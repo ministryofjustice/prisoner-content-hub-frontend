@@ -3,3 +3,4 @@ public
 assets
 .vscode
 cypress/integration/examples
+.circleci
