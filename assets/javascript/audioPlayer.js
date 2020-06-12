@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  var audio = $('#audioPlayer');
+  var audio = $('#hub-audio');
   var programmeCode = audio.data().programmeCode;
   var title = audio.data().title;
   var extendConfig = audio.data().config || {};
@@ -40,7 +40,7 @@ $(document).ready(function() {
     },
   };
 
-  audio.videoPlayer(Object.assign(config, extendConfig));
+  // audio.videoPlayer(Object.assign(config, extendConfig));
 
   function analyticsAudioEvent(config) {
     return function() {
