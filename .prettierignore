@@ -12,3 +12,4 @@ test/resource/featuredItemTile.json
 .vscode
 .cache
 build-info.json
+.circleci
