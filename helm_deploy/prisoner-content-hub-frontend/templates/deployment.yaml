@@ -32,6 +32,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.application.nomisApiToken }}
                   key: nomisApiToken
+            - name: COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.application.cookieSecret }}
+                  key: cookieSecret
             - name: HUB_API_ENDPOINT
               value: {{ .Values.application.config.hubApiEndpoint }}
             - name: BACKEND_URL
@@ -52,6 +57,18 @@ spec:
               value: {{ .Values.application.config.featureNewDesigns }}
             - name: ESTABLISHMENT_NAME
               value: {{ .Values.application.config.establishmentName }}
+            - name: FEEDBACK_URL
+              value: {{ .Values.application.config.feedbackUrl }}
+            - name: NPR_STREAM
+              value: {{ .Values.application.config.nprStream }}
+            - name: ANALYTICS_ENDPOINT
+              value: {{ .Values.application.config.analyticsEndpoint }}
+            - name: NPR_STREAM
+              value: {{ .Values.application.config.nprStream }}
+            - name: ANALYTICS_ENDPOINT
+              value: {{ .Values.application.config.analyticsEndpoint }}
+            - name: ANALYTICS_SITE_ID
+              value: {{ .Values.application.config.analyticsSiteId }}
           ports:
             - name: http
               containerPort: {{ .Values.application.port }}
