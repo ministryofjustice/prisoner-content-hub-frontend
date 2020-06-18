@@ -1,6 +1,6 @@
 apiVersion: v2
-name: prisoner-content-hub-backend
-description: Drupal backend for the prisoner content hub
+name: prisoner-content-hub-frontend
+description: Node frontend for the prisoner content hub
 type: application
 
 version: 0.1.0

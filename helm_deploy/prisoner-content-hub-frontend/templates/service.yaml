@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "prisoner-content-hub-backend.fullname" . }}
+  name: {{ include "prisoner-content-hub-frontend.fullname" . }}
   labels:
-    {{- include "prisoner-content-hub-backend.labels" . | nindent 4 }}
+    {{- include "prisoner-content-hub-frontend.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "prisoner-content-hub-backend.selectorLabels" . | nindent 4 }}
+    {{- include "prisoner-content-hub-frontend.selectorLabels" . | nindent 4 }}

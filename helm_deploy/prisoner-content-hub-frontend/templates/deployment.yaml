@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "prisoner-content-hub-backend.fullname" . }}
+  name: {{ include "prisoner-content-hub-frontend.fullname" . }}
   labels:
-    {{- include "prisoner-content-hub-backend.labels" . | nindent 4 }}
+    {{- include "prisoner-content-hub-frontend.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "prisoner-content-hub-backend.selectorLabels" . | nindent 6 }}
+      {{- include "prisoner-content-hub-frontend.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "prisoner-content-hub-backend.selectorLabels" . | nindent 8 }}
+        {{- include "prisoner-content-hub-frontend.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -27,36 +27,31 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: HUB_DB_ENV_MYSQL_DATABASE
+            - name: NOMIS_API_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.application.dbSecretName }}
-                  key: database_name
-            - name: HUB_DB_ENV_MYSQL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.application.dbSecretName }}
-                  key: database_username
-            - name: HUB_DB_ENV_MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.application.dbSecretName }}
-                  key: database_password
-            - name: HUB_DB_PORT_3306_TCP_ADDR
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.application.dbSecretName }}
-                  key: rds_instance_address
-            - name: HUB_EXT_FILE_URL
-              value: {{ .Values.ingress.hostName }}
-            - name: PHP_MEMORY_LIMIT
-              value: {{ .Values.application.config.phpMemoryLimit }}
-            - name: PHP_UPLOAD_MAX_FILE_SIZE
-              value: {{ .Values.application.config.phpUploadMaxFileSize }}
-            - name: PHP_POST_MAX_SIZE
-              value: {{ .Values.application.config.phpPostMaxSize }}
-            - name: XDEBUG_IP
-              value: {{ .Values.application.config.xDebugIp }}
+                  name: {{ .Values.application.nomisApiToken }}
+                  key: nomisApiToken
+            - name: HUB_API_ENDPOINT
+              value: {{ .Values.application.config.hubApiEndpoint }}
+            - name: BACKEND_URL
+              value: {{ .Values.application.config.backEndUrl }}
+            - name: NOMIS_API_ENDPOINT
+              value: {{ .Values.application.config.nomisApiEndpoint }}
+            - name: APP_NAME
+              value: {{ .Values.application.config.appName }}
+            - name: ENABLE_FEATURE_TOGGLES
+              value: {{ .Values.application.config.enableFeatureToggles }}
+            - name: ENABLE_PRISON_SWITCH
+              value: {{ .Values.application.config.enablePrisonSwitch }}
+            - name: MOCK_AUTH
+              value: {{ .Values.application.config.mockAuth }}
+            - name: ELASTICSEARCH_ENDPOINT
+              value: {{ .Values.application.config.elasticSearchEndpoint }}
+            - name: FEATURE_NEW_DESIGNS
+              value: {{ .Values.application.config.featureNewDesigns }}
+            - name: ESTABLISHMENT_NAME
+              value: {{ .Values.application.config.establishmentName }}
           ports:
             - name: http
               containerPort: {{ .Values.application.port }}

@@ -5,7 +5,7 @@ replicaCount: 1
 maxReplicaCount: 3
 
 image:
-  repository: mojdigitalstudio/digital-hub-be
+  repository: mojdigitalstudio/digital-hub-node
   pullPolicy: IfNotPresent
   tag: latest
 
@@ -20,11 +20,17 @@ application:
     delaySeconds: 10
     timeoutSeconds: 5
   config:
-    phpMemoryLimit: 256M
-    phpUploadMaxFileSize: 500M
-    phpPostMaxSize: 500M
-    xDebugIp: 127.0.0.1
-  dbSecretName: drupal-rds
+    hubApiEndpoint: https://content.pfs-digital-hub-stage.hmpps.dsd.io/
+    backEndUrl: http://some.domain
+    nomisApiEndpoint: https://gateway.t3.nomis-api.hmpps.dsd.io
+    appName: HMP Local
+    enableFeatureToggles: true
+    enablePrisonSwitch: true
+    mockAuth: true
+    elasticSearchEndpoint: http://localhost:9200
+    featureNewDesigns: false
+    establishmentName: berwyn
+  nomisApiToken: drupal-rds
 
 imagePullSecrets: [] # Are we using ECR?
 
