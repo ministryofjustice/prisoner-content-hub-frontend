@@ -1,0 +1,161 @@
+[
+  {
+    "scenario": "Should handle items that don't have a series attribute",
+    "input": {
+      "large_tiles": [
+        {
+          "id": "1234",
+          "title": "Featured Item",
+          "content_type": "landing_page",
+          "summary": "Featured Item Summary",
+          "image": {
+            "alt": "Featured Item",
+            "url": "http://foo.bar/images/foo.jpg"
+          }
+        },
+        {
+          "id": "1234",
+          "title": "Featured Item",
+          "content_type": "landing_page",
+          "summary": "Featured Item Summary",
+          "image": {
+            "alt": "Featured Item",
+            "url": "http://foo.bar/images/foo.jpg"
+          }
+        }
+      ],
+      "small_tiles": [
+        {
+          "id": "1234",
+          "title": "Featured Item",
+          "content_type": "landing_page",
+          "summary": "Featured Item Summary",
+          "image": {
+            "alt": "Featured Item",
+            "url": "http://foo.bar/images/foo.jpg"
+          }
+        }
+      ]
+    },
+    "output": {
+      "id": "1234",
+      "title": "Featured Item",
+      "summary": "Featured Item Summary",
+      "image": {
+        "alt": "Featured Item",
+        "url": "http://foo.bar/images/foo.jpg"
+      },
+      "contentType": "landing_page",
+      "contentUrl": "/content/1234",
+      "isSeries": false
+    }
+  },
+  {
+    "scenario": "Should handle items that have no series",
+    "input": {
+      "large_tiles": [
+        {
+          "id": "1234",
+          "title": "Featured Item",
+          "content_type": "moj_video_item",
+          "summary": "Featured Item Summary",
+          "image": {
+            "alt": "Featured Item",
+            "url": "http://foo.bar/images/foo.jpg"
+          },
+          "series": []
+        },
+        {
+          "id": "1234",
+          "title": "Featured Item",
+          "content_type": "moj_video_item",
+          "summary": "Featured Item Summary",
+          "image": {
+            "alt": "Featured Item",
+            "url": "http://foo.bar/images/foo.jpg"
+          },
+          "series": []
+        }
+      ],
+      "small_tiles": [
+        {
+          "id": "1234",
+          "title": "Featured Item",
+          "content_type": "moj_video_item",
+          "summary": "Featured Item Summary",
+          "image": {
+            "alt": "Featured Item",
+            "url": "http://foo.bar/images/foo.jpg"
+          },
+          "series": []
+        }
+      ]
+    },
+    "output": {
+      "id": "1234",
+      "title": "Featured Item",
+      "summary": "Featured Item Summary",
+      "image": {
+        "alt": "Featured Item",
+        "url": "http://foo.bar/images/foo.jpg"
+      },
+      "contentType": "moj_video_item",
+      "contentUrl": "/content/1234",
+      "isSeries": false
+    }
+  },
+  {
+    "scenario": "Should handle items that have series",
+    "input": {
+      "large_tiles": [
+        {
+          "id": "1234",
+          "title": "Featured Item",
+          "content_type": "moj_video_item",
+          "summary": "Featured Item Summary",
+          "image": {
+            "alt": "Featured Item",
+            "url": "http://foo.bar/images/foo.jpg"
+          },
+          "series": ["foo", "bar", "baz"]
+        },
+        {
+          "id": "1234",
+          "title": "Featured Item",
+          "content_type": "moj_video_item",
+          "summary": "Featured Item Summary",
+          "image": {
+            "alt": "Featured Item",
+            "url": "http://foo.bar/images/foo.jpg"
+          },
+          "series": ["foo", "bar", "baz"]
+        }
+      ],
+      "small_tiles": [
+        {
+          "id": "1234",
+          "title": "Featured Item",
+          "content_type": "moj_video_item",
+          "summary": "Featured Item Summary",
+          "image": {
+            "alt": "Featured Item",
+            "url": "http://foo.bar/images/foo.jpg"
+          },
+          "series": ["foo", "bar", "baz"]
+        }
+      ]
+    },
+    "output": {
+      "id": "1234",
+      "title": "Featured Item",
+      "summary": "Featured Item Summary",
+      "image": {
+        "alt": "Featured Item",
+        "url": "http://foo.bar/images/foo.jpg"
+      },
+      "contentType": "moj_video_item",
+      "contentUrl": "/content/1234",
+      "isSeries": true
+    }
+  }
+]

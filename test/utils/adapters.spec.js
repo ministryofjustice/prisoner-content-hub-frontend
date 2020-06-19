@@ -17,14 +17,13 @@ const videoShowResponse = require('../resources/videoShow.json');
 const termsResponse = require('../resources/terms.json');
 const featuredItemResponse = require('../resources/featuredItem.json');
 const featuredSeriesResponse = require('../resources/featuredSeries.json');
-const featuredItemTileResponse = require('../resources/featuredItemTile.json');
-const featuredSeriesTileResponse = require('../resources/featuredSeriesTile.json');
 const flatPageContentResponse = require('../resources/flatPageContent.json');
 const seasonResponse = require('../resources/season.json');
 const landingPageResponse = require('../resources/landingPage.json');
 const relatedContentResponse = require('../resources/relatedContent.json');
 const pdfContentResponse = require('../resources/pdfContentResponse.json');
 const searchResponse = require('../resources/rawSearchResponse.json');
+const featuredItems = require('../resources/featuredItems.json');
 
 describe('Adapters', () => {
   describe('.mediaResponseFrom', () => {
@@ -94,16 +93,14 @@ describe('Adapters', () => {
   });
 
   describe('.featuredContentTileResponseFrom', () => {
-    it('returns formated data for featured item', () => {
-      const result = featuredContentTileResponseFrom(featuredItemTileResponse);
-      expect(result.upperFeatured).to.eql(featuredItemTile());
-    });
-
-    it('returns formated data for featured series', () => {
-      const result = featuredContentTileResponseFrom(
-        featuredSeriesTileResponse,
-      );
-      expect(result.upperFeatured).to.eql(featuredSeriesTile());
+    featuredItems.forEach(({ scenario, input, output }) => {
+      it(scenario, () => {
+        const result = featuredContentTileResponseFrom(input);
+        expect(result.upperFeatured).to.eql(output);
+        expect(result.lowerFeatured).to.eql(output);
+        expect(result.smallTiles.length).to.eql(input.small_tiles.length);
+        expect(result.smallTiles[0]).to.eql(output);
+      });
     });
   });
 
@@ -367,36 +364,6 @@ function featuredSeries() {
     duration: null,
     contentType: 'series',
     contentUrl: '/tags/678',
-  };
-}
-
-function featuredItemTile() {
-  return {
-    id: '1234',
-    title: 'Featured Item',
-    summary: 'Featured Item Summary',
-    image: {
-      alt: 'Featured Item',
-      url: 'http://foo.bar/images/foo.jpg',
-    },
-    contentType: 'moj_video_item',
-    contentUrl: '/content/1234',
-    isSeries: false,
-  };
-}
-
-function featuredSeriesTile() {
-  return {
-    id: '1234',
-    title: 'Featured Item',
-    summary: 'Featured Item Summary',
-    image: {
-      alt: 'Featured Item',
-      url: 'http://foo.bar/images/foo.jpg',
-    },
-    contentType: 'moj_video_item',
-    contentUrl: '/content/1234',
-    isSeries: true,
   };
 }
 
