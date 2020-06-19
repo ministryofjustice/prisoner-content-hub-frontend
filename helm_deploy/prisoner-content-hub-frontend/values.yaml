@@ -18,7 +18,6 @@ application:
   config:
     hubApiEndpoint: https://content.pfs-digital-hub-stage.hmpps.dsd.io/
     backEndUrl: http://some.domain
-    nomisApiEndpoint: https://gateway.t3.nomis-api.hmpps.dsd.io
     appName: "HMP Local"
     enableFeatureToggles: true
     enablePrisonSwitch: true
@@ -30,9 +29,6 @@ application:
     nprStream: /npr-stream
     analyticsEndpoint: https://www.google-analytics.com/collect
     analyticsSiteId: UA-152065860-4
-
-  # nomisApiToken: nomis-api-token
-  # cookieSecret: cookie-secret
 
 imagePullSecrets: [] # Are we using ECR?
 

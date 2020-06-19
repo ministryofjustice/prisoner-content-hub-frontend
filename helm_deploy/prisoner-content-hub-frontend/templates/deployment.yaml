@@ -27,11 +27,16 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            # - name: NOMIS_API_TOKEN
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: {{ .Values.application.nomisApiToken }}
-            #       key: nomisApiToken
+            - name: NOMIS_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+                  key: nomisApiToken
+            - name: NOMIS_API_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+                  key: nomisApiEndpoint
             # - name: COOKIE_SECRET
             #   valueFrom:
             #     secretKeyRef:
@@ -41,8 +46,6 @@ spec:
               value: {{ .Values.application.config.hubApiEndpoint }}
             - name: BACKEND_URL
               value: {{ .Values.application.config.backEndUrl }}
-            - name: NOMIS_API_ENDPOINT
-              value: {{ .Values.application.config.nomisApiEndpoint }}
             - name: APP_NAME
               value: {{ .Values.application.config.appName }}
             - name: ENABLE_FEATURE_TOGGLES
