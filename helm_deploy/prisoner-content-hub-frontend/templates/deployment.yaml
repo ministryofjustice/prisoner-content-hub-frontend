@@ -27,16 +27,16 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: NOMIS_API_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.application.nomisApiToken }}
-                  key: nomisApiToken
-            - name: COOKIE_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.application.cookieSecret }}
-                  key: cookieSecret
+            # - name: NOMIS_API_TOKEN
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: {{ .Values.application.nomisApiToken }}
+            #       key: nomisApiToken
+            # - name: COOKIE_SECRET
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: {{ .Values.application.cookieSecret }}
+            #       key: cookieSecret
             - name: HUB_API_ENDPOINT
               value: {{ .Values.application.config.hubApiEndpoint }}
             - name: BACKEND_URL
@@ -46,15 +46,15 @@ spec:
             - name: APP_NAME
               value: {{ .Values.application.config.appName }}
             - name: ENABLE_FEATURE_TOGGLES
-              value: {{ .Values.application.config.enableFeatureToggles }}
+              value: {{ .Values.application.config.enableFeatureToggles | quote }}
             - name: ENABLE_PRISON_SWITCH
-              value: {{ .Values.application.config.enablePrisonSwitch }}
+              value: {{ .Values.application.config.enablePrisonSwitch | quote }}
             - name: MOCK_AUTH
-              value: {{ .Values.application.config.mockAuth }}
+              value: {{ .Values.application.config.mockAuth | quote }}
             - name: ELASTICSEARCH_ENDPOINT
               value: {{ .Values.application.config.elasticSearchEndpoint }}
             - name: FEATURE_NEW_DESIGNS
-              value: {{ .Values.application.config.featureNewDesigns }}
+              value: {{ .Values.application.config.featureNewDesigns | quote }}
             - name: ESTABLISHMENT_NAME
               value: {{ .Values.application.config.establishmentName }}
             - name: FEEDBACK_URL

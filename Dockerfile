@@ -38,4 +38,7 @@ RUN npm run verify
 RUN apk del git
 
 EXPOSE 3000
+RUN chown -R 1000:1000 /home/node/app
+
+USER 1000
 CMD [ "npm", "start" ]

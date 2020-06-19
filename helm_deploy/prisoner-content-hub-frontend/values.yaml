@@ -6,24 +6,20 @@ maxReplicaCount: 3
 
 image:
   repository: mojdigitalstudio/digital-hub-node
-  pullPolicy: IfNotPresent
-  tag: latest
+  pullPolicy: Always
+  tag: dev
 
 application:
-  port: 80
+  port: 3000
   liveness:
-    endpoint: /api/health
-    delaySeconds: 10
-    timeoutSeconds: 5
+    endpoint: /games/smashout
   readiness:
-    endpoint: /
-    delaySeconds: 10
-    timeoutSeconds: 5
+    endpoint: /health
   config:
     hubApiEndpoint: https://content.pfs-digital-hub-stage.hmpps.dsd.io/
     backEndUrl: http://some.domain
     nomisApiEndpoint: https://gateway.t3.nomis-api.hmpps.dsd.io
-    appName: 'HMP Local'
+    appName: "HMP Local"
     enableFeatureToggles: true
     enablePrisonSwitch: true
     mockAuth: true
@@ -35,14 +31,20 @@ application:
     analyticsEndpoint: https://www.google-analytics.com/collect
     analyticsSiteId: UA-152065860-4
 
-  nomisApiToken: nomis-api-token
-  cookieSecret: cookie-secret
+  # nomisApiToken: nomis-api-token
+  # cookieSecret: cookie-secret
 
 imagePullSecrets: [] # Are we using ECR?
 
 podSecurityContext: {}
 
-securityContext: {}
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
 
 resources: {}
 
@@ -55,6 +57,6 @@ service:
 ingress:
   enabled: false
   tlsEnabled: false
-  hostName: content.pfs-hub.local
+  hostName: pfs-hub.local
   path: /
   cert_secret: cert-secret
