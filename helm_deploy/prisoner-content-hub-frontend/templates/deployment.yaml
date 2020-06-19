@@ -37,15 +37,16 @@ spec:
                 secretKeyRef:
                   name: {{ include "prisoner-content-hub-frontend.fullname" . }}
                   key: nomisApiEndpoint
-            # - name: COOKIE_SECRET
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: {{ .Values.application.cookieSecret }}
-            #       key: cookieSecret
             - name: HUB_API_ENDPOINT
-              value: {{ .Values.application.config.hubApiEndpoint }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.application.contentConfigMap }}
+                  key: internalUrl
             - name: BACKEND_URL
-              value: {{ .Values.application.config.backEndUrl }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.application.contentConfigMap }}
+                  key: externalUrl
             - name: APP_NAME
               value: {{ .Values.application.config.appName }}
             - name: ENABLE_FEATURE_TOGGLES

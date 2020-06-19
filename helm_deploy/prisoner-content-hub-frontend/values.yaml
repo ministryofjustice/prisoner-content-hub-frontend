@@ -16,8 +16,6 @@ application:
   readiness:
     endpoint: /health
   config:
-    hubApiEndpoint: https://content.pfs-digital-hub-stage.hmpps.dsd.io/
-    backEndUrl: http://some.domain
     appName: "HMP Local"
     enableFeatureToggles: true
     enablePrisonSwitch: true
