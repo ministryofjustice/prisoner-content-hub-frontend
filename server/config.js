@@ -53,7 +53,7 @@ module.exports = {
   production: isProduction,
   backendUrl,
   buildInfo: {
-    buildNumber: getEnv('BUILD_NUMBER', '1234'),
+    buildNumber: getEnv('BUILD_NUMBER', '9999999'),
     gitRef: getEnv('GIT_REF', 'abcd1234'),
     gitDate: getEnv('GIT_DATE', '2020-06-21 12:12:12'),
   },

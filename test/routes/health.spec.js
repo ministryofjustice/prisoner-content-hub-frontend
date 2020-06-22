@@ -3,7 +3,7 @@ const request = require('supertest');
 const { createHealthRouter } = require('../../server/routes/health');
 const { setupBasicApp } = require('../test-helpers');
 
-describe.only('/health', () => {
+describe('/health', () => {
   it('returns the health status of the application', () => {
     const healthService = {
       status: sinon.stub().returns({
