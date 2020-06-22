@@ -13,8 +13,12 @@ application:
   port: 3000
   liveness:
     endpoint: /games/smashout
+    delaySeconds: 10
+    timeoutSeconds: 5
   readiness:
     endpoint: /health
+    delaySeconds: 10
+    timeoutSeconds: 5
   config:
     appName: "HMP Local"
     enableFeatureToggles: true

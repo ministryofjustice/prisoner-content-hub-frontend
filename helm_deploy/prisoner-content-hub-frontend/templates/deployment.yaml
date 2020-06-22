@@ -87,8 +87,8 @@ spec:
             httpGet:
               path: {{ .Values.application.readiness.endpoint }}
               port: http
-            initialDelaySeconds: {{ .Values.application.liveness.delaySeconds }}
-            timeoutSeconds: {{ .Values.application.liveness.timeoutSeconds }}
+            initialDelaySeconds: {{ .Values.application.readiness.delaySeconds }}
+            timeoutSeconds: {{ .Values.application.readiness.timeoutSeconds }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.affinity }}
