@@ -6,7 +6,7 @@ maxReplicaCount: 3
 
 image:
   repository: mojdigitalstudio/digital-hub-node
-  pullPolicy: Always
+  pullPolicy: Never
   tag: dev
 
 application:
