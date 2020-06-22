@@ -6,14 +6,14 @@ default_machine: &default_machine
   machine:
     enabled: true
   working_directory: ~/prisoner-content-hub-frontend
-master_branch: &master_branch
+main_branch: &main_branch
   filters:
     branches:
-      only: master
+      only: main
 feature_branch: &feature_branch
   filters:
     branches:
-      ignore: master
+      ignore: main
 
 version: 2.1
 commands:
@@ -237,30 +237,30 @@ workflows:
           requires:
             - approve_preview_build_deploy_stage
       - build_frontend:
-          <<: *master_branch
+          <<: *main_branch
       # - run_e2e_test:
-      #     <<: *master_branch
+      #     <<: *main_branch
       #     requires:
       #       - build_frontend
       - deploy_dev:
-          <<: *master_branch
+          <<: *main_branch
           requires:
             - build_frontend
       - approve_deploy_stage:
-          <<: *master_branch
+          <<: *main_branch
           type: approval
           requires:
             - deploy_dev
       - deploy_stage:
-          <<: *master_branch
+          <<: *main_branch
           requires:
             - approve_deploy_stage
       - approve_deploy_prod:
-          <<: *master_branch
+          <<: *main_branch
           type: approval
           requires:
             - deploy_stage
       - deploy_prod:
-          <<: *master_branch
+          <<: *main_branch
           requires:
             - approve_deploy_prod
