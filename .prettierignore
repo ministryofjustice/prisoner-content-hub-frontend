@@ -14,3 +14,4 @@ test/resource/featuredItemTile.json
 build-info.json
 .circleci
 helm_deploy
+.mocharc.yml
