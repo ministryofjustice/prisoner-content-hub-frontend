@@ -28,11 +28,12 @@ RUN ./node_modules/node-sass/bin/node-sass $@ \
   /home/node/app/assets/sass/style.scss \
   /home/node/app/assets/stylesheets/application.css
 
+ENV BUILD_NUMBER=${BUILD_NUMBER}
+ENV GIT_REF=${GIT_REF}
+ENV GIT_DATE=${GIT_DATE}
+
 # Run application verification
 RUN npm run verify
-
-# Record build number
-RUN BUILD_NUMBER=${BUILD_NUMBER} GIT_REF=${GIT_REF} GIT_DATE=${GIT_DATE} npm run record-build-info
 
 RUN apk del git
 

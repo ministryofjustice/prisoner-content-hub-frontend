@@ -109,7 +109,6 @@ describe('App', () => {
 
 function app(opts) {
   const services = {
-    appInfo: sinon.stub(),
     hubPromotedContentService: { hubPromotedContent: sinon.stub().returns([]) },
     hubFeaturedContentService: { hubFeaturedContent: sinon.stub().returns([]) },
     hubMenuService: {

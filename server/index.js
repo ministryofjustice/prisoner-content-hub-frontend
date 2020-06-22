@@ -7,7 +7,6 @@ const { StandardClient } = require('./clients/standard');
 const { NomisClient } = require('./clients/nomisClient');
 
 // Services
-const { appInfoService } = require('./services/appInfo');
 const { createHubMenuService } = require('./services/hubMenu');
 const {
   createHubFeaturedContentService,
@@ -39,8 +38,6 @@ const { offenderRepository } = require('./repositories/offender');
 const { searchRepository } = require('./repositories/search');
 const { analyticsRepository } = require('./repositories/analytics');
 const { feedbackRepository } = require('./repositories/feedback');
-
-const buildInfo = config.dev ? null : require('../build-info.json'); // eslint-disable-line import/no-unresolved
 
 // Connect services with repositories
 const hubMenuService = createHubMenuService(
@@ -74,7 +71,6 @@ const feedbackService = createFeedbackService({
 });
 
 const app = createApp({
-  appInfo: appInfoService(buildInfo),
   healthService: createHealthService({
     client: new StandardClient(),
     config,

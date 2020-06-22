@@ -45,7 +45,6 @@ const {
 const version = Date.now().toString();
 
 const createApp = ({
-  appInfo,
   logger,
   hubFeaturedContentService,
   hubMenuService,
@@ -171,7 +170,7 @@ const createApp = ({
   );
 
   // Health end point
-  app.use('/health', createHealthRouter({ appInfo, healthService }));
+  app.use('/health', createHealthRouter({ healthService }));
 
   app.use((req, res, next) => {
     if (req.session && !req.session.id) {
