@@ -218,7 +218,7 @@ const createApp = ({
     '/auth',
     createAuthRouter({
       logger,
-      formParser: bodyParser.urlencoded(),
+      formParser: bodyParser.urlencoded({ extended: true }),
       authenticateUser: authenticateUser({
         config: ldapConfig,
         mockAuth: config.mockAuth,
