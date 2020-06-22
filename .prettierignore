@@ -13,3 +13,4 @@ test/resource/featuredItemTile.json
 .cache
 build-info.json
 .circleci
+helm_deploy

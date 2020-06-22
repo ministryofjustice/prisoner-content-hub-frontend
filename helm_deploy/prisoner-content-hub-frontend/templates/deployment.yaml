@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+  labels:
+    {{- include "prisoner-content-hub-frontend.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "prisoner-content-hub-frontend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "prisoner-content-hub-frontend.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: NOMIS_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+                  key: nomisApiToken
+            - name: NOMIS_API_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+                  key: nomisApiEndpoint
+            - name: HUB_API_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.application.contentConfigMap }}
+                  key: internalUrl
+            - name: BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.application.contentConfigMap }}
+                  key: externalUrl
+            - name: APP_NAME
+              value: {{ .Values.application.config.appName }}
+            - name: ENABLE_FEATURE_TOGGLES
+              value: {{ .Values.application.config.enableFeatureToggles | quote }}
+            - name: ENABLE_PRISON_SWITCH
+              value: {{ .Values.application.config.enablePrisonSwitch | quote }}
+            - name: MOCK_AUTH
+              value: {{ .Values.application.config.mockAuth | quote }}
+            - name: ELASTICSEARCH_ENDPOINT
+              value: {{ .Values.application.config.elasticSearchEndpoint }}
+            - name: FEATURE_NEW_DESIGNS
+              value: {{ .Values.application.config.featureNewDesigns | quote }}
+            - name: ESTABLISHMENT_NAME
+              value: {{ .Values.application.config.establishmentName }}
+            - name: FEEDBACK_URL
+              value: {{ .Values.application.config.feedbackUrl }}
+            - name: NPR_STREAM
+              value: {{ .Values.application.config.nprStream }}
+            - name: ANALYTICS_ENDPOINT
+              value: {{ .Values.application.config.analyticsEndpoint }}
+            - name: NPR_STREAM
+              value: {{ .Values.application.config.nprStream }}
+            - name: ANALYTICS_ENDPOINT
+              value: {{ .Values.application.config.analyticsEndpoint }}
+            - name: ANALYTICS_SITE_ID
+              value: {{ .Values.application.config.analyticsSiteId }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.application.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.application.liveness.endpoint }}
+              port: http
+            initialDelaySeconds: {{ .Values.application.liveness.delaySeconds }}
+            timeoutSeconds: {{ .Values.application.liveness.timeoutSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.application.readiness.endpoint }}
+              port: http
+            initialDelaySeconds: {{ .Values.application.readiness.delaySeconds }}
+            timeoutSeconds: {{ .Values.application.readiness.timeoutSeconds }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

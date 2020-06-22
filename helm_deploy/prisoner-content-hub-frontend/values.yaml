@@ -1,0 +1,60 @@
+nameOverride: ""
+fullnameOverride: ""
+
+replicaCount: 1
+maxReplicaCount: 3
+
+image:
+  repository: mojdigitalstudio/digital-hub-node
+  pullPolicy: Never
+  tag: dev
+
+application:
+  port: 3000
+  liveness:
+    endpoint: /games/smashout
+    delaySeconds: 10
+    timeoutSeconds: 5
+  readiness:
+    endpoint: /health
+    delaySeconds: 10
+    timeoutSeconds: 5
+  config:
+    appName: "HMP Local"
+    enableFeatureToggles: true
+    enablePrisonSwitch: true
+    mockAuth: true
+    elasticSearchEndpoint: http://localhost:9200
+    featureNewDesigns: false
+    establishmentName: berwyn
+    feedbackUrl: http://localhost:9200/local-feedback/_doc
+    nprStream: /npr-stream
+    analyticsEndpoint: https://www.google-analytics.com/collect
+    analyticsSiteId: UA-152065860-4
+
+imagePullSecrets: [] # Are we using ECR?
+
+podSecurityContext: {}
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
+resources: {}
+
+affinity: {}
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  tlsEnabled: false
+  hostName: pfs-hub.local
+  path: /
+  cert_secret: cert-secret
