@@ -3,16 +3,8 @@ const request = require('supertest');
 const { createHealthRouter } = require('../../server/routes/health');
 const { setupBasicApp } = require('../test-helpers');
 
-describe('/health', () => {
+describe.only('/health', () => {
   it('returns the health status of the application', () => {
-    const appInfo = {
-      getBuildInfo: sinon.stub().returns({
-        buildNumber: 'foo-number',
-        gitRef: 'foo-ref',
-        gitDate: 'foo-date',
-      }),
-    };
-
     const healthService = {
       status: sinon.stub().returns({
         status: 'OK',
@@ -21,8 +13,14 @@ describe('/health', () => {
         },
       }),
     };
-    const router = createHealthRouter({ appInfo, healthService });
-    const app = setupBasicApp();
+    const router = createHealthRouter({ healthService });
+    const app = setupBasicApp({
+      buildInfo: {
+        buildNumber: 'foo-number',
+        gitRef: 'foo-ref',
+        gitDate: 'foo-date',
+      },
+    });
 
     app.use('/health', router);
 

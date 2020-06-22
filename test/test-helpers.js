@@ -3,7 +3,7 @@ const path = require('path');
 const nunjucks = require('nunjucks');
 const chance = require('chance')();
 
-function setupBasicApp() {
+function setupBasicApp(config = {}) {
   const app = express();
   app.set('views', path.join(__dirname, '../server/views'));
   app.set('view engine', 'html');
@@ -18,7 +18,7 @@ function setupBasicApp() {
     autoescape: true,
   });
 
-  app.locals.config = {};
+  app.locals.config = config;
 
   return app;
 }

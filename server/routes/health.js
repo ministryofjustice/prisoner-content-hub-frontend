@@ -1,14 +1,18 @@
 const express = require('express');
+const { path } = require('ramda');
 
-const createHealthRouter = ({ appInfo, healthService }) => {
+const createHealthRouter = ({ healthService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
     try {
       const healthStatus = await healthService.status();
+      const buildInfo = path(['app', 'locals', 'config', 'buildInfo'], req);
       res.set('Content-Language', 'en-GB');
       res.json({
-        ...appInfo.getBuildInfo(),
+        buildNumber: path(['buildNumber'], buildInfo),
+        gitRef: path(['gitRef'], buildInfo),
+        gitDate: path(['gitDate'], buildInfo),
         ...healthStatus,
       });
     } catch (exp) {
