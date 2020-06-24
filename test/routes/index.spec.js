@@ -42,7 +42,7 @@ describe('GET /', () => {
     };
   });
 
-  describe('Homepage', () => {
+  describe.only('Homepage', () => {
     beforeEach(() => {
       const analyticsService = {
         sendPageTrack: sinon.stub(),
@@ -54,12 +54,19 @@ describe('GET /', () => {
         analyticsService,
       });
 
-      app = setupBasicApp();
+      app = setupBasicApp({
+        establishments: {
+          1: {
+            homePageLinksTitle: 'Popular topics',
+          },
+        },
+      });
       app.use(
         (req, res, next) => {
           // TODO: Remove this when new designs implemented fully in template
           res.locals = {
             features: { newDesigns: true },
+            establishmentId: 1,
           };
           next();
         },
@@ -123,7 +130,7 @@ describe('GET /', () => {
         });
     });
 
-    it('renders the popular topics menu', () => {
+    it('renders the home page links menu', () => {
       return request(app)
         .get('/')
         .then(response => {

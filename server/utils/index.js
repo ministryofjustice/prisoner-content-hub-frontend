@@ -37,8 +37,12 @@ function getEstablishmentUiId(id) {
   return R.path(['establishments', id, 'uuId'], config);
 }
 
-function getEstablishmentFacilitiesList(id) {
-  return R.pathOr('/404', ['establishments', id, 'facilitiesList'], config);
+function getEstablishmentHomepageLinks(id) {
+  return R.path(['establishments', id, 'homePageLinks'], config);
+}
+
+function getEstablishmentHomepageLinksTitle(id) {
+  return R.path(['establishments', id, 'homePageLinksTitle'], config);
 }
 
 function getEstablishmentWorkingIn(id) {
@@ -169,8 +173,9 @@ module.exports = {
   getEstablishmentStandFirst,
   getEstablishmentWorkingIn,
   getEstablishmentWorkingInUrls,
-  getEstablishmentFacilitiesList,
   getEstablishmentPrefix,
+  getEstablishmentHomepageLinks,
+  getEstablishmentHomepageLinksTitle,
   isEmpty,
   capitalize,
   capitalizeAll,

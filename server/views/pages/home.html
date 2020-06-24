@@ -46,9 +46,9 @@
         }) }}
       </div>
       <div class="popular-topics">
-        <h3 class="govuk-heading-s">Popular topics</h3>
+        <h3 class="govuk-heading-s">{{ homePageLinksTitle }}</h3>
         <ul>
-          {% for itemtitle, link in popularTopics %}
+          {% for itemtitle, link in homePageLinks %}
             <li>
               <a href="{{link}}" class="govuk-link">{{itemtitle}}</a>
             </li>
