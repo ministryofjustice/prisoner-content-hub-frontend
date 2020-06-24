@@ -4,6 +4,8 @@ fullnameOverride: ""
 replicaCount: 1
 maxReplicaCount: 3
 
+tier: frontend
+
 image:
   repository: mojdigitalstudio/digital-hub-node
   pullPolicy: Never
@@ -24,7 +26,7 @@ application:
     enableFeatureToggles: true
     enablePrisonSwitch: true
     mockAuth: true
-    elasticSearchEndpoint: http://localhost:9200
+    elasticSearchEndpoint: http://hub-elasticsearch-elasticsearch-coordinating-only.development.svc.cluster.local:9200
     featureNewDesigns: false
     establishmentName: berwyn
     feedbackUrl: http://localhost:9200/local-feedback/_doc
