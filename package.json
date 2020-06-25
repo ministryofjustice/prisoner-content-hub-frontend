@@ -1,5 +1,5 @@
 {
-  "name": "digital-hub",
+  "name": "prisoner-content-hub-frontend",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ministryofjustice/digital-hub/"
+    "url": "https://github.com/ministryofjustice/prisoner-content-hub-frontend/"
   },
   "engines": {
     "node": ">= 12",

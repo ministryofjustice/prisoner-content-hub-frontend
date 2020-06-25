@@ -7,7 +7,7 @@ maxReplicaCount: 3
 tier: frontend
 
 image:
-  repository: mojdigitalstudio/digital-hub-node
+  repository: mojdigitalstudio/prisoner-content-hub-frontend
   pullPolicy: Never
   tag: dev
 

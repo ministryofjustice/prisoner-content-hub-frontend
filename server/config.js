@@ -78,7 +78,7 @@ const establishments = {
 };
 
 module.exports = {
-  appName: getEnv('APP_NAME', `digital-hub-frontend`, {
+  appName: getEnv('APP_NAME', 'prisoner-content-hub-frontend', {
     requireInProduction: true,
   }),
   dev: !isProduction && !isTest,
