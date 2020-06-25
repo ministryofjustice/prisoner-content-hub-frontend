@@ -1,10 +1,10 @@
 const R = require('ramda');
 const crypto = require('crypto');
-const config = require('../config');
+const defaultConfig = require('../config');
 
 const isEmpty = val => R.isEmpty(val) || R.isNil(val);
 
-function getEstablishmentId(name) {
+function getEstablishmentId(name, config = defaultConfig) {
   return Object.keys(config.establishments).reduce(
     (matchingEstablishmentId, establishmentId) => {
       if (config.establishments[establishmentId].name === name) {
@@ -17,35 +17,39 @@ function getEstablishmentId(name) {
   );
 }
 
-function getEstablishmentName(id) {
+function getEstablishmentName(id, config = defaultConfig) {
   return R.path(['establishments', id, 'name'], config);
 }
 
-function getEstablishmentStandFirst(id) {
+function getEstablishmentStandFirst(id, config = defaultConfig) {
   return R.pathOr('', ['establishments', id, 'standFirst'], config);
 }
 
-function getEstablishmentPrefix(id) {
+function getEstablishmentPrefix(id, config = defaultConfig) {
   return R.pathOr('HMP', ['establishments', id, 'prefix'], config);
 }
 
-function getEstablishmentFormattedName(id) {
+function getEstablishmentFormattedName(id, config = defaultConfig) {
   return R.path(['establishments', id, 'formattedName'], config);
 }
 
-function getEstablishmentUiId(id) {
+function getEstablishmentUiId(id, config = defaultConfig) {
   return R.path(['establishments', id, 'uuId'], config);
 }
 
-function getEstablishmentFacilitiesList(id) {
-  return R.pathOr('/404', ['establishments', id, 'facilitiesList'], config);
+function getEstablishmentHomepageLinks(id, config = defaultConfig) {
+  return R.path(['establishments', id, 'homePageLinks'], config);
 }
 
-function getEstablishmentWorkingIn(id) {
+function getEstablishmentHomepageLinksTitle(id, config = defaultConfig) {
+  return R.path(['establishments', id, 'homePageLinksTitle'], config);
+}
+
+function getEstablishmentWorkingIn(id, config = defaultConfig) {
   return R.pathOr([], ['establishments', id, 'workingIn'], config);
 }
 
-function getEstablishmentWorkingInUrls() {
+function getEstablishmentWorkingInUrls(config = defaultConfig) {
   return Object.keys(config.establishments)
     .reduce((urls, establishmentId) => {
       return `/working-in-${config.establishments[establishmentId].name},${urls}`;
@@ -65,7 +69,7 @@ function relativeUrlFrom(url = '', override) {
   return url.replace(urlSchemeAndAuthorityRegex, newUrlAuthority);
 }
 
-function fixUrlForProduction(url) {
+function fixUrlForProduction(url, config = defaultConfig) {
   if (config.production) {
     return relativeUrlFrom(url);
   }
@@ -169,8 +173,9 @@ module.exports = {
   getEstablishmentStandFirst,
   getEstablishmentWorkingIn,
   getEstablishmentWorkingInUrls,
-  getEstablishmentFacilitiesList,
   getEstablishmentPrefix,
+  getEstablishmentHomepageLinks,
+  getEstablishmentHomepageLinksTitle,
   isEmpty,
   capitalize,
   capitalizeAll,

@@ -186,7 +186,7 @@ const createApp = ({
     createIndexRouter({
       logger,
       hubFeaturedContentService,
-      analyticsService,
+      config,
     }),
   );
 

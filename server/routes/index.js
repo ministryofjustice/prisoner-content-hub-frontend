@@ -1,8 +1,11 @@
 const express = require('express');
 const { path } = require('ramda');
-const { getEstablishmentFacilitiesList } = require('../utils');
+const {
+  getEstablishmentHomepageLinks,
+  getEstablishmentHomepageLinksTitle,
+} = require('../utils');
 
-const createIndexRouter = ({ logger, hubFeaturedContentService }) => {
+const createIndexRouter = ({ logger, hubFeaturedContentService, config }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
@@ -12,12 +15,20 @@ const createIndexRouter = ({ logger, hubFeaturedContentService }) => {
       const userName = path(['session', 'user', 'name'], req);
       const establishmentId = path(['locals', 'establishmentId'], res);
       const newDesigns = path(['locals', 'features', 'newDesigns'], res);
+      const homePageLinks = getEstablishmentHomepageLinks(
+        establishmentId,
+        config,
+      );
+      const homePageLinksTitle = getEstablishmentHomepageLinksTitle(
+        establishmentId,
+        config,
+      );
 
       const featuredContent = await hubFeaturedContentService.hubFeaturedContent(
         { establishmentId },
       );
 
-      const config = {
+      const pageConfig = {
         content: true,
         header: true,
         postscript: true,
@@ -28,26 +39,11 @@ const createIndexRouter = ({ logger, hubFeaturedContentService }) => {
         returnUrl: req.originalUrl,
       };
 
-      const popularTopics = {
-        Coronavirus: '/tags/894',
-        Visits: '/content/4203',
-        // Incentives: '/content/4204',
-        Games: '/content/3621',
-        Inspiration: '/content/3659',
-        'Music & talk': '/content/3662',
-        'PSIs & PSOs': '/tags/796',
-        'Facilities list & catalogues': getEstablishmentFacilitiesList(
-          establishmentId,
-        ),
-        'Healthy mind & body': '/content/3657',
-        // 'Money & debt': '/content/4201',
-        Chaplaincy: '/tags/901',
-      };
-
       res.render('pages/home', {
-        config,
+        config: pageConfig,
         title: 'Home',
-        popularTopics,
+        homePageLinks,
+        homePageLinksTitle,
         featuredContent: featuredContent.featured[0],
       });
     } catch (error) {

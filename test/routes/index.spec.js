@@ -44,14 +44,28 @@ describe('GET /', () => {
 
   describe('Homepage', () => {
     beforeEach(() => {
-      const analyticsService = {
-        sendPageTrack: sinon.stub(),
-        sendEvent: sinon.stub(),
+      const config = {
+        establishments: {
+          1: {
+            homePageLinksTitle: 'Popular topics',
+            homePageLinks: {
+              Coronavirus: '/tags/894',
+              Visits: '/content/4203',
+              Games: '/content/3621',
+              Inspiration: '/content/3659',
+              'Music & talk': '/content/3662',
+              'PSIs & PSOs': '/tags/796',
+              'Facilities list & catalogues': '/content/3990',
+              'Healthy mind & body': '/content/3657',
+              Chaplaincy: '/tags/901',
+            },
+          },
+        },
       };
       router = createIndexRouter({
         logger,
         hubFeaturedContentService,
-        analyticsService,
+        config,
       });
 
       app = setupBasicApp();
@@ -60,6 +74,7 @@ describe('GET /', () => {
           // TODO: Remove this when new designs implemented fully in template
           res.locals = {
             features: { newDesigns: true },
+            establishmentId: 1,
           };
           next();
         },
@@ -123,7 +138,7 @@ describe('GET /', () => {
         });
     });
 
-    it('renders the popular topics menu', () => {
+    it('renders the home page links menu', () => {
       return request(app)
         .get('/')
         .then(response => {
