@@ -42,25 +42,33 @@ describe('GET /', () => {
     };
   });
 
-  describe.only('Homepage', () => {
+  describe('Homepage', () => {
     beforeEach(() => {
-      const analyticsService = {
-        sendPageTrack: sinon.stub(),
-        sendEvent: sinon.stub(),
+      const config = {
+        establishments: {
+          1: {
+            homePageLinksTitle: 'Popular topics',
+            homePageLinks: {
+              Coronavirus: '/tags/894',
+              Visits: '/content/4203',
+              Games: '/content/3621',
+              Inspiration: '/content/3659',
+              'Music & talk': '/content/3662',
+              'PSIs & PSOs': '/tags/796',
+              'Facilities list & catalogues': '/content/3990',
+              'Healthy mind & body': '/content/3657',
+              Chaplaincy: '/tags/901',
+            },
+          },
+        },
       };
       router = createIndexRouter({
         logger,
         hubFeaturedContentService,
-        analyticsService,
+        config,
       });
 
-      app = setupBasicApp({
-        establishments: {
-          1: {
-            homePageLinksTitle: 'Popular topics',
-          },
-        },
-      });
+      app = setupBasicApp();
       app.use(
         (req, res, next) => {
           // TODO: Remove this when new designs implemented fully in template

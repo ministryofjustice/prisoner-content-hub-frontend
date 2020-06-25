@@ -5,7 +5,7 @@ const {
   getEstablishmentHomepageLinksTitle,
 } = require('../utils');
 
-const createIndexRouter = ({ logger, hubFeaturedContentService }) => {
+const createIndexRouter = ({ logger, hubFeaturedContentService, config }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
@@ -15,16 +15,20 @@ const createIndexRouter = ({ logger, hubFeaturedContentService }) => {
       const userName = path(['session', 'user', 'name'], req);
       const establishmentId = path(['locals', 'establishmentId'], res);
       const newDesigns = path(['locals', 'features', 'newDesigns'], res);
-      const homePageLinks = getEstablishmentHomepageLinks(establishmentId);
+      const homePageLinks = getEstablishmentHomepageLinks(
+        establishmentId,
+        config,
+      );
       const homePageLinksTitle = getEstablishmentHomepageLinksTitle(
         establishmentId,
+        config,
       );
 
       const featuredContent = await hubFeaturedContentService.hubFeaturedContent(
         { establishmentId },
       );
 
-      const config = {
+      const pageConfig = {
         content: true,
         header: true,
         postscript: true,
@@ -36,7 +40,7 @@ const createIndexRouter = ({ logger, hubFeaturedContentService }) => {
       };
 
       res.render('pages/home', {
-        config,
+        config: pageConfig,
         title: 'Home',
         homePageLinks,
         homePageLinksTitle,
