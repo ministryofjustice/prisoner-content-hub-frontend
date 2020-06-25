@@ -1,18 +1,18 @@
 build:
-	docker build -t digital-hub-node . \
+	docker build -t prisoner-content-hub-frontend . \
 		--build-arg BUILD_NUMBER="$(BUILD_NUMBER)" \
 		--build-arg GIT_REF="$(GIT_REF)" \
 		--build-arg GIT_DATE="$(GIT_DATE)"
 
 push:
 	@docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
-	docker tag digital-hub-node mojdigitalstudio/digital-hub-node:build-$(CIRCLE_BUILD_NUM)
-	docker tag digital-hub-node mojdigitalstudio/digital-hub-node:latest
-	docker push mojdigitalstudio/digital-hub-node:build-$(CIRCLE_BUILD_NUM)
-	docker push mojdigitalstudio/digital-hub-node:latest
+	docker tag prisoner-content-hub-frontend mojdigitalstudio/prisoner-content-hub-frontend:build-$(CIRCLE_BUILD_NUM)
+	docker tag prisoner-content-hub-frontend mojdigitalstudio/prisoner-content-hub-frontend:latest
+	docker push mojdigitalstudio/prisoner-content-hub-frontend:build-$(CIRCLE_BUILD_NUM)
+	docker push mojdigitalstudio/prisoner-content-hub-frontend:latest
 
 push-preview:
 	@docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
-	docker tag digital-hub-node mojdigitalstudio/digital-hub-node:preview
-	docker push mojdigitalstudio/digital-hub-node:preview
+	docker tag prisoner-content-hub-frontend mojdigitalstudio/prisoner-content-hub-frontend:preview
+	docker push mojdigitalstudio/prisoner-content-hub-frontend:preview
 
