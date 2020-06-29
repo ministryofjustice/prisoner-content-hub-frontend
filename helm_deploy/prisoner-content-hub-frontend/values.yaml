@@ -8,8 +8,8 @@ tier: frontend
 
 image:
   repository: mojdigitalstudio/prisoner-content-hub-frontend
-  pullPolicy: Never
-  tag: dev
+  pullPolicy: IfNotPresent
+  tag: latest
 
 application:
   port: 3000
@@ -22,17 +22,15 @@ application:
     delaySeconds: 10
     timeoutSeconds: 5
   config:
-    appName: "HMP Local"
-    enableFeatureToggles: true
-    enablePrisonSwitch: true
-    mockAuth: true
-    elasticSearchEndpoint: http://hub-elasticsearch-elasticsearch-coordinating-only.development.svc.cluster.local:9200
+    appName: "HMP Berwyn"
+    enableFeatureToggles: false
+    enablePrisonSwitch: false
+    mockAuth: false
     featureNewDesigns: false
     establishmentName: berwyn
-    feedbackUrl: http://localhost:9200/local-feedback/_doc
     nprStream: /npr-stream
     analyticsEndpoint: https://www.google-analytics.com/collect
-    analyticsSiteId: UA-152065860-4
+  contentConfigMap: prisoner-content-hub-drupal
 
 imagePullSecrets: [] # Are we using ECR?
 
@@ -52,11 +50,9 @@ affinity: {}
 
 service:
   type: ClusterIP
-  port: 8080
+  port: 80
 
 ingress:
   enabled: false
   tlsEnabled: false
-  hostName: pfs-hub.local
   path: /
-  cert_secret: cert-secret

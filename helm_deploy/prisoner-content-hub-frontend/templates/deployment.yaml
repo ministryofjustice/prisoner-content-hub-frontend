@@ -56,13 +56,13 @@ spec:
             - name: MOCK_AUTH
               value: {{ .Values.application.config.mockAuth | quote }}
             - name: ELASTICSEARCH_ENDPOINT
-              value: {{ .Values.application.config.elasticSearchEndpoint }}
+              value: {{ include "prisoner-content-hub-frontend.elasticsearchServiceHost" . }}
             - name: FEATURE_NEW_DESIGNS
               value: {{ .Values.application.config.featureNewDesigns | quote }}
             - name: ESTABLISHMENT_NAME
               value: {{ .Values.application.config.establishmentName }}
             - name: FEEDBACK_URL
-              value: {{ .Values.application.config.feedbackUrl }}
+              value: {{ include "prisoner-content-hub-frontend.feedbackUrl" . }}
             - name: NPR_STREAM
               value: {{ .Values.application.config.nprStream }}
             - name: ANALYTICS_ENDPOINT
