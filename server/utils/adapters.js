@@ -66,7 +66,6 @@ function featuredContentResponseFrom(response) {
     summary: response.summary,
     image: imageOrDefaultFor(response.image, type),
     contentUrl,
-    duration: response.duration,
   };
 }
 
@@ -110,7 +109,6 @@ function contentResponseFrom(data = []) {
       contentType: HUB_CONTENT_TYPES[item.content_type],
       summary: item.summary,
       image: imageFor(item.image),
-      duration: item.duration,
       contentUrl: `/content/${item.id}`,
       categories: R.map(R.prop('target_id'), R.propOr([], 'categories', item)),
       secondaryTags: R.map(
@@ -134,7 +132,6 @@ function mediaResponseFrom(data) {
       summary: R.path(['description', 'summary'], data),
     },
     media: fixUrlForProduction(R.path(['media', 'url'], data)),
-    duration: data.duration,
     image: imageOrDefaultFor(data.image),
     episode: data.episode,
     season: data.season,

@@ -41,7 +41,6 @@ function createFeaturedItem() {
       alt: chance.word(),
       url: chance.avatar({ fileExtension: 'jpg' }),
     },
-    duration: `${chance.minute()}:${chance.second()}`,
     contentUrl: `/content/${chance.integer()}`,
   };
 }

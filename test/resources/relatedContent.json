@@ -7,8 +7,7 @@
     "image": {
       "alt": "Video Item 1 alt",
       "url": "http://foo.bar/image/foo.jpg"
-    },
-    "duration": "12:34"
+    }
   },
   {
     "id": "3457",
@@ -18,7 +17,6 @@
     "image": {
       "alt": "Video Item 2 alt",
       "url": "http://foo.bar/image/bar.jpg"
-    },
-    "duration": "45:12"
+    }
   }
 ]

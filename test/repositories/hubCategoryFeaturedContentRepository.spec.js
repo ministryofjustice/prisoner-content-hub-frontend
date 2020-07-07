@@ -17,7 +17,6 @@ describe('hubCategoryFeaturedContentRepository', () => {
           'contentType',
           'summary',
           'image',
-          'duration',
           'contentUrl',
         ];
 

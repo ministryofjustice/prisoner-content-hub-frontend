@@ -27,7 +27,6 @@ describe('contentRepository', () => {
         'description',
         'contentType',
         'media',
-        'duration',
         'episode',
         'season',
         'seriesId',
@@ -196,7 +195,6 @@ describe('contentRepository', () => {
         'contentType',
         'summary',
         'image',
-        'duration',
         'contentUrl',
       ];
 
@@ -250,7 +248,6 @@ describe('contentRepository', () => {
         'contentType',
         'summary',
         'image',
-        'duration',
         'contentUrl',
       ];
 
