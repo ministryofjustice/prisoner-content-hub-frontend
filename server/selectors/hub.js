@@ -43,7 +43,9 @@ module.exports.featuredAudioUrlFrom = R.view(
 );
 
 module.exports.audioUrlFrom = R.view(R.lensPath(['field_moj_audio', 0, 'url']));
-module.exports.videoUrlFrom = R.view(R.lensPath(['field_moj_video', 0, 'url']));
+module.exports.videoUrlFrom =
+  R.view(R.lensPath(['field_video', 0, 'url'])) ||
+  R.view(R.lensPath(['field_moj_video', 0, 'url']));
 module.exports.seriesIdFrom = R.view(
   R.lensPath(['field_moj_series', 0, 'target_id']),
 );
