@@ -17,7 +17,6 @@
       "id": 98,
       "title": "Foo episode",
       "type": "radio",
-      "duration": "18:41",
       "episode": 1,
       "season": 1,
       "seriesId": 694,
@@ -43,7 +42,6 @@
         "alt": "suggested image alt",
         "url": "suggested image url"
       },
-      "duration": "18:12",
       "contentUrl": "/content/666"
     }
   ]
