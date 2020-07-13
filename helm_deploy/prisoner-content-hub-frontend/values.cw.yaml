@@ -1,0 +1,7 @@
+application:
+  config:
+    appName: "HMYOI Cookham Wood"
+    establishmentName: cookhamwood
+
+ingress:
+  domainPrefix: cw
