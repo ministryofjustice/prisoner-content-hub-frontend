@@ -46,8 +46,6 @@ commands:
         type: string
       establishment:
         type: string
-      establishmentDisplayName:
-        type: string
       releaseName:
         type: string
     steps:
@@ -79,10 +77,9 @@ commands:
             helm upgrade << parameters.releaseName >> ~/git/helm_deploy/prisoner-content-hub-frontend \
               --install --wait --force --reset-values --timeout 360s \
               --namespace=${KUBE_NAMESPACE} \
+              --values ~/git/helm_deploy/prisoner-content-hub-frontend/values.<< parameters.establishment >>.yaml \
               --values ~/git/helm_deploy/prisoner-content-hub-frontend/values.<< parameters.namespace >>.yaml \
               --set application.contentConfigMap="${HELM_BACKEND_RELEASE_NAME}" \
-              --set application.config.establishmentName="<< parameters.establishment >>" \
-              --set application.config.appName="<< parameters.establishmentDisplayName >>" \
               --set nomisApiToken="${SECRET_NOMIS_API_TOKEN}" \
               --set nomisApiEndpoint="${SECRET_NOMIS_API_ENDPOINT}" \
               --set image.tag=${VERSION_TO_DEPLOY}
@@ -265,7 +262,6 @@ jobs:
       - release_to_namespace:
           namespace: "prod"
           establishment: "cookhamwood"
-          establishmentDisplayName: "HMYOI Cookham Wood"
           releaseName: "prisoner-content-hub-frontend-cw"
 
 workflows:
