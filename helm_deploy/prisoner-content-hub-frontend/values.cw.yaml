@@ -4,4 +4,4 @@ application:
     establishmentName: cookhamwood
 
 ingress:
-  domainPrefix: cw
+  domainPrefix: cookhamwood
