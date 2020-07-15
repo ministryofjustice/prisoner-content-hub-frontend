@@ -235,15 +235,13 @@ jobs:
     steps:
       - deploy_to_environment:
           to: hub-dev
+
   deploy_azure_staging:
     <<: *default_machine
     steps:
       - deploy_to_environment:
           to: hub-stage
-      - release_to_namespace:
-          environment: "staging"
-          establishment: "cookhamwood"
-          releaseName: "prisoner-content-hub-frontend-cookhamwood"
+
   deploy_azure_production:
     <<: *default_machine
     steps:
