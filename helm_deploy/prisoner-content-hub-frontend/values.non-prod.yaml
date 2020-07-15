@@ -9,6 +9,6 @@ application:
     analyticsSiteId: UA-152065860-4
 
 ingress:
-  enabled: false
-  tlsEnabled: false
-  hostName: pfs-hub.local
+  enabled: true
+  tlsEnabled: true
+  hostName: prisoner-content-hub-development.apps.live-1.cloud-platform.service.justice.gov.uk
