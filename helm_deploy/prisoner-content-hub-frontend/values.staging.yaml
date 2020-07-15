@@ -3,12 +3,9 @@ application:
     elasticsearchServiceName: aws-es-proxy-service
     feedbackServiceName: aws-es-proxy-service
     feedbackEndpoint: /prod-feedback/_doc
-    enableFeatureToggles: true
-    enablePrisonSwitch: true
-    mockAuth: true
     analyticsSiteId: UA-152065860-4
 
 ingress:
-  enabled: false
-  tlsEnabled: false
-  hostName: pfs-hub.local
+  enabled: true
+  tlsEnabled: true
+  hostName: prisoner-content-hub-staging.apps.live-1.cloud-platform.service.justice.gov.uk
