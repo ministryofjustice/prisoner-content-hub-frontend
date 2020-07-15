@@ -10,7 +10,7 @@
   "summary": "Foo Term summary",
   "image": {
     "alt": "Foo Term",
-    "url": "http://foo.bar/term/"
+    "url": "http://foo.bar/images/foo.jpg"
   },
   "video": null,
   "audio": {

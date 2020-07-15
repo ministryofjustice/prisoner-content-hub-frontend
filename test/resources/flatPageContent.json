@@ -4,7 +4,7 @@
   "id": 3456,
   "image": {
     "alt": "foo alt",
-    "url": "http://foo.image.png"
+    "url": "http://foo.bar/image/foo.png"
   },
   "description": {
     "value": "<h2>foo text</h2>",
