@@ -310,6 +310,8 @@ workflows:
       - deploy_cloud_platform_staging:
           <<: *main_branch
           context: prisoner-content-hub-staging
+          requires:
+            - build_frontend
       - approve_deploy_cloud_platform_production:
           <<: *main_branch
           type: approval
