@@ -25,7 +25,7 @@ There are three tiers of yaml files containing configuration values. These are:
   - one of the non-development Cloud Platform namespaces `production` or `staging`, **or**
   - `development.<a unique name>` for shorter-lived development environments, e.g. `development.unicornsetup`, **or**
   - `local`, for local development
-3. `values.prison-<prison name>.yaml` for individual prisons, where `prison-name` is meaningful, e.g. `cookhamwood`.
+3. `values.establishment-<establishment name>.yaml` for individual prisons/YOIs, where `establishment-name` is meaningful, e.g. `cookhamwood`.
 
 ### Testing the release
 
@@ -33,7 +33,7 @@ There are three tiers of yaml files containing configuration values. These are:
 helm upgrade [Release Name] . \
 --install --dry-run --debug \
 --namespace [Kubernetes Namespace] \
---values values.prison-[prison name].yaml \
+--values values.establishment-[establishment name].yaml \
 --values values.[environment].yaml \
 --values secrets.yaml \
 --set application.contentConfigMap=[Backend Release Name] \
@@ -50,7 +50,7 @@ Once tested and verified the release can be performed using the following
 helm upgrade [Release Name] . \
 --install --wait \
 --namespace [Kubernetes Namespace] \
---values values.prison-[prison name].yaml \
+--values values.establishment-[establishment name].yaml \
 --values values.[environment].yaml \
 --values secrets.yaml \
 --set application.contentConfigMap=[Backend Release Name] \
