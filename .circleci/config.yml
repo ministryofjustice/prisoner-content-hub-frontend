@@ -77,7 +77,7 @@ commands:
             helm upgrade << parameters.releaseName >> ~/git/helm_deploy/prisoner-content-hub-frontend \
               --install --wait --force --reset-values --timeout 360s \
               --namespace=${KUBE_NAMESPACE} \
-              --values ~/git/helm_deploy/prisoner-content-hub-frontend/values.prison-<< parameters.establishment >>.yaml \
+              --values ~/git/helm_deploy/prisoner-content-hub-frontend/values.establishment-<< parameters.establishment >>.yaml \
               --values ~/git/helm_deploy/prisoner-content-hub-frontend/values.<< parameters.namespace >>.yaml \
               --set application.contentConfigMap="${HELM_BACKEND_RELEASE_NAME}" \
               --set nomisApiToken="${SECRET_NOMIS_API_TOKEN}" \
