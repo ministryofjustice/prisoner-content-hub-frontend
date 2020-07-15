@@ -70,10 +70,7 @@ function relativeUrlFrom(url = '', override) {
 }
 
 function fixUrlForProduction(url, config = defaultConfig) {
-  if (config.useRelativeUrl) {
-    return relativeUrlFrom(url);
-  }
-  return url;
+  return config.useRelativeUrl ? relativeUrlFrom(url) : url;
 }
 
 function capitalizeAll(input, separator = ' ') {
