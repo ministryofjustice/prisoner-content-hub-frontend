@@ -316,7 +316,7 @@ workflows:
           <<: *main_branch
           type: approval
           requires:
-            - build_frontend
+            - deploy_cloud_platform_staging
       - deploy_cloud_platform_production:
           <<: *main_branch
           context: prisoner-content-hub-prod
