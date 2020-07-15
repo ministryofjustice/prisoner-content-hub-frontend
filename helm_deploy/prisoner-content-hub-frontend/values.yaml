@@ -30,6 +30,7 @@ application:
     establishmentName: berwyn
     nprStream: /npr-stream
     analyticsEndpoint: https://www.google-analytics.com/collect
+    useRelativeUrlForMedia: false
   contentConfigMap: prisoner-content-hub-drupal
 
 imagePullSecrets: [] # Are we using ECR?
