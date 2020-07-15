@@ -17,23 +17,32 @@ Documentation for installing Helm can be found [here](https://helm.sh/docs/intro
 
 **Note:** The assumption is made that Helm is installed and your `kubectl` context is appropriately configured.
 
-**Testing the release**
+### Values files
+
+There are three tiers of yaml files containing configuration values. These are:
+1. `values.yaml`, the default values applied to all the things
+2. `values.<environment>.yaml`, where `<environment>` is one of:
+  - one of the non-development Cloud Platform namespaces `production` or `staging`, **or**
+  - `development.<a unique name>` for shorter-lived development environments, e.g. `development.unicornsetup`, **or**
+  - `local`, for local development
+3. `values.prison-<prison name>.yaml` for individual prisons, where `prison-name` is meaningful, e.g. `cookhamwood`.
+
+### Testing the release
 
 ```
 helm upgrade [Release Name] . \
 --install --dry-run --debug \
 --namespace [Kubernetes Namespace] \
---values values.[Environment].yaml \
+--values values.prison-[prison name].yaml \
+--values values.[environment].yaml \
 --values secrets.yaml \
 --set application.contentConfigMap=[Backend Release Name] \
---set application.config.appName="HMP [Establishment Name]" \
---set application.config.establishmentName=[Establishment Name] \
 --set image.tag=[Image Tag]
 ```
 
 The computed values and generated output will be displayed
 
-**Perform the release**
+### Perform the release
 
 Once tested and verified the release can be performed using the following
 
@@ -41,15 +50,14 @@ Once tested and verified the release can be performed using the following
 helm upgrade [Release Name] . \
 --install --wait \
 --namespace [Kubernetes Namespace] \
---values values.[Environment].yaml \
+--values values.prison-[prison name].yaml \
+--values values.[environment].yaml \
 --values secrets.yaml \
 --set application.contentConfigMap=[Backend Release Name] \
---set application.config.appName="HMP [Establishment Name]" \
---set application.config.establishmentName=[Establishment Name] \
 --set image.tag=[Image Tag]
 ```
 
-**Rolling back releases**
+### Rolling back releases
 
 To list releases on the Namespace
 
