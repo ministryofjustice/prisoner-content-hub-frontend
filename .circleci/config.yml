@@ -260,13 +260,21 @@ jobs:
             ssh -t ciuser@pfs-management-bastion-1.uksouth.cloudapp.azure.com ssh -t ciuser@hub-berwyn-prod.pfs-management.com "sudo /etc/docker-decomposed-secrets.sh -v ${VERSION_TO_DEPLOY}"
             # ssh -t ciuser@pfs-management-bastion-1.uksouth.cloudapp.azure.com ssh -t ciuser@hub-cookhamwood-prod.pfs-management.com "sudo /etc/docker-decomposed-secrets.sh -v ${VERSION_TO_DEPLOY}"
 
-  release_production:
+  deploy_cloud_platform_production:
     <<: *defaults
     steps:
       - release_to_namespace:
           environment: "production"
           establishment: "cookhamwood"
           releaseName: "prisoner-content-hub-frontend-cookhamwood"
+
+  deploy_cloud_platform_staging:
+    <<: *defaults
+    steps:
+      - release_to_namespace:
+          environment: "staging"
+          establishment: "cookhamwood"
+          releaseName: "prisoner-content-hub-staging-cookhamwood"
 
 workflows:
   version: 2
@@ -301,16 +309,19 @@ workflows:
       #     <<: *main_branch
       #     requires:
       #       - build_frontend
-      - approve_release_production:
+      - deploy_cloud_platform_staging:
+          <<: *main_branch
+          context: prisoner-content-hub-staging
+      - approve_deploy_cloud_platform_production:
           <<: *main_branch
           type: approval
           requires:
             - build_frontend
-      - release_production:
+      - deploy_cloud_platform_production:
           <<: *main_branch
           context: prisoner-content-hub-prod
           requires:
-            - approve_release_production
+            - approve_deploy_cloud_platform_production
       - deploy_dev:
           <<: *main_branch
           requires:
