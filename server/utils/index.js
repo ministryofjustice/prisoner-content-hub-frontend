@@ -70,7 +70,7 @@ function relativeUrlFrom(url = '', override) {
 }
 
 function fixUrlForProduction(url, config = defaultConfig) {
-  if (config.production) {
+  if (config.useRelativeUrl) {
     return relativeUrlFrom(url);
   }
   return url;

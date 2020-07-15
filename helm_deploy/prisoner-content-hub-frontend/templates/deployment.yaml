@@ -73,6 +73,8 @@ spec:
               value: {{ .Values.application.config.analyticsEndpoint }}
             - name: ANALYTICS_SITE_ID
               value: {{ .Values.application.config.analyticsSiteId }}
+            - name: FEATURE_USE_RELATIVE_URL
+              value: {{ .Values.application.config.useRelativeUrl | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.application.port }}
