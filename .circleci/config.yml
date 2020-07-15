@@ -240,6 +240,10 @@ jobs:
     steps:
       - deploy_to_environment:
           to: hub-stage
+      - release_to_namespace:
+          namespace: "staging"
+          establishment: "cookhamwood"
+          releaseName: "prisoner-content-hub-frontend-cookhamwood"
   deploy_prod:
     <<: *default_machine
     steps:
@@ -260,9 +264,9 @@ jobs:
     <<: *defaults
     steps:
       - release_to_namespace:
-          namespace: "prod"
+          namespace: "production"
           establishment: "cookhamwood"
-          releaseName: "prisoner-content-hub-frontend-cw"
+          releaseName: "prisoner-content-hub-frontend-cookhamwood"
 
 workflows:
   version: 2
