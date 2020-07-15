@@ -137,12 +137,12 @@ jobs:
           root: /tmp/build-info
           paths:
             - version-to-deploy.txt
-  preview_build_deploy_dev:
+  preview_build_deploy_azure_dev:
     <<: *default_machine
     steps:
       - deploy_to_environment:
           to: hub-dev
-  preview_build_deploy_stage:
+  preview_build_deploy_azure_staging:
     <<: *default_machine
     steps:
       - deploy_to_environment:
@@ -230,12 +230,12 @@ jobs:
   #         path: ./cypress/videos
   #     - store_artifacts:
   #         path: ./cypress/screenshots
-  deploy_dev:
+  deploy_azure_dev:
     <<: *default_machine
     steps:
       - deploy_to_environment:
           to: hub-dev
-  deploy_stage:
+  deploy_azure_staging:
     <<: *default_machine
     steps:
       - deploy_to_environment:
@@ -244,7 +244,7 @@ jobs:
           environment: "staging"
           establishment: "cookhamwood"
           releaseName: "prisoner-content-hub-frontend-cookhamwood"
-  deploy_prod:
+  deploy_azure_production:
     <<: *default_machine
     steps:
       - attach_workspace:
@@ -290,19 +290,19 @@ workflows:
           requires:
             - test_branch
             - approve_preview_build
-      - preview_build_deploy_dev:
+      - preview_build_deploy_azure_dev:
           <<: *feature_branch
           requires:
             - preview_build
-      - approve_preview_build_deploy_stage:
+      - approve_preview_build_deploy_azure_staging:
           <<: *feature_branch
           type: approval
           requires:
-            - preview_build_deploy_dev
-      - preview_build_deploy_stage:
+            - preview_build_deploy_azure_dev
+      - preview_build_deploy_azure_staging:
           <<: *feature_branch
           requires:
-            - approve_preview_build_deploy_stage
+            - approve_preview_build_deploy_azure_staging
       - build_frontend:
           <<: *main_branch
       # - run_e2e_test:
@@ -322,25 +322,25 @@ workflows:
           context: prisoner-content-hub-prod
           requires:
             - approve_deploy_cloud_platform_production
-      - deploy_dev:
+      - deploy_azure_dev:
           <<: *main_branch
           requires:
             - build_frontend
-      - approve_deploy_stage:
+      - approve_deploy_azure_staging:
           <<: *main_branch
           type: approval
           requires:
-            - deploy_dev
-      - deploy_stage:
+            - deploy_azure_dev
+      - deploy_azure_staging:
           <<: *main_branch
           requires:
-            - approve_deploy_stage
-      - approve_deploy_prod:
+            - approve_deploy_azure_staging
+      - approve_deploy_azure_production:
           <<: *main_branch
           type: approval
           requires:
-            - deploy_stage
-      - deploy_prod:
+            - deploy_azure_staging
+      - deploy_azure_production:
           <<: *main_branch
           requires:
-            - approve_deploy_prod
+            - approve_deploy_azure_production
