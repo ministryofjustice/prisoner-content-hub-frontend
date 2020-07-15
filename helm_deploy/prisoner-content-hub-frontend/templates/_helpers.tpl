@@ -69,10 +69,6 @@ Create a feedback URL
 Create concatenated hostname
 */}}
 {{- define "prisoner-content-hub-frontend.hostName" -}}
-{{- $protocol := "http" }}
-{{- if .Values.ingress.tlsEnabled }}
-{{- $protocol = "https" }}
-{{- end }}
 {{- printf "%s-%s" .Values.ingress.domainPrefix .Values.ingress.hostName }}
 {{- end }}
 
