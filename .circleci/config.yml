@@ -272,7 +272,7 @@ jobs:
       - release_to_namespace:
           environment: "staging"
           establishment: "cookhamwood"
-          releaseName: "prisoner-content-hub-staging-cookhamwood"
+          releaseName: "prisoner-content-hub-cookhamwood"
 
 workflows:
   version: 2
