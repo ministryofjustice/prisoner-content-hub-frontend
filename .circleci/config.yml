@@ -274,6 +274,14 @@ jobs:
           establishment: "cookhamwood"
           releaseName: "prisoner-content-hub-cookhamwood"
 
+  deploy_cloud_platform_dev_preview:
+    <<: *defaults
+    steps:
+      - release_to_namespace:
+          environment: "development"
+          establishment: "cookhamwood"
+          releaseName: "prisoner-content-hub-cookhamwood"
+
 workflows:
   version: 2
   build-test-deploy:
@@ -307,11 +315,24 @@ workflows:
       #     <<: *main_branch
       #     requires:
       #       - build_frontend
+
+      - approve_deploy_cloud_platform_dev_preview:
+          <<: *feature_branch
+          type: approval
+          requires:
+            - build_frontend
+      - deploy_cloud_platform_dev_preview:
+          <<: *feature_branch
+          context: prisoner-content-hub-development
+          requires:
+            - approve_deploy_cloud_platform_dev_preview
+
       - deploy_cloud_platform_staging:
           <<: *main_branch
           context: prisoner-content-hub-staging
           requires:
             - build_frontend
+
       - approve_deploy_cloud_platform_production:
           <<: *main_branch
           type: approval
@@ -322,6 +343,7 @@ workflows:
           context: prisoner-content-hub-prod
           requires:
             - approve_deploy_cloud_platform_production
+
       - deploy_azure_dev:
           <<: *main_branch
           requires:
