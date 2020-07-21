@@ -288,27 +288,7 @@ workflows:
     jobs:
       - test_branch:
           <<: *feature_branch
-      - approve_preview_build:
-          <<: *feature_branch
-          type: approval
-      - preview_build:
-          <<: *feature_branch
-          requires:
-            - test_branch
-            - approve_preview_build
-      - preview_build_deploy_azure_dev:
-          <<: *feature_branch
-          requires:
-            - preview_build
-      - approve_preview_build_deploy_azure_staging:
-          <<: *feature_branch
-          type: approval
-          requires:
-            - preview_build_deploy_azure_dev
-      - preview_build_deploy_azure_staging:
-          <<: *feature_branch
-          requires:
-            - approve_preview_build_deploy_azure_staging
+
       - build_frontend:
           <<: *main_branch
       # - run_e2e_test:
@@ -316,6 +296,9 @@ workflows:
       #     requires:
       #       - build_frontend
 
+      #
+      # Deploy to Cloud Platform
+      #
       - approve_deploy_cloud_platform_dev_preview:
           <<: *feature_branch
           type: approval
@@ -344,10 +327,37 @@ workflows:
           requires:
             - approve_deploy_cloud_platform_production
 
+      #
+      # Deploy to Azure
+      #
+      - approve_preview_build:
+          <<: *feature_branch
+          type: approval
+      - preview_build:
+          <<: *feature_branch
+          requires:
+            - test_branch
+            - approve_preview_build
+      - preview_build_deploy_azure_dev:
+          <<: *feature_branch
+          requires:
+            - preview_build
+
+      - approve_preview_build_deploy_azure_staging:
+          <<: *feature_branch
+          type: approval
+          requires:
+            - preview_build_deploy_azure_dev
+      - preview_build_deploy_azure_staging:
+          <<: *feature_branch
+          requires:
+            - approve_preview_build_deploy_azure_staging
+
       - deploy_azure_dev:
           <<: *main_branch
           requires:
             - build_frontend
+
       - approve_deploy_azure_staging:
           <<: *main_branch
           type: approval
@@ -357,6 +367,7 @@ workflows:
           <<: *main_branch
           requires:
             - approve_deploy_azure_staging
+
       - approve_deploy_azure_production:
           <<: *main_branch
           type: approval
