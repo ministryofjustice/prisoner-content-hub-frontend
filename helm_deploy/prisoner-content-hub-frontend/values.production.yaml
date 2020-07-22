@@ -10,7 +10,7 @@ ingress:
   tlsEnabled: true
   hosts:
     - host: prisoner-content-hub-production.apps.live-1.cloud-platform.service.justice.gov.uk
-    - host: cookhamwood.prisoner.service.justice.gov.uk
+    - host: cookhamwood.content-hub.prisoner.service.justice.gov.uk
       cert_secret: prisoner-content-hub-frontend-certificate
   path: /
 
