@@ -8,4 +8,6 @@ application:
 ingress:
   enabled: true
   tlsEnabled: true
-  hostName: prisoner-content-hub-staging.apps.live-1.cloud-platform.service.justice.gov.uk
+  hosts:
+    - host: prisoner-content-hub-staging.apps.live-1.cloud-platform.service.justice.gov.uk
+  path: /
