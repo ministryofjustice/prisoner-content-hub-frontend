@@ -1,0 +1,7 @@
+application:
+  config:
+    appName: "HMP Berwyn"
+    establishmentName: berwyn
+
+ingress:
+  domainPrefix: berwyn
