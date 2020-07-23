@@ -14,11 +14,11 @@ image:
 application:
   port: 3000
   liveness:
-    endpoint: /games/smashout
+    endpoint: /health/liveness
     delaySeconds: 10
     timeoutSeconds: 5
   readiness:
-    endpoint: /health
+    endpoint: /health/readiness
     delaySeconds: 10
     timeoutSeconds: 5
   config:

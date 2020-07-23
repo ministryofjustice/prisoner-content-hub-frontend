@@ -4,7 +4,9 @@ const { path } = require('ramda');
 const createHealthRouter = ({ healthService }) => {
   const router = express.Router();
 
-  router.get('/', async (req, res, next) => {
+  router.get('/liveness', (_, res) => res.json({ status: 'OK' }));
+
+  router.get('/readiness', async (req, res, next) => {
     try {
       const healthStatus = await healthService.status();
       const buildInfo = path(['app', 'locals', 'config', 'buildInfo'], req);

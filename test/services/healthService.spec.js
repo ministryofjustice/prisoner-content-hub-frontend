@@ -27,7 +27,7 @@ describe('HealthService', () => {
         .returns({
           backend: {
             timestamp: 1564392127,
-            'Drupal Version': '8.7.3',
+            'Drupal Version': '8.9.1',
           },
           db: {
             database: 'mysql',
