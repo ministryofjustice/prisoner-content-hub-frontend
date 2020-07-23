@@ -66,13 +66,6 @@ Create a feedback URL
 {{- end }}
 
 {{/*
-Create concatenated hostname
-*/}}
-{{- define "prisoner-content-hub-frontend.hostName" -}}
-{{- printf "%s-%s" .Values.ingress.domainPrefix .Values.ingress.hostName }}
-{{- end }}
-
-{{/*
 Create external Kubernetes hostname
 */}}
 {{- define "prisoner-content-hub-frontend.externalHost" -}}
@@ -80,5 +73,5 @@ Create external Kubernetes hostname
 {{- if .Values.ingress.tlsEnabled }}
 {{- $protocol = "https" }}
 {{- end }}
-{{- printf "%s://%s" $protocol  (include "prisoner-content-hub-frontend.hostName" .) }}
+{{- printf "%s://%s%s" $protocol .Values.ingress.domainPrefix (index .Values.ingress.hosts 0).suffix }}
 {{- end }}

@@ -12,4 +12,5 @@ application:
 ingress:
   enabled: false
   tlsEnabled: false
-  hostName: pfs-hub.local
+  hosts:
+    - suffix: pfs-hub.local
