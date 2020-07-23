@@ -12,14 +12,15 @@ metadata:
   {{- end }}
 spec:
   tls:
+  {{- $domainPrefix := .Values.ingress.domainPrefix -}}
   {{- range .Values.ingress.hosts }}
   - hosts:
-    - {{ .host }}
+    - {{ $domainPrefix }}{{ .suffix }}
     {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
   {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
-    - host: {{ .host }}
+    - host: {{ $domainPrefix }}{{ .suffix }}
       http:
         paths:
           - path: "/"

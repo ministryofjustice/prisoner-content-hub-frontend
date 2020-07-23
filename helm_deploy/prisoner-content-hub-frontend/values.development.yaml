@@ -11,5 +11,4 @@ ingress:
   enabled: true
   tlsEnabled: true
   hosts:
-    - host: prisoner-content-hub-development.apps.live-1.cloud-platform.service.justice.gov.uk
-  path: /
+    - suffix: prisoner-content-hub-development.apps.live-1.cloud-platform.service.justice.gov.uk
