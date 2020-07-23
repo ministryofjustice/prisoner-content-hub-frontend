@@ -274,12 +274,62 @@ jobs:
           establishment: "cookhamwood"
           releaseName: "prisoner-content-hub-cookhamwood"
 
+  deploy_cloud_platform_dev_preview:
+    <<: *defaults
+    steps:
+      - release_to_namespace:
+          environment: "development"
+          establishment: "cookhamwood"
+          releaseName: "prisoner-content-hub-cookhamwood"
+
 workflows:
   version: 2
   build-test-deploy:
     jobs:
       - test_branch:
           <<: *feature_branch
+
+      - build_frontend:
+          <<: *main_branch
+      # - run_e2e_test:
+      #     <<: *main_branch
+      #     requires:
+      #       - build_frontend
+
+      #
+      # Deploy to Cloud Platform
+      #
+      - approve_deploy_cloud_platform_dev_preview:
+          <<: *feature_branch
+          type: approval
+          requires:
+            - build_frontend
+      - deploy_cloud_platform_dev_preview:
+          <<: *feature_branch
+          context: prisoner-content-hub-development
+          requires:
+            - approve_deploy_cloud_platform_dev_preview
+
+      - deploy_cloud_platform_staging:
+          <<: *main_branch
+          context: prisoner-content-hub-staging
+          requires:
+            - build_frontend
+
+      - approve_deploy_cloud_platform_production:
+          <<: *main_branch
+          type: approval
+          requires:
+            - deploy_cloud_platform_staging
+      - deploy_cloud_platform_production:
+          <<: *main_branch
+          context: prisoner-content-hub-prod
+          requires:
+            - approve_deploy_cloud_platform_production
+
+      #
+      # Deploy to Azure
+      #
       - approve_preview_build:
           <<: *feature_branch
           type: approval
@@ -292,6 +342,7 @@ workflows:
           <<: *feature_branch
           requires:
             - preview_build
+
       - approve_preview_build_deploy_azure_staging:
           <<: *feature_branch
           type: approval
@@ -301,31 +352,12 @@ workflows:
           <<: *feature_branch
           requires:
             - approve_preview_build_deploy_azure_staging
-      - build_frontend:
-          <<: *main_branch
-      # - run_e2e_test:
-      #     <<: *main_branch
-      #     requires:
-      #       - build_frontend
-      - deploy_cloud_platform_staging:
-          <<: *main_branch
-          context: prisoner-content-hub-staging
-          requires:
-            - build_frontend
-      - approve_deploy_cloud_platform_production:
-          <<: *main_branch
-          type: approval
-          requires:
-            - deploy_cloud_platform_staging
-      - deploy_cloud_platform_production:
-          <<: *main_branch
-          context: prisoner-content-hub-prod
-          requires:
-            - approve_deploy_cloud_platform_production
+
       - deploy_azure_dev:
           <<: *main_branch
           requires:
             - build_frontend
+
       - approve_deploy_azure_staging:
           <<: *main_branch
           type: approval
@@ -335,6 +367,7 @@ workflows:
           <<: *main_branch
           requires:
             - approve_deploy_azure_staging
+
       - approve_deploy_azure_production:
           <<: *main_branch
           type: approval
