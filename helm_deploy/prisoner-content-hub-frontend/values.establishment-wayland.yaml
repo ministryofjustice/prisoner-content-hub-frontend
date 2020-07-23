@@ -1,0 +1,7 @@
+application:
+  config:
+    appName: "HMP Wayland"
+    establishmentName: wayland
+
+ingress:
+  domainPrefix: wayland

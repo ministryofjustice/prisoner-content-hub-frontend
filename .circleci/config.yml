@@ -263,24 +263,48 @@ jobs:
     steps:
       - release_to_namespace:
           environment: "production"
+          establishment: "berwyn"
+          releaseName: "prisoner-content-hub-berwyn"
+      - release_to_namespace:
+          environment: "production"
           establishment: "cookhamwood"
-          releaseName: "prisoner-content-hub-frontend-cookhamwood"
+          releaseName: "prisoner-content-hub-cookhamwood"
+      - release_to_namespace:
+          environment: "production"
+          establishment: "wayland"
+          releaseName: "prisoner-content-hub-wayland"
 
   deploy_cloud_platform_staging:
     <<: *defaults
     steps:
       - release_to_namespace:
           environment: "staging"
+          establishment: "berwyn"
+          releaseName: "prisoner-content-hub-berwyn"
+      - release_to_namespace:
+          environment: "staging"
           establishment: "cookhamwood"
           releaseName: "prisoner-content-hub-cookhamwood"
+      - release_to_namespace:
+          environment: "staging"
+          establishment: "wayland"
+          releaseName: "prisoner-content-hub-wayland"
 
   deploy_cloud_platform_dev_preview:
     <<: *defaults
     steps:
       - release_to_namespace:
           environment: "development"
+          establishment: "berwyn"
+          releaseName: "prisoner-content-hub-berwyn"
+      - release_to_namespace:
+          environment: "development"
           establishment: "cookhamwood"
           releaseName: "prisoner-content-hub-cookhamwood"
+      - release_to_namespace:
+          environment: "development"
+          establishment: "wayland"
+          releaseName: "prisoner-content-hub-wayland"
 
 workflows:
   version: 2
