@@ -1,4 +1,4 @@
-const { pathEq, prop, path } = require('ramda');
+const { pathEq, propEq, path, not, compose } = require('ramda');
 
 const statuses = {
   UP: 'UP',
@@ -10,9 +10,9 @@ function createHealthService({ client, config, logger }) {
   const { UP, DOWN, PARTIALLY_DEGRADED } = statuses;
 
   function allOk(...args) {
-    const fn = s => s === UP;
-    const all = args.every(fn);
-    const some = args.some(fn);
+    const statusIsOkay = s => s === UP;
+    const all = args.every(statusIsOkay);
+    const some = args.some(statusIsOkay);
 
     if (all) {
       return UP;
@@ -38,9 +38,10 @@ function createHealthService({ client, config, logger }) {
   async function getElasticSearchHealth() {
     const elasticsearchUrl = path(['elasticsearch', 'health'], config);
     const result = await client.get(elasticsearchUrl);
+    const isUp = compose(not, propEq('status', 'red'));
 
     return {
-      elasticsearch: prop('status', result) !== 'red' ? UP : DOWN,
+      elasticsearch: isUp(result) ? UP : DOWN,
     };
   }
 
@@ -56,8 +57,8 @@ function createHealthService({ client, config, logger }) {
           ...elasticSearchStatus,
         },
       };
-    } catch (exp) {
-      logger.error(exp);
+    } catch (e) {
+      logger.error(e);
       return {
         status: DOWN,
         dependencies: {
