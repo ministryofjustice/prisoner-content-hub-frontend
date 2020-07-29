@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block head %}
-  <link href="/public/stylesheets/video-js.min.css" rel="stylesheet" />
+  <link href="/public/video-js.min.css" rel="stylesheet"/>
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
 {% endblock %}
 
@@ -74,7 +74,7 @@
           }
         }'
       >
-        <source src="{{ data.media }}" type="video/mp4" />
+        <source src="{{ data.media }}" type="video/mp4"/>
       </video>
       {{ hubFeedbackWidget({
         contentId: data.id,
@@ -94,9 +94,9 @@
     <ul id="tags-list" class="govuk-hub-navigation__list govuk-hub-navigation__list--linear govuk-!-margin-bottom-6">
       {% for tagItem in data.tags %}
         {% if tagItem.name %}
-        <li class="govuk-hub-navigation__list-item govuk-hub-navigation__list-item-topic">
-          <a title="{{tagItem.name}}" href="/tags/{{tagItem.id}}">{{tagItem.name}}</a>
-        </li>
+          <li class="govuk-hub-navigation__list-item govuk-hub-navigation__list-item-topic">
+            <a title="{{tagItem.name}}" href="/tags/{{tagItem.id}}">{{tagItem.name}}</a>
+          </li>
         {% endif %}
       {% endfor %}
     </ul>
@@ -115,5 +115,5 @@
 {% endblock %}
 
 {% block bodyEnd %}
-  <script src="/public/javascript/videojs.min.js"></script>
+  <script src="/public/video.min.js"></script>
 {% endblock %}
