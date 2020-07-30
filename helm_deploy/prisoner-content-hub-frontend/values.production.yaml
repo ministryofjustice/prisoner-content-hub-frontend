@@ -6,8 +6,6 @@ application:
     analyticsSiteId: UA-152065860-4
 
 ingress:
-  enabled: true
-  tlsEnabled: true
   hosts:
     - suffix: .content-hub.prisoner.service.justice.gov.uk
       cert_secret: prisoner-content-hub-frontend-certificate
