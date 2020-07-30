@@ -8,7 +8,5 @@ application:
     analyticsSiteId: UA-152065860-4
 
 ingress:
-  enabled: true
-  tlsEnabled: true
   hosts:
-    - suffix: prisoner-content-hub-development.apps.live-1.cloud-platform.service.justice.gov.uk
+    - suffix: -prisoner-content-hub-development.apps.live-1.cloud-platform.service.justice.gov.uk
