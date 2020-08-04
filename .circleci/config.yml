@@ -80,6 +80,7 @@ commands:
               --values ~/git/helm_deploy/prisoner-content-hub-frontend/values.establishment-<< parameters.establishment >>.yaml \
               --values ~/git/helm_deploy/prisoner-content-hub-frontend/values.<< parameters.environment >>.yaml \
               --set application.contentConfigMap="${HELM_BACKEND_RELEASE_NAME}" \
+              --set application.sentry_dsn="${FRONTEND_SENTRY_DSN}" \
               --set nomisApiToken="${SECRET_NOMIS_API_TOKEN}" \
               --set nomisApiEndpoint="${SECRET_NOMIS_API_ENDPOINT}" \
               --set image.tag=${VERSION_TO_DEPLOY}
