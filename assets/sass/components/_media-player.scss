@@ -79,6 +79,7 @@
 }
 
 .video-js {
+  @include govuk-font(16);
   margin-bottom: govuk-spacing(6);
 
   & .vjs-poster,
