@@ -93,7 +93,7 @@
       <div id="body" class="govuk-body">{{ data.description.sanitized | safe }}</div>
     </div>
 
-    <ul id="tags-list" class="govuk-hub-navigation__list govuk-hub-navigation__list--linear govuk-!-margin-bottom-6">
+    <ul id="tags-list" class="secondary-tags-list govuk-body">
       {% for tagItem in data.tags %}
         {% if tagItem.name %}
           <li class="govuk-hub-navigation__list-item govuk-hub-navigation__list-item-topic">
