@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block head %}
+  <link href="/public/video-js.min.css" rel="stylesheet"/>
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
 {% endblock %}
 
@@ -51,11 +52,31 @@
         </div>
       </header>
 
-      <div class="govuk-hub-media-player__player govuk-hub-media-audio">
-        <div id="audioPlayer" class="webPlayer light" data-title="{{data.title}}" data-media="{{data.media}}" data-programme-code="{{data.programmeCode}}">
-          <div id="audioPlayerContainer" class="videoPlayer"></div>
-        </div>
-      </div>
+      <audio
+        id="hub-audio"
+        class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause"
+        controls
+        height="226"
+        width="900"
+        preload="auto"
+        poster="/public/images/radio-player-background.jpg"
+        data-setup='{
+          "controlBar": {
+            "children": [
+                "playToggle",
+                "volumePanel",
+                "currentTimeDisplay",
+                "progressControl",
+                "durationDisplay",
+                "fullscreenToggle"
+            ]
+          }
+        }'
+        data-title="{{ data.title }}"
+        data-programme-code="{{ data.programmeCode }}"
+      >
+        <source src="{{ data.media }}" type="audio/ogg"/>
+      </audio>
 
       {{ hubFeedbackWidget({
         contentId: data.id,
@@ -73,9 +94,9 @@
       <ul id="tags-list" class="secondary-tags-list govuk-body">
         {% for tagItem in data.tags %}
           {% if tagItem.name %}
-          <li>
-            <a title="{{tagItem.name}}" href="/tags/{{tagItem.id}}">{{tagItem.name}}</a>
-          </li>
+            <li>
+              <a title="{{tagItem.name}}" href="/tags/{{tagItem.id}}">{{tagItem.name}}</a>
+            </li>
           {% endif %}
         {% endfor %}
       </ul>
@@ -96,7 +117,6 @@
 
 {% block bodyEnd %}
   <script src="/public/jquery.min.js"></script>
-  <script src="/public/jplayer/jquery.jplayer.min.js"></script>
-  <script src="/public/javascript/jplayer.cleanskin.min.js"></script>
+  <script src="/public/video.min.js"></script>
   <script src="/public/javascript/audioPlayer.js"></script>
 {% endblock %}

@@ -134,6 +134,7 @@ const createApp = ({
     '../node_modules/govuk-frontend/govuk/',
     '../node_modules/jplayer/dist',
     '../node_modules/jquery/dist',
+    '../node_modules/video.js/dist',
   ].forEach(dir => {
     app.use('/public', express.static(path.join(__dirname, dir), cacheControl));
   });

@@ -70,7 +70,8 @@
     "nunjucks": "^3.2.1",
     "ramda": "^0.27.0",
     "retry-axios": "^2.1.2",
-    "uuid": "^7.0.3"
+    "uuid": "^7.0.3",
+    "video.js": "^7.0.3"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
