@@ -224,14 +224,18 @@ function seasonResponseFrom(data = []) {
   return R.map(mediaResponseFrom, data);
 }
 
-function searchResultFrom({ _id, _source }) {
-  const idFrom = text => text.match(/\d+/)[0];
-  const titleFrom = R.view(R.lensPath(['title', 0]));
-  const summaryFrom = R.view(R.lensPath(['summary', 0]));
+function searchResultFrom(result) {
+  const idFrom = R.path(['attributes', 'drupal_internal__nid']);
+  const titleFrom = R.path(['attributes', 'title']);
+  const summaryFrom = R.path([
+    'attributes',
+    'field_moj_description',
+    'summary',
+  ]);
   return {
-    title: titleFrom(_source),
-    summary: summaryFrom(_source),
-    url: `/content/${idFrom(_id)}`,
+    title: titleFrom(result),
+    summary: summaryFrom(result),
+    url: `/content/${idFrom(result)}`,
   };
 }
 
