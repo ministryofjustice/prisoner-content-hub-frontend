@@ -8,13 +8,23 @@ const backendUrl = getEnv('BACKEND_URL', 'http://hub-be:80');
 const nomisEndpoint = getEnv('NOMIS_API_ENDPOINT', 'https://api.nomis', {
   requireInProduction: true,
 });
-const elasticSearchEndpoint = getEnv(
+const elasticsearchEndpoint = getEnv(
   'ELASTICSEARCH_ENDPOINT',
   'http://localhost:9200',
   {
     requireInProduction: true,
   },
 );
+const elasticsearchIndexName = getEnv(
+  'ELASTICSEARCH_INDEX_NAME',
+  'content_index',
+  {
+    requireInProduction: true,
+  },
+);
+const drupalDatabaseName = getEnv('DRUPAL_DATABASE_NAME', 'hubdb', {
+  requireInProduction: true,
+});
 const establishments = {
   792: {
     name: 'berwyn',
@@ -139,8 +149,8 @@ module.exports = {
     },
   },
   elasticsearch: {
-    health: `${elasticSearchEndpoint}/_cluster/health?pretty`,
-    search: `${elasticSearchEndpoint}/elasticsearch_index_hubdb_content_index/_search`,
+    health: `${elasticsearchEndpoint}/_cluster/health?pretty`,
+    search: `${elasticsearchEndpoint}/elasticsearch_index_${drupalDatabaseName}_${elasticsearchIndexName}/_search`,
   },
   features: {
     newDesigns: getEnv('FEATURE_NEW_DESIGNS', 'false') === 'true',

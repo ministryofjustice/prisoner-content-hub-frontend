@@ -57,6 +57,13 @@ spec:
               value: {{ .Values.application.config.mockAuth | quote }}
             - name: ELASTICSEARCH_ENDPOINT
               value: {{ include "prisoner-content-hub-frontend.elasticsearchServiceHost" . }}
+            - name: ELASTICSEARCH_INDEX_NAME
+              value: {{ .Values.application.config.elasticsearchIndexName }}
+            - name: DRUPAL_DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.application.dbSecretName }}
+                  key: database_name
             - name: FEATURE_NEW_DESIGNS
               value: {{ .Values.application.config.featureNewDesigns | quote }}
             - name: ESTABLISHMENT_NAME
