@@ -104,7 +104,7 @@ jobs:
       - run:
           name: Run Unit and Integration tests
           command: npm run lint && npm run test
-  preview_build:
+  build_preview:
     <<: *defaults
     steps:
       - checkout
@@ -138,17 +138,7 @@ jobs:
           root: /tmp/build-info
           paths:
             - version-to-deploy.txt
-  preview_build_deploy_azure_dev:
-    <<: *default_machine
-    steps:
-      - deploy_to_environment:
-          to: hub-dev
-  preview_build_deploy_azure_staging:
-    <<: *default_machine
-    steps:
-      - deploy_to_environment:
-          to: hub-stage
-  build_frontend:
+  build_production:
     <<: *defaults
     steps:
       - checkout
@@ -189,75 +179,6 @@ jobs:
           root: /tmp/build-info
           paths:
             - version-to-deploy.txt
-  # run_e2e_test:
-  #   docker:
-  #     - image: circleci/node:12-browsers
-  #   working_directory: /home/circleci/app
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Update NPM
-  #         command: "sudo npm install -g npm@latest"
-  #     - restore_cache:
-  #         key: dependency-cache-{{ checksum "package-lock.json" }}
-  #     - run:
-  #         name: Install dependencies
-  #         command: npm ci
-  #     - save_cache:
-  #         key: dependency-cache-{{ checksum "package-lock.json" }}
-  #         paths:
-  #           - ./node_modules
-  #     - run:
-  #         name: Run E2E tests against Staging
-  #         command: |
-  #           npm run build && \
-  #           BUILD_NUMBER="$CIRCLE_BUILD_NUM" \
-  #           GIT_REF="$CIRCLE_SHA1" \
-  #           GIT_DATE="$(git log --format=%cd -n1 --date=iso $CIRCLE_SHA1)" \
-  #           npm run record-build-info && \
-  #           APP_NAME="HMP Local" \
-  #           NODE_ENV=production \
-  #           MATOMO_URL="foo.bar" \
-  #           MATOMO_TOKEN="foobar" \
-  #           MATOMO_API_URI="http://hub-matomo" \
-  #           ENABLE_PRISON_SWITCH="true" \
-  #           HUB_API_ENDPOINT="http://pfs-stage-hub-1.uksouth.cloudapp.azure.com:11001" \
-  #           ELASTICSEARCH_ENDPOINT="UNSET" \
-  #           ESTABLISHMENT_NAME="berwyn" \
-  #           NOMIS_API_ENDPOINT="https://foo.bar" \
-  #           FEEDBACK_URL="http://foo.bar" \
-  #           npm run test:e2e:run
-  #     - store_artifacts:
-  #         path: ./cypress/videos
-  #     - store_artifacts:
-  #         path: ./cypress/screenshots
-  deploy_azure_dev:
-    <<: *default_machine
-    steps:
-      - deploy_to_environment:
-          to: hub-dev
-
-  deploy_azure_staging:
-    <<: *default_machine
-    steps:
-      - deploy_to_environment:
-          to: hub-stage
-
-  deploy_azure_production:
-    <<: *default_machine
-    steps:
-      - attach_workspace:
-          at: /tmp/build-info
-      - add_ssh_keys:
-          fingerprints:
-            - "36:39:b2:8b:1a:6e:03:37:69:91:58:c4:fe:81:fe:d9"
-      - run:
-          name: Deploy to Production
-          command: |
-            export VERSION_TO_DEPLOY="$(cat /tmp/build-info/version-to-deploy.txt)" && \
-            ssh -t ciuser@pfs-management-bastion-1.uksouth.cloudapp.azure.com ssh -t ciuser@hub-wayland-prod.pfs-management.com "sudo /etc/docker-decomposed-secrets.sh -v ${VERSION_TO_DEPLOY}" && \
-            ssh -t ciuser@pfs-management-bastion-1.uksouth.cloudapp.azure.com ssh -t ciuser@hub-berwyn-prod.pfs-management.com "sudo /etc/docker-decomposed-secrets.sh -v ${VERSION_TO_DEPLOY}"
-            # ssh -t ciuser@pfs-management-bastion-1.uksouth.cloudapp.azure.com ssh -t ciuser@hub-cookhamwood-prod.pfs-management.com "sudo /etc/docker-decomposed-secrets.sh -v ${VERSION_TO_DEPLOY}"
 
   deploy_cloud_platform_production:
     <<: *defaults
@@ -291,7 +212,23 @@ jobs:
           establishment: "wayland"
           releaseName: "prisoner-content-hub-wayland"
 
-  deploy_cloud_platform_dev_preview:
+  deploy_cloud_platform_development_feature:
+    <<: *defaults
+    steps:
+      - release_to_namespace:
+          environment: "development"
+          establishment: "berwyn"
+          releaseName: "prisoner-content-hub-berwyn"
+      - release_to_namespace:
+          environment: "development"
+          establishment: "cookhamwood"
+          releaseName: "prisoner-content-hub-cookhamwood"
+      - release_to_namespace:
+          environment: "development"
+          establishment: "wayland"
+          releaseName: "prisoner-content-hub-wayland"
+
+  deploy_cloud_platform_development:
     <<: *defaults
     steps:
       - release_to_namespace:
@@ -314,91 +251,44 @@ workflows:
       - test_branch:
           <<: *feature_branch
 
-      - build_frontend:
-          <<: *main_branch
-      # - run_e2e_test:
-      #     <<: *main_branch
-      #     requires:
-      #       - build_frontend
-
-      #
-      # Deploy to Cloud Platform
-      #
-      - approve_deploy_cloud_platform_dev_preview:
+      - approve_preview_build:
           <<: *feature_branch
           type: approval
+
+      - build_preview:
+          <<: *feature_branch
           requires:
-            - build_frontend
-      - deploy_cloud_platform_dev_preview:
+            - approve_preview_build
+
+      - deploy_cloud_platform_development_feature:
           <<: *feature_branch
           context: prisoner-content-hub-development
           requires:
-            - approve_deploy_cloud_platform_dev_preview
+            - build_preview
+
+      - build_production:
+          <<: *main_branch
+
+      - deploy_cloud_platform_development:
+          <<: *main_branch
+          context: prisoner-content-hub-development
+          requires:
+            - build_production
 
       - deploy_cloud_platform_staging:
           <<: *main_branch
           context: prisoner-content-hub-staging
           requires:
-            - build_frontend
+            - build_production
 
-      - approve_deploy_cloud_platform_production:
+      - approve_deploy_production:
           <<: *main_branch
           type: approval
           requires:
             - deploy_cloud_platform_staging
+
       - deploy_cloud_platform_production:
           <<: *main_branch
           context: prisoner-content-hub-prod
           requires:
-            - approve_deploy_cloud_platform_production
-
-      #
-      # Deploy to Azure
-      #
-      - approve_preview_build:
-          <<: *feature_branch
-          type: approval
-      - preview_build:
-          <<: *feature_branch
-          requires:
-            - test_branch
-            - approve_preview_build
-      - preview_build_deploy_azure_dev:
-          <<: *feature_branch
-          requires:
-            - preview_build
-
-      - approve_preview_build_deploy_azure_staging:
-          <<: *feature_branch
-          type: approval
-          requires:
-            - preview_build_deploy_azure_dev
-      - preview_build_deploy_azure_staging:
-          <<: *feature_branch
-          requires:
-            - approve_preview_build_deploy_azure_staging
-
-      - deploy_azure_dev:
-          <<: *main_branch
-          requires:
-            - build_frontend
-
-      - approve_deploy_azure_staging:
-          <<: *main_branch
-          type: approval
-          requires:
-            - deploy_azure_dev
-      - deploy_azure_staging:
-          <<: *main_branch
-          requires:
-            - approve_deploy_azure_staging
-
-      - approve_deploy_azure_production:
-          <<: *main_branch
-          type: approval
-          requires:
-            - deploy_azure_staging
-      - deploy_azure_production:
-          <<: *main_branch
-          requires:
-            - approve_deploy_azure_production
+            - approve_deploy_production
