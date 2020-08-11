@@ -1,3 +1,6 @@
+image:
+  pullPolicy: Never
+
 application:
   config:
     appName: "HMP Local"
@@ -13,4 +16,4 @@ ingress:
   enabled: false
   tlsEnabled: false
   hosts:
-    - suffix: pfs-hub.local
+    - suffix: frontend.prisoner-content-hub.local
