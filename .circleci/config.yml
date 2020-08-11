@@ -6,6 +6,10 @@ default_machine: &default_machine
   machine:
     enabled: true
   working_directory: ~/workspace
+test_setup: &test_setup
+  docker:
+    - image: circleci/node:12-browsers
+  working_directory: ~/workspace
 main_branch: &main_branch
   filters:
     branches:
@@ -22,23 +26,6 @@ orbs:
   helm: circleci/helm@1.0.0
 
 commands:
-  deploy_to_environment:
-    description: "Deploy build to environment"
-    parameters:
-      to:
-        type: string
-        default: latest
-    steps:
-      - attach_workspace:
-          at: /tmp/build-info
-      - add_ssh_keys:
-          fingerprints:
-            - "36:39:b2:8b:1a:6e:03:37:69:91:58:c4:fe:81:fe:d9"
-      - run:
-          name: Deploy to Development
-          command: |
-            export VERSION_TO_DEPLOY="$(cat /tmp/build-info/version-to-deploy.txt)" && \
-            ssh -t ciuser@pfs-management-bastion-1.uksouth.cloudapp.azure.com ssh -t ciuser@<< parameters.to >>.pfs-management.com "sudo /etc/docker-decomposed-secrets.sh -v ${VERSION_TO_DEPLOY}"
   release_to_namespace:
     description: "Release with Helm"
     parameters:
@@ -87,10 +74,8 @@ commands:
               --set image.tag=${VERSION_TO_DEPLOY}
 
 jobs:
-  test_branch:
-    docker:
-      - image: circleci/node:12-browsers
-    working_directory: ~/workspace
+  run_unit_and_integration_tests:
+    <<: *test_setup
     steps:
       - checkout
       - restore_cache:
@@ -105,6 +90,7 @@ jobs:
       - run:
           name: Run Unit and Integration tests
           command: npm run lint && npm run test
+
   build_preview:
     <<: *defaults
     steps:
@@ -139,6 +125,7 @@ jobs:
           root: /tmp/build-info
           paths:
             - version-to-deploy.txt
+
   build_production:
     <<: *defaults
     steps:
@@ -213,23 +200,7 @@ jobs:
           establishment: "wayland"
           releaseName: "prisoner-content-hub-wayland"
 
-  deploy_cloud_platform_development_feature:
-    <<: *defaults
-    steps:
-      - release_to_namespace:
-          environment: "development"
-          establishment: "berwyn"
-          releaseName: "prisoner-content-hub-berwyn"
-      - release_to_namespace:
-          environment: "development"
-          establishment: "cookhamwood"
-          releaseName: "prisoner-content-hub-cookhamwood"
-      - release_to_namespace:
-          environment: "development"
-          establishment: "wayland"
-          releaseName: "prisoner-content-hub-wayland"
-
-  deploy_cloud_platform_development:
+  deploy_cloud_platform_development_preview:
     <<: *defaults
     steps:
       - release_to_namespace:
@@ -249,8 +220,7 @@ workflows:
   version: 2
   build-test-deploy:
     jobs:
-      - test_branch:
-          <<: *feature_branch
+      - run_unit_and_integration_tests
 
       - approve_preview_build:
           <<: *feature_branch
@@ -261,7 +231,7 @@ workflows:
           requires:
             - approve_preview_build
 
-      - deploy_cloud_platform_development_feature:
+      - deploy_cloud_platform_development_preview:
           <<: *feature_branch
           context: prisoner-content-hub-development
           requires:
@@ -269,12 +239,8 @@ workflows:
 
       - build_production:
           <<: *main_branch
-
-      - deploy_cloud_platform_development:
-          <<: *main_branch
-          context: prisoner-content-hub-development
           requires:
-            - build_production
+            - run_unit_and_integration_tests
 
       - deploy_cloud_platform_staging:
           <<: *main_branch
