@@ -276,11 +276,17 @@ workflows:
           requires:
             - build_production
 
+      - approve_deploy_staging:
+          <<: *main_branch
+          type: approval
+          requires:
+            - deploy_cloud_platform_development
+
       - deploy_cloud_platform_staging:
           <<: *main_branch
           context: prisoner-content-hub-staging
           requires:
-            - build_production
+            - approve_deploy_staging
 
       - approve_deploy_production:
           <<: *main_branch
