@@ -77,8 +77,6 @@ spec:
                   key: externalUrl
             - name: ANALYTICS_ENDPOINT
               value: {{ .Values.application.config.analyticsEndpoint }}
-            - name: NPR_STREAM
-              value: {{ .Values.application.config.nprStream }}
             - name: ANALYTICS_ENDPOINT
               value: {{ .Values.application.config.analyticsEndpoint }}
             - name: ANALYTICS_SITE_ID

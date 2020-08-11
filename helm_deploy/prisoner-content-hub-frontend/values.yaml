@@ -28,7 +28,6 @@ application:
     mockAuth: false
     featureNewDesigns: false
     establishmentName: berwyn
-    nprStream: /npr-stream
     analyticsEndpoint: https://www.google-analytics.com/collect
     useRelativeUrlForMedia: false
     elasticsearchIndexName: content_index
