@@ -36,7 +36,8 @@ helm upgrade [Release Name] . \
 --values values.establishment-[establishment name].yaml \
 --values values.[environment].yaml \
 --values secrets.yaml \
---set application.contentConfigMap=[Backend Release Name] \
+--set application.contentConfigMapName=[Backend Release Name] \
+--set application.nprConfigMapName=[Backend Release Name] \
 --set image.tag=[Image Tag]
 ```
 
@@ -53,7 +54,8 @@ helm upgrade [Release Name] . \
 --values values.establishment-[establishment name].yaml \
 --values values.[environment].yaml \
 --values secrets.yaml \
---set application.contentConfigMap=[Backend Release Name] \
+--set application.contentConfigMapName=[Backend Release Name] \
+--set application.nprConfigMapName=[Backend Release Name] \
 --set image.tag=[Image Tag]
 ```
 
