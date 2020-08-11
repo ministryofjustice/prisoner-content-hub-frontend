@@ -40,12 +40,12 @@ spec:
             - name: HUB_API_ENDPOINT
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.application.contentConfigMap }}
+                  name: {{ .Values.application.contentConfigMapName }}
                   key: internalUrl
             - name: BACKEND_URL
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.application.contentConfigMap }}
+                  name: {{ .Values.application.contentConfigMapName }}
                   key: externalUrl
             - name: APP_NAME
               value: {{ .Values.application.config.appName }}
@@ -71,7 +71,10 @@ spec:
             - name: FEEDBACK_URL
               value: {{ include "prisoner-content-hub-frontend.feedbackUrl" . }}
             - name: NPR_STREAM
-              value: {{ .Values.application.config.nprStream }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.application.nprConfigMapName }}
+                  key: externalUrl
             - name: ANALYTICS_ENDPOINT
               value: {{ .Values.application.config.analyticsEndpoint }}
             - name: NPR_STREAM

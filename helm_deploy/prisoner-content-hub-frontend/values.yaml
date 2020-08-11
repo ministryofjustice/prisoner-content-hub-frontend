@@ -32,7 +32,8 @@ application:
     analyticsEndpoint: https://www.google-analytics.com/collect
     useRelativeUrlForMedia: false
     elasticsearchIndexName: content_index
-  contentConfigMap: prisoner-content-hub-drupal
+  contentConfigMapName: prisoner-content-hub-drupal
+  nprConfigMapName: npr-live
   dbSecretName: drupal-rds
 
 imagePullSecrets: [] # Are we using ECR?
