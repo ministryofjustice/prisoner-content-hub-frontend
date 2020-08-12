@@ -202,6 +202,7 @@ workflows:
 
       - deploy_cloud_platform:
           <<: *feature_branch
+          name: deploy_dev_preview
           context: prisoner-content-hub-development
           matrix:
             parameters:
@@ -217,6 +218,7 @@ workflows:
 
       - deploy_cloud_platform:
           <<: *main_branch
+          name: deploy_staging
           context: prisoner-content-hub-staging
           matrix:
             parameters:
@@ -229,10 +231,11 @@ workflows:
           <<: *main_branch
           type: approval
           requires:
-            - deploy_cloud_platform_staging
+            - deploy_staging
 
       - deploy_cloud_platform:
           <<: *main_branch
+          name: deploy_production
           context: prisoner-content-hub-prod
           matrix:
             parameters:
