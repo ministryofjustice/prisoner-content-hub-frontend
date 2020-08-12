@@ -202,7 +202,6 @@ workflows:
 
       - deploy_cloud_platform:
           <<: *feature_branch
-          name: deploy_dev_preview
           context: prisoner-content-hub-development
           matrix:
             parameters:
