@@ -217,7 +217,6 @@ workflows:
 
       - deploy_cloud_platform:
           <<: *main_branch
-          name: deploy_staging
           context: prisoner-content-hub-staging
           matrix:
             alias: deploy_to_staging
@@ -235,7 +234,6 @@ workflows:
 
       - deploy_cloud_platform:
           <<: *main_branch
-          name: deploy_production
           context: prisoner-content-hub-prod
           matrix:
             parameters:
