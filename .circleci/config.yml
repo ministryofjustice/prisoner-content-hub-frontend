@@ -221,6 +221,7 @@ workflows:
           name: deploy_staging
           context: prisoner-content-hub-staging
           matrix:
+            alias: deploy_to_staging
             parameters:
               environment: ["staging"]
               establishment: ["berwyn", "cookhamwood", "wayland"]
@@ -231,7 +232,7 @@ workflows:
           <<: *main_branch
           type: approval
           requires:
-            - deploy_staging
+            - deploy_to_staging
 
       - deploy_cloud_platform:
           <<: *main_branch
