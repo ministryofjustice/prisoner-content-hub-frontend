@@ -63,11 +63,11 @@ commands:
           name: Release to << parameters.environment >> (<< parameters.establishment >>)
           command: |
             VERSION_TO_DEPLOY=$(cat /tmp/build-info/version-to-deploy.txt)
-            helm upgrade << parameters.releaseName >> ~/git/helm_deploy/prisoner-content-hub-frontend \
+            helm upgrade << parameters.releaseName >> ./helm_deploy/prisoner-content-hub-frontend \
               --install --wait --force --reset-values --timeout 360s \
               --namespace=${KUBE_NAMESPACE} \
-              --values ~/git/helm_deploy/prisoner-content-hub-frontend/values.establishment-<< parameters.establishment >>.yaml \
-              --values ~/git/helm_deploy/prisoner-content-hub-frontend/values.<< parameters.environment >>.yaml \
+              --values ./helm_deploy/prisoner-content-hub-frontend/values.establishment-<< parameters.establishment >>.yaml \
+              --values ./helm_deploy/prisoner-content-hub-frontend/values.<< parameters.environment >>.yaml \
               --set application.contentConfigMapName="${HELM_BACKEND_RELEASE_NAME}" \
               --set application.nprConfigMapName="${HELM_NPR_CONFIG_MAP_NAME}" \
               --set application.sentry_dsn="${FRONTEND_SENTRY_DSN}" \
