@@ -235,7 +235,7 @@ workflows:
           context: prisoner-content-hub-development
           matrix:
             parameters:
-              environment: "development"
+              environment: ["development"]
               establishment: ["berwyn", "cookhamwood", "wayland"]
           requires:
             - build_preview
@@ -250,7 +250,7 @@ workflows:
           context: prisoner-content-hub-staging
           matrix:
             parameters:
-              environment: "development"
+              environment: ["development"]
               establishment: ["berwyn", "cookhamwood", "wayland"]
           requires:
             - build_production
@@ -266,7 +266,7 @@ workflows:
           context: prisoner-content-hub-prod
           matrix:
             parameters:
-              environment: "development"
+              environment: ["development"]
               establishment: ["berwyn", "cookhamwood", "wayland"]
           requires:
             - approve_deploy_production
