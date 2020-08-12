@@ -172,57 +172,48 @@ jobs:
 
   deploy_cloud_platform_production:
     <<: *defaults
+    parameters:
+      environment:
+        type: string
+      establishment:
+        type: string
     steps:
       - set_up_helm
       - checkout
       - release_to_namespace:
-          environment: "production"
-          establishment: "berwyn"
-          releaseName: "prisoner-content-hub-berwyn"
-      - release_to_namespace:
-          environment: "production"
-          establishment: "cookhamwood"
-          releaseName: "prisoner-content-hub-cookhamwood"
-      - release_to_namespace:
-          environment: "production"
-          establishment: "wayland"
-          releaseName: "prisoner-content-hub-wayland"
+          environment: "<< parameters.environment >>"
+          establishment: "<< parameters.establishment >>"
+          releaseName: "prisoner-content-hub-<< parameters.establishment >>"
 
   deploy_cloud_platform_staging:
     <<: *defaults
+    parameters:
+      environment:
+        type: string
+      establishment:
+        type: string
     steps:
       - set_up_helm
       - checkout
       - release_to_namespace:
-          environment: "staging"
-          establishment: "berwyn"
-          releaseName: "prisoner-content-hub-berwyn"
-      - release_to_namespace:
-          environment: "staging"
-          establishment: "cookhamwood"
-          releaseName: "prisoner-content-hub-cookhamwood"
-      - release_to_namespace:
-          environment: "staging"
-          establishment: "wayland"
-          releaseName: "prisoner-content-hub-wayland"
+          environment: "<< parameters.environment >>"
+          establishment: "<< parameters.establishment >>"
+          releaseName: "prisoner-content-hub-<< parameters.establishment >>"
 
   deploy_cloud_platform_development_preview:
     <<: *defaults
+    parameters:
+      environment:
+        type: string
+      establishment:
+        type: string
     steps:
       - set_up_helm
       - checkout
       - release_to_namespace:
-          environment: "development"
-          establishment: "berwyn"
-          releaseName: "prisoner-content-hub-berwyn"
-      - release_to_namespace:
-          environment: "development"
-          establishment: "cookhamwood"
-          releaseName: "prisoner-content-hub-cookhamwood"
-      - release_to_namespace:
-          environment: "development"
-          establishment: "wayland"
-          releaseName: "prisoner-content-hub-wayland"
+          environment: "<< parameters.environment >>"
+          establishment: "<< parameters.establishment >>"
+          releaseName: "prisoner-content-hub-<< parameters.establishment >>"
 
 workflows:
   version: 2
@@ -242,6 +233,10 @@ workflows:
       - deploy_cloud_platform_development_preview:
           <<: *feature_branch
           context: prisoner-content-hub-development
+          matrix:
+            parameters:
+              environment: "development"
+              establishment: ["berwyn", "cookhamwood", "wayland"]
           requires:
             - build_preview
 
@@ -253,6 +248,10 @@ workflows:
       - deploy_cloud_platform_staging:
           <<: *main_branch
           context: prisoner-content-hub-staging
+          matrix:
+            parameters:
+              environment: "development"
+              establishment: ["berwyn", "cookhamwood", "wayland"]
           requires:
             - build_production
 
@@ -265,5 +264,9 @@ workflows:
       - deploy_cloud_platform_production:
           <<: *main_branch
           context: prisoner-content-hub-prod
+          matrix:
+            parameters:
+              environment: "development"
+              establishment: ["berwyn", "cookhamwood", "wayland"]
           requires:
             - approve_deploy_production
