@@ -178,8 +178,8 @@ jobs:
       establishment:
         type: string
     steps:
-      - set_up_helm
       - checkout
+      - set_up_helm
       - release_to_namespace:
           environment: "<< parameters.environment >>"
           establishment: "<< parameters.establishment >>"
