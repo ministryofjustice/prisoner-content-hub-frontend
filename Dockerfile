@@ -1,7 +1,8 @@
 FROM node:12-alpine
 
 RUN apk add --no-cache git \
-  python
+  python \
+  make
 
 ARG BUILD_NUMBER
 ARG GIT_REF
