@@ -43,8 +43,6 @@ commands:
       releaseName:
         type: string
     steps:
-      - checkout:
-          path: ~/git
       - attach_workspace:
           at: /tmp/build-info
       - run:
@@ -65,11 +63,11 @@ commands:
           name: Release to << parameters.environment >> (<< parameters.establishment >>)
           command: |
             VERSION_TO_DEPLOY=$(cat /tmp/build-info/version-to-deploy.txt)
-            helm upgrade << parameters.releaseName >> ~/git/helm_deploy/prisoner-content-hub-frontend \
+            helm upgrade << parameters.releaseName >> ./helm_deploy/prisoner-content-hub-frontend \
               --install --wait --force --reset-values --timeout 360s \
               --namespace=${KUBE_NAMESPACE} \
-              --values ~/git/helm_deploy/prisoner-content-hub-frontend/values.establishment-<< parameters.establishment >>.yaml \
-              --values ~/git/helm_deploy/prisoner-content-hub-frontend/values.<< parameters.environment >>.yaml \
+              --values ./helm_deploy/prisoner-content-hub-frontend/values.establishment-<< parameters.establishment >>.yaml \
+              --values ./helm_deploy/prisoner-content-hub-frontend/values.<< parameters.environment >>.yaml \
               --set application.contentConfigMapName="${HELM_BACKEND_RELEASE_NAME}" \
               --set application.nprConfigMapName="${HELM_NPR_CONFIG_MAP_NAME}" \
               --set application.sentry_dsn="${FRONTEND_SENTRY_DSN}" \
@@ -172,56 +170,20 @@ jobs:
           paths:
             - version-to-deploy.txt
 
-  deploy_cloud_platform_production:
+  deploy_cloud_platform:
     <<: *defaults
+    parameters:
+      environment:
+        type: string
+      establishment:
+        type: string
     steps:
+      - checkout
       - set_up_helm
       - release_to_namespace:
-          environment: "production"
-          establishment: "berwyn"
-          releaseName: "prisoner-content-hub-berwyn"
-      - release_to_namespace:
-          environment: "production"
-          establishment: "cookhamwood"
-          releaseName: "prisoner-content-hub-cookhamwood"
-      - release_to_namespace:
-          environment: "production"
-          establishment: "wayland"
-          releaseName: "prisoner-content-hub-wayland"
-
-  deploy_cloud_platform_staging:
-    <<: *defaults
-    steps:
-      - set_up_helm
-      - release_to_namespace:
-          environment: "staging"
-          establishment: "berwyn"
-          releaseName: "prisoner-content-hub-berwyn"
-      - release_to_namespace:
-          environment: "staging"
-          establishment: "cookhamwood"
-          releaseName: "prisoner-content-hub-cookhamwood"
-      - release_to_namespace:
-          environment: "staging"
-          establishment: "wayland"
-          releaseName: "prisoner-content-hub-wayland"
-
-  deploy_cloud_platform_development_preview:
-    <<: *defaults
-    steps:
-      - set_up_helm
-      - release_to_namespace:
-          environment: "development"
-          establishment: "berwyn"
-          releaseName: "prisoner-content-hub-berwyn"
-      - release_to_namespace:
-          environment: "development"
-          establishment: "cookhamwood"
-          releaseName: "prisoner-content-hub-cookhamwood"
-      - release_to_namespace:
-          environment: "development"
-          establishment: "wayland"
-          releaseName: "prisoner-content-hub-wayland"
+          environment: "<< parameters.environment >>"
+          establishment: "<< parameters.establishment >>"
+          releaseName: "prisoner-content-hub-<< parameters.establishment >>"
 
 workflows:
   version: 2
@@ -238,9 +200,13 @@ workflows:
           requires:
             - approve_preview_build
 
-      - deploy_cloud_platform_development_preview:
+      - deploy_cloud_platform:
           <<: *feature_branch
           context: prisoner-content-hub-development
+          matrix:
+            parameters:
+              environment: ["development"]
+              establishment: ["berwyn", "cookhamwood", "wayland"]
           requires:
             - build_preview
 
@@ -249,9 +215,14 @@ workflows:
           requires:
             - run_unit_and_integration_tests
 
-      - deploy_cloud_platform_staging:
+      - deploy_cloud_platform:
           <<: *main_branch
           context: prisoner-content-hub-staging
+          matrix:
+            alias: deploy_to_staging
+            parameters:
+              environment: ["staging"]
+              establishment: ["berwyn", "cookhamwood", "wayland"]
           requires:
             - build_production
 
@@ -259,10 +230,14 @@ workflows:
           <<: *main_branch
           type: approval
           requires:
-            - deploy_cloud_platform_staging
+            - deploy_to_staging
 
-      - deploy_cloud_platform_production:
+      - deploy_cloud_platform:
           <<: *main_branch
           context: prisoner-content-hub-prod
+          matrix:
+            parameters:
+              environment: ["production"]
+              establishment: ["berwyn", "cookhamwood", "wayland"]
           requires:
             - approve_deploy_production
