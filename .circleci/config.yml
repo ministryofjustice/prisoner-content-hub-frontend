@@ -71,8 +71,9 @@ commands:
               --set application.contentConfigMapName="${HELM_BACKEND_RELEASE_NAME}" \
               --set application.nprConfigMapName="${HELM_NPR_CONFIG_MAP_NAME}" \
               --set application.sentry_dsn="${FRONTEND_SENTRY_DSN}" \
-              --set nomisApiToken="${SECRET_NOMIS_API_TOKEN}" \
-              --set nomisApiEndpoint="${SECRET_NOMIS_API_ENDPOINT}" \
+              --set hmppsAuthToken="${HMPPS_AUTH_TOKEN}" \
+              --set hmppsAuthBaseUrl="${HMPPS_AUTH_BASE_URL}" \
+              --set prisonApiBaseUrl="${PRISON_API_BASE_URL}" \
               --set image.tag=${VERSION_TO_DEPLOY}
 
 jobs:

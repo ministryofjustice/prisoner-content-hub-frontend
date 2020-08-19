@@ -15,7 +15,7 @@ describe('NomisClient', () => {
       const token = 'foo.bar.baz';
 
       nock('https://api.nomis')
-        .post(/auth\/oauth/)
+        .post(/oauth/)
         .reply(200, function request() {
           expect(this.req.headers.authorization).to.match(/Basic .+/);
           expect(this.req.headers.accept).to.equal('application/json');
@@ -37,7 +37,7 @@ describe('NomisClient', () => {
         const authSpy = sinon.spy();
 
         nock('https://api.nomis')
-          .post(/auth\/oauth/)
+          .post(/oauth/)
           .reply(200, function request() {
             authSpy();
             return { access_token: token };
@@ -65,7 +65,7 @@ describe('NomisClient', () => {
         const authSpy = sinon.spy();
 
         nock('https://api.nomis')
-          .post(/auth\/oauth/)
+          .post(/oauth/)
           .reply(200, function request() {
             authSpy();
             return { access_token: token };
@@ -96,7 +96,7 @@ describe('NomisClient', () => {
         const apiSpy = sinon.spy();
 
         nock('https://api.nomis')
-          .post(/auth\/oauth/)
+          .post(/oauth/)
           .reply(200, function request() {
             authSpy();
             return { access_token: token };
@@ -138,7 +138,7 @@ describe('NomisClient', () => {
         const apiSpy = sinon.spy();
 
         nock('https://api.nomis')
-          .post(/auth\/oauth/)
+          .post(/oauth/)
           .times(3)
           .reply(200, () => {
             authSpy();
@@ -173,7 +173,7 @@ describe('NomisClient', () => {
         const apiSpy = sinon.spy();
 
         nock('https://api.nomis')
-          .post(/auth\/oauth/)
+          .post(/oauth/)
           .times(2)
           .reply(200, authSpy)
           .get(/test/)
@@ -210,7 +210,7 @@ describe('NomisClient', () => {
         const apiSpy = sinon.spy();
 
         nock('https://api.nomis')
-          .post(/auth\/oauth/)
+          .post(/oauth/)
           .times(2)
           .reply(401, () => {
             authSpy();
