@@ -17,6 +17,7 @@ class NomisClient {
   }
 
   async getAuthToken() {
+    logger.info(`Requested ${config.nomis.api.auth}`);
     const res = await this.client({
       url: config.nomis.api.auth,
       method: 'post',
@@ -26,7 +27,6 @@ class NomisClient {
         'Content-Length': 0,
       },
     });
-    logger.info(`Requested ${config.nomis.api.auth}`);
     const token = path(['data', 'access_token'], res);
     this.authToken = token;
     return token;
