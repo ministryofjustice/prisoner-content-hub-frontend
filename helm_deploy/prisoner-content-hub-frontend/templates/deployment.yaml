@@ -27,11 +27,16 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: HMPPS_AUTH_TOKEN
+            - name: HMPPS_AUTH_CLIENT_ID
               valueFrom:
                 secretKeyRef:
                   name: {{ include "prisoner-content-hub-frontend.fullname" . }}
-                  key: hmppsAuthToken
+                  key: hmppsAuthClientId
+            - name: HMPPS_AUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+                  key: hmppsAuthClientSecret
             - name: HMPPS_AUTH_BASE_URL
               valueFrom:
                 secretKeyRef:
