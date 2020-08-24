@@ -5,11 +5,13 @@ function validateOffenderNumberFor(offenderNo) {
   return pattern.test(offenderNo);
 }
 
+const getBookingsUrlFrom = path(['prisonApi', 'endpoints', 'bookings']);
+
 function offenderRepository(httpClient) {
   function getOffenderDetailsFor(offenderNo) {
     if (validateOffenderNumberFor(offenderNo)) {
       return httpClient.get(
-        `${config.nomis.api.bookings}/offenderNo/${offenderNo.toUpperCase()}`,
+        `${getBookingsUrlFrom(config)}/offenderNo/${offenderNo.toUpperCase()}`,
       );
     }
     throw new Error('Invalid offender number');
@@ -17,34 +19,36 @@ function offenderRepository(httpClient) {
 
   function getIEPSummaryFor(bookingId) {
     return httpClient.get(
-      `${config.nomis.api.bookings}/${bookingId}/iepSummary`,
+      `${getBookingsUrlFrom(config)}/${bookingId}/iepSummary`,
     );
   }
 
   function getBalancesFor(bookingId) {
-    return httpClient.get(`${config.nomis.api.bookings}/${bookingId}/balances`);
+    return httpClient.get(
+      `${getBookingsUrlFrom(config)}/${bookingId}/balances`,
+    );
   }
 
   function getKeyWorkerFor(offenderNo) {
     return httpClient.get(
-      `${config.nomis.api.bookings}/offenderNo/${offenderNo}/key-worker`,
+      `${getBookingsUrlFrom(config)}/offenderNo/${offenderNo}/key-worker`,
     );
   }
 
   function getNextVisitFor(bookingId) {
     return httpClient.get(
-      `${config.nomis.api.bookings}/${bookingId}/visits/next`,
+      `${getBookingsUrlFrom(config)}/${bookingId}/visits/next`,
     );
   }
 
   function getLastVisitFor(bookingId) {
     return httpClient.get(
-      `${config.nomis.api.bookings}/${bookingId}/visits/last`,
+      `${getBookingsUrlFrom(config)}/${bookingId}/visits/last`,
     );
   }
 
   function getVisitsFor(bookingId, startDate) {
-    const endpoint = `${config.nomis.api.bookings}/${bookingId}/visits`;
+    const endpoint = `${getBookingsUrlFrom(config)}/${bookingId}/visits`;
     const query = [`fromDate=${startDate}`, `toDate=${startDate}`];
 
     return httpClient.get(`${endpoint}?${query.join('&')}`);
@@ -52,18 +56,18 @@ function offenderRepository(httpClient) {
 
   function sentenceDetailsFor(bookingId) {
     return httpClient.get(
-      `${config.nomis.api.bookings}/${bookingId}/sentenceDetail`,
+      `${getBookingsUrlFrom(config)}/${bookingId}/sentenceDetail`,
     );
   }
 
   function getEventsForToday(bookingId) {
     return httpClient.get(
-      `${config.nomis.api.bookings}/${bookingId}/events/today`,
+      `${getBookingsUrlFrom(config)}/${bookingId}/events/today`,
     );
   }
 
   function getEventsFor(bookingId, startDate, endDate) {
-    const endpoint = `${config.nomis.api.bookings}/${bookingId}/events`;
+    const endpoint = `${getBookingsUrlFrom(config)}/${bookingId}/events`;
     const query = [`fromDate=${startDate}`, `toDate=${endDate}`];
 
     return httpClient.get(`${endpoint}?${query.join('&')}`);
