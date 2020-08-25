@@ -97,6 +97,11 @@ spec:
               value: {{ .Values.application.sentry_dsn }}
             - name: ENABLE_REDIS_CACHE
               value: {{ .Values.application.config.enableRedisCache | quote }}
+            - name: CACHE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+                  key: cacheSecret
           ports:
             - name: http
               containerPort: {{ .Values.application.port }}

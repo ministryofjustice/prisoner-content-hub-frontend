@@ -145,7 +145,7 @@ module.exports = {
     initialisationVector: getEnv('PHONE_IV', { requireInProduction: true }),
   },
   caching: {
-    secret: getEnv('CACHE_SECRET', 'UNSET'),
+    secret: getEnv('CACHE_SECRET', { requireInProduction: true }),
     redis: {
       host: getEnv('REDIS_HOST', '127.0.0.1'),
       port: getEnv('REDIS_PORT', 6379),
