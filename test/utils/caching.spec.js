@@ -89,6 +89,32 @@ describe('RedisCachingStrategy', () => {
     expect(hasCalledGet.lastCall.args[0]).to.equal(TEST_KEY);
     expect(token).to.equal(null);
   });
+
+  it('should throw when not provided the correct parameters', async () => {
+    const mockRedis = {};
+    const hasCalledGet = sinon.spy();
+    const hasCalledSet = sinon.spy();
+    mockRedis.get = (key, fn) => {
+      hasCalledGet(key);
+      fn(null, ENCRYPTED_TEST_VALUE);
+    };
+    mockRedis.set = (key, value, property, propertyValue, fn) => {
+      hasCalledSet(key, value, property, propertyValue);
+      fn();
+    };
+
+    const strategy = new RedisCachingStrategy(TEST_SECRET, mockRedis);
+
+    await expect(strategy.set(TEST_KEY, TEST_VALUE)).to.be.rejectedWith(
+      /unable to cache/i,
+    );
+    await expect(strategy.set(TEST_KEY)).to.be.rejectedWith(/unable to cache/i);
+    await expect(strategy.set()).to.be.rejectedWith(/unable to cache/i);
+
+    await expect(strategy.get()).to.be.rejectedWith(
+      /unable to retrieve cache/i,
+    );
+  });
 });
 
 describe('InMemoryCachingStrategy', () => {
@@ -116,12 +142,26 @@ describe('InMemoryCachingStrategy', () => {
   it('should not return an expired value', async () => {
     const strategy = new InMemoryCachingStrategy();
 
-    await strategy.set('baz', TEST_VALUE, 0);
+    await strategy.set('baz', TEST_VALUE, -9999);
     const { baz } = strategy.state;
     expect(baz.value).to.equal(TEST_VALUE);
     expect(baz.expires).to.exist;
 
     const value = await strategy.get('baz');
     expect(value).to.equal(null);
+  });
+
+  it('should throw when not provided the correct parameters', async () => {
+    const strategy = new InMemoryCachingStrategy();
+
+    await expect(strategy.set(TEST_KEY, TEST_VALUE)).to.be.rejectedWith(
+      /unable to cache/i,
+    );
+    await expect(strategy.set(TEST_KEY)).to.be.rejectedWith(/unable to cache/i);
+    await expect(strategy.set()).to.be.rejectedWith(/unable to cache/i);
+
+    await expect(strategy.get()).to.be.rejectedWith(
+      /unable to retrieve cache/i,
+    );
   });
 });

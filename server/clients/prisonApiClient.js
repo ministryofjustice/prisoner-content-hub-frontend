@@ -13,15 +13,15 @@ class PrisonApiClient {
       ['prisonApi', 'auth'],
       options,
     );
-    this.client = options.client || baseClient;
-    this.cache = options.cachingStrategy || new InMemoryCachingStrategy();
-    this.setBasicAuthToken(clientId, clientSecret);
 
     if (!authUrl) {
       throw new Error('Unable to create PrisonApiClient, authUrl not set');
     }
 
     this.authUrl = authUrl;
+    this.client = options.client || baseClient;
+    this.cache = options.cachingStrategy || new InMemoryCachingStrategy();
+    this.setBasicAuthToken(clientId, clientSecret);
   }
 
   setBasicAuthToken(clientId, clientSecret) {
