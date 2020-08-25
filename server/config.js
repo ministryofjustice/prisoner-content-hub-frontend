@@ -5,7 +5,10 @@ const waylandGAJMenu = require('./data/wayland-step-by-step.json');
 
 const hubEndpoint = getEnv('HUB_API_ENDPOINT', { requireInProduction: true });
 const backendUrl = getEnv('BACKEND_URL', 'http://hub-be:80');
-const nomisEndpoint = getEnv('NOMIS_API_ENDPOINT', 'https://api.nomis', {
+const prisonApiBaseUrl = getEnv('PRISON_API_BASE_URL', 'https://api.nomis', {
+  requireInProduction: true,
+});
+const hmppsAuthBaseUrl = getEnv('HMPPS_AUTH_BASE_URL', 'https://api.nomis', {
   requireInProduction: true,
 });
 const elasticsearchEndpoint = getEnv(
@@ -131,10 +134,10 @@ module.exports = {
     hubContent: `${hubEndpoint}/v2/api/content`,
   },
   nomis: {
-    clientToken: getEnv('NOMIS_API_TOKEN', 'ADD_ME'),
+    clientToken: getEnv('HMPPS_AUTH_TOKEN', 'UNSET'),
     api: {
-      auth: `${nomisEndpoint}/auth/oauth/token?grant_type=client_credentials`,
-      bookings: `${nomisEndpoint}/elite2api/api/bookings`,
+      auth: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
+      bookings: `${prisonApiBaseUrl}/api/bookings`,
     },
   },
   elasticsearch: {
