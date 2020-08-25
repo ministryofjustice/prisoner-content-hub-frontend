@@ -37,7 +37,12 @@ helm upgrade [Release Name] . \
 --values values.[environment].yaml \
 --values secrets.yaml \
 --set application.contentConfigMapName=[Backend Release Name] \
---set application.nprConfigMapName=[Backend Release Name] \
+--set application.nprConfigMapName=[NPR Proxy config map name] \
+--set hmppsAuthClientId=[HMPPS Auth client ID] \
+--set hmppsAuthClientSecret=[HMPPS Auth client secret] \
+--set hmppsAuthBaseUrl=[HMPPS Auth base URL] \
+--set prisonApiBaseUrl=[Prison API base URL] \
+--set cacheSecret=[32Byte string used for encrypting cached items] \
 --set image.tag=[Image Tag]
 ```
 
@@ -55,7 +60,12 @@ helm upgrade [Release Name] . \
 --values values.[environment].yaml \
 --values secrets.yaml \
 --set application.contentConfigMapName=[Backend Release Name] \
---set application.nprConfigMapName=[Backend Release Name] \
+--set application.nprConfigMapName=[NPR Proxy config map name] \
+--set hmppsAuthClientId=[HMPPS Auth client ID] \
+--set hmppsAuthClientSecret=[HMPPS Auth client secret] \
+--set hmppsAuthBaseUrl=[HMPPS Auth base URL] \
+--set prisonApiBaseUrl=[Prison API base URL] \
+--set cacheSecret=[32Byte string used for encrypting cached items] \
 --set image.tag=[Image Tag]
 ```
 

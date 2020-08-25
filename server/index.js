@@ -1,10 +1,16 @@
+const redis = require('redis');
+const { path } = require('ramda');
 const { createApp } = require('./app');
 const { logger } = require('./utils/logger');
 const config = require('./config');
 
 const { HubClient } = require('./clients/hub');
 const { StandardClient } = require('./clients/standard');
-const { NomisClient } = require('./clients/nomisClient');
+const { PrisonApiClient } = require('./clients/prisonApiClient');
+const {
+  RedisCachingStrategy,
+  InMemoryCachingStrategy,
+} = require('./utils/caching');
 
 // Services
 const { createHubMenuService } = require('./services/hubMenu');
@@ -17,7 +23,7 @@ const {
 const { createHubContentService } = require('./services/hubContent');
 const { createHealthService } = require('./services/health');
 const { createHubTagsService } = require('./services/hubTags');
-const { createNomisOffenderService } = require('./services/offender');
+const { createPrisonApiOffenderService } = require('./services/offender');
 const { createSearchService } = require('./services/search');
 const { createAnalyticsService } = require('./services/analytics');
 const { createFeedbackService } = require('./services/feedback');
@@ -57,8 +63,21 @@ const hubContentService = createHubContentService({
   ),
 });
 const hubTagsService = createHubTagsService(contentRepository(new HubClient()));
-const offenderService = createNomisOffenderService(
-  offenderRepository(new NomisClient()),
+
+const cachingStrategy = path(['features', 'useRedisCache'], config)
+  ? new RedisCachingStrategy(
+      config.caching.secret,
+      redis.createClient(config.caching.redis),
+    )
+  : new InMemoryCachingStrategy();
+
+const offenderService = createPrisonApiOffenderService(
+  offenderRepository(
+    new PrisonApiClient({
+      prisonApi: config.prisonApi,
+      cachingStrategy,
+    }),
+  ),
 );
 const searchService = createSearchService({
   searchRepository: searchRepository(new StandardClient()),

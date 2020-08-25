@@ -133,10 +133,33 @@ module.exports = {
   apiV2: {
     hubContent: `${hubEndpoint}/v2/api/content`,
   },
-  nomis: {
-    clientToken: getEnv('HMPPS_AUTH_TOKEN', 'UNSET'),
-    api: {
-      auth: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
+  phone: {
+    server: getEnv('PHONE_SERVER', { requireInProduction: true }),
+    port: parseInt(getEnv('PHONE_PORT', { requireInProduction: true }), 10),
+    passPhrase: getEnv('PHONE_PASSPHRASE', { requireInProduction: true }),
+    iterations: parseInt(
+      getEnv('PHONE_ITERATIONS', { requireInProduction: true }),
+      10,
+    ),
+    salt: getEnv('PHONE_SALT', { requireInProduction: true }),
+    initialisationVector: getEnv('PHONE_IV', { requireInProduction: true }),
+  },
+  caching: {
+    secret: getEnv('CACHE_SECRET', { requireInProduction: true }),
+    redis: {
+      host: getEnv('REDIS_HOST', '127.0.0.1'),
+      port: getEnv('REDIS_PORT', 6379),
+      // password: getEnv('REDIS_PASSWORD', { requireInProduction: true }),
+      tls: getEnv('REDIS_USE_TLS', 'false') === 'true' ? {} : false,
+    },
+  },
+  prisonApi: {
+    auth: {
+      clientId: getEnv('HMPPS_AUTH_CLIENT_ID', 'UNSET'),
+      clientSecret: getEnv('HMPPS_AUTH_CLIENT_SECRET', 'UNSET'),
+      authUrl: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
+    },
+    endpoints: {
       bookings: `${prisonApiBaseUrl}/api/bookings`,
     },
   },
@@ -147,6 +170,7 @@ module.exports = {
   features: {
     newDesigns: getEnv('FEATURE_NEW_DESIGNS', 'false') === 'true',
     prisonSwitch: getEnv('ENABLE_PRISON_SWITCH', 'false') === 'true',
+    useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'true') === 'true',
   },
   mockAuth: getEnv('MOCK_AUTH', 'false') === 'true',
   analytics: {

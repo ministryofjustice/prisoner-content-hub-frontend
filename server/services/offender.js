@@ -419,5 +419,5 @@ const createOffenderService = repository => {
 };
 
 module.exports = {
-  createNomisOffenderService: createOffenderService,
+  createPrisonApiOffenderService: createOffenderService,
 };

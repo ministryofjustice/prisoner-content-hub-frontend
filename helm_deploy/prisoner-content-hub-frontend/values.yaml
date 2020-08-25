@@ -31,6 +31,7 @@ application:
     analyticsEndpoint: https://www.google-analytics.com/collect
     useRelativeUrlForMedia: false
     elasticsearchIndexName: content_index
+    enableRedisCache: false
   contentConfigMapName: prisoner-content-hub-drupal
   nprConfigMapName: npr-live
   dbSecretName: drupal-rds

@@ -68,6 +68,7 @@
     "node-sass-middleware": "0.11.0",
     "nunjucks": "^3.2.1",
     "ramda": "^0.27.0",
+    "redis": "^3.0.2",
     "retry-axios": "^2.1.2",
     "uuid": "^7.0.3",
     "video.js": "^7.0.3"
