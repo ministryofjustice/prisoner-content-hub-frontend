@@ -4,6 +4,8 @@ application:
     feedbackServiceName: aws-es-proxy-service
     feedbackEndpoint: /prod-feedback/_doc
     analyticsSiteId: UA-152065860-4
+    mockAuth: true
+    featureNewDesigns: true
 
 ingress:
   hosts:
