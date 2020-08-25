@@ -95,6 +95,8 @@ spec:
               value: {{ .Values.application.config.useRelativeUrlForMedia | quote }}
             - name: SENTRY_DSN
               value: {{ .Values.application.sentry_dsn }}
+            - name: ENABLE_REDIS_CACHE
+              value: {{ .Values.application.config.enableRedisCache | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.application.port }}
