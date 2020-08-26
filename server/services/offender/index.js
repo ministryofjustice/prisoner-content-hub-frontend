@@ -1,7 +1,8 @@
 const { parseISO, format, isValid, isBefore, addDays } = require('date-fns');
-const { propOr, prop } = require('ramda');
+const { prop } = require('ramda');
 const { capitalize, capitalizePersonName } = require('../../utils');
 const { IEPSummary } = require('./responses/iep');
+const { Balances } = require('./responses/balances');
 
 const prettyDate = date => {
   if (!isValid(new Date(date))) return 'Unavailable';
@@ -94,36 +95,8 @@ const createOffenderService = repository => {
 
   async function getBalancesFor(bookingId) {
     try {
-      const balances = await repository.getBalancesFor(bookingId);
-      const defaultValue = 'Unavailable';
-      const getOrDefault = propOr(defaultValue);
-      const getOrCurrency = propOr('GBP');
-      const formatBalance = (amount, currency) =>
-        new Intl.NumberFormat('en-GB', { style: 'currency', currency }).format(
-          amount,
-        );
-      const balanceData = {
-        spends: getOrDefault('spends', balances),
-        cash: getOrDefault('cash', balances),
-        savings: getOrDefault('savings', balances),
-        currency: getOrCurrency('currency', balances),
-      };
-
-      return {
-        spends:
-          balanceData.spends !== defaultValue
-            ? formatBalance(balanceData.spends, balanceData.currency)
-            : balanceData.spends,
-        cash:
-          balanceData.cash !== defaultValue
-            ? formatBalance(balanceData.cash, balanceData.currency)
-            : balanceData.cash,
-        savings:
-          balanceData.savings !== defaultValue
-            ? formatBalance(balanceData.savings, balanceData.currency)
-            : balanceData.savings,
-        currency: balanceData.currency,
-      };
+      const response = await repository.getBalancesFor(bookingId);
+      return Balances.from(response).format();
     } catch {
       return {
         error: 'We are not able to show your balances at this time',
