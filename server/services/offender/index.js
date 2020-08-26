@@ -3,6 +3,7 @@ const { prop } = require('ramda');
 const { capitalize, capitalizePersonName } = require('../../utils');
 const { IEPSummary } = require('./responses/iep');
 const { Balances } = require('./responses/balances');
+const { Offender } = require('./responses/offender');
 
 const prettyDate = date => {
   if (!isValid(new Date(date))) return 'Unavailable';
@@ -73,13 +74,7 @@ const getTimeOfDay = date => {
 const createOffenderService = repository => {
   async function getOffenderDetailsFor(prisonerId) {
     const response = await repository.getOffenderDetailsFor(prisonerId);
-    const { bookingId, offenderNo, firstName, lastName } = response;
-
-    return {
-      bookingId,
-      offenderNo,
-      name: `${capitalize(firstName)} ${capitalize(lastName)}`,
-    };
+    return Offender.from(response).format();
   }
 
   async function getIEPSummaryFor(bookingId) {
