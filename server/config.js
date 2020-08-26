@@ -168,7 +168,8 @@ module.exports = {
     search: `${elasticsearchEndpoint}/elasticsearch_index_${drupalDatabaseName}_${elasticsearchIndexName}/_search`,
   },
   features: {
-    newDesigns: getEnv('FEATURE_NEW_DESIGNS', 'false') === 'true',
+    personalInformation:
+      getEnv('ENABLE_PERSONAL_INFORMATION', 'false') === 'true',
     prisonSwitch: getEnv('ENABLE_PRISON_SWITCH', 'false') === 'true',
     useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'true') === 'true',
   },

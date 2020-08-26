@@ -8,7 +8,10 @@ const createNprRouter = ({ logger }) => {
     logger.info(`GET /npr`);
 
     const userName = path(['session', 'user', 'name'], req);
-    const newDesigns = path(['locals', 'features', 'newDesigns'], res);
+    const personalInformation = path(
+      ['locals', 'features', 'personalInformation'],
+      res,
+    );
     const nprStream = path(['app', 'locals', 'config', 'npr', 'stream'], req);
 
     const config = {
@@ -16,7 +19,7 @@ const createNprRouter = ({ logger }) => {
       header: false,
       postscript: false,
       detailsType: 'small',
-      newDesigns,
+      personalInformation,
       userName,
     };
 

@@ -10,7 +10,7 @@ application:
     enablePrisonSwitch: true
     analyticsSiteId: UA-152065860-4
     mockAuth: true
-    featureNewDesigns: true
+    enablePersonalInformation: true
 
 ingress:
   hosts:

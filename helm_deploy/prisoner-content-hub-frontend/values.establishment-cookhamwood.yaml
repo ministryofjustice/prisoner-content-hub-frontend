@@ -3,6 +3,7 @@ application:
     appName: "HMYOI Cookham Wood"
     establishmentName: cookhamwood
     analyticsSiteId: UA-152065860-5
+    enablePersonalInformation: false
 
 ingress:
   domainPrefix: cookhamwood

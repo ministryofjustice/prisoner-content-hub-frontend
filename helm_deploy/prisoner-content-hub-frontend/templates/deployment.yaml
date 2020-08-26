@@ -74,8 +74,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.application.dbSecretName }}
                   key: database_name
-            - name: FEATURE_NEW_DESIGNS
-              value: {{ .Values.application.config.featureNewDesigns | quote }}
+            - name: ENABLE_PERSONAL_INFORMATION
+              value: {{ .Values.application.config.enablePersonalInformation | quote }}
             - name: ESTABLISHMENT_NAME
               value: {{ .Values.application.config.establishmentName }}
             - name: FEEDBACK_URL

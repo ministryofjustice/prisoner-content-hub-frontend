@@ -14,7 +14,10 @@ const createIndexRouter = ({ logger, hubFeaturedContentService, config }) => {
 
       const userName = path(['session', 'user', 'name'], req);
       const establishmentId = path(['locals', 'establishmentId'], res);
-      const newDesigns = path(['locals', 'features', 'newDesigns'], res);
+      const personalInformation = path(
+        ['locals', 'features', 'personalInformation'],
+        res,
+      );
       const homePageLinks = getEstablishmentHomepageLinks(
         establishmentId,
         config,
@@ -33,7 +36,7 @@ const createIndexRouter = ({ logger, hubFeaturedContentService, config }) => {
         header: true,
         postscript: true,
         detailsType: 'large',
-        newDesigns,
+        personalInformation,
         userName: userName ? `Hi, ${userName}` : null,
         establishmentId,
         returnUrl: req.originalUrl,
