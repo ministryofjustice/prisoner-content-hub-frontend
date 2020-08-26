@@ -73,7 +73,7 @@ describe('GET /', () => {
         (req, res, next) => {
           // TODO: Remove this when new designs implemented fully in template
           res.locals = {
-            features: { newDesigns: true },
+            features: { personalInformation: true },
             establishmentId: 1,
           };
           next();

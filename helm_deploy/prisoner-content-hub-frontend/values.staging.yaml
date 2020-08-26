@@ -5,7 +5,7 @@ application:
     feedbackEndpoint: /prod-feedback/_doc
     analyticsSiteId: UA-152065860-4
     mockAuth: true
-    featureNewDesigns: true
+    enablePersonalInformation: true
 
 ingress:
   hosts:
