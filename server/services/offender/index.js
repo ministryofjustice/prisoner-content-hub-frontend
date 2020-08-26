@@ -1,14 +1,7 @@
-const {
-  parseISO,
-  formatDistance,
-  format,
-  isValid,
-  isBefore,
-  addDays,
-  addMonths,
-} = require('date-fns');
+const { parseISO, format, isValid, isBefore, addDays } = require('date-fns');
 const { propOr, prop } = require('ramda');
-const { capitalize, capitalizePersonName } = require('../utils');
+const { capitalize, capitalizePersonName } = require('../../utils');
+const { IEPSummary } = require('./responses/iep');
 
 const prettyDate = date => {
   if (!isValid(new Date(date))) return 'Unavailable';
@@ -90,15 +83,8 @@ const createOffenderService = repository => {
 
   async function getIEPSummaryFor(bookingId) {
     try {
-      const iePSummary = await repository.getIEPSummaryFor(bookingId);
-      const lastIepDate = parseISO(iePSummary.iepDate);
-      const reviewDate = addMonths(lastIepDate, 3);
-
-      return {
-        reviewDate: format(reviewDate, 'EEEE d MMMM') || 'Unavailable',
-        iepLevel: iePSummary.iepLevel,
-        daysSinceReview: formatDistance(lastIepDate, new Date()),
-      };
+      const response = await repository.getIEPSummaryFor(bookingId);
+      return IEPSummary.from(response).format();
     } catch {
       return {
         error: 'We are not able to show your IEP summary at this time',
