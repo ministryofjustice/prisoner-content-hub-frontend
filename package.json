@@ -67,6 +67,8 @@
     "nocache": "^2.1.0",
     "node-sass-middleware": "0.11.0",
     "nunjucks": "^3.2.1",
+    "passport": "^0.4.1",
+    "passport-azure-ad-oauth2": "0.0.4",
     "ramda": "^0.27.0",
     "redis": "^3.0.2",
     "retry-axios": "^2.1.2",
