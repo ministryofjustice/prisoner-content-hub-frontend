@@ -4,6 +4,7 @@ const { capitalize, capitalizePersonName } = require('../../utils');
 const { IEPSummary } = require('./responses/iep');
 const { Balances } = require('./responses/balances');
 const { Offender } = require('./responses/offender');
+const { KeyWorker } = require('./responses/keyWorker');
 
 const prettyDate = date => {
   if (!isValid(new Date(date))) return 'Unavailable';
@@ -101,14 +102,8 @@ const createOffenderService = repository => {
 
   async function getKeyWorkerFor(prisonerId) {
     try {
-      const { firstName, lastName } = await repository.getKeyWorkerFor(
-        prisonerId,
-      );
-
-      return {
-        current: `${capitalize(firstName)} ${capitalize(lastName)}`,
-        lastMeeting: 'Unavailable',
-      };
+      const response = await repository.getKeyWorkerFor(prisonerId);
+      return KeyWorker.from(response).format();
     } catch {
       return {
         error: 'We are not able to show Key Worker information at this time',
