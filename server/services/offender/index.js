@@ -1,10 +1,11 @@
 const { parseISO, format, isValid, isBefore, addDays } = require('date-fns');
 const { prop } = require('ramda');
-const { capitalize, capitalizePersonName } = require('../../utils');
+const { capitalize } = require('../../utils');
 const { IEPSummary } = require('./responses/iep');
 const { Balances } = require('./responses/balances');
 const { Offender } = require('./responses/offender');
 const { KeyWorker } = require('./responses/keyWorker');
+const { NextVisit } = require('./responses/nextVisit');
 
 const prettyDate = date => {
   if (!isValid(new Date(date))) return 'Unavailable';
@@ -111,43 +112,10 @@ const createOffenderService = repository => {
     }
   }
 
-  async function getVisitsFor(bookingId, startDate = new Date()) {
+  async function getVisitsFor(bookingId) {
     try {
-      const nextVisitData = await repository.getNextVisitFor(bookingId);
-      let nextVisit = 'Unavailable';
-
-      if (prop('eventStatus', nextVisitData) === 'SCH') {
-        nextVisit = prettyDate(prop('startTime', nextVisitData));
-      }
-
-      const visitsData = await repository.getVisitsFor(
-        bookingId,
-        format(startDate, 'yyyy-MM-dd'),
-      );
-
-      if (!Array.isArray(visitsData)) {
-        throw new Error('Invalid data returned from API');
-      }
-
-      return {
-        nextVisit,
-        nextVisitDay:
-          nextVisit !== 'Unavailable'
-            ? format(parseISO(prop('startTime', nextVisitData)), 'EEEE')
-            : 'Unavailable',
-        nextVisitDate:
-          nextVisit !== 'Unavailable'
-            ? format(parseISO(prop('startTime', nextVisitData)), 'd MMMM')
-            : 'Unavailable',
-        visitorName:
-          nextVisit !== 'Unavailable'
-            ? capitalizePersonName(prop('leadVisitor', nextVisitData))
-            : 'Unavailable',
-        visitType:
-          nextVisit !== 'Unavailable'
-            ? prop('visitTypeDescription', nextVisitData).split(' ')[0]
-            : 'Unavailable',
-      };
+      const response = await repository.getNextVisitFor(bookingId);
+      return NextVisit.from(response).format();
     } catch {
       return {
         error: 'We are not able to show your visits at this time',
