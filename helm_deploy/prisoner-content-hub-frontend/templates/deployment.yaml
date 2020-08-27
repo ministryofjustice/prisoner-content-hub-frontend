@@ -61,8 +61,6 @@ spec:
               value: {{ .Values.application.config.appName }}
             - name: ENABLE_FEATURE_TOGGLES
               value: {{ .Values.application.config.enableFeatureToggles | quote }}
-            - name: ENABLE_PRISON_SWITCH
-              value: {{ .Values.application.config.enablePrisonSwitch | quote }}
             - name: ELASTICSEARCH_ENDPOINT
               value: {{ include "prisoner-content-hub-frontend.elasticsearchServiceHost" . }}
             - name: ELASTICSEARCH_INDEX_NAME

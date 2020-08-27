@@ -157,7 +157,6 @@ module.exports = {
   features: {
     personalInformation:
       getEnv('ENABLE_PERSONAL_INFORMATION', 'false') === 'true',
-    prisonSwitch: getEnv('ENABLE_PRISON_SWITCH', 'false') === 'true',
     useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'true') === 'true',
   },
   mockAuth: getEnv('MOCK_AUTH', 'false') === 'true',
