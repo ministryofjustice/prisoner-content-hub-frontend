@@ -123,8 +123,8 @@ describe('Offender Service', () => {
         nextVisit: 'Saturday 07 December 2019',
         nextVisitDate: '7 December',
         nextVisitDay: 'Saturday',
-        visitType: '',
-        visitorName: '',
+        visitType: 'Unavailable',
+        visitorName: 'Unavailable',
       });
     });
   });
