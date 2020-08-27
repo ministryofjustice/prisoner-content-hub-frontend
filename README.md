@@ -29,3 +29,4 @@ Mocha and Chai are used for unit and integration tests
 Cypress is used for E2E testing
 
     npm run test:e2e:dev
+
