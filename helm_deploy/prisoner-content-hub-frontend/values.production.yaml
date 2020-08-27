@@ -5,6 +5,8 @@ application:
     feedbackEndpoint: /prod-feedback/_doc
 
 ingress:
+  annotations:
+    kubernetes.io/ingress.class: nginx
   hosts:
     - suffix: .content-hub.prisoner.service.justice.gov.uk
       cert_secret: prisoner-content-hub-frontend-certificate
