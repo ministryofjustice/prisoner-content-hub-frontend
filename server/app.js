@@ -13,6 +13,9 @@ const sassMiddleware = require('node-sass-middleware');
 const session = require('cookie-session');
 const bodyParser = require('body-parser');
 const { v4: uuid } = require('uuid');
+const passport = require('passport');
+const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
+const jwt = require('jsonwebtoken');
 
 const { createIndexRouter } = require('./routes/index');
 const { createTopicsRouter } = require('./routes/topics');
@@ -92,6 +95,25 @@ const createApp = ({
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+
+  app.use(passport.initialize());
+  passport.serializeUser(function (user, done) {
+    done(null, JSON.stringify(user));
+  });
+
+  passport.deserializeUser(function (user, done) {
+    done(null, JSON.parse(user));
+  });
+  passport.use(new AzureAdOAuth2Strategy({
+    clientID: '',
+    clientSecret: '',
+    callbackURL: 'http://localhost:3000/auth/provider/callback',
+  },
+    (accessToken, refresh_token, params, profile, done) => {
+      let waadProfile = jwt.decode(params.id_token);
+      done(null, { id: waadProfile.upn });
+    })
+  );
 
   if (config.production) {
     // Version only changes on reboot
