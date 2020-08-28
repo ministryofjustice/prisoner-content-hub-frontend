@@ -4,16 +4,16 @@ const {
 
 const DEFAULT_VALUE = 'Unavailable';
 
-describe('Offender', () => {
+describe('NextVisit', () => {
   it('Should handle an empty response', () => {
-    const offender = NextVisit.from();
+    const nextVisit = NextVisit.from();
 
-    expect(offender.startTime).to.not.exist;
-    expect(offender.status).to.not.exist;
-    expect(offender.visitorName).to.not.exist;
-    expect(offender.visitType).to.not.exist;
+    expect(nextVisit.startTime).to.not.exist;
+    expect(nextVisit.status).to.not.exist;
+    expect(nextVisit.visitorName).to.not.exist;
+    expect(nextVisit.visitType).to.not.exist;
 
-    const formatted = offender.format();
+    const formatted = nextVisit.format();
 
     expect(formatted).to.eql(
       {
