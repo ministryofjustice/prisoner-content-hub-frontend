@@ -6,11 +6,7 @@ const { Balances } = require('./responses/balances');
 const { Offender } = require('./responses/offender');
 const { KeyWorker } = require('./responses/keyWorker');
 const { NextVisit } = require('./responses/nextVisit');
-
-const prettyDate = date => {
-  if (!isValid(new Date(date))) return 'Unavailable';
-  return format(parseISO(date), 'EEEE dd MMMM yyyy');
-};
+const { ImportantDates } = require('./responses/importantDates');
 
 const prettyTime = date => {
   if (!isValid(new Date(date))) return '';
@@ -125,20 +121,8 @@ const createOffenderService = repository => {
 
   async function getImportantDatesFor(bookingId) {
     try {
-      const sentenceDetails = await repository.sentenceDetailsFor(bookingId);
-
-      return {
-        reCategorisationDate: 'Unavailable',
-        hdcEligibilityDate: prettyDate(
-          prop('homeDetentionCurfewEligibilityDate', sentenceDetails),
-        ),
-        conditionalReleaseDate: prettyDate(
-          prop('conditionalReleaseDate', sentenceDetails),
-        ),
-        licenceExpiryDate: prettyDate(
-          prop('licenceExpiryDate', sentenceDetails),
-        ),
-      };
+      const response = await repository.sentenceDetailsFor(bookingId);
+      return ImportantDates.from(response).format();
     } catch {
       return {
         error: 'We are not able to show your important dates at this time',
