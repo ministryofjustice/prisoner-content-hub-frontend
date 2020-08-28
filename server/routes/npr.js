@@ -7,11 +7,7 @@ const createNprRouter = ({ logger }) => {
   router.get('/', async (req, res) => {
     logger.info(`GET /npr`);
 
-    const userName = path(['session', 'user', 'name'], req);
-    const personalInformation = path(
-      ['locals', 'features', 'personalInformation'],
-      res,
-    );
+    const userName = req.user && req.user.getFullName();
     const nprStream = path(['app', 'locals', 'config', 'npr', 'stream'], req);
 
     const config = {
@@ -19,7 +15,6 @@ const createNprRouter = ({ logger }) => {
       header: false,
       postscript: false,
       detailsType: 'small',
-      personalInformation,
       userName,
     };
 

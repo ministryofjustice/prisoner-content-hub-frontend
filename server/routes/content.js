@@ -18,7 +18,7 @@ const createContentRouter = ({
       return next();
     }
 
-    const userName = path(['session', 'user', 'name'], req);
+    const userName = req.user && req.user.getFullName();
 
     const config = {
       content: true,

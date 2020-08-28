@@ -14,7 +14,7 @@ const createTagRouter = ({ logger, hubTagsService }) => {
         return next();
       }
 
-      const userName = path(['session', 'user', 'name'], req);
+      const userName = req.user && req.user.getFullName();
       const establishmentId = path(['locals', 'establishmentId'], res);
       const config = {
         content: true,
