@@ -105,8 +105,8 @@ const createApp = ({
     done(null, JSON.parse(user));
   });
   passport.use(new AzureAdOAuth2Strategy({
-    clientID: '',
-    clientSecret: '',
+    clientID: config.auth.clientId,
+    clientSecret: config.auth.clientSecret,
     callbackURL: 'http://localhost:3000/auth/provider/callback',
   },
     (accessToken, refresh_token, params, profile, done) => {
