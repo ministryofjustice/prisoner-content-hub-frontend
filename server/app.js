@@ -15,7 +15,6 @@ const bodyParser = require('body-parser');
 const { v4: uuid } = require('uuid');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
-const jwt = require('jsonwebtoken');
 
 const { createIndexRouter } = require('./routes/index');
 const { createTopicsRouter } = require('./routes/topics');
@@ -38,6 +37,7 @@ const {
   configureEstablishment,
 } = require('./middleware/configureEstablishment');
 
+const { User } = require('./auth/user');
 const { authenticateUser, createUserSession } = require('./middleware/auth');
 
 const {
@@ -97,13 +97,10 @@ const createApp = ({
   app.use(bodyParser.urlencoded({ extended: true }));
 
   app.use(passport.initialize());
-  passport.serializeUser((user, done) => {
-    done(null, JSON.stringify(user));
-  });
-
-  passport.deserializeUser((user, done) => {
-    done(null, JSON.parse(user));
-  });
+  passport.serializeUser((user, done) => done(null, user.serialize()));
+  passport.deserializeUser((serializedUser, done) =>
+    done(null, User.deserialize(serializedUser)),
+  );
   passport.use(
     new AzureAdOAuth2Strategy(
       {
@@ -111,10 +108,8 @@ const createApp = ({
         clientSecret: config.auth.clientSecret,
         callbackURL: 'http://localhost:3000/auth/provider/callback',
       },
-      (accessToken, refreshToken, params, profile, done) => {
-        const waadProfile = jwt.decode(params.id_token);
-        done(null, { id: waadProfile.upn });
-      },
+      (accessToken, refreshToken, params, profile, done) =>
+        done(null, User.from(params.id_token)),
     ),
   );
 
