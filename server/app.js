@@ -8,7 +8,6 @@ const helmet = require('helmet');
 const noCache = require('nocache');
 const nunjucks = require('nunjucks');
 const path = require('path');
-const fs = require('fs');
 const sassMiddleware = require('node-sass-middleware');
 const session = require('cookie-session');
 const bodyParser = require('body-parser');
@@ -38,7 +37,11 @@ const {
 } = require('./middleware/configureEstablishment');
 
 const { User } = require('./auth/user');
-const { authenticateUser, createUserSession } = require('./middleware/auth');
+const {
+  createSignOutMiddleware,
+  createSignInMiddleware,
+  createSignInCallbackMiddleware,
+} = require('./auth/middleware');
 
 const {
   getEstablishmentId,
@@ -96,23 +99,6 @@ const createApp = ({
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  app.use(passport.initialize());
-  passport.serializeUser((user, done) => done(null, user.serialize()));
-  passport.deserializeUser((serializedUser, done) =>
-    done(null, User.deserialize(serializedUser)),
-  );
-  passport.use(
-    new AzureAdOAuth2Strategy(
-      {
-        clientID: config.auth.clientId,
-        clientSecret: config.auth.clientSecret,
-        callbackURL: 'http://localhost:3000/auth/provider/callback',
-      },
-      (accessToken, refreshToken, params, profile, done) =>
-        done(null, User.from(params.id_token)),
-    ),
-  );
-
   if (config.production) {
     // Version only changes on reboot
     app.locals.version = version;
@@ -146,6 +132,24 @@ const createApp = ({
       maxAge: 4.32e7, // 12 Hours
     }),
   );
+
+  passport.serializeUser((user, done) => done(null, user.serialize()));
+  passport.deserializeUser((serializedUser, done) =>
+    done(null, User.deserialize(serializedUser)),
+  );
+  passport.use(
+    new AzureAdOAuth2Strategy(
+      {
+        clientID: config.auth.clientId,
+        clientSecret: config.auth.clientSecret,
+        callbackURL: 'http://localhost:3000/auth/provider/callback',
+      },
+      (accessToken, refreshToken, params, profile, done) =>
+        done(null, User.from(params.id_token)),
+    ),
+  );
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   [
     '../public',
@@ -220,32 +224,13 @@ const createApp = ({
     }),
   );
 
-  const getCert = certPath => {
-    try {
-      const cert = fs.readFileSync(certPath);
-      return { ca: [cert] };
-    } catch (error) {
-      logger.error(error.message);
-      return null;
-    }
-  };
-
-  const ldapConfig = {
-    ...config.ldap,
-    tlsOptions: getCert(config.ldap.certPath),
-  };
-
   app.use(
     '/auth',
     createAuthRouter({
       logger,
-      formParser: bodyParser.urlencoded({ extended: true }),
-      authenticateUser: authenticateUser({
-        config: ldapConfig,
-        mockAuth: config.mockAuth,
-      }),
-      createUserSession: createUserSession({ offenderService }),
-      analyticsService,
+      signIn: createSignInMiddleware(),
+      signInCallback: createSignInCallbackMiddleware({ offenderService }),
+      signOut: createSignOutMiddleware(),
     }),
   );
 

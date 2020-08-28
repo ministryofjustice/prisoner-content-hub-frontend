@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { capitalize } = require('../utils');
 
 class User {
   constructor(profile = {}) {
@@ -6,6 +7,15 @@ class User {
     this.prisonerId = profile.prisonerId;
     this.firstName = profile.firstName;
     this.lastName = profile.lastName;
+    this.bookingId = profile.bookingId;
+  }
+
+  setBookingId(bookingId) {
+    this.bookingId = bookingId;
+  }
+
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
   }
 
   serialize() {
@@ -14,17 +24,21 @@ class User {
       prisonerId: this.prisonerId,
       firstName: this.firstName,
       lastName: this.lastName,
+      bookingId: this.bookingId,
     });
   }
 
   static deserialize(serialized) {
-    const { id, prisonerId, firstName, lastName } = JSON.parse(serialized);
+    const { id, prisonerId, firstName, lastName, bookingId } = JSON.parse(
+      serialized,
+    );
 
     return new User({
       id,
       prisonerId,
       firstName,
       lastName,
+      bookingId,
     });
   }
 
@@ -34,8 +48,8 @@ class User {
     return new User({
       id: profile.id,
       prisonerId: profile.unique_name.split('@').shift(),
-      firstName: profile.given_name,
-      lastName: profile.family_name,
+      firstName: capitalize(profile.given_name),
+      lastName: capitalize(profile.family_name),
     });
   }
 }

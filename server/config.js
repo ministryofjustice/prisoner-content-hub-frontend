@@ -121,7 +121,9 @@ module.exports = {
   },
   auth: {
     clientId: getEnv('AZURE_AD_CLIENT_ID', { requireInProduction: true }),
-    clientSecret: getEnv('AZURE_AD_CLIENT_SECRET', { requireInProduction: true }),
+    clientSecret: getEnv('AZURE_AD_CLIENT_SECRET', {
+      requireInProduction: true,
+    }),
   },
   api: {
     hubHealth: `${hubEndpoint}/api/health`,
