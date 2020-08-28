@@ -3,7 +3,6 @@ const { capitalize } = require('../utils');
 
 class User {
   constructor(profile = {}) {
-    this.id = profile.id;
     this.prisonerId = profile.prisonerId;
     this.firstName = profile.firstName;
     this.lastName = profile.lastName;
@@ -15,12 +14,11 @@ class User {
   }
 
   getFullName() {
-    return `${this.firstName} ${this.lastName}`;
+    return [this.firstName, this.lastName].join(' ').trim();
   }
 
   serialize() {
     return JSON.stringify({
-      id: this.id,
       prisonerId: this.prisonerId,
       firstName: this.firstName,
       lastName: this.lastName,
@@ -29,12 +27,11 @@ class User {
   }
 
   static deserialize(serialized) {
-    const { id, prisonerId, firstName, lastName, bookingId } = JSON.parse(
+    const { prisonerId, firstName, lastName, bookingId } = JSON.parse(
       serialized,
     );
 
     return new User({
-      id,
       prisonerId,
       firstName,
       lastName,
@@ -46,7 +43,6 @@ class User {
     const profile = jwt.decode(token);
 
     return new User({
-      id: profile.id,
       prisonerId: profile.unique_name.split('@').shift(),
       firstName: capitalize(profile.given_name),
       lastName: capitalize(profile.family_name),
