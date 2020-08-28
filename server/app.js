@@ -97,22 +97,25 @@ const createApp = ({
   app.use(bodyParser.urlencoded({ extended: true }));
 
   app.use(passport.initialize());
-  passport.serializeUser(function (user, done) {
+  passport.serializeUser((user, done) => {
     done(null, JSON.stringify(user));
   });
 
-  passport.deserializeUser(function (user, done) {
+  passport.deserializeUser((user, done) => {
     done(null, JSON.parse(user));
   });
-  passport.use(new AzureAdOAuth2Strategy({
-    clientID: config.auth.clientId,
-    clientSecret: config.auth.clientSecret,
-    callbackURL: 'http://localhost:3000/auth/provider/callback',
-  },
-    (accessToken, refresh_token, params, profile, done) => {
-      let waadProfile = jwt.decode(params.id_token);
-      done(null, { id: waadProfile.upn });
-    })
+  passport.use(
+    new AzureAdOAuth2Strategy(
+      {
+        clientID: config.auth.clientId,
+        clientSecret: config.auth.clientSecret,
+        callbackURL: 'http://localhost:3000/auth/provider/callback',
+      },
+      (accessToken, refreshToken, params, profile, done) => {
+        const waadProfile = jwt.decode(params.id_token);
+        done(null, { id: waadProfile.upn });
+      },
+    ),
   );
 
   if (config.production) {
