@@ -1,24 +1,12 @@
 const express = require('express');
-const { path } = require('ramda');
 const { format, addDays, subDays } = require('date-fns');
 
 const createTimetableRouter = ({ logger, offenderService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
+    logger.info('GET timetable');
     try {
-      logger.info('GET timetable');
-
-      const today = new Date();
-      const startDate = format(today, 'yyyy-MM-dd');
-      const endDate = format(addDays(today, 6), 'yyyy-MM-dd');
-      const userName = path(['session', 'user', 'name'], req);
-      const bookingId = path(['session', 'user', 'bookingId'], req);
-
-      const events = await Promise.all([
-        offenderService.getEventsFor(bookingId, startDate, endDate),
-      ]);
-
       const config = {
         content: false,
         header: false,
@@ -26,9 +14,22 @@ const createTimetableRouter = ({ logger, offenderService }) => {
         detailsType: 'small',
         lastWeek: false,
         nextWeek: false,
-        userName,
         returnUrl: req.originalUrl,
       };
+
+      let events = [];
+
+      if (req.user) {
+        const userName = req.user && req.user.getFullName();
+        const { bookingId } = req.user;
+        const today = new Date();
+        const startDate = format(today, 'yyyy-MM-dd');
+        const endDate = format(addDays(today, 6), 'yyyy-MM-dd');
+        events = await Promise.all([
+          offenderService.getEventsFor(bookingId, startDate, endDate),
+        ]);
+        config.userName = userName;
+      }
 
       res.render('pages/timetable', {
         title: 'Timetable',
@@ -41,20 +42,8 @@ const createTimetableRouter = ({ logger, offenderService }) => {
   });
 
   router.get('/lastweek', async (req, res, next) => {
+    logger.info('GET timetable/lastweek');
     try {
-      logger.info('GET timetable/lastweek');
-
-      const today = new Date();
-      const yesterday = subDays(today, 1);
-      const startDate = format(subDays(today, 7), 'yyyy-MM-dd');
-      const endDate = format(yesterday, 'yyyy-MM-dd');
-      const userName = path(['session', 'user', 'name'], req);
-      const bookingId = path(['session', 'user', 'bookingId'], req);
-
-      const events = await Promise.all([
-        offenderService.getEventsFor(bookingId, startDate, endDate),
-      ]);
-
       const config = {
         content: false,
         header: false,
@@ -62,9 +51,23 @@ const createTimetableRouter = ({ logger, offenderService }) => {
         detailsType: 'small',
         lastWeek: true,
         nextWeek: false,
-        userName,
         returnUrl: req.originalUrl,
       };
+
+      let events = [];
+
+      if (req.user) {
+        const userName = req.user && req.user.getFullName();
+        const { bookingId } = req.user;
+        const today = new Date();
+        const yesterday = subDays(today, 1);
+        const startDate = format(subDays(today, 7), 'yyyy-MM-dd');
+        const endDate = format(yesterday, 'yyyy-MM-dd');
+        events = await Promise.all([
+          offenderService.getEventsFor(bookingId, startDate, endDate),
+        ]);
+        config.userName = userName;
+      }
 
       res.render('pages/timetable', {
         title: 'Timetable',
@@ -80,17 +83,6 @@ const createTimetableRouter = ({ logger, offenderService }) => {
     try {
       logger.info('GET timetable/nextweek');
 
-      const today = new Date();
-      const nextWeekStart = addDays(today, 7);
-      const startDate = format(nextWeekStart, 'yyyy-MM-dd');
-      const endDate = format(addDays(nextWeekStart, 6), 'yyyy-MM-dd');
-      const userName = path(['session', 'user', 'name'], req);
-      const bookingId = path(['session', 'user', 'bookingId'], req);
-
-      const events = await Promise.all([
-        offenderService.getEventsFor(bookingId, startDate, endDate),
-      ]);
-
       const config = {
         content: false,
         header: false,
@@ -98,9 +90,23 @@ const createTimetableRouter = ({ logger, offenderService }) => {
         detailsType: 'small',
         lastWeek: false,
         nextWeek: true,
-        userName,
         returnUrl: req.originalUrl,
       };
+
+      let events = [];
+
+      if (req.user) {
+        const userName = req.user && req.user.getFullName();
+        const { bookingId } = req.user;
+        const today = new Date();
+        const nextWeekStart = addDays(today, 7);
+        const startDate = format(nextWeekStart, 'yyyy-MM-dd');
+        const endDate = format(addDays(nextWeekStart, 6), 'yyyy-MM-dd');
+        events = await Promise.all([
+          offenderService.getEventsFor(bookingId, startDate, endDate),
+        ]);
+        config.userName = userName;
+      }
 
       res.render('pages/timetable', {
         title: 'Timetable',
