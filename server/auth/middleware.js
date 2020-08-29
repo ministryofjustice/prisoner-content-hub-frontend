@@ -1,15 +1,17 @@
-const passport = require('passport');
+// eslint-disable-next-line no-underscore-dangle
+const _passport = require('passport');
 
-const createSignInMiddleware = () => {
+const createSignInMiddleware = (passport = _passport) => {
   return function signIn(req, res, next) {
-    if (req.query.returnUrl) {
-      req.session.returnUrl = req.query.returnUrl;
-    }
+    req.session.returnUrl = req.query.returnUrl || '/';
     passport.authenticate('azure_ad_oauth2')(req, res, next);
   };
 };
 
-const createSignInCallbackMiddleware = ({ offenderService }) => {
+const createSignInCallbackMiddleware = (
+  { offenderService },
+  passport = _passport,
+) => {
   return async function signInCallback(req, res, next) {
     passport.authenticate('azure_ad_oauth2', async (err, user) => {
       if (err) {
@@ -26,7 +28,7 @@ const createSignInCallbackMiddleware = ({ offenderService }) => {
         if (loginErr) {
           return next(err);
         }
-        return res.redirect(req.session.returnUrl || '/');
+        return res.redirect(req.session.returnUrl);
       });
     })(req, res, next);
   };
