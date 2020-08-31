@@ -21,10 +21,10 @@ const _authenticate = (req, res, next) =>
     })(req, res, next);
   });
 
-const createSignInCallbackMiddleware = (
-  { offenderService },
+const createSignInCallbackMiddleware = ({
+  offenderService,
   authenticate = _authenticate,
-) => {
+}) => {
   return async function signInCallback(req, res, next) {
     try {
       const user = await authenticate(req, res, next);

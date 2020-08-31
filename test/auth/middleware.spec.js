@@ -79,10 +79,10 @@ describe('AuthMiddleware', () => {
       it('should pass the error to next if passport.authenticate() returns an error', async () => {
         const authenticate = sinon.stub().rejects(TEST_CALLBACK_ERROR);
 
-        const signInCallback = createSignInCallbackMiddleware(
-          { offenderService },
+        const signInCallback = createSignInCallbackMiddleware({
+          offenderService,
           authenticate,
-        );
+        });
 
         await signInCallback(req, res, next);
         expect(next).to.have.been.calledWith(TEST_CALLBACK_ERROR);
@@ -91,10 +91,10 @@ describe('AuthMiddleware', () => {
       it('should redirect to the sign in page if passport.authenticate() returns no user', async () => {
         const authenticate = sinon.stub().resolves();
 
-        const signInCallback = createSignInCallbackMiddleware(
-          { offenderService },
+        const signInCallback = createSignInCallbackMiddleware({
+          offenderService,
           authenticate,
-        );
+        });
 
         await signInCallback(req, res, next);
         expect(res.redirect).to.have.been.calledWith('/auth/sign-in');
@@ -114,10 +114,10 @@ describe('AuthMiddleware', () => {
 
         req.session.returnUrl = '/foo/bar/baz';
 
-        const signInCallback = createSignInCallbackMiddleware(
-          { offenderService },
+        const signInCallback = createSignInCallbackMiddleware({
+          offenderService,
           authenticate,
-        );
+        });
 
         await signInCallback(req, res, next);
         expect(res.redirect).to.have.been.calledWith(req.session.returnUrl);
