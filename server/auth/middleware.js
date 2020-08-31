@@ -8,29 +8,39 @@ const createSignInMiddleware = (passport = _passport) => {
   };
 };
 
+// eslint-disable-next-line no-underscore-dangle
+const _authenticate = (req, res, next) =>
+  new Promise((resolve, reject) => {
+    _passport.authenticate('azure_ad_oauth2', (err, user) => {
+      if (err) {
+        reject(err);
+      }
+      req.logIn(user, loginErr =>
+        loginErr ? reject(loginErr) : resolve(user),
+      );
+    })(req, res, next);
+  });
+
 const createSignInCallbackMiddleware = (
   { offenderService },
-  passport = _passport,
+  authenticate = _authenticate,
 ) => {
   return async function signInCallback(req, res, next) {
-    passport.authenticate('azure_ad_oauth2', async (err, user) => {
-      if (err) {
-        return next(err);
-      }
+    try {
+      const user = await authenticate(req, res, next);
+
       if (!user) {
         return res.redirect('/auth/sign-in');
       }
+
       const { bookingId } = await offenderService.getOffenderDetailsFor(
         user.prisonerId,
       );
       user.setBookingId(bookingId);
-      return req.logIn(user, loginErr => {
-        if (loginErr) {
-          return next(err);
-        }
-        return res.redirect(req.session.returnUrl);
-      });
-    })(req, res, next);
+      return res.redirect(req.session.returnUrl);
+    } catch (e) {
+      return next(e);
+    }
   };
 };
 
@@ -45,4 +55,5 @@ module.exports = {
   createSignInMiddleware,
   createSignInCallbackMiddleware,
   createSignOutMiddleware,
+  _authenticate,
 };
