@@ -32,10 +32,12 @@ application:
     useRelativeUrlForMedia: false
     elasticsearchIndexName: content_index
     enableRedisCache: false
-    azureAdCallbackEndpoint: /auth/provider/callback
   contentConfigMapName: prisoner-content-hub-drupal
   nprConfigMapName: npr-live
   dbSecretName: drupal-rds
+
+prisonerAuthAD:
+  callbackEndpoint: /auth/provider/callback
 
 imagePullSecrets: [] # Are we using ECR?
 
