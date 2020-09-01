@@ -149,8 +149,6 @@ const createOffenderService = repository => {
         throw new Error('Start date is after end date');
       }
 
-      const timeTable = TimeTable.forRange(startDate, endDate);
-
       const eventsData = await repository.getEventsFor(
         bookingId,
         startDate,
@@ -161,6 +159,7 @@ const createOffenderService = repository => {
         throw new Error('Invalid data returned from API');
       }
 
+      const timeTable = TimeTable.forRange(startDate, endDate);
       eventsData.forEach(timeTable.addEvent.bind(timeTable));
       return timeTable.setEventStatesForToday().build();
     } catch {
