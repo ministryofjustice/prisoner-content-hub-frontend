@@ -1,5 +1,5 @@
 const { format, isBefore, addDays, isValid, parseISO } = require('date-fns');
-const { capitalize } = require('../../../utils');
+const { TimeTableEvent } = require('./timeTableEvent');
 
 const getTimetableTitle = date => {
   const givenDate = new Date(date);
@@ -21,23 +21,6 @@ const getTimetableTitle = date => {
   }
 
   return givenDateString;
-};
-
-const getTimetableEventTime = (startTime, endTime) => {
-  if (startTime === '') {
-    return '';
-  }
-
-  if (endTime !== '') {
-    return `${startTime} to ${endTime}`;
-  }
-
-  return startTime;
-};
-
-const prettyTime = date => {
-  if (!isValid(new Date(date))) return '';
-  return format(parseISO(date), 'h:mmaaa');
 };
 
 const isoDate = date => {
@@ -104,26 +87,12 @@ class TimeTable {
   }
 
   addEvent(event = {}) {
-    const startTime = prettyTime(event.startTime);
-    const endTime = prettyTime(event.endTime);
     const dateString = isoDate(event.startTime);
     const timeOfDay = getTimeOfDay(event.startTime);
 
-    this.events[dateString][timeOfDay].events.push({
-      description: event.eventSourceDesc,
-      startTime,
-      endTime,
-      location: capitalize(event.eventLocation),
-      timeString: getTimetableEventTime(startTime, endTime),
-      eventType: event.eventType,
-      finished: event.eventStatus !== 'SCH',
-      status: event.eventStatus,
-      paid: event.paid,
-    });
-
-    if (event.eventStatus === 'SCH') {
-      this.events[dateString][timeOfDay].finished = false;
-    }
+    this.events[dateString][timeOfDay].events.push(
+      TimeTableEvent.from(event).format(),
+    );
   }
 
   setEventStatesForToday() {
