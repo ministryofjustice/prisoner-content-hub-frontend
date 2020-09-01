@@ -322,10 +322,7 @@ const createApp = ({
     res.render('pages/404');
   });
 
-  app.use(renderErrors);
-
-  // eslint-disable-next-line no-unused-vars
-  function renderErrors(error, req, res, next) {
+  app.use((error, req, res) => {
     logger.error(error, 'Unhandled error');
 
     res.status(error.status || 500);
@@ -343,7 +340,7 @@ const createApp = ({
     }
 
     res.render('pages/error', locals);
-  }
+  });
 
   return app;
 };

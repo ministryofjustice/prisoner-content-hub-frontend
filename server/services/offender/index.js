@@ -20,11 +20,16 @@ const createOffenderService = repository => {
     return Offender.from(response).format();
   }
 
-  async function getIEPSummaryFor(bookingId) {
+  async function getIEPSummaryFor(bookingId, logger) {
     try {
       const response = await repository.getIEPSummaryFor(bookingId);
       return IEPSummary.from(response).format();
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getIEPSummaryFor',
+        message: e.message,
+        id: bookingId,
+      });
       return {
         error: 'We are not able to show your IEP summary at this time',
       };

@@ -24,7 +24,7 @@ const createIepRouter = ({ hubContentService, offenderService, logger }) => {
       if (req.user) {
         const userName = req.user && req.user.getFullName();
         const { bookingId } = req.user;
-        const iep = await offenderService.getIEPSummaryFor(bookingId);
+        const iep = await offenderService.getIEPSummaryFor(bookingId, logger);
         data.personalisedData = iep;
         config.userName = userName;
       }
