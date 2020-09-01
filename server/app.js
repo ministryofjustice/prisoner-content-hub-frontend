@@ -142,7 +142,7 @@ const createApp = ({
       {
         clientID: config.auth.clientId,
         clientSecret: config.auth.clientSecret,
-        callbackURL: 'http://localhost:3000/auth/provider/callback',
+        callbackURL: config.auth.callbackUrl,
       },
       (accessToken, refreshToken, params, profile, done) =>
         done(null, User.from(params.id_token)),

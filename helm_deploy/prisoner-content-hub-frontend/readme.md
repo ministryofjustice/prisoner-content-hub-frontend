@@ -43,6 +43,8 @@ helm upgrade [Release Name] . \
 --set hmppsAuthBaseUrl=[HMPPS Auth base URL] \
 --set prisonApiBaseUrl=[Prison API base URL] \
 --set cacheSecret=[32Byte string used for encrypting cached items] \
+--set azureAdClientId=[Azure AD Client ID] \
+--set azureAdClientSecret=[Azure AD Client secret] \
 --set image.tag=[Image Tag]
 ```
 
@@ -66,6 +68,8 @@ helm upgrade [Release Name] . \
 --set hmppsAuthBaseUrl=[HMPPS Auth base URL] \
 --set prisonApiBaseUrl=[Prison API base URL] \
 --set cacheSecret=[32Byte string used for encrypting cached items] \
+--set azureAdClientId=[Azure AD Client ID] \
+--set azureAdClientSecret=[Azure AD Client secret] \
 --set image.tag=[Image Tag]
 ```
 
