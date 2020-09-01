@@ -5,27 +5,29 @@ const createVisitsRouter = ({ hubContentService, offenderService, logger }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
-    const id = 4203;
-
     logger.info('GET /visits');
-
-    const userName = path(['session', 'user', 'name'], req);
-    const bookingId = path(['session', 'user', 'bookingId'], req);
-    const establishmentId = path(['locals', 'establishmentId'], res);
-    const config = {
-      content: true,
-      header: false,
-      postscript: true,
-      detailsType: 'small',
-      category: 'visits',
-      userName,
-      returnUrl: req.originalUrl,
-    };
-
     try {
-      const visits = await offenderService.getVisitsFor(bookingId);
+      const id = 4203;
+      const establishmentId = path(['locals', 'establishmentId'], res);
+
       const data = await hubContentService.contentFor(id, establishmentId);
-      data.personalisedData = visits;
+
+      const config = {
+        content: true,
+        header: false,
+        postscript: true,
+        detailsType: 'small',
+        category: 'visits',
+        returnUrl: req.originalUrl,
+      };
+
+      if (req.user) {
+        const userName = req.user && req.user.getFullName();
+        const { bookingId } = req.user;
+        const visits = await offenderService.getVisitsFor(bookingId);
+        data.personalisedData = visits;
+        config.userName = userName;
+      }
 
       return res.render('pages/category', {
         title: 'Visits',

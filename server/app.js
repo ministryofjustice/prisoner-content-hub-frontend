@@ -8,11 +8,12 @@ const helmet = require('helmet');
 const noCache = require('nocache');
 const nunjucks = require('nunjucks');
 const path = require('path');
-const fs = require('fs');
 const sassMiddleware = require('node-sass-middleware');
 const session = require('cookie-session');
 const bodyParser = require('body-parser');
 const { v4: uuid } = require('uuid');
+const passport = require('passport');
+const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
 
 const { createIndexRouter } = require('./routes/index');
 const { createTopicsRouter } = require('./routes/topics');
@@ -35,7 +36,12 @@ const {
   configureEstablishment,
 } = require('./middleware/configureEstablishment');
 
-const { authenticateUser, createUserSession } = require('./middleware/auth');
+const { User } = require('./auth/user');
+const {
+  createSignOutMiddleware,
+  createSignInMiddleware,
+  createSignInCallbackMiddleware,
+} = require('./auth/middleware');
 
 const {
   getEstablishmentId,
@@ -127,6 +133,24 @@ const createApp = ({
     }),
   );
 
+  passport.serializeUser((user, done) => done(null, user.serialize()));
+  passport.deserializeUser((serializedUser, done) =>
+    done(null, User.deserialize(serializedUser)),
+  );
+  passport.use(
+    new AzureAdOAuth2Strategy(
+      {
+        clientID: config.auth.clientId,
+        clientSecret: config.auth.clientSecret,
+        callbackURL: config.auth.callbackUrl,
+      },
+      (accessToken, refreshToken, params, profile, done) =>
+        done(null, User.from(params.id_token)),
+    ),
+  );
+  app.use(passport.initialize());
+  app.use(passport.session());
+
   [
     '../public',
     '../assets',
@@ -200,32 +224,13 @@ const createApp = ({
     }),
   );
 
-  const getCert = certPath => {
-    try {
-      const cert = fs.readFileSync(certPath);
-      return { ca: [cert] };
-    } catch (error) {
-      logger.error(error.message);
-      return null;
-    }
-  };
-
-  const ldapConfig = {
-    ...config.ldap,
-    tlsOptions: getCert(config.ldap.certPath),
-  };
-
   app.use(
     '/auth',
     createAuthRouter({
       logger,
-      formParser: bodyParser.urlencoded({ extended: true }),
-      authenticateUser: authenticateUser({
-        config: ldapConfig,
-        mockAuth: config.mockAuth,
-      }),
-      createUserSession: createUserSession({ offenderService }),
-      analyticsService,
+      signIn: createSignInMiddleware(),
+      signInCallback: createSignInCallbackMiddleware({ offenderService }),
+      signOut: createSignOutMiddleware(),
     }),
   );
 

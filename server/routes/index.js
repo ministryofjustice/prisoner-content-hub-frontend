@@ -11,8 +11,7 @@ const createIndexRouter = ({ logger, hubFeaturedContentService, config }) => {
   router.get('/', async (req, res, next) => {
     try {
       logger.info('GET index');
-
-      const userName = path(['session', 'user', 'name'], req);
+      const userName = req.user && req.user.getFullName();
       const establishmentId = path(['locals', 'establishmentId'], res);
       const personalInformation = path(
         ['locals', 'features', 'personalInformation'],

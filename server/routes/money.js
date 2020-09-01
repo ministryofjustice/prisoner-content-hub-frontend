@@ -5,28 +5,29 @@ const createMoneyRouter = ({ hubContentService, offenderService, logger }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
-    const id = 4201;
-
     logger.info('GET /money');
-
-    const userName = path(['session', 'user', 'name'], req);
-    const bookingId = path(['session', 'user', 'bookingId'], req);
-    const establishmentId = path(['locals', 'establishmentId'], res);
-
-    const config = {
-      content: true,
-      header: false,
-      postscript: true,
-      detailsType: 'small',
-      category: 'money',
-      userName,
-      returnUrl: req.originalUrl,
-    };
-
     try {
-      const balances = await offenderService.getBalancesFor(bookingId);
+      const id = 4201;
+      const establishmentId = path(['locals', 'establishmentId'], res);
+
       const data = await hubContentService.contentFor(id, establishmentId);
-      data.personalisedData = balances;
+
+      const config = {
+        content: true,
+        header: false,
+        postscript: true,
+        detailsType: 'small',
+        category: 'money',
+        returnUrl: req.originalUrl,
+      };
+
+      if (req.user) {
+        const userName = req.user && req.user.getFullName();
+        const { bookingId } = req.user;
+        const balances = await offenderService.getBalancesFor(bookingId);
+        data.personalisedData = balances;
+        config.userName = userName;
+      }
 
       return res.render('pages/category', {
         title: 'Money and Debt',

@@ -63,8 +63,6 @@ spec:
               value: {{ .Values.application.config.enableFeatureToggles | quote }}
             - name: ENABLE_PRISON_SWITCH
               value: {{ .Values.application.config.enablePrisonSwitch | quote }}
-            - name: MOCK_AUTH
-              value: {{ .Values.application.config.mockAuth | quote }}
             - name: ELASTICSEARCH_ENDPOINT
               value: {{ include "prisoner-content-hub-frontend.elasticsearchServiceHost" . }}
             - name: ELASTICSEARCH_INDEX_NAME
@@ -102,6 +100,18 @@ spec:
                 secretKeyRef:
                   name: {{ include "prisoner-content-hub-frontend.fullname" . }}
                   key: cacheSecret
+            - name: AZURE_AD_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+                  key: azureAdClientId
+            - name: AZURE_AD_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+                  key: azureAdClientSecret
+            - name: AZURE_AD_CALLBACK_URL
+              value: {{ printf "%s%s" (include "prisoner-content-hub-frontend.externalHost" .) .Values.prisonerAuthAD.callbackEndpoint }}
           ports:
             - name: http
               containerPort: {{ .Values.application.port }}

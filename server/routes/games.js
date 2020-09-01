@@ -1,4 +1,3 @@
-const { path } = require('ramda');
 const express = require('express');
 
 const createGamesRouter = ({ logger }) => {
@@ -12,10 +11,9 @@ const createGamesRouter = ({ logger }) => {
 
   router.get('/chess', (req, res) => {
     logger.info('GET /games/chess');
-    const userDetails = path(['session', 'user'], req);
 
     config.detailsType = 'small';
-    config.userName = path(['name'], userDetails);
+    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/chess', {
       title: 'Chess',
@@ -25,10 +23,9 @@ const createGamesRouter = ({ logger }) => {
 
   router.get('/sudoku', (req, res) => {
     logger.info('GET /games/sudoku');
-    const userDetails = path(['session', 'user'], req);
 
     config.detailsType = 'small';
-    config.userName = path(['name'], userDetails);
+    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/sudoku', {
       title: 'Sudoku',
@@ -38,10 +35,9 @@ const createGamesRouter = ({ logger }) => {
 
   router.get('/neontroids', (req, res) => {
     logger.info('GET /games/neontroids');
-    const userDetails = path(['session', 'user'], req);
 
     config.detailsType = 'small';
-    config.userName = path(['name'], userDetails);
+    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/neontroids', {
       title: 'Neontroids',
@@ -51,10 +47,9 @@ const createGamesRouter = ({ logger }) => {
 
   router.get('/mimstris', (req, res) => {
     logger.info('GET /games/mimstris');
-    const userDetails = path(['session', 'user'], req);
 
     config.detailsType = 'small';
-    config.userName = path(['name'], userDetails);
+    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/mimstris', {
       title: 'Mimstris',
@@ -64,10 +59,9 @@ const createGamesRouter = ({ logger }) => {
 
   router.get('/invadersfromspace', (req, res) => {
     logger.info('GET /games/invadersfromspace');
-    const userDetails = path(['session', 'user'], req);
 
     config.detailsType = 'small';
-    config.userName = path(['name'], userDetails);
+    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/invadersfromspace', {
       title: 'Invaders from Space',
@@ -77,10 +71,9 @@ const createGamesRouter = ({ logger }) => {
 
   router.get('/crossword', (req, res) => {
     logger.info('GET /games/crossword');
-    const userDetails = path(['session', 'user'], req);
 
     config.detailsType = 'small';
-    config.userName = path(['name'], userDetails);
+    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/crossword', {
       title: 'Crossword',
@@ -90,10 +83,9 @@ const createGamesRouter = ({ logger }) => {
 
   router.get('/solitaire', (req, res) => {
     logger.info('GET /games/solitaire');
-    const userDetails = path(['session', 'user'], req);
 
     config.detailsType = 'small';
-    config.userName = path(['name'], userDetails);
+    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/solitaire', {
       title: 'Solitaire',
@@ -103,10 +95,9 @@ const createGamesRouter = ({ logger }) => {
 
   router.get('/smashout', (req, res) => {
     logger.info('GET /games/smashout');
-    const userDetails = path(['session', 'user'], req);
 
     config.detailsType = 'small';
-    config.userName = path(['name'], userDetails);
+    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/smashout', {
       title: 'Smashout',

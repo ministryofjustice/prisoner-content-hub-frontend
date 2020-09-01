@@ -19,7 +19,7 @@ const createTopicsRouter = ({ logger, hubMenuService }) => {
     try {
       logger.info('GET index');
 
-      const userName = path(['session', 'user', 'name'], req);
+      const userName = req.user && req.user.getFullName();
       const establishmentId = path(['locals', 'establishmentId'], res);
       const topics = await hubMenuService.allTopics(establishmentId);
 
