@@ -79,7 +79,7 @@ describe('User', () => {
     });
   });
 
-  describe('serBookingId', () => {
+  describe('setBookingId', () => {
     it('should set a booking ID', () => {
       const user = new User({
         prisonerId: 'A1234BC',

@@ -37,6 +37,7 @@ const createSignInCallbackMiddleware = ({
         user.prisonerId,
       );
       user.setBookingId(bookingId);
+      req.session.passport.user = user.serialize();
       return res.redirect(req.session.returnUrl);
     } catch (e) {
       return next(e);
