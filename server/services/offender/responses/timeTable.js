@@ -60,23 +60,10 @@ class TimeTable {
     while (checkDateStr !== endDateStr) {
       checkDateStr = format(checkDateObj, 'yyyy-MM-dd');
 
-      const finished = isBefore(checkDateObj, todayObj);
-
-      this.events[checkDateStr] = {
-        morning: {
-          finished,
-          events: [],
-        },
-        afternoon: {
-          finished,
-          events: [],
-        },
-        evening: {
-          finished,
-          events: [],
-        },
+      this.events[checkDateStr] = TimeTable.createNewTimeTableRow({
         title: getTimetableTitle(checkDateStr),
-      };
+        finished: isBefore(checkDateObj, todayObj),
+      });
 
       checkDateObj = addDays(checkDateObj, 1);
     }
@@ -86,13 +73,41 @@ class TimeTable {
     return new TimeTable({ startDate, endDate });
   }
 
-  addEvent(event = {}) {
-    const dateString = isoDate(event.startTime);
-    const timeOfDay = getTimeOfDay(event.startTime);
+  static createNewTimeTableRow({ title, finished }) {
+    return {
+      morning: {
+        finished,
+        events: [],
+      },
+      afternoon: {
+        finished,
+        events: [],
+      },
+      evening: {
+        finished,
+        events: [],
+      },
+      title,
+    };
+  }
 
-    this.events[dateString][timeOfDay].events.push(
-      TimeTableEvent.from(event).format(),
-    );
+  addEvents(response = []) {
+    if (!Array.isArray(response)) {
+      throw new Error('Events must be an array');
+    }
+
+    this.events = response.reduce((timeTable, event) => {
+      const dateString = isoDate(event.startTime);
+      const timeOfDay = getTimeOfDay(event.startTime);
+
+      timeTable[dateString][timeOfDay].events.push(
+        TimeTableEvent.from(event).format(),
+      );
+
+      return timeTable;
+    }, this.events);
+
+    return this;
   }
 
   setEventStatesForToday() {

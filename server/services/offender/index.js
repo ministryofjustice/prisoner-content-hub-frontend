@@ -159,9 +159,10 @@ const createOffenderService = repository => {
         throw new Error('Invalid data returned from API');
       }
 
-      const timeTable = TimeTable.forRange(startDate, endDate);
-      eventsData.forEach(timeTable.addEvent.bind(timeTable));
-      return timeTable.setEventStatesForToday().build();
+      return TimeTable.forRange(startDate, endDate)
+        .addEvents(eventsData)
+        .setEventStatesForToday()
+        .build();
     } catch {
       return {
         error: `We are not able to show your schedule for the selected week at this time`,
