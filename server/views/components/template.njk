@@ -111,7 +111,9 @@
         title: "{{title}}",
         userAgent: navigator.userAgent,
         screen: window.screen.width + 'x' + window.screen.height,
-        viewport: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'x' + Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+        viewport: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'x' + Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+        categories: "{{data.categories}}",
+        secondaryTags: "{{data.secondaryTags}}"
       });
     </script>
     {% endblock %}

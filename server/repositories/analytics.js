@@ -30,6 +30,8 @@ function analyticsRepository(httpClient) {
     userAgent,
     screen,
     viewport,
+    secondaryTags,
+    categories,
   }) {
     const postData = {
       v: '1',
@@ -45,6 +47,14 @@ function analyticsRepository(httpClient) {
 
     if (userAgent !== undefined) {
       postData.ua = userAgent;
+    }
+
+    if (secondaryTags !== undefined) {
+      postData.cd1 = secondaryTags;
+    }
+
+    if (categories !== undefined) {
+      postData.cd2 = categories;
     }
 
     return httpClient.postFormData(config.analytics.endpoint, postData);
