@@ -32,6 +32,9 @@ const { createSearchRouter } = require('./routes/search');
 const { createAuthRouter } = require('./routes/auth');
 const { createNprRouter } = require('./routes/npr');
 const { featureToggleMiddleware } = require('./middleware/featureToggle');
+const {
+  configureEstablishment,
+} = require('./middleware/configureEstablishment');
 
 const { User } = require('./auth/user');
 const {
@@ -183,6 +186,9 @@ const createApp = ({
 
   // feature toggles
   app.use(featureToggleMiddleware(config.features));
+
+  // establishment toggle
+  app.use(configureEstablishment());
 
   // Health end point
   app.use('/health', createHealthRouter({ healthService }));
