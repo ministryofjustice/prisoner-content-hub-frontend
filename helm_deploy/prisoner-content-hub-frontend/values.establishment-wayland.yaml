@@ -2,7 +2,6 @@ application:
   config:
     appName: "HMP Wayland"
     establishmentName: wayland
-    analyticsSiteId: UA-152065860-2
     enablePersonalInformation: false
 
 ingress:
