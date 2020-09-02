@@ -66,7 +66,10 @@ describe('AuthMiddleware', () => {
     describe('signInCallback', () => {
       const offenderService = { getOffenderDetailsFor: sinon.stub() };
 
-      const req = { session: {}, logIn: sinon.stub() };
+      const req = {
+        session: { passport: { user: 'serialized_user' } },
+        logIn: sinon.stub(),
+      };
       const res = { redirect: sinon.stub() };
       const next = sinon.spy();
 
@@ -104,9 +107,11 @@ describe('AuthMiddleware', () => {
         const user = {
           prisonerId: TEST_PRISONER_ID,
           setBookingId: sinon.stub(),
+          serialize: sinon.stub(),
         };
 
         const authenticate = sinon.stub().resolves(user);
+        user.serialize.returns('serialized_user');
 
         offenderService.getOffenderDetailsFor.resolves({
           bookingId: TEST_BOOKING_ID,
@@ -120,6 +125,12 @@ describe('AuthMiddleware', () => {
         });
 
         await signInCallback(req, res, next);
+        expect(user.setBookingId).to.have.been.calledWith(TEST_BOOKING_ID);
+        expect(user.serialize).to.have.been.called;
+        expect(req.session.passport.user).to.equal(
+          'serialized_user',
+          'It should have saved the updated user in the session',
+        );
         expect(res.redirect).to.have.been.calledWith(req.session.returnUrl);
       });
     });
