@@ -1,7 +1,7 @@
 const { format, isBefore, addDays, isValid, parseISO } = require('date-fns');
 const { TimeTableEvent } = require('./timeTableEvent');
 
-const getTimetableTitle = date => {
+const getTimeTableRowTitle = date => {
   const givenDate = new Date(date);
 
   if (!isValid(givenDate)) return '';
@@ -48,24 +48,22 @@ const getTimeOfDay = date => {
 class TimeTable {
   constructor(options = {}) {
     this.events = {};
-    this.startDate = options.startDate;
-    this.endDate = options.endDate;
 
-    let checkDateObj = new Date(this.startDate);
-    let checkDateStr = format(checkDateObj, 'yyyy-MM-dd');
-    const endDateObj = new Date(this.endDate);
-    const endDateStr = format(endDateObj, 'yyyy-MM-dd');
-    const todayObj = new Date();
+    let startDate = new Date(options.startDate);
+    let startDateString = format(startDate, 'yyyy-MM-dd');
+    const endDate = new Date(options.endDate);
+    const endDateString = format(endDate, 'yyyy-MM-dd');
+    const todaysDate = new Date();
 
-    while (checkDateStr !== endDateStr) {
-      checkDateStr = format(checkDateObj, 'yyyy-MM-dd');
+    while (startDateString !== endDateString) {
+      startDateString = format(startDate, 'yyyy-MM-dd');
 
-      this.events[checkDateStr] = TimeTable.createNewTimeTableRow({
-        title: getTimetableTitle(checkDateStr),
-        finished: isBefore(checkDateObj, todayObj),
+      this.events[startDateString] = TimeTable.createNewTableRow({
+        title: getTimeTableRowTitle(startDateString),
+        hasDateElapsed: isBefore(startDate, todaysDate),
       });
 
-      checkDateObj = addDays(checkDateObj, 1);
+      startDate = addDays(startDate, 1);
     }
   }
 
@@ -73,59 +71,61 @@ class TimeTable {
     return new TimeTable({ startDate, endDate });
   }
 
-  static createNewTimeTableRow({ title, finished }) {
+  static createNewTableRow({ title, hasDateElapsed }) {
     return {
       morning: {
-        finished,
+        finished: hasDateElapsed,
         events: [],
       },
       afternoon: {
-        finished,
+        finished: hasDateElapsed,
         events: [],
       },
       evening: {
-        finished,
+        finished: hasDateElapsed,
         events: [],
       },
       title,
     };
   }
 
-  addEvents(response = []) {
-    if (!Array.isArray(response)) {
+  addEvents(events = []) {
+    if (!Array.isArray(events)) {
       throw new Error('Events must be an array');
     }
 
-    this.events = response.reduce((timeTable, event) => {
-      const dateString = isoDate(event.startTime);
+    this.events = events.reduce((timeTable, event) => {
+      const eventDate = isoDate(event.startTime);
       const timeOfDay = getTimeOfDay(event.startTime);
 
-      timeTable[dateString][timeOfDay].events.push(
+      timeTable[eventDate][timeOfDay].events.push(
         TimeTableEvent.from(event).format(),
       );
 
       return timeTable;
     }, this.events);
 
+    this.setEventStatesForToday();
+
     return this;
   }
 
   setEventStatesForToday() {
-    const nowDateString = format(new Date(), 'yyyy-MM-dd');
+    const todaysDate = format(new Date(), 'yyyy-MM-dd');
 
-    if (this.events[nowDateString]) {
-      const nowString = format(new Date(), 'yyyy-MM-dd HH:mm');
-      const currentTimeOfDay = getTimeOfDay(nowString);
+    if (this.events[todaysDate]) {
+      const todaysDateAndTime = format(new Date(), 'yyyy-MM-dd HH:mm');
+      const currentTimeOfDay = getTimeOfDay(todaysDateAndTime);
 
-      this.events[nowDateString].morning.finished = false;
-      this.events[nowDateString].afternoon.finished = false;
-      this.events[nowDateString].evening.finished = false;
+      this.events[todaysDate].morning.finished = false;
+      this.events[todaysDate].afternoon.finished = false;
+      this.events[todaysDate].evening.finished = false;
 
       if (currentTimeOfDay === 'afternoon') {
-        this.events[nowDateString].morning.finished = true;
+        this.events[todaysDate].morning.finished = true;
       } else if (currentTimeOfDay === 'evening') {
-        this.events[nowDateString].morning.finished = true;
-        this.events[nowDateString].afternoon.finished = true;
+        this.events[todaysDate].morning.finished = true;
+        this.events[todaysDate].afternoon.finished = true;
       }
     }
 

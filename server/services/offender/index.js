@@ -161,7 +161,6 @@ const createOffenderService = repository => {
 
       return TimeTable.forRange(startDate, endDate)
         .addEvents(eventsData)
-        .setEventStatesForToday()
         .build();
     } catch {
       return {
