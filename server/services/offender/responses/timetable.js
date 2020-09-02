@@ -1,16 +1,20 @@
 const { format, isBefore, addDays, isValid, parseISO } = require('date-fns');
-const { TimeTableEvent } = require('./timeTableEvent');
+const { TimetableEvent } = require('./timetableEvent');
 
-const getTimeTableRowTitle = date => {
+const LONG_PRETTY_DATE = 'EEEE d MMMM';
+const ISO_DATE = 'yyyy-MM-dd';
+const ISO_DATE_TIME = 'yyyy-MM-dd HH:mm';
+
+const getTimetableRowTitle = date => {
   const givenDate = new Date(date);
 
   if (!isValid(givenDate)) return '';
 
   const today = new Date();
   const tomorrow = addDays(today, 1);
-  const todayDateString = format(today, 'EEEE d MMMM');
-  const tomorrowDateString = format(tomorrow, 'EEEE d MMMM');
-  const givenDateString = format(givenDate, 'EEEE d MMMM');
+  const todayDateString = format(today, LONG_PRETTY_DATE);
+  const tomorrowDateString = format(tomorrow, LONG_PRETTY_DATE);
+  const givenDateString = format(givenDate, LONG_PRETTY_DATE);
 
   if (givenDateString === todayDateString) {
     return 'Today';
@@ -25,8 +29,16 @@ const getTimeTableRowTitle = date => {
 
 const isoDate = date => {
   if (!isValid(new Date(date))) return '';
-  return format(parseISO(date), 'yyyy-MM-dd');
+  return format(parseISO(date), ISO_DATE);
 };
+
+const timesOfDay = {
+  MORNING: 'morning',
+  AFTERNOON: 'afternoon',
+  EVENING: 'evening',
+};
+
+const { MORNING, AFTERNOON, EVENING } = timesOfDay;
 
 const getTimeOfDay = date => {
   const dateObject = new Date(date);
@@ -35,40 +47,41 @@ const getTimeOfDay = date => {
   const dateString = isoDate(date);
 
   if (isBefore(dateObject, parseISO(`${dateString} 12:00:00`))) {
-    return 'morning';
+    return MORNING;
   }
 
   if (isBefore(dateObject, parseISO(`${dateString} 17:00:00`))) {
-    return 'afternoon';
+    return AFTERNOON;
   }
 
-  return 'evening';
+  return EVENING;
 };
 
-class TimeTable {
+class Timetable {
   constructor(options = {}) {
     this.events = {};
 
     let startDate = new Date(options.startDate);
-    let startDateString = format(startDate, 'yyyy-MM-dd');
+    let startDateString = format(startDate, ISO_DATE);
     const endDate = new Date(options.endDate);
-    const endDateString = format(endDate, 'yyyy-MM-dd');
+    const endDateString = format(endDate, ISO_DATE);
     const todaysDate = new Date();
 
-    while (startDateString !== endDateString) {
-      startDateString = format(startDate, 'yyyy-MM-dd');
+    do {
+      startDateString = format(startDate, ISO_DATE);
 
-      this.events[startDateString] = TimeTable.createNewTableRow({
-        title: getTimeTableRowTitle(startDateString),
+      this.events[startDateString] = Timetable.createNewTableRow({
+        title: getTimetableRowTitle(startDateString),
         hasDateElapsed: isBefore(startDate, todaysDate),
       });
 
       startDate = addDays(startDate, 1);
-    }
+    } while (startDateString !== endDateString);
   }
 
-  static forRange(startDate, endDate) {
-    return new TimeTable({ startDate, endDate });
+  static create(options = {}) {
+    const { startDate, endDate } = options;
+    return new Timetable({ startDate, endDate: endDate || startDate });
   }
 
   static createNewTableRow({ title, hasDateElapsed }) {
@@ -94,15 +107,15 @@ class TimeTable {
       throw new Error('Events must be an array');
     }
 
-    this.events = events.reduce((timeTable, event) => {
+    this.events = events.reduce((timetable, event) => {
       const eventDate = isoDate(event.startTime);
       const timeOfDay = getTimeOfDay(event.startTime);
 
-      timeTable[eventDate][timeOfDay].events.push(
-        TimeTableEvent.from(event).format(),
+      timetable[eventDate][timeOfDay].events.push(
+        TimetableEvent.from(event).format(),
       );
 
-      return timeTable;
+      return timetable;
     }, this.events);
 
     this.setEventStatesForToday();
@@ -111,21 +124,21 @@ class TimeTable {
   }
 
   setEventStatesForToday() {
-    const todaysDate = format(new Date(), 'yyyy-MM-dd');
+    const todaysDate = format(new Date(), ISO_DATE);
 
     if (this.events[todaysDate]) {
-      const todaysDateAndTime = format(new Date(), 'yyyy-MM-dd HH:mm');
+      const todaysDateAndTime = format(new Date(), ISO_DATE_TIME);
       const currentTimeOfDay = getTimeOfDay(todaysDateAndTime);
 
-      this.events[todaysDate].morning.finished = false;
-      this.events[todaysDate].afternoon.finished = false;
-      this.events[todaysDate].evening.finished = false;
+      this.events[todaysDate][MORNING].finished = false;
+      this.events[todaysDate][AFTERNOON].finished = false;
+      this.events[todaysDate][EVENING].finished = false;
 
-      if (currentTimeOfDay === 'afternoon') {
-        this.events[todaysDate].morning.finished = true;
-      } else if (currentTimeOfDay === 'evening') {
-        this.events[todaysDate].morning.finished = true;
-        this.events[todaysDate].afternoon.finished = true;
+      if (currentTimeOfDay === AFTERNOON) {
+        this.events[todaysDate][MORNING].finished = true;
+      } else if (currentTimeOfDay === EVENING) {
+        this.events[todaysDate][MORNING].finished = true;
+        this.events[todaysDate][AFTERNOON].finished = true;
       }
     }
 
@@ -138,5 +151,5 @@ class TimeTable {
 }
 
 module.exports = {
-  TimeTable,
+  Timetable,
 };

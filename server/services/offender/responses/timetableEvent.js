@@ -24,15 +24,13 @@ const formatDateOr = (defaultValue = '', dateFormat, date) => {
   return format(parseISO(date), dateFormat);
 };
 
-class TimeTableEvent {
+class TimetableEvent {
   constructor(options = {}) {
     this.description = options.description;
     this.startTime = options.startTime;
     this.endTime = options.endTime;
     this.location = options.location;
-    this.timeString = options.timeString;
     this.eventType = options.eventType;
-    this.finished = options.finished;
     this.status = options.status;
     this.paid = options.paid;
   }
@@ -42,13 +40,13 @@ class TimeTableEvent {
       description: this.description || DEFAULT,
       startTime: formatDateOr('', PRETTY_TIME, this.startTime),
       endTime: formatDateOr('', PRETTY_TIME, this.endTime),
-      location: this.location || DEFAULT,
+      location: this.location ? capitalize(this.location) : DEFAULT,
       timeString: getTimetableEventTime(
         formatDateOr('', PRETTY_TIME, this.startTime),
         formatDateOr('', PRETTY_TIME, this.endTime),
       ),
       eventType: this.eventType || DEFAULT,
-      finished: this.finished || DEFAULT,
+      finished: this.status !== SCHEDULED_STATUS,
       status: this.status || DEFAULT,
       paid: this.paid,
     };
@@ -65,13 +63,12 @@ class TimeTableEvent {
       paid,
     } = response;
 
-    return new TimeTableEvent({
+    return new TimetableEvent({
       description: eventSourceDesc,
       startTime,
       endTime,
-      location: capitalize(eventLocation),
+      location: eventLocation,
       eventType,
-      finished: eventStatus !== SCHEDULED_STATUS,
       status: eventStatus,
       paid,
     });
@@ -79,5 +76,5 @@ class TimeTableEvent {
 }
 
 module.exports = {
-  TimeTableEvent,
+  TimetableEvent,
 };
