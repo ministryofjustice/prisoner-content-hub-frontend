@@ -2,7 +2,6 @@ application:
   config:
     appName: "HMP Berwyn"
     establishmentName: berwyn
-    analyticsSiteId: UA-152065860-1
     enablePersonalInformation: false
 
 ingress:

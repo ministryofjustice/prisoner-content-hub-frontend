@@ -3,6 +3,7 @@ application:
     elasticsearchServiceName: aws-es-proxy-service
     feedbackServiceName: aws-es-proxy-service
     feedbackEndpoint: /prod-feedback/_doc
+    analyticsSiteId: UA-152065860-6
 
 ingress:
   annotations:
