@@ -165,7 +165,7 @@ module.exports = {
       'ANALYTICS_ENDPOINT',
       'https://www.google-analytics.com/collect',
     ),
-    siteId: getEnv('ANALYTICS_SITE_ID', 'UA-152065860-7'),
+    siteId: getEnv('ANALYTICS_SITE_ID', 'UA-152065860-4'),
   },
   feedback: {
     endpoint: getEnv(
