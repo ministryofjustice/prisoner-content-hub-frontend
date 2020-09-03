@@ -34,6 +34,8 @@ const createAnalyticsRouter = ({ analyticsService, logger }) => {
       userAgent: path(['body', 'userAgent'], req),
       screen: path(['body', 'screen'], req),
       viewport: path(['body', 'viewport'], req),
+      secondaryTags: path(['body', 'secondaryTags'], req),
+      categories: path(['body', 'categories'], req),
     });
 
     return res.send('OK');

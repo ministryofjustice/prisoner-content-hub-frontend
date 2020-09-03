@@ -1,14 +1,5 @@
 const createAnalyticsService = ({ analyticsRepository }) => {
-  function sendEvent({
-    category,
-    action,
-    label,
-    value,
-    sessionId,
-    userAgent,
-    screen,
-    viewport,
-  }) {
+  function sendEvent({ category, action, label, value, sessionId, userAgent }) {
     return analyticsRepository.sendEvent({
       category,
       action,
@@ -16,8 +7,6 @@ const createAnalyticsService = ({ analyticsRepository }) => {
       value,
       sessionId,
       userAgent,
-      screen,
-      viewport,
     });
   }
 
@@ -29,6 +18,8 @@ const createAnalyticsService = ({ analyticsRepository }) => {
     userAgent,
     screen,
     viewport,
+    secondaryTags,
+    categories,
   }) {
     return analyticsRepository.sendPageTrack({
       hostname,
@@ -38,6 +29,8 @@ const createAnalyticsService = ({ analyticsRepository }) => {
       userAgent,
       screen,
       viewport,
+      secondaryTags,
+      categories,
     });
   }
 
