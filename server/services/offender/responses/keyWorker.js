@@ -1,7 +1,7 @@
-// eslint-disable-next-line import/no-useless-path-segments
-const { capitalize } = require('../../../../server/utils');
-
-const DEFAULT = 'Unavailable';
+const { capitalize } = require('../../../utils');
+const {
+  placeholders: { DEFAULT },
+} = require('../../../utils/enums');
 
 class KeyWorker {
   constructor(options = {}) {

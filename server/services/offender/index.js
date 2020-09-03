@@ -1,5 +1,9 @@
 const { format, isValid, isBefore, addDays } = require('date-fns');
 const responses = require('./responses');
+const {
+  dateFormats: { ISO_DATE, HOUR },
+  timetable: { APP_EVENT_TYPE, VISIT_EVENT_TYPE },
+} = require('../../utils/enums');
 
 const createOffenderService = (
   repository,
@@ -76,13 +80,13 @@ const createOffenderService = (
 
   // Move to the repository Tier ?
   async function getActualHomeEvents(bookingId, time) {
-    const hour = Number.parseInt(format(time, 'H'), 10);
+    const hour = Number.parseInt(format(time, HOUR), 10);
     const tomorrowCutOffHour = 19;
 
     if (hour >= tomorrowCutOffHour) {
       const tomorrow = addDays(time, 1);
-      const startDate = format(time, 'yyyy-MM-dd');
-      const endDate = format(tomorrow, 'yyyy-MM-dd');
+      const startDate = format(time, ISO_DATE);
+      const endDate = format(tomorrow, ISO_DATE);
 
       return {
         events: await repository.getEventsFor(bookingId, startDate, endDate),
@@ -110,7 +114,9 @@ const createOffenderService = (
         ? { todaysEvents: [], isTomorrow: false }
         : {
             todaysEvents: events
-              .filter(TimetableEvent.filterByType('APP', 'VISIT'))
+              .filter(
+                TimetableEvent.filterByType(APP_EVENT_TYPE, VISIT_EVENT_TYPE),
+              )
               .map(eventResponse =>
                 TimetableEvent.from(eventResponse).format(),
               ),

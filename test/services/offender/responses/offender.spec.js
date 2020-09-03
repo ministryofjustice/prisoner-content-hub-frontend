@@ -1,8 +1,9 @@
 const {
   Offender,
 } = require('../../../../server/services/offender/responses/offender');
-
-const DEFAULT_VALUE = 'Unavailable';
+const {
+  placeholders: { DEFAULT },
+} = require('../../../../server/utils/enums');
 
 describe('Offender', () => {
   it('Should handle an empty response', () => {
@@ -17,7 +18,7 @@ describe('Offender', () => {
 
     expect(formatted.bookingId).to.not.exist;
     expect(formatted.offenderNo).to.not.exist;
-    expect(formatted.name).to.equal(DEFAULT_VALUE);
+    expect(formatted.name).to.equal(DEFAULT);
   });
 
   it('should handle an incomplete response', () => {

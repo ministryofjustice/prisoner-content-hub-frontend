@@ -1,8 +1,9 @@
 const {
   Balances,
 } = require('../../../../server/services/offender/responses/balances');
-
-const DEFAULT_VALUE = 'Unavailable';
+const {
+  placeholders: { DEFAULT },
+} = require('../../../../server/utils/enums');
 
 describe('Balances', () => {
   it('Should handle an empty response', () => {
@@ -15,10 +16,10 @@ describe('Balances', () => {
 
     const formatted = balances.format();
 
-    expect(formatted.spends).to.equal(DEFAULT_VALUE);
-    expect(formatted.cash).to.equal(DEFAULT_VALUE);
-    expect(formatted.savings).to.equal(DEFAULT_VALUE);
-    expect(formatted.currency).to.equal(DEFAULT_VALUE);
+    expect(formatted.spends).to.equal(DEFAULT);
+    expect(formatted.cash).to.equal(DEFAULT);
+    expect(formatted.savings).to.equal(DEFAULT);
+    expect(formatted.currency).to.equal(DEFAULT);
   });
 
   it('should handle an incomplete response', () => {
@@ -32,10 +33,10 @@ describe('Balances', () => {
 
     expect(formatted).to.eql(
       {
-        spends: DEFAULT_VALUE,
-        cash: DEFAULT_VALUE,
-        savings: DEFAULT_VALUE,
-        currency: DEFAULT_VALUE,
+        spends: DEFAULT,
+        cash: DEFAULT,
+        savings: DEFAULT,
+        currency: DEFAULT,
       },
       'It should not assume the currency',
     );
@@ -49,8 +50,8 @@ describe('Balances', () => {
 
     expect(formatted).to.eql({
       spends: '£100.00',
-      cash: DEFAULT_VALUE,
-      savings: DEFAULT_VALUE,
+      cash: DEFAULT,
+      savings: DEFAULT,
       currency: 'GBP',
     });
   });

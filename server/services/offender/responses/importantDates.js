@@ -1,7 +1,8 @@
 const { parseISO, format, isValid } = require('date-fns');
-
-const DEFAULT = 'Unavailable';
-const PRETTY_DATE = 'EEEE dd MMMM yyyy';
+const {
+  placeholders: { DEFAULT },
+  dateFormats: { PRETTY_DATE },
+} = require('../../../utils/enums');
 
 const formatDateOr = (defaultValue = '', dateFormat, date) => {
   if (!isValid(new Date(date))) {

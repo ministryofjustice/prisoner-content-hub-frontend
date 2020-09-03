@@ -1,7 +1,10 @@
 const { addMonths, format, formatDistance, parseISO } = require('date-fns');
+const {
+  placeholders: { DEFAULT },
+  dateFormats: { LONG_PRETTY_DATE },
+} = require('../../../utils/enums');
 
 const MONTHS_UNTIL_IEP_REVIEW = 3;
-const DEFAULT = 'Unavailable';
 
 class IEPSummary {
   constructor(options = {}) {
@@ -16,7 +19,7 @@ class IEPSummary {
     return {
       iepLevel: this.iepLevel || DEFAULT,
       reviewDate: this.nextIepReviewDate
-        ? format(this.nextIepReviewDate, 'EEEE d MMMM')
+        ? format(this.nextIepReviewDate, LONG_PRETTY_DATE)
         : DEFAULT,
       daysSinceReview: this.lastIepReviewDate
         ? formatDistance(this.lastIepReviewDate, new Date())

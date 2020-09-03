@@ -1,4 +1,6 @@
-const DEFAULT = 'Unavailable';
+const {
+  placeholders: { DEFAULT },
+} = require('../../../utils/enums');
 
 class Balances {
   constructor(options = {}) {

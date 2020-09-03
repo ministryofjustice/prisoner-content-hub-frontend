@@ -1,9 +1,9 @@
 const { format, isBefore, addDays, isValid, parseISO } = require('date-fns');
 const { TimetableEvent } = require('./timetableEvent');
-
-const LONG_PRETTY_DATE = 'EEEE d MMMM';
-const ISO_DATE = 'yyyy-MM-dd';
-const ISO_DATE_TIME = 'yyyy-MM-dd HH:mm';
+const {
+  dateFormats: { LONG_PRETTY_DATE, ISO_DATE, ISO_DATE_TIME },
+  timetable: { MORNING, AFTERNOON, EVENING },
+} = require('../../../utils/enums');
 
 const getTimetableRowTitle = date => {
   const givenDate = new Date(date);
@@ -31,14 +31,6 @@ const isoDate = date => {
   if (!isValid(new Date(date))) return '';
   return format(parseISO(date), ISO_DATE);
 };
-
-const timesOfDay = {
-  MORNING: 'morning',
-  AFTERNOON: 'afternoon',
-  EVENING: 'evening',
-};
-
-const { MORNING, AFTERNOON, EVENING } = timesOfDay;
 
 const getTimeOfDay = date => {
   const dateObject = new Date(date);

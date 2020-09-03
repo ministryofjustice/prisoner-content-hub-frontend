@@ -1,8 +1,9 @@
 const {
   TimetableEvent,
 } = require('../../../../server/services/offender/responses/timetableEvent');
-
-const DEFAULT_VALUE = 'Unavailable';
+const {
+  placeholders: { DEFAULT },
+} = require('../../../../server/utils/enums');
 
 describe('TimetableEvent', () => {
   it('Should handle an empty response', () => {
@@ -19,14 +20,14 @@ describe('TimetableEvent', () => {
 
     const formatted = timetableEvent.format();
 
-    expect(formatted.description).to.equal(DEFAULT_VALUE);
+    expect(formatted.description).to.equal(DEFAULT);
     expect(formatted.startTime).to.equal('', 'Should return an empty string');
     expect(formatted.endTime).to.equal('', 'Should return an empty string');
-    expect(formatted.location).to.equal(DEFAULT_VALUE);
+    expect(formatted.location).to.equal(DEFAULT);
     expect(formatted.timeString).to.equal('', 'Should return an empty string');
-    expect(formatted.eventType).to.equal(DEFAULT_VALUE);
+    expect(formatted.eventType).to.equal(DEFAULT);
     expect(formatted.finished).to.equal(true, 'Should return a boolean value');
-    expect(formatted.status).to.equal(DEFAULT_VALUE);
+    expect(formatted.status).to.equal(DEFAULT);
     expect(formatted.paid).to.not.exist;
   });
 
