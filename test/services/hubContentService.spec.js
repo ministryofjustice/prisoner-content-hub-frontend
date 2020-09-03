@@ -35,6 +35,7 @@ describe('#hubContentService', () => {
             seriesId: 'seriesId',
             episodeId: 'episodeId',
             secondaryTags: [12],
+            categories: [13],
             description: { raw: '' },
           }),
           suggestedContentFor: sinon
@@ -69,8 +70,11 @@ describe('#hubContentService', () => {
           },
           episodeId: 'episodeId',
           secondaryTags: [12],
+          categories: [13],
           season: [{ id: 2, title: 'bar episode' }], // hides the current episode from season
           tags: [{ name: 'foo series name', id: 'foo' }],
+          secondaryTagNames: 'foo series name',
+          categoryNames: 'foo series name',
         });
 
         expect(contentRepository.termFor.lastCall.args[0]).to.equal(
