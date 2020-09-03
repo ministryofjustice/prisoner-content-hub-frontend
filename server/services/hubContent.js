@@ -19,25 +19,30 @@ function createHubContentService({
     }
 
     const secondaryTags = prop('secondaryTags', content);
-    const categories = prop('categories', content);
 
-    if (secondaryTags && categories) {
+    if (secondaryTags) {
       const tagsPromises = map(
         tag => contentRepository.termFor(tag, establishmentId),
         secondaryTags,
       );
-      const categoriesPromises = map(
-        tag => contentRepository.termFor(tag, establishmentId),
-        categories,
-      );
-
       const tags = await Promise.all(tagsPromises);
-      const categoryNames = await Promise.all(categoriesPromises);
 
       content.tags = tags;
       content.secondaryTagNames = tags
         .map(secondaryTag => secondaryTag.name)
         .join(',');
+    }
+
+    const categories = prop('categories', content);
+
+    if (categories) {
+      const categoriesPromises = map(
+        tag => contentRepository.termFor(tag, establishmentId),
+        categories,
+      );
+
+      const categoryNames = await Promise.all(categoriesPromises);
+
       content.categoryNames = categoryNames
         .map(category => category.name)
         .join(',');
