@@ -18,6 +18,36 @@ function createHubContentService({
       return {};
     }
 
+    const secondaryTags = prop('secondaryTags', content);
+
+    if (secondaryTags) {
+      const tagsPromises = map(
+        tag => contentRepository.termFor(tag, establishmentId),
+        secondaryTags,
+      );
+      const tags = await Promise.all(tagsPromises);
+
+      content.tags = tags;
+      content.secondaryTagNames = tags
+        .map(secondaryTag => secondaryTag.name)
+        .join(',');
+    }
+
+    const categories = prop('categories', content);
+
+    if (categories) {
+      const categoriesPromises = map(
+        tag => contentRepository.termFor(tag, establishmentId),
+        categories,
+      );
+
+      const categoryNames = await Promise.all(categoriesPromises);
+
+      content.categoryNames = categoryNames
+        .map(category => category.name)
+        .join(',');
+    }
+
     const contentType = prop('contentType', content);
     const suggestedContent =
       contentType === 'radio' || contentType === 'video'
@@ -78,13 +108,8 @@ function createHubContentService({
     const id = prop('id', data);
     const seriesId = prop('seriesId', data);
     const episodeId = prop('episodeId', data);
-    const secondaryTags = prop('secondaryTags', data);
     const filterOutCurrentEpisode = filter(item =>
       not(equals(prop('id', item), id)),
-    );
-    const tagsPromises = map(
-      tag => contentRepository.termFor(tag, establishmentId),
-      secondaryTags,
     );
 
     const [series, seasons] = await Promise.all([
@@ -97,13 +122,10 @@ function createHubContentService({
       }),
     ]);
 
-    const tags = await Promise.all(tagsPromises);
-
     return {
       ...data,
       seriesName: prop('name', series),
       season: seasons ? filterOutCurrentEpisode(seasons) : seasons,
-      tags,
     };
   }
 
