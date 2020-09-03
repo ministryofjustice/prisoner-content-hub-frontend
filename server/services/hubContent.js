@@ -18,6 +18,31 @@ function createHubContentService({
       return {};
     }
 
+    const secondaryTags = prop('secondaryTags', content);
+    const categories = prop('categories', content);
+
+    if (secondaryTags && categories) {
+      const tagsPromises = map(
+        tag => contentRepository.termFor(tag, establishmentId),
+        secondaryTags,
+      );
+      const categoriesPromises = map(
+        tag => contentRepository.termFor(tag, establishmentId),
+        categories,
+      );
+
+      const tags = await Promise.all(tagsPromises);
+      const categoryNames = await Promise.all(categoriesPromises);
+
+      content.tags = tags;
+      content.secondaryTagNames = tags
+        .map(secondaryTag => secondaryTag.name)
+        .join(',');
+      content.categoryNames = categoryNames
+        .map(category => category.name)
+        .join(',');
+    }
+
     const contentType = prop('contentType', content);
     const suggestedContent =
       contentType === 'radio' || contentType === 'video'
@@ -78,18 +103,8 @@ function createHubContentService({
     const id = prop('id', data);
     const seriesId = prop('seriesId', data);
     const episodeId = prop('episodeId', data);
-    const secondaryTags = prop('secondaryTags', data);
-    const categories = prop('categories', data);
     const filterOutCurrentEpisode = filter(item =>
       not(equals(prop('id', item), id)),
-    );
-    const tagsPromises = map(
-      tag => contentRepository.termFor(tag, establishmentId),
-      secondaryTags,
-    );
-    const categoriesPromises = map(
-      tag => contentRepository.termFor(tag, establishmentId),
-      categories,
     );
 
     const [series, seasons] = await Promise.all([
@@ -102,16 +117,10 @@ function createHubContentService({
       }),
     ]);
 
-    const tags = await Promise.all(tagsPromises);
-    const categoryNames = await Promise.all(categoriesPromises);
-
     return {
       ...data,
       seriesName: prop('name', series),
       season: seasons ? filterOutCurrentEpisode(seasons) : seasons,
-      tags,
-      secondaryTagNames: tags.map(secondaryTag => secondaryTag.name).join(','),
-      categoryNames: categoryNames.map(category => category.name).join(','),
     };
   }
 

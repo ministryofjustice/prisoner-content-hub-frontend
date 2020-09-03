@@ -8,8 +8,11 @@ describe('#hubContentService', () => {
           title: 'foo',
           href: 'www.foo.com',
           type: 'foo',
+          secondaryTags: [12],
+          categories: [13],
           description: { raw: '' },
         }),
+        termFor: sinon.stub().returns({ name: 'foo series name', id: 'foo' }),
       };
       const service = createHubContentService({ contentRepository });
       const result = await service.contentFor('contentId');
@@ -18,9 +21,14 @@ describe('#hubContentService', () => {
         title: 'foo',
         href: 'www.foo.com',
         type: 'foo',
+        secondaryTags: [12],
+        categories: [13],
         description: {
           raw: '',
         },
+        tags: [{ name: 'foo series name', id: 'foo' }],
+        secondaryTagNames: 'foo series name',
+        categoryNames: 'foo series name',
       });
     });
 
@@ -108,11 +116,14 @@ describe('#hubContentService', () => {
       featuredContentId: 'featuredContentId',
       categoryId: 'categoryId',
       establishmentId,
+      secondaryTags: [12],
+      categories: [13],
       description: { raw: '' },
     };
 
     const createContentRepository = () => ({
       relatedContentFor: sinon.stub().returns([]),
+      termFor: sinon.stub().returns({ name: 'foo series name', id: 'foo' }),
       contentFor: sinon
         .stub()
         .onFirstCall()
