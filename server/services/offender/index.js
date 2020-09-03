@@ -1,20 +1,19 @@
-const { parseISO, format, isValid, isBefore, addDays } = require('date-fns');
-const { prop } = require('ramda');
-const { capitalize } = require('../../utils');
-const { IEPSummary } = require('./responses/iep');
-const { Balances } = require('./responses/balances');
-const { Offender } = require('./responses/offender');
-const { KeyWorker } = require('./responses/keyWorker');
-const { NextVisit } = require('./responses/nextVisit');
-const { ImportantDates } = require('./responses/importantDates');
-const { Timetable } = require('./responses/timetable');
+const { format, isValid, isBefore, addDays } = require('date-fns');
+const responses = require('./responses');
 
-const prettyTime = date => {
-  if (!isValid(new Date(date))) return '';
-  return format(parseISO(date), 'h:mmaaa');
-};
-
-const createOffenderService = repository => {
+const createOffenderService = (
+  repository,
+  {
+    Offender,
+    IEPSummary,
+    Balances,
+    KeyWorker,
+    NextVisit,
+    ImportantDates,
+    Timetable,
+    TimetableEvent,
+  } = responses,
+) => {
   async function getOffenderDetailsFor(prisonerId) {
     const response = await repository.getOffenderDetailsFor(prisonerId);
     return Offender.from(response).format();
@@ -75,7 +74,7 @@ const createOffenderService = repository => {
     }
   }
 
-  // Move to the repository Tier?
+  // Move to the repository Tier ?
   async function getActualHomeEvents(bookingId, time) {
     const hour = Number.parseInt(format(time, 'H'), 10);
     const tomorrowCutOffHour = 19;
@@ -111,22 +110,10 @@ const createOffenderService = repository => {
         ? { todaysEvents: [], isTomorrow: false }
         : {
             todaysEvents: events
-              .filter(
-                event =>
-                  event.eventType === 'APP' || event.eventType === 'VISIT',
-              )
-              .map(event => {
-                const startTime = prettyTime(prop('startTime', event));
-                const endTime = prettyTime(prop('endTime', event));
-
-                return {
-                  title: event.eventSourceDesc,
-                  startTime,
-                  endTime,
-                  location: capitalize(event.eventLocation),
-                  timeString: startTime,
-                };
-              }),
+              .filter(TimetableEvent.filterByType('APP', 'VISIT'))
+              .map(eventResponse =>
+                TimetableEvent.from(eventResponse).format(),
+              ),
             isTomorrow,
           };
     } catch {
@@ -162,7 +149,7 @@ const createOffenderService = repository => {
       return Timetable.create({ startDate, endDate })
         .addEvents(eventsData)
         .build();
-    } catch (e) {
+    } catch {
       return {
         error: `We are not able to show your schedule for the selected week at this time`,
       };

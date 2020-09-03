@@ -12,7 +12,7 @@ describe('TimetableEvent', () => {
     expect(timetableEvent.startTime).to.not.exist;
     expect(timetableEvent.endTime).to.not.exist;
     expect(timetableEvent.location).to.not.exist;
-    expect(timetableEvent.eventType).to.not.exist;
+    expect(timetableEvent.type).to.not.exist;
     expect(timetableEvent.finished).to.not.exist;
     expect(timetableEvent.status).to.not.exist;
     expect(timetableEvent.paid).to.not.exist;
@@ -81,6 +81,29 @@ describe('TimetableEvent', () => {
       finished: false,
       status: 'SCH',
       paid: true,
+    });
+  });
+
+  describe('filterByType', () => {
+    it('should filter by a single type', () => {
+      const filter = TimetableEvent.filterByType('FOO');
+
+      const ofType = new TimetableEvent({ type: 'FOO' });
+      const notOfType = new TimetableEvent({ type: 'BAR' });
+
+      expect(filter(ofType)).to.equal(true);
+      expect(filter(notOfType)).to.equal(false);
+    });
+    it('should filter by multiple types', () => {
+      const filter = TimetableEvent.filterByType('FOO', 'BAR');
+
+      const ofType = new TimetableEvent({ type: 'FOO' });
+      const ofAnotherType = new TimetableEvent({ type: 'BAR' });
+      const notOfType = new TimetableEvent({ type: 'BAZ' });
+
+      expect(filter(ofType)).to.equal(true);
+      expect(filter(ofAnotherType)).to.equal(true);
+      expect(filter(notOfType)).to.equal(false);
     });
   });
 });

@@ -30,7 +30,7 @@ class TimetableEvent {
     this.startTime = options.startTime;
     this.endTime = options.endTime;
     this.location = options.location;
-    this.eventType = options.eventType;
+    this.type = options.type;
     this.status = options.status;
     this.paid = options.paid;
   }
@@ -45,11 +45,15 @@ class TimetableEvent {
         formatDateOr('', PRETTY_TIME, this.startTime),
         formatDateOr('', PRETTY_TIME, this.endTime),
       ),
-      eventType: this.eventType || DEFAULT,
+      eventType: this.type || DEFAULT,
       finished: this.status !== SCHEDULED_STATUS,
       status: this.status || DEFAULT,
       paid: this.paid,
     };
+  }
+
+  static filterByType(...types) {
+    return timetableEvent => types.includes(timetableEvent.type);
   }
 
   static from(response = {}) {
@@ -68,7 +72,7 @@ class TimetableEvent {
       startTime,
       endTime,
       location: eventLocation,
-      eventType,
+      type: eventType,
       status: eventStatus,
       paid,
     });

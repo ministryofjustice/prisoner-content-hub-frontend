@@ -1,231 +1,244 @@
 const {
   createPrisonApiOffenderService,
 } = require('../../server/services/offender');
-const { getEventsForTodayData, getEventsForData } = require('../test-data');
+
+const TEST_PRISONER_ID = 'A1234BC';
+const TEST_BOOKING_ID = 1234;
+const RAW_RESPONSE = 'RAW_RESPONSE';
+const FORMATTED_RESPONSE = 'FORMATTED_RESPONSE';
 
 describe('Offender Service', () => {
-  describe('getOffenderDetailsFor', () => {
-    it('returns offender data', async () => {
-      const repository = {
-        getOffenderDetailsFor: sinon.stub().returns({
-          bookingId: 1013376,
-          offenderNo: 'G0653GG',
-          firstName: 'CUDMASTARIE',
-          middleName: 'JAYMORES',
-          lastName: 'AARELL',
-        }),
-      };
-      const service = createPrisonApiOffenderService(repository);
-      const data = await service.getOffenderDetailsFor('FOO_ID');
+  const format = sinon.stub();
+  const from = sinon.stub();
+  const mockAdapter = { from };
 
-      expect(repository.getOffenderDetailsFor.lastCall.args[0]).to.equal(
-        'FOO_ID',
-      );
-      expect(data).to.eql({
-        name: 'Cudmastarie Aarell',
-        bookingId: 1013376,
-        offenderNo: 'G0653GG',
+  beforeEach(() => {
+    format.returns(FORMATTED_RESPONSE);
+    from.returns({ format });
+  });
+
+  describe('getOffenderDetailsFor', () => {
+    it('returns formatted Offender data', async () => {
+      const repository = {
+        getOffenderDetailsFor: sinon.stub().returns(RAW_RESPONSE),
+      };
+
+      const service = createPrisonApiOffenderService(repository, {
+        Offender: mockAdapter,
       });
+
+      const data = await service.getOffenderDetailsFor(TEST_PRISONER_ID);
+
+      expect(repository.getOffenderDetailsFor).to.have.been.calledWith(
+        TEST_PRISONER_ID,
+      );
+      expect(mockAdapter.from).to.have.been.calledWith(RAW_RESPONSE);
+      expect(data).to.equal(FORMATTED_RESPONSE);
     });
   });
 
   describe('getIEPSummaryFor', () => {
-    it('returns IEP data', async () => {
-      const clock = sinon.useFakeTimers({
-        now: 1559343600000, // 01 Jun 2019 00:00
-      });
+    it('returns formatted IEP data', async () => {
       const repository = {
-        getIEPSummaryFor: sinon.stub().returns({
-          iepLevel: 'POTANUS',
-          iepDate: '2019-06-17T06:00:00.000Z',
-          lastName: 'AARELL',
-        }),
+        getIEPSummaryFor: sinon.stub().returns(RAW_RESPONSE),
       };
 
-      const service = createPrisonApiOffenderService(repository);
-      const data = await service.getIEPSummaryFor('FOO_ID');
-
-      expect(repository.getIEPSummaryFor.lastCall.args[0]).to.equal('FOO_ID');
-      expect(data).to.eql({
-        reviewDate: 'Tuesday 17 September',
-        iepLevel: 'POTANUS',
-        daysSinceReview: '16 days',
+      const service = createPrisonApiOffenderService(repository, {
+        IEPSummary: mockAdapter,
       });
 
-      clock.restore();
+      const data = await service.getIEPSummaryFor(TEST_BOOKING_ID);
+
+      expect(repository.getIEPSummaryFor).to.have.been.calledWith(
+        TEST_BOOKING_ID,
+      );
+      expect(mockAdapter.from).to.have.been.calledWith(RAW_RESPONSE);
+      expect(data).to.equal(FORMATTED_RESPONSE);
     });
   });
 
   describe('getBalancesFor', () => {
-    it('returns balance data', async () => {
+    it('returns formatted Balances data', async () => {
       const repository = {
-        getBalancesFor: sinon.stub().returns({
-          spends: '100',
-          cash: '100',
-          savings: '0',
-          currency: 'GBP',
-        }),
+        getBalancesFor: sinon.stub().returns(RAW_RESPONSE),
       };
-      const service = createPrisonApiOffenderService(repository);
-      const data = await service.getBalancesFor('FOO_ID');
 
-      expect(repository.getBalancesFor.lastCall.args[0]).to.equal('FOO_ID');
-      expect(data).to.eql({
-        spends: '£100.00',
-        cash: '£100.00',
-        savings: '£0.00',
-        currency: 'GBP',
+      const service = createPrisonApiOffenderService(repository, {
+        Balances: mockAdapter,
       });
+
+      const data = await service.getBalancesFor(TEST_BOOKING_ID);
+
+      expect(repository.getBalancesFor).to.have.been.calledWith(
+        TEST_BOOKING_ID,
+      );
+      expect(mockAdapter.from).to.have.been.calledWith(RAW_RESPONSE);
+      expect(data).to.equal(FORMATTED_RESPONSE);
     });
   });
 
   describe('getKeyWorkerFor', () => {
-    it('returns keyworker data', async () => {
+    it('returns formatted KeyWorker data', async () => {
       const repository = {
-        getKeyWorkerFor: sinon.stub().returns({
-          firstName: 'CUDMASTARIE',
-          lastName: 'JAYMORES',
-        }),
+        getKeyWorkerFor: sinon.stub().returns(RAW_RESPONSE),
       };
-      const service = createPrisonApiOffenderService(repository);
-      const data = await service.getKeyWorkerFor('FOO_ID');
 
-      expect(repository.getKeyWorkerFor.lastCall.args[0]).to.equal('FOO_ID');
-      expect(data).to.eql({
-        current: 'Cudmastarie Jaymores',
-        lastMeeting: 'Unavailable',
+      const service = createPrisonApiOffenderService(repository, {
+        KeyWorker: mockAdapter,
       });
+
+      const data = await service.getKeyWorkerFor(TEST_BOOKING_ID);
+
+      expect(repository.getKeyWorkerFor).to.have.been.calledWith(
+        TEST_BOOKING_ID,
+      );
+      expect(mockAdapter.from).to.have.been.calledWith(RAW_RESPONSE);
+      expect(data).to.equal(FORMATTED_RESPONSE);
     });
   });
 
   describe('getVisitsFor', () => {
-    it('returns visits data', async () => {
+    it('returns formatted Visits data', async () => {
       const repository = {
-        getLastVisitFor: sinon.stub().returns({
-          startTime: '2014-02-11T11:30:30',
-          visitTypeDescription: '',
-          leadVisitor: '',
-        }),
-        getNextVisitFor: sinon.stub().returns({
-          startTime: '2019-12-07T11:30:30',
-          visitTypeDescription: '',
-          leadVisitor: '',
-          eventStatus: 'SCH',
-        }),
-        getVisitsFor: sinon.stub().returns([]),
+        getNextVisitFor: sinon.stub().returns(RAW_RESPONSE),
       };
-      const service = createPrisonApiOffenderService(repository);
-      const data = await service.getVisitsFor('FOO_ID');
 
-      expect(repository.getNextVisitFor.lastCall.args[0]).to.equal('FOO_ID');
-
-      expect(data).to.eql({
-        nextVisit: 'Saturday 07 December 2019',
-        nextVisitDate: '7 December',
-        nextVisitDay: 'Saturday',
-        visitType: 'Unavailable',
-        visitorName: 'Unavailable',
+      const service = createPrisonApiOffenderService(repository, {
+        NextVisit: mockAdapter,
       });
+
+      const data = await service.getVisitsFor(TEST_BOOKING_ID);
+
+      expect(repository.getNextVisitFor).to.have.been.calledWith(
+        TEST_BOOKING_ID,
+      );
+      expect(mockAdapter.from).to.have.been.calledWith(RAW_RESPONSE);
+      expect(data).to.equal(FORMATTED_RESPONSE);
     });
   });
 
   describe('getImportantDatesFor', () => {
-    it('returns visits', async () => {
+    it('returns formatted ImportantDates data', async () => {
       const repository = {
-        sentenceDetailsFor: sinon.stub().returns({
-          homeDetentionCurfewEligibilityDate: '2014-02-11T11:30:30',
-          conditionalReleaseDate: '2019-04-07T11:30:30',
-          licenceExpiryDate: '2019-05-07T11:30:30',
-        }),
+        sentenceDetailsFor: sinon.stub().returns(RAW_RESPONSE),
       };
-      const service = createPrisonApiOffenderService(repository);
-      const data = await service.getImportantDatesFor('FOO_ID');
 
-      expect(repository.sentenceDetailsFor.lastCall.args[0]).to.equal('FOO_ID');
-
-      expect(data).to.eql({
-        reCategorisationDate: 'Unavailable',
-        hdcEligibilityDate: 'Tuesday 11 February 2014',
-        conditionalReleaseDate: 'Sunday 07 April 2019',
-        licenceExpiryDate: 'Tuesday 07 May 2019',
+      const service = createPrisonApiOffenderService(repository, {
+        ImportantDates: mockAdapter,
       });
+
+      const data = await service.getImportantDatesFor(TEST_BOOKING_ID);
+
+      expect(repository.sentenceDetailsFor).to.have.been.calledWith(
+        TEST_BOOKING_ID,
+      );
+      expect(mockAdapter.from).to.have.been.calledWith(RAW_RESPONSE);
+      expect(data).to.equal(FORMATTED_RESPONSE);
     });
   });
 
-  describe('getEventsForToday', () => {
-    it('should call the repository service with the correct bookingId', async () => {
-      const repository = {
-        getEventsForToday: sinon.stub().returns({
-          todaysEvents: [
-            {
-              eventSourceDesc: 'Some title',
-              startTime: '2019-04-07T11:30:30',
-              endTime: '2019-04-07T12:30:30',
-              eventLocation: 'Some location',
-              eventType: 'APP',
-            },
-          ],
-          isTomorrow: false,
-        }),
-      };
-      const service = createPrisonApiOffenderService(repository);
-      const dateBeforeCutOff = new Date();
-      dateBeforeCutOff.setHours(7);
-      await service.getEventsForToday('FOO_ID', dateBeforeCutOff);
-
-      expect(repository.getEventsForToday.lastCall.args[0]).to.equal('FOO_ID');
-    });
-
-    getEventsForTodayData.forEach(singleTestData => {
-      it(`should return events for ${singleTestData.title}`, async () => {
-        const repository = {
-          getEventsForToday: sinon.stub().returns(singleTestData.repo),
-        };
-        const service = createPrisonApiOffenderService(repository);
-        const dateBeforeCutOff = new Date();
-        dateBeforeCutOff.setHours(7);
-        const data = await service.getEventsForToday(
-          'FOO_ID',
-          dateBeforeCutOff,
-        );
-
-        expect(data).to.eql(singleTestData.data);
-      });
-    });
-  });
+  describe('getEventsForToday', () => {});
 
   describe('getEventsFor', () => {
-    it('should call the repository service with the correct bookingId', async () => {
-      const repository = {
-        getEventsFor: sinon.stub().returns([
-          {
-            eventSourceDesc: 'Some title',
-            startTime: '2019-04-07T11:30:30',
-            endTime: '2019-04-07T12:30:30',
-            eventLocation: 'Some location',
-            eventType: 'APP',
-          },
-        ]),
-      };
-      const service = createPrisonApiOffenderService(repository);
-      await service.getEventsFor('FOO_ID', '2019-03-07', '2019-04-07');
+    const create = sinon.stub();
+    const addEvents = sinon.stub();
+    const build = sinon.stub();
+    const mockTimetableAdapter = { create };
 
-      expect(repository.getEventsFor.lastCall.args[0]).to.equal('FOO_ID');
+    beforeEach(() => {
+      addEvents.resetHistory();
+      create.resetHistory();
+      build.returns(FORMATTED_RESPONSE);
+      addEvents.returns({ build });
+      create.returns({ addEvents });
     });
 
-    getEventsForData.forEach(({ title, startDate, endDate, repo, data }) => {
-      it(`should return events for ${title}`, async () => {
-        const repository = {
-          getEventsFor: sinon.stub().returns(repo),
-        };
-        const service = createPrisonApiOffenderService(repository);
-        const serviceData = await service.getEventsFor(
-          'FOO_ID',
-          startDate,
-          endDate,
-        );
-        expect(serviceData).to.eql(data);
+    it('should call the repository service with the correct bookingId', async () => {
+      const repository = {
+        getEventsFor: sinon.stub().returns(['FOO', 'BAR']),
+      };
+
+      const service = createPrisonApiOffenderService(repository, {
+        Timetable: mockTimetableAdapter,
       });
+
+      const data = await service.getEventsFor(
+        TEST_BOOKING_ID,
+        '2019-03-07',
+        '2019-04-07',
+      );
+
+      expect(repository.getEventsFor.lastCall.args[0]).to.equal(
+        TEST_BOOKING_ID,
+        '2019-03-07',
+        '2019-04-07',
+      );
+      expect(mockTimetableAdapter.create).to.have.been.calledWith({
+        startDate: '2019-03-07',
+        endDate: '2019-04-07',
+      });
+      expect(addEvents).to.have.been.calledWith(['FOO', 'BAR']);
+      expect(data).to.equal(FORMATTED_RESPONSE);
+    });
+
+    it('should return an error response when passed invalid dates', async () => {
+      const repository = {
+        getEventsFor: sinon.stub().returns([]),
+      };
+
+      const service = createPrisonApiOffenderService(repository, {
+        Timetable: mockTimetableAdapter,
+      });
+
+      const data = await service.getEventsFor(TEST_BOOKING_ID, 'FOO', 'BAR');
+
+      expect(repository.getEventsFor).to.have.not.been.called;
+      expect(mockTimetableAdapter.create).to.have.not.been.called;
+      expect(data.error).to.exist;
+    });
+
+    it('should return an error response when passed an invalid date range', async () => {
+      const repository = {
+        getEventsFor: sinon.stub().returns([]),
+      };
+
+      const service = createPrisonApiOffenderService(repository, {
+        Timetable: mockTimetableAdapter,
+      });
+
+      const data = await service.getEventsFor(
+        TEST_BOOKING_ID,
+        '2019-03-07',
+        '2019-02-07',
+      );
+
+      expect(repository.getEventsFor).to.have.not.been.called;
+      expect(mockTimetableAdapter.create).to.have.not.been.called;
+      expect(data.error).to.exist;
+    });
+
+    it('should return an error response if the repository returns malformed data', async () => {
+      const repository = {
+        getEventsFor: sinon.stub().returns('FOO'),
+      };
+
+      const service = createPrisonApiOffenderService(repository, {
+        Timetable: mockTimetableAdapter,
+      });
+
+      const data = await service.getEventsFor(
+        TEST_BOOKING_ID,
+        '2019-03-07',
+        '2019-04-07',
+      );
+
+      expect(repository.getEventsFor).to.have.been.calledWith(
+        TEST_BOOKING_ID,
+        '2019-03-07',
+        '2019-04-07',
+      );
+      expect(mockTimetableAdapter.create).to.have.not.been.called;
+      expect(data.error).to.exist;
     });
   });
 });
