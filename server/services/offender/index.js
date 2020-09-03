@@ -7,7 +7,7 @@ const { Offender } = require('./responses/offender');
 const { KeyWorker } = require('./responses/keyWorker');
 const { NextVisit } = require('./responses/nextVisit');
 const { ImportantDates } = require('./responses/importantDates');
-const { TimeTable } = require('./responses/timeTable');
+const { Timetable } = require('./responses/timetable');
 
 const prettyTime = date => {
   if (!isValid(new Date(date))) return '';
@@ -149,8 +149,6 @@ const createOffenderService = repository => {
         throw new Error('Start date is after end date');
       }
 
-      const timeTable = TimeTable.forRange(startDate, endDate);
-
       const eventsData = await repository.getEventsFor(
         bookingId,
         startDate,
@@ -161,9 +159,10 @@ const createOffenderService = repository => {
         throw new Error('Invalid data returned from API');
       }
 
-      eventsData.forEach(timeTable.addEvent.bind(timeTable));
-      return timeTable.setEventStatesForToday().build();
-    } catch {
+      return Timetable.create({ startDate, endDate })
+        .addEvents(eventsData)
+        .build();
+    } catch (e) {
       return {
         error: `We are not able to show your schedule for the selected week at this time`,
       };
