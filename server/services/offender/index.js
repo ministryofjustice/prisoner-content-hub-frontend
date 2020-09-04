@@ -4,6 +4,7 @@ const {
   dateFormats: { ISO_DATE, HOUR },
   timetable: { APP_EVENT_TYPE, VISIT_EVENT_TYPE },
 } = require('../../utils/enums');
+const { logger } = require('../../utils/logger');
 
 const createOffenderService = (
   repository,
@@ -27,7 +28,12 @@ const createOffenderService = (
     try {
       const response = await repository.getIEPSummaryFor(bookingId);
       return IEPSummary.from(response).format();
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getIEPSummaryFor',
+        message: e.message,
+        id: bookingId,
+      });
       return {
         error: 'We are not able to show your IEP summary at this time',
       };
@@ -38,7 +44,12 @@ const createOffenderService = (
     try {
       const response = await repository.getBalancesFor(bookingId);
       return Balances.from(response).format();
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getBalancesFor',
+        message: e.message,
+        id: bookingId,
+      });
       return {
         error: 'We are not able to show your balances at this time',
       };
@@ -49,7 +60,12 @@ const createOffenderService = (
     try {
       const response = await repository.getKeyWorkerFor(prisonerId);
       return KeyWorker.from(response).format();
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getKeyWorkerFor',
+        message: e.message,
+        id: prisonerId,
+      });
       return {
         error: 'We are not able to show Key Worker information at this time',
       };
@@ -60,7 +76,12 @@ const createOffenderService = (
     try {
       const response = await repository.getNextVisitFor(bookingId);
       return NextVisit.from(response).format();
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getVisitsFor',
+        message: e.message,
+        id: bookingId,
+      });
       return {
         error: 'We are not able to show your visits at this time',
       };
@@ -71,7 +92,12 @@ const createOffenderService = (
     try {
       const response = await repository.sentenceDetailsFor(bookingId);
       return ImportantDates.from(response).format();
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getImportantDatesFor',
+        message: e.message,
+        id: bookingId,
+      });
       return {
         error: 'We are not able to show your important dates at this time',
       };
@@ -121,7 +147,12 @@ const createOffenderService = (
               ),
             isTomorrow,
           };
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getEventsForToday',
+        message: e.message,
+        id: bookingId,
+      });
       return {
         error: 'We are not able to show your schedule for today at this time',
       };
@@ -154,7 +185,16 @@ const createOffenderService = (
       return Timetable.create({ startDate, endDate })
         .addEvents(eventsData)
         .build();
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getEventsFor',
+        message: e.message,
+        id: bookingId,
+        options: {
+          startDate,
+          endDate,
+        },
+      });
       return {
         error: `We are not able to show your schedule for the selected week at this time`,
       };
