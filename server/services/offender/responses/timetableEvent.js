@@ -1,10 +1,10 @@
-const { parseISO, format, isValid } = require('date-fns');
 const { capitalize } = require('../../../utils');
 const {
   placeholders: { DEFAULT },
   timetable: { SCHEDULED_EVENT_TYPE },
   dateFormats: { PRETTY_TIME },
 } = require('../../../utils/enums');
+const { formatDateOr } = require('../../../utils/date');
 
 const getTimetableEventTime = (startTime, endTime) => {
   if (startTime === '') {
@@ -16,13 +16,6 @@ const getTimetableEventTime = (startTime, endTime) => {
   }
 
   return startTime;
-};
-
-const formatDateOr = (defaultValue = '', dateFormat, date) => {
-  if (!isValid(new Date(date))) {
-    return defaultValue;
-  }
-  return format(parseISO(date), dateFormat);
 };
 
 class TimetableEvent {

@@ -78,7 +78,6 @@ const createOffenderService = (
     }
   }
 
-  // Move to the repository Tier ?
   async function getActualHomeEvents(bookingId, time) {
     const hour = Number.parseInt(format(time, HOUR), 10);
     const tomorrowCutOffHour = 19;

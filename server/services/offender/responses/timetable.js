@@ -5,28 +5,6 @@ const {
   timetable: { MORNING, AFTERNOON, EVENING },
 } = require('../../../utils/enums');
 
-const getTimetableRowTitle = date => {
-  const givenDate = new Date(date);
-
-  if (!isValid(givenDate)) return '';
-
-  const today = new Date();
-  const tomorrow = addDays(today, 1);
-  const todayDateString = format(today, LONG_PRETTY_DATE);
-  const tomorrowDateString = format(tomorrow, LONG_PRETTY_DATE);
-  const givenDateString = format(givenDate, LONG_PRETTY_DATE);
-
-  if (givenDateString === todayDateString) {
-    return 'Today';
-  }
-
-  if (givenDateString === tomorrowDateString) {
-    return 'Tomorrow';
-  }
-
-  return givenDateString;
-};
-
 const isoDate = date => {
   if (!isValid(new Date(date))) return '';
   return format(parseISO(date), ISO_DATE);
@@ -63,7 +41,7 @@ class Timetable {
       startDateString = format(startDate, ISO_DATE);
 
       this.events[startDateString] = Timetable.createNewTableRow({
-        title: getTimetableRowTitle(startDateString),
+        title: Timetable.getTimetableRowTitle(startDateString),
         hasDateElapsed: isBefore(startDate, todaysDate),
       });
 
@@ -74,6 +52,28 @@ class Timetable {
   static create(options = {}) {
     const { startDate, endDate } = options;
     return new Timetable({ startDate, endDate: endDate || startDate });
+  }
+
+  static getTimetableRowTitle(date) {
+    const givenDate = new Date(date);
+
+    if (!isValid(givenDate)) return '';
+
+    const today = new Date();
+    const tomorrow = addDays(today, 1);
+    const todayDateString = format(today, LONG_PRETTY_DATE);
+    const tomorrowDateString = format(tomorrow, LONG_PRETTY_DATE);
+    const givenDateString = format(givenDate, LONG_PRETTY_DATE);
+
+    if (givenDateString === todayDateString) {
+      return 'Today';
+    }
+
+    if (givenDateString === tomorrowDateString) {
+      return 'Tomorrow';
+    }
+
+    return givenDateString;
   }
 
   static createNewTableRow({ title, hasDateElapsed }) {

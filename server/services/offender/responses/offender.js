@@ -1,29 +1,22 @@
 // eslint-disable-next-line import/no-useless-path-segments
-const { capitalize } = require('../../../utils');
 const {
   placeholders: { DEFAULT },
 } = require('../../../utils/enums');
+const { fullNameOr } = require('../../../utils/string');
 
 class Offender {
   constructor(options = {}) {
-    const { bookingId, offenderNo, firstName, lastName } = options;
-
-    this.bookingId = bookingId;
-    this.offenderNo = offenderNo;
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.bookingId = options.bookingId;
+    this.offenderNo = options.offenderNo;
+    this.firstName = options.firstName;
+    this.lastName = options.lastName;
   }
 
   format() {
-    const fullName = [this.firstName, this.lastName]
-      .map(capitalize)
-      .join(' ')
-      .trim();
-
     return {
       bookingId: this.bookingId,
       offenderNo: this.offenderNo,
-      name: fullName !== '' ? fullName : DEFAULT,
+      name: fullNameOr(DEFAULT, this.firstName, this.lastName),
     };
   }
 

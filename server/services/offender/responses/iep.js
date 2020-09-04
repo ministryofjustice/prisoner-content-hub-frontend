@@ -1,8 +1,9 @@
-const { addMonths, format, formatDistance, parseISO } = require('date-fns');
+const { addMonths, parseISO } = require('date-fns');
 const {
   placeholders: { DEFAULT },
   dateFormats: { LONG_PRETTY_DATE },
 } = require('../../../utils/enums');
+const { formatDateOr, formatTimeBetweenOr } = require('../../../utils/date');
 
 const MONTHS_UNTIL_IEP_REVIEW = 3;
 
@@ -18,12 +19,12 @@ class IEPSummary {
   format() {
     return {
       iepLevel: this.iepLevel || DEFAULT,
-      reviewDate: this.nextIepReviewDate
-        ? format(this.nextIepReviewDate, LONG_PRETTY_DATE)
-        : DEFAULT,
-      daysSinceReview: this.lastIepReviewDate
-        ? formatDistance(this.lastIepReviewDate, new Date())
-        : DEFAULT,
+      reviewDate: formatDateOr(
+        DEFAULT,
+        LONG_PRETTY_DATE,
+        this.nextIepReviewDate,
+      ),
+      daysSinceReview: formatTimeBetweenOr(DEFAULT, this.lastIepReviewDate),
     };
   }
 
@@ -33,11 +34,11 @@ class IEPSummary {
     };
 
     if (response.iepDate) {
-      options.lastIepReviewDate = parseISO(response.iepDate);
+      options.lastIepReviewDate = response.iepDate;
       options.nextIepReviewDate = addMonths(
-        options.lastIepReviewDate,
+        parseISO(options.lastIepReviewDate),
         MONTHS_UNTIL_IEP_REVIEW,
-      );
+      ).toISOString();
     }
 
     return new IEPSummary(options);

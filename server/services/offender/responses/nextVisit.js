@@ -1,17 +1,10 @@
-const { parseISO, format, isValid } = require('date-fns');
 const { capitalizePersonName } = require('../../../utils');
 const {
   placeholders: { DEFAULT },
   timetable: { SCHEDULED_EVENT_TYPE },
   dateFormats: { PRETTY_DAY, PRETTY_DAY_AND_MONTH, PRETTY_DATE },
 } = require('../../../utils/enums');
-
-const formatDateOr = (defaultValue = '', dateFormat, date) => {
-  if (!isValid(new Date(date))) {
-    return defaultValue;
-  }
-  return format(parseISO(date), dateFormat);
-};
+const { formatDateOr } = require('../../../utils/date');
 
 class NextVisit {
   constructor(options = {}) {

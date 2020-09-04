@@ -1,7 +1,7 @@
-const { capitalize } = require('../../../utils');
 const {
   placeholders: { DEFAULT },
 } = require('../../../utils/enums');
+const { fullNameOr } = require('../../../utils/string');
 
 class KeyWorker {
   constructor(options = {}) {
@@ -10,13 +10,8 @@ class KeyWorker {
   }
 
   format() {
-    const fullName = [this.firstName, this.lastName]
-      .map(capitalize)
-      .join(' ')
-      .trim();
-
     return {
-      current: fullName !== '' ? fullName : DEFAULT,
+      current: fullNameOr(DEFAULT, this.firstName, this.lastName),
       lastMeeting: DEFAULT,
     };
   }
