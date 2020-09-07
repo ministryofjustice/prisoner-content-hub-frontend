@@ -323,8 +323,12 @@ const createApp = ({
 
   // eslint-disable-next-line no-unused-vars
   function renderErrors(error, req, res, next) {
-    logger.error(error, 'Unhandled error');
-
+    logger.error({
+      function: 'Unhandled express error',
+      message: error.message,
+      id: error.code,
+      stack: error.stack,
+    });
     res.status(error.status || 500);
 
     const locals = {

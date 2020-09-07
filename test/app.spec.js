@@ -13,31 +13,32 @@ describe('App', () => {
     config.mockAuth = originalConfig.mockAuth;
   });
 
-  it('renders a 404 page correctly on invalid url', () =>
-    request(app())
+  it('renders a 404 page correctly on invalid url', async () => {
+    await request(app())
       .get('/unknown-url')
       .expect(404)
       .then(res => {
         expect(res.text).to.contain(
           'The page you are looking for could not be found',
         );
-      }));
+      });
+  });
 
-  it('hides the stack trace on error pages', () => {
+  it('hides the stack trace on error pages', async () => {
     const error = new Error('broken kittens');
     const copy = config.dev;
 
     config.dev = false;
-    request(
+    await request(
       app({
-        hubPromotedContentService: {
-          hubPromotedContent: sinon.stub().returns(error),
+        hubFeaturedContentService: {
+          hubFeaturedContent: sinon.stub().rejects(error),
         },
         hubMenuService: {
-          tagsMenu: sinon.stub(),
+          tagsMenu: sinon.stub().resolves({}),
         },
         offenderService: {
-          getOffenderDetailsFor: sinon.stub(),
+          getOffenderDetailsFor: sinon.stub().resolves({}),
         },
       }),
     )
@@ -56,21 +57,21 @@ describe('App', () => {
       });
   });
 
-  it('shows the stack trace on error pages', () => {
+  it('shows the stack trace on error pages', async () => {
     const error = new Error('Broken kittens');
     const copy = config.dev;
 
     config.dev = true;
 
-    return request(
+    await request(
       app({
         hubFeaturedContentService: {
           hubFeaturedContent: sinon.stub().rejects(error),
         },
         offenderService: {
-          getEventsForToday: sinon.stub(),
-          getEventsFor: sinon.stub(),
-          getOffenderDetailsFor: sinon.stub(),
+          getEventsForToday: sinon.stub().resolves([]),
+          getEventsFor: sinon.stub().resolves([]),
+          getOffenderDetailsFor: sinon.stub().resolves({}),
         },
       }),
     )
@@ -95,8 +96,8 @@ describe('App', () => {
       });
   });
 
-  it('contains the correct security headers per request', () =>
-    request(app())
+  it('contains the correct security headers per request', async () => {
+    await request(app())
       .get('/')
       .then(res => {
         expect(res.headers).to.have.property('x-dns-prefetch-control');
@@ -104,21 +105,24 @@ describe('App', () => {
         expect(res.headers).to.have.property('x-download-options');
         expect(res.headers).to.have.property('x-content-type-options');
         expect(res.headers).to.have.property('x-xss-protection');
-      }));
+      });
+  });
 });
 
 function app(opts) {
   const services = {
     hubPromotedContentService: { hubPromotedContent: sinon.stub().returns([]) },
-    hubFeaturedContentService: { hubFeaturedContent: sinon.stub().returns([]) },
+    hubFeaturedContentService: {
+      hubFeaturedContent: sinon.stub().resolves([]),
+    },
     hubMenuService: {
       navigationMenu: sinon.stub().returns({ mainMenu: [], topicsMenu: [] }),
       seriesMenu: sinon.stub().returns([]),
     },
     offenderService: {
-      getOffenderDetailsFor: sinon.stub(),
+      getOffenderDetailsFor: sinon.stub().resolves({}),
     },
-    hubContentService: { contentFor: sinon.stub().returns({}) },
+    hubContentService: { contentFor: sinon.stub().resolves({}) },
     searchService: { find: sinon.stub() },
     logger,
     ...opts,
