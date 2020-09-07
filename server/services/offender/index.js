@@ -107,33 +107,22 @@ const createOffenderService = (
   async function getActualHomeEvents(bookingId, time) {
     const hour = Number.parseInt(format(time, HOUR), 10);
     const tomorrowCutOffHour = 19;
-    let events;
-    let isTomorrow = false;
 
-    try {
-      events =
-        hour < tomorrowCutOffHour
-          ? await repository.getEventsForToday(bookingId)
-          : [];
-
-      if (hour >= tomorrowCutOffHour) {
-        const tomorrow = addDays(time, 1);
-        const startDate = format(time, ISO_DATE);
-        const endDate = format(tomorrow, ISO_DATE);
-        events = await repository.getEventsFor(bookingId, startDate, endDate);
-        isTomorrow = true;
-      }
+    if (hour >= tomorrowCutOffHour) {
+      const tomorrow = addDays(time, 1);
+      const startDate = format(time, ISO_DATE);
+      const endDate = format(tomorrow, ISO_DATE);
 
       return {
-        events,
-        isTomorrow,
-      };
-    } catch (e) {
-      return {
-        events,
-        isTomorrow,
+        events: await repository.getEventsFor(bookingId, startDate, endDate),
+        isTomorrow: true,
       };
     }
+
+    return {
+      events: await repository.getEventsForToday(bookingId),
+      isTomorrow: false,
+    };
   }
 
   /*
