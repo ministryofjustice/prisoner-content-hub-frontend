@@ -1,36 +1,39 @@
-const { fullNameOr, formatBalanceOr } = require('../../server/utils/string');
+const {
+  fullNameOrDefault,
+  formatBalanceOrDefault,
+} = require('../../server/utils/string');
 
 describe('StringUtils', () => {
-  describe('fullNameOr', () => {
+  describe('fullNameOrDefault', () => {
     it('should format multiple names', () => {
-      const fullName = fullNameOr('', 'FOO', 'BAR', 'BAZ');
+      const fullName = fullNameOrDefault('', 'FOO', 'BAR', 'BAZ');
       expect(fullName).to.equal('Foo Bar Baz');
     });
 
     it('should format a single name', () => {
-      const fullName = fullNameOr('', 'FOO');
+      const fullName = fullNameOrDefault('', 'FOO');
       expect(fullName).to.equal('Foo');
     });
 
     it('should handle bad data', () => {
-      const fullName = fullNameOr('PLACEHOLDER', undefined, '');
+      const fullName = fullNameOrDefault('PLACEHOLDER', undefined, '');
       expect(fullName).to.equal('PLACEHOLDER');
     });
   });
 
-  describe('formatBalanceOr', () => {
+  describe('formatBalanceOrDefault', () => {
     it('should format currency', () => {
-      const balance = formatBalanceOr('', 5.0, 'GBP');
+      const balance = formatBalanceOrDefault('', 5.0, 'GBP');
       expect(balance).to.equal('£5.00');
     });
 
     it('should return the placeholder if no amount passed', () => {
-      const balance = formatBalanceOr('PLACEHOLDER', null, 'GBP');
+      const balance = formatBalanceOrDefault('PLACEHOLDER', null, 'GBP');
       expect(balance).to.equal('PLACEHOLDER');
     });
 
     it('should return the placeholder if no currency type passed', () => {
-      const balance = formatBalanceOr('PLACEHOLDER', 5.0);
+      const balance = formatBalanceOrDefault('PLACEHOLDER', 5.0);
       expect(balance).to.equal('PLACEHOLDER');
     });
   });

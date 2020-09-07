@@ -1,7 +1,7 @@
 const {
   placeholders: { DEFAULT },
 } = require('../../../utils/enums');
-const { formatBalanceOr } = require('../../../utils/string');
+const { formatBalanceOrDefault } = require('../../../utils/string');
 
 class Balances {
   constructor(options = {}) {
@@ -14,9 +14,9 @@ class Balances {
 
   format() {
     return {
-      spends: formatBalanceOr(DEFAULT, this.spends, this.currency),
-      cash: formatBalanceOr(DEFAULT, this.cash, this.currency),
-      savings: formatBalanceOr(DEFAULT, this.savings, this.currency),
+      spends: formatBalanceOrDefault(DEFAULT, this.spends, this.currency),
+      cash: formatBalanceOrDefault(DEFAULT, this.cash, this.currency),
+      savings: formatBalanceOrDefault(DEFAULT, this.savings, this.currency),
       currency: this.currency || DEFAULT,
     };
   }

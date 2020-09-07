@@ -2,7 +2,7 @@
 const {
   placeholders: { DEFAULT },
 } = require('../../../utils/enums');
-const { fullNameOr } = require('../../../utils/string');
+const { fullNameOrDefault } = require('../../../utils/string');
 
 class Offender {
   constructor(options = {}) {
@@ -16,7 +16,7 @@ class Offender {
     return {
       bookingId: this.bookingId,
       offenderNo: this.offenderNo,
-      name: fullNameOr(DEFAULT, this.firstName, this.lastName),
+      name: fullNameOrDefault(DEFAULT, this.firstName, this.lastName),
     };
   }
 

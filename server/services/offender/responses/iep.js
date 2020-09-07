@@ -3,7 +3,10 @@ const {
   placeholders: { DEFAULT },
   dateFormats: { LONG_PRETTY_DATE },
 } = require('../../../utils/enums');
-const { formatDateOr, formatTimeBetweenOr } = require('../../../utils/date');
+const {
+  formatDateOrDefault,
+  formatTimeBetweenOrDefault,
+} = require('../../../utils/date');
 
 const MONTHS_UNTIL_IEP_REVIEW = 3;
 
@@ -19,12 +22,15 @@ class IEPSummary {
   format() {
     return {
       iepLevel: this.iepLevel || DEFAULT,
-      reviewDate: formatDateOr(
+      reviewDate: formatDateOrDefault(
         DEFAULT,
         LONG_PRETTY_DATE,
         this.nextIepReviewDate,
       ),
-      daysSinceReview: formatTimeBetweenOr(DEFAULT, this.lastIepReviewDate),
+      daysSinceReview: formatTimeBetweenOrDefault(
+        DEFAULT,
+        this.lastIepReviewDate,
+      ),
     };
   }
 

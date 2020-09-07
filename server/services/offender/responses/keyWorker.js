@@ -1,7 +1,7 @@
 const {
   placeholders: { DEFAULT },
 } = require('../../../utils/enums');
-const { fullNameOr } = require('../../../utils/string');
+const { fullNameOrDefault } = require('../../../utils/string');
 
 class KeyWorker {
   constructor(options = {}) {
@@ -11,7 +11,7 @@ class KeyWorker {
 
   format() {
     return {
-      current: fullNameOr(DEFAULT, this.firstName, this.lastName),
+      current: fullNameOrDefault(DEFAULT, this.firstName, this.lastName),
       lastMeeting: DEFAULT,
     };
   }

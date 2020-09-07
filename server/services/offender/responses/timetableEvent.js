@@ -4,7 +4,7 @@ const {
   timetable: { SCHEDULED_EVENT_TYPE },
   dateFormats: { PRETTY_TIME },
 } = require('../../../utils/enums');
-const { formatDateOr } = require('../../../utils/date');
+const { formatDateOrDefault } = require('../../../utils/date');
 
 const getTimetableEventTime = (startTime, endTime) => {
   if (startTime === '') {
@@ -32,12 +32,12 @@ class TimetableEvent {
   format() {
     return {
       description: this.description || DEFAULT,
-      startTime: formatDateOr('', PRETTY_TIME, this.startTime),
-      endTime: formatDateOr('', PRETTY_TIME, this.endTime),
+      startTime: formatDateOrDefault('', PRETTY_TIME, this.startTime),
+      endTime: formatDateOrDefault('', PRETTY_TIME, this.endTime),
       location: this.location ? capitalize(this.location) : DEFAULT,
       timeString: getTimetableEventTime(
-        formatDateOr('', PRETTY_TIME, this.startTime),
-        formatDateOr('', PRETTY_TIME, this.endTime),
+        formatDateOrDefault('', PRETTY_TIME, this.startTime),
+        formatDateOrDefault('', PRETTY_TIME, this.endTime),
       ),
       eventType: this.type || DEFAULT,
       finished: this.status !== SCHEDULED_EVENT_TYPE,

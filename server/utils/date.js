@@ -1,13 +1,13 @@
 const { parseISO, format, isValid, formatDistance } = require('date-fns');
 
-const formatDateOr = (placeHolder = '', dateFormat, date) => {
+const formatDateOrDefault = (placeHolder = '', dateFormat, date) => {
   if (!isValid(new Date(date))) {
     return placeHolder;
   }
   return format(parseISO(date), dateFormat);
 };
 
-const formatTimeBetweenOr = (placeHolder, start, finish) => {
+const formatTimeBetweenOrDefault = (placeHolder, start, finish) => {
   if (!isValid(new Date(start))) {
     return placeHolder;
   }
@@ -17,6 +17,6 @@ const formatTimeBetweenOr = (placeHolder, start, finish) => {
 };
 
 module.exports = {
-  formatDateOr,
-  formatTimeBetweenOr,
+  formatDateOrDefault,
+  formatTimeBetweenOrDefault,
 };

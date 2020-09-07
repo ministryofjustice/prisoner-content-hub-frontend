@@ -1,12 +1,12 @@
 const {
-  formatDateOr,
-  formatTimeBetweenOr,
+  formatDateOrDefault,
+  formatTimeBetweenOrDefault,
 } = require('../../server/utils/date');
 
 describe('DateUtils', () => {
-  describe('formatDateOr', () => {
+  describe('formatDateOrDefault', () => {
     it('should format a valid date', () => {
-      const formatted = formatDateOr(
+      const formatted = formatDateOrDefault(
         'PLACEHOLDER',
         'EEEE dd MMMM yyyy',
         '2020-09-04',
@@ -15,7 +15,7 @@ describe('DateUtils', () => {
     });
 
     it('should return the placeholder when date is invalid', () => {
-      const formatted = formatDateOr(
+      const formatted = formatDateOrDefault(
         'PLACEHOLDER',
         'EEEE dd MMMM yyyy',
         'invalid-date',
@@ -24,7 +24,7 @@ describe('DateUtils', () => {
     });
 
     it('should return the placeholder when date is not provided', () => {
-      const formatted = formatDateOr(
+      const formatted = formatDateOrDefault(
         'PLACEHOLDER',
         'EEEE dd MMMM yyyy',
         undefined,
@@ -33,9 +33,9 @@ describe('DateUtils', () => {
     });
   });
 
-  describe('formatTimeBetweenOr', () => {
+  describe('formatTimeBetweenOrDefault', () => {
     it('should return a formatted range between two dates', () => {
-      const formatted = formatTimeBetweenOr(
+      const formatted = formatTimeBetweenOrDefault(
         'PLACEHOLDER',
         '2020-08-01',
         '2020-09-01',
@@ -48,14 +48,14 @@ describe('DateUtils', () => {
         now: new Date('2020-09-01T12:00:00').getTime(),
       });
 
-      const formatted = formatTimeBetweenOr('PLACEHOLDER', '2020-08-01');
+      const formatted = formatTimeBetweenOrDefault('PLACEHOLDER', '2020-08-01');
       expect(formatted).to.match(/1 month/i);
 
       clock.restore();
     });
 
     it('should return a placeholder when no start date provided', () => {
-      const formatted = formatTimeBetweenOr('PLACEHOLDER', undefined);
+      const formatted = formatTimeBetweenOrDefault('PLACEHOLDER', undefined);
       expect(formatted).to.equal('PLACEHOLDER');
     });
   });

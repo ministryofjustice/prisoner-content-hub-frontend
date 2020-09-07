@@ -1,11 +1,11 @@
 const { capitalize } = require('./index');
 
-const fullNameOr = (placeHolder, ...names) => {
+const fullNameOrDefault = (placeHolder, ...names) => {
   const fullName = names.map(capitalize).join(' ').trim();
   return fullName === '' ? placeHolder : fullName;
 };
 
-const formatBalanceOr = (placeHolder, amount, currency) => {
+const formatBalanceOrDefault = (placeHolder, amount, currency) => {
   return amount && currency
     ? new Intl.NumberFormat('en-GB', {
         style: 'currency',
@@ -15,6 +15,6 @@ const formatBalanceOr = (placeHolder, amount, currency) => {
 };
 
 module.exports = {
-  fullNameOr,
-  formatBalanceOr,
+  fullNameOrDefault,
+  formatBalanceOrDefault,
 };

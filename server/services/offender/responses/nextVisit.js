@@ -4,7 +4,7 @@ const {
   timetable: { SCHEDULED_EVENT_TYPE },
   dateFormats: { PRETTY_DAY, PRETTY_DAY_AND_MONTH, PRETTY_DATE },
 } = require('../../../utils/enums');
-const { formatDateOr } = require('../../../utils/date');
+const { formatDateOrDefault } = require('../../../utils/date');
 
 class NextVisit {
   constructor(options = {}) {
@@ -20,9 +20,9 @@ class NextVisit {
     }
 
     return {
-      nextVisit: formatDateOr(DEFAULT, PRETTY_DATE, this.startTime),
-      nextVisitDay: formatDateOr(DEFAULT, PRETTY_DAY, this.startTime),
-      nextVisitDate: formatDateOr(
+      nextVisit: formatDateOrDefault(DEFAULT, PRETTY_DATE, this.startTime),
+      nextVisitDay: formatDateOrDefault(DEFAULT, PRETTY_DAY, this.startTime),
+      nextVisitDate: formatDateOrDefault(
         DEFAULT,
         PRETTY_DAY_AND_MONTH,
         this.startTime,
