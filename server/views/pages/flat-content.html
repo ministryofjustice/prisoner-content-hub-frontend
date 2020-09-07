@@ -65,8 +65,7 @@
 
 {% block bodyEnd %}
   {% if data.videos %}
-    <script src="/public/jplayer/jquery.jplayer.min.js"></script>
-    <script src="/public/javascript/jplayer.cleanskin.min.js"></script>
+    <script src="/public/video.min.js"></script>
     <script>
       $(document).ready(function () {
         {% for video in data.videos %}
@@ -75,23 +74,26 @@
       });
 
       function initPlayer(index, imageUrl, videoUrl) {
-        var playerHtml = '<div class="govuk-hub-media-player__player govuk-hub-media-video articlePlayer"><div id="videoPlayer' + index + '" class="webPlayer light articlePlayer"><div id="videoPlayerContainer' + index + '" class="videoPlayer" data-video="' + videoUrl + '"></div></div>';
+        var playerHtml = '<video id="videoPlayer"' + index + '" class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause" controls preload="auto" poster="' + imageUrl + '" data-setup=\'{"fluid": true,"controlBar": {"children": ["playToggle","volumePanel","currentTimeDisplay","progressControl","durationDisplay","fullscreenToggle"]}}\'><source src="' + videoUrl + ' type="video/mp4"/></video>';
 
         $("#body p:contains('VIDEO|')")
           .filter(":first")
           .replaceWith(playerHtml);
-        $('#videoPlayer' + index).videoPlayer({
-          name: '{{ data.title }}',
-          size: {
-            width: '100%',
-            height: '100%'
-          },
-          media: {
-            preload: 'metadata',
-            m4v: videoUrl,
-            supplied: "m4v",
-            poster: imageUrl
-          }
+        videojs("videoPlayer" + index, {}, function() {
+          this.controls = true;
+          this.preload = "auto";
+          this.poster = imageUrl;
+          this.fluid = true;
+          this.children = {
+            "controlBar": {
+              "playToggle": true,
+              "volumePanel": true,
+              "currentTimeDisplay": true,
+              "progressControl": true,
+              "durationDisplay": true,
+              "fullscreenToggle": true
+            }
+          };
         });
       }
     </script>
