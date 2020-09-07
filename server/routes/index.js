@@ -50,8 +50,8 @@ const createIndexRouter = ({
       const data = {};
 
       if (req.user) {
-        const userName = req.user && `Hi, ${req.user.getFullName()}`;
-        pageConfig.userName = userName;
+        pageConfig.userName = req.user.getFullName();
+        pageConfig.welcomeMessage = `Hi, ${req.user.getFullName()}`;
 
         const { bookingId } = req.user;
         const {
