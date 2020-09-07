@@ -1,9 +1,10 @@
 const { parseISO, format, isValid } = require('date-fns');
+const {
+  placeholders: { DEFAULT },
+  dateFormats: { PRETTY_DATE },
+} = require('../../../utils/enums');
 
-const DEFAULT = 'Unavailable';
-const PRETTY_DATE = 'EEEE dd MMMM yyyy';
-
-const formatDateOr = (defaultValue = '', dateFormat, date) => {
+const formatDateOrDefault = (defaultValue = '', dateFormat, date) => {
   if (!isValid(new Date(date))) {
     return defaultValue;
   }
@@ -20,17 +21,17 @@ class ImportantDates {
   format() {
     return {
       reCategorisationDate: DEFAULT,
-      hdcEligibilityDate: formatDateOr(
+      hdcEligibilityDate: formatDateOrDefault(
         DEFAULT,
         PRETTY_DATE,
         this.hdcEligibilityDate,
       ),
-      conditionalReleaseDate: formatDateOr(
+      conditionalReleaseDate: formatDateOrDefault(
         DEFAULT,
         PRETTY_DATE,
         this.conditionalReleaseDate,
       ),
-      licenceExpiryDate: formatDateOr(
+      licenceExpiryDate: formatDateOrDefault(
         DEFAULT,
         PRETTY_DATE,
         this.licenceExpiryDate,

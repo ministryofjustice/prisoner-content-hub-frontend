@@ -1,8 +1,9 @@
 const {
   KeyWorker,
 } = require('../../../../server/services/offender/responses/keyWorker');
-
-const DEFAULT_VALUE = 'Unavailable';
+const {
+  placeholders: { DEFAULT },
+} = require('../../../../server/utils/enums');
 
 describe('KeyWorker', () => {
   it('Should handle an empty response', () => {
@@ -13,8 +14,8 @@ describe('KeyWorker', () => {
 
     const formatted = keyWorker.format();
 
-    expect(formatted.current).to.equal(DEFAULT_VALUE);
-    expect(formatted.lastMeeting).to.equal(DEFAULT_VALUE);
+    expect(formatted.current).to.equal(DEFAULT);
+    expect(formatted.lastMeeting).to.equal(DEFAULT);
   });
 
   it('should handle an incomplete response', () => {
@@ -27,7 +28,7 @@ describe('KeyWorker', () => {
     expect(formatted).to.eql(
       {
         current: 'Donald',
-        lastMeeting: DEFAULT_VALUE,
+        lastMeeting: DEFAULT,
       },
       'Should handle a partial name',
     );
@@ -43,7 +44,7 @@ describe('KeyWorker', () => {
 
     expect(formatted).to.eql({
       current: 'Donald Duck',
-      lastMeeting: DEFAULT_VALUE,
+      lastMeeting: DEFAULT,
     });
   });
 });

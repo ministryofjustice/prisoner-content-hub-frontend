@@ -1,8 +1,10 @@
 const {
   IEPSummary,
 } = require('../../../../server/services/offender/responses/iep');
+const {
+  placeholders: { DEFAULT },
+} = require('../../../../server/utils/enums');
 
-const DEFAULT_VALUE = 'Unavailable';
 const TEST_IEP_LEVEL = 'STANDARD';
 
 describe('IEPSummary', () => {
@@ -15,9 +17,9 @@ describe('IEPSummary', () => {
 
     const formatted = iepSummary.format();
 
-    expect(formatted.iepLevel).to.equal(DEFAULT_VALUE);
-    expect(formatted.daysSinceReview).to.equal(DEFAULT_VALUE);
-    expect(formatted.reviewDate).to.equal(DEFAULT_VALUE);
+    expect(formatted.iepLevel).to.equal(DEFAULT);
+    expect(formatted.daysSinceReview).to.equal(DEFAULT);
+    expect(formatted.reviewDate).to.equal(DEFAULT);
   });
 
   it('should handle an incomplete response', () => {
@@ -33,8 +35,8 @@ describe('IEPSummary', () => {
 
     expect(formatted).to.eql({
       iepLevel: TEST_IEP_LEVEL,
-      daysSinceReview: DEFAULT_VALUE,
-      reviewDate: DEFAULT_VALUE,
+      daysSinceReview: DEFAULT,
+      reviewDate: DEFAULT,
     });
 
     response = {
@@ -44,7 +46,7 @@ describe('IEPSummary', () => {
     formatted = IEPSummary.from(response).format();
 
     expect(formatted).to.eql({
-      iepLevel: DEFAULT_VALUE,
+      iepLevel: DEFAULT,
       daysSinceReview: '16 days',
       reviewDate: 'Tuesday 17 September',
     });

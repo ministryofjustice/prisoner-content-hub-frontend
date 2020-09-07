@@ -1,4 +1,7 @@
-const DEFAULT = 'Unavailable';
+const {
+  placeholders: { DEFAULT },
+} = require('../../../utils/enums');
+const { formatBalanceOrDefault } = require('../../../utils/string');
 
 class Balances {
   constructor(options = {}) {
@@ -10,19 +13,10 @@ class Balances {
   }
 
   format() {
-    const formatBalance = (amount, currency) => {
-      return amount && currency
-        ? new Intl.NumberFormat('en-GB', {
-            style: 'currency',
-            currency,
-          }).format(amount)
-        : DEFAULT;
-    };
-
     return {
-      spends: formatBalance(this.spends, this.currency),
-      cash: formatBalance(this.cash, this.currency),
-      savings: formatBalance(this.savings, this.currency),
+      spends: formatBalanceOrDefault(DEFAULT, this.spends, this.currency),
+      cash: formatBalanceOrDefault(DEFAULT, this.cash, this.currency),
+      savings: formatBalanceOrDefault(DEFAULT, this.savings, this.currency),
       currency: this.currency || DEFAULT,
     };
   }

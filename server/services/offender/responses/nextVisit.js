@@ -1,19 +1,10 @@
-const { parseISO, format, isValid } = require('date-fns');
-// eslint-disable-next-line import/no-useless-path-segments
-const { capitalizePersonName } = require('../../../../server/utils');
-
-const DEFAULT = 'Unavailable';
-const SCHEDULED_STATUS = 'SCH';
-const PRETTY_DATE = 'EEEE dd MMMM yyyy';
-const PRETTY_DAY = 'EEEE';
-const PRETTY_DAY_AND_MONTH = 'd MMMM';
-
-const formatDateOr = (defaultValue = '', dateFormat, date) => {
-  if (!isValid(new Date(date))) {
-    return defaultValue;
-  }
-  return format(parseISO(date), dateFormat);
-};
+const { capitalizePersonName } = require('../../../utils');
+const {
+  placeholders: { DEFAULT },
+  timetable: { SCHEDULED_EVENT_TYPE },
+  dateFormats: { PRETTY_DAY, PRETTY_DAY_AND_MONTH, PRETTY_DATE },
+} = require('../../../utils/enums');
+const { formatDateOrDefault } = require('../../../utils/date');
 
 class NextVisit {
   constructor(options = {}) {
@@ -24,14 +15,14 @@ class NextVisit {
   }
 
   format() {
-    if (this.status !== SCHEDULED_STATUS || !this.startTime) {
+    if (this.status !== SCHEDULED_EVENT_TYPE || !this.startTime) {
       return { error: 'No upcoming visit' };
     }
 
     return {
-      nextVisit: formatDateOr(DEFAULT, PRETTY_DATE, this.startTime),
-      nextVisitDay: formatDateOr(DEFAULT, PRETTY_DAY, this.startTime),
-      nextVisitDate: formatDateOr(
+      nextVisit: formatDateOrDefault(DEFAULT, PRETTY_DATE, this.startTime),
+      nextVisitDay: formatDateOrDefault(DEFAULT, PRETTY_DAY, this.startTime),
+      nextVisitDate: formatDateOrDefault(
         DEFAULT,
         PRETTY_DAY_AND_MONTH,
         this.startTime,

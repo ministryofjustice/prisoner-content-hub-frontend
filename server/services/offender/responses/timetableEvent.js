@@ -1,9 +1,10 @@
-const { parseISO, format, isValid } = require('date-fns');
 const { capitalize } = require('../../../utils');
-
-const DEFAULT = 'Unavailable';
-const SCHEDULED_STATUS = 'SCH';
-const PRETTY_TIME = 'h:mmaaa';
+const {
+  placeholders: { DEFAULT },
+  timetable: { SCHEDULED_EVENT_TYPE },
+  dateFormats: { PRETTY_TIME },
+} = require('../../../utils/enums');
+const { formatDateOrDefault } = require('../../../utils/date');
 
 const getTimetableEventTime = (startTime, endTime) => {
   if (startTime === '') {
@@ -17,20 +18,13 @@ const getTimetableEventTime = (startTime, endTime) => {
   return startTime;
 };
 
-const formatDateOr = (defaultValue = '', dateFormat, date) => {
-  if (!isValid(new Date(date))) {
-    return defaultValue;
-  }
-  return format(parseISO(date), dateFormat);
-};
-
 class TimetableEvent {
   constructor(options = {}) {
     this.description = options.description;
     this.startTime = options.startTime;
     this.endTime = options.endTime;
     this.location = options.location;
-    this.eventType = options.eventType;
+    this.type = options.type;
     this.status = options.status;
     this.paid = options.paid;
   }
@@ -38,18 +32,22 @@ class TimetableEvent {
   format() {
     return {
       description: this.description || DEFAULT,
-      startTime: formatDateOr('', PRETTY_TIME, this.startTime),
-      endTime: formatDateOr('', PRETTY_TIME, this.endTime),
+      startTime: formatDateOrDefault('', PRETTY_TIME, this.startTime),
+      endTime: formatDateOrDefault('', PRETTY_TIME, this.endTime),
       location: this.location ? capitalize(this.location) : DEFAULT,
       timeString: getTimetableEventTime(
-        formatDateOr('', PRETTY_TIME, this.startTime),
-        formatDateOr('', PRETTY_TIME, this.endTime),
+        formatDateOrDefault('', PRETTY_TIME, this.startTime),
+        formatDateOrDefault('', PRETTY_TIME, this.endTime),
       ),
-      eventType: this.eventType || DEFAULT,
-      finished: this.status !== SCHEDULED_STATUS,
+      eventType: this.type || DEFAULT,
+      finished: this.status !== SCHEDULED_EVENT_TYPE,
       status: this.status || DEFAULT,
       paid: this.paid,
     };
+  }
+
+  static filterByType(...types) {
+    return timetableEvent => types.includes(timetableEvent.type);
   }
 
   static from(response = {}) {
@@ -68,7 +66,7 @@ class TimetableEvent {
       startTime,
       endTime,
       location: eventLocation,
-      eventType,
+      type: eventType,
       status: eventStatus,
       paid,
     });

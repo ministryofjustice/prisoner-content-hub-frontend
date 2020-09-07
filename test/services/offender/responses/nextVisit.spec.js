@@ -1,8 +1,9 @@
 const {
   NextVisit,
 } = require('../../../../server/services/offender/responses/nextVisit');
-
-const DEFAULT_VALUE = 'Unavailable';
+const {
+  placeholders: { DEFAULT },
+} = require('../../../../server/utils/enums');
 
 describe('NextVisit', () => {
   it('Should handle an empty response', () => {
@@ -36,8 +37,8 @@ describe('NextVisit', () => {
         nextVisit: 'Saturday 07 December 2019',
         nextVisitDate: '7 December',
         nextVisitDay: 'Saturday',
-        visitType: DEFAULT_VALUE,
-        visitorName: DEFAULT_VALUE,
+        visitType: DEFAULT,
+        visitorName: DEFAULT,
       },
       'Should handle missing visitor name or type',
     );

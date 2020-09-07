@@ -1,20 +1,24 @@
-const { parseISO, format, isValid, isBefore, addDays } = require('date-fns');
-const { prop } = require('ramda');
-const { capitalize } = require('../../utils');
-const { IEPSummary } = require('./responses/iep');
-const { Balances } = require('./responses/balances');
-const { Offender } = require('./responses/offender');
-const { KeyWorker } = require('./responses/keyWorker');
-const { NextVisit } = require('./responses/nextVisit');
-const { ImportantDates } = require('./responses/importantDates');
-const { Timetable } = require('./responses/timetable');
+const { format, isValid, isBefore, addDays } = require('date-fns');
+const responses = require('./responses');
+const {
+  dateFormats: { ISO_DATE, HOUR },
+  timetable: { APP_EVENT_TYPE, VISIT_EVENT_TYPE },
+} = require('../../utils/enums');
+const { logger } = require('../../utils/logger');
 
-const prettyTime = date => {
-  if (!isValid(new Date(date))) return '';
-  return format(parseISO(date), 'h:mmaaa');
-};
-
-const createOffenderService = repository => {
+const createOffenderService = (
+  repository,
+  {
+    Offender,
+    IEPSummary,
+    Balances,
+    KeyWorker,
+    NextVisit,
+    ImportantDates,
+    Timetable,
+    TimetableEvent,
+  } = responses,
+) => {
   async function getOffenderDetailsFor(prisonerId) {
     const response = await repository.getOffenderDetailsFor(prisonerId);
     return Offender.from(response).format();
@@ -24,7 +28,12 @@ const createOffenderService = repository => {
     try {
       const response = await repository.getIEPSummaryFor(bookingId);
       return IEPSummary.from(response).format();
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getIEPSummaryFor',
+        message: e.message,
+        id: bookingId,
+      });
       return {
         error: 'We are not able to show your IEP summary at this time',
       };
@@ -35,7 +44,12 @@ const createOffenderService = repository => {
     try {
       const response = await repository.getBalancesFor(bookingId);
       return Balances.from(response).format();
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getBalancesFor',
+        message: e.message,
+        id: bookingId,
+      });
       return {
         error: 'We are not able to show your balances at this time',
       };
@@ -46,7 +60,12 @@ const createOffenderService = repository => {
     try {
       const response = await repository.getKeyWorkerFor(prisonerId);
       return KeyWorker.from(response).format();
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getKeyWorkerFor',
+        message: e.message,
+        id: prisonerId,
+      });
       return {
         error: 'We are not able to show Key Worker information at this time',
       };
@@ -57,7 +76,12 @@ const createOffenderService = repository => {
     try {
       const response = await repository.getNextVisitFor(bookingId);
       return NextVisit.from(response).format();
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getVisitsFor',
+        message: e.message,
+        id: bookingId,
+      });
       return {
         error: 'We are not able to show your visits at this time',
       };
@@ -68,22 +92,26 @@ const createOffenderService = repository => {
     try {
       const response = await repository.sentenceDetailsFor(bookingId);
       return ImportantDates.from(response).format();
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getImportantDatesFor',
+        message: e.message,
+        id: bookingId,
+      });
       return {
         error: 'We are not able to show your important dates at this time',
       };
     }
   }
 
-  // Move to the repository Tier?
   async function getActualHomeEvents(bookingId, time) {
-    const hour = Number.parseInt(format(time, 'H'), 10);
+    const hour = Number.parseInt(format(time, HOUR), 10);
     const tomorrowCutOffHour = 19;
 
     if (hour >= tomorrowCutOffHour) {
       const tomorrow = addDays(time, 1);
-      const startDate = format(time, 'yyyy-MM-dd');
-      const endDate = format(tomorrow, 'yyyy-MM-dd');
+      const startDate = format(time, ISO_DATE);
+      const endDate = format(tomorrow, ISO_DATE);
 
       return {
         events: await repository.getEventsFor(bookingId, startDate, endDate),
@@ -112,24 +140,19 @@ const createOffenderService = repository => {
         : {
             todaysEvents: events
               .filter(
-                event =>
-                  event.eventType === 'APP' || event.eventType === 'VISIT',
+                TimetableEvent.filterByType(APP_EVENT_TYPE, VISIT_EVENT_TYPE),
               )
-              .map(event => {
-                const startTime = prettyTime(prop('startTime', event));
-                const endTime = prettyTime(prop('endTime', event));
-
-                return {
-                  title: event.eventSourceDesc,
-                  startTime,
-                  endTime,
-                  location: capitalize(event.eventLocation),
-                  timeString: startTime,
-                };
-              }),
+              .map(eventResponse =>
+                TimetableEvent.from(eventResponse).format(),
+              ),
             isTomorrow,
           };
-    } catch {
+    } catch (e) {
+      logger.error({
+        function: 'getEventsForToday',
+        message: e.message,
+        id: bookingId,
+      });
       return {
         error: 'We are not able to show your schedule for today at this time',
       };
@@ -163,6 +186,15 @@ const createOffenderService = repository => {
         .addEvents(eventsData)
         .build();
     } catch (e) {
+      logger.error({
+        function: 'getEventsFor',
+        message: e.message,
+        id: bookingId,
+        options: {
+          startDate,
+          endDate,
+        },
+      });
       return {
         error: `We are not able to show your schedule for the selected week at this time`,
       };

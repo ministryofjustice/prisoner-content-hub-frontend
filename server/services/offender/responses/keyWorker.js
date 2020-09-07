@@ -1,7 +1,7 @@
-// eslint-disable-next-line import/no-useless-path-segments
-const { capitalize } = require('../../../../server/utils');
-
-const DEFAULT = 'Unavailable';
+const {
+  placeholders: { DEFAULT },
+} = require('../../../utils/enums');
+const { fullNameOrDefault } = require('../../../utils/string');
 
 class KeyWorker {
   constructor(options = {}) {
@@ -10,13 +10,8 @@ class KeyWorker {
   }
 
   format() {
-    const fullName = [this.firstName, this.lastName]
-      .map(capitalize)
-      .join(' ')
-      .trim();
-
     return {
-      current: fullName !== '' ? fullName : DEFAULT,
+      current: fullNameOrDefault(DEFAULT, this.firstName, this.lastName),
       lastMeeting: DEFAULT,
     };
   }
