@@ -125,8 +125,8 @@ const createOffenderService = (
       }
 
       return {
-        events: await repository.getEventsForToday(bookingId),
-        isTomorrow: false,
+        events,
+        isTomorrow,
       };
     } catch (e) {
       return {
