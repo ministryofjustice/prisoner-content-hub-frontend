@@ -3,9 +3,7 @@ const createHubFeaturedContentService = repository => {
     { establishmentId } = { establishmentId: 0 },
   ) {
     try {
-      const [featured] = await Promise.all([
-        repository.contentFor({ establishmentId }),
-      ]);
+      const featured = await repository.contentFor({ establishmentId });
 
       return {
         featured,

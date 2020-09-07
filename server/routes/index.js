@@ -33,9 +33,13 @@ const createIndexRouter = ({
         config,
       );
 
-      const featuredContent = await hubFeaturedContentService.hubFeaturedContent(
+      const featuredContentResults = await hubFeaturedContentService.hubFeaturedContent(
         { establishmentId },
       );
+      const featuredContent =
+        featuredContentResults !== [] && featuredContentResults.featured
+          ? featuredContentResults.featured[0]
+          : [];
 
       const pageConfig = {
         content: true,
@@ -67,7 +71,7 @@ const createIndexRouter = ({
         title: 'Home',
         homePageLinks,
         homePageLinksTitle,
-        featuredContent: featuredContent.featured[0],
+        featuredContent,
         ...data,
       });
     } catch (error) {

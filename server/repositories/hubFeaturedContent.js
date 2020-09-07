@@ -9,11 +9,15 @@ function hubFeaturedContentRepository(httpClient) {
       _prison: establishmentId,
     };
 
-    const response = await httpClient.get(endpoint, { query });
+    try {
+      const response = await httpClient.get(endpoint, { query });
 
-    if (!Array.isArray(response)) return [];
+      if (!Array.isArray(response)) return [];
 
-    return R.map(featuredContentTileResponseFrom, response);
+      return R.map(featuredContentTileResponseFrom, response);
+    } catch (e) {
+      return [];
+    }
   }
 
   return {
