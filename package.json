@@ -60,7 +60,6 @@
     "express-request-id": "^1.4.1",
     "govuk-frontend": "^3.6.0",
     "helmet": "^3.22.0",
-    "jplayer": "^2.9.2",
     "jquery": "^3.5.0",
     "jsonwebtoken": "^8.5.1",
     "mkdirp": "^1.0.4",

@@ -156,7 +156,6 @@ const createApp = ({
     '../assets',
     '../assets/stylesheets',
     '../node_modules/govuk-frontend/govuk/',
-    '../node_modules/jplayer/dist',
     '../node_modules/jquery/dist',
     '../node_modules/video.js/dist',
   ].forEach(dir => {
