@@ -45,24 +45,8 @@ const { searchRepository } = require('./repositories/search');
 const { analyticsRepository } = require('./repositories/analytics');
 const { feedbackRepository } = require('./repositories/feedback');
 
-// Connect services with repositories
-const hubMenuService = createHubMenuService(
-  hubMenuRepository(new HubClient(), new StandardClient()),
-);
-const hubFeaturedContentService = createHubFeaturedContentService(
-  hubFeaturedContentRepository(new HubClient()),
-);
-const hubPromotedContentService = createHubPromotedContentService(
-  promotedContentRepository(new HubClient()),
-);
-const hubContentService = createHubContentService({
-  contentRepository: contentRepository(new HubClient()),
-  menuRepository: hubMenuRepository(new HubClient()),
-  categoryFeaturedContentRepository: categoryFeaturedContentRepository(
-    new HubClient(),
-  ),
-});
-const hubTagsService = createHubTagsService(contentRepository(new HubClient()));
+const hubClient = new HubClient();
+const standardClient = new StandardClient();
 
 const cachingStrategy = path(['features', 'useRedisCache'], config)
   ? new RedisCachingStrategy(
@@ -71,40 +55,45 @@ const cachingStrategy = path(['features', 'useRedisCache'], config)
     )
   : new InMemoryCachingStrategy();
 
-const offenderService = createPrisonApiOffenderService(
-  offenderRepository(
-    new PrisonApiClient({
-      prisonApi: config.prisonApi,
-      cachingStrategy,
-    }),
-  ),
-);
-const searchService = createSearchService({
-  searchRepository: searchRepository(new StandardClient()),
-});
-const analyticsService = createAnalyticsService({
-  analyticsRepository: analyticsRepository(new StandardClient()),
-});
-const feedbackService = createFeedbackService({
-  feedbackRepository: feedbackRepository(new StandardClient()),
-});
-
-const app = createApp({
+module.exports = createApp({
+  logger,
   healthService: createHealthService({
-    client: new StandardClient(),
+    client: standardClient,
     config,
     logger,
   }),
-  logger,
-  hubFeaturedContentService,
-  hubPromotedContentService,
-  hubMenuService,
-  hubContentService,
-  hubTagsService,
-  offenderService,
-  searchService,
-  analyticsService,
-  feedbackService,
+  hubFeaturedContentService: createHubFeaturedContentService(
+    hubFeaturedContentRepository(hubClient),
+  ),
+  hubPromotedContentService: createHubPromotedContentService(
+    promotedContentRepository(hubClient),
+  ),
+  hubMenuService: createHubMenuService(
+    hubMenuRepository(hubClient, standardClient),
+  ),
+  hubContentService: createHubContentService({
+    contentRepository: contentRepository(hubClient),
+    menuRepository: hubMenuRepository(hubClient),
+    categoryFeaturedContentRepository: categoryFeaturedContentRepository(
+      hubClient,
+    ),
+  }),
+  hubTagsService: createHubTagsService(contentRepository(hubClient)),
+  offenderService: createPrisonApiOffenderService(
+    offenderRepository(
+      new PrisonApiClient({
+        prisonApi: config.prisonApi,
+        cachingStrategy,
+      }),
+    ),
+  ),
+  searchService: createSearchService({
+    searchRepository: searchRepository(standardClient),
+  }),
+  analyticsService: createAnalyticsService({
+    analyticsRepository: analyticsRepository(standardClient),
+  }),
+  feedbackService: createFeedbackService({
+    feedbackRepository: feedbackRepository(standardClient),
+  }),
 });
-
-module.exports = app;
