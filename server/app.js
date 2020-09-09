@@ -52,6 +52,7 @@ const version = Date.now().toString();
 
 const createApp = ({
   logger,
+  requestLogger,
   hubFeaturedContentService,
   hubMenuService,
   hubContentService,
@@ -186,7 +187,7 @@ const createApp = ({
   // Don't cache dynamic resources
   app.use(noCache());
 
-  app.use(logger.requestLogger());
+  app.use(requestLogger);
 
   // feature toggles
   app.use(featureToggleMiddleware(config.features));
