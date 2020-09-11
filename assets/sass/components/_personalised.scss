@@ -118,12 +118,8 @@
   justify-content: space-between;
   margin-bottom: govuk-spacing(5);
 
-  @media (min-width: $desktop-breakpoint) {
-    width: 66%;
-  }
-
   & > * {
-    flex: 1 0 25%;
+    width: 33%;
   }
 
   & p {
@@ -137,7 +133,7 @@
   }
 
   & > div {
-    padding-right: govuk-spacing(5);
+    padding-right: govuk-spacing(2);
 
     & > button {
       width: 100%;
