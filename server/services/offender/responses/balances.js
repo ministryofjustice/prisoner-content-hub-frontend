@@ -1,7 +1,6 @@
-const {
-  placeholders: { DEFAULT },
-} = require('../../../utils/enums');
 const { formatBalanceOrDefault } = require('../../../utils/string');
+
+const DEFAULT = null;
 
 class Balances {
   constructor(options = {}) {
