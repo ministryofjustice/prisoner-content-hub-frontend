@@ -1,9 +1,8 @@
 const {
   Balances,
 } = require('../../../../server/services/offender/responses/balances');
-const {
-  placeholders: { DEFAULT },
-} = require('../../../../server/utils/enums');
+
+const DEFAULT = null;
 
 describe('Balances', () => {
   it('Should handle an empty response', () => {
