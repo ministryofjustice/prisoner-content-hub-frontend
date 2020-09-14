@@ -55,6 +55,11 @@
     opacity: 0.7;
   }
 
+  & > .day-block--placeholder {
+    color: govuk-colour('black');
+    background-color: rgba(177, 180, 182, 0.5);
+  }
+
   & > div > div {
     margin: govuk-spacing(4);
   }

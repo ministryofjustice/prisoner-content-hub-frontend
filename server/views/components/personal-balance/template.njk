@@ -2,40 +2,34 @@
 <div id="money">
   {% if isLoggedIn %}
     {% if params.data.error %}
-      <h2>
+      <p class="govuk-!-font-size-24">
         {{params.data.error}}, <a href="{{ params.authReturnUrl }}" class="govuk-link">try again</a>
-      </h2>
+      </p>
     {% else %}
-      <h2>Your account balances</h2>
+      <p class="govuk-!-font-size-24">Your account balances</p>
     {% endif %}
     <div class="balances">
       {{ personalBalanceSingle({
-          type: 'spends',
-          amount: params.data.spends
-        })}}
+        type: 'spends',
+        amount: params.data.spends
+      })}}
       {{ personalBalanceSingle({
-          type: 'private',
-          amount: params.data.cash
-        })}}
+        type: 'private',
+        amount: params.data.cash
+      })}}
       {{ personalBalanceSingle({
-          type: 'savings',
-          amount: params.data.savings
-        })}}
+        type: 'savings',
+        amount: params.data.savings
+      })}}
     </div>
   {% else %}
-    <h2>
-      <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your balances
-    </h2>
-    <div class="balances">
-      <div>
-        <p class="unavailable">Spends</p>
-      </div>
-      <div>
-        <p class="unavailable">Private</p>
-      </div>
-      <div>
-        <p class="unavailable">Savings</p>
-      </div>
+    <p class="govuk-!-font-size-24">
+      <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your account balances
+    </p>
+    <div class="govuk-clearfix">
+      <div class="personalisation-placeholder">Spends</div>
+      <div class="personalisation-placeholder">Private</div>
+      <div class="personalisation-placeholder">Savings</div>
     </div>
   {% endif %}
 </div>

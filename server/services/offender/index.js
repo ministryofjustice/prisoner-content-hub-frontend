@@ -196,7 +196,7 @@ const createOffenderService = (
         },
       });
       return {
-        error: `We are not able to show your schedule for the selected week at this time`,
+        error: `We are not able to show your timetable at this time`,
       };
     }
   }
