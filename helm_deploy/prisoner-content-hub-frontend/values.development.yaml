@@ -8,7 +8,6 @@ application:
     feedbackEndpoint: /prod-feedback/_doc
     enableFeatureToggles: true
     analyticsSiteId: UA-152065860-4
-    mockAuth: true
     enablePersonalInformation: true
 
 ingress:

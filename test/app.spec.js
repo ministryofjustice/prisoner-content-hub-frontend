@@ -5,14 +5,6 @@ const config = require('../server/config');
 const { logger } = require('./test-helpers');
 
 describe('App', () => {
-  const originalConfig = { ...config };
-  beforeEach(() => {
-    config.mockAuth = true;
-  });
-  afterEach(() => {
-    config.mockAuth = originalConfig.mockAuth;
-  });
-
   it('renders a 404 page correctly on invalid url', async () => {
     await request(app())
       .get('/unknown-url')

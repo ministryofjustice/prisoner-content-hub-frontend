@@ -24,7 +24,6 @@ application:
   config:
     appName: "HMP Berwyn"
     enableFeatureToggles: false
-    mockAuth: false
     enablePersonalInformation: false
     establishmentName: berwyn
     analyticsEndpoint: https://www.google-analytics.com/collect

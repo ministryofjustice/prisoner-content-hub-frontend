@@ -159,7 +159,6 @@ module.exports = {
       getEnv('ENABLE_PERSONAL_INFORMATION', 'false') === 'true',
     useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'true') === 'true',
   },
-  mockAuth: getEnv('MOCK_AUTH', 'false') === 'true',
   analytics: {
     endpoint: getEnv(
       'ANALYTICS_ENDPOINT',
