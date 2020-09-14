@@ -11,15 +11,15 @@
   </div>
   <div class="govuk-body">
     {% if params.error %}
-      <p>Unavailable</p>
+      <p>Your timetable is currently unavailable.</p>
     {% else %}
       {% for event in params.events %}
-        <div>
+        {% if loop.first %}<div>{% endif %}
           <span class="timetable-time">{{event.timeString}}</span>
           <span>
             <strong>{{event.description}}</strong>
             {{event.location}}</span>
-        </div>
+        {% if loop.last %}</div>{% endif %}
       {% else %}
         {% if isLoggedIn %}
           Nothing scheduled for today

@@ -91,18 +91,28 @@
 
   & > :last-child {
     margin: 0;
-    display: flex;
-    flex-wrap: wrap;
     font-size: 24px;
     margin-bottom: 0;
 
+    & > div {
+      display: grid;
+      grid-template-columns: auto 4fr;
+      grid-column-gap: govuk-spacing(2);
+      grid-row-gap: govuk-spacing(2);
+    }
+
+    & > div > span {
+      text-transform: capitalize;
+    }
+
+    & > div > .timetable-time {
+      text-transform: lowercase;
+    }
+
     & > div > :first-child {
-      display: block;
       margin-top: govuk-spacing(4);
 
       @media (min-width: $desktop-breakpoint) {
-        display: inline-block;
-        width: 100px;
         margin-top: 0;
       }
     }
