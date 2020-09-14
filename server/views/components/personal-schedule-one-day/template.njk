@@ -1,20 +1,26 @@
 {% from "../personal-schedule-day-block/macro.njk" import personalScheduleDayBlock %}
 <div class="govuk-width-container govuk-body timetable-day">
-  {% if params.error %}
-    <p>Unavailable</p>
+  {% if isLoggedIn %}
+    {% if params.data.error %}
+      <p>Unavailable</p>
+    {% else %}
+      {% for day, event in params.data %}
+        <h3>{{event.title}}</h3>
+        <div>
+          <h4{% if event.morning.finished %} class="day-block-finished"{% endif %}>Morning</h4>
+          <h4{% if event.afternoon.finished %} class="day-block-finished"{% endif %}>Afternoon</h4>
+          <h4{% if event.evening.finished %} class="day-block-finished"{% endif %}>Evening</h4>
+        </div>
+        <div class="timetable-day-blocks">
+          {{ personalScheduleDayBlock(event.morning) }}
+          {{ personalScheduleDayBlock(event.afternoon) }}
+          {{ personalScheduleDayBlock(event.evening) }}
+        </div>
+      {% endfor %}
+    {% endif %}
   {% else %}
-    {% for day, event in params %}
-      <h3>{{event.title}}</h3>
-      <div>
-        <h4{% if event.morning.finished %} class="day-block-finished"{% endif %}>Morning</h4>
-        <h4{% if event.afternoon.finished %} class="day-block-finished"{% endif %}>Afternoon</h4>
-        <h4{% if event.evening.finished %} class="day-block-finished"{% endif %}>Evening</h4>
-      </div>
-      <div class="timetable-day-blocks">
-        {{ personalScheduleDayBlock(event.morning) }}
-        {{ personalScheduleDayBlock(event.afternoon) }}
-        {{ personalScheduleDayBlock(event.evening) }}
-      </div>
-    {% endfor %}
+    <p class="govuk-!-font-size-24">
+      <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your timetable
+    </p>
   {% endif %}
 </div>

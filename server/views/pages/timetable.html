@@ -38,7 +38,7 @@
 {% block header %}
   <div class="govuk-width-container govuk-body timetable-header">
     <h1>{{ title }}</h1>
-    {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }) }}
+    {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }, config.userName)}}
   </div>
 {% endblock %}
 
@@ -46,9 +46,9 @@
 {% block search %}{% endblock %}
 
 {% block timetable %}
-  {{personalScheduleOneDay(events | first)}}
+  {{personalScheduleOneDay({ data: events | first, authReturnUrl:  config.returnUrl }, config.userName)}}
   <div class="govuk-width-container govuk-body timetable-header timetable-footer">
-    {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }) }}
+    {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }, config.userName) }}
   </div>
 {% endblock %}
 
