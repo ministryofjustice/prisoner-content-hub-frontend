@@ -1,28 +1,33 @@
 {% from "../personal-balance-single/macro.njk" import personalBalanceSingle %}
-{% if isLoggedIn %}
-  {% if params.data.error %}
-    {{params.data.error}}, <a href="{{ params.authReturnUrl }}" class="govuk-link">try again</a>
-  {% else %}
-    <div id="money">
+<div id="money">
+  {% if isLoggedIn %}
+    {% if params.data.error %}
+      <h2>
+        {{params.data.error}}, <a href="{{ params.authReturnUrl }}" class="govuk-link">try again</a>
+      </h2>
+    {% else %}
       <h2>Your account balances</h2>
-      <div class="balances">
-        {{ personalBalanceSingle({
-          type: 'spends',
-          amount: params.data.spends
-        })}}
-        {{ personalBalanceSingle({
-          type: 'private',
-          amount: params.data.cash
-        })}}
-        {{ personalBalanceSingle({
-          type: 'savings',
-          amount: params.data.savings
-        })}}
-      </div>
-    </div>
+    {% endif %}
+  {% else %}
+    <h2>
+      <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your balances
+    </h2>
   {% endif %}
-{% else %}
-  <span class="govuk-body">
-    <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your balances
-  </span>
-{% endif %}
+  <div class="balances">
+    {{ personalBalanceSingle({
+      type: 'spends',
+      amount: params.data.spends,
+      showPlaceholder: isLoggedIn
+    })}}
+    {{ personalBalanceSingle({
+      type: 'private',
+      amount: params.data.cash,
+      showPlaceholder: isLoggedIn
+    })}}
+    {{ personalBalanceSingle({
+      type: 'savings',
+      amount: params.data.savings,
+      showPlaceholder: isLoggedIn
+    })}}
+  </div>
+</div>

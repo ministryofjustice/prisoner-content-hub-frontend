@@ -3,7 +3,9 @@
   {% if params.amount %}
     <button type="button" class="govuk-button" id="show-balance-{{ params.type }}" onclick="showHiddenBlock('balance-{{ params.type }}')">View balance</button>
     <p id="balance-{{ params.type }}" class="hidden-block-text">{{ params.amount }}</p>
-  {% else %}
+  {% elif params.showPlaceholder %}
     <p class="unavailable">Unavailable</p>
+  {% else %}
+    <p class="unavailable"></p>
   {% endif %}
 </div>
