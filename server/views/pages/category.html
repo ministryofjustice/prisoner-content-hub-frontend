@@ -48,7 +48,7 @@
           {{ personalVisits({data: data.personalisedData }) }}
         {% endif %}
         {% if config.category === 'iep' %}
-          {{ personalIncentives({data: data.personalisedData }) }}
+          {{ personalIncentives({data: data.personalisedData, authReturnUrl: config.returnUrl }, config.userName) }}
         {% endif %}
         {% if config.category === 'money' %}
           {{ personalBalances({ data: data.personalisedData, authReturnUrl: config.returnUrl }, config.userName) }}
