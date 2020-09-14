@@ -29,7 +29,7 @@ const getTimeOfDay = date => {
 
 class Timetable {
   constructor(options = {}) {
-    this.events = {};
+    this.timetable = { events: {}, hasEvents: false };
 
     let startDate = new Date(options.startDate);
     let startDateString = format(startDate, ISO_DATE);
@@ -40,7 +40,7 @@ class Timetable {
     do {
       startDateString = format(startDate, ISO_DATE);
 
-      this.events[startDateString] = Timetable.createNewTableRow({
+      this.timetable.events[startDateString] = Timetable.createNewTableRow({
         title: Timetable.getTimetableRowTitle(startDateString),
         hasDateElapsed: isBefore(startDate, todaysDate),
       });
@@ -99,16 +99,17 @@ class Timetable {
       throw new Error('Events must be an array');
     }
 
-    this.events = events.reduce((timetable, event) => {
+    this.timetable.hasEvents = true;
+    this.timetable = events.reduce((timetable, event) => {
       const eventDate = isoDate(event.startTime);
       const timeOfDay = getTimeOfDay(event.startTime);
 
-      timetable[eventDate][timeOfDay].events.push(
+      timetable.events[eventDate][timeOfDay].events.push(
         TimetableEvent.from(event).format(),
       );
 
       return timetable;
-    }, this.events);
+    }, this.timetable);
 
     this.setEventStatesForToday();
 
@@ -118,19 +119,19 @@ class Timetable {
   setEventStatesForToday() {
     const todaysDate = format(new Date(), ISO_DATE);
 
-    if (this.events[todaysDate]) {
+    if (this.timetable.events[todaysDate]) {
       const todaysDateAndTime = format(new Date(), ISO_DATE_TIME);
       const currentTimeOfDay = getTimeOfDay(todaysDateAndTime);
 
-      this.events[todaysDate][MORNING].finished = false;
-      this.events[todaysDate][AFTERNOON].finished = false;
-      this.events[todaysDate][EVENING].finished = false;
+      this.timetable.events[todaysDate][MORNING].finished = false;
+      this.timetable.events[todaysDate][AFTERNOON].finished = false;
+      this.timetable.events[todaysDate][EVENING].finished = false;
 
       if (currentTimeOfDay === AFTERNOON) {
-        this.events[todaysDate][MORNING].finished = true;
+        this.timetable.events[todaysDate][MORNING].finished = true;
       } else if (currentTimeOfDay === EVENING) {
-        this.events[todaysDate][MORNING].finished = true;
-        this.events[todaysDate][AFTERNOON].finished = true;
+        this.timetable.events[todaysDate][MORNING].finished = true;
+        this.timetable.events[todaysDate][AFTERNOON].finished = true;
       }
     }
 
@@ -138,7 +139,7 @@ class Timetable {
   }
 
   build() {
-    return this.events;
+    return this.timetable;
   }
 }
 
