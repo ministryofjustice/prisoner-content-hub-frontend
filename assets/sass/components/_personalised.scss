@@ -33,10 +33,6 @@
 
 #iepSummary {
   width: 100%;
-
-  @media (min-width: $desktop-breakpoint) {
-    width: 75%;
-  }
 }
 
 .iep-info p > span {
@@ -84,6 +80,11 @@
 .iep-level--enhanced {
   background-color: govuk-colour('purple');
   margin-right: 0;
+}
+.iep-level--placeholder {
+  color: govuk-colour('black');
+  background-color: rgba(177, 180, 182, 0.5);
+  margin-right: govuk-spacing(2);
 }
 .iep-indicator--standard {
   margin-left: calc(30% + 30px);
