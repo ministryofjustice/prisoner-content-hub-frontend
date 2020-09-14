@@ -8,26 +8,34 @@
     {% else %}
       <h2>Your account balances</h2>
     {% endif %}
+    <div class="balances">
+      {{ personalBalanceSingle({
+          type: 'spends',
+          amount: params.data.spends
+        })}}
+      {{ personalBalanceSingle({
+          type: 'private',
+          amount: params.data.cash
+        })}}
+      {{ personalBalanceSingle({
+          type: 'savings',
+          amount: params.data.savings
+        })}}
+    </div>
   {% else %}
     <h2>
       <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your balances
     </h2>
+    <div class="balances">
+      <div>
+        <p class="unavailable">Spends</p>
+      </div>
+      <div>
+        <p class="unavailable">Private</p>
+      </div>
+      <div>
+        <p class="unavailable">Savings</p>
+      </div>
+    </div>
   {% endif %}
-  <div class="balances">
-    {{ personalBalanceSingle({
-      type: 'spends',
-      amount: params.data.spends,
-      showPlaceholder: isLoggedIn
-    })}}
-    {{ personalBalanceSingle({
-      type: 'private',
-      amount: params.data.cash,
-      showPlaceholder: isLoggedIn
-    })}}
-    {{ personalBalanceSingle({
-      type: 'savings',
-      amount: params.data.savings,
-      showPlaceholder: isLoggedIn
-    })}}
-  </div>
 </div>
