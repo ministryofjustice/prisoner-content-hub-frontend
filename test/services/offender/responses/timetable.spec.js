@@ -17,7 +17,12 @@ describe('Timetable', () => {
       '2020-08-28',
       '2020-08-29',
       '2020-08-30',
-    ].forEach(date => expect(timetable[date]).to.exist);
+    ].forEach(date => expect(timetable.events[date]).to.exist);
+
+    expect(timetable.hasEvents).to.equal(
+      false,
+      'Should not have set the hasEvents flag',
+    );
   });
 
   it('Should generate a timetable row for each date', () => {
@@ -25,12 +30,12 @@ describe('Timetable', () => {
       startDate: '2020-08-24',
     }).build();
 
-    expect(Object.keys(timetable).length).to.equal(
+    expect(Object.keys(timetable.events).length).to.equal(
       1,
       'Should only create entries for dates in range',
     );
 
-    expect(timetable['2020-08-24']).to.eql({
+    expect(timetable.events['2020-08-24']).to.eql({
       title: 'Monday 24 August',
       morning: { finished: true, events: [] },
       afternoon: { finished: true, events: [] },
@@ -67,19 +72,24 @@ describe('Timetable', () => {
       ])
       .build();
 
-    expect(timetable['2020-08-24'].morning.events.length).to.equal(
+    expect(timetable.events['2020-08-24'].morning.events.length).to.equal(
       1,
       'Should add events to the morning when before midday',
     );
 
-    expect(timetable['2020-08-24'].afternoon.events.length).to.equal(
+    expect(timetable.events['2020-08-24'].afternoon.events.length).to.equal(
       1,
       'Should add events to the afternoon when after midday',
     );
 
-    expect(timetable['2020-08-24'].evening.events.length).to.equal(
+    expect(timetable.events['2020-08-24'].evening.events.length).to.equal(
       1,
       'Should add events to the evening when after 1700hrs',
+    );
+
+    expect(timetable.hasEvents).to.equal(
+      true,
+      'Should have set the hasEvents flag',
     );
   });
 
@@ -116,15 +126,15 @@ describe('Timetable', () => {
 
     let t = timetable.build();
 
-    expect(t['2020-08-24'].morning.finished).to.equal(
+    expect(t.events['2020-08-24'].morning.finished).to.equal(
       false,
       'Should not be finished',
     );
-    expect(t['2020-08-24'].afternoon.finished).to.equal(
+    expect(t.events['2020-08-24'].afternoon.finished).to.equal(
       false,
       'Should not be finished',
     );
-    expect(t['2020-08-24'].evening.finished).to.equal(
+    expect(t.events['2020-08-24'].evening.finished).to.equal(
       false,
       'Should not be finished',
     );
@@ -132,15 +142,15 @@ describe('Timetable', () => {
     clock.now = new Date('2020-08-24T13:00:00').getTime();
     t = timetable.setEventStatesForToday().build();
 
-    expect(t['2020-08-24'].morning.finished).to.equal(
+    expect(t.events['2020-08-24'].morning.finished).to.equal(
       true,
       'Should be finished',
     );
-    expect(t['2020-08-24'].afternoon.finished).to.equal(
+    expect(t.events['2020-08-24'].afternoon.finished).to.equal(
       false,
       'Should not be finished',
     );
-    expect(t['2020-08-24'].evening.finished).to.equal(
+    expect(t.events['2020-08-24'].evening.finished).to.equal(
       false,
       'Should not be finished',
     );
@@ -148,15 +158,15 @@ describe('Timetable', () => {
     clock.now = new Date('2020-08-24T18:00:00').getTime();
     t = timetable.setEventStatesForToday().build();
 
-    expect(t['2020-08-24'].morning.finished).to.equal(
+    expect(t.events['2020-08-24'].morning.finished).to.equal(
       true,
       'Should be finished',
     );
-    expect(t['2020-08-24'].afternoon.finished).to.equal(
+    expect(t.events['2020-08-24'].afternoon.finished).to.equal(
       true,
       'Should be finished',
     );
-    expect(t['2020-08-24'].evening.finished).to.equal(
+    expect(t.events['2020-08-24'].evening.finished).to.equal(
       false,
       'Should not be finished',
     );

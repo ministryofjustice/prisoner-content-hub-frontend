@@ -201,6 +201,10 @@ const createOffenderService = (
     }
   }
 
+  function getEmptyTimetable(startDate, endDate) {
+    return Timetable.create({ startDate, endDate }).build();
+  }
+
   return {
     getOffenderDetailsFor,
     getIEPSummaryFor,
@@ -210,6 +214,7 @@ const createOffenderService = (
     getImportantDatesFor,
     getEventsForToday,
     getEventsFor,
+    getEmptyTimetable,
   };
 };
 
