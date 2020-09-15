@@ -7,19 +7,22 @@ const config = require('../config');
 const loggingTransports = [new transports.Console({ level: 'info' })];
 const exceptionTransports = [new transports.Console({ level: 'info' })];
 
+const logLevel = config.production ? 'info' : 'debug';
+
 const logger = createLogger({
-  level: config.production ? 'info' : 'debug',
+  level: logLevel,
   format: combine(timestamp(), json(), logstash()),
   transports: loggingTransports,
   exceptionHandlers: exceptionTransports,
   exitOnError: true,
 });
 
-logger.info(`Logger mode: ${config.production ? 'production' : 'development'}`);
+logger.info(`Logger level - "${logLevel}"`);
 
 module.exports = {
   logger,
-  requestLogger: morgan('tiny', {
-    stream: { write: message => logger.info(message) },
-  }),
+  requestLogger: (loggingFormat = 'tiny') =>
+    morgan(loggingFormat, {
+      stream: { write: message => logger.info(message) },
+    }),
 };

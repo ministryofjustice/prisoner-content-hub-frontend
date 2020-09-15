@@ -117,7 +117,7 @@ function app(opts) {
     hubContentService: { contentFor: sinon.stub().resolves({}) },
     searchService: { find: sinon.stub() },
     logger,
-    requestLogger: (req, res, next) => next(),
+    requestLogger: () => (req, res, next) => next(),
     ...opts,
   };
   return createApp(services);

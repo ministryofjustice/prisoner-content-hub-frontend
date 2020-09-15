@@ -120,7 +120,7 @@ const createApp = ({
       sassMiddleware({
         src: path.join(__dirname, '../assets/sass'),
         dest: path.join(__dirname, '../assets/stylesheets'),
-        debug: true,
+        debug: false,
         outputStyle: 'compressed',
         prefix: '/stylesheets/',
       }),
@@ -187,7 +187,7 @@ const createApp = ({
   // Don't cache dynamic resources
   app.use(noCache());
 
-  app.use(requestLogger);
+  app.use(requestLogger());
 
   // feature toggles
   app.use(featureToggleMiddleware(config.features));
@@ -328,12 +328,8 @@ const createApp = ({
 
   // eslint-disable-next-line no-unused-vars
   function renderErrors(error, req, res, next) {
-    logger.error({
-      function: 'Unhandled express error',
-      message: error.message,
-      id: error.code,
-      stack: error.stack,
-    });
+    logger.error(`Unhandled error - ${error.message}`);
+    logger.debug(error.stack);
     res.status(error.status || 500);
 
     const locals = {
