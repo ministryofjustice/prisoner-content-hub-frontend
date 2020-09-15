@@ -1,7 +1,7 @@
 <div class="todays-events">
   <div>
     <h3 class="govuk-heading-m">
-      {% if params.isTomorrow %}Tomorrow{% else %}Today{% endif %}'s appointments</h3>
+      {% if params.isTomorrow %}Tomorrow{% else %}Today{% endif %}'s events</h3>
     {% if not isLoggedIn %}
       <span class="govuk-body">
         <a href="/auth/sign-in?returnUrl=/" class="govuk-link see-timetable">Sign in</a> to see your timetable</span>
