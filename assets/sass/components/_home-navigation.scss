@@ -102,6 +102,27 @@
       grid-row-gap: govuk-spacing(2);
     }
 
+    & > div.todays-events__placeholder {
+      display: block;
+      width: 100%;
+      height: 100%;
+
+      & > div {
+        display: block;
+        margin-top: 0;
+        width: 66%;
+        background-color: govuk-colour('mid-grey');
+        opacity: 50%;
+        height: 40%;
+        margin-bottom: govuk-spacing(2);
+
+        &:last-of-type {
+          width: 33%;
+          margin-bottom: 0;
+        }
+      }
+    }
+
     & > div > span {
       text-transform: capitalize;
     }
@@ -124,25 +145,6 @@
 
     & > * {
       flex: 1 1 30%;
-    }
-  }
-}
-
-.todays-events__placeholder {
-  display: block;
-  width: 100%;
-
-  & > div {
-    // TODO: fix and remove important
-    display: block !important;
-    margin-top: 0 !important;
-    width: 66% !important;
-    background-color: govuk-colour('light-grey');
-    height: 44%;
-    margin-bottom: govuk-spacing(2);
-
-    &:last-of-type {
-      width: 33% !important;
     }
   }
 }
