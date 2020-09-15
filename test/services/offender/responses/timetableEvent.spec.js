@@ -13,7 +13,7 @@ describe('TimetableEvent', () => {
     expect(timetableEvent.startTime).to.not.exist;
     expect(timetableEvent.endTime).to.not.exist;
     expect(timetableEvent.location).to.not.exist;
-    expect(timetableEvent.type).to.not.exist;
+    expect(timetableEvent.eventType).to.not.exist;
     expect(timetableEvent.finished).to.not.exist;
     expect(timetableEvent.status).to.not.exist;
     expect(timetableEvent.paid).to.not.exist;
@@ -89,8 +89,8 @@ describe('TimetableEvent', () => {
     it('should filter by a single type', () => {
       const filter = TimetableEvent.filterByType('FOO');
 
-      const ofType = new TimetableEvent({ type: 'FOO' });
-      const notOfType = new TimetableEvent({ type: 'BAR' });
+      const ofType = new TimetableEvent({ eventType: 'FOO' });
+      const notOfType = new TimetableEvent({ eventType: 'BAR' });
 
       expect(filter(ofType)).to.equal(true);
       expect(filter(notOfType)).to.equal(false);
@@ -98,9 +98,9 @@ describe('TimetableEvent', () => {
     it('should filter by multiple types', () => {
       const filter = TimetableEvent.filterByType('FOO', 'BAR');
 
-      const ofType = new TimetableEvent({ type: 'FOO' });
-      const ofAnotherType = new TimetableEvent({ type: 'BAR' });
-      const notOfType = new TimetableEvent({ type: 'BAZ' });
+      const ofType = new TimetableEvent({ eventType: 'FOO' });
+      const ofAnotherType = new TimetableEvent({ eventType: 'BAR' });
+      const notOfType = new TimetableEvent({ eventType: 'BAZ' });
 
       expect(filter(ofType)).to.equal(true);
       expect(filter(ofAnotherType)).to.equal(true);
