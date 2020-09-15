@@ -11,15 +11,16 @@
   }
 }
 
+.visitor-name-block > *,
 .type-of-visit > *,
 .next-visit > * {
-  margin: 0;
+  margin: 0 0 govuk-spacing(2);
 }
 
 .next-visit-type,
 .next-visit-day {
   @include govuk-font(48, 'bold');
-  margin: govuk-spacing(2) 0;
+  margin: 0;
 }
 
 .next-visit-date {
@@ -29,6 +30,7 @@
 .hidden-block-text {
   display: none;
   margin: 0 0 13px;
+  @include govuk-font(24, 'normal');
 }
 
 #iepSummary {
