@@ -156,3 +156,19 @@
     }
   }
 }
+
+.personalisation-placeholder {
+  color: govuk-colour('black');
+  background-color: rgba(177, 180, 182, 0.5);
+  font-weight: bold;
+  padding: govuk-spacing(2);
+  float: left;
+  width: 30%;
+  margin-right: govuk-spacing(2);
+  text-align: center;
+  @include govuk-font(24, 'bold');
+
+  @media (min-width: $desktop-breakpoint) {
+    width: 29.3%;
+  }
+}

@@ -13,9 +13,15 @@
     {% for day, event in params.data.events %}
       <h3>{{event.title}}</h3>
       <div>
-        <h4{% if event.morning.finished %} class="day-block-finished"{% endif %}>Morning</h4>
-        <h4{% if event.afternoon.finished %} class="day-block-finished"{% endif %}>Afternoon</h4>
-        <h4{% if event.evening.finished %} class="day-block-finished"{% endif %}>Evening</h4>
+        {% if params.data.hasEvents %}
+          <h4{% if event.morning.finished %} class="day-block-finished"{% endif %}>Morning</h4>
+          <h4{% if event.afternoon.finished %} class="day-block-finished"{% endif %}>Afternoon</h4>
+          <h4{% if event.evening.finished %} class="day-block-finished"{% endif %}>Evening</h4>
+        {% else %}
+          <h4>Morning</h4>
+          <h4>Afternoon</h4>
+          <h4>Evening</h4>
+        {% endif %}
       </div>
       <div class="timetable-day-blocks">
         {{ personalScheduleDayBlock(event.morning, params.data.hasEvents, '8:30am to 12:00pm') }}
