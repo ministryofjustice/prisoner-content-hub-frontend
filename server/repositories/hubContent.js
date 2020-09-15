@@ -21,10 +21,11 @@ const hubContentRepository = httpClient => {
       logger.error(`HubContentRepository (contentFor) - No ID passed`);
       return null;
     }
-
-    const response = await httpClient.get(endpoint, {
+    const query = {
       _prison: establishmentId,
-    });
+    };
+
+    const response = await httpClient.get(endpoint, { query });
 
     if (isEmpty(response)) {
       logger.error(`HubContentRepository (contentFor) - Empty response`);

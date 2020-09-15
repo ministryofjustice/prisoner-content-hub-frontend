@@ -22,7 +22,6 @@ application:
     delaySeconds: 10
     timeoutSeconds: 5
   config:
-    appName: "HMP Berwyn"
     enableFeatureToggles: false
     enablePersonalInformation: false
     establishmentName: berwyn

@@ -11,12 +11,6 @@ function createHubContentService({
     }
 
     const content = await contentRepository.contentFor(id, establishmentId);
-    const prisonIds = prop('establishmentIds', content);
-
-    if (!canAccessContent(establishmentId, prisonIds)) {
-      return {};
-    }
-
     const secondaryTags = prop('secondaryTags', content);
 
     if (secondaryTags) {
@@ -136,13 +130,6 @@ function createHubContentService({
     contentFor,
     streamFor,
   };
-}
-
-function canAccessContent(establishmentId, prisonIds) {
-  if (!prisonIds || (prisonIds && prisonIds.length === 0) || !establishmentId)
-    return true;
-
-  return prisonIds.includes(establishmentId);
 }
 
 module.exports = {

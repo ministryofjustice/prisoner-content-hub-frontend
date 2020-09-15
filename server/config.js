@@ -91,9 +91,6 @@ const establishments = {
 };
 
 module.exports = {
-  appName: getEnv('APP_NAME', 'prisoner-content-hub-frontend', {
-    requireInProduction: true,
-  }),
   dev: !isProduction && !isTest,
   test: isTest,
   production: isProduction,
@@ -106,9 +103,6 @@ module.exports = {
   },
   cookieSecret: getEnv('COOKIE_SECRET', 'keyboard cat'),
   establishments,
-  establishmentName: getEnv('ESTABLISHMENT_NAME', 'berwyn', {
-    requireInProduction: true,
-  }),
   hubEndpoint,
   auth: {
     clientId: getEnv('AZURE_AD_CLIENT_ID', { requireInProduction: true }),
