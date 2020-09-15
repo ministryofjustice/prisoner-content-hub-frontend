@@ -120,7 +120,7 @@
     flex: 1 1 auto;
     padding: govuk-spacing(2);
     margin-left: 0;
-    margin-bottom: 0;
+    margin-bottom: govuk-spacing(4);
 
     & > * {
       flex: 1 1 30%;
