@@ -6,7 +6,6 @@ const {
 } = require('../utils');
 
 const createIndexRouter = ({
-  logger,
   hubFeaturedContentService,
   offenderService,
   config,
@@ -15,7 +14,6 @@ const createIndexRouter = ({
 
   router.get('/', async (req, res, next) => {
     try {
-      logger.info('GET index');
       const establishmentId = path(['locals', 'establishmentId'], res);
 
       const personalInformation = path(

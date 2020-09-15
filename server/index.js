@@ -1,7 +1,7 @@
 const redis = require('redis');
 const { path } = require('ramda');
 const { createApp } = require('./app');
-const { logger } = require('./utils/logger');
+const { logger, requestLogger } = require('./utils/logger');
 const config = require('./config');
 
 const { HubClient } = require('./clients/hub');
@@ -57,6 +57,7 @@ const cachingStrategy = path(['features', 'useRedisCache'], config)
 
 module.exports = createApp({
   logger,
+  requestLogger,
   healthService: createHealthService({
     client: standardClient,
     config,

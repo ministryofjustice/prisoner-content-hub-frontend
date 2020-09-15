@@ -1,5 +1,4 @@
 const R = require('ramda');
-const qs = require('querystring');
 
 const { logger } = require('../utils/logger');
 const config = require('../config');
@@ -16,7 +15,9 @@ function hubCategoryFeaturedContentRepository(httpClient) {
     };
 
     if (!categoryId) {
-      logger.error(`Requested ${endpoint}?${qs.stringify(query)}`);
+      logger.error(
+        `HubCategoryFeaturedContentRepository (contentFor) - No Category ID passed`,
+      );
       return [];
     }
 

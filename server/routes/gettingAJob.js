@@ -18,16 +18,10 @@ function addCurrentPageToMenu(url, menu) {
   });
 }
 
-const createGettingAJobRouter = ({
-  logger,
-  hubContentService,
-  hubMenuService,
-}) => {
+const createGettingAJobRouter = ({ hubContentService, hubMenuService }) => {
   const router = express.Router();
 
   router.get('/', (req, res) => {
-    logger.info(`GET ${req.originalUrl}`);
-
     const establishmentId = path(['locals', 'establishmentId'], res);
     const establishmentName = getEstablishmentFormattedName(establishmentId);
     const title = `Working in ${establishmentName}`;
@@ -66,7 +60,6 @@ const createGettingAJobRouter = ({
   });
 
   router.get('/:id', async (req, res, next) => {
-    logger.info(`GET ${req.originalUrl}`);
     const establishmentId = path(['locals', 'establishmentId'], res);
     const establishmentName = getEstablishmentFormattedName(establishmentId);
     const menu = hubMenuService.gettingAJobMenu(establishmentId);

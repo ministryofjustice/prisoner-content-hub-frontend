@@ -1,12 +1,10 @@
 const { path } = require('ramda');
 const express = require('express');
 
-const createNprRouter = ({ logger }) => {
+const createNprRouter = () => {
   const router = express.Router();
 
   router.get('/', async (req, res) => {
-    logger.info(`GET /npr`);
-
     const userName = req.user && req.user.getFullName();
     const nprStream = path(['app', 'locals', 'config', 'npr', 'stream'], req);
 

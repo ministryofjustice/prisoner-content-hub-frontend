@@ -1,12 +1,10 @@
 const { path } = require('ramda');
 const express = require('express');
 
-const createAnalyticsRouter = ({ analyticsService, logger }) => {
+const createAnalyticsRouter = ({ analyticsService }) => {
   const router = express.Router();
 
   router.post('/event', (req, res) => {
-    logger.info('GET /analytics/event');
-
     const sessionId = path(['session', 'id'], req);
 
     analyticsService.sendEvent({
@@ -22,8 +20,6 @@ const createAnalyticsRouter = ({ analyticsService, logger }) => {
   });
 
   router.post('/page', (req, res) => {
-    logger.info('GET /analytics/page');
-
     const sessionId = path(['session', 'id'], req);
 
     analyticsService.sendPageTrack({

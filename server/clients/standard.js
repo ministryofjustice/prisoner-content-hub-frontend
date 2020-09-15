@@ -12,15 +12,12 @@ class StandardClient {
     return this.client
       .get(endpoint, { params: query, ...rest })
       .then(res => {
-        logger.info(`Requested (GET) ${endpoint}?${qs.stringify(query)}`);
-
+        logger.info(`StandardClient (GET) ${endpoint}?${qs.stringify(query)}`);
         return res.data;
       })
-      .catch(exp => {
-        logger.info(
-          `Failed to request (GET) ${endpoint}?${qs.stringify(query)}`,
-        );
-        logger.error(exp);
+      .catch(e => {
+        logger.error(`StandardClient (GET) - ${e.message}`);
+        logger.debug(e.stack);
         return null;
       });
   }
@@ -29,24 +26,18 @@ class StandardClient {
     return this.client
       .post(endpoint, data)
       .then(res => {
-        logger.info(`Requested (POST) ${endpoint} with`, JSON.stringify(data));
-
+        logger.info(`StandardClient (POST) ${endpoint}`);
         return res.data;
       })
-      .catch(exp => {
-        logger.info(
-          `Failed to request (POST) ${endpoint} with`,
-          JSON.stringify(data),
-        );
-        logger.error(exp);
+      .catch(e => {
+        logger.error(`StandardClient (POST) - ${e.message}`);
+        logger.debug(e.stack);
         return null;
       });
   }
 
   postFormData(endpoint, data) {
-    const querystring = Object.keys(data)
-      .map(key => `${key}=${encodeURIComponent(data[key])}`)
-      .join('&');
+    const querystring = qs.stringify(data);
 
     const headers = {
       'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
@@ -63,19 +54,13 @@ class StandardClient {
       })
       .then(res => {
         logger.info(
-          `Requested (POST URLENCODED) ${endpoint} with`,
-          querystring,
+          `StandardClient (POST URLENCODED) - ${endpoint}?${querystring}`,
         );
-
         return res.data;
       })
-      .catch(exp => {
-        logger.info(
-          `Failed to request (POST URLENCODED) ${endpoint} with`,
-          querystring,
-        );
-        logger.error(exp);
-
+      .catch(e => {
+        logger.error(`StandardClient FAILED (GET) - ${e.message}`);
+        logger.debug(e.stack);
         return null;
       });
   }

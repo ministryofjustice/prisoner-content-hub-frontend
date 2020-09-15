@@ -1,11 +1,10 @@
 const { path } = require('ramda');
 const express = require('express');
 
-const createVisitsRouter = ({ hubContentService, offenderService, logger }) => {
+const createVisitsRouter = ({ hubContentService, offenderService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
-    logger.info('GET /visits');
     try {
       const id = 4203;
       const establishmentId = path(['locals', 'establishmentId'], res);

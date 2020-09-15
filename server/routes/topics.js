@@ -12,13 +12,11 @@ const fixUrls = element => {
   }
 };
 
-const createTopicsRouter = ({ logger, hubMenuService }) => {
+const createTopicsRouter = ({ hubMenuService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
     try {
-      logger.info('GET index');
-
       const userName = req.user && req.user.getFullName();
       const establishmentId = path(['locals', 'establishmentId'], res);
       const topics = await hubMenuService.allTopics(establishmentId);

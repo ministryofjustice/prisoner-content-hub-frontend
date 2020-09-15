@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "npm-run-all --parallel dev:*",
-    "dev:start": "DEBUG=gov-starter-server* nodemon server.js | bunyan -o short",
+    "dev:start": "DEBUG=gov-starter-server* nodemon server.js",
     "build": "npm run css-build",
     "css-build": "./bin/build-css",
     "clean": "rm -rf public/* .port.tmp *.log build/* uploads/* test-results.xml",
@@ -49,7 +49,6 @@
     "@sentry/node": "^5.22.3",
     "axios": "0.20.0",
     "body-parser": "^1.19.0",
-    "bunyan-request-logger": "^2.1.0",
     "cheerio": "^1.0.0-rc.3",
     "compression": "^1.7.4",
     "cookie-session": "^2.0.0-rc.1",
@@ -63,6 +62,7 @@
     "jquery": "^3.5.0",
     "jsonwebtoken": "^8.5.1",
     "mkdirp": "^1.0.4",
+    "morgan": "^1.10.0",
     "nocache": "^2.1.0",
     "node-sass-middleware": "0.11.0",
     "nunjucks": "^3.2.2",
@@ -70,9 +70,9 @@
     "passport-azure-ad-oauth2": "0.0.4",
     "ramda": "^0.27.1",
     "redis": "^3.0.2",
-    "retry-axios": "^2.2.1",
     "uuid": "^8.3.0",
-    "video.js": "^7.8.4"
+    "video.js": "^7.8.4",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
