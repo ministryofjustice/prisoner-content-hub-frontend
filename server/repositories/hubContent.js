@@ -1,5 +1,4 @@
 const R = require('ramda');
-const qs = require('querystring');
 
 const config = require('../config');
 const { logger } = require('../utils/logger');
@@ -21,13 +20,14 @@ const hubContentRepository = httpClient => {
     const endpoint = `${config.api.hubContent}/${id}`;
 
     if (!id) {
-      logger.error(`Requested ${endpoint}`);
+      logger.error(`HubContentRepository (contentFor) - No ID passed`);
       return null;
     }
 
     const response = await httpClient.get(endpoint);
 
     if (isEmpty(response)) {
+      logger.error(`HubContentRepository (contentFor) - Empty response`);
       return null;
     }
 
@@ -37,14 +37,14 @@ const hubContentRepository = httpClient => {
   async function termFor(id, establishmentId) {
     const endpoint = `${config.api.hubTerm}/${id}`;
     if (!id) {
-      logger.error(`Requested ${endpoint}`);
+      logger.error(`HubContentRepository (termFor) - No ID passed`);
       return null;
     }
     const response = await httpClient.get(endpoint, {
       _prison: establishmentId,
     });
     if (isEmpty(response)) {
-      logger.error(`Requested ${endpoint}`);
+      logger.error(`HubContentRepository (termFor) - Empty response`);
       return null;
     }
     return termResponseFrom(response);
@@ -58,7 +58,7 @@ const hubContentRepository = httpClient => {
     };
 
     if (!id) {
-      logger.error(`Requested ${endpoint}?${qs.stringify(query)}`);
+      logger.error(`HubContentRepository (menuFor) - No ID passed`);
       return null;
     }
 
@@ -83,7 +83,7 @@ const hubContentRepository = httpClient => {
     };
 
     if (!id) {
-      logger.error(`Requested ${endpoint}?${qs.stringify(query)}`);
+      logger.error(`HubContentRepository (seasonFor) - No ID passed`);
       return [];
     }
 
@@ -111,7 +111,7 @@ const hubContentRepository = httpClient => {
     };
 
     if (!id || !episodeId) {
-      logger.error(`Requested ${endpoint}?${qs.stringify(query)}`);
+      logger.error(`HubContentRepository (nextEpisodesFor) - No ID passed`);
       return [];
     }
 
@@ -126,7 +126,7 @@ const hubContentRepository = httpClient => {
     const endpoint = `${config.api.hubContent}/${id}`;
 
     if (!id) {
-      logger.error(`Requested ${endpoint}`);
+      logger.error(`HubContentRepository (featuredContentFor) - No ID passed`);
       return null;
     }
 
@@ -154,7 +154,7 @@ const hubContentRepository = httpClient => {
     };
 
     if (!id) {
-      logger.error(`Requested ${endpoint}?${qs.stringify(query)}`);
+      logger.error(`HubContentRepository (relatedContentFor) - No ID passed`);
       return [];
     }
 
@@ -178,7 +178,7 @@ const hubContentRepository = httpClient => {
     };
 
     if (!id) {
-      logger.error(`Requested ${endpoint}?${qs.stringify(query)}`);
+      logger.error(`HubContentRepository (suggestedContentFor) - No ID passed`);
       return [];
     }
 
