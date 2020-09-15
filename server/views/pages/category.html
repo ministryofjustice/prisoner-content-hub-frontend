@@ -45,7 +45,7 @@
       <h1 class="govuk-heading-l" id="title">{{ title }}</h1>
       <div class="personalised-section">
         {% if config.category === 'visits' %}
-          {{ personalVisits({data: data.personalisedData }) }}
+          {{ personalVisits({data: data.personalisedData, authReturnUrl: config.returnUrl }, config.userName) }}
         {% endif %}
         {% if config.category === 'iep' %}
           {{ personalIncentives({data: data.personalisedData, authReturnUrl: config.returnUrl }, config.userName) }}
