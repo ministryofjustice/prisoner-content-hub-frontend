@@ -29,11 +29,8 @@ const createOffenderService = (
       const response = await repository.getIEPSummaryFor(bookingId);
       return IEPSummary.from(response).format();
     } catch (e) {
-      logger.error({
-        function: 'getIEPSummaryFor',
-        message: e.message,
-        id: bookingId,
-      });
+      logger.error(`OffenderService FAILED (getIEPSummaryFor) - ${e.message}`);
+      logger.debug(e.stack);
       return {
         error: 'We are not able to show your IEP summary at this time',
       };
@@ -45,11 +42,8 @@ const createOffenderService = (
       const response = await repository.getBalancesFor(bookingId);
       return Balances.from(response).format();
     } catch (e) {
-      logger.error({
-        function: 'getBalancesFor',
-        message: e.message,
-        id: bookingId,
-      });
+      logger.error(`OffenderService FAILED (getBalancesFor) - ${e.message}`);
+      logger.debug(e.stack);
       return {
         error: 'We are not able to show your balances at this time',
       };
@@ -61,11 +55,8 @@ const createOffenderService = (
       const response = await repository.getKeyWorkerFor(prisonerId);
       return KeyWorker.from(response).format();
     } catch (e) {
-      logger.error({
-        function: 'getKeyWorkerFor',
-        message: e.message,
-        id: prisonerId,
-      });
+      logger.error(`OffenderService FAILED (getKeyWorkerFor) - ${e.message}`);
+      logger.debug(e.stack);
       return {
         error: 'We are not able to show Key Worker information at this time',
       };
@@ -77,11 +68,8 @@ const createOffenderService = (
       const response = await repository.getNextVisitFor(bookingId);
       return NextVisit.from(response).format();
     } catch (e) {
-      logger.error({
-        function: 'getVisitsFor',
-        message: e.message,
-        id: bookingId,
-      });
+      logger.error(`OffenderService FAILED (getVisitsFor) - ${e.message}`);
+      logger.debug(e.stack);
       return {
         error: 'We are not able to show your visits at this time',
       };
@@ -93,11 +81,10 @@ const createOffenderService = (
       const response = await repository.sentenceDetailsFor(bookingId);
       return ImportantDates.from(response).format();
     } catch (e) {
-      logger.error({
-        function: 'getImportantDatesFor',
-        message: e.message,
-        id: bookingId,
-      });
+      logger.error(
+        `OffenderService FAILED (getImportantDatesFor) - ${e.message}`,
+      );
+      logger.debug(e.stack);
       return {
         error: 'We are not able to show your important dates at this time',
       };
@@ -148,11 +135,8 @@ const createOffenderService = (
             isTomorrow,
           };
     } catch (e) {
-      logger.error({
-        function: 'getEventsForToday',
-        message: e.message,
-        id: bookingId,
-      });
+      logger.error(`OffenderService FAILED (getEventsForToday) - ${e.message}`);
+      logger.debug(e.stack);
       return {
         error: 'We are not able to show your schedule for today at this time',
       };
@@ -186,15 +170,8 @@ const createOffenderService = (
         .addEvents(eventsData)
         .build();
     } catch (e) {
-      logger.error({
-        function: 'getEventsFor',
-        message: e.message,
-        id: bookingId,
-        options: {
-          startDate,
-          endDate,
-        },
-      });
+      logger.error(`OffenderService FAILED (getEventsFor) - ${e.message}`);
+      logger.debug(e.stack);
       return {
         error: `We are not able to show your timetable at this time`,
       };
