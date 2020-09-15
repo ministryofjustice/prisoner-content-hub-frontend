@@ -2,7 +2,6 @@ const { format, isValid, isBefore, addDays } = require('date-fns');
 const responses = require('./responses');
 const {
   dateFormats: { ISO_DATE, HOUR },
-  timetable: { APP_EVENT_TYPE, VISIT_EVENT_TYPE },
 } = require('../../utils/enums');
 const { logger } = require('../../utils/logger');
 
@@ -138,13 +137,9 @@ const createOffenderService = (
       return !Array.isArray(events)
         ? { todaysEvents: [], isTomorrow: false }
         : {
-            todaysEvents: events
-              .filter(
-                TimetableEvent.filterByType(APP_EVENT_TYPE, VISIT_EVENT_TYPE),
-              )
-              .map(eventResponse =>
-                TimetableEvent.from(eventResponse).format(),
-              ),
+            todaysEvents: events.map(eventResponse =>
+              TimetableEvent.from(eventResponse).format(),
+            ),
             isTomorrow,
           };
     } catch (e) {
