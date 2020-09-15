@@ -10,7 +10,7 @@ function createHubContentService({
       return {};
     }
 
-    const content = await contentRepository.contentFor(id);
+    const content = await contentRepository.contentFor(id, establishmentId);
     const prisonIds = prop('establishmentIds', content);
 
     if (!canAccessContent(establishmentId, prisonIds)) {

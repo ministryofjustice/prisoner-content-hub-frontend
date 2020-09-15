@@ -1,5 +1,3 @@
-const R = require('ramda');
-
 const config = require('../config');
 const { logger } = require('../utils/logger');
 const { isEmpty, fillContentItems } = require('../utils');
@@ -16,7 +14,7 @@ const {
 } = require('../utils/adapters');
 
 const hubContentRepository = httpClient => {
-  async function contentFor(id) {
+  async function contentFor(id, establishmentId) {
     const endpoint = `${config.api.hubContent}/${id}`;
 
     if (!id) {
@@ -24,7 +22,9 @@ const hubContentRepository = httpClient => {
       return null;
     }
 
-    const response = await httpClient.get(endpoint);
+    const response = await httpClient.get(endpoint, {
+      _prison: establishmentId,
+    });
 
     if (isEmpty(response)) {
       logger.error(`HubContentRepository (contentFor) - Empty response`);
@@ -48,25 +48,6 @@ const hubContentRepository = httpClient => {
       return null;
     }
     return termResponseFrom(response);
-  }
-
-  async function menuFor(id) {
-    const endpoint = config.api.hubMenu;
-    const query = {
-      _parent: id,
-      _menu: 'main',
-    };
-
-    if (!id) {
-      logger.error(`HubContentRepository (menuFor) - No ID passed`);
-      return null;
-    }
-
-    const response = await httpClient.get(endpoint, { query });
-
-    if (!Array.isArray(response)) return [];
-
-    return parseMenuResponse(response);
   }
 
   async function seasonFor({
@@ -122,21 +103,6 @@ const hubContentRepository = httpClient => {
     return seasonResponseFrom(response);
   }
 
-  async function featuredContentFor(id) {
-    const endpoint = `${config.api.hubContent}/${id}`;
-
-    if (!id) {
-      logger.error(`HubContentRepository (featuredContentFor) - No ID passed`);
-      return null;
-    }
-
-    const response = await httpClient.get(endpoint);
-
-    if (!Array.isArray(response)) return [];
-
-    return contentResponseFrom(response);
-  }
-
   async function relatedContentFor({
     id,
     establishmentId,
@@ -189,14 +155,6 @@ const hubContentRepository = httpClient => {
     return fillContentItems(contentResponseFrom(response));
   }
 
-  function parseMenuResponse(data = []) {
-    return data.map(menuItem => ({
-      linkText: R.prop('title', menuItem),
-      href: `/content/${R.prop('id', menuItem)}`,
-      id: R.prop('id', menuItem),
-    }));
-  }
-
   function parseResponse(data) {
     const contentType = typeFrom(data.content_type);
 
@@ -226,9 +184,7 @@ const hubContentRepository = httpClient => {
     termFor,
     seasonFor,
     nextEpisodesFor,
-    featuredContentFor,
     relatedContentFor,
-    menuFor,
     suggestedContentFor,
     streamFor,
   };

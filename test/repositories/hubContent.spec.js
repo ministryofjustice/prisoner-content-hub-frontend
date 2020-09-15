@@ -262,36 +262,6 @@ describe('contentRepository', () => {
       });
     });
   });
-
-  describe('#menuFor', () => {
-    it('returns null if no id is passed', async () => {
-      const client = generateClient({ response: 'data' });
-      const repository = contentRepository(client);
-      const result = await repository.menuFor();
-
-      expect(client.get.callCount).to.equal(0);
-      expect(result).to.equal(null);
-    });
-    it('returns formated menu for a given category id', async () => {
-      const client = generateClient([
-        { title: 'Foo', link: 'www.foo.com', id: '1' },
-        { title: 'Bar', link: 'www.bar.com', id: '2' },
-      ]);
-      const repository = contentRepository(client);
-      const content = await repository.menuFor('id');
-
-      const expected = [
-        { linkText: 'Foo', href: '/content/1', id: '1' },
-        { linkText: 'Bar', href: '/content/2', id: '2' },
-      ];
-
-      expect(content).to.eql(expected);
-      const queryString = JSON.stringify(client.get.lastCall.args[1]);
-      expect(queryString).to.include(
-        JSON.stringify({ _parent: 'id', _menu: 'main' }),
-      );
-    });
-  });
 });
 
 function generateClient(response) {
