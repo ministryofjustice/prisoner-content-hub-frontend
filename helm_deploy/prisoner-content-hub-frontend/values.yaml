@@ -24,7 +24,6 @@ application:
   config:
     enableFeatureToggles: false
     enablePersonalInformation: false
-    establishmentName: berwyn
     analyticsEndpoint: https://www.google-analytics.com/collect
     useRelativeUrlForMedia: false
     elasticsearchIndexName: content_index

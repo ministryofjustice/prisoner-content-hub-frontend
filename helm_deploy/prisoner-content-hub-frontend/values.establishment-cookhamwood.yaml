@@ -1,6 +1,5 @@
 application:
   config:
-    establishmentName: cookhamwood
     enablePersonalInformation: false
 
 ingress:

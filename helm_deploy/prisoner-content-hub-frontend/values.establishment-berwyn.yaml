@@ -1,6 +1,5 @@
 application:
   config:
-    establishmentName: berwyn
     enablePersonalInformation: false
 
 ingress:
