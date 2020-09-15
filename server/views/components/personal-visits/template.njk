@@ -1,29 +1,49 @@
-<div id="visits">
+{% if isLoggedIn %}
   {% if params.data.error %}
-    <p class="govuk-!-font-size-24">
-      {{params.data.error}}, <a href="{{ params.authReturnUrl }}" class="govuk-link">try again</a>
-    </p>
+    <div>
+      <p class="govuk-!-font-size-24">
+        {{params.data.error}}, <a href="{{ params.authReturnUrl }}" class="govuk-link">try again</a>
+      </p>
+      <div class="govuk-clearfix">
+        <div class="personalisation-placeholder">Your next visit</div>
+        <div class="personalisation-placeholder">Type of visit</div>
+        <div class="personalisation-placeholder">Visitor name</div>
+      </div>
+    </div>
   {% elif params.data.nextVisit === 'Unavailable' %}
     <p>Not booked yet</p>
   {% else %}
-    <div class="next-visit">
-      <h3>Your next visit</h3>
-      <p class="next-visit-day">{{ params.data.nextVisitDay }}</p>
-      <p class="next-visit-date">{{ params.data.nextVisitDate }}</p>
-    </div>
-    <div class="type-of-visit">
-      <h3>Type of visit</h3>
-      <p class="next-visit-type">{{ params.data.visitType }}</p>
-    </div>
-    {% if params.data.visitorName %}
-      <div class="visitor-name-block">
-        <h3>Visitor name</h3>
-        <button type="button" class="govuk-button" id="show-visitor-name" onclick="showHiddenBlock('visitor-name')">Show visitor name</button>
-        <p id="visitor-name" class="hidden-block-text">{{ params.data.visitorName }}</p>
+    <div id="visits">
+      <div class="next-visit">
+        <h3>Your next visit</h3>
+        <p class="next-visit-day">{{ params.data.nextVisitDay }}</p>
+        <p class="next-visit-date">{{ params.data.nextVisitDate }}</p>
       </div>
+      <div class="type-of-visit">
+        <h3>Type of visit</h3>
+        <p class="next-visit-type">{{ params.data.visitType }}</p>
+      </div>
+      {% if params.data.visitorName %}
+        <div class="visitor-name-block">
+          <h3>Visitor name</h3>
+          <button type="button" class="govuk-button" id="show-visitor-name" onclick="showHiddenBlock('visitor-name')">Show visitor name</button>
+          <p id="visitor-name" class="hidden-block-text">{{ params.data.visitorName }}</p>
+        </div>
+      {% endif %}
     {% endif %}
-  {% endif %}
-</div>
+  </div>
+{% else %}
+  <div>
+    <p class="govuk-!-font-size-24">
+      <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your visits
+    </p>
+    <div class="govuk-clearfix">
+      <div class="personalisation-placeholder">Your next visit</div>
+      <div class="personalisation-placeholder">Type of visit</div>
+      <div class="personalisation-placeholder">Visitor name</div>
+    </div>
+  </div>
+{% endif %}
 <p>
   <a href="/timetable" class="govuk-link">View your full timetable</a>
 </p>
