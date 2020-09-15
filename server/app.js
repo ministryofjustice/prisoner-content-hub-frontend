@@ -220,7 +220,6 @@ const createApp = ({
   app.use(
     '/topics',
     createTopicsRouter({
-      logger,
       hubMenuService,
       analyticsService,
     }),
@@ -239,7 +238,6 @@ const createApp = ({
   app.use(
     '/timetable',
     createTimetableRouter({
-      logger,
       offenderService,
       analyticsService,
     }),
@@ -251,7 +249,6 @@ const createApp = ({
       hubContentService,
       offenderService,
       analyticsService,
-      logger,
     }),
   );
 
@@ -261,7 +258,6 @@ const createApp = ({
       hubContentService,
       offenderService,
       analyticsService,
-      logger,
     }),
   );
 
@@ -271,14 +267,12 @@ const createApp = ({
       hubContentService,
       offenderService,
       analyticsService,
-      logger,
     }),
   );
 
   app.use(
     '/content',
     createContentRouter({
-      logger,
       hubContentService,
       analyticsService,
     }),
@@ -288,36 +282,30 @@ const createApp = ({
     '/npr',
     createNprRouter({
       analyticsService,
-      logger,
     }),
   );
 
   app.use(
     '/tags',
     createTagRouter({
-      logger,
       hubTagsService,
       analyticsService,
     }),
   );
 
-  app.use('/games', createGamesRouter({ analyticsService, logger }));
-  app.use('/analytics', createAnalyticsRouter({ analyticsService, logger }));
-  app.use('/feedback', createFeedbackRouter({ feedbackService, logger }));
+  app.use('/games', createGamesRouter({ analyticsService }));
+  app.use('/analytics', createAnalyticsRouter({ analyticsService }));
+  app.use('/feedback', createFeedbackRouter({ feedbackService }));
 
   app.use(
     getEstablishmentWorkingInUrls(),
     createGettingAJobRouter({
-      logger,
       hubContentService,
       hubMenuService,
       analyticsService,
     }),
   );
-  app.use(
-    '/search',
-    createSearchRouter({ logger, searchService, analyticsService }),
-  );
+  app.use('/search', createSearchRouter({ searchService, analyticsService }));
 
   app.use('*', (req, res) => {
     res.status(404);

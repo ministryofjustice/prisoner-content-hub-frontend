@@ -1,12 +1,10 @@
 const { path } = require('ramda');
 const express = require('express');
 
-const createFeedbackRouter = ({ feedbackService, logger }) => {
+const createFeedbackRouter = ({ feedbackService }) => {
   const router = express.Router();
 
   router.post('/:feedbackId', (req, res) => {
-    logger.info('GET /feedback');
-
     const sessionId = path(['session', 'id'], req);
 
     feedbackService.sendFeedback({

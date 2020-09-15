@@ -2,17 +2,11 @@ const { prop, path, propOr } = require('ramda');
 const express = require('express');
 const { fixUrlForProduction } = require('../utils');
 
-const createContentRouter = ({
-  hubContentService,
-  analyticsService,
-  logger,
-}) => {
+const createContentRouter = ({ hubContentService, analyticsService }) => {
   const router = express.Router();
 
   router.get('/:id', async (req, res, next) => {
     const { id } = req.params;
-
-    logger.info(`GET /${id}`);
 
     if (!id) {
       return next();

@@ -1,6 +1,6 @@
 const express = require('express');
 
-const createGamesRouter = ({ logger }) => {
+const createGamesRouter = () => {
   const router = express.Router();
 
   const config = {
@@ -10,8 +10,6 @@ const createGamesRouter = ({ logger }) => {
   };
 
   router.get('/chess', (req, res) => {
-    logger.info('GET /games/chess');
-
     config.detailsType = 'small';
     config.userName = req.user && req.user.getFullName();
 
@@ -22,8 +20,6 @@ const createGamesRouter = ({ logger }) => {
   });
 
   router.get('/sudoku', (req, res) => {
-    logger.info('GET /games/sudoku');
-
     config.detailsType = 'small';
     config.userName = req.user && req.user.getFullName();
 
@@ -34,8 +30,6 @@ const createGamesRouter = ({ logger }) => {
   });
 
   router.get('/neontroids', (req, res) => {
-    logger.info('GET /games/neontroids');
-
     config.detailsType = 'small';
     config.userName = req.user && req.user.getFullName();
 
@@ -46,8 +40,6 @@ const createGamesRouter = ({ logger }) => {
   });
 
   router.get('/mimstris', (req, res) => {
-    logger.info('GET /games/mimstris');
-
     config.detailsType = 'small';
     config.userName = req.user && req.user.getFullName();
 
@@ -58,8 +50,6 @@ const createGamesRouter = ({ logger }) => {
   });
 
   router.get('/invadersfromspace', (req, res) => {
-    logger.info('GET /games/invadersfromspace');
-
     config.detailsType = 'small';
     config.userName = req.user && req.user.getFullName();
 
@@ -70,8 +60,6 @@ const createGamesRouter = ({ logger }) => {
   });
 
   router.get('/crossword', (req, res) => {
-    logger.info('GET /games/crossword');
-
     config.detailsType = 'small';
     config.userName = req.user && req.user.getFullName();
 
@@ -82,8 +70,6 @@ const createGamesRouter = ({ logger }) => {
   });
 
   router.get('/solitaire', (req, res) => {
-    logger.info('GET /games/solitaire');
-
     config.detailsType = 'small';
     config.userName = req.user && req.user.getFullName();
 
@@ -94,8 +80,6 @@ const createGamesRouter = ({ logger }) => {
   });
 
   router.get('/smashout', (req, res) => {
-    logger.info('GET /games/smashout');
-
     config.detailsType = 'small';
     config.userName = req.user && req.user.getFullName();
 

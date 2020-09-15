@@ -1,11 +1,10 @@
 const express = require('express');
 const { format, addDays, subDays } = require('date-fns');
 
-const createTimetableRouter = ({ logger, offenderService }) => {
+const createTimetableRouter = ({ offenderService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
-    logger.info('GET timetable');
     try {
       const config = {
         content: false,
@@ -44,7 +43,6 @@ const createTimetableRouter = ({ logger, offenderService }) => {
   });
 
   router.get('/lastweek', async (req, res, next) => {
-    logger.info('GET timetable/lastweek');
     try {
       const config = {
         content: false,
@@ -83,8 +81,6 @@ const createTimetableRouter = ({ logger, offenderService }) => {
 
   router.get('/nextweek', async (req, res, next) => {
     try {
-      logger.info('GET timetable/nextweek');
-
       const config = {
         content: false,
         header: false,

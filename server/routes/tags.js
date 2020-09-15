@@ -1,15 +1,12 @@
 const express = require('express');
 const { path } = require('ramda');
 
-const createTagRouter = ({ logger, hubTagsService }) => {
+const createTagRouter = ({ hubTagsService }) => {
   const router = express.Router();
 
   router.get('/:id', async (req, res, next) => {
     try {
       const { id } = req.params;
-
-      logger.info(`GET /tags/${id}`);
-
       if (!id) {
         return next();
       }
@@ -45,7 +42,6 @@ const createTagRouter = ({ logger, hubTagsService }) => {
 
   router.get('/related-content/:id', async (req, res, next) => {
     const { id } = req.params;
-    logger.info(`GET /tags/${id}/related-content`);
 
     if (!id) {
       return next();
