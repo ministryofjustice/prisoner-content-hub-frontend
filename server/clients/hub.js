@@ -11,22 +11,24 @@ class HubContentClient {
   }
 
   get(endpoint, { query, ...rest } = {}) {
-    const newQuery = {
+    const queryString = {
       _format: 'json',
       _lang: 'en',
       _prison: getEstablishmentId(config.establishmentName),
       ...query,
     };
-    return this.client
-      .get(endpoint, { params: newQuery, ...rest })
-      .then(res => {
-        logger.info(`Requested ${endpoint}?${qs.stringify(newQuery)}`);
 
+    return this.client
+      .get(endpoint, { params: queryString, ...rest })
+      .then(res => {
+        logger.info(
+          `HubContentClient (GET) - ${endpoint}?${qs.stringify(queryString)}`,
+        );
         return res.data;
       })
-      .catch(exp => {
-        logger.info(`Failed to request ${endpoint}?${qs.stringify(newQuery)}`);
-        logger.error(exp);
+      .catch(e => {
+        logger.error(`HubContentClient FAILED (GET) - ${e.message}`);
+        logger.debug(e.stack);
         return null;
       });
   }

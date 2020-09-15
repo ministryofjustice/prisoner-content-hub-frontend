@@ -36,7 +36,9 @@ class PrisonApiClient {
   }
 
   async requestNewAccessToken() {
-    logger.info(`Requested new access token from ${this.authUrl}`);
+    logger.info(
+      `PrisonApiClient - Requested new access token from ${this.authUrl}`,
+    );
     let response;
 
     try {
@@ -71,7 +73,7 @@ class PrisonApiClient {
   }
 
   async get(url) {
-    logger.info(`Requested ${url}`);
+    logger.info(`PrisonApiClient (GET) - ${url}`);
 
     let token = await this.cache.get(PRISON_API_TOKEN_KEY);
 
