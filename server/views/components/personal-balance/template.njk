@@ -5,23 +5,28 @@
       <p class="govuk-!-font-size-24">
         {{params.data.error}}, <a href="{{ params.authReturnUrl }}" class="govuk-link">try again</a>
       </p>
+      <div class="govuk-clearfix">
+        <div class="personalisation-placeholder">Spends</div>
+        <div class="personalisation-placeholder">Private</div>
+        <div class="personalisation-placeholder">Savings</div>
+      </div>
     {% else %}
       <p class="govuk-!-font-size-24">Your account balances</p>
-    {% endif %}
-    <div class="balances">
-      {{ personalBalanceSingle({
+      <div class="balances">
+        {{ personalBalanceSingle({
         type: 'spends',
         amount: params.data.spends
       })}}
-      {{ personalBalanceSingle({
+        {{ personalBalanceSingle({
         type: 'private',
         amount: params.data.cash
       })}}
-      {{ personalBalanceSingle({
+        {{ personalBalanceSingle({
         type: 'savings',
         amount: params.data.savings
       })}}
-    </div>
+      </div>
+    {% endif %}
   {% else %}
     <p class="govuk-!-font-size-24">
       <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your account balances
