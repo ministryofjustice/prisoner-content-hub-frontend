@@ -37,19 +37,19 @@ describe('Offender Service', () => {
     });
   });
 
-  describe('getIEPSummaryFor', () => {
-    it('returns formatted IEP data', async () => {
+  describe('getIncentivesSummaryFor', () => {
+    it('returns formatted incentives data', async () => {
       const repository = {
-        getIEPSummaryFor: sinon.stub().returns(RAW_RESPONSE),
+        getIncentivesSummaryFor: sinon.stub().returns(RAW_RESPONSE),
       };
 
       const service = createPrisonApiOffenderService(repository, {
-        IEPSummary: mockAdapter,
+        IncentivesSummary: mockAdapter,
       });
 
-      const data = await service.getIEPSummaryFor(TEST_BOOKING_ID);
+      const data = await service.getIncentivesSummaryFor(TEST_BOOKING_ID);
 
-      expect(repository.getIEPSummaryFor).to.have.been.calledWith(
+      expect(repository.getIncentivesSummaryFor).to.have.been.calledWith(
         TEST_BOOKING_ID,
       );
       expect(mockAdapter.from).to.have.been.calledWith(RAW_RESPONSE);

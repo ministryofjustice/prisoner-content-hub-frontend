@@ -6,7 +6,7 @@
 {% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 {% from "../components/personal-visits/macro.njk" import personalVisits %}
-{% from "../components/personal-iep/macro.njk" import personalIncentives %}
+{% from "../components/personal-incentives/macro.njk" import personalIncentives %}
 {% from "../components/personal-balance/macro.njk" import personalBalances %}
 
 {% extends "../components/template.njk" %}
@@ -47,7 +47,7 @@
         {% if config.category === 'visits' %}
           {{ personalVisits({data: data.personalisedData, authReturnUrl: config.returnUrl }, config.userName) }}
         {% endif %}
-        {% if config.category === 'iep' %}
+        {% if config.category === 'incentives' %}
           {{ personalIncentives({data: data.personalisedData, authReturnUrl: config.returnUrl }, config.userName) }}
         {% endif %}
         {% if config.category === 'money' %}

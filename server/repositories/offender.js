@@ -18,7 +18,7 @@ function offenderRepository(httpClient) {
     throw new Error('Invalid offender number');
   }
 
-  function getIEPSummaryFor(bookingId) {
+  function getIncentivesSummaryFor(bookingId) {
     return httpClient.get(
       `${getBookingsUrlFrom(config)}/${bookingId}/iepSummary`,
     );
@@ -76,7 +76,7 @@ function offenderRepository(httpClient) {
 
   return {
     getOffenderDetailsFor,
-    getIEPSummaryFor,
+    getIncentivesSummaryFor,
     getBalancesFor,
     getKeyWorkerFor,
     getNextVisitFor,

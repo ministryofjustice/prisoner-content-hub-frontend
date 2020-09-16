@@ -33,16 +33,16 @@
   @include govuk-font(24, 'normal');
 }
 
-#iepSummary {
+#incentivesSummary {
   width: 100%;
 }
 
-.iep-info p > span {
+.incentives-info p > span {
   display: block;
   font-weight: 700;
   padding-top: govuk-spacing(1);
 }
-.iep-indicator {
+.incentives-indicator {
   display: inline-block;
   width: 30%;
   margin: 0 0 govuk-spacing(1);
@@ -54,12 +54,12 @@
     width: 29.3%;
   }
 }
-.iep-indicator::after {
+.incentives-indicator::after {
   content: '\25bc';
   display: block;
   text-align: center;
 }
-.iep-level {
+.incentives-level {
   color: govuk-colour('white');
   font-weight: bold;
   padding: govuk-spacing(2);
@@ -73,36 +73,36 @@
     width: 29.3%;
   }
 }
-.iep-level--basic {
+.incentives-level--basic {
   background-color: govuk-colour('blue');
 }
-.iep-level--standard {
+.incentives-level--standard {
   background-color: govuk-colour('turquoise');
 }
-.iep-level--enhanced {
+.incentives-level--enhanced {
   background-color: govuk-colour('purple');
   margin-right: 0;
 }
-.iep-level--placeholder {
+.incentives-level--placeholder {
   color: govuk-colour('black');
   background-color: rgba(177, 180, 182, 0.5);
   margin-right: govuk-spacing(2);
 }
-.iep-indicator--standard {
+.incentives-indicator--standard {
   margin-left: calc(30% + 30px);
 
   @media (min-width: $desktop-breakpoint) {
     margin-left: calc(29.3% + 30px);
   }
 }
-.iep-indicator--enhanced {
+.incentives-indicator--enhanced {
   margin-left: calc(60% + 60px);
 
   @media (min-width: $desktop-breakpoint) {
     margin-left: calc(58.6% + 60px);
   }
 }
-.iepReview {
+.incentivesReview {
   @include govuk-font(24);
 
   & > span {

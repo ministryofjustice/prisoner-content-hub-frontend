@@ -1,23 +1,23 @@
 const {
-  IEPSummary,
-} = require('../../../../server/services/offender/responses/iep');
+  IncentivesSummary,
+} = require('../../../../server/services/offender/responses/incentives');
 const {
   placeholders: { DEFAULT },
 } = require('../../../../server/utils/enums');
 
-const TEST_IEP_LEVEL = 'STANDARD';
+const TEST_INCENTIVES_LEVEL = 'STANDARD';
 
-describe('IEPSummary', () => {
+describe('incentivesSummary', () => {
   it('Should handle an empty response', () => {
-    const iepSummary = IEPSummary.from();
+    const incentivesSummary = IncentivesSummary.from();
 
-    expect(iepSummary.iepLevel).to.not.exist;
-    expect(iepSummary.lastIepReviewDate).to.not.exist;
-    expect(iepSummary.lastIepReviewDate).to.not.exist;
+    expect(incentivesSummary.incentivesLevel).to.not.exist;
+    expect(incentivesSummary.lastIncentivesReviewDate).to.not.exist;
+    expect(incentivesSummary.nextIncentivesReviewDate).to.not.exist;
 
-    const formatted = iepSummary.format();
+    const formatted = incentivesSummary.format();
 
-    expect(formatted.iepLevel).to.equal(DEFAULT);
+    expect(formatted.incentivesLevel).to.equal(DEFAULT);
     expect(formatted.daysSinceReview).to.equal(DEFAULT);
     expect(formatted.reviewDate).to.equal(DEFAULT);
   });
@@ -28,13 +28,13 @@ describe('IEPSummary', () => {
     });
 
     let response = {
-      iepLevel: TEST_IEP_LEVEL,
+      iepLevel: TEST_INCENTIVES_LEVEL,
     };
 
-    let formatted = IEPSummary.from(response).format();
+    let formatted = IncentivesSummary.from(response).format();
 
     expect(formatted).to.eql({
-      iepLevel: TEST_IEP_LEVEL,
+      incentivesLevel: TEST_INCENTIVES_LEVEL,
       daysSinceReview: DEFAULT,
       reviewDate: DEFAULT,
     });
@@ -43,10 +43,10 @@ describe('IEPSummary', () => {
       iepDate: '2019-06-17T06:00:00.000Z',
     };
 
-    formatted = IEPSummary.from(response).format();
+    formatted = IncentivesSummary.from(response).format();
 
     expect(formatted).to.eql({
-      iepLevel: DEFAULT,
+      incentivesLevel: DEFAULT,
       daysSinceReview: '16 days',
       reviewDate: 'Tuesday 17 September',
     });
@@ -60,14 +60,14 @@ describe('IEPSummary', () => {
     });
 
     const response = {
-      iepLevel: TEST_IEP_LEVEL,
+      iepLevel: TEST_INCENTIVES_LEVEL,
       iepDate: '2019-06-17T06:00:00.000Z',
     };
 
-    const formatted = IEPSummary.from(response).format();
+    const formatted = IncentivesSummary.from(response).format();
 
     expect(formatted).to.eql({
-      iepLevel: TEST_IEP_LEVEL,
+      incentivesLevel: TEST_INCENTIVES_LEVEL,
       daysSinceReview: '16 days',
       reviewDate: 'Tuesday 17 September',
     });

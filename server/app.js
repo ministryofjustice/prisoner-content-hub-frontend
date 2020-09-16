@@ -21,7 +21,7 @@ const { createTimetableRouter } = require('./routes/timetable');
 const { createHealthRouter } = require('./routes/health');
 const { createContentRouter } = require('./routes/content');
 const { createVisitsRouter } = require('./routes/visits');
-const { createIepRouter } = require('./routes/iep');
+const { createIncentivesRouter } = require('./routes/incentives');
 const { createMoneyRouter } = require('./routes/money');
 const { createTagRouter } = require('./routes/tags');
 const { createGamesRouter } = require('./routes/games');
@@ -253,8 +253,8 @@ const createApp = ({
   );
 
   app.use(
-    '/iep',
-    createIepRouter({
+    '/incentives',
+    createIncentivesRouter({
       hubContentService,
       offenderService,
       analyticsService,

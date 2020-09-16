@@ -48,13 +48,13 @@ describe('offenderRepository', () => {
     });
   });
 
-  describe('getIEPSummaryFor', () => {
-    it('calls the IEP summary endpoint for a given ID', async () => {
+  describe('getIncentivesSummaryFor', () => {
+    it('calls the Incentives summary endpoint for a given ID', async () => {
       const client = {
         get: sinon.stub().resolves('SOME_RESULT'),
       };
       const repository = offenderRepository(client);
-      const result = await repository.getIEPSummaryFor('FOO_ID');
+      const result = await repository.getIncentivesSummaryFor('FOO_ID');
 
       expect(client.get.lastCall.args[0]).to.include('/FOO_ID/iepSummary');
       expect(result).to.equal('SOME_RESULT');

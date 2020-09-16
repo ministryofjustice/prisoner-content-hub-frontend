@@ -1,7 +1,7 @@
 const { path } = require('ramda');
 const express = require('express');
 
-const createIepRouter = ({ hubContentService, offenderService }) => {
+const createIncentivesRouter = ({ hubContentService, offenderService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
@@ -16,15 +16,17 @@ const createIepRouter = ({ hubContentService, offenderService }) => {
         header: false,
         postscript: true,
         detailsType: 'small',
-        category: 'iep',
+        category: 'incentives',
         returnUrl: req.originalUrl,
       };
 
       if (req.user) {
         const userName = req.user && req.user.getFullName();
         const { bookingId } = req.user;
-        const iep = await offenderService.getIEPSummaryFor(bookingId);
-        data.personalisedData = iep;
+        const incentivesSummary = await offenderService.getIncentivesSummaryFor(
+          bookingId,
+        );
+        data.personalisedData = incentivesSummary;
         config.userName = userName;
       }
 
@@ -42,5 +44,5 @@ const createIepRouter = ({ hubContentService, offenderService }) => {
 };
 
 module.exports = {
-  createIepRouter,
+  createIncentivesRouter,
 };
