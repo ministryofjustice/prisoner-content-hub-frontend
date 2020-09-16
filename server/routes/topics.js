@@ -4,9 +4,9 @@ const { path } = require('ramda');
 const fixUrls = element => {
   const { id, description, href, linkText } = element;
   switch (element.href) {
-    // TODO: Re-enable when IEP personalization feature released
+    // TODO: Re-enable when Incentives personalization feature released
     // case '/content/4204':
-    //   return { id, description, href: '/iep', linkText };
+    //   return { id, description, href: '/incentives', linkText };
     default:
       return { id, description, href, linkText };
   }

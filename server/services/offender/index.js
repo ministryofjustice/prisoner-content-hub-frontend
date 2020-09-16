@@ -9,7 +9,7 @@ const createOffenderService = (
   repository,
   {
     Offender,
-    IEPSummary,
+    IncentivesSummary,
     Balances,
     KeyWorker,
     NextVisit,
@@ -23,15 +23,17 @@ const createOffenderService = (
     return Offender.from(response).format();
   }
 
-  async function getIEPSummaryFor(bookingId) {
+  async function getIncentivesSummaryFor(bookingId) {
     try {
-      const response = await repository.getIEPSummaryFor(bookingId);
-      return IEPSummary.from(response).format();
+      const response = await repository.getIncentivesSummaryFor(bookingId);
+      return IncentivesSummary.from(response).format();
     } catch (e) {
-      logger.error(`OffenderService FAILED (getIEPSummaryFor) - ${e.message}`);
+      logger.error(
+        `OffenderService FAILED (getIncentivesSummaryFor) - ${e.message}`,
+      );
       logger.debug(e.stack);
       return {
-        error: 'We are not able to show your IEP summary at this time',
+        error: 'We are not able to show your incentives summary at this time',
       };
     }
   }
@@ -179,7 +181,7 @@ const createOffenderService = (
 
   return {
     getOffenderDetailsFor,
-    getIEPSummaryFor,
+    getIncentivesSummaryFor,
     getBalancesFor,
     getKeyWorkerFor,
     getVisitsFor,

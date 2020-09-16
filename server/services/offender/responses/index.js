@@ -1,5 +1,5 @@
 const { Offender } = require('./offender');
-const { IEPSummary } = require('./iep');
+const { IncentivesSummary } = require('./incentives');
 const { Balances } = require('./balances');
 const { KeyWorker } = require('./keyWorker');
 const { NextVisit } = require('./nextVisit');
@@ -8,7 +8,7 @@ const { Timetable } = require('./timetable');
 const { TimetableEvent } = require('./timetableEvent');
 
 module.exports = {
-  IEPSummary,
+  IncentivesSummary,
   Balances,
   Offender,
   KeyWorker,
