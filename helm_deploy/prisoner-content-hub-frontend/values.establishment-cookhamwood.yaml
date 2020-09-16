@@ -2,7 +2,7 @@ application:
   config:
     appName: "HMYOI Cookham Wood"
     establishmentName: cookhamwood
-    enablePersonalInformation: false
+    enablePersonalInformation: true
 
 ingress:
   domainPrefix: cookhamwood
