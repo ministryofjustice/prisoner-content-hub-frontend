@@ -10,8 +10,10 @@
         <div class="personalisation-placeholder">Visitor name</div>
       </div>
     </div>
-  {% elif params.data.nextVisit === 'Unavailable' %}
-    <p>Not booked yet</p>
+  {% elif not params.data.isScheduled %}
+    <div>
+      <p class="govuk-!-font-size-24">No upcoming visit</p>
+    </div>
   {% else %}
     <div id="visits">
       <div class="next-visit">
@@ -30,8 +32,8 @@
           <p id="visitor-name" class="hidden-block-text">{{ params.data.visitorName }}</p>
         </div>
       {% endif %}
-    {% endif %}
-  </div>
+    </div>
+  {% endif %}
 {% else %}
   <div>
     <p class="govuk-!-font-size-24">

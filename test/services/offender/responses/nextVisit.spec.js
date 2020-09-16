@@ -18,7 +18,12 @@ describe('NextVisit', () => {
 
     expect(formatted).to.eql(
       {
-        error: 'No upcoming visit',
+        isScheduled: false,
+        nextVisit: DEFAULT,
+        nextVisitDate: DEFAULT,
+        nextVisitDay: DEFAULT,
+        visitType: DEFAULT,
+        visitorName: DEFAULT,
       },
       'Should return a notification when no start time or status is available',
     );
@@ -34,6 +39,7 @@ describe('NextVisit', () => {
 
     expect(formatted).to.eql(
       {
+        isScheduled: true,
         nextVisit: 'Saturday 07 December 2019',
         nextVisitDate: '7 December',
         nextVisitDay: 'Saturday',
@@ -55,6 +61,7 @@ describe('NextVisit', () => {
     const formatted = NextVisit.from(response).format();
 
     expect(formatted).to.eql({
+      isScheduled: true,
       nextVisit: 'Saturday 07 December 2019',
       nextVisitDate: '7 December',
       nextVisitDay: 'Saturday',

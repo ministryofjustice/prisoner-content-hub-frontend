@@ -14,12 +14,17 @@ class NextVisit {
     this.visitType = options.visitType;
   }
 
-  format() {
-    if (this.status !== SCHEDULED_EVENT_TYPE || !this.startTime) {
-      return { error: 'No upcoming visit' };
-    }
+  isScheduled() {
+    return this.status === SCHEDULED_EVENT_TYPE;
+  }
 
+  hasStartTime() {
+    return this.startTime != null;
+  }
+
+  format() {
     return {
+      isScheduled: this.isScheduled() && this.hasStartTime(),
       nextVisit: formatDateOrDefault(DEFAULT, PRETTY_DATE, this.startTime),
       nextVisitDay: formatDateOrDefault(DEFAULT, PRETTY_DAY, this.startTime),
       nextVisitDate: formatDateOrDefault(
