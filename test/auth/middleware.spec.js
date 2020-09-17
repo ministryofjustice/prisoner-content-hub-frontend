@@ -91,7 +91,7 @@ describe('AuthMiddleware', () => {
         expect(next).to.have.been.calledWith(TEST_CALLBACK_ERROR);
       });
 
-      it('should redirect to the sign in page if passport.authenticate() returns no user', async () => {
+      it('should redirect to the failed page if passport.authenticate() returns no user', async () => {
         const authenticate = sinon.stub().resolves();
         const failedUrl = '/auth/sign-in';
 
