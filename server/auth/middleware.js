@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-underscore-dangle
 const _passport = require('passport');
+const config = require('../config');
 
 const createSignInMiddleware = (passport = _passport) => {
   return function signIn(req, res, next) {
@@ -24,13 +25,14 @@ const _authenticate = (req, res, next) =>
 const createSignInCallbackMiddleware = ({
   offenderService,
   authenticate = _authenticate,
+  failedUrl = config.auth.failedUrl,
 }) => {
   return async function signInCallback(req, res, next) {
     try {
       const user = await authenticate(req, res, next);
 
       if (!user) {
-        return res.redirect('/auth/sign-in');
+        return res.redirect(failedUrl);
       }
 
       const { bookingId } = await offenderService.getOffenderDetailsFor(

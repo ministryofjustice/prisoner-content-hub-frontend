@@ -93,14 +93,16 @@ describe('AuthMiddleware', () => {
 
       it('should redirect to the sign in page if passport.authenticate() returns no user', async () => {
         const authenticate = sinon.stub().resolves();
+        const failedUrl = '/auth/sign-in';
 
         const signInCallback = createSignInCallbackMiddleware({
           offenderService,
           authenticate,
+          failedUrl,
         });
 
         await signInCallback(req, res, next);
-        expect(res.redirect).to.have.been.calledWith('/auth/sign-in');
+        expect(res.redirect).to.have.been.calledWith(failedUrl);
       });
 
       it('should fetch offender details if passport.authenticate() returns a user', async () => {

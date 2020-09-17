@@ -116,6 +116,9 @@ module.exports = {
       requireInProduction: true,
     }),
     callbackUrl: getEnv('AZURE_AD_CALLBACK_URL', { requireInProduction: true }),
+    failedUrl: getEnv('AZURE_AD_FAILED_AUTH_URL', {
+      requireInProduction: true,
+    }),
   },
   api: {
     hubHealth: `${hubEndpoint}/api/health`,

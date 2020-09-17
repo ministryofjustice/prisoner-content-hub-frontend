@@ -110,6 +110,8 @@ spec:
                   key: azureAdClientSecret
             - name: AZURE_AD_CALLBACK_URL
               value: {{ printf "%s%s" (include "prisoner-content-hub-frontend.externalHost" .) .Values.prisonerAuthAD.callbackEndpoint }}
+            - name: AZURE_AD_FAILED_AUTH_URL
+              value: {{ .Values.application.config.azureAdFailedAuthUrl | quote }}
           ports:
             - name: http
               containerPort: {{ .Values.application.port }}

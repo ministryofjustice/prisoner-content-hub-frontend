@@ -9,6 +9,7 @@ application:
     enableFeatureToggles: true
     analyticsSiteId: UA-152065860-4
     enablePersonalInformation: true
+    azureAdFailedAuthUrl: /content/6291
 
 ingress:
   annotations:

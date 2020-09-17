@@ -4,6 +4,7 @@ application:
     feedbackServiceName: aws-es-proxy-service
     feedbackEndpoint: /prod-feedback/_doc
     analyticsSiteId: UA-152065860-6
+    azureAdFailedAuthUrl: /content/6554
 
 ingress:
   annotations:

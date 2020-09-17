@@ -10,6 +10,7 @@ application:
     enableFeatureToggles: true
     analyticsSiteId: UA-152065860-4
     enableRedisCache: false
+    azureAdFailedAuthUrl: /content/6291
 
 ingress:
   enabled: false
