@@ -30,7 +30,7 @@ const createSignInCallbackMiddleware = ({
       const user = await authenticate(req, res, next);
 
       if (!user) {
-        return res.redirect('/auth/sign-in');
+        return res.redirect('/auth/error');
       }
 
       const { bookingId } = await offenderService.getOffenderDetailsFor(

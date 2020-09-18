@@ -91,7 +91,7 @@ describe('AuthMiddleware', () => {
         expect(next).to.have.been.calledWith(TEST_CALLBACK_ERROR);
       });
 
-      it('should redirect to the sign in page if passport.authenticate() returns no user', async () => {
+      it('should redirect to the auth error page if passport.authenticate() returns no user', async () => {
         const authenticate = sinon.stub().resolves();
 
         const signInCallback = createSignInCallbackMiddleware({
@@ -100,7 +100,7 @@ describe('AuthMiddleware', () => {
         });
 
         await signInCallback(req, res, next);
-        expect(res.redirect).to.have.been.calledWith('/auth/sign-in');
+        expect(res.redirect).to.have.been.calledWith('/auth/error');
       });
 
       it('should fetch offender details if passport.authenticate() returns a user', async () => {
