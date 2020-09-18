@@ -33,7 +33,8 @@ const createOffenderService = (
       );
       logger.debug(e.stack);
       return {
-        error: 'We are not able to show your incentives summary at this time',
+        error:
+          'We are not able to show your incentive level summary at this time',
       };
     }
   }

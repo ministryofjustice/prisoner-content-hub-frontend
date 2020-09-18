@@ -15,7 +15,7 @@
         {% if params.data.incentivesLevel === 'Basic' %}incentives-indicator--basic{% endif %}
         {% if params.data.incentivesLevel === 'Standard' %}incentives-indicator--standard{% endif %}
         {% if params.data.incentivesLevel === 'Enhanced' %}incentives-indicator--enhanced{% endif %}
-      ">Your current level</p>
+      ">Your current incentive level</p>
         <div class="incentives-levels govuk-clearfix">
           <div class="incentives-level incentives-level--basic">Basic</div>
           <div class="incentives-level incentives-level--standard">Standard</div>
@@ -23,20 +23,20 @@
         </div>
       {% else %}
         <p class="govuk-!-font-size-24">
-          Your incentives level is unavailable
+          Your incentive level is unavailable
         </p>
       {% endif %}
       <p class="incentivesReview">
         {% if params.data.reviewDate %}
-        Your level can be reviewed on <span>{{ params.data.reviewDate }}</span>
+        Your incentive level can be reviewed on <span>{{ params.data.reviewDate }}</span>
         {% else %}
-        Your incentives review date is unavailable
+        Your incentive level review date is unavailable
       {% endif %}
       </p>
     {% endif %}
   {% else %}
     <p class="govuk-!-font-size-24">
-      <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your current incentives level
+      <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your current incentive level
     </p>
     <div class="incentives-levels govuk-clearfix">
       <div class="incentives-level incentives-level--placeholder">Basic</div>
