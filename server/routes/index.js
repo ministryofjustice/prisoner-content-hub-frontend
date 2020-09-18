@@ -45,19 +45,14 @@ const createIndexRouter = ({
         returnUrl: req.originalUrl,
       };
 
-      const data = {};
+      let todaysEvents = {};
 
       if (req.user) {
         pageConfig.userName = req.user.getFullName();
         pageConfig.welcomeMessage = `Hi, ${req.user.getFullName()}`;
 
         const { bookingId } = req.user;
-        const {
-          todaysEvents,
-          isTomorrow,
-        } = await offenderService.getEventsForToday(bookingId);
-        data.todaysEvents = todaysEvents;
-        data.isTomorrow = isTomorrow;
+        todaysEvents = await offenderService.getEventsForToday(bookingId);
       }
 
       res.render('pages/home', {
@@ -66,7 +61,7 @@ const createIndexRouter = ({
         homePageLinks,
         homePageLinksTitle,
         featuredContent: featuredContent.featured[0],
-        ...data,
+        todaysEvents,
       });
     } catch (error) {
       next(error);
