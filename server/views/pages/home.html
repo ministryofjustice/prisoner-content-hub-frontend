@@ -57,7 +57,7 @@
       </div>
     </div>
     {% if config.personalInformation %}
-      {{personalScheduleToday({events: todaysEvents, isTomorrow: isTomorrow, establishmentId: config.establishmentId}, config.userName)}}
+      {{personalScheduleToday({ data: todaysEvents, authReturnUrl: returnUrl }, config.userName)}}
     {% endif %}
   </div>
 {% endblock %}

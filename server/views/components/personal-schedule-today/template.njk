@@ -1,7 +1,7 @@
 <div class="todays-events">
   <div>
     <h3 class="govuk-heading-m">
-      {% if params.isTomorrow %}Tomorrow{% else %}Today{% endif %}'s events</h3>
+      {% if params.data.isTomorrow %}Tomorrow{% else %}Today{% endif %}'s events</h3>
     {% if not isLoggedIn %}
       <span class="govuk-body">
         <a href="/auth/sign-in?returnUrl=/" class="govuk-link see-timetable">Sign in</a> to see your timetable</span>
@@ -10,16 +10,22 @@
     {% endif %}
   </div>
   <div class="govuk-body">
-    {% if params.error %}
-      <p>Your timetable is currently unavailable.</p>
+    {% if params.data.error %}
+      <span class="govuk-!-font-size-24">
+        {{ params.data.error }}, <a href="{{ params.authReturnUrl }}" class="govuk-link">try again</a>
+      </span>
     {% else %}
-      {% for event in params.events %}
-        {% if loop.first %}<div>{% endif %}
+      {% for event in params.data.events %}
+        {% if loop.first %}
+          <div>
+          {% endif %}
           <span class="timetable-time">{{event.timeString}}</span>
           <span>
             <strong>{{event.description}}</strong>
             {{event.location}}</span>
-        {% if loop.last %}</div>{% endif %}
+          {% if loop.last %}
+          </div>
+        {% endif %}
       {% else %}
         {% if isLoggedIn %}
           Nothing scheduled for today
@@ -29,7 +35,6 @@
             <div></div>
           </div>
         {% endif %}
-
       {% endfor %}
     {% endif %}
   </div>
