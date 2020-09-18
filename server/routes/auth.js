@@ -9,6 +9,22 @@ const createAuthRouter = ({ signIn, signInCallback, signOut }) => {
 
   router.get('/sign-out', signOut);
 
+  const config = {
+    content: false,
+    header: false,
+    postscript: false,
+  };
+
+  router.get('/error', (req, res) => {
+    config.detailsType = 'small';
+    config.userName = req.user && req.user.getFullName();
+
+    return res.render('pages/authError', {
+      title: 'Authentication Error',
+      config,
+    });
+  });
+
   return router;
 };
 
