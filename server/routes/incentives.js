@@ -31,7 +31,7 @@ const createIncentivesRouter = ({ hubContentService, offenderService }) => {
       }
 
       return res.render('pages/category', {
-        title: 'Incentives',
+        title: 'Incentive level',
         config,
         data,
       });
