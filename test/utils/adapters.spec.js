@@ -151,14 +151,14 @@ function radioContent() {
       summary: 'hello world',
     },
     contentType: 'radio',
-    media: '/audio.mp3',
+    media: 'http://foo.bar/audio.mp3',
     episode: 1,
     season: 1,
     episodeId: 1001,
     seriesId: 665,
     image: {
       alt: 'Foo Bar',
-      url: '/image.png',
+      url: 'http://foo.bar/image.png',
     },
     secondaryTags: [646],
     categories: [646],
@@ -179,13 +179,13 @@ function videoContent() {
       summary: 'hello world',
     },
     contentType: 'video',
-    media: '/video.mp4',
+    media: 'http://foo.bar/video.mp4',
     episode: 2,
     season: 1,
     seriesId: 665,
     image: {
       alt: 'Foo Bar',
-      url: '/image.png',
+      url: 'http://foo.bar/image.png',
     },
     secondaryTags: [],
     categories: [],
@@ -207,7 +207,7 @@ function flatPageContent() {
     },
     image: {
       alt: 'foo alt',
-      url: '/image/foo.png',
+      url: 'http://foo.bar/image/foo.png',
     },
     standFirst: 'foo stand first',
     establishmentIds: [],
@@ -232,9 +232,9 @@ function seasonContent() {
       id: '3456',
       image: {
         alt: '',
-        url: '/images/foo.jpg',
+        url: 'http://foo.bar/images/foo.jpg',
       },
-      media: '/audio/foo.mp3',
+      media: 'http://foo.bar/audio/foo.mp3',
       season: '1',
       seriesId: 660,
       secondaryTags: [646],
@@ -256,9 +256,9 @@ function seasonContent() {
       id: '3457',
       image: {
         alt: '',
-        url: '/images/bar.jpg',
+        url: 'http://foo.bar/images/bar.jpg',
       },
-      media: '/audio/bar.mp3',
+      media: 'http://foo.bar/audio/bar.mp3',
       season: '1',
       seriesId: 660,
       secondaryTags: [761],
@@ -283,7 +283,7 @@ function landingPageContent() {
       summary: 'Landing page item summary',
     },
     image: {
-      url: '/image/foo.jpg',
+      url: 'http://foo.bar/image/foo.jpg',
       alt: 'foo image',
     },
   };
@@ -297,7 +297,7 @@ function relatedContent() {
       contentType: 'video',
       summary: 'Item summary 1',
       image: {
-        url: '/image/foo.jpg',
+        url: 'http://foo.bar/image/foo.jpg',
         alt: 'Video Item 1 alt',
       },
       contentUrl: '/content/3456',
@@ -310,7 +310,7 @@ function relatedContent() {
       contentType: 'video',
       summary: 'Item summary 2',
       image: {
-        url: '/image/bar.jpg',
+        url: 'http://foo.bar/image/bar.jpg',
         alt: 'Video Item 2 alt',
       },
       contentUrl: '/content/3457',
@@ -325,7 +325,7 @@ function pdfContent() {
     id: '3456',
     title: 'Food and catering',
     contentType: 'pdf',
-    url: '/content/foo.pdf',
+    url: 'http://foo.bar/content/foo.pdf',
     establishmentIds: [],
     contentUrl: '/content/3456',
   };
@@ -338,7 +338,7 @@ function featuredItem() {
     summary: 'Featured video summary',
     image: {
       alt: 'Featured Video 1',
-      url: '/images/foo.jpg',
+      url: 'http://foo.bar/images/foo.jpg',
     },
     contentType: 'video',
     contentUrl: '/content/3456',
@@ -352,7 +352,7 @@ function featuredSeries() {
     summary: 'Featured item summary',
     image: {
       alt: 'Featured Item 1',
-      url: '/images/foo.jpg',
+      url: 'http://foo.bar/images/foo.jpg',
     },
     contentType: 'series',
     contentUrl: '/tags/678',
@@ -362,7 +362,7 @@ function featuredSeries() {
 function termContent() {
   return {
     audio: {
-      url: '/audio/foo.mp3',
+      url: 'http://foo.bar/audio/foo.mp3',
       programmeCode: 'xyz',
     },
     description: {
@@ -373,12 +373,12 @@ function termContent() {
     id: '678',
     image: {
       alt: 'Foo Term',
-      url: '/images/foo.jpg',
+      url: 'http://foo.bar/images/foo.jpg',
     },
     name: 'Foo term',
     contentType: 'series',
     video: {
-      url: '',
+      url: undefined,
     },
   };
 }

@@ -5,7 +5,7 @@
   "id": 3546,
   "image": {
     "alt": "Foo Bar",
-    "url": "http://foo.bar.com/image.png"
+    "url": "http://foo.bar/image.png"
   },
   "description": {
     "value": "<p>Hello world</p>\r\n",
@@ -21,7 +21,7 @@
     }
   ],
   "media": {
-    "url": "http://foo.bar.com/video.mp4"
+    "url": "http://foo.bar/video.mp4"
   },
   "episode_id": 1002,
   "series_id": 665,

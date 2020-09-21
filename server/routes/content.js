@@ -1,6 +1,5 @@
 const { prop, path, propOr } = require('ramda');
 const express = require('express');
-const { fixUrlForProduction } = require('../utils');
 
 const createContentRouter = ({ hubContentService, analyticsService }) => {
   const router = express.Router();
@@ -77,7 +76,7 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
             },
           });
         case 'pdf': {
-          const url = fixUrlForProduction(data.url);
+          const { url } = data;
 
           analyticsService.sendEvent({
             category: 'PDFs',
