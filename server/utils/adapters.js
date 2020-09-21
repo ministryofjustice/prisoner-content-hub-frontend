@@ -1,5 +1,4 @@
 const R = require('ramda');
-const { fixUrlForProduction } = require('./index');
 
 const HUB_CONTENT_TYPES = {
   moj_radio_item: 'radio',
@@ -35,7 +34,7 @@ const defaultAlt = type => {
 function imageFor(image) {
   return image
     ? {
-        url: fixUrlForProduction(image.url),
+        url: image.url,
         alt: image.alt,
       }
     : null;
@@ -44,7 +43,7 @@ function imageFor(image) {
 function imageOrDefaultFor(image, contentType) {
   return image
     ? {
-        url: fixUrlForProduction(image.url),
+        url: image.url,
         alt: image.alt,
       }
     : {
@@ -131,7 +130,7 @@ function mediaResponseFrom(data) {
       sanitized: R.path(['description', 'processed'], data),
       summary: R.path(['description', 'summary'], data),
     },
-    media: fixUrlForProduction(R.path(['media', 'url'], data)),
+    media: R.path(['media', 'url'], data),
     image: imageOrDefaultFor(data.image),
     episode: data.episode,
     season: data.season,
@@ -180,10 +179,10 @@ function termResponseFrom(data) {
     },
     image: imageFor(data.image),
     video: {
-      url: fixUrlForProduction(R.path(['video', 'url'], data)),
+      url: R.path(['video', 'url'], data),
     },
     audio: {
-      url: fixUrlForProduction(R.path(['audio', 'url'], data)),
+      url: R.path(['audio', 'url'], data),
       programmeCode: data.programme_code,
     },
   };
@@ -210,7 +209,7 @@ function pdfResponseFrom(data) {
     id: data.id,
     title: data.title,
     contentType: typeFrom(data.content_type),
-    url: fixUrlForProduction(R.path(['media', 'url'], data)),
+    url: R.path(['media', 'url'], data),
     establishmentIds: R.map(R.prop('target_id'), R.propOr([], 'prisons', data)),
     contentUrl: `/content/${data.id}`,
   };

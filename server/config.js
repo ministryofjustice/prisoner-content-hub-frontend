@@ -93,7 +93,6 @@ module.exports = {
   dev: !isProduction && !isTest,
   test: isTest,
   production: isProduction,
-  useRelativeUrl: getEnv('FEATURE_USE_RELATIVE_URL', 'true') === 'true',
   buildInfo: {
     buildNumber: getEnv('BUILD_NUMBER', '9999999'),
     gitRef: getEnv('GIT_REF', 'abcd1234'),

@@ -43,7 +43,7 @@
       "summary": "Featured Item Summary",
       "image": {
         "alt": "Featured Item",
-        "url": "/images/foo.jpg"
+        "url": "http://foo.bar/images/foo.jpg"
       },
       "contentType": "landing_page",
       "contentUrl": "/content/1234",
@@ -97,7 +97,7 @@
       "summary": "Featured Item Summary",
       "image": {
         "alt": "Featured Item",
-        "url": "/images/foo.jpg"
+        "url": "http://foo.bar/images/foo.jpg"
       },
       "contentType": "moj_video_item",
       "contentUrl": "/content/1234",
@@ -151,7 +151,7 @@
       "summary": "Featured Item Summary",
       "image": {
         "alt": "Featured Item",
-        "url": "/images/foo.jpg"
+        "url": "http://foo.bar/images/foo.jpg"
       },
       "contentType": "moj_video_item",
       "contentUrl": "/content/1234",

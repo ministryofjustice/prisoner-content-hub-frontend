@@ -62,16 +62,6 @@ const capitalize = (str = '') => {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
 
-function relativeUrlFrom(url = '', override) {
-  const urlSchemeAndAuthorityRegex = /^https?:\/\/[^/]+/;
-  const newUrlAuthority = override || '';
-  return url.replace(urlSchemeAndAuthorityRegex, newUrlAuthority);
-}
-
-function fixUrlForProduction(url, config = defaultConfig) {
-  return config.useRelativeUrl ? relativeUrlFrom(url) : url;
-}
-
 function capitalizeAll(input, separator = ' ') {
   if (input === '') return '';
 
@@ -111,8 +101,6 @@ function fillContentItems(contentItems = [], number = 4) {
 }
 
 module.exports = {
-  relativeUrlFrom,
-  fixUrlForProduction,
   getEstablishmentId,
   getEstablishmentName,
   getEstablishmentFormattedName,

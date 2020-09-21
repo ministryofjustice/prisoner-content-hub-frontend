@@ -4,7 +4,7 @@
   "id": 3546,
   "image": {
     "alt": "Foo Bar",
-    "url": "http://foo.bar.com/image.png"
+    "url": "http://foo.bar/image.png"
   },
   "description": {
     "value": "<p>Hello world</p>\r\n",
@@ -22,9 +22,16 @@
       "target_id": 646
     }
   ],
-  "prisons": [{ "target_id": 792 }, { "target_id": 793 }],
+  "prisons": [
+    {
+      "target_id": 792
+    },
+    {
+      "target_id": 793
+    }
+  ],
   "media": {
-    "url": "http://foo.bar.com/audio.mp3"
+    "url": "http://foo.bar/audio.mp3"
   },
   "episode_id": 1001,
   "series_id": 665,

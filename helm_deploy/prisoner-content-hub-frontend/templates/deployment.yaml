@@ -80,8 +80,6 @@ spec:
               value: {{ .Values.application.config.analyticsEndpoint }}
             - name: ANALYTICS_SITE_ID
               value: {{ .Values.application.config.analyticsSiteId }}
-            - name: FEATURE_USE_RELATIVE_URL
-              value: {{ .Values.application.config.useRelativeUrlForMedia | quote }}
             - name: SENTRY_DSN
               value: {{ .Values.application.sentry_dsn }}
             - name: ENABLE_REDIS_CACHE
