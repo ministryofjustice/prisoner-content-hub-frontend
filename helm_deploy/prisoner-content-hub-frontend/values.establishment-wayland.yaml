@@ -1,6 +1,5 @@
 application:
   config:
-    appName: "HMP Wayland"
     establishmentName: wayland
     enablePersonalInformation: false
 

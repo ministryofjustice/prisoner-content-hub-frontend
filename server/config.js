@@ -91,9 +91,6 @@ const establishments = {
 };
 
 module.exports = {
-  appName: getEnv('APP_NAME', 'prisoner-content-hub-frontend', {
-    requireInProduction: true,
-  }),
   dev: !isProduction && !isTest,
   test: isTest,
   production: isProduction,
