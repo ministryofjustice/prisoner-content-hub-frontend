@@ -6,7 +6,6 @@ application:
     elasticsearchServiceName: hub-elasticsearch-elasticsearch-coordinating-only
     feedbackServiceName: hub-elasticsearch-elasticsearch-coordinating-only
     feedbackEndpoint: /prod-feedback/_doc
-    enableFeatureToggles: true
     analyticsSiteId: UA-152065860-4
     enableRedisCache: false
 

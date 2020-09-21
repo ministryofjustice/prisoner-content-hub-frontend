@@ -52,8 +52,6 @@ spec:
                 configMapKeyRef:
                   name: {{ .Values.application.contentConfigMapName }}
                   key: internalUrl
-            - name: ENABLE_FEATURE_TOGGLES
-              value: {{ .Values.application.config.enableFeatureToggles | quote }}
             - name: ELASTICSEARCH_ENDPOINT
               value: {{ include "prisoner-content-hub-frontend.elasticsearchServiceHost" . }}
             - name: ELASTICSEARCH_INDEX_NAME
