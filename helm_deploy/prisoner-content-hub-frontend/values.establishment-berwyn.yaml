@@ -1,6 +1,5 @@
 application:
   config:
-    appName: "HMP Berwyn"
     establishmentName: berwyn
     enablePersonalInformation: false
 

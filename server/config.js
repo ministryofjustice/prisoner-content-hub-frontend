@@ -4,7 +4,6 @@ const berwynGAJMenu = require('./data/berwyn-step-by-step.json');
 const waylandGAJMenu = require('./data/wayland-step-by-step.json');
 
 const hubEndpoint = getEnv('HUB_API_ENDPOINT', { requireInProduction: true });
-const backendUrl = getEnv('BACKEND_URL', 'http://hub-be:80');
 const prisonApiBaseUrl = getEnv('PRISON_API_BASE_URL', 'https://api.nomis', {
   requireInProduction: true,
 });
@@ -91,13 +90,9 @@ const establishments = {
 };
 
 module.exports = {
-  appName: getEnv('APP_NAME', 'prisoner-content-hub-frontend', {
-    requireInProduction: true,
-  }),
   dev: !isProduction && !isTest,
   test: isTest,
   production: isProduction,
-  backendUrl,
   buildInfo: {
     buildNumber: getEnv('BUILD_NUMBER', '9999999'),
     gitRef: getEnv('GIT_REF', 'abcd1234'),
@@ -108,7 +103,6 @@ module.exports = {
   establishmentName: getEnv('ESTABLISHMENT_NAME', 'berwyn', {
     requireInProduction: true,
   }),
-  hubEndpoint,
   auth: {
     clientId: getEnv('AZURE_AD_CLIENT_ID', { requireInProduction: true }),
     clientSecret: getEnv('AZURE_AD_CLIENT_SECRET', {
