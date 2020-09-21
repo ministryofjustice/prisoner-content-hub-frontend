@@ -4,7 +4,6 @@ const berwynGAJMenu = require('./data/berwyn-step-by-step.json');
 const waylandGAJMenu = require('./data/wayland-step-by-step.json');
 
 const hubEndpoint = getEnv('HUB_API_ENDPOINT', { requireInProduction: true });
-const backendUrl = getEnv('BACKEND_URL', 'http://hub-be:80');
 const prisonApiBaseUrl = getEnv('PRISON_API_BASE_URL', 'https://api.nomis', {
   requireInProduction: true,
 });
@@ -95,7 +94,6 @@ module.exports = {
   test: isTest,
   production: isProduction,
   useRelativeUrl: getEnv('FEATURE_USE_RELATIVE_URL', 'true') === 'true',
-  backendUrl,
   buildInfo: {
     buildNumber: getEnv('BUILD_NUMBER', '9999999'),
     gitRef: getEnv('GIT_REF', 'abcd1234'),
