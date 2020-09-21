@@ -52,13 +52,6 @@ spec:
                 configMapKeyRef:
                   name: {{ .Values.application.contentConfigMapName }}
                   key: internalUrl
-            - name: BACKEND_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Values.application.contentConfigMapName }}
-                  key: externalUrl
-            - name: APP_NAME
-              value: {{ .Values.application.config.appName }}
             - name: ENABLE_FEATURE_TOGGLES
               value: {{ .Values.application.config.enableFeatureToggles | quote }}
             - name: ELASTICSEARCH_ENDPOINT

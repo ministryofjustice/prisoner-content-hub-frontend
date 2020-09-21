@@ -3,7 +3,6 @@ image:
 
 application:
   config:
-    appName: "HMP Local"
     elasticsearchServiceName: hub-elasticsearch-elasticsearch-coordinating-only
     feedbackServiceName: hub-elasticsearch-elasticsearch-coordinating-only
     feedbackEndpoint: /prod-feedback/_doc
