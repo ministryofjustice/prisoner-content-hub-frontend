@@ -1,6 +1,4 @@
-// eslint-disable-next-line import/order
-const config = require('./config');
-
+const { pathOr } = require('ramda');
 const express = require('express');
 const addRequestId = require('express-request-id')();
 const compression = require('compression');
@@ -14,6 +12,7 @@ const bodyParser = require('body-parser');
 const { v4: uuid } = require('uuid');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
+const config = require('./config');
 
 const { createIndexRouter } = require('./routes/index');
 const { createTopicsRouter } = require('./routes/topics');
@@ -161,13 +160,20 @@ const createApp = ({
     ),
   );
 
-  // GovUK Template Configuration
-  const establishmentId = getEstablishmentId(config.establishmentName);
-  app.locals.asset_path = '/public/';
-  app.locals.config = {
-    ...config,
-    establishmentId,
-  };
+  app.use((req, res, next) => {
+    const replaceUrl = /-prisoner-content-hub.*$/g;
+    config.establishmentName = pathOr('berwyn', ['headers', 'host'], req)
+      .split('.')[0]
+      .replace(replaceUrl, '');
+    const establishmentId = getEstablishmentId(config.establishmentName);
+    app.locals.asset_path = '/public/';
+    app.locals.config = {
+      ...config,
+      establishmentId,
+    };
+
+    return next();
+  });
 
   // Don't cache dynamic resources
   app.use(noCache());

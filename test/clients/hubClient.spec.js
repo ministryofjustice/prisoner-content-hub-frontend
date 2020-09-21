@@ -32,7 +32,6 @@ describe('HubClient', () => {
 
       expect(reqPath).to.include('_format=json');
       expect(reqPath).to.include('_lang=en');
-      expect(reqPath).to.include('_prison=792');
     });
 
     it('accepts additional query params', async () => {
@@ -51,7 +50,6 @@ describe('HubClient', () => {
 
       expect(reqPath).to.include('_format=json');
       expect(reqPath).to.include('_lang=en');
-      expect(reqPath).to.include('_prison=792');
       expect(reqPath).to.include('foo=bar');
     });
 

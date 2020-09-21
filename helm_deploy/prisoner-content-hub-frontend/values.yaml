@@ -23,7 +23,6 @@ application:
     timeoutSeconds: 5
   config:
     enablePersonalInformation: false
-    establishmentName: berwyn
     analyticsEndpoint: https://www.google-analytics.com/collect
     elasticsearchIndexName: content_index
     enableRedisCache: false
