@@ -104,7 +104,6 @@ module.exports = {
   establishmentName: getEnv('ESTABLISHMENT_NAME', 'berwyn', {
     requireInProduction: true,
   }),
-  hubEndpoint,
   auth: {
     clientId: getEnv('AZURE_AD_CLIENT_ID', { requireInProduction: true }),
     clientSecret: getEnv('AZURE_AD_CLIENT_SECRET', {
