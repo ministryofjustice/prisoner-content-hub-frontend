@@ -171,7 +171,6 @@ const createApp = ({
   app.use('/health', createHealthRouter({ healthService }));
 
   // Routing
-
   app.use(
     '/',
     createIndexRouter({
@@ -182,8 +181,6 @@ const createApp = ({
     }),
   );
 
-  app.use('/topics', createTopicsRouter({ hubMenuService }));
-
   app.use(
     '/auth',
     createAuthRouter({
@@ -191,14 +188,11 @@ const createApp = ({
       signIn: createSignInMiddleware(),
       signInCallback: createSignInCallbackMiddleware({
         offenderService,
-        analyticsService,
         logger,
       }),
-      signOut: createSignOutMiddleware({ analyticsService, logger }),
+      signOut: createSignOutMiddleware({ logger }),
     }),
   );
-
-  app.use('/timetable', createTimetableRouter({ offenderService }));
 
   app.use(
     '/visits',
@@ -224,12 +218,14 @@ const createApp = ({
     }),
   );
 
+  app.use('/topics', createTopicsRouter({ hubMenuService }));
+  app.use('/timetable', createTimetableRouter({ offenderService }));
   app.use('/content', createContentRouter({ hubContentService }));
   app.use('/npr', createNprRouter());
   app.use('/tags', createTagRouter({ hubTagsService }));
   app.use('/games', createGamesRouter());
   app.use('/feedback', createFeedbackRouter({ feedbackService }));
-  app.use('/search', createSearchRouter({ searchService, analyticsService }));
+  app.use('/search', createSearchRouter({ searchService }));
 
   app.use('*', (req, res) => {
     res.status(404);
