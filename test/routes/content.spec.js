@@ -28,13 +28,9 @@ describe('GET /content/:id', () => {
       const hubContentService = {
         contentFor: sinon.stub().returns(radioShowResponse),
       };
-      const analyticsService = {
-        sendEvent: sinon.stub(),
-      };
 
       const router = createContentRouter({
         hubContentService,
-        analyticsService,
       });
       app = setupBasicApp();
 
@@ -136,13 +132,9 @@ describe('GET /content/:id', () => {
       const hubContentService = {
         contentFor: sinon.stub().returns(videoShowResponse),
       };
-      const analyticsService = {
-        sendEvent: sinon.stub(),
-      };
 
       const router = createContentRouter({
         hubContentService,
-        analyticsService,
       });
       app = setupBasicApp();
 
@@ -307,12 +299,8 @@ describe('GET /content/:id', () => {
       const hubContentService = {
         contentFor: sinon.stub().returns(flatContentResponse),
       };
-      const analyticsService = {
-        sendEvent: sinon.stub(),
-      };
       const router = createContentRouter({
         hubContentService,
-        analyticsService,
       });
       app = setupBasicApp();
 
@@ -351,14 +339,10 @@ describe('GET /content/:id', () => {
         url: 'www.foo.bar/file.pdf',
       }),
     };
-    const analyticsService = {
-      sendEvent: sinon.stub(),
-    };
 
     it('returns a PDF', () => {
       const router = createContentRouter({
         hubContentService,
-        analyticsService,
       });
       const app = setupBasicApp();
 
@@ -424,12 +408,8 @@ describe('GET /content/:id', () => {
       const hubContentService = {
         contentFor: sinon.stub().returns(serviceResponse),
       };
-      const analyticsService = {
-        sendEvent: sinon.stub(),
-      };
       const router = createContentRouter({
         hubContentService,
-        analyticsService,
       });
       const app = setupBasicApp();
 

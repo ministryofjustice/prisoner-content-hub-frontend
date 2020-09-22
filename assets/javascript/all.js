@@ -73,3 +73,14 @@ function showHiddenBlock(block) {
     hiddenData.style.display = 'none';
   }, 3000);
 }
+
+
+$( document ).ready(function() {
+  $('a.is-pdf').on('click', function() {
+    gtag('event', $(this).data('featuredTitle'), {
+      'event_category': 'PDFs',
+      'event_label': 'Downloads',
+      'value': 1
+    });
+  })
+})

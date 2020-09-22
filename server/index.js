@@ -22,7 +22,6 @@ const { createHealthService } = require('./services/health');
 const { createHubTagsService } = require('./services/hubTags');
 const { createPrisonApiOffenderService } = require('./services/offender');
 const { createSearchService } = require('./services/search');
-const { createAnalyticsService } = require('./services/analytics');
 const { createFeedbackService } = require('./services/feedback');
 
 // Repositories
@@ -36,7 +35,6 @@ const { hubMenuRepository } = require('./repositories/hubMenu');
 const { contentRepository } = require('./repositories/hubContent');
 const { offenderRepository } = require('./repositories/offender');
 const { searchRepository } = require('./repositories/search');
-const { analyticsRepository } = require('./repositories/analytics');
 const { feedbackRepository } = require('./repositories/feedback');
 
 const hubClient = new HubClient();
@@ -81,9 +79,6 @@ module.exports = createApp({
   ),
   searchService: createSearchService({
     searchRepository: searchRepository(standardClient),
-  }),
-  analyticsService: createAnalyticsService({
-    analyticsRepository: analyticsRepository(standardClient),
   }),
   feedbackService: createFeedbackService({
     feedbackRepository: feedbackRepository(standardClient),

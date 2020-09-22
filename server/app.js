@@ -22,7 +22,6 @@ const { createIncentivesRouter } = require('./routes/incentives');
 const { createMoneyRouter } = require('./routes/money');
 const { createTagRouter } = require('./routes/tags');
 const { createGamesRouter } = require('./routes/games');
-const { createAnalyticsRouter } = require('./routes/analytics');
 const { createFeedbackRouter } = require('./routes/feedback');
 const { createSearchRouter } = require('./routes/search');
 const { createAuthRouter } = require('./routes/auth');
@@ -49,7 +48,6 @@ const createApp = ({
   healthService,
   offenderService,
   searchService,
-  analyticsService,
   feedbackService,
 }) => {
   const app = express();
@@ -226,18 +224,10 @@ const createApp = ({
     }),
   );
 
-  app.use(
-    '/content',
-    createContentRouter({
-      hubContentService,
-      analyticsService,
-    }),
-  );
-
+  app.use('/content', createContentRouter({ hubContentService }));
   app.use('/npr', createNprRouter());
   app.use('/tags', createTagRouter({ hubTagsService }));
   app.use('/games', createGamesRouter());
-  app.use('/analytics', createAnalyticsRouter({ analyticsService }));
   app.use('/feedback', createFeedbackRouter({ feedbackService }));
   app.use('/search', createSearchRouter({ searchService, analyticsService }));
 
