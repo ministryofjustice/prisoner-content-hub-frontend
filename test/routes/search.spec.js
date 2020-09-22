@@ -2,7 +2,7 @@ const request = require('supertest');
 const cheerio = require('cheerio');
 
 const { createSearchRouter } = require('../../server/routes/search');
-const { setupBasicApp, logger } = require('../test-helpers');
+const { setupBasicApp } = require('../test-helpers');
 
 const searchResponse = require('../resources/searchResponse.json');
 
@@ -20,7 +20,6 @@ describe('GET /search', () => {
 
         const router = createSearchRouter({
           searchService,
-          logger,
           analyticsService,
         });
         const app = setupBasicApp();
@@ -70,7 +69,6 @@ describe('GET /search', () => {
 
         const router = createSearchRouter({
           searchService,
-          logger,
           analyticsService,
         });
         const app = setupBasicApp();
@@ -108,7 +106,6 @@ describe('GET /search', () => {
 
         const router = createSearchRouter({
           searchService,
-          logger,
           analyticsService,
         });
         const app = setupBasicApp();
@@ -146,7 +143,6 @@ describe('GET /suggest', () => {
 
       const router = createSearchRouter({
         searchService,
-        logger,
         analyticsService,
       });
       const app = setupBasicApp();
@@ -182,7 +178,6 @@ describe('GET /suggest', () => {
 
       const router = createSearchRouter({
         searchService,
-        logger,
         analyticsService,
       });
       const app = setupBasicApp();

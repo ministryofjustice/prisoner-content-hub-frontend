@@ -2,7 +2,7 @@ const request = require('supertest');
 const cheerio = require('cheerio');
 
 const { createContentRouter } = require('../../server/routes/content');
-const { setupBasicApp, logger } = require('../test-helpers');
+const { setupBasicApp } = require('../test-helpers');
 
 const radioShowResponse = require('../resources/radioShowServiceResponse.json');
 const videoShowResponse = require('../resources/videoShowServiceResponse.json');
@@ -13,10 +13,7 @@ describe('GET /content/:id', () => {
     const invalidService = {
       contentFor: () => ({ type: 'invalid' }),
     };
-    const router = createContentRouter({
-      logger,
-      hubContentService: invalidService,
-    });
+    const router = createContentRouter({ hubContentService: invalidService });
     const app = setupBasicApp();
 
     app.use('/content', router);
@@ -37,7 +34,6 @@ describe('GET /content/:id', () => {
       };
 
       const router = createContentRouter({
-        logger,
         hubContentService,
         analyticsService,
       });
@@ -147,7 +143,6 @@ describe('GET /content/:id', () => {
       };
 
       const router = createContentRouter({
-        logger,
         hubContentService,
         analyticsService,
       });
@@ -319,7 +314,6 @@ describe('GET /content/:id', () => {
         sendEvent: sinon.stub(),
       };
       const router = createContentRouter({
-        logger,
         hubContentService,
         analyticsService,
       });
@@ -367,7 +361,6 @@ describe('GET /content/:id', () => {
 
     it('returns a PDF', () => {
       const router = createContentRouter({
-        logger,
         hubContentService,
         analyticsService,
       });
@@ -440,7 +433,6 @@ describe('GET /content/:id', () => {
         sendEvent: sinon.stub(),
       };
       const router = createContentRouter({
-        logger,
         hubContentService,
         analyticsService,
       });
