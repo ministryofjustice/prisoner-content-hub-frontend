@@ -1,11 +1,3 @@
-function sendEvent(data) {
-  $.ajax({
-    type: "POST",
-    url: '/analytics/event',
-    data: data
-  });
-}
-
 (function() {
   document.body.addEventListener('click', function(event) {
     if (matchesAll('[data-state]', event.target)) {

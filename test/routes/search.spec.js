@@ -13,13 +13,9 @@ describe('GET /search', () => {
         const searchService = {
           find: sinon.stub().returns(searchResponse),
         };
-        const analyticsService = {
-          sendEvent: sinon.stub(),
-        };
 
         const router = createSearchRouter({
           searchService,
-          analyticsService,
         });
         const app = setupBasicApp();
 
@@ -61,13 +57,9 @@ describe('GET /search', () => {
         const searchService = {
           find: sinon.stub().returns([]),
         };
-        const analyticsService = {
-          sendEvent: sinon.stub(),
-        };
 
         const router = createSearchRouter({
           searchService,
-          analyticsService,
         });
         const app = setupBasicApp();
 
@@ -97,13 +89,9 @@ describe('GET /search', () => {
         const searchService = {
           find: sinon.stub().rejects('BOOM!'),
         };
-        const analyticsService = {
-          sendEvent: sinon.stub(),
-        };
 
         const router = createSearchRouter({
           searchService,
-          analyticsService,
         });
         const app = setupBasicApp();
 
@@ -133,13 +121,9 @@ describe('GET /suggest', () => {
       const searchService = {
         typeAhead: sinon.stub().returns(searchResponse),
       };
-      const analyticsService = {
-        sendEvent: sinon.stub(),
-      };
 
       const router = createSearchRouter({
         searchService,
-        analyticsService,
       });
       const app = setupBasicApp();
 
@@ -167,13 +151,9 @@ describe('GET /suggest', () => {
       const searchService = {
         find: sinon.stub().rejects('BOOM!'),
       };
-      const analyticsService = {
-        sendEvent: sinon.stub(),
-      };
 
       const router = createSearchRouter({
         searchService,
-        analyticsService,
       });
       const app = setupBasicApp();
 
