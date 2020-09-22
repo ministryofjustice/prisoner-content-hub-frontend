@@ -7,7 +7,7 @@ const config = require('../config');
 const loggingTransports = [new transports.Console({ level: 'info' })];
 const exceptionTransports = [new transports.Console({ level: 'info' })];
 
-const logLevel = config.production ? 'info' : 'debug';
+const logLevel = config.isProduction ? 'info' : 'debug';
 
 const logger = createLogger({
   level: logLevel,

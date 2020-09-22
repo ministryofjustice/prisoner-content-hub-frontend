@@ -105,7 +105,7 @@ const createApp = ({
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  if (config.production) {
+  if (config.isProduction) {
     // Version only changes on reboot
     app.locals.version = version;
   } else {
@@ -320,16 +320,10 @@ const createApp = ({
     logger.debug(error.stack);
     res.status(error.status || 500);
 
-    const locals = {
-      message: 'Sorry, there is a problem with this service',
-      stack: '',
-    };
-    if (error.expose || config.dev) {
-      locals.message = error.message;
-    }
-    if (config.dev) {
-      locals.stack = error.stack;
-      locals.req_id = req.id;
+    const locals = {};
+
+    if (config.features.showStackTraces) {
+      locals.error = error;
     }
 
     res.render('pages/error', locals);
