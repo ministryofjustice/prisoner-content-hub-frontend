@@ -13,13 +13,13 @@
     <meta name="theme-color" content="{{ themeColor | default('#0b0c0c') }}"/>
     <meta name="robots" content="noindex, nofollow, noimageindex">
     {% block analytics %}
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152065860-4"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{analyticsId}}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'UA-152065860-4', {
+      gtag('config', '{{analyticsId}}', {
         'custom_map': {
           'dimension1': 'Secondary Tags',
           'dimension2': 'Categories'

@@ -171,6 +171,7 @@ const createApp = ({
   app.use('/health', createHealthRouter({ healthService }));
 
   // Routing
+
   app.use(
     '/',
     createIndexRouter({
