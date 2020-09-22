@@ -22,7 +22,6 @@ application:
     delaySeconds: 10
     timeoutSeconds: 5
   config:
-    enableFeatureToggles: false
     enablePersonalInformation: false
     establishmentName: berwyn
     analyticsEndpoint: https://www.google-analytics.com/collect
