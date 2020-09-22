@@ -2,11 +2,10 @@ const request = require('supertest');
 const cheerio = require('cheerio');
 
 const { createTopicsRouter } = require('../../server/routes/topics');
-const { setupBasicApp, logger, consoleLogError } = require('../test-helpers');
+const { setupBasicApp, consoleLogError } = require('../test-helpers');
 
 describe('GET /topics', () => {
   let hubMenuService;
-  let analyticsService;
   let router;
   let app;
 
@@ -17,19 +16,11 @@ describe('GET /topics', () => {
         { linkText: 'bar', href: '/content/bar' },
       ]),
     };
-    analyticsService = {
-      sendPageTrack: sinon.stub(),
-      sendEvent: sinon.stub(),
-    };
   });
 
   describe('Topics', () => {
     beforeEach(() => {
-      router = createTopicsRouter({
-        logger,
-        hubMenuService,
-        analyticsService,
-      });
+      router = createTopicsRouter({ hubMenuService });
 
       app = setupBasicApp();
       app.use((req, res, next) => {

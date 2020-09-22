@@ -2,7 +2,7 @@ const request = require('supertest');
 const cheerio = require('cheerio');
 
 const { createGettingAJobRouter } = require('../../server/routes/gettingAJob');
-const { setupBasicApp, logger } = require('../test-helpers');
+const { setupBasicApp } = require('../test-helpers');
 
 const flatContentResponse = require('../resources/flatContentResponse.json');
 
@@ -24,11 +24,6 @@ const hubMenuService = {
   ]),
 };
 
-const analyticsService = {
-  sendPageTrack: sinon.stub(),
-  sendEvent: sinon.stub(),
-};
-
 const setPrisonMiddleware = establishmentId => (req, res, next) => {
   res.locals = { establishmentId };
   next();
@@ -36,10 +31,8 @@ const setPrisonMiddleware = establishmentId => (req, res, next) => {
 
 describe('GET /working-in-(berwyn|wayland|cookhamwood)', () => {
   const router = createGettingAJobRouter({
-    logger,
     hubContentService,
     hubMenuService,
-    analyticsService,
   });
 
   describe('/', () => {

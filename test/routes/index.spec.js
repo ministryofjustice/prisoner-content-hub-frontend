@@ -2,7 +2,7 @@ const request = require('supertest');
 const cheerio = require('cheerio');
 
 const { createIndexRouter } = require('../../server/routes/index');
-const { setupBasicApp, logger, consoleLogError } = require('../test-helpers');
+const { setupBasicApp, consoleLogError } = require('../test-helpers');
 
 describe('GET /', () => {
   let featuredItem;
@@ -63,7 +63,6 @@ describe('GET /', () => {
         },
       };
       router = createIndexRouter({
-        logger,
         hubFeaturedContentService,
         config,
       });

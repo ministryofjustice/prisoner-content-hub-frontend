@@ -217,13 +217,7 @@ const createApp = ({
     }),
   );
 
-  app.use(
-    '/topics',
-    createTopicsRouter({
-      hubMenuService,
-      analyticsService,
-    }),
-  );
+  app.use('/topics', createTopicsRouter({ hubMenuService }));
 
   app.use(
     '/auth',
@@ -235,20 +229,13 @@ const createApp = ({
     }),
   );
 
-  app.use(
-    '/timetable',
-    createTimetableRouter({
-      offenderService,
-      analyticsService,
-    }),
-  );
+  app.use('/timetable', createTimetableRouter({ offenderService }));
 
   app.use(
     '/visits',
     createVisitsRouter({
       hubContentService,
       offenderService,
-      analyticsService,
     }),
   );
 
@@ -257,7 +244,6 @@ const createApp = ({
     createIncentivesRouter({
       hubContentService,
       offenderService,
-      analyticsService,
     }),
   );
 
@@ -266,7 +252,6 @@ const createApp = ({
     createMoneyRouter({
       hubContentService,
       offenderService,
-      analyticsService,
     }),
   );
 
@@ -278,22 +263,11 @@ const createApp = ({
     }),
   );
 
-  app.use(
-    '/npr',
-    createNprRouter({
-      analyticsService,
-    }),
-  );
+  app.use('/npr', createNprRouter());
 
-  app.use(
-    '/tags',
-    createTagRouter({
-      hubTagsService,
-      analyticsService,
-    }),
-  );
+  app.use('/tags', createTagRouter({ hubTagsService }));
 
-  app.use('/games', createGamesRouter({ analyticsService }));
+  app.use('/games', createGamesRouter());
   app.use('/analytics', createAnalyticsRouter({ analyticsService }));
   app.use('/feedback', createFeedbackRouter({ feedbackService }));
 
@@ -302,7 +276,6 @@ const createApp = ({
     createGettingAJobRouter({
       hubContentService,
       hubMenuService,
-      analyticsService,
     }),
   );
   app.use('/search', createSearchRouter({ searchService, analyticsService }));

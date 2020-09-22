@@ -2,16 +2,12 @@ const request = require('supertest');
 const cheerio = require('cheerio');
 
 const { createGamesRouter } = require('../../server/routes/games');
-const { setupBasicApp, logger } = require('../test-helpers');
+const { setupBasicApp } = require('../test-helpers');
 
 describe('GET /games', () => {
   describe('/chess', () => {
     it('renders a chess game page', () => {
-      const analyticsService = {
-        sendPageTrack: sinon.stub(),
-        sendEvent: sinon.stub(),
-      };
-      const router = createGamesRouter({ logger, analyticsService });
+      const router = createGamesRouter();
       const app = setupBasicApp();
 
       app.use('/games', router);
@@ -29,11 +25,7 @@ describe('GET /games', () => {
 
   describe('/sudoku', () => {
     it('renders a sudoku game page', () => {
-      const analyticsService = {
-        sendPageTrack: sinon.stub(),
-        sendEvent: sinon.stub(),
-      };
-      const router = createGamesRouter({ logger, analyticsService });
+      const router = createGamesRouter();
       const app = setupBasicApp();
 
       app.use('/games', router);
@@ -51,11 +43,7 @@ describe('GET /games', () => {
 
   describe('/neontroids', () => {
     it('renders a neontroids game page', () => {
-      const analyticsService = {
-        sendPageTrack: sinon.stub(),
-        sendEvent: sinon.stub(),
-      };
-      const router = createGamesRouter({ logger, analyticsService });
+      const router = createGamesRouter();
       const app = setupBasicApp();
 
       app.use('/games', router);
