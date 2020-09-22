@@ -1,4 +1,4 @@
-const { getEnv, isProduction, isTest } = require('../utils/index');
+const { getEnv, isProduction } = require('../utils/index');
 
 const berwynGAJMenu = require('./data/berwyn-step-by-step.json');
 const waylandGAJMenu = require('./data/wayland-step-by-step.json');
@@ -90,9 +90,7 @@ const establishments = {
 };
 
 module.exports = {
-  dev: !isProduction && !isTest,
-  test: isTest,
-  production: isProduction,
+  isProduction,
   buildInfo: {
     buildNumber: getEnv('BUILD_NUMBER', '9999999'),
     gitRef: getEnv('GIT_REF', 'abcd1234'),
@@ -151,6 +149,8 @@ module.exports = {
     personalInformation:
       getEnv('ENABLE_PERSONAL_INFORMATION', 'false') === 'true',
     useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'true') === 'true',
+    showStackTraces:
+      getEnv('ENABLE_STACK_TRACES_ON_ERROR_PAGES', 'false') === 'true',
   },
   analytics: {
     endpoint: getEnv(

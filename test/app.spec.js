@@ -17,10 +17,11 @@ describe('App', () => {
   });
 
   it('hides the stack trace on error pages', async () => {
-    const error = new Error('broken kittens');
-    const copy = config.dev;
+    const error = {
+      message: 'Something has gone horribly wrong',
+      stack: 'beep-boop',
+    };
 
-    config.dev = false;
     await request(
       app({
         hubFeaturedContentService: {
@@ -37,23 +38,25 @@ describe('App', () => {
       .get('/')
       .expect(500)
       .then(response => {
-        expect(response.text).to.contain(
-          'Sorry, there is a problem with this service',
+        expect(response.text).to.not.contain(
+          error.stack,
+          'it should not show the error message',
         );
-        expect(response.text).to.contain(
-          '<code></code>',
-          'The code block is not empty',
+        expect(response.text).to.not.contain(
+          error.stack,
+          'it should not show the stack',
         );
-        // restore config
-        config.dev = copy;
       });
   });
 
   it('shows the stack trace on error pages', async () => {
-    const error = new Error('Broken kittens');
-    const copy = config.dev;
+    const error = {
+      message: 'Something has gone horribly wrong',
+      stack: 'beep-boop',
+    };
+    const previousConfiguration = JSON.stringify(config.features);
 
-    config.dev = true;
+    config.features.showStackTraces = true;
 
     await request(
       app({
@@ -70,21 +73,14 @@ describe('App', () => {
       .get('/')
       .expect(500)
       .then(res => {
-        expect(res.text).to.contain('Broken kittens');
-        expect(res.text).to.not.contain(
-          'Sorry, there is a problem with this service',
-        );
-        expect(res.text).to.not.contain(
-          '<code></code>',
-          'The code block should not be empty',
-        );
         expect(res.text).to.contain(
-          'at Context.',
-          'there should be an error in the code block',
+          error.message,
+          'it should show the error message',
         );
+        expect(res.text).to.contain(error.stack, 'it should show the stack');
 
         // restore config
-        config.dev = copy;
+        config.features = JSON.parse(previousConfiguration);
       });
   });
 

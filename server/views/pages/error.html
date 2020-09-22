@@ -5,22 +5,32 @@
 {% endblock %}
 
 {% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet" />
+  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block main %}
-<div class="govuk-width-container">
-  <main class="govuk-main-wrapper--l" id="main-content" role="main">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl">{{message}}</h1>
-        <p class="govuk-body">
-          Try again later.
-        </p>
-          <kbd>{{ req_id }}</kbd>
-          <code>{{ stack }}</code>
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper--l" id="main-content" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <h1 class="govuk-heading-xl">Something went wrong</h1>
+          <p class="govuk-body govuk-!-font-size-24">
+            Return to the <a href="/">home page</a> or
+            <script>
+              document.write('<a href="' + document.referrer + '">try again</a>');
+            </script>
+          </p>
+          {% if error %}
+            <h2 class="govuk-heading-m">Geek Stuff 👇</h2>
+            <div class="govuk-inset-text">
+              <p class="govuk-body govuk-!-font-weight-bold">
+                {{ error.message }}
+              </p>
+              <code>{{ error.stack }}</code>
+            </div>
+          {% endif %}
+        </div>
       </div>
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
 {% endblock %}
