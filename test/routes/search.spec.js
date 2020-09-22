@@ -14,7 +14,6 @@ describe('GET /search', () => {
           find: sinon.stub().returns(searchResponse),
         };
         const analyticsService = {
-          sendPageTrack: sinon.stub(),
           sendEvent: sinon.stub(),
         };
 
@@ -63,7 +62,6 @@ describe('GET /search', () => {
           find: sinon.stub().returns([]),
         };
         const analyticsService = {
-          sendPageTrack: sinon.stub(),
           sendEvent: sinon.stub(),
         };
 
@@ -100,7 +98,6 @@ describe('GET /search', () => {
           find: sinon.stub().rejects('BOOM!'),
         };
         const analyticsService = {
-          sendPageTrack: sinon.stub(),
           sendEvent: sinon.stub(),
         };
 
@@ -137,7 +134,6 @@ describe('GET /suggest', () => {
         typeAhead: sinon.stub().returns(searchResponse),
       };
       const analyticsService = {
-        sendPageTrack: sinon.stub(),
         sendEvent: sinon.stub(),
       };
 
@@ -172,7 +168,6 @@ describe('GET /suggest', () => {
         find: sinon.stub().rejects('BOOM!'),
       };
       const analyticsService = {
-        sendPageTrack: sinon.stub(),
         sendEvent: sinon.stub(),
       };
 

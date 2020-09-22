@@ -22,47 +22,9 @@ function analyticsRepository(httpClient) {
 
     return httpClient.postFormData(config.analytics.endpoint, postData);
   }
-  function sendPageTrack({
-    hostname,
-    page,
-    title,
-    sessionId,
-    userAgent,
-    screen,
-    viewport,
-    secondaryTags,
-    categories,
-  }) {
-    const postData = {
-      v: '1',
-      tid: config.analytics.siteId,
-      cid: sessionId,
-      t: 'pageview',
-      dh: hostname,
-      dp: page,
-      dt: title,
-      sr: screen,
-      vp: viewport,
-    };
-
-    if (userAgent !== undefined) {
-      postData.ua = userAgent;
-    }
-
-    if (secondaryTags !== undefined) {
-      postData.cd1 = secondaryTags;
-    }
-
-    if (categories !== undefined) {
-      postData.cd2 = categories;
-    }
-
-    return httpClient.postFormData(config.analytics.endpoint, postData);
-  }
 
   return {
     sendEvent,
-    sendPageTrack,
   };
 }
 

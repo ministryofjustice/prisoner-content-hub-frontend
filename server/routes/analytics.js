@@ -19,24 +19,6 @@ const createAnalyticsRouter = ({ analyticsService }) => {
     return res.send('OK');
   });
 
-  router.post('/page', (req, res) => {
-    const sessionId = path(['session', 'id'], req);
-
-    analyticsService.sendPageTrack({
-      hostname: path(['body', 'hostname'], req),
-      page: path(['body', 'page'], req),
-      title: path(['body', 'title'], req),
-      sessionId,
-      userAgent: path(['body', 'userAgent'], req),
-      screen: path(['body', 'screen'], req),
-      viewport: path(['body', 'viewport'], req),
-      secondaryTags: path(['body', 'secondaryTags'], req),
-      categories: path(['body', 'categories'], req),
-    });
-
-    return res.send('OK');
-  });
-
   return router;
 };
 

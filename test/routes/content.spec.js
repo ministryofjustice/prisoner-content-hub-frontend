@@ -29,7 +29,6 @@ describe('GET /content/:id', () => {
         contentFor: sinon.stub().returns(radioShowResponse),
       };
       const analyticsService = {
-        sendPageTrack: sinon.stub(),
         sendEvent: sinon.stub(),
       };
 
@@ -138,7 +137,6 @@ describe('GET /content/:id', () => {
         contentFor: sinon.stub().returns(videoShowResponse),
       };
       const analyticsService = {
-        sendPageTrack: sinon.stub(),
         sendEvent: sinon.stub(),
       };
 
@@ -310,7 +308,6 @@ describe('GET /content/:id', () => {
         contentFor: sinon.stub().returns(flatContentResponse),
       };
       const analyticsService = {
-        sendPageTrack: sinon.stub(),
         sendEvent: sinon.stub(),
       };
       const router = createContentRouter({
@@ -355,7 +352,6 @@ describe('GET /content/:id', () => {
       }),
     };
     const analyticsService = {
-      sendPageTrack: sinon.stub(),
       sendEvent: sinon.stub(),
     };
 
@@ -429,7 +425,6 @@ describe('GET /content/:id', () => {
         contentFor: sinon.stub().returns(serviceResponse),
       };
       const analyticsService = {
-        sendPageTrack: sinon.stub(),
         sendEvent: sinon.stub(),
       };
       const router = createContentRouter({

@@ -10,33 +10,8 @@ const createAnalyticsService = ({ analyticsRepository }) => {
     });
   }
 
-  function sendPageTrack({
-    hostname,
-    page,
-    title,
-    sessionId,
-    userAgent,
-    screen,
-    viewport,
-    secondaryTags,
-    categories,
-  }) {
-    return analyticsRepository.sendPageTrack({
-      hostname,
-      page,
-      title,
-      sessionId,
-      userAgent,
-      screen,
-      viewport,
-      secondaryTags,
-      categories,
-    });
-  }
-
   return {
     sendEvent,
-    sendPageTrack,
   };
 };
 
