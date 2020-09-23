@@ -48,8 +48,6 @@ const {
   getEstablishmentWorkingInUrls,
 } = require('./utils');
 
-const version = Date.now().toString();
-
 const createApp = ({
   logger,
   requestLogger,
@@ -105,16 +103,7 @@ const createApp = ({
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  if (config.isProduction) {
-    // Version only changes on reboot
-    app.locals.version = version;
-  } else {
-    // Version changes every request
-    app.use((req, res, next) => {
-      res.locals.version = Date.now().toString();
-      return next();
-    });
-
+  if (!config.isProduction) {
     app.use(
       '/public',
       sassMiddleware({
