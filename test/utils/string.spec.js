@@ -27,8 +27,18 @@ describe('StringUtils', () => {
       expect(balance).to.equal('£5.00');
     });
 
-    it('should return the placeholder if no amount passed', () => {
+    it('should handle zero', () => {
+      const balance = formatBalanceOrDefault('', 0.0, 'GBP');
+      expect(balance).to.equal('£0.00');
+    });
+
+    it('should return the placeholder if null amount passed', () => {
       const balance = formatBalanceOrDefault('PLACEHOLDER', null, 'GBP');
+      expect(balance).to.equal('PLACEHOLDER');
+    });
+
+    it('should return the placeholder if undefined amount passed', () => {
+      const balance = formatBalanceOrDefault('PLACEHOLDER', undefined, 'GBP');
       expect(balance).to.equal('PLACEHOLDER');
     });
 
