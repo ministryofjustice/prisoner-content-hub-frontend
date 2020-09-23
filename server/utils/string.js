@@ -6,7 +6,7 @@ const fullNameOrDefault = (placeHolder, ...names) => {
 };
 
 const formatBalanceOrDefault = (placeHolder, amount, currency) => {
-  return amount && currency
+  return amount !== null && !Number.isNaN(Number(amount)) && currency
     ? new Intl.NumberFormat('en-GB', {
         style: 'currency',
         currency,
