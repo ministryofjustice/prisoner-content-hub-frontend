@@ -70,10 +70,6 @@ spec:
                 configMapKeyRef:
                   name: {{ .Values.application.nprConfigMapName }}
                   key: externalUrl
-            - name: ANALYTICS_ENDPOINT
-              value: {{ .Values.application.config.analyticsEndpoint }}
-            - name: ANALYTICS_ENDPOINT
-              value: {{ .Values.application.config.analyticsEndpoint }}
             - name: ANALYTICS_SITE_ID
               value: {{ .Values.application.config.analyticsSiteId }}
             - name: SENTRY_DSN
