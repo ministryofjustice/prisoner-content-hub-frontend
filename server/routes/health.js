@@ -5,7 +5,6 @@ const createHealthRouter = ({ healthService }) => {
   const router = express.Router();
 
   router.get('/', (_, res) => res.json({ status: 'OK' }));
-  router.get('/liveness', (_, res) => res.json({ status: 'OK' }));
 
   router.get('/readiness', async (req, res, next) => {
     try {
