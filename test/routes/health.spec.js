@@ -3,7 +3,7 @@ const request = require('supertest');
 const { createHealthRouter } = require('../../server/routes/health');
 const { setupBasicApp } = require('../test-helpers');
 
-describe('GET /health/liveness', () => {
+describe('GET /health', () => {
   it('returns the health status of the application', () => {
     const healthService = {};
     const router = createHealthRouter({ healthService });
@@ -18,7 +18,7 @@ describe('GET /health/liveness', () => {
     app.use('/health', router);
 
     return request(app)
-      .get('/health/liveness')
+      .get('/health')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
