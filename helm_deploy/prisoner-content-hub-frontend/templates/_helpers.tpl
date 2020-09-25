@@ -75,3 +75,11 @@ Create external Kubernetes hostname
 {{- end }}
 {{- printf "%s://%s%s" $protocol .Values.ingress.domainPrefix (index .Values.ingress.hosts 0).suffix }}
 {{- end }}
+
+{{/*
+Create a string from a list of values joined by a comma
+*/}}
+{{- define "app.joinListWithComma" -}}
+{{- $local := dict "first" true -}}
+{{- range $k, $v := . -}}{{- if not $local.first -}},{{- end -}}{{- $v -}}{{- $_ := set $local "first" false -}}{{- end -}}
+{{- end -}}
