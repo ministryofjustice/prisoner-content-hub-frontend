@@ -3,7 +3,7 @@ const { capitalize } = require('../utils');
 
 class User {
   constructor(profile = {}) {
-    this.prisonerId = profile.prisonerId;
+    this.prisonerId = profile.prisonerId.toUpperCase();
     this.firstName = profile.firstName;
     this.lastName = profile.lastName;
     this.bookingId = profile.bookingId;

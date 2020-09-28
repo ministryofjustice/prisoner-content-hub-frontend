@@ -21,6 +21,11 @@ const _authenticate = (req, res, next) =>
     })(req, res, next);
   });
 
+function isPrisonerId(id) {
+  const pattern = new RegExp(/^[A-Z][0-9]{4}[A-Z]{2}$/i);
+  return pattern.test(id);
+}
+
 const createSignInCallbackMiddleware = ({
   offenderService,
   authenticate = _authenticate,
@@ -33,10 +38,12 @@ const createSignInCallbackMiddleware = ({
         return res.redirect('/auth/error');
       }
 
-      const { bookingId } = await offenderService.getOffenderDetailsFor(
-        user.prisonerId,
-      );
-      user.setBookingId(bookingId);
+      if (isPrisonerId(user.prisonerId)) {
+        const { bookingId } = await offenderService.getOffenderDetailsFor(
+          user.prisonerId,
+        );
+        user.setBookingId(bookingId);
+      }
       req.session.passport.user = user.serialize();
       return res.redirect(req.session.returnUrl);
     } catch (e) {
@@ -56,5 +63,6 @@ module.exports = {
   createSignInMiddleware,
   createSignInCallbackMiddleware,
   createSignOutMiddleware,
+  isPrisonerId,
   _authenticate,
 };
