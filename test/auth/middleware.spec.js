@@ -2,12 +2,14 @@ const {
   createSignInMiddleware,
   createSignInCallbackMiddleware,
   createSignOutMiddleware,
+  isPrisonerId,
 } = require('../../server/auth/middleware');
 
 const AZURE_AD_OAUTH2_STRATEGY = 'azure_ad_oauth2';
 const TEST_RETURN_URL = '/foo/bar';
 const TEST_CALLBACK_ERROR = new Error('BOOM!');
 const TEST_PRISONER_ID = 'A1234BC';
+const TEST_INVALID_PRISONER_ID = 'FOOBAR';
 const TEST_BOOKING_ID = 1234;
 
 describe('AuthMiddleware', () => {
@@ -77,6 +79,7 @@ describe('AuthMiddleware', () => {
       beforeEach(() => {
         req.logIn.resetHistory();
         res.redirect.resetHistory();
+        offenderService.getOffenderDetailsFor.resetHistory();
         next.resetHistory();
       });
 
@@ -106,7 +109,7 @@ describe('AuthMiddleware', () => {
         expect(res.redirect).to.have.been.calledWith('/auth/error');
       });
 
-      it('should fetch offender details if passport.authenticate() returns a user', async () => {
+      it('should fetch offender details if passport.authenticate() returns a user with a valid prisoner ID', async () => {
         const user = {
           prisonerId: TEST_PRISONER_ID,
           setBookingId: sinon.stub(),
@@ -130,6 +133,35 @@ describe('AuthMiddleware', () => {
 
         await signInCallback(req, res, next);
         expect(user.setBookingId).to.have.been.calledWith(TEST_BOOKING_ID);
+        expect(user.serialize).to.have.been.called;
+        expect(req.session.passport.user).to.equal(
+          'serialized_user',
+          'It should have saved the updated user in the session',
+        );
+        expect(res.redirect).to.have.been.calledWith(req.session.returnUrl);
+      });
+
+      it('should not fetch offender details if passport.authenticate() returns a user without a valid prisoner ID', async () => {
+        const user = {
+          prisonerId: TEST_INVALID_PRISONER_ID,
+          setBookingId: sinon.stub(),
+          serialize: sinon.stub(),
+        };
+
+        const authenticate = sinon.stub().resolves(user);
+        user.serialize.returns('serialized_user');
+
+        offenderService.getOffenderDetailsFor.resolves();
+
+        req.session.returnUrl = '/foo/bar/baz';
+
+        const signInCallback = createSignInCallbackMiddleware({
+          offenderService,
+          authenticate,
+        });
+
+        await signInCallback(req, res, next);
+        expect(offenderService.getOffenderDetailsFor).to.not.have.been.called;
         expect(user.serialize).to.have.been.called;
         expect(req.session.passport.user).to.equal(
           'serialized_user',
@@ -175,6 +207,20 @@ describe('AuthMiddleware', () => {
         expect(req.logOut).to.have.been.called;
         expect(res.redirect).to.have.been.calledWith('/');
       });
+    });
+  });
+
+  describe('isPrisonerId', () => {
+    it('should return true if a prisoner ID', () => {
+      expect(isPrisonerId('A1234BC')).to.equal(true);
+      expect(isPrisonerId('a1234bc')).to.equal(true);
+    });
+    it('should return false if not a prisoner ID', () => {
+      expect(isPrisonerId('Rick Sanchez')).to.equal(false);
+      expect(isPrisonerId('###A1234BC###')).to.equal(false);
+      expect(isPrisonerId('')).to.equal(false);
+      expect(isPrisonerId(null)).to.equal(false);
+      expect(isPrisonerId(undefined)).to.equal(false);
     });
   });
 });
