@@ -59,6 +59,7 @@ describe('AuthMiddleware', () => {
     it('should return a middleware function', () => {
       const signInCallbackMiddleware = createSignInCallbackMiddleware({
         offenderService: () => {},
+        logger: { error: () => {}, debug: () => {} },
       });
       expect(typeof signInCallbackMiddleware).to.equal('function');
     });
@@ -85,6 +86,7 @@ describe('AuthMiddleware', () => {
         const signInCallback = createSignInCallbackMiddleware({
           offenderService,
           authenticate,
+          logger: { error: () => {}, debug: () => {} },
         });
 
         await signInCallback(req, res, next);
@@ -97,6 +99,7 @@ describe('AuthMiddleware', () => {
         const signInCallback = createSignInCallbackMiddleware({
           offenderService,
           authenticate,
+          logger: { error: () => {}, debug: () => {} },
         });
 
         await signInCallback(req, res, next);
@@ -122,6 +125,7 @@ describe('AuthMiddleware', () => {
         const signInCallback = createSignInCallbackMiddleware({
           offenderService,
           authenticate,
+          logger: { error: () => {}, debug: () => {} },
         });
 
         await signInCallback(req, res, next);
