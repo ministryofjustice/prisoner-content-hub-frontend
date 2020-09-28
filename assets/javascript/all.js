@@ -14,14 +14,14 @@ function sendPageTrack(data) {
   });
 }
 
-(function() {
-  document.body.addEventListener('click', function(event) {
+(function () {
+  document.body.addEventListener('click', function (event) {
     if (matchesAll('[data-state]', event.target)) {
       var element = getAncestorElementBySelector('[data-state]', event.target);
 
       if (element) {
         var state = element.getAttribute('data-state');
-        var stateToggle = function() {
+        var stateToggle = function () {
           element.setAttribute('data-state', 'hidden');
         };
         element.setAttribute('data-state', toggleShowing(state));
@@ -84,7 +84,7 @@ function showHiddenBlock(block) {
     userAgent: navigator.userAgent,
   });
 
-  window.setTimeout(function() {
+  window.setTimeout(function () {
     button.style.display = 'block';
     hiddenData.style.display = 'none';
   }, 3000);
