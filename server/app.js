@@ -213,7 +213,10 @@ const createApp = ({
     createAuthRouter({
       logger,
       signIn: createSignInMiddleware(),
-      signInCallback: createSignInCallbackMiddleware({ offenderService }),
+      signInCallback: createSignInCallbackMiddleware({
+        offenderService,
+        logger,
+      }),
       signOut: createSignOutMiddleware(),
     }),
   );

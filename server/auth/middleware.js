@@ -22,6 +22,7 @@ const _authenticate = (req, res, next) =>
   });
 
 const createSignInCallbackMiddleware = ({
+  logger,
   offenderService,
   authenticate = _authenticate,
 }) => {
@@ -40,6 +41,10 @@ const createSignInCallbackMiddleware = ({
       req.session.passport.user = user.serialize();
       return res.redirect(req.session.returnUrl);
     } catch (e) {
+      logger.error(
+        `SignInCallbackMiddleware FAILED (signInCallback) - ${e.message}`,
+      );
+      logger.debug(e.stack);
       return next(e);
     }
   };
