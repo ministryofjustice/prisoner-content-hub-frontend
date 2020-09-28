@@ -109,7 +109,7 @@ module.exports = {
     callbackUrl: getEnv('AZURE_AD_CALLBACK_URL', { requireInProduction: true }),
   },
   api: {
-    hubHealth: `${hubEndpoint}/api/health`,
+    hubHealth: `${hubEndpoint}/health`,
     hubContent: `${hubEndpoint}/v1/api/content`,
     hubCategory: `${hubEndpoint}/v1/api/category`,
     hubMenu: `${hubEndpoint}/v1/api/menu`,
