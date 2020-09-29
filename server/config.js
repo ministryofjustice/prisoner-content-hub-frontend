@@ -57,7 +57,7 @@ const establishments = {
     workingIn: waylandGAJMenu,
     homePageLinksTitle: 'Popular topics',
     homePageLinks: {
-      'Money & Debt': '/money',
+      'Money & debt': '/money',
       Visits: '/visits',
       'Incentive level': '/incentives',
       Inspiration: '/content/3659',
