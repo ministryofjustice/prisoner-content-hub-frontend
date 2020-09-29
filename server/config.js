@@ -111,7 +111,7 @@ module.exports = {
   api: {
     hubHealth: `${hubEndpoint}/health`,
     hubContent: `${hubEndpoint}/v1/api/content`,
-    hubCategory: `${hubEndpoint}/v1/api/category`,
+    hubCategoryFeatured: `${hubEndpoint}/v1/api/category/featured`,
     hubMenu: `${hubEndpoint}/v1/api/menu`,
     categoryMenu: `${hubEndpoint}/v1/api/category-menu`,
     hubTerm: `${hubEndpoint}/v1/api/term`,
