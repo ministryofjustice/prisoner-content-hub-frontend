@@ -166,7 +166,7 @@ describe('#hubContentService', () => {
         content.featuredContentId,
       );
       expect(result).to.have.property('featuredContent', 'fooBar');
-      expect(result).to.have.property('relatedContent');
+      expect(result).to.have.property('categoryFeaturedContent');
       expect(result).to.have.property('categoryMenu', 'categoryMenu');
     });
 

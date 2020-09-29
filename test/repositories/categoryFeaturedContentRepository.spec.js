@@ -2,7 +2,7 @@ const {
   categoryFeaturedContentRepository,
 } = require('../../server/repositories/categoryFeaturedContent');
 
-describe('hubCategoryFeaturedContentRepository', () => {
+describe('CategoryFeaturedContentRepository', () => {
   describe('#contentFor', () => {
     describe('When content is returned from the endpoint', () => {
       it('returns a featured content', async () => {

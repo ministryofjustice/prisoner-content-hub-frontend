@@ -95,8 +95,8 @@
   <div class="govuk-body categories-container">
     <h2>Featured</h2>
     <div class="category-content">
-      {{ contentTileLarge({content: data.relatedContent.data[0], imageAlign: 'right'}) }}
-      {% for tile in data.relatedContent.data %}
+      {{ contentTileLarge({content: data.categoryFeaturedContent.data[0], imageAlign: 'right'}) }}
+      {% for tile in data.categoryFeaturedContent.data %}
         {% if loop.index === 1 or loop.index === 5 %}
           <div class="category-content__three-items">
           {% endif %}
@@ -107,7 +107,7 @@
           </div>
         {% endif %}
       {% endfor %}
-      {% if data.relatedContent.data.length !== 4 and data.relatedContent.data.length !== 7 and data.relatedContent.data.length < 8 %}
+      {% if data.categoryFeaturedContent.data.length !== 4 and data.categoryFeaturedContent.data.length !== 7 and data.categoryFeaturedContent.data.length < 8 %}
       </div>
     {% endif %}
   </div>
