@@ -393,7 +393,7 @@ describe('GET /content/:id', () => {
           url: '',
         },
       },
-      relatedContent: {
+      categoryFeaturedContent: {
         contentType: 'foo',
         data: [
           {

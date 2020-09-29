@@ -5,7 +5,7 @@ const config = require('../config');
 
 const { featuredContentResponseFrom } = require('../utils/adapters');
 
-function hubCategoryFeaturedContentRepository(httpClient) {
+function categoryFeaturedContentRepository(httpClient) {
   async function contentFor({ categoryId, establishmentId, number = 8 } = {}) {
     const endpoint = `${config.api.hubCategory}/featured`;
     const query = {
@@ -16,7 +16,7 @@ function hubCategoryFeaturedContentRepository(httpClient) {
 
     if (!categoryId) {
       logger.error(
-        `HubCategoryFeaturedContentRepository (contentFor) - No Category ID passed`,
+        `CategoryFeaturedContentRepository (contentFor) - No Category ID passed`,
       );
       return [];
     }
@@ -36,5 +36,5 @@ function hubCategoryFeaturedContentRepository(httpClient) {
 }
 
 module.exports = {
-  categoryFeaturedContentRepository: hubCategoryFeaturedContentRepository,
+  categoryFeaturedContentRepository,
 };

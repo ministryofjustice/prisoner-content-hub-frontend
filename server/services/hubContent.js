@@ -127,7 +127,10 @@ function createHubContentService({
     return {
       ...data,
       featuredContent,
-      relatedContent: { contentType: 'default', data: categoryFeaturedContent },
+      categoryFeaturedContent: {
+        contentType: 'default',
+        data: categoryFeaturedContent,
+      },
       categoryMenu,
     };
   }
