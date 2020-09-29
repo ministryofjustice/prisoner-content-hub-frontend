@@ -162,7 +162,7 @@ const createApp = ({
 
   app.use((req, res, next) => {
     const replaceUrl = /-prisoner-content-hub.*$/g;
-    config.establishmentName = pathOr('berwyn', ['headers', 'host'], req)
+    config.establishmentName = pathOr('wayland', ['headers', 'host'], req)
       .split('.')[0]
       .replace(replaceUrl, '');
     const establishmentId = getEstablishmentId(config.establishmentName);
