@@ -40,7 +40,7 @@ describe('configureEstablishment', () => {
       'establishment should be persisted in the session',
     );
     expect(res.locals).to.have.property(
-      'establishmentName',
+      'establishmentDisplayName',
       `HMP ${defaultPrison.slice(0, 1).toUpperCase() + defaultPrison.slice(1)}`,
     );
     expect(res.locals).to.have.property('establishmentId');

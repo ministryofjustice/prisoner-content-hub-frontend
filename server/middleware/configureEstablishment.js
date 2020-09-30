@@ -15,7 +15,7 @@ const configureEstablishment = () => (req, res, next) => {
   const establishmentId = getEstablishmentId(req.session.prison);
 
   res.locals.establishmentId = establishmentId;
-  res.locals.establishmentName = `${getEstablishmentPrefix(
+  res.locals.establishmentDisplayName = `${getEstablishmentPrefix(
     establishmentId,
   )} ${getEstablishmentFormattedName(establishmentId)}`;
 
