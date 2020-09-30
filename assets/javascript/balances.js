@@ -5,21 +5,24 @@
     const SHOW_LABEL = 'Show balances';
     const HIDE_LABEL = 'Hide balances';
     const PLACEHOLDER = '****';
-    balanceToggle.innerHTML = SHOW_LABEL;
-    const balances = document.getElementsByClassName('balance-amount');
-    for (let i = 0; i < balances.length; i++) {
-      balances[i].innerHTML = PLACEHOLDER;
-      balances[i].setAttribute('aria-hidden', true);
-    }
-    balanceToggle.onclick = e => {
-      const isHidden = e.target.innerHTML === HIDE_LABEL;
-      e.target.innerHTML = isHidden ? SHOW_LABEL : HIDE_LABEL;
-      for (let i = 0; i < balances.length; i++) {
-        balances[i].innerHTML = isHidden
+    let isHidden = true;
+    const getButtonLabel = isCurrentlyHidden =>
+      isCurrentlyHidden ? SHOW_LABEL : HIDE_LABEL;
+    const setBalances = (balanceObjects, isCurrentlyHidden) => {
+      for (let i = 0; i < balanceObjects.length; i++) {
+        balanceObjects[i].innerHTML = isCurrentlyHidden
           ? PLACEHOLDER
-          : balances[i].dataset.amount;
-        balances[i].setAttribute('aria-hidden', isHidden);
+          : balanceObjects[i].dataset.amount;
+        balanceObjects[i].setAttribute('aria-hidden', isCurrentlyHidden);
       }
+    };
+    balanceToggle.innerHTML = getButtonLabel(isHidden);
+    const balances = document.getElementsByClassName('balance-amount');
+    setBalances(balances, isHidden);
+    balanceToggle.onclick = e => {
+      isHidden = !isHidden;
+      e.target.innerHTML = getButtonLabel(isHidden);
+      setBalances(balances, isHidden);
     };
   }
 })();
