@@ -1,4 +1,4 @@
-const R = require('ramda');
+const { path, pathOr } = require('ramda');
 const config = require('../config');
 const {
   tagIdFrom,
@@ -9,7 +9,6 @@ const {
   getEstablishmentName,
   getEstablishmentFormattedName,
   getEstablishmentUiId,
-  getEstablishmentWorkingIn,
 } = require('../utils');
 
 function hubMenuRepository(httpClient, jsonClient) {
@@ -21,14 +20,6 @@ function hubMenuRepository(httpClient, jsonClient) {
     }
     return -1;
   };
-
-  async function mainMenu() {
-    const query = {
-      _menu: 'main',
-    };
-    const response = await httpClient.get(config.api.hubMenu, { query });
-    return parseMenuResponse(response);
-  }
 
   async function tagsMenu() {
     const response = await httpClient.get(config.api.tags);
@@ -47,16 +38,8 @@ function hubMenuRepository(httpClient, jsonClient) {
     return tags.concat(primary).sort(sortAlphabetically);
   }
 
-  async function seriesMenu() {
-    const query = {
-      _menu: 'series',
-    };
-    const response = await httpClient.get(config.api.hubMenu, { query });
-    return parseMenuResponse(response);
-  }
-
   function gettingAJobMenu(prisonId) {
-    return getEstablishmentWorkingIn(prisonId);
+    return pathOr([], ['establishments', prisonId, 'workingIn'], config);
   }
 
   async function categoryMenu({ categoryId, prisonId }) {
@@ -69,23 +52,13 @@ function hubMenuRepository(httpClient, jsonClient) {
     return parseCategoryMenu(response, prisonId, categoryId);
   }
 
-  function parseMenuResponse(data = []) {
-    if (data === null) return [];
-
-    return data.map(menuItem => ({
-      linkText: R.prop('title', menuItem),
-      href: `/content/${R.prop('id', menuItem)}`,
-      id: R.prop('id', menuItem),
-    }));
-  }
-
   function parseJsonResponse(data, prisonId) {
     if (data === null) return [];
 
     const items = Object.keys(data.data)
       .filter(key => {
         const { relationships } = data.data[key];
-        const prisons = R.path(['field_moj_prisons', 'data'], relationships);
+        const prisons = path(['field_moj_prisons', 'data'], relationships);
         const matchingPrison = prisons.some(
           prison => prison.id === getEstablishmentUiId(prisonId),
         );
@@ -98,10 +71,7 @@ function hubMenuRepository(httpClient, jsonClient) {
         return {
           id: attributes.drupal_internal__nid,
           linkText: attributes.title,
-          description: R.path(
-            ['field_moj_description', 'processed'],
-            attributes,
-          ),
+          description: path(['field_moj_description', 'processed'], attributes),
           href: `/content/${attributes.drupal_internal__nid}`,
         };
       });
@@ -126,7 +96,6 @@ function hubMenuRepository(httpClient, jsonClient) {
     if (data === null) return [];
 
     const series = parseTagsResponse(data.series_ids);
-    // const secondaryTags = parseTagsResponse(data.secondary_tag_ids);
 
     // inject extra link
     if (Number(categoryId) === 645) {
@@ -144,10 +113,8 @@ function hubMenuRepository(httpClient, jsonClient) {
   }
 
   return {
-    mainMenu,
     tagsMenu,
     primaryMenu,
-    seriesMenu,
     gettingAJobMenu,
     categoryMenu,
     allTopics,

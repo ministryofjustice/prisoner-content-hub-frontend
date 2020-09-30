@@ -1,6 +1,6 @@
 const config = require('../config');
 const { logger } = require('../utils/logger');
-const { isEmpty, fillContentItems } = require('../utils');
+const { isEmptyResponse, fillContentItems } = require('../utils');
 
 const {
   contentResponseFrom,
@@ -24,7 +24,7 @@ const hubContentRepository = httpClient => {
 
     const response = await httpClient.get(endpoint);
 
-    if (isEmpty(response)) {
+    if (isEmptyResponse(response)) {
       logger.error(`HubContentRepository (contentFor) - Empty response`);
       return null;
     }
@@ -41,7 +41,7 @@ const hubContentRepository = httpClient => {
     const response = await httpClient.get(endpoint, {
       _prison: establishmentId,
     });
-    if (isEmpty(response)) {
+    if (isEmptyResponse(response)) {
       logger.error(`HubContentRepository (termFor) - Empty response`);
       return null;
     }

@@ -17,9 +17,6 @@ const { createHubMenuService } = require('./services/hubMenu');
 const {
   createHubFeaturedContentService,
 } = require('./services/hubFeaturedContent');
-const {
-  createHubPromotedContentService,
-} = require('./services/hubPromotedContent');
 const { createHubContentService } = require('./services/hubContent');
 const { createHealthService } = require('./services/health');
 const { createHubTagsService } = require('./services/hubTags');
@@ -35,9 +32,6 @@ const {
 const {
   categoryFeaturedContentRepository,
 } = require('./repositories/categoryFeaturedContent');
-const {
-  promotedContentRepository,
-} = require('./repositories/hubPromotedContent');
 const { hubMenuRepository } = require('./repositories/hubMenu');
 const { contentRepository } = require('./repositories/hubContent');
 const { offenderRepository } = require('./repositories/offender');
@@ -65,9 +59,6 @@ module.exports = createApp({
   }),
   hubFeaturedContentService: createHubFeaturedContentService(
     hubFeaturedContentRepository(hubClient),
-  ),
-  hubPromotedContentService: createHubPromotedContentService(
-    promotedContentRepository(hubClient),
   ),
   hubMenuService: createHubMenuService(
     hubMenuRepository(hubClient, standardClient),

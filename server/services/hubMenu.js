@@ -1,8 +1,4 @@
 const createHubMenuService = repository => {
-  function seriesMenu() {
-    return repository.seriesMenu();
-  }
-
   function primaryMenu() {
     return repository.primaryMenu();
   }
@@ -24,7 +20,6 @@ const createHubMenuService = repository => {
   }
 
   return {
-    seriesMenu,
     tagsMenu,
     primaryMenu,
     gettingAJobMenu,
