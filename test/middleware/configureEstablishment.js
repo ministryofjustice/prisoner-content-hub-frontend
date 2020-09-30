@@ -14,7 +14,6 @@ describe('configureEstablishment', () => {
     const configureEstablishmentMiddleware = configureEstablishment();
     const req = {
       session: {
-        prison: '',
         establishmentName: defaultPrison,
         establishmentId: 793,
       },
@@ -24,11 +23,6 @@ describe('configureEstablishment', () => {
 
     configureEstablishmentMiddleware(req, res, next);
 
-    expect(req.session).to.have.property(
-      'prison',
-      defaultPrison,
-      'establishment should be persisted in the session',
-    );
     expect(res.locals).to.have.property(
       'establishmentDisplayName',
       `HMP ${defaultPrison.slice(0, 1).toUpperCase() + defaultPrison.slice(1)}`,

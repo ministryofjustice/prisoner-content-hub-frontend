@@ -1,4 +1,3 @@
-const { pathOr } = require('ramda');
 const express = require('express');
 const addRequestId = require('express-request-id')();
 const compression = require('compression');
@@ -9,7 +8,6 @@ const path = require('path');
 const sassMiddleware = require('node-sass-middleware');
 const session = require('cookie-session');
 const bodyParser = require('body-parser');
-const { v4: uuid } = require('uuid');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
 const config = require('./config');
@@ -40,8 +38,6 @@ const {
   createSignInMiddleware,
   createSignInCallbackMiddleware,
 } = require('./auth/middleware');
-
-const { getEstablishmentId } = require('./utils');
 
 const createApp = ({
   logger,
@@ -161,23 +157,6 @@ const createApp = ({
       cacheControl,
     ),
   );
-
-  app.use((req, res, next) => {
-    if (req.session && (!req.session.id || !req.session.establishmentId)) {
-      const replaceUrl = /-prisoner-content-hub.*$/g;
-      const establishmentName = pathOr('wayland', ['headers', 'host'], req)
-        .split('.')[0]
-        .replace(replaceUrl, '');
-
-      req.session.id = uuid();
-      req.session.establishmentName = establishmentName;
-      req.session.establishmentId = getEstablishmentId(establishmentName);
-    }
-
-    res.locals.feedbackId = uuid();
-
-    next();
-  });
 
   // Don't cache dynamic resources
   app.use(noCache());
