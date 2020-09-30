@@ -87,8 +87,8 @@ const createSignOutMiddleware = analyticsService => {
     req.logOut();
     analyticsService.sendEvent({
       category: 'Signin',
-      action: 'signin',
-      label: 'failure',
+      action: 'signout',
+      label: 'success',
       value: 1,
       sessionId: path(['session', 'id'], req),
       userAgent: path(['body', 'userAgent'], req),
