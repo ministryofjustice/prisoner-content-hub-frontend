@@ -73,12 +73,13 @@ describe('GET /', () => {
           // TODO: Remove this when new designs implemented fully in template
           res.locals = {
             features: { personalInformation: true },
-            establishmentId: 1,
           };
           next();
         },
         (req, res, next) => {
-          req.session = {};
+          req.session = {
+            establishmentId: 1,
+          };
           next();
         },
       );

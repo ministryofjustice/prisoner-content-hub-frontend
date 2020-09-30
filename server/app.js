@@ -63,6 +63,8 @@ const createApp = ({
     path.join(__dirname, '/views/'),
   ];
 
+  app.locals.config = config;
+
   // View Engine Configuration
   app.set('views', path.join(__dirname, '../server/views'));
   app.set('view engine', 'html');
@@ -161,26 +163,18 @@ const createApp = ({
   );
 
   app.use((req, res, next) => {
-    if (req.session && !req.session.id) {
+    if (req.session && (!req.session.id || !req.session.establishmentId)) {
       const replaceUrl = /-prisoner-content-hub.*$/g;
-
-      req.session.id = uuid();
-      req.session.establishmentName = pathOr(
-        'wayland',
-        ['headers', 'host'],
-        req,
-      )
+      const establishmentName = pathOr('wayland', ['headers', 'host'], req)
         .split('.')[0]
         .replace(replaceUrl, '');
+
+      req.session.id = uuid();
+      req.session.establishmentName = establishmentName;
+      req.session.establishmentId = getEstablishmentId(establishmentName);
     }
 
     res.locals.feedbackId = uuid();
-
-    app.locals.asset_path = '/public/';
-    app.locals.config = {
-      ...config,
-      establishmentId: getEstablishmentId(req.session.establishmentName),
-    };
 
     next();
   });

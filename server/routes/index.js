@@ -14,7 +14,7 @@ const createIndexRouter = ({
 
   router.get('/', async (req, res, next) => {
     try {
-      const establishmentId = path(['locals', 'establishmentId'], res);
+      const establishmentId = path(['session', 'establishmentId'], req);
 
       const personalInformation = path(
         ['locals', 'features', 'personalInformation'],

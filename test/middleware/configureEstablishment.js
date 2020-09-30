@@ -16,6 +16,7 @@ describe('configureEstablishment', () => {
       session: {
         prison: '',
         establishmentName: defaultPrison,
+        establishmentId: 793,
       },
     };
 
@@ -32,7 +33,6 @@ describe('configureEstablishment', () => {
       'establishmentDisplayName',
       `HMP ${defaultPrison.slice(0, 1).toUpperCase() + defaultPrison.slice(1)}`,
     );
-    expect(res.locals).to.have.property('establishmentId');
     expect(next.called).to.equal(true, 'next should have been called');
   });
 });

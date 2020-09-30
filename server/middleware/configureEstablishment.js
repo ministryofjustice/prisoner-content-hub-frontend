@@ -1,5 +1,4 @@
 const {
-  getEstablishmentId,
   getEstablishmentFormattedName,
   getEstablishmentPrefix,
 } = require('../utils');
@@ -7,12 +6,10 @@ const {
 const configureEstablishment = () => (req, res, next) => {
   req.session.prison = req.session.establishmentName;
 
-  const establishmentId = getEstablishmentId(req.session.prison);
-
-  res.locals.establishmentId = establishmentId;
+  res.locals.establishmentId = req.session.establishmentId;
   res.locals.establishmentDisplayName = `${getEstablishmentPrefix(
-    establishmentId,
-  )} ${getEstablishmentFormattedName(establishmentId)}`;
+    req.session.establishmentId,
+  )} ${getEstablishmentFormattedName(req.session.establishmentId)}`;
 
   next();
 };

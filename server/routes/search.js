@@ -5,7 +5,7 @@ const createSearchRouter = ({ searchService, analyticsService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
-    const establishmentId = path(['locals', 'establishmentId'], res);
+    const establishmentId = path(['session', 'establishmentId'], req);
 
     let results = [];
     const query = path(['query', 'query'], req);
@@ -44,7 +44,7 @@ const createSearchRouter = ({ searchService, analyticsService }) => {
   });
 
   router.get('/suggest', async (req, res) => {
-    const establishmentId = path(['locals', 'establishmentId'], res);
+    const establishmentId = path(['session', 'establishmentId'], req);
     const query = path(['query', 'query'], req);
 
     try {
