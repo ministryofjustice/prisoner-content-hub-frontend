@@ -161,18 +161,28 @@ const createApp = ({
   );
 
   app.use((req, res, next) => {
-    const replaceUrl = /-prisoner-content-hub.*$/g;
-    config.establishmentName = pathOr('wayland', ['headers', 'host'], req)
-      .split('.')[0]
-      .replace(replaceUrl, '');
-    const establishmentId = getEstablishmentId(config.establishmentName);
+    if (req.session && !req.session.id) {
+      const replaceUrl = /-prisoner-content-hub.*$/g;
+
+      req.session.id = uuid();
+      req.session.establishmentName = pathOr(
+        'wayland',
+        ['headers', 'host'],
+        req,
+      )
+        .split('.')[0]
+        .replace(replaceUrl, '');
+    }
+
+    res.locals.feedbackId = uuid();
+
     app.locals.asset_path = '/public/';
     app.locals.config = {
       ...config,
-      establishmentId,
+      establishmentId: getEstablishmentId(req.session.establishmentName),
     };
 
-    return next();
+    next();
   });
 
   // Don't cache dynamic resources
@@ -189,13 +199,6 @@ const createApp = ({
   // Health end point
   app.use('/health', createHealthRouter({ healthService }));
 
-  app.use((req, res, next) => {
-    if (req.session && !req.session.id) {
-      req.session.id = uuid();
-    }
-    res.locals.feedbackId = uuid();
-    next();
-  });
   // Routing
 
   app.use(

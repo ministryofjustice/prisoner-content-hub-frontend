@@ -1,5 +1,3 @@
-const { path } = require('ramda');
-
 const {
   getEstablishmentId,
   getEstablishmentFormattedName,
@@ -7,10 +5,7 @@ const {
 } = require('../utils');
 
 const configureEstablishment = () => (req, res, next) => {
-  req.session.prison = path(
-    ['app', 'locals', 'config', 'establishmentName'],
-    req,
-  );
+  req.session.prison = req.session.establishmentName;
 
   const establishmentId = getEstablishmentId(req.session.prison);
 

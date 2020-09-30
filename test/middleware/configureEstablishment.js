@@ -4,17 +4,6 @@ const {
 
 describe('configureEstablishment', () => {
   const defaultPrison = 'wayland';
-
-  const defaultRequest = {
-    app: {
-      locals: {
-        config: {
-          establishmentName: defaultPrison,
-        },
-      },
-    },
-  };
-
   const next = sinon.spy();
 
   beforeEach(() => {
@@ -24,9 +13,9 @@ describe('configureEstablishment', () => {
   it('should use the set the session from the config', () => {
     const configureEstablishmentMiddleware = configureEstablishment();
     const req = {
-      ...defaultRequest,
       session: {
         prison: '',
+        establishmentName: defaultPrison,
       },
     };
 
