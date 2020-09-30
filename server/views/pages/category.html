@@ -25,7 +25,7 @@
 
 {% block topBar %}
   {{ topBar({
-    establishmentName: establishmentName,
+    establishmentDisplayName: establishmentDisplayName,
     showBar: false,
     userName: config.userName,
     returnUrl: config.returnUrl
@@ -80,7 +80,7 @@
           contentId: data.id,
           title: data.title,
           contentType: data.contentType,
-          establishment: establishmentName,
+          establishment: establishmentDisplayName,
           sidebar: true,
           feedbackId: feedbackId,
           categories: data.categories,
