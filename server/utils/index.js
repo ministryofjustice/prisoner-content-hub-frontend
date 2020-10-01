@@ -38,18 +38,7 @@ function getEstablishmentHomepageLinks(id, config = defaultConfig) {
 }
 
 function getEstablishmentHomepageLinksTitle(id, config = defaultConfig) {
-  return path(['establishments', id, 'homePageLinksTitle'], config);
-}
-
-function getEstablishmentWorkingInUrls(config = defaultConfig) {
-  return Object.keys(config.establishments)
-    .reduce(
-      (urls, establishmentId) =>
-        `/working-in-${config.establishments[establishmentId].name},${urls}`,
-      '',
-    )
-    .slice(0, -1)
-    .split(',');
+  return R.path(['establishments', id, 'homePageLinksTitle'], config);
 }
 
 const capitalize = (str = '') => {
@@ -101,7 +90,6 @@ module.exports = {
   getEstablishmentFormattedName,
   getEstablishmentUiId,
   getEstablishmentStandFirst,
-  getEstablishmentWorkingInUrls,
   getEstablishmentPrefix,
   getEstablishmentHomepageLinks,
   getEstablishmentHomepageLinksTitle,

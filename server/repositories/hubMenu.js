@@ -5,11 +5,7 @@ const {
   nameFrom,
   termDescriptionValueFrom,
 } = require('../selectors/hub');
-const {
-  getEstablishmentName,
-  getEstablishmentFormattedName,
-  getEstablishmentUiId,
-} = require('../utils');
+const { getEstablishmentUiId } = require('../utils');
 
 function hubMenuRepository(httpClient, jsonClient) {
   const sortAlphabetically = (a, b) => {
@@ -38,10 +34,6 @@ function hubMenuRepository(httpClient, jsonClient) {
     return tags.concat(primary).sort(sortAlphabetically);
   }
 
-  function gettingAJobMenu(prisonId) {
-    return pathOr([], ['establishments', prisonId, 'workingIn'], config);
-  }
-
   async function categoryMenu({ categoryId, prisonId }) {
     const query = {
       _category: categoryId,
@@ -49,7 +41,9 @@ function hubMenuRepository(httpClient, jsonClient) {
     };
     const response = await httpClient.get(config.api.categoryMenu, { query });
 
-    return parseCategoryMenu(response, prisonId, categoryId);
+    if (response === null) return [];
+
+    return parseTagsResponse(response.series_ids);
   }
 
   function parseJsonResponse(data, prisonId) {
@@ -92,30 +86,9 @@ function hubMenuRepository(httpClient, jsonClient) {
     return tags.sort(sortAlphabetically);
   }
 
-  function parseCategoryMenu(data, prisonId, categoryId) {
-    if (data === null) return [];
-
-    const series = parseTagsResponse(data.series_ids);
-
-    // inject extra link
-    if (Number(categoryId) === 645) {
-      const establishmentName = getEstablishmentName(prisonId);
-      const link = {
-        id: `working-in-${establishmentName}`,
-        linkText: `Working in ${getEstablishmentFormattedName(prisonId)}`,
-        href: `/working-in-${establishmentName}`,
-      };
-
-      return [link, ...series];
-    }
-
-    return series;
-  }
-
   return {
     tagsMenu,
     primaryMenu,
-    gettingAJobMenu,
     categoryMenu,
     allTopics,
   };

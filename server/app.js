@@ -27,7 +27,6 @@ const { createTagRouter } = require('./routes/tags');
 const { createGamesRouter } = require('./routes/games');
 const { createAnalyticsRouter } = require('./routes/analytics');
 const { createFeedbackRouter } = require('./routes/feedback');
-const { createGettingAJobRouter } = require('./routes/gettingAJob');
 const { createSearchRouter } = require('./routes/search');
 const { createAuthRouter } = require('./routes/auth');
 const { createNprRouter } = require('./routes/npr');
@@ -43,10 +42,7 @@ const {
   createSignInCallbackMiddleware,
 } = require('./auth/middleware');
 
-const {
-  getEstablishmentId,
-  getEstablishmentWorkingInUrls,
-} = require('./utils');
+const { getEstablishmentId } = require('./utils');
 
 const createApp = ({
   logger,
@@ -257,20 +253,10 @@ const createApp = ({
   );
 
   app.use('/npr', createNprRouter());
-
   app.use('/tags', createTagRouter({ hubTagsService }));
-
   app.use('/games', createGamesRouter());
   app.use('/analytics', createAnalyticsRouter({ analyticsService }));
   app.use('/feedback', createFeedbackRouter({ feedbackService }));
-
-  app.use(
-    getEstablishmentWorkingInUrls(),
-    createGettingAJobRouter({
-      hubContentService,
-      hubMenuService,
-    }),
-  );
   app.use('/search', createSearchRouter({ searchService, analyticsService }));
 
   app.use('*', (req, res) => {
