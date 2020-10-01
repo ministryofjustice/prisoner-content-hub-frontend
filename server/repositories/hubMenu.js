@@ -1,4 +1,4 @@
-const { path, pathOr } = require('ramda');
+const { path } = require('ramda');
 const config = require('../config');
 const {
   tagIdFrom,

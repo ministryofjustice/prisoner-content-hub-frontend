@@ -38,7 +38,7 @@ function getEstablishmentHomepageLinks(id, config = defaultConfig) {
 }
 
 function getEstablishmentHomepageLinksTitle(id, config = defaultConfig) {
-  return R.path(['establishments', id, 'homePageLinksTitle'], config);
+  return path(['establishments', id, 'homePageLinksTitle'], config);
 }
 
 const capitalize = (str = '') => {
