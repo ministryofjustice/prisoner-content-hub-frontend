@@ -215,9 +215,10 @@ const createApp = ({
       signIn: createSignInMiddleware(),
       signInCallback: createSignInCallbackMiddleware({
         offenderService,
+        analyticsService,
         logger,
       }),
-      signOut: createSignOutMiddleware(),
+      signOut: createSignOutMiddleware(analyticsService),
     }),
   );
 

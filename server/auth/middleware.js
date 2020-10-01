@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-underscore-dangle
 const _passport = require('passport');
+const { path } = require('ramda');
 
 const createSignInMiddleware = (passport = _passport) => {
   return function signIn(req, res, next) {
@@ -29,9 +30,13 @@ function isPrisonerId(id) {
 const createSignInCallbackMiddleware = ({
   logger,
   offenderService,
+  analyticsService,
   authenticate = _authenticate,
 }) => {
   return async function signInCallback(req, res, next) {
+    const sessionId = path(['session', 'id'], req);
+    const userAgent = path(['body', 'userAgent'], req);
+
     try {
       const user = await authenticate(req, res, next);
 
@@ -46,20 +51,48 @@ const createSignInCallbackMiddleware = ({
         user.setBookingId(bookingId);
       }
       req.session.passport.user = user.serialize();
+
+      analyticsService.sendEvent({
+        category: 'Signin',
+        action: 'signin',
+        label: 'success',
+        value: 1,
+        sessionId,
+        userAgent,
+      });
+
       return res.redirect(req.session.returnUrl);
     } catch (e) {
       logger.error(
         `SignInCallbackMiddleware FAILED (signInCallback) - ${e.message}`,
       );
       logger.debug(e.stack);
+
+      analyticsService.sendEvent({
+        category: 'Signin',
+        action: 'signin',
+        label: 'failure',
+        value: 1,
+        sessionId,
+        userAgent,
+      });
+
       return next(e);
     }
   };
 };
 
-const createSignOutMiddleware = () => {
+const createSignOutMiddleware = analyticsService => {
   return function signOut(req, res) {
     req.logOut();
+    analyticsService.sendEvent({
+      category: 'Signin',
+      action: 'signout',
+      label: 'success',
+      value: 1,
+      sessionId: path(['session', 'id'], req),
+      userAgent: path(['body', 'userAgent'], req),
+    });
     res.redirect(req.query.returnUrl || '/');
   };
 };
