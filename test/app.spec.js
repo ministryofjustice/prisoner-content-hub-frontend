@@ -99,13 +99,11 @@ describe('App', () => {
 
 function app(opts) {
   const services = {
-    hubPromotedContentService: { hubPromotedContent: sinon.stub().returns([]) },
     hubFeaturedContentService: {
       hubFeaturedContent: sinon.stub().resolves([]),
     },
     hubMenuService: {
-      navigationMenu: sinon.stub().returns({ mainMenu: [], topicsMenu: [] }),
-      seriesMenu: sinon.stub().returns([]),
+      navigationMenu: sinon.stub().returns({ topicsMenu: [] }),
     },
     offenderService: {
       getOffenderDetailsFor: sinon.stub().resolves({}),

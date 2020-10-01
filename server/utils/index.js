@@ -1,58 +1,53 @@
-const R = require('ramda');
+const { path, pathOr, isNil, isEmpty } = require('ramda');
 const defaultConfig = require('../config');
 
-const isEmpty = val => R.isEmpty(val) || R.isNil(val);
+const isEmptyResponse = val => isEmpty(val) || isNil(val);
 
 function getEstablishmentId(name, config = defaultConfig) {
   return Object.keys(config.establishments).reduce(
-    (matchingEstablishmentId, establishmentId) => {
-      if (config.establishments[establishmentId].name === name) {
-        return parseInt(establishmentId, 10);
-      }
-
-      return matchingEstablishmentId;
-    },
+    (matchingEstablishmentId, establishmentId) =>
+      config.establishments[establishmentId].name === name
+        ? parseInt(establishmentId, 10)
+        : matchingEstablishmentId,
     0,
   );
 }
 
 function getEstablishmentName(id, config = defaultConfig) {
-  return R.path(['establishments', id, 'name'], config);
+  return path(['establishments', id, 'name'], config);
 }
 
 function getEstablishmentStandFirst(id, config = defaultConfig) {
-  return R.pathOr('', ['establishments', id, 'standFirst'], config);
+  return pathOr('', ['establishments', id, 'standFirst'], config);
 }
 
 function getEstablishmentPrefix(id, config = defaultConfig) {
-  return R.pathOr('HMP', ['establishments', id, 'prefix'], config);
+  return pathOr('HMP', ['establishments', id, 'prefix'], config);
 }
 
 function getEstablishmentFormattedName(id, config = defaultConfig) {
-  return R.path(['establishments', id, 'formattedName'], config);
+  return path(['establishments', id, 'formattedName'], config);
 }
 
 function getEstablishmentUiId(id, config = defaultConfig) {
-  return R.path(['establishments', id, 'uuId'], config);
+  return path(['establishments', id, 'uuId'], config);
 }
 
 function getEstablishmentHomepageLinks(id, config = defaultConfig) {
-  return R.path(['establishments', id, 'homePageLinks'], config);
+  return path(['establishments', id, 'homePageLinks'], config);
 }
 
 function getEstablishmentHomepageLinksTitle(id, config = defaultConfig) {
-  return R.path(['establishments', id, 'homePageLinksTitle'], config);
-}
-
-function getEstablishmentWorkingIn(id, config = defaultConfig) {
-  return R.pathOr([], ['establishments', id, 'workingIn'], config);
+  return path(['establishments', id, 'homePageLinksTitle'], config);
 }
 
 function getEstablishmentWorkingInUrls(config = defaultConfig) {
   return Object.keys(config.establishments)
-    .reduce((urls, establishmentId) => {
-      return `/working-in-${config.establishments[establishmentId].name},${urls}`;
-    }, '')
+    .reduce(
+      (urls, establishmentId) =>
+        `/working-in-${config.establishments[establishmentId].name},${urls}`,
+      '',
+    )
     .slice(0, -1)
     .split(',');
 }
@@ -106,12 +101,11 @@ module.exports = {
   getEstablishmentFormattedName,
   getEstablishmentUiId,
   getEstablishmentStandFirst,
-  getEstablishmentWorkingIn,
   getEstablishmentWorkingInUrls,
   getEstablishmentPrefix,
   getEstablishmentHomepageLinks,
   getEstablishmentHomepageLinksTitle,
-  isEmpty,
+  isEmptyResponse,
   capitalize,
   capitalizeAll,
   capitalizePersonName,
