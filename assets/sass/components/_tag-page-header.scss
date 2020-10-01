@@ -68,32 +68,3 @@
     }
   }
 }
-
-.govuk-hub-tag-page-header .webPlayer {
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  overflow: hidden;
-}
-
-.govuk-hub-tag-page-header .controls,
-.govuk-hub-tag-page-header .govuk-hub-media-audio .controls {
-  position: absolute;
-  bottom: -100px;
-  transition: bottom ease-in-out 300ms;
-  width: 100%;
-  padding: 5px 0;
-}
-
-.govuk-hub-tag-page-header .jp-state-playing:hover .controls {
-  bottom: 0;
-}
-
-.govuk-hub-tag-page-header .webPlayer .playerScreen .video-play {
-  bottom: 24px;
-  opacity: 0.9;
-  background-color: rgba(0, 0, 0, 0.7);
-
-  &:focus {
-    outline-color: govuk-colour('yellow');
-  }
-}

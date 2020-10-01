@@ -8,20 +8,16 @@ $mobile-breakpoint: map-get($govuk-breakpoints, 'mobile');
 $real-dark-grey: #232425;
 
 @import 'general';
-@import 'player';
 @import 'fonts';
 
 @import 'components/tools';
 @import 'components/media';
 @import 'components/topbar';
 @import 'components/header';
-@import 'components/language-toggle';
 @import 'components/notification';
 @import 'components/topics';
-@import 'components/navigation-menu';
+@import 'components/secondary-tags-list';
 @import 'components/tag-page-header';
-@import 'components/utils';
-@import 'components/related-content';
 @import 'components/media-player';
 @import 'components/episode-content-item';
 @import 'components/featured-content';
