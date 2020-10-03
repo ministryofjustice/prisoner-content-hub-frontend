@@ -76,6 +76,14 @@ function showHiddenBlock(block) {
   button.style.display = 'none';
   hiddenData.style.display = 'block';
 
+  sendEvent({
+    category: 'Buttons',
+    action: 'show',
+    label: block,
+    value: 1,
+    userAgent: navigator.userAgent,
+  });
+
   window.setTimeout(function() {
     button.style.display = 'block';
     hiddenData.style.display = 'none';
