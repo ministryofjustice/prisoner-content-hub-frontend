@@ -4,12 +4,13 @@ const { featuredContentTileResponseFrom } = require('../utils/adapters');
 
 function hubFeaturedContentRepository(httpClient) {
   async function contentFor({ establishmentId } = {}) {
-    const endpoint = `${config.apiV2.hubContent}/featured`;
     const query = {
       _prison: establishmentId,
     };
 
-    const response = await httpClient.get(endpoint, { query });
+    const response = await httpClient.get(config.apiV2.hubContentFeatured, {
+      query,
+    });
 
     if (!Array.isArray(response)) return [];
 

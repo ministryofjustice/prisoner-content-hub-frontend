@@ -120,7 +120,7 @@ module.exports = {
     primary: `${hubEndpoint}/jsonapi/node/landing_page?fields[node--landing_page]=title,field_moj_description,drupal_internal__nid,field_moj_prisons`,
   },
   apiV2: {
-    hubContent: `${hubEndpoint}/v2/api/content`,
+    hubContentFeatured: `${hubEndpoint}/v2/api/content/featured`,
   },
   caching: {
     secret: getEnv('CACHE_SECRET', { requireInProduction: true }),
