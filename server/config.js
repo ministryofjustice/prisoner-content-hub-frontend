@@ -30,7 +30,6 @@ const establishments = {
     formattedName: 'Berwyn',
     prefix: 'HMP',
     uuId: 'fd1e1db7-d0be-424a-a3a6-3b0f49e33293',
-    standFirst: 'What you need to do to get or change your job in Berwyn.',
     homePageLinksTitle: 'Popular topics',
     homePageLinks: {
       Coronavirus: '/tags/894',
@@ -49,7 +48,6 @@ const establishments = {
     formattedName: 'Wayland',
     prefix: 'HMP',
     uuId: 'b73767ea-2cbb-4ad5-ba22-09379cc07241',
-    standFirst: 'How to do to get, or change, a job in this prison.',
     homePageLinksTitle: 'Popular topics',
     homePageLinks: {
       'Money & debt': '/money',

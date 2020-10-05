@@ -17,10 +17,6 @@ function getEstablishmentName(id, config = defaultConfig) {
   return path(['establishments', id, 'name'], config);
 }
 
-function getEstablishmentStandFirst(id, config = defaultConfig) {
-  return pathOr('', ['establishments', id, 'standFirst'], config);
-}
-
 function getEstablishmentPrefix(id, config = defaultConfig) {
   return pathOr('HMP', ['establishments', id, 'prefix'], config);
 }
@@ -89,7 +85,6 @@ module.exports = {
   getEstablishmentName,
   getEstablishmentFormattedName,
   getEstablishmentUiId,
-  getEstablishmentStandFirst,
   getEstablishmentPrefix,
   getEstablishmentHomepageLinks,
   getEstablishmentHomepageLinksTitle,
