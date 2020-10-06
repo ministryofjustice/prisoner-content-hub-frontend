@@ -11,6 +11,6 @@ application:
 
 ingress:
   annotations:
-    kubernetes.io/ingress.class: prisoner-content-hub-development
+    kubernetes.io/ingress.class: nginx
   hosts:
     - suffix: -prisoner-content-hub-development.apps.live-1.cloud-platform.service.justice.gov.uk
