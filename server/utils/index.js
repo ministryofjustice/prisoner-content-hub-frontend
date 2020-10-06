@@ -17,10 +17,6 @@ function getEstablishmentName(id, config = defaultConfig) {
   return path(['establishments', id, 'name'], config);
 }
 
-function getEstablishmentStandFirst(id, config = defaultConfig) {
-  return pathOr('', ['establishments', id, 'standFirst'], config);
-}
-
 function getEstablishmentPrefix(id, config = defaultConfig) {
   return pathOr('HMP', ['establishments', id, 'prefix'], config);
 }
@@ -39,17 +35,6 @@ function getEstablishmentHomepageLinks(id, config = defaultConfig) {
 
 function getEstablishmentHomepageLinksTitle(id, config = defaultConfig) {
   return path(['establishments', id, 'homePageLinksTitle'], config);
-}
-
-function getEstablishmentWorkingInUrls(config = defaultConfig) {
-  return Object.keys(config.establishments)
-    .reduce(
-      (urls, establishmentId) =>
-        `/working-in-${config.establishments[establishmentId].name},${urls}`,
-      '',
-    )
-    .slice(0, -1)
-    .split(',');
 }
 
 const capitalize = (str = '') => {
@@ -100,8 +85,6 @@ module.exports = {
   getEstablishmentName,
   getEstablishmentFormattedName,
   getEstablishmentUiId,
-  getEstablishmentStandFirst,
-  getEstablishmentWorkingInUrls,
   getEstablishmentPrefix,
   getEstablishmentHomepageLinks,
   getEstablishmentHomepageLinksTitle,

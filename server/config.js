@@ -1,8 +1,5 @@
 const { getEnv, isProduction } = require('../utils/index');
 
-const berwynGAJMenu = require('./data/berwyn-step-by-step.json');
-const waylandGAJMenu = require('./data/wayland-step-by-step.json');
-
 const hubEndpoint = getEnv('HUB_API_ENDPOINT', { requireInProduction: true });
 const prisonApiBaseUrl = getEnv('PRISON_API_BASE_URL', 'https://api.nomis', {
   requireInProduction: true,
@@ -33,8 +30,6 @@ const establishments = {
     formattedName: 'Berwyn',
     prefix: 'HMP',
     uuId: 'fd1e1db7-d0be-424a-a3a6-3b0f49e33293',
-    standFirst: 'What you need to do to get or change your job in Berwyn.',
-    workingIn: berwynGAJMenu,
     homePageLinksTitle: 'Popular topics',
     homePageLinks: {
       Coronavirus: '/tags/894',
@@ -53,8 +48,6 @@ const establishments = {
     formattedName: 'Wayland',
     prefix: 'HMP',
     uuId: 'b73767ea-2cbb-4ad5-ba22-09379cc07241',
-    standFirst: 'How to do to get, or change, a job in this prison.',
-    workingIn: waylandGAJMenu,
     homePageLinksTitle: 'Popular topics',
     homePageLinks: {
       'Money & debt': '/money',
@@ -73,7 +66,6 @@ const establishments = {
     formattedName: 'Cookham Wood',
     prefix: 'HMYOI',
     uuId: '9969cd5a-90fa-476c-9f14-3f85b26d23bc',
-    workingIn: [],
     homePageLinksTitle: 'Popular topics',
     homePageLinks: {
       Coronavirus: '/tags/894',

@@ -11,10 +11,6 @@ const createHubMenuService = repository => {
     return repository.allTopics(prisonId);
   }
 
-  function gettingAJobMenu(prisonId) {
-    return repository.gettingAJobMenu(prisonId);
-  }
-
   function categoryMenu({ category, prisonId }) {
     return repository.categoryMenu({ category, prisonId });
   }
@@ -22,7 +18,6 @@ const createHubMenuService = repository => {
   return {
     tagsMenu,
     primaryMenu,
-    gettingAJobMenu,
     categoryMenu,
     allTopics,
   };
