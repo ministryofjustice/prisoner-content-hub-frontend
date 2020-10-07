@@ -1,9 +1,6 @@
 const qs = require('querystring');
 const { baseClient } = require('./baseClient');
 const { logger } = require('../utils/logger');
-const config = require('../config');
-
-const { getEstablishmentId } = require('../utils');
 
 class HubContentClient {
   constructor(client = baseClient) {
@@ -14,7 +11,6 @@ class HubContentClient {
     const queryString = {
       _format: 'json',
       _lang: 'en',
-      _prison: getEstablishmentId(config.establishmentName),
       ...query,
     };
 

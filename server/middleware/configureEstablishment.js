@@ -1,5 +1,5 @@
-const { path } = require('ramda');
-
+const { v4: uuid } = require('uuid');
+const { pathOr } = require('ramda');
 const {
   getEstablishmentId,
   getEstablishmentFormattedName,
@@ -7,17 +7,21 @@ const {
 } = require('../utils');
 
 const configureEstablishment = () => (req, res, next) => {
-  req.session.prison = path(
-    ['app', 'locals', 'config', 'establishmentName'],
-    req,
-  );
+  if (req.session && (!req.session.id || !req.session.establishmentId)) {
+    const replaceUrl = /-prisoner-content-hub.*$/g;
+    const establishmentName = pathOr('wayland', ['headers', 'host'], req)
+      .split('.')[0]
+      .replace(replaceUrl, '');
 
-  const establishmentId = getEstablishmentId(req.session.prison);
+    req.session.id = uuid();
+    req.session.establishmentName = establishmentName;
+    req.session.establishmentId = getEstablishmentId(establishmentName);
+  }
 
-  res.locals.establishmentId = establishmentId;
+  res.locals.feedbackId = uuid();
   res.locals.establishmentDisplayName = `${getEstablishmentPrefix(
-    establishmentId,
-  )} ${getEstablishmentFormattedName(establishmentId)}`;
+    req.session.establishmentId,
+  )} ${getEstablishmentFormattedName(req.session.establishmentId)}`;
 
   next();
 };

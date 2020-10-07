@@ -7,7 +7,7 @@ const createIncentivesRouter = ({ hubContentService, offenderService }) => {
   router.get('/', async (req, res, next) => {
     try {
       const id = 4204;
-      const establishmentId = path(['locals', 'establishmentId'], res);
+      const establishmentId = path(['session', 'establishmentId'], req);
 
       const data = await hubContentService.contentFor(id, establishmentId);
 

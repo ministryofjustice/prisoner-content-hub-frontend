@@ -21,7 +21,7 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
       returnUrl: req.originalUrl,
     };
 
-    const establishmentId = path(['locals', 'establishmentId'], res);
+    const establishmentId = path(['session', 'establishmentId'], req);
     const userAgent = path(['headers', 'user-agent'], req);
 
     try {

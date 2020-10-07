@@ -14,15 +14,18 @@ const {
 } = require('../utils/adapters');
 
 const hubContentRepository = httpClient => {
-  async function contentFor(id) {
+  async function contentFor(id, establishmentId) {
     const endpoint = `${config.api.hubContent}/${id}`;
 
     if (!id) {
       logger.error(`HubContentRepository (contentFor) - No ID passed`);
       return null;
     }
+    const query = {
+      _prison: establishmentId,
+    };
 
-    const response = await httpClient.get(endpoint);
+    const response = await httpClient.get(endpoint, { query });
 
     if (isEmptyResponse(response)) {
       logger.error(`HubContentRepository (contentFor) - Empty response`);

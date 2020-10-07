@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/order
-const config = require('./config');
-
 const express = require('express');
 const addRequestId = require('express-request-id')();
 const compression = require('compression');
@@ -11,9 +8,9 @@ const path = require('path');
 const sassMiddleware = require('node-sass-middleware');
 const session = require('cookie-session');
 const bodyParser = require('body-parser');
-const { v4: uuid } = require('uuid');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
+const config = require('./config');
 
 const { createIndexRouter } = require('./routes/index');
 const { createTopicsRouter } = require('./routes/topics');
@@ -42,8 +39,6 @@ const {
   createSignInCallbackMiddleware,
 } = require('./auth/middleware');
 
-const { getEstablishmentId } = require('./utils');
-
 const createApp = ({
   logger,
   requestLogger,
@@ -63,6 +58,8 @@ const createApp = ({
     path.join(__dirname, '../node_modules/govuk-frontend/'),
     path.join(__dirname, '/views/'),
   ];
+
+  app.locals.config = config;
 
   // View Engine Configuration
   app.set('views', path.join(__dirname, '../server/views'));
@@ -161,14 +158,6 @@ const createApp = ({
     ),
   );
 
-  // GovUK Template Configuration
-  const establishmentId = getEstablishmentId(config.establishmentName);
-  app.locals.asset_path = '/public/';
-  app.locals.config = {
-    ...config,
-    establishmentId,
-  };
-
   // Don't cache dynamic resources
   app.use(noCache());
 
@@ -183,13 +172,6 @@ const createApp = ({
   // Health end point
   app.use('/health', createHealthRouter({ healthService }));
 
-  app.use((req, res, next) => {
-    if (req.session && !req.session.id) {
-      req.session.id = uuid();
-    }
-    res.locals.feedbackId = uuid();
-    next();
-  });
   // Routing
 
   app.use(

@@ -63,8 +63,6 @@ spec:
                   key: database_name
             - name: ENABLE_PERSONAL_INFORMATION
               value: {{ .Values.application.config.enablePersonalInformation | quote }}
-            - name: ESTABLISHMENT_NAME
-              value: {{ .Values.application.config.establishmentName }}
             - name: FEEDBACK_URL
               value: {{ include "prisoner-content-hub-frontend.feedbackUrl" . }}
             - name: NPR_STREAM

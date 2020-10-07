@@ -12,7 +12,7 @@ const createTagRouter = ({ hubTagsService }) => {
       }
 
       const userName = req.user && req.user.getFullName();
-      const establishmentId = path(['locals', 'establishmentId'], res);
+      const establishmentId = path(['session', 'establishmentId'], req);
       const config = {
         content: true,
         header: false,
@@ -48,7 +48,7 @@ const createTagRouter = ({ hubTagsService }) => {
     }
 
     try {
-      const establishmentId = path(['locals', 'establishmentId'], res);
+      const establishmentId = path(['session', 'establishmentId'], req);
       const contentType = path(['query', 'contentType'], req);
 
       const method =

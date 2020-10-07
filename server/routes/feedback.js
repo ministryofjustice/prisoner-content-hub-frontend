@@ -18,10 +18,7 @@ const createFeedbackRouter = ({ feedbackService }) => {
       sentiment: path(['body', 'sentiment'], req),
       comment: path(['body', 'comment'], req),
       date: new Date().toISOString(),
-      establishment: path(
-        ['app', 'locals', 'config', 'establishmentName'],
-        req,
-      ).toUpperCase(),
+      establishment: path(['session', 'establishmentName'], req).toUpperCase(),
       sessionId,
     });
 
