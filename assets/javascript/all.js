@@ -60,12 +60,10 @@ function showHiddenBlock(block) {
   button.style.display = 'none';
   hiddenData.style.display = 'block';
 
-  sendEvent({
-    category: 'Buttons',
-    action: 'show',
-    label: block,
-    value: 1,
-    userAgent: navigator.userAgent,
+  gtag('event', 'show', {
+    'event_category': 'Buttons',
+    'event_label': block,
+    'value': 1
   });
 
   window.setTimeout(function() {
@@ -82,5 +80,21 @@ $( document ).ready(function() {
       'event_label': 'Downloads',
       'value': 1
     });
-  })
+  });
+
+  $("a[href*='/auth/sign-in']").on('click', function() {
+    gtag('event', 'signin', {
+      'event_category': 'Signin',
+      'event_label': 'signinclick',
+      'value': 1
+    });
+  });
+
+  $("a[href*='/auth/sign-out']").on('click', function() {
+    gtag('event', 'signout', {
+      'event_category': 'Signout',
+      'event_label': 'signoutclick',
+      'value': 1
+    });
+  });
 })

@@ -69,7 +69,6 @@ describe('AuthMiddleware', () => {
 
     describe('signInCallback', () => {
       const offenderService = { getOffenderDetailsFor: sinon.stub() };
-      const analyticsService = { sendEvent: sinon.stub() };
 
       const req = {
         session: { passport: { user: 'serialized_user' } },
@@ -91,7 +90,6 @@ describe('AuthMiddleware', () => {
         const signInCallback = createSignInCallbackMiddleware({
           offenderService,
           authenticate,
-          analyticsService,
           logger: MOCK_LOGGER,
         });
 
@@ -105,7 +103,6 @@ describe('AuthMiddleware', () => {
         const signInCallback = createSignInCallbackMiddleware({
           offenderService,
           authenticate,
-          analyticsService,
           logger: { error: () => {}, debug: () => {} },
         });
 
@@ -132,7 +129,6 @@ describe('AuthMiddleware', () => {
         const signInCallback = createSignInCallbackMiddleware({
           offenderService,
           authenticate,
-          analyticsService,
           logger: MOCK_LOGGER,
         });
 
@@ -162,7 +158,6 @@ describe('AuthMiddleware', () => {
 
         const signInCallback = createSignInCallbackMiddleware({
           offenderService,
-          analyticsService,
           authenticate,
           logger: MOCK_LOGGER,
         });
@@ -195,7 +190,6 @@ describe('AuthMiddleware', () => {
       };
       const req = { logOut: sinon.stub(), user: mockUser };
       const res = { redirect: sinon.stub() };
-      const analyticsService = { sendEvent: sinon.stub() };
 
       beforeEach(() => {
         req.logOut.resetHistory();
@@ -207,7 +201,6 @@ describe('AuthMiddleware', () => {
         req.query = { returnUrl: TEST_RETURN_URL };
 
         const signOut = createSignOutMiddleware({
-          analyticsService,
           logger: MOCK_LOGGER,
         });
 
@@ -219,7 +212,6 @@ describe('AuthMiddleware', () => {
 
       it('should call logOut and redirect to the home page if not passed a returnUrl', () => {
         const signOut = createSignOutMiddleware({
-          analyticsService,
           logger: MOCK_LOGGER,
         });
 
