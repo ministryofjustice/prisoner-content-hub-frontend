@@ -5,6 +5,10 @@
 
 {% extends "../components/template.njk" %}
 
+{% block pageTitle %}
+  {{ title }}
+{% endblock %}
+
 {% block pageNavigation %}
   {{ pageNavigation({ title: title }) }}
 {% endblock %}
