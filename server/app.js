@@ -267,6 +267,22 @@ const createApp = ({
       locals.error = error;
     }
 
+    const escapeHTML = () => {
+      return this.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    };
+
+    const refererHeader = pathOr('/', ['headers', 'referer'], req);
+    locals.referer = '/';
+
+    if (refererHeader) {
+      const referer = new URL(refererHeader);
+      locals.referer = referer.hostname.endsWith('service.justice.gov.uk')
+        ? escapeHTML(referer.pathname)
+        : '/';
+    }
     res.render('pages/error', locals);
   }
 

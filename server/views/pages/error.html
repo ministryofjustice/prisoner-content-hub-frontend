@@ -6,10 +6,6 @@
 
 {% block head %}
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-  <script>
-    var validHost = new URL(document.referrer).hostname.endsWith('service.justice.gov.uk');
-    var referrer = validHost ? document.referrer : '/';
-  </script>
 {% endblock %}
 
 {% block main %}
@@ -21,7 +17,7 @@
           <p class="govuk-body">
             Return to the <a href="/">home page</a> or
             <script>
-              document.write('<a href="' + referrer + '">try again</a>');
+              document.write('<a href="{{referer}}">try again</a>');
             </script>
           </p>
           {% if error %}
