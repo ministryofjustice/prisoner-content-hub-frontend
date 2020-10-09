@@ -21,13 +21,13 @@ const createTimetableRouter = ({ offenderService }) => {
       const startDate = format(today, 'yyyy-MM-dd');
       const endDate = format(addDays(today, 6), 'yyyy-MM-dd');
 
-      if (req.user) {
-        const userName = req.user && req.user.getFullName();
-        const { bookingId } = req.user;
+      const { user } = req;
+
+      if (user) {
         events = await Promise.all([
-          offenderService.getEventsFor(bookingId, startDate, endDate),
+          offenderService.getEventsFor(user, startDate, endDate),
         ]);
-        config.userName = userName;
+        config.userName = user.getFullName();
       } else {
         events = [offenderService.getEmptyTimetable(startDate, endDate)];
       }

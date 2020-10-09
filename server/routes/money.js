@@ -20,12 +20,12 @@ const createMoneyRouter = ({ hubContentService, offenderService }) => {
         returnUrl: req.originalUrl,
       };
 
-      if (req.user) {
-        const userName = req.user && req.user.getFullName();
-        const { bookingId } = req.user;
-        const balances = await offenderService.getBalancesFor(bookingId);
+      const { user } = req;
+
+      if (user) {
+        const balances = await offenderService.getBalancesFor(user);
         data.personalisedData = balances;
-        config.userName = userName;
+        config.userName = user.getFullName();
       }
 
       return res.render('pages/category', {

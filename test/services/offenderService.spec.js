@@ -7,6 +7,11 @@ const TEST_BOOKING_ID = 1234;
 const RAW_RESPONSE = 'RAW_RESPONSE';
 const FORMATTED_RESPONSE = 'FORMATTED_RESPONSE';
 
+const TEST_USER = {
+  prisonerId: TEST_PRISONER_ID,
+  bookingId: TEST_BOOKING_ID,
+};
+
 describe('Offender Service', () => {
   const format = sinon.stub();
   const from = sinon.stub();
@@ -27,7 +32,7 @@ describe('Offender Service', () => {
         Offender: mockAdapter,
       });
 
-      const data = await service.getOffenderDetailsFor(TEST_PRISONER_ID);
+      const data = await service.getOffenderDetailsFor(TEST_USER);
 
       expect(repository.getOffenderDetailsFor).to.have.been.calledWith(
         TEST_PRISONER_ID,
@@ -47,7 +52,7 @@ describe('Offender Service', () => {
         IncentivesSummary: mockAdapter,
       });
 
-      const data = await service.getIncentivesSummaryFor(TEST_BOOKING_ID);
+      const data = await service.getIncentivesSummaryFor(TEST_USER);
 
       expect(repository.getIncentivesSummaryFor).to.have.been.calledWith(
         TEST_BOOKING_ID,
@@ -67,7 +72,7 @@ describe('Offender Service', () => {
         Balances: mockAdapter,
       });
 
-      const data = await service.getBalancesFor(TEST_BOOKING_ID);
+      const data = await service.getBalancesFor(TEST_USER);
 
       expect(repository.getBalancesFor).to.have.been.calledWith(
         TEST_BOOKING_ID,
@@ -87,10 +92,10 @@ describe('Offender Service', () => {
         KeyWorker: mockAdapter,
       });
 
-      const data = await service.getKeyWorkerFor(TEST_BOOKING_ID);
+      const data = await service.getKeyWorkerFor(TEST_USER);
 
       expect(repository.getKeyWorkerFor).to.have.been.calledWith(
-        TEST_BOOKING_ID,
+        TEST_PRISONER_ID,
       );
       expect(mockAdapter.from).to.have.been.calledWith(RAW_RESPONSE);
       expect(data).to.equal(FORMATTED_RESPONSE);
@@ -107,7 +112,7 @@ describe('Offender Service', () => {
         NextVisit: mockAdapter,
       });
 
-      const data = await service.getVisitsFor(TEST_BOOKING_ID);
+      const data = await service.getVisitsFor(TEST_USER);
 
       expect(repository.getNextVisitFor).to.have.been.calledWith(
         TEST_BOOKING_ID,
@@ -127,7 +132,7 @@ describe('Offender Service', () => {
         ImportantDates: mockAdapter,
       });
 
-      const data = await service.getImportantDatesFor(TEST_BOOKING_ID);
+      const data = await service.getImportantDatesFor(TEST_USER);
 
       expect(repository.sentenceDetailsFor).to.have.been.calledWith(
         TEST_BOOKING_ID,
@@ -163,7 +168,7 @@ describe('Offender Service', () => {
       });
 
       const data = await service.getEventsFor(
-        TEST_BOOKING_ID,
+        TEST_USER,
         '2019-03-07',
         '2019-04-07',
       );
@@ -190,7 +195,7 @@ describe('Offender Service', () => {
         Timetable: mockTimetableAdapter,
       });
 
-      const data = await service.getEventsFor(TEST_BOOKING_ID, 'FOO', 'BAR');
+      const data = await service.getEventsFor(TEST_USER, 'FOO', 'BAR');
 
       expect(repository.getEventsFor).to.have.not.been.called;
       expect(mockTimetableAdapter.create).to.have.not.been.called;
@@ -227,7 +232,7 @@ describe('Offender Service', () => {
       });
 
       const data = await service.getEventsFor(
-        TEST_BOOKING_ID,
+        TEST_USER,
         '2019-03-07',
         '2019-04-07',
       );

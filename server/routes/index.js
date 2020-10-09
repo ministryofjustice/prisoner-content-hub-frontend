@@ -46,13 +46,13 @@ const createIndexRouter = ({
       };
 
       let todaysEvents = {};
+      const { user } = req;
 
-      if (req.user) {
-        pageConfig.userName = req.user.getFullName();
-        pageConfig.welcomeMessage = `Hi, ${req.user.getFullName()}`;
-
-        const { bookingId } = req.user;
-        todaysEvents = await offenderService.getEventsForToday(bookingId);
+      if (user) {
+        const userName = user.getFullName();
+        pageConfig.userName = userName;
+        pageConfig.welcomeMessage = `Hi, ${userName}`;
+        todaysEvents = await offenderService.getEventsForToday(user);
       }
 
       res.render('pages/home', {

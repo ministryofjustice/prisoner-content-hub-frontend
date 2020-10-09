@@ -18,18 +18,29 @@ const createOffenderService = (
     TimetableEvent,
   } = responses,
 ) => {
-  async function getOffenderDetailsFor(prisonerId) {
-    const response = await repository.getOffenderDetailsFor(prisonerId);
+  async function getOffenderDetailsFor(user) {
+    logger.info(
+      `OffenderService (getOffenderDetailsFor) - User: ${user.prisonerId}`,
+    );
+    const response = await repository.getOffenderDetailsFor(user.prisonerId);
     return Offender.from(response).format();
   }
 
-  async function getIncentivesSummaryFor(bookingId) {
+  async function getIncentivesSummaryFor(user) {
     try {
-      const response = await repository.getIncentivesSummaryFor(bookingId);
+      logger.info(
+        `OffenderService (getIncentivesSummaryFor) - User: ${user.prisonerId}`,
+      );
+
+      if (!user.bookingId) {
+        throw new Error('No bookingId passed');
+      }
+
+      const response = await repository.getIncentivesSummaryFor(user.bookingId);
       return IncentivesSummary.from(response).format();
     } catch (e) {
       logger.error(
-        `OffenderService FAILED (getIncentivesSummaryFor) - ${e.message}`,
+        `OffenderService (getIncentivesSummaryFor) - Failed: ${e.message} - User: ${user.prisonerId}`,
       );
       logger.debug(e.stack);
       return {
@@ -39,12 +50,22 @@ const createOffenderService = (
     }
   }
 
-  async function getBalancesFor(bookingId) {
+  async function getBalancesFor(user) {
     try {
-      const response = await repository.getBalancesFor(bookingId);
+      logger.info(
+        `OffenderService (getBalancesFor) - User: ${user.prisonerId}`,
+      );
+
+      if (!user.bookingId) {
+        throw new Error('No bookingId passed');
+      }
+
+      const response = await repository.getBalancesFor(user.bookingId);
       return Balances.from(response).format();
     } catch (e) {
-      logger.error(`OffenderService FAILED (getBalancesFor) - ${e.message}`);
+      logger.error(
+        `OffenderService (getBalancesFor) - Failed: ${e.message} - User: ${user.prisonerId}`,
+      );
       logger.debug(e.stack);
       return {
         error: 'We are not able to show your balances at this time',
@@ -52,12 +73,22 @@ const createOffenderService = (
     }
   }
 
-  async function getKeyWorkerFor(prisonerId) {
+  async function getKeyWorkerFor(user) {
     try {
-      const response = await repository.getKeyWorkerFor(prisonerId);
+      logger.info(
+        `OffenderService (getKeyWorkerFor) - User: ${user.prisonerId}`,
+      );
+
+      if (!user.prisonerId) {
+        throw new Error('No prisonerId passed');
+      }
+
+      const response = await repository.getKeyWorkerFor(user.prisonerId);
       return KeyWorker.from(response).format();
     } catch (e) {
-      logger.error(`OffenderService FAILED (getKeyWorkerFor) - ${e.message}`);
+      logger.error(
+        `OffenderService (getKeyWorkerFor) - Failed: ${e.message} - User: ${user.prisonerId}`,
+      );
       logger.debug(e.stack);
       return {
         error: 'We are not able to show Key Worker information at this time',
@@ -65,12 +96,20 @@ const createOffenderService = (
     }
   }
 
-  async function getVisitsFor(bookingId) {
+  async function getVisitsFor(user) {
     try {
-      const response = await repository.getNextVisitFor(bookingId);
+      logger.info(`OffenderService (getVisitsFor) - User: ${user.prisonerId}`);
+
+      if (!user.bookingId) {
+        throw new Error('No bookingId passed');
+      }
+
+      const response = await repository.getNextVisitFor(user.bookingId);
       return NextVisit.from(response).format();
     } catch (e) {
-      logger.error(`OffenderService FAILED (getVisitsFor) - ${e.message}`);
+      logger.error(
+        `OffenderService (getVisitsFor) - Failed: ${e.message} - User: ${user.prisonerId}`,
+      );
       logger.debug(e.stack);
       return {
         error: 'We are not able to show your visits at this time',
@@ -78,13 +117,21 @@ const createOffenderService = (
     }
   }
 
-  async function getImportantDatesFor(bookingId) {
+  async function getImportantDatesFor(user) {
     try {
-      const response = await repository.sentenceDetailsFor(bookingId);
+      logger.info(
+        `OffenderService (getImportantDatesFor) - User: ${user.prisonerId}`,
+      );
+
+      if (!user.bookingId) {
+        throw new Error('No bookingId passed');
+      }
+
+      const response = await repository.sentenceDetailsFor(user.bookingId);
       return ImportantDates.from(response).format();
     } catch (e) {
       logger.error(
-        `OffenderService FAILED (getImportantDatesFor) - ${e.message}`,
+        `OffenderService (getImportantDatesFor) - Failed: ${e.message} - User: ${user.prisonerId}`,
       );
       logger.debug(e.stack);
       return {
@@ -93,7 +140,7 @@ const createOffenderService = (
     }
   }
 
-  async function getActualHomeEvents(bookingId, time) {
+  async function getActualHomeEvents(user, time) {
     const hour = Number.parseInt(format(time, HOUR), 10);
     const tomorrowCutOffHour = 19;
 
@@ -103,13 +150,17 @@ const createOffenderService = (
       const endDate = format(tomorrow, ISO_DATE);
 
       return {
-        events: await repository.getEventsFor(bookingId, startDate, endDate),
+        events: await repository.getEventsFor(
+          user.bookingId,
+          startDate,
+          endDate,
+        ),
         isTomorrow: true,
       };
     }
 
     return {
-      events: await repository.getEventsForToday(bookingId),
+      events: await repository.getEventsForToday(user.bookingId),
       isTomorrow: false,
     };
   }
@@ -118,11 +169,17 @@ const createOffenderService = (
    * Note this actually gets tomorrow's events if it's after 7pm as per this requirement:
    * https://trello.com/c/m5yt4sgm
    */
-  async function getEventsForToday(bookingId, time = new Date()) {
+  async function getEventsForToday(user, time = new Date()) {
     try {
-      if (!bookingId) return [];
+      logger.info(
+        `OffenderService (getEventsForToday) - User: ${user.prisonerId}`,
+      );
 
-      const { events, isTomorrow } = await getActualHomeEvents(bookingId, time);
+      if (!user.bookingId) {
+        throw new Error('No bookingId passed');
+      }
+
+      const { events, isTomorrow } = await getActualHomeEvents(user, time);
 
       return !Array.isArray(events)
         ? { todaysEvents: [], isTomorrow: false }
@@ -133,7 +190,9 @@ const createOffenderService = (
             isTomorrow,
           };
     } catch (e) {
-      logger.error(`OffenderService FAILED (getEventsForToday) - ${e.message}`);
+      logger.error(
+        `OffenderService (getEventsForToday) - Failed: ${e.message} - User: ${user.prisonerId}`,
+      );
       logger.debug(e.stack);
       return {
         error: 'We are not able to show your schedule for today at this time',
@@ -141,8 +200,14 @@ const createOffenderService = (
     }
   }
 
-  async function getEventsFor(bookingId, startDate, endDate) {
+  async function getEventsFor(user, startDate, endDate) {
     try {
+      logger.info(`OffenderService (getEventsFor) - User: ${user.prisonerId}`);
+
+      if (!user.bookingId) {
+        throw new Error('No bookingId passed');
+      }
+
       const startDateObj = new Date(startDate);
       const endDateObj = new Date(endDate);
 
@@ -155,7 +220,7 @@ const createOffenderService = (
       }
 
       const eventsData = await repository.getEventsFor(
-        bookingId,
+        user.bookingId,
         startDate,
         endDate,
       );
@@ -168,7 +233,9 @@ const createOffenderService = (
         .addEvents(eventsData)
         .build();
     } catch (e) {
-      logger.error(`OffenderService FAILED (getEventsFor) - ${e.message}`);
+      logger.error(
+        `OffenderService (getEventsFor) - Failed: ${e.message} - User: ${user.prisonerId}`,
+      );
       logger.debug(e.stack);
       return {
         error: `We are not able to show your timetable at this time`,
