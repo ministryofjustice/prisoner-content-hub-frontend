@@ -18,7 +18,6 @@ const configureEstablishment = () => (req, res, next) => {
     req.session.establishmentId = getEstablishmentId(establishmentName);
   }
 
-  res.locals.feedbackId = uuid();
   res.locals.establishmentDisplayName = `${getEstablishmentPrefix(
     req.session.establishmentId,
   )} ${getEstablishmentFormattedName(req.session.establishmentId)}`;

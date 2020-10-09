@@ -10,6 +10,7 @@ const session = require('cookie-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
+const { v4: uuid } = require('uuid');
 const config = require('./config');
 
 const { createIndexRouter } = require('./routes/index');
@@ -166,6 +167,12 @@ const createApp = ({
 
   // establishment toggle
   app.use(configureEstablishment());
+
+  app.use((req, res, next) => {
+    res.locals.feedbackId = uuid();
+    res.locals.analyticsId = config.analytics.siteId;
+    next();
+  });
 
   // Health end point
   app.use('/health', createHealthRouter({ healthService }));
