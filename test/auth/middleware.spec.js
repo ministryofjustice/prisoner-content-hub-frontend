@@ -11,6 +11,7 @@ const TEST_CALLBACK_ERROR = new Error('BOOM!');
 const TEST_PRISONER_ID = 'A1234BC';
 const TEST_INVALID_PRISONER_ID = 'FOOBAR';
 const TEST_BOOKING_ID = 1234;
+const MOCK_LOGGER = { info: () => {}, error: () => {}, debug: () => {} };
 
 describe('AuthMiddleware', () => {
   describe('createSignInMiddleware', () => {
@@ -61,7 +62,7 @@ describe('AuthMiddleware', () => {
     it('should return a middleware function', () => {
       const signInCallbackMiddleware = createSignInCallbackMiddleware({
         offenderService: () => {},
-        logger: { error: () => {}, debug: () => {} },
+        logger: MOCK_LOGGER,
       });
       expect(typeof signInCallbackMiddleware).to.equal('function');
     });
@@ -91,7 +92,7 @@ describe('AuthMiddleware', () => {
           offenderService,
           authenticate,
           analyticsService,
-          logger: { error: () => {}, debug: () => {} },
+          logger: MOCK_LOGGER,
         });
 
         await signInCallback(req, res, next);
@@ -132,7 +133,7 @@ describe('AuthMiddleware', () => {
           offenderService,
           authenticate,
           analyticsService,
-          logger: { error: () => {}, debug: () => {} },
+          logger: MOCK_LOGGER,
         });
 
         await signInCallback(req, res, next);
@@ -163,6 +164,7 @@ describe('AuthMiddleware', () => {
           offenderService,
           analyticsService,
           authenticate,
+          logger: MOCK_LOGGER,
         });
 
         await signInCallback(req, res, next);
@@ -179,12 +181,19 @@ describe('AuthMiddleware', () => {
 
   describe('createSignOutMiddleware', () => {
     it('should return a middleware function', () => {
-      const signOut = createSignOutMiddleware();
+      const signOut = createSignOutMiddleware({
+        logger: MOCK_LOGGER,
+      });
       expect(typeof signOut).to.equal('function');
     });
 
     describe('signOut', () => {
-      const req = { logOut: sinon.stub() };
+      const mockUser = {
+        prisonerId: TEST_INVALID_PRISONER_ID,
+        setBookingId: sinon.stub(),
+        serialize: sinon.stub(),
+      };
+      const req = { logOut: sinon.stub(), user: mockUser };
       const res = { redirect: sinon.stub() };
       const analyticsService = { sendEvent: sinon.stub() };
 
@@ -197,7 +206,10 @@ describe('AuthMiddleware', () => {
       it('should call logOut and redirect if passed a returnUrl', () => {
         req.query = { returnUrl: TEST_RETURN_URL };
 
-        const signOut = createSignOutMiddleware(analyticsService);
+        const signOut = createSignOutMiddleware({
+          analyticsService,
+          logger: MOCK_LOGGER,
+        });
 
         signOut(req, res);
 
@@ -206,7 +218,10 @@ describe('AuthMiddleware', () => {
       });
 
       it('should call logOut and redirect to the home page if not passed a returnUrl', () => {
-        const signOut = createSignOutMiddleware(analyticsService);
+        const signOut = createSignOutMiddleware({
+          analyticsService,
+          logger: MOCK_LOGGER,
+        });
 
         signOut(req, res);
 

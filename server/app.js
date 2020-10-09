@@ -196,7 +196,7 @@ const createApp = ({
         analyticsService,
         logger,
       }),
-      signOut: createSignOutMiddleware(analyticsService),
+      signOut: createSignOutMiddleware({ analyticsService, logger }),
     }),
   );
 
