@@ -84,7 +84,7 @@ $( document ).ready(function() {
 
   $("a[href*='/auth/sign-in']").on('click', function() {
     gtag('event', 'signin', {
-      'event_category': 'Signin',
+      'event_category': 'Auth',
       'event_label': 'signinclick',
       'value': 1
     });
@@ -92,7 +92,7 @@ $( document ).ready(function() {
 
   $("a[href*='/auth/sign-out']").on('click', function() {
     gtag('event', 'signout', {
-      'event_category': 'Signout',
+      'event_category': 'Auth',
       'event_label': 'signoutclick',
       'value': 1
     });
