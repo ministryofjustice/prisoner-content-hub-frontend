@@ -23,7 +23,7 @@ class HubContentClient {
         return res.data;
       })
       .catch(e => {
-        logger.error(`HubContentClient FAILED (GET) - ${e.message}`);
+        logger.error(`HubContentClient (GET) - Failed: ${e.message}`);
         logger.debug(e.stack);
         return null;
       });

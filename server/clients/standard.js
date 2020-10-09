@@ -16,7 +16,7 @@ class StandardClient {
         return res.data;
       })
       .catch(e => {
-        logger.error(`StandardClient (GET) - ${e.message}`);
+        logger.error(`StandardClient (GET) - Failed: ${e.message}`);
         logger.debug(e.stack);
         return null;
       });
@@ -30,7 +30,7 @@ class StandardClient {
         return res.data;
       })
       .catch(e => {
-        logger.error(`StandardClient (POST) - ${e.message}`);
+        logger.error(`StandardClient (POST) - Failed: ${e.message}`);
         logger.debug(e.stack);
         return null;
       });
@@ -59,7 +59,7 @@ class StandardClient {
         return res.data;
       })
       .catch(e => {
-        logger.error(`StandardClient FAILED (GET) - ${e.message}`);
+        logger.error(`StandardClient (POST URLENCODED) - Failed: ${e.message}`);
         logger.debug(e.stack);
         return null;
       });
