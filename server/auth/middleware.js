@@ -36,7 +36,6 @@ const createSignInCallbackMiddleware = ({
   return async function signInCallback(req, res, next) {
     const sessionId = path(['session', 'id'], req);
     const userAgent = path(['body', 'userAgent'], req);
-
     try {
       const user = await authenticate(req, res, next);
 
@@ -44,10 +43,12 @@ const createSignInCallbackMiddleware = ({
         return res.redirect('/auth/error');
       }
 
+      logger.info(
+        `SignInCallbackMiddleware (signInCallback) - User: ${user.prisonerId}`,
+      );
+
       if (isPrisonerId(user.prisonerId)) {
-        const { bookingId } = await offenderService.getOffenderDetailsFor(
-          user.prisonerId,
-        );
+        const { bookingId } = await offenderService.getOffenderDetailsFor(user);
         user.setBookingId(bookingId);
       }
       req.session.passport.user = user.serialize();
@@ -64,7 +65,7 @@ const createSignInCallbackMiddleware = ({
       return res.redirect(req.session.returnUrl);
     } catch (e) {
       logger.error(
-        `SignInCallbackMiddleware FAILED (signInCallback) - ${e.message}`,
+        `SignInCallbackMiddleware (signInCallback) - Failed: ${e.message}`,
       );
       logger.debug(e.stack);
 
@@ -82,8 +83,9 @@ const createSignInCallbackMiddleware = ({
   };
 };
 
-const createSignOutMiddleware = analyticsService => {
+const createSignOutMiddleware = ({ logger, analyticsService }) => {
   return function signOut(req, res) {
+    logger.info(`SignOutMiddleware (signOut) - User: ${req.user.prisonerId}`);
     req.logOut();
     analyticsService.sendEvent({
       category: 'Signin',

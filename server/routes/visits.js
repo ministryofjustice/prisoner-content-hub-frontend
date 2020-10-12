@@ -20,12 +20,12 @@ const createVisitsRouter = ({ hubContentService, offenderService }) => {
         returnUrl: req.originalUrl,
       };
 
-      if (req.user) {
-        const userName = req.user && req.user.getFullName();
-        const { bookingId } = req.user;
-        const visits = await offenderService.getVisitsFor(bookingId);
+      const { user } = req;
+
+      if (user) {
+        const visits = await offenderService.getVisitsFor(user);
         data.personalisedData = visits;
-        config.userName = userName;
+        config.userName = user.getFullName();
       }
 
       return res.render('pages/category', {
