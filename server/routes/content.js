@@ -21,7 +21,7 @@ const createContentRouter = ({ hubContentService }) => {
       returnUrl: req.originalUrl,
     };
 
-    const establishmentId = path(['locals', 'establishmentId'], res);
+    const establishmentId = path(['session', 'establishmentId'], req);
 
     try {
       const data = await hubContentService.contentFor(id, establishmentId);
