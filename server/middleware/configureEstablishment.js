@@ -17,7 +17,7 @@ const configureEstablishment = () => (req, res, next) => {
     req.session.id = uuid();
     req.session.establishmentName = establishmentName;
     req.session.establishmentId = getEstablishmentId(establishmentName);
-    req.session.personalisationEnabled = getEstablishmentPersonalisation(
+    req.session.establishmentPersonalisationEnabled = getEstablishmentPersonalisation(
       req.session.establishmentId,
     );
   }

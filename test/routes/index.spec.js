@@ -71,7 +71,7 @@ describe('GET /', () => {
       app.use((req, res, next) => {
         req.session = {
           establishmentId: 1,
-          personalInformation: true,
+          establishmentPersonalisationEnabled: true,
         };
         next();
       });

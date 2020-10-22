@@ -16,14 +16,14 @@ const createIndexRouter = ({
     try {
       const establishmentId = path(['session', 'establishmentId'], req);
 
-      const personalInformationGlobal = path(
+      const envPersonalisationEnabled = path(
         ['locals', 'features', 'personalInformation'],
         res,
       );
 
       const personalInformation =
-        path(['session', 'personalisationEnabled'], req) &&
-        personalInformationGlobal;
+        path(['session', 'establishmentPersonalisationEnabled'], req) &&
+        envPersonalisationEnabled;
 
       const homePageLinks = getEstablishmentHomepageLinks(
         establishmentId,
