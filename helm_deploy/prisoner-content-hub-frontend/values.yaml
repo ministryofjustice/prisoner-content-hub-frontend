@@ -57,10 +57,10 @@ ingress:
   enabled: true
   tlsEnabled: true
   path: /
-  prefix:
-    - siteName: berwyn
-    - siteName: wayland
-    - siteName: cookhamwood
+  prefixes:
+    - berwyn
+    - wayland
+    - cookhamwood
   allowed:
     sheffieldoffice: "217.33.148.210/29"
     mojvpn: "81.134.202.29/32"

@@ -17,16 +17,16 @@ spec:
   {{- $domainSuffix := .suffix -}}
   {{- $certSecret := .cert_secret -}}
   - hosts:
-    {{- range $.Values.ingress.prefix }}
-    - {{ .siteName }}{{ $domainSuffix }}
+    {{- range $.Values.ingress.prefixes }}
+    - {{ . }}{{ $domainSuffix }}
     {{ if $certSecret }}secretName: {{ $certSecret }}{{ end }}
     {{- end }}
   {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
     {{- $domainSuffix := .suffix -}}
-    {{- range $.Values.ingress.prefix }}
-    - host: {{ .siteName }}{{ $domainSuffix }}
+    {{- range $.Values.ingress.prefixes }}
+    - host: {{ . }}{{ $domainSuffix }}
       http:
         paths:
           - path: "/"
