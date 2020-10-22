@@ -15,18 +15,24 @@ spec:
   tls:
   {{- $domainPrefix := .Values.ingress.domainPrefix -}}
   {{- range .Values.ingress.hosts }}
+    {{- $domainSuffix := .suffix -}}
   - hosts:
-    - {{ $domainPrefix }}{{ .suffix }}
+    {{- range $.Values.ingress.prefix }}
+    - {{ .siteName }}{{ $domainSuffix }}
     {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
+    {{- end }}
   {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
-    - host: {{ $domainPrefix }}{{ .suffix }}
+    {{- $domainSuffix := .suffix -}}
+    {{- range $.Values.ingress.prefix }}
+    - host: {{ .siteName }}{{ .$domainSuffix }}
       http:
         paths:
           - path: "/"
             backend:
               serviceName: {{ $fullName }}
               servicePort: http
+    {{- end }}
   {{- end }}
 {{- end }}
