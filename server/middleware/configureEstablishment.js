@@ -4,6 +4,7 @@ const {
   getEstablishmentId,
   getEstablishmentFormattedName,
   getEstablishmentPrefix,
+  getEstablishmentPersonalisation,
 } = require('../utils');
 
 const configureEstablishment = () => (req, res, next) => {
@@ -16,6 +17,9 @@ const configureEstablishment = () => (req, res, next) => {
     req.session.id = uuid();
     req.session.establishmentName = establishmentName;
     req.session.establishmentId = getEstablishmentId(establishmentName);
+    req.session.personalisationEnabled = getEstablishmentPersonalisation(
+      req.session.establishmentId,
+    );
   }
 
   res.locals.feedbackId = uuid();

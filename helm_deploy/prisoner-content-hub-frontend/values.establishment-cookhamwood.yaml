@@ -1,6 +1,2 @@
-application:
-  config:
-    enablePersonalInformation: true
-
 ingress:
   domainPrefix: cookhamwood

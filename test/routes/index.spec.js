@@ -68,21 +68,13 @@ describe('GET /', () => {
       });
 
       app = setupBasicApp();
-      app.use(
-        (req, res, next) => {
-          // TODO: Remove this when new designs implemented fully in template
-          res.locals = {
-            features: { personalInformation: true },
-          };
-          next();
-        },
-        (req, res, next) => {
-          req.session = {
-            establishmentId: 1,
-          };
-          next();
-        },
-      );
+      app.use((req, res, next) => {
+        req.session = {
+          establishmentId: 1,
+          personalInformation: true,
+        };
+        next();
+      });
       app.use(router);
       app.use(consoleLogError);
     });
