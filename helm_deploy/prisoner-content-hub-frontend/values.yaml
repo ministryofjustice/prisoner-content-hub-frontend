@@ -1,8 +1,8 @@
 nameOverride: ""
 fullnameOverride: ""
 
-replicaCount: 2
-maxReplicaCount: 3
+replicaCount: 3
+maxReplicaCount: 6
 
 tier: frontend
 
