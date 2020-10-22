@@ -15,7 +15,7 @@ spec:
   tls:
   {{- range .Values.ingress.hosts }}
   {{- $domainSuffix := .suffix -}}
-  {{- $certSecret := .suffix -}}
+  {{- $certSecret := .cert_secret -}}
   - hosts:
     {{- range $.Values.ingress.prefix }}
     - {{ .siteName }}{{ $domainSuffix }}
