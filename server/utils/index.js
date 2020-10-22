@@ -38,7 +38,7 @@ function getEstablishmentHomepageLinksTitle(id, config = defaultConfig) {
 }
 
 function getEstablishmentPersonalisation(id, config = defaultConfig) {
-  return path(['establishments', id, 'personalisation'], config);
+  return path(['establishments', id, 'personalInformation'], config);
 }
 
 const capitalize = (str = '') => {
