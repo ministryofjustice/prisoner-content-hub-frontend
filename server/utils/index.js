@@ -37,6 +37,10 @@ function getEstablishmentHomepageLinksTitle(id, config = defaultConfig) {
   return path(['establishments', id, 'homePageLinksTitle'], config);
 }
 
+function getEstablishmentPersonalisation(id, config = defaultConfig) {
+  return path(['establishments', id, 'personalInformation'], config);
+}
+
 const capitalize = (str = '') => {
   if (str === '') return '';
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -88,6 +92,7 @@ module.exports = {
   getEstablishmentPrefix,
   getEstablishmentHomepageLinks,
   getEstablishmentHomepageLinksTitle,
+  getEstablishmentPersonalisation,
   isEmptyResponse,
   capitalize,
   capitalizeAll,
