@@ -14,9 +14,9 @@ metadata:
 spec:
   tls:
   {{- range .Values.ingress.hosts }}
-  {{- $domainSuffix := .suffix -}}
-  {{- $certSecret := .cert_secret -}}
   - hosts:
+    {{- $domainSuffix := .suffix -}}
+    {{- $certSecret := .cert_secret -}}
     {{- range $.Values.ingress.prefixes }}
     - {{ . }}{{ $domainSuffix }}
     {{ if $certSecret }}secretName: {{ $certSecret }}{{ end }}
