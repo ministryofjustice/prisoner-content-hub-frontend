@@ -22,12 +22,14 @@
       gtag('config', '{{analyticsId}}', {
         'custom_map': {
           'dimension1': 'Secondary Tags',
-          'dimension2': 'Categories'
+          'dimension2': 'Categories',
+          'dimension3': 'Series'
         }
       });
 
       gtag('event', 'categories', {'Categories': "{{data.categoryNames}}"});
       gtag('event', 'secondary_tags', {'Secondary Tags': "{{data.secondaryTagNames}}"});
+      gtag('event', 'series', {'Series': "{{data.seriesName}}"});
     </script>
     {% endblock %}
 
