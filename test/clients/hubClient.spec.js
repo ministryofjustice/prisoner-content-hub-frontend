@@ -1,7 +1,7 @@
 const nock = require('nock');
 const { HubClient } = require('../../server/clients/hub');
 
-describe('HubClient', () => {
+describe.skip('HubClient', () => {
   describe('.get', () => {
     it('makes a request simple GET request', async () => {
       nock('https://hub-api.com')
