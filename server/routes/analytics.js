@@ -32,6 +32,7 @@ const createAnalyticsRouter = ({ analyticsService }) => {
       viewport: path(['body', 'viewport'], req),
       secondaryTags: path(['body', 'secondaryTags'], req),
       categories: path(['body', 'categories'], req),
+      series: path(['body', 'series'], req),
     });
 
     return res.send('OK');
