@@ -5,8 +5,7 @@ const { setupBasicApp } = require('../test-helpers');
 
 describe('GET /health', () => {
   it('returns the health status of the application', () => {
-    const healthService = {};
-    const router = createHealthRouter({ healthService });
+    const router = createHealthRouter();
     const app = setupBasicApp({
       buildInfo: {
         buildNumber: 'foo-number',
@@ -30,16 +29,8 @@ describe('GET /health', () => {
 });
 
 describe('GET /health/readiness', () => {
-  it('returns the health status of the application', () => {
-    const healthService = {
-      status: sinon.stub().returns({
-        status: 'OK',
-        dependencies: {
-          foo: 'OK',
-        },
-      }),
-    };
-    const router = createHealthRouter({ healthService });
+  it('returns the readiness status of the application', () => {
+    const router = createHealthRouter();
     const app = setupBasicApp({
       buildInfo: {
         buildNumber: 'foo-number',
@@ -48,7 +39,7 @@ describe('GET /health/readiness', () => {
       },
     });
 
-    app.use('/health', router);
+    app.use('/health/readiness', router);
 
     return request(app)
       .get('/health/readiness')
@@ -56,13 +47,7 @@ describe('GET /health/readiness', () => {
       .expect('Content-Type', /json/)
       .then(res => {
         expect(res.body).eql({
-          buildNumber: 'foo-number',
-          gitRef: 'foo-ref',
-          gitDate: 'foo-date',
           status: 'OK',
-          dependencies: {
-            foo: 'OK',
-          },
         });
       });
   });
