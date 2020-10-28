@@ -30,9 +30,6 @@ application:
   nprConfigMapName: npr-live
   dbSecretName: drupal-rds
 
-prisonerAuthAD:
-  callbackEndpoint: /auth/provider/callback
-
 imagePullSecrets: [] # Are we using ECR?
 
 podSecurityContext: {}

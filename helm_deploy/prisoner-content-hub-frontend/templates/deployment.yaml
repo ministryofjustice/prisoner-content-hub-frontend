@@ -107,8 +107,6 @@ spec:
                 secretKeyRef:
                   name: {{ include "prisoner-content-hub-frontend.fullname" . }}
                   key: azureAdClientSecret
-            - name: AZURE_AD_CALLBACK_PATH
-              value: {{ .Values.prisonerAuthAD.callbackEndpoint }}
           ports:
             - name: http
               containerPort: {{ .Values.application.port }}
