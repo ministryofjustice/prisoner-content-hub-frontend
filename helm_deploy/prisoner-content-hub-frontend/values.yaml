@@ -1,8 +1,8 @@
 nameOverride: ""
 fullnameOverride: ""
 
-replicaCount: 2
-maxReplicaCount: 3
+replicaCount: 3
+maxReplicaCount: 6
 
 tier: frontend
 
@@ -30,9 +30,6 @@ application:
   nprConfigMapName: npr-live
   dbSecretName: drupal-rds
 
-prisonerAuthAD:
-  callbackEndpoint: /auth/provider/callback
-
 imagePullSecrets: [] # Are we using ECR?
 
 podSecurityContext: {}
@@ -57,6 +54,10 @@ ingress:
   enabled: true
   tlsEnabled: true
   path: /
+  prefixes:
+    - berwyn
+    - wayland
+    - cookhamwood
   allowed:
     sheffieldoffice: "217.33.148.210/29"
     mojvpn: "81.134.202.29/32"

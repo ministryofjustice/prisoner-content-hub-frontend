@@ -38,8 +38,6 @@ commands:
     parameters:
       environment:
         type: string
-      establishment:
-        type: string
       releaseName:
         type: string
     steps:
@@ -60,13 +58,12 @@ commands:
               --namespace=${KUBE_NAMESPACE}
             kubectl config use-context ${KUBE_CLUSTER_NAME}
       - run:
-          name: Release to << parameters.environment >> (<< parameters.establishment >>)
+          name: Release to << parameters.environment >>
           command: |
             VERSION_TO_DEPLOY=$(cat /tmp/build-info/version-to-deploy.txt)
             helm upgrade << parameters.releaseName >> ./helm_deploy/prisoner-content-hub-frontend \
               --install --wait --force --reset-values --timeout 360s \
               --namespace=${KUBE_NAMESPACE} \
-              --values ./helm_deploy/prisoner-content-hub-frontend/values.establishment-<< parameters.establishment >>.yaml \
               --values ./helm_deploy/prisoner-content-hub-frontend/values.<< parameters.environment >>.yaml \
               --set application.contentConfigMapName="${HELM_BACKEND_RELEASE_NAME}" \
               --set application.nprConfigMapName="${HELM_NPR_CONFIG_MAP_NAME}" \
@@ -180,15 +177,12 @@ jobs:
     parameters:
       environment:
         type: string
-      establishment:
-        type: string
     steps:
       - checkout
       - set_up_helm
       - release_to_namespace:
           environment: "<< parameters.environment >>"
-          establishment: "<< parameters.establishment >>"
-          releaseName: "prisoner-content-hub-<< parameters.establishment >>"
+          releaseName: "prisoner-content-hub-frontend"
 
 workflows:
   version: 2
@@ -211,7 +205,6 @@ workflows:
           matrix:
             parameters:
               environment: ["development"]
-              establishment: ["berwyn", "cookhamwood", "wayland"]
           requires:
             - build_preview
 
@@ -227,7 +220,6 @@ workflows:
             alias: deploy_to_staging
             parameters:
               environment: ["staging"]
-              establishment: ["berwyn", "cookhamwood", "wayland"]
           requires:
             - build_production
 
@@ -243,6 +235,5 @@ workflows:
           matrix:
             parameters:
               environment: ["production"]
-              establishment: ["berwyn", "cookhamwood", "wayland"]
           requires:
             - approve_deploy_production

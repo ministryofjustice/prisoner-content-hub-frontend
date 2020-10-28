@@ -107,8 +107,6 @@ spec:
                 secretKeyRef:
                   name: {{ include "prisoner-content-hub-frontend.fullname" . }}
                   key: azureAdClientSecret
-            - name: AZURE_AD_CALLBACK_URL
-              value: {{ printf "%s%s" (include "prisoner-content-hub-frontend.externalHost" .) .Values.prisonerAuthAD.callbackEndpoint }}
           ports:
             - name: http
               containerPort: {{ .Values.application.port }}

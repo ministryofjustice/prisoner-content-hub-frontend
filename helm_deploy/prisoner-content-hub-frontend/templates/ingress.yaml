@@ -13,20 +13,26 @@ metadata:
     nginx.ingress.kubernetes.io/whitelist-source-range: {{ include "app.joinListWithComma" .Values.ingress.allowed | quote }}
 spec:
   tls:
-  {{- $domainPrefix := .Values.ingress.domainPrefix -}}
   {{- range .Values.ingress.hosts }}
   - hosts:
-    - {{ $domainPrefix }}{{ .suffix }}
-    {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
+    {{- $domainSuffix := .suffix -}}
+    {{- $certSecret := .cert_secret -}}
+    {{- range $.Values.ingress.prefixes }}
+    - {{ . }}{{ $domainSuffix }}
+    {{ if $certSecret }}secretName: {{ $certSecret }}{{ end }}
+    {{- end }}
   {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
-    - host: {{ $domainPrefix }}{{ .suffix }}
+    {{- $domainSuffix := .suffix -}}
+    {{- range $.Values.ingress.prefixes }}
+    - host: {{ . }}{{ $domainSuffix }}
       http:
         paths:
           - path: "/"
             backend:
               serviceName: {{ $fullName }}
               servicePort: http
+    {{- end }}
   {{- end }}
 {{- end }}

@@ -10,6 +10,7 @@ const session = require('cookie-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
+const { pathOr } = require('ramda');
 const config = require('./config');
 
 const { createIndexRouter } = require('./routes/index');
@@ -124,17 +125,24 @@ const createApp = ({
   passport.deserializeUser((serializedUser, done) =>
     done(null, User.deserialize(serializedUser)),
   );
-  passport.use(
-    new AzureAdOAuth2Strategy(
-      {
-        clientID: config.auth.clientId,
-        clientSecret: config.auth.clientSecret,
-        callbackURL: config.auth.callbackUrl,
-      },
-      (accessToken, refreshToken, params, profile, done) =>
-        done(null, User.from(params.id_token)),
-    ),
-  );
+  app.use((req, res, next) => {
+    passport.use(
+      new AzureAdOAuth2Strategy(
+        {
+          clientID: config.auth.clientId,
+          clientSecret: config.auth.clientSecret,
+          callbackURL: `https://${pathOr(
+            'localhost',
+            ['headers', 'host'],
+            req,
+          )}${config.auth.callbackPath}`,
+        },
+        (accessToken, refreshToken, params, profile, done) =>
+          done(null, User.from(params.id_token)),
+      ),
+    );
+    next();
+  });
   app.use(passport.initialize());
   app.use(passport.session());
 
