@@ -101,7 +101,6 @@ module.exports = {
     callbackUrl: getEnv('AZURE_AD_CALLBACK_URL', { requireInProduction: true }),
   },
   api: {
-    hubHealth: `${hubEndpoint}/health`,
     hubContent: `${hubEndpoint}/v1/api/content`,
     hubCategoryFeatured: `${hubEndpoint}/v1/api/category/featured`,
     hubMenu: `${hubEndpoint}/v1/api/menu`,
@@ -134,7 +133,6 @@ module.exports = {
     },
   },
   elasticsearch: {
-    health: `${elasticsearchEndpoint}/_cluster/health?pretty`,
     search: `${elasticsearchEndpoint}/elasticsearch_index_${drupalDatabaseName}_${elasticsearchIndexName}/_search`,
   },
   features: {

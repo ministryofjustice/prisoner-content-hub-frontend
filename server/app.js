@@ -46,7 +46,6 @@ const createApp = ({
   hubMenuService,
   hubContentService,
   hubTagsService,
-  healthService,
   offenderService,
   searchService,
   analyticsService,
@@ -170,7 +169,7 @@ const createApp = ({
   app.use(configureEstablishment());
 
   // Health end point
-  app.use('/health', createHealthRouter({ healthService }));
+  app.use('/health', createHealthRouter());
 
   // Routing
 

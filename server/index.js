@@ -18,7 +18,6 @@ const {
   createHubFeaturedContentService,
 } = require('./services/hubFeaturedContent');
 const { createHubContentService } = require('./services/hubContent');
-const { createHealthService } = require('./services/health');
 const { createHubTagsService } = require('./services/hubTags');
 const { createPrisonApiOffenderService } = require('./services/offender');
 const { createSearchService } = require('./services/search');
@@ -52,11 +51,6 @@ const cachingStrategy = path(['features', 'useRedisCache'], config)
 module.exports = createApp({
   logger,
   requestLogger,
-  healthService: createHealthService({
-    client: standardClient,
-    config,
-    logger,
-  }),
   hubFeaturedContentService: createHubFeaturedContentService(
     hubFeaturedContentRepository(hubClient),
   ),
