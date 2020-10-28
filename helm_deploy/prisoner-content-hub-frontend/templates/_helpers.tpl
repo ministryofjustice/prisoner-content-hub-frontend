@@ -66,17 +66,6 @@ Create a feedback URL
 {{- end }}
 
 {{/*
-Create external Kubernetes hostname
-*/}}
-{{- define "prisoner-content-hub-frontend.externalHost" -}}
-{{- $protocol := "http" }}
-{{- if .Values.ingress.tlsEnabled }}
-{{- $protocol = "https" }}
-{{- end }}
-{{- printf "%s://siteName%s" $protocol (index .Values.ingress.hosts 0).suffix }}
-{{- end }}
-
-{{/*
 Create a string from a list of values joined by a comma
 */}}
 {{- define "app.joinListWithComma" -}}
