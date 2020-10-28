@@ -4,8 +4,9 @@ const { createApp } = require('../server/app');
 const config = require('../server/config');
 const { logger } = require('./test-helpers');
 
-describe.skip('App', () => {
+describe('App', () => {
   it('renders a 404 page correctly on invalid url', async () => {
+    config.auth.callbackUrl = 'testUrl';
     await request(app())
       .get('/unknown-url')
       .expect(404)
@@ -17,6 +18,7 @@ describe.skip('App', () => {
   });
 
   it('hides the stack trace on error pages', async () => {
+    config.auth.callbackUrl = 'testUrl';
     const error = {
       message: 'Something has gone horribly wrong',
       stack: 'beep-boop',
@@ -56,6 +58,7 @@ describe.skip('App', () => {
     };
     const previousConfiguration = JSON.stringify(config.features);
 
+    config.auth.callbackUrl = 'testUrl';
     config.features.showStackTraces = true;
 
     await request(
@@ -85,6 +88,7 @@ describe.skip('App', () => {
   });
 
   it('contains the correct security headers per request', async () => {
+    config.auth.callbackUrl = 'testUrl';
     await request(app())
       .get('/')
       .then(res => {
