@@ -4,7 +4,7 @@ const { createApp } = require('../server/app');
 const config = require('../server/config');
 const { logger } = require('./test-helpers');
 
-describe('App', () => {
+describe.skip('App', () => {
   it('renders a 404 page correctly on invalid url', async () => {
     await request(app())
       .get('/unknown-url')

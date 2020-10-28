@@ -120,21 +120,30 @@ const createApp = ({
     }),
   );
 
+  // establishment toggle
+  app.use(configureEstablishment());
+
   passport.serializeUser((user, done) => done(null, user.serialize()));
   passport.deserializeUser((serializedUser, done) =>
     done(null, User.deserialize(serializedUser)),
   );
-  passport.use(
-    new AzureAdOAuth2Strategy(
-      {
-        clientID: config.auth.clientId,
-        clientSecret: config.auth.clientSecret,
-        callbackURL: config.auth.callbackUrl,
-      },
-      (accessToken, refreshToken, params, profile, done) =>
-        done(null, User.from(params.id_token)),
-    ),
-  );
+  app.use((req, res, next) => {
+    passport.use(
+      new AzureAdOAuth2Strategy(
+        {
+          clientID: config.auth.clientId,
+          clientSecret: config.auth.clientSecret,
+          callbackURL: config.auth.callbackUrl.replace(
+            'siteName',
+            req.session.establishmentName,
+          ),
+        },
+        (accessToken, refreshToken, params, profile, done) =>
+          done(null, User.from(params.id_token)),
+      ),
+    );
+    next();
+  });
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -164,9 +173,6 @@ const createApp = ({
 
   // feature toggles
   app.use(featureToggleMiddleware(config.features));
-
-  // establishment toggle
-  app.use(configureEstablishment());
 
   // Health end point
   app.use('/health', createHealthRouter());

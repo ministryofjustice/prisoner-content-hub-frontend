@@ -73,7 +73,7 @@ Create external Kubernetes hostname
 {{- if .Values.ingress.tlsEnabled }}
 {{- $protocol = "https" }}
 {{- end }}
-{{- printf "%s://%s%s" $protocol .Values.ingress.domainPrefix (index .Values.ingress.hosts 0).suffix }}
+{{- printf "%s://siteName%s" $protocol (index .Values.ingress.hosts 0).suffix }}
 {{- end }}
 
 {{/*
