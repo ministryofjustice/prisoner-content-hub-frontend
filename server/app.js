@@ -133,10 +133,7 @@ const createApp = ({
         {
           clientID: config.auth.clientId,
           clientSecret: config.auth.clientSecret,
-          callbackURL: config.auth.callbackUrl.replace(
-            'siteName',
-            req.session.establishmentName,
-          ),
+          callbackURL: `https://${req.session.establishmentHostname}${config.auth.callbackPath}`,
         },
         (accessToken, refreshToken, params, profile, done) =>
           done(null, User.from(params.id_token)),

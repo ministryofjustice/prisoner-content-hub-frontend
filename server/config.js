@@ -98,7 +98,9 @@ module.exports = {
     clientSecret: getEnv('AZURE_AD_CLIENT_SECRET', {
       requireInProduction: true,
     }),
-    callbackUrl: getEnv('AZURE_AD_CALLBACK_URL', { requireInProduction: true }),
+    callbackPath: getEnv('AZURE_AD_CALLBACK_PATH', {
+      requireInProduction: true,
+    }),
   },
   api: {
     hubContent: `${hubEndpoint}/v1/api/content`,

@@ -12,7 +12,8 @@ const configureEstablishment = () => (req, res, next) => {
     req.session &&
     (!req.session.id ||
       !req.session.establishmentId ||
-      req.session.establishmentPersonalisationEnabled === undefined)
+      req.session.establishmentPersonalisationEnabled === undefined ||
+      req.session.establishmentHostname === undefined)
   ) {
     const replaceUrl = /-prisoner-content-hub.*$/g;
     const establishmentName = pathOr('wayland', ['headers', 'host'], req)
@@ -20,6 +21,11 @@ const configureEstablishment = () => (req, res, next) => {
       .replace(replaceUrl, '');
 
     req.session.id = uuid();
+    req.session.establishmentHostname = pathOr(
+      'wayland',
+      ['headers', 'host'],
+      req,
+    );
     req.session.establishmentName = establishmentName;
     req.session.establishmentId = getEstablishmentId(establishmentName);
     req.session.establishmentPersonalisationEnabled = getEstablishmentPersonalisation(
