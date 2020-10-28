@@ -121,9 +121,6 @@ const createApp = ({
     }),
   );
 
-  // establishment toggle
-  app.use(configureEstablishment());
-
   passport.serializeUser((user, done) => done(null, user.serialize()));
   passport.deserializeUser((serializedUser, done) =>
     done(null, User.deserialize(serializedUser)),
@@ -175,6 +172,9 @@ const createApp = ({
 
   // feature toggles
   app.use(featureToggleMiddleware(config.features));
+
+  // establishment toggle
+  app.use(configureEstablishment());
 
   // Health end point
   app.use('/health', createHealthRouter());
