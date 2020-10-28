@@ -2,5 +2,10 @@
 Ingress not enabled
 {{ else }}
 Application is running at:
-  {{ include "prisoner-content-hub-frontend.externalHost" . }}
+  {{- range .Values.ingress.hosts }}
+    {{- $domainSuffix := .suffix -}}
+    {{- range $.Values.ingress.prefixes }}
+    - {{ . }}{{ $domainSuffix }}
+    {{- end }}
+  {{- end }}
 {{- end }}
