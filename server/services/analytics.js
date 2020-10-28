@@ -20,6 +20,7 @@ const createAnalyticsService = ({ analyticsRepository }) => {
     viewport,
     secondaryTags,
     categories,
+    series,
   }) {
     return analyticsRepository.sendPageTrack({
       hostname,
@@ -31,6 +32,7 @@ const createAnalyticsService = ({ analyticsRepository }) => {
       viewport,
       secondaryTags,
       categories,
+      series,
     });
   }
 

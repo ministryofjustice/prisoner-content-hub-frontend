@@ -104,6 +104,7 @@ describe('analyticsRepository', () => {
         viewport: 'viewport',
         secondaryTags: 'secondaryTags',
         categories: 'categories',
+        series: 'series',
       };
       const client = {
         postFormData: sinon.stub(),
@@ -130,6 +131,7 @@ describe('analyticsRepository', () => {
         basicData.secondaryTags,
       );
       expect(client.postFormData.args[0][1].cd2).to.equal(basicData.categories);
+      expect(client.postFormData.args[0][1].cd3).to.equal(basicData.series);
     });
 
     it('should skip userAgent if not present', async () => {
@@ -142,6 +144,7 @@ describe('analyticsRepository', () => {
         viewport: 'viewport',
         secondaryTags: 'secondaryTags',
         categories: 'categories',
+        series: 'series',
       };
       const client = {
         postFormData: sinon.stub(),
@@ -168,6 +171,7 @@ describe('analyticsRepository', () => {
         basicData.secondaryTags,
       );
       expect(client.postFormData.args[0][1].cd2).to.equal(basicData.categories);
+      expect(client.postFormData.args[0][1].cd3).to.equal(basicData.series);
     });
 
     it('should skip secondaryTags if not present', async () => {
@@ -179,6 +183,7 @@ describe('analyticsRepository', () => {
         screen: 'screen',
         viewport: 'viewport',
         categories: 'categories',
+        series: 'series',
       };
       const client = {
         postFormData: sinon.stub(),
@@ -202,6 +207,7 @@ describe('analyticsRepository', () => {
       expect(client.postFormData.args[0][1].vp).to.equal(basicData.viewport);
       expect(client.postFormData.args[0][1].cd1).to.equal(undefined);
       expect(client.postFormData.args[0][1].cd2).to.equal(basicData.categories);
+      expect(client.postFormData.args[0][1].cd3).to.equal(basicData.series);
     });
 
     it('should skip categories if not present', async () => {
@@ -233,7 +239,45 @@ describe('analyticsRepository', () => {
       expect(client.postFormData.args[0][1].cid).to.equal(basicData.sessionId);
       expect(client.postFormData.args[0][1].sr).to.equal(basicData.screen);
       expect(client.postFormData.args[0][1].vp).to.equal(basicData.viewport);
+      expect(client.postFormData.args[0][1].cd1).to.equal(basicData.categories);
       expect(client.postFormData.args[0][1].cd2).to.equal(undefined);
+      expect(client.postFormData.args[0][1].cd3).to.equal(basicData.series);
+    });
+
+    it('should skip series if not present', async () => {
+      const basicData = {
+        hostname: 'hostname',
+        page: 'page',
+        title: 'title',
+        sessionId: 'sessionId',
+        screen: 'screen',
+        viewport: 'viewport',
+      };
+      const client = {
+        postFormData: sinon.stub(),
+      };
+      const repository = analyticsRepository(client);
+
+      let exception = null;
+
+      try {
+        await repository.sendPageTrack(basicData);
+      } catch (e) {
+        exception = e;
+      }
+
+      expect(exception).to.be.null;
+      expect(client.postFormData.args[0][1].dh).to.equal(basicData.hostname);
+      expect(client.postFormData.args[0][1].dp).to.equal(basicData.page);
+      expect(client.postFormData.args[0][1].dt).to.equal(basicData.title);
+      expect(client.postFormData.args[0][1].cid).to.equal(basicData.sessionId);
+      expect(client.postFormData.args[0][1].sr).to.equal(basicData.screen);
+      expect(client.postFormData.args[0][1].vp).to.equal(basicData.viewport);
+      expect(client.postFormData.args[0][1].cd1).to.equal(basicData.categories);
+      expect(client.postFormData.args[0][1].cd2).to.equal(
+        basicData.secondaryTags,
+      );
+      expect(client.postFormData.args[0][1].cd3).to.equal(undefined);
     });
   });
 });

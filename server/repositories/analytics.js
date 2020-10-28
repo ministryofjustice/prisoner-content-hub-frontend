@@ -32,6 +32,7 @@ function analyticsRepository(httpClient) {
     viewport,
     secondaryTags,
     categories,
+    series,
   }) {
     const postData = {
       v: '1',
@@ -55,6 +56,10 @@ function analyticsRepository(httpClient) {
 
     if (categories !== undefined) {
       postData.cd2 = categories;
+    }
+
+    if (series !== undefined) {
+      postData.cd3 = series;
     }
 
     return httpClient.postFormData(config.analytics.endpoint, postData);
