@@ -1,2 +1,6 @@
+application:
+  config:
+    enablePersonalInformation: false
+
 ingress:
   domainPrefix: berwyn

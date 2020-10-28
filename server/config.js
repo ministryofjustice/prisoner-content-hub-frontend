@@ -42,7 +42,6 @@ const establishments = {
       'Healthy mind & body': '/content/3657',
       Chaplaincy: '/tags/901',
     },
-    personalInformation: false,
   },
   793: {
     name: 'wayland',
@@ -61,7 +60,6 @@ const establishments = {
       Exercise: '/tags/907',
       Games: '/content/3621',
     },
-    personalInformation: true,
   },
   959: {
     name: 'cookhamwood',
@@ -80,7 +78,6 @@ const establishments = {
       'Healthy mind & body': '/content/3657',
       Chaplaincy: '/tags/901',
     },
-    personalInformation: true,
   },
 };
 
