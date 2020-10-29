@@ -55,8 +55,8 @@ ingress:
   tlsEnabled: true
   path: /
   prefixes:
-    - berwyn
-    - wayland
+    # - berwyn
+    # - wayland
     - cookhamwood
   allowed:
     sheffieldoffice: "217.33.148.210/29"
