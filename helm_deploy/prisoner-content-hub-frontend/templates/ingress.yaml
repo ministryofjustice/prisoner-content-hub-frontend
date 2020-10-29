@@ -14,11 +14,11 @@ metadata:
 spec:
   tls:
   {{- range .Values.ingress.hosts }}
+  {{- $certSecret := .cert_secret -}}
+  {{- $domainSuffix := .suffix }}
   - hosts:
-    {{- $domainSuffix := .suffix -}}
-    {{- $certSecret := .cert_secret -}}
     {{- range $.Values.ingress.prefixes }}
-    - {{ . }}{{ $domainSuffix }}
+      - {{ . }}{{ $domainSuffix }}
     {{ if $certSecret }}secretName: {{ $certSecret }}{{ end }}
     {{- end }}
   {{- end }}
