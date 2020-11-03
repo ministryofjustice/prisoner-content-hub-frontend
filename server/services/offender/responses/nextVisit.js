@@ -1,7 +1,6 @@
 const { capitalizePersonName } = require('../../../utils');
 const {
   placeholders: { DEFAULT },
-  timetable: { SCHEDULED_EVENT_TYPE },
   dateFormats: { PRETTY_DAY, PRETTY_DAY_AND_MONTH, PRETTY_DATE },
 } = require('../../../utils/enums');
 const { formatDateOrDefault } = require('../../../utils/date');
@@ -14,17 +13,13 @@ class NextVisit {
     this.visitType = options.visitType;
   }
 
-  isScheduled() {
-    return this.status === SCHEDULED_EVENT_TYPE;
-  }
-
   hasStartTime() {
     return this.startTime != null;
   }
 
   format() {
     return {
-      isScheduled: this.isScheduled() && this.hasStartTime(),
+      hasStartTime: this.hasStartTime(),
       nextVisit: formatDateOrDefault(DEFAULT, PRETTY_DATE, this.startTime),
       nextVisitDay: formatDateOrDefault(DEFAULT, PRETTY_DAY, this.startTime),
       nextVisitDate: formatDateOrDefault(

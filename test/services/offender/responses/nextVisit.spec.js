@@ -18,7 +18,7 @@ describe('NextVisit', () => {
 
     expect(formatted).to.eql(
       {
-        isScheduled: false,
+        hasStartTime: false,
         nextVisit: DEFAULT,
         nextVisitDate: DEFAULT,
         nextVisitDay: DEFAULT,
@@ -39,7 +39,7 @@ describe('NextVisit', () => {
 
     expect(formatted).to.eql(
       {
-        isScheduled: true,
+        hasStartTime: true,
         nextVisit: 'Saturday 07 December 2019',
         nextVisitDate: '7 December',
         nextVisitDay: 'Saturday',
@@ -61,7 +61,7 @@ describe('NextVisit', () => {
     const formatted = NextVisit.from(response).format();
 
     expect(formatted).to.eql({
-      isScheduled: true,
+      hasStartTime: true,
       nextVisit: 'Saturday 07 December 2019',
       nextVisitDate: '7 December',
       nextVisitDay: 'Saturday',
