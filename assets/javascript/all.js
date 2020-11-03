@@ -1,19 +1,3 @@
-function sendEvent(data) {
-  $.ajax({
-    type: "POST",
-    url: '/analytics/event',
-    data: data
-  });
-}
-
-function sendPageTrack(data) {
-  $.ajax({
-    type: "POST",
-    url: '/analytics/page',
-    data: data
-  });
-}
-
 (function() {
   document.body.addEventListener('click', function(event) {
     if (matchesAll('[data-state]', event.target)) {
@@ -76,12 +60,10 @@ function showHiddenBlock(block) {
   button.style.display = 'none';
   hiddenData.style.display = 'block';
 
-  sendEvent({
-    category: 'Buttons',
-    action: 'show',
-    label: block,
-    value: 1,
-    userAgent: navigator.userAgent,
+  gtag('event', 'show', {
+    'event_category': 'Buttons',
+    'event_label': block,
+    'value': 1
   });
 
   window.setTimeout(function() {
@@ -89,3 +71,29 @@ function showHiddenBlock(block) {
     hiddenData.style.display = 'none';
   }, 3000);
 }
+
+jQuery(function() {
+  $('a.is-pdf').on('click', function() {
+    gtag('event', $(this).data('featuredTitle'), {
+      'event_category': 'PDFs',
+      'event_label': 'Downloads',
+      'value': 1
+    });
+  });
+
+  $("a[href*='/auth/sign-in']").on('click', function() {
+    gtag('event', 'signin', {
+      'event_category': 'Auth',
+      'event_label': 'signinclick',
+      'value': 1
+    });
+  });
+
+  $("a[href*='/auth/sign-out']").on('click', function() {
+    gtag('event', 'signout', {
+      'event_category': 'Auth',
+      'event_label': 'signoutclick',
+      'value': 1
+    });
+  });
+});

@@ -143,10 +143,6 @@ module.exports = {
       getEnv('ENABLE_STACK_TRACES_ON_ERROR_PAGES', 'false') === 'true',
   },
   analytics: {
-    endpoint: getEnv(
-      'ANALYTICS_ENDPOINT',
-      'https://www.google-analytics.com/collect',
-    ),
     siteId: getEnv('ANALYTICS_SITE_ID', 'UA-152065860-4'),
   },
   feedback: {

@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
 const { pathOr } = require('ramda');
+const { v4: uuid } = require('uuid');
 const config = require('./config');
 
 const { createIndexRouter } = require('./routes/index');
@@ -23,7 +24,6 @@ const { createIncentivesRouter } = require('./routes/incentives');
 const { createMoneyRouter } = require('./routes/money');
 const { createTagRouter } = require('./routes/tags');
 const { createGamesRouter } = require('./routes/games');
-const { createAnalyticsRouter } = require('./routes/analytics');
 const { createFeedbackRouter } = require('./routes/feedback');
 const { createSearchRouter } = require('./routes/search');
 const { createAuthRouter } = require('./routes/auth');
@@ -49,7 +49,6 @@ const createApp = ({
   hubTagsService,
   offenderService,
   searchService,
-  analyticsService,
   feedbackService,
 }) => {
   const app = express();
@@ -176,6 +175,12 @@ const createApp = ({
   // establishment toggle
   app.use(configureEstablishment());
 
+  app.use((req, res, next) => {
+    res.locals.feedbackId = uuid();
+    res.locals.analyticsId = config.analytics.siteId;
+    next();
+  });
+
   // Health end point
   app.use('/health', createHealthRouter());
 
@@ -200,10 +205,9 @@ const createApp = ({
       signIn: createSignInMiddleware(),
       signInCallback: createSignInCallbackMiddleware({
         offenderService,
-        analyticsService,
         logger,
       }),
-      signOut: createSignOutMiddleware({ analyticsService, logger }),
+      signOut: createSignOutMiddleware({ logger }),
     }),
   );
 
@@ -237,16 +241,14 @@ const createApp = ({
     '/content',
     createContentRouter({
       hubContentService,
-      analyticsService,
     }),
   );
 
   app.use('/npr', createNprRouter());
   app.use('/tags', createTagRouter({ hubTagsService }));
   app.use('/games', createGamesRouter());
-  app.use('/analytics', createAnalyticsRouter({ analyticsService }));
   app.use('/feedback', createFeedbackRouter({ feedbackService }));
-  app.use('/search', createSearchRouter({ searchService, analyticsService }));
+  app.use('/search', createSearchRouter({ searchService }));
 
   app.use('*', (req, res) => {
     res.status(404);

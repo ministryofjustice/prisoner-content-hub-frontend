@@ -1,7 +1,7 @@
 const { prop, path, propOr } = require('ramda');
 const express = require('express');
 
-const createContentRouter = ({ hubContentService, analyticsService }) => {
+const createContentRouter = ({ hubContentService }) => {
   const router = express.Router();
 
   router.get('/:id', async (req, res, next) => {
@@ -22,12 +22,10 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
     };
 
     const establishmentId = path(['session', 'establishmentId'], req);
-    const userAgent = path(['headers', 'user-agent'], req);
 
     try {
       const data = await hubContentService.contentFor(id, establishmentId);
       const contentType = prop('contentType', data);
-      const sessionId = path(['session', 'id'], req);
       const getCategoriesFrom = propOr([], 'categories');
       const getSecondaryTagsFrom = propOr([], 'secondaryTags');
 
@@ -77,15 +75,6 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
           });
         case 'pdf': {
           const { url } = data;
-
-          analyticsService.sendEvent({
-            category: 'PDFs',
-            action: `${data.title}`,
-            label: 'Downloads',
-            sessionId,
-            value: 1,
-            userAgent,
-          });
 
           return res.redirect(303, url);
         }

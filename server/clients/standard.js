@@ -1,5 +1,4 @@
 const qs = require('querystring');
-const { path } = require('ramda');
 const { baseClient } = require('./baseClient');
 const { logger } = require('../utils/logger');
 
@@ -31,35 +30,6 @@ class StandardClient {
       })
       .catch(e => {
         logger.error(`StandardClient (POST) - Failed: ${e.message}`);
-        logger.debug(e.stack);
-        return null;
-      });
-  }
-
-  postFormData(endpoint, data) {
-    const querystring = qs.stringify(data);
-
-    const headers = {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-    };
-    const userAgent = path(['userAgent'], data);
-
-    if (userAgent) {
-      headers['User-Agent'] = userAgent;
-    }
-
-    return this.client
-      .post(endpoint, querystring, {
-        headers,
-      })
-      .then(res => {
-        logger.info(
-          `StandardClient (POST URLENCODED) - ${endpoint}?${querystring}`,
-        );
-        return res.data;
-      })
-      .catch(e => {
-        logger.error(`StandardClient (POST URLENCODED) - Failed: ${e.message}`);
         logger.debug(e.stack);
         return null;
       });

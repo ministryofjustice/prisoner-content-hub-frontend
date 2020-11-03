@@ -28,14 +28,9 @@ describe('GET /content/:id', () => {
       const hubContentService = {
         contentFor: sinon.stub().returns(radioShowResponse),
       };
-      const analyticsService = {
-        sendPageTrack: sinon.stub(),
-        sendEvent: sinon.stub(),
-      };
 
       const router = createContentRouter({
         hubContentService,
-        analyticsService,
       });
       app = setupBasicApp();
 
@@ -137,14 +132,9 @@ describe('GET /content/:id', () => {
       const hubContentService = {
         contentFor: sinon.stub().returns(videoShowResponse),
       };
-      const analyticsService = {
-        sendPageTrack: sinon.stub(),
-        sendEvent: sinon.stub(),
-      };
 
       const router = createContentRouter({
         hubContentService,
-        analyticsService,
       });
       app = setupBasicApp();
 
@@ -309,13 +299,8 @@ describe('GET /content/:id', () => {
       const hubContentService = {
         contentFor: sinon.stub().returns(flatContentResponse),
       };
-      const analyticsService = {
-        sendPageTrack: sinon.stub(),
-        sendEvent: sinon.stub(),
-      };
       const router = createContentRouter({
         hubContentService,
-        analyticsService,
       });
       app = setupBasicApp();
 
@@ -354,15 +339,10 @@ describe('GET /content/:id', () => {
         url: 'www.foo.bar/file.pdf',
       }),
     };
-    const analyticsService = {
-      sendPageTrack: sinon.stub(),
-      sendEvent: sinon.stub(),
-    };
 
     it('returns a PDF', () => {
       const router = createContentRouter({
         hubContentService,
-        analyticsService,
       });
       const app = setupBasicApp();
 
@@ -428,13 +408,8 @@ describe('GET /content/:id', () => {
       const hubContentService = {
         contentFor: sinon.stub().returns(serviceResponse),
       };
-      const analyticsService = {
-        sendPageTrack: sinon.stub(),
-        sendEvent: sinon.stub(),
-      };
       const router = createContentRouter({
         hubContentService,
-        analyticsService,
       });
       const app = setupBasicApp();
 
