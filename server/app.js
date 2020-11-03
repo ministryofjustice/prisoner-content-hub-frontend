@@ -10,7 +10,7 @@ const session = require('cookie-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
-const { pathOr } = require('ramda');
+const R = require('ramda');
 const config = require('./config');
 
 const { createIndexRouter } = require('./routes/index');
@@ -131,7 +131,7 @@ const createApp = ({
         {
           clientID: config.auth.clientId,
           clientSecret: config.auth.clientSecret,
-          callbackURL: `https://${pathOr(
+          callbackURL: `https://${R.pathOr(
             'localhost',
             ['headers', 'host'],
             req,
@@ -274,7 +274,7 @@ const createApp = ({
         .replace(/"/g, '&quot;');
     };
 
-    const refererHeader = pathOr('/', ['headers', 'referer'], req);
+    const refererHeader = R.path(['headers', 'referer'], req);
     locals.referer = '/';
 
     if (refererHeader) {
