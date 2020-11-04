@@ -146,7 +146,6 @@ function radioContent() {
     id: 3546,
     title: 'Foo radio show',
     description: {
-      raw: '<p>Hello world</p>\r\n',
       sanitized: '<p>Hello world</p>',
       summary: 'hello world',
     },
@@ -173,7 +172,6 @@ function videoContent() {
     episodeId: 1002,
     title: 'Foo video show',
     description: {
-      raw: '<p>Hello world</p>\r\n',
       sanitized: '<p>Hello world</p>',
       summary: 'hello world',
     },
@@ -199,7 +197,6 @@ function flatPageContent() {
     title: 'foo title',
     contentType: 'page',
     description: {
-      raw: '<h2>foo text</h2>',
       sanitized: '<h2>foo text</h2>',
       summary: 'foo text',
     },
@@ -220,7 +217,6 @@ function seasonContent() {
       contentType: 'radio',
       contentUrl: '/content/3456',
       description: {
-        raw: '<p>Series radio item</p>\r\n',
         sanitized: '<p>Series radio item</p>',
         summary: 'Series radio item summary',
       },
@@ -243,7 +239,6 @@ function seasonContent() {
       contentType: 'radio',
       contentUrl: '/content/3457',
       description: {
-        raw: '<p>Series radio item</p>\r\n',
         sanitized: '<p>Series radio item</p>',
         summary: 'Series radio item summary',
       },
@@ -273,7 +268,6 @@ function landingPageContent() {
     contentType: 'landing-page',
     featuredContentId: '3456',
     description: {
-      raw: '<p>Landing page item</p>\r\n',
       sanitized: '<p>Landing page item</p>',
       summary: 'Landing page item summary',
     },
@@ -360,7 +354,6 @@ function termContent() {
       programmeCode: 'xyz',
     },
     description: {
-      raw: '<p>Foo Term</p>\r\n',
       sanitized: undefined,
       summary: 'Foo Term summary',
     },

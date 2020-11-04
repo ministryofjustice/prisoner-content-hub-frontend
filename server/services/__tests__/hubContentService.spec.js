@@ -11,7 +11,7 @@ describe('#hubContentService', () => {
           type: 'foo',
           secondaryTags: [12],
           categories: [13],
-          description: { raw: '' },
+          description: {},
         }),
         termFor: jest
           .fn()
@@ -26,9 +26,7 @@ describe('#hubContentService', () => {
         type: 'foo',
         secondaryTags: [12],
         categories: [13],
-        description: {
-          raw: '',
-        },
+        description: {},
         tags: [{ name: 'foo series name', id: 'foo' }],
         secondaryTagNames: 'foo series name',
         categoryNames: 'foo series name',
@@ -47,7 +45,7 @@ describe('#hubContentService', () => {
             episodeId: 'episodeId',
             secondaryTags: [12],
             categories: [13],
-            description: { raw: '' },
+            description: {},
           }),
           suggestedContentFor: jest
             .fn()
@@ -80,9 +78,7 @@ describe('#hubContentService', () => {
               type: 'foo',
             },
           ],
-          description: {
-            raw: '',
-          },
+          description: {},
           episodeId: 'episodeId',
           secondaryTags: [12],
           categories: [13],
@@ -121,7 +117,7 @@ describe('#hubContentService', () => {
       establishmentId,
       secondaryTags: [12],
       categories: [13],
-      description: { raw: '' },
+      description: {},
     };
 
     const createContentRepository = () => ({

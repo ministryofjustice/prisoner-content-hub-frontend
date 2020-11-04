@@ -126,7 +126,6 @@ function mediaResponseFrom(data) {
     title: data.title,
     contentType: typeFrom(data.content_type),
     description: {
-      raw: R.path(['description', 'value'], data),
       sanitized: R.path(['description', 'processed'], data),
       summary: R.path(['description', 'summary'], data),
     },
@@ -150,7 +149,6 @@ function flatPageContentFrom(data) {
     title: data.title,
     contentType: typeFrom(data.content_type),
     description: {
-      raw: R.path(['description', 'value'], data),
       sanitized: R.path(['description', 'processed'], data),
       summary: R.path(['description', 'summary'], data),
     },
@@ -171,7 +169,6 @@ function termResponseFrom(data) {
     contentType: data.content_type,
     name: data.title,
     description: {
-      raw: R.path(['description', 'value'], data),
       sanitized: R.path(['description', 'sanitized'], data),
       summary: data.summary,
     },
@@ -193,7 +190,6 @@ function landingResponseFrom(data) {
     contentType: typeFrom(data.content_type),
     featuredContentId: data.featured_content_id,
     description: {
-      raw: R.path(['description', 'value'], data),
       sanitized: R.path(['description', 'processed'], data),
       summary: R.path(['description', 'summary'], data),
     },
