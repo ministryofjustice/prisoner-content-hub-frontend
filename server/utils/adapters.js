@@ -135,7 +135,6 @@ function mediaResponseFrom(data) {
     episode: data.episode,
     season: data.season,
     seriesId: data.series_id,
-    establishmentIds: R.map(R.prop('target_id'), R.propOr([], 'prisons', data)),
     contentUrl: `/content/${data.id}`,
     categories: R.map(R.prop('target_id'), R.propOr([], 'categories', data)),
     secondaryTags: R.map(
@@ -157,7 +156,6 @@ function flatPageContentFrom(data) {
     },
     standFirst: data.stand_first,
     image: imageOrDefaultFor(data.image),
-    establishmentIds: R.map(R.prop('target_id'), R.propOr([], 'prisons', data)),
     contentUrl: `/content/${data.id}`,
     categories: R.map(R.prop('target_id'), R.propOr([], 'categories', data)),
     secondaryTags: R.map(
@@ -210,7 +208,6 @@ function pdfResponseFrom(data) {
     title: data.title,
     contentType: typeFrom(data.content_type),
     url: R.path(['media', 'url'], data),
-    establishmentIds: R.map(R.prop('target_id'), R.propOr([], 'prisons', data)),
     contentUrl: `/content/${data.id}`,
   };
 }
