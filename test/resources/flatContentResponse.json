@@ -9,7 +9,6 @@
   },
   "standFirst": "Some incredible foo stand first",
   "image": { "alt": null, "url": null },
-  "establishmentIds": [792],
   "suggestedContent": [
     {
       "id": 666,

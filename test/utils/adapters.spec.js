@@ -162,7 +162,6 @@ function radioContent() {
     },
     secondaryTags: [646],
     categories: [646],
-    establishmentIds: [792, 793],
     contentUrl: '/content/3546',
     programmeCode: 'foo code',
   };
@@ -189,7 +188,6 @@ function videoContent() {
     },
     secondaryTags: [],
     categories: [],
-    establishmentIds: [792],
     contentUrl: '/content/3546',
     programmeCode: 'foo code',
   };
@@ -210,7 +208,6 @@ function flatPageContent() {
       url: 'http://foo.bar/image/foo.png',
     },
     standFirst: 'foo stand first',
-    establishmentIds: [],
     contentUrl: '/content/3456',
     secondaryTags: [],
     categories: [644],
@@ -240,7 +237,6 @@ function seasonContent() {
       secondaryTags: [646],
       categories: [646],
       title: 'Radio Item 1',
-      establishmentIds: [],
       programmeCode: undefined,
     },
     {
@@ -264,7 +260,6 @@ function seasonContent() {
       secondaryTags: [761],
       categories: [785],
       title: 'Radio Item 2',
-      establishmentIds: [],
       programmeCode: undefined,
     },
   ];
@@ -326,7 +321,6 @@ function pdfContent() {
     title: 'Food and catering',
     contentType: 'pdf',
     url: 'http://foo.bar/content/foo.pdf',
-    establishmentIds: [],
     contentUrl: '/content/3456',
   };
 }
