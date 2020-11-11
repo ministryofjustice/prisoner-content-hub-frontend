@@ -24,10 +24,10 @@ function setupBasicApp(config = {}) {
 }
 
 const logger = {
-  info: sinon.stub(),
-  error: sinon.stub(),
-  debug: sinon.stub(),
-  warn: sinon.stub(),
+  info: jest.fn(),
+  error: jest.fn(),
+  debug: jest.fn(),
+  warn: jest.fn(),
   requestLogger: () => (req, res, next) => next(),
 };
 
@@ -51,8 +51,8 @@ function consoleLogError(err, req, res) {
 }
 
 const createClient = () => ({
-  get: sinon.stub(),
-  post: sinon.stub(),
+  get: jest.fn(),
+  post: jest.fn(),
 });
 
 module.exports = {
