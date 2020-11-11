@@ -39,7 +39,7 @@ describe('searchRepository', () => {
           prison: 'HMP Development',
         });
 
-        expect(client.post.mock.calls.length).toBe(
+        expect(client.post).toHaveBeenCalledTimes(
           1,
           'The method should have performed a post using the client',
         );
@@ -80,7 +80,7 @@ describe('searchRepository', () => {
           prison: 'HMP Development',
         });
 
-        expect(client.post.mock.calls.length).toBe(
+        expect(client.post).toHaveBeenCalledTimes(
           1,
           'The method should have performed a post using the client',
         );
@@ -105,7 +105,7 @@ describe('searchRepository', () => {
           prison: 'HMP Development',
         });
 
-        expect(client.post.mock.calls.length).toBe(
+        expect(client.post).toHaveBeenCalledTimes(
           1,
           'The method should have performed a post using the client',
         );
@@ -129,7 +129,7 @@ describe('searchRepository', () => {
           prison: 'HMP Development',
         });
 
-        expect(client.post.mock.calls.length).toBe(
+        expect(client.post).toHaveBeenCalledTimes(
           1,
           'The method should have performed a post using the client',
         );
@@ -180,7 +180,7 @@ describe('searchRepository', () => {
           prison: 'HMP Development',
         });
 
-        expect(client.post.mock.calls.length).toBe(
+        expect(client.post).toHaveBeenCalledTimes(
           1,
           'The method should have performed a post using the client',
         );
@@ -221,7 +221,7 @@ describe('searchRepository', () => {
           prison: 'HMP Development',
         });
 
-        expect(client.post.mock.calls.length).toBe(
+        expect(client.post).toHaveBeenCalledTimes(
           1,
           'The method should have performed a post using the client',
         );
@@ -246,7 +246,7 @@ describe('searchRepository', () => {
           prison: 'HMP Development',
         });
 
-        expect(client.post.mock.calls.length).toBe(
+        expect(client.post).toHaveBeenCalledTimes(
           1,
           'The method should have performed a post using the client',
         );
@@ -270,7 +270,7 @@ describe('searchRepository', () => {
           prison: 'HMP Development',
         });
 
-        expect(client.post.mock.calls.length).toBe(
+        expect(client.post).toHaveBeenCalledTimes(
           1,
           'The method should have performed a post using the client',
         );

@@ -20,7 +20,7 @@ describe('SearchService', () => {
         from: 5,
       });
 
-      expect(searchRepository.find.mock.calls.length).toBe(
+      expect(searchRepository.find).toHaveBeenCalledTimes(
         1,
         'The repository should have been called',
       );
@@ -39,7 +39,7 @@ describe('SearchService', () => {
         'The repository should have been called with the correct arguments',
       );
 
-      expect(getEstablishmentName.mock.calls.length).toBe(
+      expect(getEstablishmentName).toHaveBeenCalledTimes(
         1,
         'The service should get the establishment name',
       );
@@ -81,10 +81,7 @@ describe('SearchService', () => {
 
       expect(results.length).toBe(0, 'The array should be empty');
 
-      expect(searchRepository.find.mock.calls.length).toBe(
-        0,
-        'The repository should not have been called',
-      );
+      expect(searchRepository.find).not.toHaveBeenCalled();
     });
   });
 
@@ -108,7 +105,7 @@ describe('SearchService', () => {
         limit: 3,
       });
 
-      expect(searchRepository.typeAhead.mock.calls.length).toBe(
+      expect(searchRepository.typeAhead).toHaveBeenCalledTimes(
         1,
         'The repository should have been called',
       );
@@ -126,7 +123,7 @@ describe('SearchService', () => {
         'The repository should have been called with the correct arguments',
       );
 
-      expect(getEstablishmentName.mock.calls.length).toBe(
+      expect(getEstablishmentName).toHaveBeenCalledTimes(
         1,
         'The service should get the establishment name',
       );
@@ -167,10 +164,7 @@ describe('SearchService', () => {
 
       expect(results.length).toBe(0, 'The array should be empty');
 
-      expect(searchRepository.typeAhead.mock.calls.length).toBe(
-        0,
-        'The repository should not have been called',
-      );
+      expect(searchRepository.typeAhead).not.toHaveBeenCalled();
     });
   });
 });

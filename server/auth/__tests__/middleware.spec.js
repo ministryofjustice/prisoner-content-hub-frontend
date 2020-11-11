@@ -138,7 +138,7 @@ describe('AuthMiddleware', () => {
 
         await signInCallback(req, res, next);
         expect(user.setBookingId).toHaveBeenCalledWith(TEST_BOOKING_ID);
-        expect(user.serialize.mock.calls.length).toBeGreaterThan(0);
+        expect(user.serialize).toHaveBeenCalled();
         expect(req.session.passport.user).toBe(
           'serialized_user',
           'It should have saved the updated user in the session',
@@ -168,8 +168,8 @@ describe('AuthMiddleware', () => {
         });
 
         await signInCallback(req, res, next);
-        expect(offenderService.getOffenderDetailsFor.mock.calls.length).toBe(0);
-        expect(user.serialize.mock.calls.length).toBeGreaterThan(0);
+        expect(offenderService.getOffenderDetailsFor).not.toHaveBeenCalled();
+        expect(user.serialize).toHaveBeenCalled();
         expect(req.session.passport.user).toBe(
           'serialized_user',
           'It should have saved the updated user in the session',
@@ -213,7 +213,7 @@ describe('AuthMiddleware', () => {
 
         signOut(req, res);
 
-        expect(req.logOut.mock.calls.length).toBeGreaterThan(0);
+        expect(req.logOut).toHaveBeenCalled();
         expect(res.redirect).toHaveBeenCalledWith(TEST_RETURN_URL);
       });
 
@@ -225,7 +225,7 @@ describe('AuthMiddleware', () => {
 
         signOut(req, res);
 
-        expect(req.logOut.mock.calls.length).toBeGreaterThan(0);
+        expect(req.logOut).toHaveBeenCalled();
         expect(res.redirect).toHaveBeenCalledWith('/');
       });
     });

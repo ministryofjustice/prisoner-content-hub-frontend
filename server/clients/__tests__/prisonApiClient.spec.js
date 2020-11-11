@@ -81,10 +81,7 @@ describe('PrisonApiClient', () => {
 
       const token = await client.requestNewAccessToken();
 
-      expect(testCacheStrategy.set.mock.calls.length).toBeGreaterThan(
-        0,
-        'It should have stored the access token',
-      );
+      expect(testCacheStrategy.set).toHaveBeenCalled();
       expect(testCacheStrategy.set).toHaveBeenCalledWith(
         PRISON_API_TOKEN_KEY,
         'foo.bar.baz',

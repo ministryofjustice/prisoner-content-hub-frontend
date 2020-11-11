@@ -18,7 +18,7 @@ describe('offenderRepository', () => {
       }
 
       expect(exception.message).toBe('Invalid offender number');
-      expect(client.get.mock.calls.length).toBe(0);
+      expect(client.get).not.toHaveBeenCalled();
     });
     it('should make the offender number uppercase before making a call to the API', async () => {
       const offenderNumber = 'a1234bc';

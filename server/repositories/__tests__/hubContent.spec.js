@@ -8,7 +8,7 @@ describe('contentRepository', () => {
       const repository = contentRepository(client);
       const result = await repository.contentFor();
 
-      expect(client.get.mock.calls.length).toBe(0);
+      expect(client.get).not.toHaveBeenCalled();
       expect(result).toBe(null);
     });
 
@@ -18,7 +18,7 @@ describe('contentRepository', () => {
 
       const result = await repository.contentFor('id');
 
-      expect(client.get.mock.calls.length).toBe(1);
+      expect(client.get).toHaveBeenCalledTimes(1);
       expect(
         client.get.mock.calls[client.get.mock.calls.length - 1][0],
       ).toContain('id');
@@ -51,7 +51,7 @@ describe('contentRepository', () => {
       const repository = contentRepository(client);
       const result = await repository.termFor();
 
-      expect(client.get.mock.calls.length).toBe(0);
+      expect(client.get).not.toHaveBeenCalled();
       expect(result).toBe(null);
     });
     it('returns terms data for a given id', async () => {
@@ -85,7 +85,7 @@ describe('contentRepository', () => {
       const repository = contentRepository(client);
       const result = await repository.seasonFor({});
 
-      expect(client.get.mock.calls.length).toBe(0);
+      expect(client.get).not.toHaveBeenCalled();
       expect(result).toStrictEqual([]);
     });
 
@@ -94,7 +94,7 @@ describe('contentRepository', () => {
       const repository = contentRepository(client);
       const result = await repository.seasonFor({ id: 1 });
 
-      expect(client.get.mock.calls.length).toBe(
+      expect(client.get).toHaveBeenCalledTimes(
         1,
         'client should have been called',
       );
@@ -138,7 +138,7 @@ describe('contentRepository', () => {
       const repository = contentRepository(client);
       const result = await repository.nextEpisodesFor({ id: 1, episodeId: 1 });
 
-      expect(client.get.mock.calls.length).toBe(1);
+      expect(client.get).toHaveBeenCalledTimes(1);
       expect(result).toStrictEqual([]);
     });
 
@@ -183,7 +183,7 @@ describe('contentRepository', () => {
       const repository = contentRepository(client);
       const result = await repository.relatedContentFor({ id: 1 });
 
-      expect(client.get.mock.calls.length).toBe(1);
+      expect(client.get).toHaveBeenCalledTimes(1);
       expect(result).toStrictEqual([]);
     });
     it('returns formated data for related content', async () => {
@@ -229,7 +229,7 @@ describe('contentRepository', () => {
       const repository = contentRepository(client);
       const result = await repository.suggestedContentFor({});
 
-      expect(client.get.mock.calls.length).toBe(0);
+      expect(client.get).not.toHaveBeenCalled();
       expect(result).toStrictEqual([]);
     });
 
@@ -238,7 +238,7 @@ describe('contentRepository', () => {
       const repository = contentRepository(client);
       const result = await repository.suggestedContentFor({ id: 1 });
 
-      expect(client.get.mock.calls.length).toBe(1);
+      expect(client.get).toHaveBeenCalledTimes(1);
       expect(result).toStrictEqual([]);
     });
     it('returns formatted data for suggested content', async () => {
