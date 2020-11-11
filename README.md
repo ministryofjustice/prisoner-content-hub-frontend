@@ -26,7 +26,7 @@ The app now takes it's establishment name from the hostname of each request. In 
 
 ### Running tests
 
-Mocha and Chai are used for unit and integration tests
+Jest is used for unit and integration tests
 
     npm run test
 
