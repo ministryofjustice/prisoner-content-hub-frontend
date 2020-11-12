@@ -1,6 +1,7 @@
 const {
   categoryFeaturedContentRepository,
 } = require('../categoryFeaturedContent');
+const { lastCall } = require('../../../test/test-helpers');
 
 describe('CategoryFeaturedContentRepository', () => {
   describe('#contentFor', () => {
@@ -24,9 +25,7 @@ describe('CategoryFeaturedContentRepository', () => {
           categoryId: 'fooCategoryId',
         });
 
-        const requestQueryString = JSON.stringify(
-          client.get.mock.calls[client.get.mock.calls.length - 1][1],
-        );
+        const requestQueryString = JSON.stringify(lastCall(client.get)[1]);
 
         expect(requestQueryString).toContain('fooCategoryId');
 

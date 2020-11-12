@@ -1,4 +1,5 @@
 const { createPrisonApiOffenderService } = require('../offender');
+const { lastCall } = require('../../../test/test-helpers');
 
 const TEST_PRISONER_ID = 'A1234BC';
 const TEST_BOOKING_ID = 1234;
@@ -165,11 +166,11 @@ describe('Offender Service', () => {
         '2019-04-07',
       );
 
-      expect(
-        repository.getEventsFor.mock.calls[
-          repository.getEventsFor.mock.calls.length - 1
-        ][0],
-      ).toBe(TEST_BOOKING_ID, '2019-03-07', '2019-04-07');
+      expect(lastCall(repository.getEventsFor)[0]).toBe(
+        TEST_BOOKING_ID,
+        '2019-03-07',
+        '2019-04-07',
+      );
       expect(mockTimetableAdapter.create).toHaveBeenCalledWith({
         startDate: '2019-03-07',
         endDate: '2019-04-07',

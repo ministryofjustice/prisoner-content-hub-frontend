@@ -1,5 +1,6 @@
 const { contentRepository } = require('../hubContent');
 const termResponse = require('../../../test/resources/terms.json');
+const { lastCall } = require('../../../test/test-helpers');
 
 describe('contentRepository', () => {
   describe('#contentFor', () => {
@@ -9,7 +10,7 @@ describe('contentRepository', () => {
       const result = await repository.contentFor();
 
       expect(client.get).not.toHaveBeenCalled();
-      expect(result).toBe(null);
+      expect(result).toBeNull();
     });
 
     it('returns content for a given id', async () => {
@@ -19,9 +20,7 @@ describe('contentRepository', () => {
       const result = await repository.contentFor('id');
 
       expect(client.get).toHaveBeenCalledTimes(1);
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain('id');
+      expect(lastCall(client.get)[0]).toContain('id');
 
       const expectedKeys = [
         'id',
@@ -52,7 +51,7 @@ describe('contentRepository', () => {
       const result = await repository.termFor();
 
       expect(client.get).not.toHaveBeenCalled();
-      expect(result).toBe(null);
+      expect(result).toBeNull();
     });
     it('returns terms data for a given id', async () => {
       const client = generateClient(termResponse);
@@ -70,9 +69,7 @@ describe('contentRepository', () => {
       ];
       const keys = Object.keys(result);
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain('id');
+      expect(lastCall(client.get)[0]).toContain('id');
       expectedKeys.forEach(key => {
         expect(keys).toContain(key);
       });
@@ -110,13 +107,9 @@ describe('contentRepository', () => {
         id: 'id',
         establishmentId: 'fooPrisonID',
       });
-      const requestQueryString = JSON.stringify(
-        client.get.mock.calls[client.get.mock.calls.length - 1][1],
-      );
+      const requestQueryString = JSON.stringify(lastCall(client.get)[1]);
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain('id');
+      expect(lastCall(client.get)[0]).toContain('id');
       expect(requestQueryString).toContain('fooPrisonID');
 
       expect(result.length).toBe(4);
@@ -153,13 +146,9 @@ describe('contentRepository', () => {
         episodeId: 'fooEpisodeId',
         establishmentId: 'fooPrisonID',
       });
-      const requestQueryString = JSON.stringify(
-        client.get.mock.calls[client.get.mock.calls.length - 1][1],
-      );
+      const requestQueryString = JSON.stringify(lastCall(client.get)[1]);
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain('id');
+      expect(lastCall(client.get)[0]).toContain('id');
 
       expect(requestQueryString).toContain('fooEpisodeId');
       expect(requestQueryString).toContain('fooPrisonID');
@@ -198,9 +187,7 @@ describe('contentRepository', () => {
         establishmentId: 'fooBarQuery',
       });
 
-      const requestQueryString = JSON.stringify(
-        client.get.mock.calls[client.get.mock.calls.length - 1][1],
-      );
+      const requestQueryString = JSON.stringify(lastCall(client.get)[1]);
 
       const expectedKeys = [
         'id',
@@ -253,9 +240,7 @@ describe('contentRepository', () => {
         establishmentId: 'fooBarQuery',
       });
 
-      const requestQueryString = JSON.stringify(
-        client.get.mock.calls[client.get.mock.calls.length - 1][1],
-      );
+      const requestQueryString = JSON.stringify(lastCall(client.get)[1]);
 
       const expectedKeys = [
         'id',

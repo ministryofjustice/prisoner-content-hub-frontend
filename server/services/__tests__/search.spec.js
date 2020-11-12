@@ -1,4 +1,5 @@
 const { createSearchService } = require('../search');
+const { lastCall } = require('../../../test/test-helpers');
 
 describe('SearchService', () => {
   describe('#find', () => {
@@ -25,11 +26,7 @@ describe('SearchService', () => {
         'The repository should have been called',
       );
 
-      expect(
-        searchRepository.find.mock.calls[
-          searchRepository.find.mock.calls.length - 1
-        ][0],
-      ).toStrictEqual(
+      expect(lastCall(searchRepository.find)[0]).toStrictEqual(
         {
           query: 'Test Query',
           prison: 'HMP Development',
@@ -44,11 +41,7 @@ describe('SearchService', () => {
         'The service should get the establishment name',
       );
 
-      expect(
-        getEstablishmentName.mock.calls[
-          getEstablishmentName.mock.calls.length - 1
-        ][0],
-      ).toStrictEqual(123);
+      expect(lastCall(getEstablishmentName)[0]).toStrictEqual(123);
 
       expect(Array.isArray(result)).toBe(
         true,
@@ -110,11 +103,7 @@ describe('SearchService', () => {
         'The repository should have been called',
       );
 
-      expect(
-        searchRepository.typeAhead.mock.calls[
-          searchRepository.typeAhead.mock.calls.length - 1
-        ][0],
-      ).toStrictEqual(
+      expect(lastCall(searchRepository.typeAhead)[0]).toStrictEqual(
         {
           query: 'Test Query',
           prison: 'HMP Development',
@@ -128,11 +117,7 @@ describe('SearchService', () => {
         'The service should get the establishment name',
       );
 
-      expect(
-        getEstablishmentName.mock.calls[
-          getEstablishmentName.mock.calls.length - 1
-        ][0],
-      ).toStrictEqual(123);
+      expect(lastCall(getEstablishmentName)[0]).toStrictEqual(123);
 
       expect(Array.isArray(result)).toBe(
         true,

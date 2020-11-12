@@ -1,4 +1,5 @@
 const { createHubContentService } = require('../hubContent');
+const { lastCall, lastArg } = require('../../../test/test-helpers');
 
 describe('#hubContentService', () => {
   describe('content', () => {
@@ -91,26 +92,17 @@ describe('#hubContentService', () => {
           categoryNames: 'foo series name',
         });
 
-        expect(
-          contentRepository.termFor.mock.calls[
-            contentRepository.termFor.mock.calls.length - 1
-          ][0],
-        ).toBe('seriesId', 'The termFor method was called incorrectly');
-        expect(
-          contentRepository.nextEpisodesFor.mock.calls[
-            contentRepository.nextEpisodesFor.mock.calls.length - 1
-          ][0],
-        ).toHaveProperty(
+        expect(lastCall(contentRepository.termFor)[0]).toBe(
+          'seriesId',
+          'The termFor method was called incorrectly',
+        );
+        expect(lastCall(contentRepository.nextEpisodesFor)[0]).toHaveProperty(
           'id',
           'seriesId',
           'The nextEpisodeFor method was called incorrectly',
         );
 
-        expect(
-          contentRepository.nextEpisodesFor.mock.calls[
-            contentRepository.nextEpisodesFor.mock.calls.length - 1
-          ][0],
-        ).toHaveProperty(
+        expect(lastCall(contentRepository.nextEpisodesFor)[0]).toHaveProperty(
           'episodeId',
           'episodeId',
           'The nextEpisodeFor method was called incorrectly',
@@ -191,10 +183,7 @@ describe('#hubContentService', () => {
 
       await service.contentFor(content.id, establishmentId);
 
-      const { calls } = contentRepository.contentFor.mock;
-      const lastCall = calls[calls.length - 1];
-      const lastArg = lastCall[lastCall.length - 1];
-      expect(lastArg).toBe(
+      expect(lastArg(contentRepository.contentFor)).toBe(
         'featuredContentId',
         `the featuredContentId was supposed to be ${content.featuredContentId}`,
       );
@@ -212,10 +201,9 @@ describe('#hubContentService', () => {
 
       await service.contentFor(content.id, establishmentId);
 
-      const { calls } = categoryFeaturedContentRepository.contentFor.mock;
-      const lastCall = calls[calls.length - 1];
-      const lastArg = lastCall[lastCall.length - 1];
-      expect(lastArg).toStrictEqual(
+      expect(
+        lastArg(categoryFeaturedContentRepository.contentFor),
+      ).toStrictEqual(
         {
           categoryId: 'categoryId',
           establishmentId: 'establishmentId',
@@ -241,10 +229,7 @@ describe('#hubContentService', () => {
 
       await service.contentFor(content.id, establishmentId);
 
-      const { calls } = menuRepository.categoryMenu.mock;
-      const lastCall = calls[calls.length - 1];
-      const lastArg = lastCall[lastCall.length - 1];
-      expect(lastArg).toStrictEqual(
+      expect(lastArg(menuRepository.categoryMenu)).toStrictEqual(
         expectedResult,
         `the call arguments were supposed to be "${JSON.stringify(
           expectedResult,

@@ -1,4 +1,5 @@
 const { searchRepository } = require('../search');
+const { lastCall } = require('../../../test/test-helpers');
 
 describe('searchRepository', () => {
   describe('#find', () => {
@@ -44,9 +45,7 @@ describe('searchRepository', () => {
           'The method should have performed a post using the client',
         );
 
-        const requestBody = JSON.stringify(
-          client.post.mock.calls[client.post.mock.calls.length - 1][1],
-        );
+        const requestBody = JSON.stringify(lastCall(client.post)[1]);
 
         expect(requestBody).toContain(
           query,
@@ -85,9 +84,7 @@ describe('searchRepository', () => {
           'The method should have performed a post using the client',
         );
 
-        const requestBody = JSON.stringify(
-          client.post.mock.calls[client.post.mock.calls.length - 1][1],
-        );
+        const requestBody = JSON.stringify(lastCall(client.post)[1]);
 
         expect(requestBody).toContain(
           'HMP Development',
@@ -110,8 +107,7 @@ describe('searchRepository', () => {
           'The method should have performed a post using the client',
         );
 
-        const requestBody =
-          client.post.mock.calls[client.post.mock.calls.length - 1][1];
+        const requestBody = lastCall(client.post)[1];
 
         expect(requestBody.size).toBe(
           15,
@@ -185,9 +181,7 @@ describe('searchRepository', () => {
           'The method should have performed a post using the client',
         );
 
-        const requestBody = JSON.stringify(
-          client.post.mock.calls[client.post.mock.calls.length - 1][1],
-        );
+        const requestBody = JSON.stringify(lastCall(client.post)[1]);
 
         expect(requestBody).toContain(
           query,
@@ -226,9 +220,7 @@ describe('searchRepository', () => {
           'The method should have performed a post using the client',
         );
 
-        const requestBody = JSON.stringify(
-          client.post.mock.calls[client.post.mock.calls.length - 1][1],
-        );
+        const requestBody = JSON.stringify(lastCall(client.post)[1]);
 
         expect(requestBody).toContain(
           'HMP Development',
@@ -251,8 +243,7 @@ describe('searchRepository', () => {
           'The method should have performed a post using the client',
         );
 
-        const requestBody =
-          client.post.mock.calls[client.post.mock.calls.length - 1][1];
+        const requestBody = lastCall(client.post)[1];
 
         expect(requestBody.size).toBe(
           5,

@@ -1,4 +1,5 @@
 const { offenderRepository } = require('../offender');
+const { lastCall } = require('../../../test/test-helpers');
 
 describe('offenderRepository', () => {
   describe('getOffenderDetailsFor', () => {
@@ -28,9 +29,9 @@ describe('offenderRepository', () => {
       const repository = offenderRepository(client);
       const result = await repository.getOffenderDetailsFor(offenderNumber);
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain(`/offenderNo/${offenderNumber.toUpperCase()}`);
+      expect(lastCall(client.get)[0]).toContain(
+        `/offenderNo/${offenderNumber.toUpperCase()}`,
+      );
       expect(result).toBe('SOME_RESULT');
     });
     it('calls the offender endpoint for a given ID', async () => {
@@ -41,9 +42,9 @@ describe('offenderRepository', () => {
       const repository = offenderRepository(client);
       const result = await repository.getOffenderDetailsFor(offenderNumber);
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain(`/offenderNo/${offenderNumber}`);
+      expect(lastCall(client.get)[0]).toContain(
+        `/offenderNo/${offenderNumber}`,
+      );
       expect(result).toBe('SOME_RESULT');
     });
   });
@@ -56,9 +57,7 @@ describe('offenderRepository', () => {
       const repository = offenderRepository(client);
       const result = await repository.getIncentivesSummaryFor('FOO_ID');
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain('/FOO_ID/iepSummary');
+      expect(lastCall(client.get)[0]).toContain('/FOO_ID/iepSummary');
       expect(result).toBe('SOME_RESULT');
     });
   });
@@ -71,9 +70,7 @@ describe('offenderRepository', () => {
       const repository = offenderRepository(client);
       const result = await repository.getBalancesFor('FOO_ID');
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain('/FOO_ID/balances');
+      expect(lastCall(client.get)[0]).toContain('/FOO_ID/balances');
       expect(result).toBe('SOME_RESULT');
     });
   });
@@ -86,9 +83,7 @@ describe('offenderRepository', () => {
       const repository = offenderRepository(client);
       const result = await repository.getKeyWorkerFor('FOO_ID');
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain('/FOO_ID/key-worker');
+      expect(lastCall(client.get)[0]).toContain('/FOO_ID/key-worker');
       expect(result).toBe('SOME_RESULT');
     });
   });
@@ -101,9 +96,7 @@ describe('offenderRepository', () => {
       const repository = offenderRepository(client);
       const result = await repository.getNextVisitFor('FOO_ID');
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain('/FOO_ID/visits/next');
+      expect(lastCall(client.get)[0]).toContain('/FOO_ID/visits/next');
       expect(result).toBe('SOME_RESULT');
     });
   });
@@ -116,9 +109,7 @@ describe('offenderRepository', () => {
       const repository = offenderRepository(client);
       const result = await repository.getLastVisitFor('FOO_ID');
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain('/FOO_ID/visits/last');
+      expect(lastCall(client.get)[0]).toContain('/FOO_ID/visits/last');
       expect(result).toBe('SOME_RESULT');
     });
   });
@@ -131,9 +122,7 @@ describe('offenderRepository', () => {
       const repository = offenderRepository(client);
       const result = await repository.sentenceDetailsFor('FOO_ID');
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain('/FOO_ID/sentenceDetail');
+      expect(lastCall(client.get)[0]).toContain('/FOO_ID/sentenceDetail');
       expect(result).toBe('SOME_RESULT');
     });
   });
@@ -146,9 +135,7 @@ describe('offenderRepository', () => {
       const repository = offenderRepository(client);
       const result = await repository.getEventsForToday('FOO_ID');
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain('/FOO_ID/events/today');
+      expect(lastCall(client.get)[0]).toContain('/FOO_ID/events/today');
       expect(result).toBe('SOME_RESULT');
     });
   });
@@ -165,9 +152,7 @@ describe('offenderRepository', () => {
         '2019-04-07',
       );
 
-      expect(
-        client.get.mock.calls[client.get.mock.calls.length - 1][0],
-      ).toContain('/FOO_ID/events');
+      expect(lastCall(client.get)[0]).toContain('/FOO_ID/events');
       expect(result).toBe('SOME_RESULT');
     });
   });

@@ -1,4 +1,5 @@
 const { InMemoryCachingStrategy, RedisCachingStrategy } = require('../caching');
+const { lastCall } = require('../../../test/test-helpers');
 
 const TEST_KEY = 'bar';
 const TEST_VALUE = 'foo';
@@ -47,25 +48,13 @@ describe('RedisCachingStrategy', () => {
     const strategy = new RedisCachingStrategy(TEST_SECRET, mockRedis);
 
     await strategy.set(TEST_KEY, TEST_VALUE, TEST_EXPIRY);
-    expect(hasCalledSet.mock.calls[hasCalledSet.mock.calls.length - 1][0]).toBe(
-      TEST_KEY,
-    );
-    expect(
-      strategy.decrypt(
-        hasCalledSet.mock.calls[hasCalledSet.mock.calls.length - 1][1],
-      ),
-    ).toBe(TEST_VALUE);
-    expect(hasCalledSet.mock.calls[hasCalledSet.mock.calls.length - 1][2]).toBe(
-      'EX',
-    );
-    expect(hasCalledSet.mock.calls[hasCalledSet.mock.calls.length - 1][3]).toBe(
-      TEST_EXPIRY,
-    );
+    expect(lastCall(hasCalledSet)[0]).toBe(TEST_KEY);
+    expect(strategy.decrypt(lastCall(hasCalledSet)[1])).toBe(TEST_VALUE);
+    expect(lastCall(hasCalledSet)[2]).toBe('EX');
+    expect(lastCall(hasCalledSet)[3]).toBe(TEST_EXPIRY);
 
     const token = await strategy.get(TEST_KEY);
-    expect(hasCalledGet.mock.calls[hasCalledGet.mock.calls.length - 1][0]).toBe(
-      TEST_KEY,
-    );
+    expect(lastCall(hasCalledGet)[0]).toBe(TEST_KEY);
     expect(token).toBe(TEST_VALUE);
   });
 
@@ -85,26 +74,14 @@ describe('RedisCachingStrategy', () => {
     const strategy = new RedisCachingStrategy(TEST_SECRET, mockRedis);
 
     await strategy.set(TEST_KEY, TEST_VALUE, TEST_EXPIRY);
-    expect(hasCalledSet.mock.calls[hasCalledSet.mock.calls.length - 1][0]).toBe(
-      TEST_KEY,
-    );
-    expect(
-      strategy.decrypt(
-        hasCalledSet.mock.calls[hasCalledSet.mock.calls.length - 1][1],
-      ),
-    ).toBe(TEST_VALUE);
-    expect(hasCalledSet.mock.calls[hasCalledSet.mock.calls.length - 1][2]).toBe(
-      'EX',
-    );
-    expect(hasCalledSet.mock.calls[hasCalledSet.mock.calls.length - 1][3]).toBe(
-      TEST_EXPIRY,
-    );
+    expect(lastCall(hasCalledSet)[0]).toBe(TEST_KEY);
+    expect(strategy.decrypt(lastCall(hasCalledSet)[1])).toBe(TEST_VALUE);
+    expect(lastCall(hasCalledSet)[2]).toBe('EX');
+    expect(lastCall(hasCalledSet)[3]).toBe(TEST_EXPIRY);
 
     const token = await strategy.get(TEST_KEY);
-    expect(hasCalledGet.mock.calls[hasCalledGet.mock.calls.length - 1][0]).toBe(
-      TEST_KEY,
-    );
-    expect(token).toBe(null);
+    expect(lastCall(hasCalledGet)[0]).toBe(TEST_KEY);
+    expect(token).toBeNull();
   });
 
   it('should throw when not provided the correct parameters', async () => {
@@ -168,7 +145,7 @@ describe('InMemoryCachingStrategy', () => {
     expect(baz.expires).toBeDefined();
 
     const value = await strategy.get('baz');
-    expect(value).toBe(null);
+    expect(value).toBeNull();
   });
 
   it('should throw when not provided the correct parameters', async () => {

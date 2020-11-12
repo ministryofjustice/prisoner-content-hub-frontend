@@ -55,10 +55,21 @@ const createClient = () => ({
   post: jest.fn(),
 });
 
+const lastCall = mockFn => {
+  return mockFn.mock.calls[mockFn.mock.calls.length - 1];
+};
+
+const lastArg = mockFn => {
+  const lastCallResult = lastCall(mockFn);
+  return lastCallResult[lastCallResult.length - 1];
+};
+
 module.exports = {
   setupBasicApp,
   logger,
   createFeaturedItem,
   consoleLogError,
   createClient,
+  lastCall,
+  lastArg,
 };
