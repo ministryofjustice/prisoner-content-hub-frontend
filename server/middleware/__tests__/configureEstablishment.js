@@ -25,9 +25,6 @@ describe('configureEstablishment', () => {
       'establishmentDisplayName',
       `HMP ${defaultPrison.slice(0, 1).toUpperCase() + defaultPrison.slice(1)}`,
     );
-    expect(next.mock.calls.length).toBeGreaterThan(
-      0,
-      'next should have been called',
-    );
+    expect(next).toHaveBeenCalled();
   });
 });
