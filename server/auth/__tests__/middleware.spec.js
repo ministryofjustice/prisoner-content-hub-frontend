@@ -86,7 +86,7 @@ describe('AuthMiddleware', () => {
       });
 
       it('should pass the error to next if passport.authenticate() returns an error', async () => {
-        const authenticate = jest.fn().mockResolvedValue(TEST_CALLBACK_ERROR);
+        const authenticate = jest.fn().mockRejectedValue(TEST_CALLBACK_ERROR);
 
         const signInCallback = createSignInCallbackMiddleware({
           offenderService,
