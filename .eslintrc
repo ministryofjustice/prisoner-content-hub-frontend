@@ -23,10 +23,5 @@
     "browser": true,
     "node": true,
     "jest": true
-  },
-  "globals": {
-    "expect":true,
-    "sinon": true,
-    "nock": true
   }
 }
