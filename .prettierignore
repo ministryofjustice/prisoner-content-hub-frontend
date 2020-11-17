@@ -14,4 +14,3 @@ build-info.json
 .circleci
 .github
 helm_deploy
-.mocharc.yml

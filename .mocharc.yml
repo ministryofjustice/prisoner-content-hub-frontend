@@ -1,6 +1,0 @@
-require: './test/.setup.js'
-recursive: true
-reporter: 'spec'
-color: 'true'
-bail: 'true'
-timeout: 25000

@@ -7,16 +7,21 @@
   "rules": {
     "no-use-before-define": "off"
   },
-      "overrides": [
-        {
-          "files": [
-            "*.test.js",
-            "*.spec.js"
-          ],
-          "rules": {
-            "no-unused-expressions": "off",
-            "no-new": "off"
-          }
-        }
-      ]
+  "overrides": [
+    {
+      "files": [
+        "*.test.js",
+        "*.spec.js"
+      ],
+      "rules": {
+        "no-unused-expressions": "off",
+        "no-new": "off"
+      }
+    }
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true
+  }
 }
