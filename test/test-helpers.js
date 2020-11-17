@@ -59,7 +59,7 @@ const lastCall = mockFn => {
   return mockFn.mock.calls[mockFn.mock.calls.length - 1];
 };
 
-const lastArg = mockFn => {
+const lastCallLastArg = mockFn => {
   const lastCallResult = lastCall(mockFn);
   return lastCallResult[lastCallResult.length - 1];
 };
@@ -71,5 +71,5 @@ module.exports = {
   consoleLogError,
   createClient,
   lastCall,
-  lastArg,
+  lastCallLastArg,
 };

@@ -1,5 +1,5 @@
 const { createHubContentService } = require('../hubContent');
-const { lastCall, lastArg } = require('../../../test/test-helpers');
+const { lastCall, lastCallLastArg } = require('../../../test/test-helpers');
 
 describe('#hubContentService', () => {
   describe('content', () => {
@@ -183,7 +183,7 @@ describe('#hubContentService', () => {
 
       await service.contentFor(content.id, establishmentId);
 
-      expect(lastArg(contentRepository.contentFor)).toBe(
+      expect(lastCallLastArg(contentRepository.contentFor)).toBe(
         'featuredContentId',
         `the featuredContentId was supposed to be ${content.featuredContentId}`,
       );
@@ -202,7 +202,7 @@ describe('#hubContentService', () => {
       await service.contentFor(content.id, establishmentId);
 
       expect(
-        lastArg(categoryFeaturedContentRepository.contentFor),
+        lastCallLastArg(categoryFeaturedContentRepository.contentFor),
       ).toStrictEqual(
         {
           categoryId: 'categoryId',
@@ -229,7 +229,7 @@ describe('#hubContentService', () => {
 
       await service.contentFor(content.id, establishmentId);
 
-      expect(lastArg(menuRepository.categoryMenu)).toStrictEqual(
+      expect(lastCallLastArg(menuRepository.categoryMenu)).toStrictEqual(
         expectedResult,
         `the call arguments were supposed to be "${JSON.stringify(
           expectedResult,
