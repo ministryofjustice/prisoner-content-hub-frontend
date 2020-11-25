@@ -17,8 +17,14 @@ function hubMenuRepository(httpClient, jsonClient) {
     return -1;
   };
 
-  async function tagsMenu() {
-    const response = await httpClient.get(config.api.tags);
+  async function tagsMenu(prisonId) {
+    const query = {
+      _prison: prisonId,
+    };
+    const response = await httpClient.get(config.api.tags, { query });
+
+    if (response === null) return [];
+
     return parseTagsResponse(response);
   }
 
@@ -28,7 +34,7 @@ function hubMenuRepository(httpClient, jsonClient) {
   }
 
   async function allTopics(prisonId) {
-    const tags = await tagsMenu();
+    const tags = await tagsMenu(prisonId);
     const primary = await primaryMenu(prisonId);
 
     return tags.concat(primary).sort(sortAlphabetically);
