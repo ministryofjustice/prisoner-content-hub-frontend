@@ -37,17 +37,23 @@ const hubContentRepository = httpClient => {
 
   async function termFor(id, establishmentId) {
     const endpoint = `${config.api.hubTerm}/${id}`;
+
     if (!id) {
       logger.error(`HubContentRepository (termFor) - No ID passed`);
       return null;
     }
-    const response = await httpClient.get(endpoint, {
+
+    const query = {
       _prison: establishmentId,
-    });
+    };
+
+    const response = await httpClient.get(endpoint, { query });
+
     if (isEmptyResponse(response)) {
       logger.error(`HubContentRepository (termFor) - Empty response`);
       return null;
     }
+
     return termResponseFrom(response);
   }
 
