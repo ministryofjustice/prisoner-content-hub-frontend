@@ -20,7 +20,9 @@ const getTimetableEventTime = (startTime, endTime) => {
 
 class TimetableEvent {
   constructor(options = {}) {
-    this.description = options.description;
+    this.description =
+      (options.eventSubType === 'PA' && options.eventSourceDesc) ||
+      options.eventSubTypeDesc;
     this.startTime = options.startTime;
     this.endTime = options.endTime;
     this.location = options.location;
@@ -46,10 +48,6 @@ class TimetableEvent {
     };
   }
 
-  static filterByType(...types) {
-    return timetableEvent => types.includes(timetableEvent.eventType);
-  }
-
   static from(response = {}) {
     const {
       startTime,
@@ -57,16 +55,20 @@ class TimetableEvent {
       eventSourceDesc,
       eventLocation,
       eventType,
+      eventSubType,
+      eventSubTypeDesc,
       eventStatus,
       paid,
     } = response;
 
     return new TimetableEvent({
-      description: eventSourceDesc,
+      eventSourceDesc,
       startTime,
       endTime,
       location: eventLocation,
       eventType,
+      eventSubType,
+      eventSubTypeDesc,
       status: eventStatus,
       paid,
     });
