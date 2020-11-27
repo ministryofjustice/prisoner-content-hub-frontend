@@ -12,6 +12,8 @@ describe('TimetableEvent', () => {
     expect(timetableEvent.endTime).not.toBeDefined();
     expect(timetableEvent.location).not.toBeDefined();
     expect(timetableEvent.eventType).not.toBeDefined();
+    expect(timetableEvent.eventSubType).not.toBeDefined();
+    expect(timetableEvent.eventSubTypeDesc).not.toBeDefined();
     expect(timetableEvent.finished).not.toBeDefined();
     expect(timetableEvent.status).not.toBeDefined();
     expect(timetableEvent.paid).not.toBeDefined();
@@ -35,6 +37,8 @@ describe('TimetableEvent', () => {
       eventSourceDesc: 'A test event',
       eventLocation: 'A Wing',
       eventType: 'TEST',
+      eventSubType: 'SBTYPE',
+      eventSubTypeDesc: 'Test Sub Type Desc',
       eventStatus: 'SCH',
       paid: true,
     };
@@ -48,7 +52,7 @@ describe('TimetableEvent', () => {
         endTime: '',
         location: 'A wing',
         timeString: '11:30AM',
-        eventType: 'TEST',
+        eventType: 'Test Sub Type Desc',
         finished: false,
         status: 'SCH',
         paid: true,
@@ -57,13 +61,15 @@ describe('TimetableEvent', () => {
     );
   });
 
-  it('should format data when passed', () => {
+  it('should format data when passed for a non-PA eventSubType', () => {
     const response = {
       startTime: '2020-08-24T11:30:30',
       endTime: '2020-08-24T12:30:30',
       eventSourceDesc: 'A test event',
       eventLocation: 'A Wing',
       eventType: 'TEST',
+      eventSubType: 'SBTYPE',
+      eventSubTypeDesc: 'Test Sub Type Desc',
       eventStatus: 'SCH',
       paid: true,
     };
@@ -76,33 +82,37 @@ describe('TimetableEvent', () => {
       endTime: '12:30PM',
       location: 'A wing',
       timeString: '11:30AM to 12:30PM',
-      eventType: 'TEST',
+      eventType: 'Test Sub Type Desc',
       finished: false,
       status: 'SCH',
       paid: true,
     });
   });
 
-  describe('filterByType', () => {
-    it('should filter by a single type', () => {
-      const filter = TimetableEvent.filterByType('FOO');
+  it('should format data when passed for a PA eventSubType', () => {
+    const response = {
+      startTime: '2020-08-24T11:30:30',
+      endTime: '2020-08-24T12:30:30',
+      eventSourceDesc: 'A test event',
+      eventLocation: 'A Wing',
+      eventSubType: 'PA',
+      eventSubTypeDesc: 'Test Sub Type Desc',
+      eventStatus: 'SCH',
+      paid: true,
+    };
 
-      const ofType = new TimetableEvent({ eventType: 'FOO' });
-      const notOfType = new TimetableEvent({ eventType: 'BAR' });
+    const formatted = TimetableEvent.from(response).format();
 
-      expect(filter(ofType)).toBe(true);
-      expect(filter(notOfType)).toBe(false);
-    });
-    it('should filter by multiple types', () => {
-      const filter = TimetableEvent.filterByType('FOO', 'BAR');
-
-      const ofType = new TimetableEvent({ eventType: 'FOO' });
-      const ofAnotherType = new TimetableEvent({ eventType: 'BAR' });
-      const notOfType = new TimetableEvent({ eventType: 'BAZ' });
-
-      expect(filter(ofType)).toBe(true);
-      expect(filter(ofAnotherType)).toBe(true);
-      expect(filter(notOfType)).toBe(false);
+    expect(formatted).toStrictEqual({
+      description: 'A test event',
+      startTime: '11:30AM',
+      endTime: '12:30PM',
+      location: 'A wing',
+      timeString: '11:30AM to 12:30PM',
+      eventType: 'A test event',
+      finished: false,
+      status: 'SCH',
+      paid: true,
     });
   });
 });

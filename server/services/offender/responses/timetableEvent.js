@@ -24,7 +24,9 @@ class TimetableEvent {
     this.startTime = options.startTime;
     this.endTime = options.endTime;
     this.location = options.location;
-    this.eventType = options.eventType;
+    this.eventType =
+      (options.eventSubType === 'PA' && options.description) ||
+      options.eventSubTypeDesc;
     this.status = options.status;
     this.paid = options.paid;
   }
@@ -46,17 +48,14 @@ class TimetableEvent {
     };
   }
 
-  static filterByType(...types) {
-    return timetableEvent => types.includes(timetableEvent.eventType);
-  }
-
   static from(response = {}) {
     const {
       startTime,
       endTime,
       eventSourceDesc,
       eventLocation,
-      eventType,
+      eventSubTypeDesc,
+      eventSubType,
       eventStatus,
       paid,
     } = response;
@@ -66,7 +65,8 @@ class TimetableEvent {
       startTime,
       endTime,
       location: eventLocation,
-      eventType,
+      eventSubType,
+      eventSubTypeDesc,
       status: eventStatus,
       paid,
     });
