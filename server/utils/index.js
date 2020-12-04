@@ -1,4 +1,4 @@
-const { path, pathOr, isNil, isEmpty } = require('ramda');
+const { isNil, isEmpty } = require('ramda');
 const defaultConfig = require('../config');
 
 const isEmptyResponse = val => isEmpty(val) || isNil(val);
@@ -14,31 +14,31 @@ function getEstablishmentId(name, config = defaultConfig) {
 }
 
 function getEstablishmentName(id, config = defaultConfig) {
-  return path(['establishments', id, 'name'], config);
+  return config?.establishments?.[id]?.name;
 }
 
 function getEstablishmentPrefix(id, config = defaultConfig) {
-  return pathOr('HMP', ['establishments', id, 'prefix'], config);
+  return config?.establishments?.[id]?.prefix || 'HMP';
 }
 
 function getEstablishmentFormattedName(id, config = defaultConfig) {
-  return path(['establishments', id, 'formattedName'], config);
+  return config?.establishments?.[id]?.formattedName;
 }
 
 function getEstablishmentUiId(id, config = defaultConfig) {
-  return path(['establishments', id, 'uuId'], config);
+  return config?.establishments?.[id]?.uuId;
 }
 
 function getEstablishmentHomepageLinks(id, config = defaultConfig) {
-  return path(['establishments', id, 'homePageLinks'], config);
+  return config?.establishments?.[id]?.homePageLinks;
 }
 
 function getEstablishmentHomepageLinksTitle(id, config = defaultConfig) {
-  return path(['establishments', id, 'homePageLinksTitle'], config);
+  return config?.establishments?.[id]?.homePageLinksTitle;
 }
 
 function getEstablishmentPersonalisation(id, config = defaultConfig) {
-  return path(['establishments', id, 'personalInformation'], config);
+  return config?.establishments?.[id]?.personalInformation;
 }
 
 const capitalize = (str = '') => {

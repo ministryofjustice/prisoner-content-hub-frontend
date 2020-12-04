@@ -1,5 +1,4 @@
 const express = require('express');
-const { path } = require('ramda');
 
 const fixUrls = element => {
   const { id, description, href, linkText } = element;
@@ -18,7 +17,7 @@ const createTopicsRouter = ({ hubMenuService }) => {
   router.get('/', async (req, res, next) => {
     try {
       const userName = req.user && req.user.getFullName();
-      const establishmentId = path(['session', 'establishmentId'], req);
+      const establishmentId = req?.session?.establishmentId;
       const topics = await hubMenuService.allTopics(establishmentId);
 
       const config = {

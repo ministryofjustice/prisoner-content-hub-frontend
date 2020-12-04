@@ -1,4 +1,3 @@
-const { path } = require('ramda');
 const express = require('express');
 
 const createMoneyRouter = ({ hubContentService, offenderService }) => {
@@ -7,7 +6,7 @@ const createMoneyRouter = ({ hubContentService, offenderService }) => {
   router.get('/', async (req, res, next) => {
     try {
       const id = 4201;
-      const establishmentId = path(['session', 'establishmentId'], req);
+      const establishmentId = req?.session?.establishmentId;
 
       const data = await hubContentService.contentFor(id, establishmentId);
 

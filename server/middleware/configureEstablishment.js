@@ -1,5 +1,4 @@
 const { v4: uuid } = require('uuid');
-const { pathOr } = require('ramda');
 const {
   getEstablishmentId,
   getEstablishmentFormattedName,
@@ -15,7 +14,7 @@ const configureEstablishment = () => (req, res, next) => {
       req.session.establishmentPersonalisationEnabled === undefined)
   ) {
     const replaceUrl = /-prisoner-content-hub.*$/g;
-    const establishmentName = pathOr('wayland', ['headers', 'host'], req)
+    const establishmentName = (req?.headers?.host || 'wayland')
       .split('.')[0]
       .replace(replaceUrl, '');
 

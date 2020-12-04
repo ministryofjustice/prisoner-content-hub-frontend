@@ -1,4 +1,3 @@
-const { path } = require('ramda');
 const config = require('../config');
 const {
   tagIdFrom,
@@ -58,7 +57,7 @@ function hubMenuRepository(httpClient, jsonClient) {
     const items = Object.keys(data.data)
       .filter(key => {
         const { relationships } = data.data[key];
-        const prisons = path(['field_moj_prisons', 'data'], relationships);
+        const prisons = relationships?.field_moj_prisons?.data;
         const matchingPrison = prisons.some(
           prison => prison.id === getEstablishmentUiId(prisonId),
         );
@@ -71,7 +70,7 @@ function hubMenuRepository(httpClient, jsonClient) {
         return {
           id: attributes.drupal_internal__nid,
           linkText: attributes.title,
-          description: path(['field_moj_description', 'processed'], attributes),
+          description: attributes?.field_moj_description?.processed,
           href: `/content/${attributes.drupal_internal__nid}`,
         };
       });

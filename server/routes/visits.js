@@ -1,4 +1,3 @@
-const { path } = require('ramda');
 const express = require('express');
 
 const createVisitsRouter = ({ hubContentService, offenderService }) => {
@@ -7,7 +6,7 @@ const createVisitsRouter = ({ hubContentService, offenderService }) => {
   router.get('/', async (req, res, next) => {
     try {
       const id = 4203;
-      const establishmentId = path(['session', 'establishmentId'], req);
+      const establishmentId = req?.session?.establishmentId;
 
       const data = await hubContentService.contentFor(id, establishmentId);
 

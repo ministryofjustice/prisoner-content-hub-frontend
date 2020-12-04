@@ -1,24 +1,23 @@
-const { path } = require('ramda');
 const express = require('express');
 
 const createFeedbackRouter = ({ feedbackService }) => {
   const router = express.Router();
 
   router.post('/:feedbackId', (req, res) => {
-    const sessionId = path(['session', 'id'], req);
+    const sessionId = req?.session?.id;
 
     feedbackService.sendFeedback({
-      title: path(['body', 'title'], req),
-      url: path(['body', 'url'], req),
-      contentType: path(['body', 'contentType'], req),
-      feedbackId: path(['params', 'feedbackId'], req),
-      series: path(['body', 'series'], req),
-      categories: path(['body', 'categories'], req),
-      secondaryTags: path(['body', 'secondaryTags'], req),
-      sentiment: path(['body', 'sentiment'], req),
-      comment: path(['body', 'comment'], req),
+      title: req?.body?.title,
+      url: req?.body?.url,
+      contentType: req?.body?.contentType,
+      feedbackId: req?.params?.feedbackId,
+      series: req?.body?.series,
+      categories: req?.body?.categories,
+      secondaryTags: req?.body?.secondaryTags,
+      sentiment: req?.body?.sentiment,
+      comment: req?.body?.comment,
       date: new Date().toISOString(),
-      establishment: path(['session', 'establishmentName'], req).toUpperCase(),
+      establishment: req?.session?.establishmentName.toUpperCase(),
       sessionId,
     });
 
