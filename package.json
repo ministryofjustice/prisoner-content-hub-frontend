@@ -89,7 +89,7 @@
     "eslint-plugin-cypress": "^2.11.1",
     "eslint-plugin-import": "^2.22.0",
     "from-html": "^0.3.3",
-    "husky": "^4.3.0",
+    "husky": "^4.3.5",
     "is-ci": "^2.0.0",
     "jest": "^26.6.3",
     "jsdom": "^16.4.0",
