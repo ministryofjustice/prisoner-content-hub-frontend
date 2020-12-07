@@ -1,5 +1,4 @@
 const redis = require('redis');
-const { path } = require('ramda');
 const { createApp } = require('./app');
 const { logger, requestLogger } = require('./utils/logger');
 const config = require('./config');
@@ -41,7 +40,7 @@ const { feedbackRepository } = require('./repositories/feedback');
 const hubClient = new HubClient();
 const standardClient = new StandardClient();
 
-const cachingStrategy = path(['features', 'useRedisCache'], config)
+const cachingStrategy = config?.features?.useRedisCache
   ? new RedisCachingStrategy(
       config.caching.secret,
       redis.createClient(config.caching.redis),

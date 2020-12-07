@@ -126,11 +126,11 @@ function mediaResponseFrom(data) {
     title: data.title,
     contentType: typeFrom(data.content_type),
     description: {
-      raw: R.path(['description', 'value'], data),
-      sanitized: R.path(['description', 'processed'], data),
-      summary: R.path(['description', 'summary'], data),
+      raw: data?.description?.value,
+      sanitized: data?.description?.processed,
+      summary: data?.description?.summary,
     },
-    media: R.path(['media', 'url'], data),
+    media: data?.media?.url,
     image: imageOrDefaultFor(data.image),
     episode: data.episode,
     season: data.season,
@@ -150,9 +150,9 @@ function flatPageContentFrom(data) {
     title: data.title,
     contentType: typeFrom(data.content_type),
     description: {
-      raw: R.path(['description', 'value'], data),
-      sanitized: R.path(['description', 'processed'], data),
-      summary: R.path(['description', 'summary'], data),
+      raw: data?.description?.value,
+      sanitized: data?.description?.processed,
+      summary: data?.description?.summary,
     },
     standFirst: data.stand_first,
     image: imageOrDefaultFor(data.image),
@@ -171,16 +171,16 @@ function termResponseFrom(data) {
     contentType: data.content_type,
     name: data.title,
     description: {
-      raw: R.path(['description', 'value'], data),
-      sanitized: R.path(['description', 'sanitized'], data),
+      raw: data?.description?.value,
+      sanitized: data?.description?.sanitized,
       summary: data.summary,
     },
     image: imageFor(data.image),
     video: {
-      url: R.path(['video', 'url'], data),
+      url: data?.video?.url,
     },
     audio: {
-      url: R.path(['audio', 'url'], data),
+      url: data?.audio?.url,
       programmeCode: data.programme_code,
     },
   };
@@ -193,9 +193,9 @@ function landingResponseFrom(data) {
     contentType: typeFrom(data.content_type),
     featuredContentId: data.featured_content_id,
     description: {
-      raw: R.path(['description', 'value'], data),
-      sanitized: R.path(['description', 'processed'], data),
-      summary: R.path(['description', 'summary'], data),
+      raw: data?.description?.value,
+      sanitized: data?.description?.processed,
+      summary: data?.description?.summary,
     },
     image: imageFor(data.image),
     categoryId: data.category_id,
@@ -207,7 +207,7 @@ function pdfResponseFrom(data) {
     id: data.id,
     title: data.title,
     contentType: typeFrom(data.content_type),
-    url: R.path(['media', 'url'], data),
+    url: data?.media?.url,
     contentUrl: `/content/${data.id}`,
   };
 }

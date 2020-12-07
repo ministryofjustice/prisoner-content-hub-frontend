@@ -1,5 +1,4 @@
 const qs = require('querystring');
-const { path } = require('ramda');
 const { baseClient } = require('./baseClient');
 const { logger } = require('../utils/logger');
 
@@ -42,7 +41,7 @@ class StandardClient {
     const headers = {
       'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
     };
-    const userAgent = path(['userAgent'], data);
+    const userAgent = data?.userAgent;
 
     if (userAgent) {
       headers['User-Agent'] = userAgent;

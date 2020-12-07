@@ -1,4 +1,4 @@
-const { prop, path, propOr } = require('ramda');
+const { prop, propOr } = require('ramda');
 const express = require('express');
 
 const createContentRouter = ({ hubContentService, analyticsService }) => {
@@ -21,13 +21,13 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
       returnUrl: req.originalUrl,
     };
 
-    const establishmentId = path(['session', 'establishmentId'], req);
-    const userAgent = path(['headers', 'user-agent'], req);
+    const establishmentId = req?.session?.establishmentId;
+    const userAgent = req?.headers?.['user-agent'];
 
     try {
       const data = await hubContentService.contentFor(id, establishmentId);
       const contentType = prop('contentType', data);
-      const sessionId = path(['session', 'id'], req);
+      const sessionId = req?.session?.id;
       const getCategoriesFrom = propOr([], 'categories');
       const getSecondaryTagsFrom = propOr([], 'secondaryTags');
 

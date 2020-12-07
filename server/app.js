@@ -10,7 +10,6 @@ const session = require('cookie-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
-const { pathOr } = require('ramda');
 const config = require('./config');
 
 const { createIndexRouter } = require('./routes/index');
@@ -131,11 +130,9 @@ const createApp = ({
         {
           clientID: config.auth.clientId,
           clientSecret: config.auth.clientSecret,
-          callbackURL: `https://${pathOr(
-            'localhost',
-            ['headers', 'host'],
-            req,
-          )}${config.auth.callbackPath}`,
+          callbackURL: `https://${req?.headers?.host || 'localhost'}${
+            config.auth.callbackPath
+          }`,
         },
         (accessToken, refreshToken, params, profile, done) =>
           done(null, User.from(params.id_token)),

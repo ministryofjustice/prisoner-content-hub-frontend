@@ -1,4 +1,3 @@
-const { pathOr } = require('ramda');
 const esb = require('elastic-builder');
 const config = require('../config');
 const { searchResultFrom } = require('../utils/adapters');
@@ -48,7 +47,7 @@ function searchRepository(httpClient) {
       esbRequest,
     );
 
-    const results = pathOr([], ['hits', 'hits'], response);
+    const results = response?.hits?.hits || [];
     return results.map(searchResultFrom);
   }
 
@@ -122,7 +121,7 @@ function searchRepository(httpClient) {
       esbRequest,
     );
 
-    const results = pathOr([], ['hits', 'hits'], response);
+    const results = response?.hits?.hits || [];
     return results.map(searchResultFrom);
   }
 

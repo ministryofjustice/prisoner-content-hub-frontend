@@ -1,5 +1,4 @@
 const express = require('express');
-const { path } = require('ramda');
 
 const createTagRouter = ({ hubTagsService }) => {
   const router = express.Router();
@@ -12,7 +11,7 @@ const createTagRouter = ({ hubTagsService }) => {
       }
 
       const userName = req.user && req.user.getFullName();
-      const establishmentId = path(['session', 'establishmentId'], req);
+      const establishmentId = req?.session?.establishmentId;
       const config = {
         content: true,
         header: false,
@@ -48,8 +47,8 @@ const createTagRouter = ({ hubTagsService }) => {
     }
 
     try {
-      const establishmentId = path(['session', 'establishmentId'], req);
-      const contentType = path(['query', 'contentType'], req);
+      const establishmentId = req?.session?.establishmentId;
+      const contentType = req?.query?.contentType;
 
       const method =
         contentType === 'series' ? 'relatedSeriesFor' : 'relatedContentFor';

@@ -1,38 +1,37 @@
-const { path } = require('ramda');
 const express = require('express');
 
 const createAnalyticsRouter = ({ analyticsService }) => {
   const router = express.Router();
 
   router.post('/event', (req, res) => {
-    const sessionId = path(['session', 'id'], req);
+    const sessionId = req?.session?.id;
 
     analyticsService.sendEvent({
-      category: path(['body', 'category'], req),
-      action: path(['body', 'action'], req),
-      label: path(['body', 'label'], req),
-      value: path(['body', 'value'], req),
+      category: req?.body?.category,
+      action: req?.body?.action,
+      label: req?.body?.label,
+      value: req?.body?.value,
       sessionId,
-      userAgent: path(['body', 'userAgent'], req),
+      userAgent: req?.body?.userAgent,
     });
 
     return res.send('OK');
   });
 
   router.post('/page', (req, res) => {
-    const sessionId = path(['session', 'id'], req);
+    const sessionId = req?.session?.id;
 
     analyticsService.sendPageTrack({
-      hostname: path(['body', 'hostname'], req),
-      page: path(['body', 'page'], req),
-      title: path(['body', 'title'], req),
+      hostname: req?.body?.hostname,
+      page: req?.body?.page,
+      title: req?.body?.title,
       sessionId,
-      userAgent: path(['body', 'userAgent'], req),
-      screen: path(['body', 'screen'], req),
-      viewport: path(['body', 'viewport'], req),
-      secondaryTags: path(['body', 'secondaryTags'], req),
-      categories: path(['body', 'categories'], req),
-      series: path(['body', 'series'], req),
+      userAgent: req?.body?.userAgent,
+      screen: req?.body?.screen,
+      viewport: req?.body?.viewport,
+      secondaryTags: req?.body?.secondaryTags,
+      categories: req?.body?.categories,
+      series: req?.body?.series,
     });
 
     return res.send('OK');

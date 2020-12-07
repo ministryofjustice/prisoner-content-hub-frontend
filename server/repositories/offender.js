@@ -1,4 +1,3 @@
-const { path } = require('ramda');
 const config = require('../config');
 
 function validateOffenderNumberFor(offenderNo) {
@@ -6,13 +5,13 @@ function validateOffenderNumberFor(offenderNo) {
   return pattern.test(offenderNo);
 }
 
-const getBookingsUrlFrom = path(['prisonApi', 'endpoints', 'bookings']);
-
 function offenderRepository(httpClient) {
   function getOffenderDetailsFor(offenderNo) {
     if (validateOffenderNumberFor(offenderNo)) {
       return httpClient.get(
-        `${getBookingsUrlFrom(config)}/offenderNo/${offenderNo.toUpperCase()}`,
+        `${
+          config?.prisonApi?.endpoints?.bookings
+        }/offenderNo/${offenderNo.toUpperCase()}`,
       );
     }
     throw new Error('Invalid offender number');
@@ -20,36 +19,36 @@ function offenderRepository(httpClient) {
 
   function getIncentivesSummaryFor(bookingId) {
     return httpClient.get(
-      `${getBookingsUrlFrom(config)}/${bookingId}/iepSummary`,
+      `${config?.prisonApi?.endpoints?.bookings}/${bookingId}/iepSummary`,
     );
   }
 
   function getBalancesFor(bookingId) {
     return httpClient.get(
-      `${getBookingsUrlFrom(config)}/${bookingId}/balances`,
+      `${config?.prisonApi?.endpoints?.bookings}/${bookingId}/balances`,
     );
   }
 
   function getKeyWorkerFor(offenderNo) {
     return httpClient.get(
-      `${getBookingsUrlFrom(config)}/offenderNo/${offenderNo}/key-worker`,
+      `${config?.prisonApi?.endpoints?.bookings}/offenderNo/${offenderNo}/key-worker`,
     );
   }
 
   function getNextVisitFor(bookingId) {
     return httpClient.get(
-      `${getBookingsUrlFrom(config)}/${bookingId}/visits/next`,
+      `${config?.prisonApi?.endpoints?.bookings}/${bookingId}/visits/next`,
     );
   }
 
   function getLastVisitFor(bookingId) {
     return httpClient.get(
-      `${getBookingsUrlFrom(config)}/${bookingId}/visits/last`,
+      `${config?.prisonApi?.endpoints?.bookings}/${bookingId}/visits/last`,
     );
   }
 
   function getVisitsFor(bookingId, startDate) {
-    const endpoint = `${getBookingsUrlFrom(config)}/${bookingId}/visits`;
+    const endpoint = `${config?.prisonApi?.endpoints?.bookings}/${bookingId}/visits`;
     const query = [`fromDate=${startDate}`, `toDate=${startDate}`];
 
     return httpClient.get(`${endpoint}?${query.join('&')}`);
@@ -57,18 +56,18 @@ function offenderRepository(httpClient) {
 
   function sentenceDetailsFor(bookingId) {
     return httpClient.get(
-      `${getBookingsUrlFrom(config)}/${bookingId}/sentenceDetail`,
+      `${config?.prisonApi?.endpoints?.bookings}/${bookingId}/sentenceDetail`,
     );
   }
 
   function getEventsForToday(bookingId) {
     return httpClient.get(
-      `${getBookingsUrlFrom(config)}/${bookingId}/events/today`,
+      `${config?.prisonApi?.endpoints?.bookings}/${bookingId}/events/today`,
     );
   }
 
   function getEventsFor(bookingId, startDate, endDate) {
-    const endpoint = `${getBookingsUrlFrom(config)}/${bookingId}/events`;
+    const endpoint = `${config?.prisonApi?.endpoints?.bookings}/${bookingId}/events`;
     const query = [`fromDate=${startDate}`, `toDate=${endDate}`];
 
     return httpClient.get(`${endpoint}?${query.join('&')}`);

@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-underscore-dangle
 const _passport = require('passport');
-const { path } = require('ramda');
 
 const createSignInMiddleware = (passport = _passport) => {
   return function signIn(req, res, next) {
@@ -34,8 +33,8 @@ const createSignInCallbackMiddleware = ({
   authenticate = _authenticate,
 }) => {
   return async function signInCallback(req, res, next) {
-    const sessionId = path(['session', 'id'], req);
-    const userAgent = path(['body', 'userAgent'], req);
+    const sessionId = req?.session?.id;
+    const userAgent = req?.body?.userAgent;
     try {
       const user = await authenticate(req, res, next);
 
@@ -92,8 +91,8 @@ const createSignOutMiddleware = ({ logger, analyticsService }) => {
       action: 'signout',
       label: 'success',
       value: 1,
-      sessionId: path(['session', 'id'], req),
-      userAgent: path(['body', 'userAgent'], req),
+      sessionId: req?.session?.id,
+      userAgent: req?.body?.userAgent,
     });
     res.redirect(req.query.returnUrl || '/');
   };
