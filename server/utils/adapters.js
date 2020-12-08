@@ -70,52 +70,46 @@ function featuredContentResponseFrom(response) {
 
 function featuredContentTileResponseFrom(response) {
   const [upperFeatured, lowerFeatured] = R.prop('large_tiles', response).map(
-    item => {
-      return {
-        id: item.id,
-        contentUrl: `/content/${item.id}`,
-        contentType: item.content_type,
-        isSeries: Array.isArray(item.series) && item.series.length > 0,
-        title: item.title,
-        summary: item.summary,
-        image: imageFor(item.image),
-      };
-    },
+    item => ({
+      id: item.id,
+      contentUrl: `/content/${item.id}`,
+      contentType: item.content_type,
+      isSeries: Array.isArray(item.series) && item.series.length > 0,
+      title: item.title,
+      summary: item.summary,
+      image: imageFor(item.image),
+    }),
   );
 
   return {
-    smallTiles: R.prop('small_tiles', response).map(item => {
-      return {
-        id: item.id,
-        contentUrl: `/content/${item.id}`,
-        contentType: item.content_type,
-        isSeries: Array.isArray(item.series) && item.series.length > 0,
-        title: item.title,
-        summary: item.summary,
-        image: imageFor(item.image),
-      };
-    }),
+    smallTiles: R.prop('small_tiles', response).map(item => ({
+      id: item.id,
+      contentUrl: `/content/${item.id}`,
+      contentType: item.content_type,
+      isSeries: Array.isArray(item.series) && item.series.length > 0,
+      title: item.title,
+      summary: item.summary,
+      image: imageFor(item.image),
+    })),
     upperFeatured,
     lowerFeatured,
   };
 }
 
 function contentResponseFrom(data = []) {
-  return data.map(item => {
-    return {
-      id: item.id,
-      title: item.title,
-      contentType: HUB_CONTENT_TYPES[item.content_type],
-      summary: item.summary,
-      image: imageFor(item.image),
-      contentUrl: `/content/${item.id}`,
-      categories: R.map(R.prop('target_id'), R.propOr([], 'categories', item)),
-      secondaryTags: R.map(
-        R.prop('target_id'),
-        R.propOr([], 'secondary_tags', item),
-      ),
-    };
-  });
+  return data.map(item => ({
+    id: item.id,
+    title: item.title,
+    contentType: HUB_CONTENT_TYPES[item.content_type],
+    summary: item.summary,
+    image: imageFor(item.image),
+    contentUrl: `/content/${item.id}`,
+    categories: R.map(R.prop('target_id'), R.propOr([], 'categories', item)),
+    secondaryTags: R.map(
+      R.prop('target_id'),
+      R.propOr([], 'secondary_tags', item),
+    ),
+  }));
 }
 
 function mediaResponseFrom(data) {

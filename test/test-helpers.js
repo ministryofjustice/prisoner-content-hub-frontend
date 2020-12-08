@@ -55,9 +55,7 @@ const createClient = () => ({
   post: jest.fn(),
 });
 
-const lastCall = mockFn => {
-  return mockFn.mock.calls[mockFn.mock.calls.length - 1];
-};
+const lastCall = mockFn => mockFn.mock.calls[mockFn.mock.calls.length - 1];
 
 const lastCallLastArg = mockFn => {
   const lastCallResult = lastCall(mockFn);
