@@ -8,7 +8,7 @@ default_machine: &default_machine
   working_directory: ~/workspace
 test_setup: &test_setup
   docker:
-    - image: circleci/node:12-browsers
+    - image: circleci/node:14-buster-browsers
   working_directory: ~/workspace
 main_branch: &main_branch
   filters:
