@@ -34,18 +34,17 @@ describe('GET /topics', () => {
       app.use(consoleLogError);
     });
 
-    it('has a search bar', () => {
-      return request(app)
+    it('has a search bar', () =>
+      request(app)
         .get('/')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
           expect($('#search-wrapper').length).toBe(1);
-        });
-    });
+        }));
 
-    it('renders a list of tags', () => {
-      return request(app)
+    it('renders a list of tags', () =>
+      request(app)
         .get('/')
         .expect(200)
         .then(response => {
@@ -63,7 +62,6 @@ describe('GET /topics', () => {
             '/content/foo',
             'The correct topic link should be rendered',
           );
-        });
-    });
+        }));
   });
 });
