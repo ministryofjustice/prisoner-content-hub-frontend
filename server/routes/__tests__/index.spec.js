@@ -26,9 +26,7 @@ describe('GET /', () => {
       },
     };
 
-    const setIdWith = item => id => {
-      return { ...item, id };
-    };
+    const setIdWith = item => id => ({ ...item, id });
 
     const featuredItemWithId = setIdWith(featuredItem);
 
@@ -82,8 +80,8 @@ describe('GET /', () => {
       app.use(consoleLogError);
     });
 
-    it('renders featured content', () => {
-      return request(app)
+    it('renders featured content', () =>
+      request(app)
         .get('/')
         .expect(200)
         .then(response => {
@@ -120,21 +118,19 @@ describe('GET /', () => {
               .find('img')
               .attr('src'),
           ).toContain('image.url.com', 'Correct image rendered (Large Tile)');
-        });
-    });
+        }));
 
-    it('has a search bar', () => {
-      return request(app)
+    it('has a search bar', () =>
+      request(app)
         .get('/')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
           expect($('#search-wrapper').length).toBe(1);
-        });
-    });
+        }));
 
-    it('renders the home page links menu', () => {
-      return request(app)
+    it('renders the home page links menu', () =>
+      request(app)
         .get('/')
         .then(response => {
           const $ = cheerio.load(response.text);
@@ -146,7 +142,6 @@ describe('GET /', () => {
             9,
             'Correct number of menu items',
           );
-        });
-    });
+        }));
   });
 });

@@ -42,8 +42,8 @@ describe('GET /content/:id', () => {
       app.use('/content', router);
     });
 
-    it('returns the correct content for a radio page', () => {
-      return request(app)
+    it('returns the correct content for a radio page', () =>
+      request(app)
         .get('/content/1')
         .expect(200)
         .then(response => {
@@ -70,22 +70,20 @@ describe('GET /content/:id', () => {
             'foo Bar',
             'Page thumbnail alt did not match',
           );
-        });
-    });
+        }));
 
-    it('returns the correct tags for a radio page', () => {
-      return request(app)
+    it('returns the correct tags for a radio page', () =>
+      request(app)
         .get('/content/1')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
 
           expect($('#tags-list > li').length).toBe(2);
-        });
-    });
+        }));
 
-    it('returns the correct episodes for a radio page', () => {
-      return request(app)
+    it('returns the correct episodes for a radio page', () =>
+      request(app)
         .get('/content/1')
         .expect(200)
         .then(response => {
@@ -108,11 +106,10 @@ describe('GET /content/:id', () => {
             `/content/${radioShowResponse.season[0].id}`,
             'did not render url',
           );
-        });
-    });
+        }));
 
-    it('returns the correct suggestions for a radio page', () => {
-      return request(app)
+    it('returns the correct suggestions for a radio page', () =>
+      request(app)
         .get('/content/1')
         .expect(200)
         .then(response => {
@@ -123,8 +120,7 @@ describe('GET /content/:id', () => {
             'Suggested content',
             "The suggested content title doesn't match",
           );
-        });
-    });
+        }));
   });
 
   describe('Video page', () => {
@@ -148,8 +144,8 @@ describe('GET /content/:id', () => {
       app.use('/content', router);
     });
 
-    it('returns the correct content for a video page', () => {
-      return request(app)
+    it('returns the correct content for a video page', () =>
+      request(app)
         .get('/content/1')
         .expect(200)
         .then(response => {
@@ -205,11 +201,10 @@ describe('GET /content/:id', () => {
             'Suggested content',
             "The suggested content title doesn't match",
           );
-        });
-    });
+        }));
 
-    it('returns the correct content for a video page', () => {
-      return request(app)
+    it('returns the correct content for a video page', () =>
+      request(app)
         .get('/content/1')
         .expect(200)
         .then(response => {
@@ -236,22 +231,20 @@ describe('GET /content/:id', () => {
             'baz Bar',
             'Page thumbnail alt did not match',
           );
-        });
-    });
+        }));
 
-    it('returns the correct tags for a video page', () => {
-      return request(app)
+    it('returns the correct tags for a video page', () =>
+      request(app)
         .get('/content/1')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
 
           expect($('#tags-list li').length).toBe(2);
-        });
-    });
+        }));
 
-    it('returns the correct episodes for a video page', () => {
-      return request(app)
+    it('returns the correct episodes for a video page', () =>
+      request(app)
         .get('/content/1')
         .expect(200)
         .then(response => {
@@ -274,11 +267,10 @@ describe('GET /content/:id', () => {
             `/content/${videoShowResponse.season[0].id}`,
             'did not render url',
           );
-        });
-    });
+        }));
 
-    it('returns the correct suggestions for a video page', () => {
-      return request(app)
+    it('returns the correct suggestions for a video page', () =>
+      request(app)
         .get('/content/1')
         .expect(200)
         .then(response => {
@@ -289,8 +281,7 @@ describe('GET /content/:id', () => {
             'Suggested content',
             "The suggested content title doesn't match",
           );
-        });
-    });
+        }));
   });
 
   describe('Flat page content', () => {
@@ -313,8 +304,8 @@ describe('GET /content/:id', () => {
       app.use('/content', router);
     });
 
-    it('returns the correct content for a flat content page', () => {
-      return request(app)
+    it('returns the correct content for a flat content page', () =>
+      request(app)
         .get('/content/1')
         .expect(200)
         .then(response => {
@@ -332,8 +323,7 @@ describe('GET /content/:id', () => {
             'Foo paragraph',
             'Article body did not match',
           );
-        });
-    });
+        }));
   });
 
   describe('Pdf pages', () => {

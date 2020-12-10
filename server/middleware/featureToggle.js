@@ -1,14 +1,12 @@
-const featureToggleMiddleware = (features = {}) => {
-  return (req, res, next) => {
-    const result = Object.keys(features).reduce((acc, currentFeature) => {
-      acc[currentFeature] = features[currentFeature];
-      return acc;
-    }, {});
+const featureToggleMiddleware = (features = {}) => (req, res, next) => {
+  const result = Object.keys(features).reduce((acc, currentFeature) => {
+    acc[currentFeature] = features[currentFeature];
+    return acc;
+  }, {});
 
-    res.locals.features = result;
+  res.locals.features = result;
 
-    next();
-  };
+  next();
 };
 
 module.exports = {

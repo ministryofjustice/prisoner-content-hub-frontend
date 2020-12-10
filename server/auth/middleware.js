@@ -2,12 +2,11 @@
 const _passport = require('passport');
 const { path } = require('ramda');
 
-const createSignInMiddleware = (passport = _passport) => {
-  return function signIn(req, res, next) {
+const createSignInMiddleware = (passport = _passport) =>
+  function signIn(req, res, next) {
     req.session.returnUrl = req.query.returnUrl || '/';
     passport.authenticate('azure_ad_oauth2')(req, res, next);
   };
-};
 
 // eslint-disable-next-line no-underscore-dangle
 const _authenticate = (req, res, next) =>
@@ -32,8 +31,8 @@ const createSignInCallbackMiddleware = ({
   offenderService,
   analyticsService,
   authenticate = _authenticate,
-}) => {
-  return async function signInCallback(req, res, next) {
+}) =>
+  async function signInCallback(req, res, next) {
     const sessionId = path(['session', 'id'], req);
     const userAgent = path(['body', 'userAgent'], req);
     try {
@@ -81,10 +80,9 @@ const createSignInCallbackMiddleware = ({
       return next(e);
     }
   };
-};
 
-const createSignOutMiddleware = ({ logger, analyticsService }) => {
-  return function signOut(req, res) {
+const createSignOutMiddleware = ({ logger, analyticsService }) =>
+  function signOut(req, res) {
     logger.info(`SignOutMiddleware (signOut) - User: ${req.user.prisonerId}`);
     req.logOut();
     analyticsService.sendEvent({
@@ -97,7 +95,6 @@ const createSignOutMiddleware = ({ logger, analyticsService }) => {
     });
     res.redirect(req.query.returnUrl || '/');
   };
-};
 
 module.exports = {
   createSignInMiddleware,
