@@ -12,20 +12,26 @@
       </div>
     {% else %}
       <p class="govuk-!-font-size-24">Your account balances</p>
-      <div class="balances">
-        {{ personalBalanceSingle({
-        type: 'spends',
-        amount: params.data.spends
-      })}}
-        {{ personalBalanceSingle({
-        type: 'private',
-        amount: params.data.cash
-      })}}
-        {{ personalBalanceSingle({
-        type: 'savings',
-        amount: params.data.savings
-      })}}
+      <div class="balances-wrapper">
+        <div class="balances">
+          {{ personalBalanceSingle({
+            type: 'spends',
+            amount: params.data.spends
+          })}}
+          {{ personalBalanceSingle({
+            type: 'private',
+            amount: params.data.cash
+          })}}
+          {{ personalBalanceSingle({
+            type: 'savings',
+            amount: params.data.savings
+          })}}
+        </div>
+        <div class="balances-toggle">
+          <button id="balance-toggle-button" class="govuk-button">Show balances</button>
+        </div>
       </div>
+      <script src="/public/javascript/balances.js"></script>
     {% endif %}
   {% else %}
     <p class="govuk-!-font-size-24">

@@ -1,9 +1,8 @@
-<p>{{ params.type | capitalize}}</p>
-<div>
+<div class="balance">
+  <h3>{{ params.type | capitalize}}</h3>
   {% if params.amount %}
-    <button type="button" class="govuk-button" id="show-balance-{{ params.type }}" onclick="showHiddenBlock('balance-{{ params.type }}')">View balance</button>
-    <p id="balance-{{ params.type }}" class="hidden-block-text">{{ params.amount }}</p>
+    <p class="balance-amount" data-amount="{{ params.amount }}">{{ params.amount }}</p>
   {% else %}
-    <p class="unavailable">Unavailable</p>
+    <p class="balance-unavailable">Unavailable</p>
   {% endif %}
 </div>
