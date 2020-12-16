@@ -7,7 +7,7 @@ var WORD_LIST = [
   { answer: 'santa', clue: 'Wears a red suit' },
   { answer: 'turkey', clue: 'Xmas roast' },
   { answer: 'blankets', clue: 'Sausages that are cold - Pigs in ________' },
-  { answer: 'snow', clue: 'Cold, clue: icy stuff' },
+  { answer: 'snow', clue: 'Cold, icy stuff' },
   { answer: 'cracker', clue: 'Pull it and get a prize' },
   { answer: 'holly', clue: 'Spiky leaves' },
   { answer: 'tinsel', clue: 'Shiny on the tree' },
