@@ -40,6 +40,7 @@ const {
   createSignInMiddleware,
   createSignInCallbackMiddleware,
 } = require('./auth/middleware');
+const { getEnv } = require('../utils/index');
 
 const createApp = ({
   logger,
@@ -79,6 +80,11 @@ const createApp = ({
   // Server Configuration
   app.set('port', process.env.PORT || 3000);
 
+  // Set up Sentry before (almost) everything else, so we can
+  // capture any exceptions during startup
+  Sentry.init({
+    dsn: getEnv('SENTRY_DSN', ''),
+  });
   app.use(Sentry.Handlers.requestHandler());
   app.use(Sentry.Handlers.errorHandler());
 
