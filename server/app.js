@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
 const { pathOr } = require('ramda');
+const Sentry = require('@sentry/node');
 const config = require('./config');
 
 const { createIndexRouter } = require('./routes/index');
@@ -77,6 +78,9 @@ const createApp = ({
 
   // Server Configuration
   app.set('port', process.env.PORT || 3000);
+
+  app.use(Sentry.Handlers.requestHandler());
+  app.use(Sentry.Handlers.errorHandler());
 
   // Secure code best practice - see:
   // 1. https://expressjs.com/en/advanced/best-practice-security.html,
