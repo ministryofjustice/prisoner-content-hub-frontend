@@ -69,6 +69,16 @@ const createGamesRouter = () => {
     });
   });
 
+  router.get('/christmas-crossword', (req, res) => {
+    config.detailsType = 'small';
+    config.userName = req.user && req.user.getFullName();
+
+    return res.render('pages/games/christmas-crossword', {
+      title: 'Christmas Crossword',
+      config,
+    });
+  });
+
   router.get('/solitaire', (req, res) => {
     config.detailsType = 'small';
     config.userName = req.user && req.user.getFullName();
