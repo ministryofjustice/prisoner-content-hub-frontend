@@ -12,9 +12,7 @@ var WORD_LIST = [
   { answer: 'holly', clue: 'Spiky leaves' },
   { answer: 'tinsel', clue: 'Shiny on the tree' },
   { answer: 'tree', clue: 'Real ones leave a mess on the floor' },
-  {
-    answer: 'twelfth', clue: 'It\'s considered unlucky to have decorations up after this time - _______ Night'
-  },
+  { answer: 'twelfth', clue: 'It\'s considered unlucky to have decorations up after this time - _______ Night' },
   { answer: 'ladies', clue: 'On the ninth day of Christmas my true love gave to me? - ______ dancing' },
   { answer: 'mince', clue: 'You\'d think they were made from meat - _____ pies' },
   { answer: 'last', clue: 'Famous Christmas song recorded by Wham - ____ christmas' },
@@ -22,20 +20,14 @@ var WORD_LIST = [
   { answer: 'sprouts', clue: 'Divisive festive vegetables' },
   { answer: 'cranberry', clue: 'Berry used for a seasonable condiment' },
   { answer: 'chimney', clue: 'Don\'t leave the fire on if you expect Santa to come down this' },
-  {
-    answer: 'bauble', clue: 'You\'d put these on your tree'
-  },
+  { answer: 'bauble', clue: 'You\'d put these on your tree' },
   { answer: 'partridge', clue: 'Found in a fruit tree' },
   { answer: 'presents', clue: 'Find these under your tree' },
   { answer: 'scrooge', clue: 'Christmas grouch' },
-  {
-    answer: 'grinch', clue: 'He\'s a mean one'
-  },
+  { answer: 'grinch', clue: 'He\'s a mean one' },
   { answer: 'candy', clue: 'Something sweet - not great to walk with - _____ cane' },
   { answer: 'gold', clue: 'On the fifth day of Christmas my true love gave these to me - ____ rings' },
-  {
-    answer: 'aid', clue: 'The groups of celebrities who asked "do they know it\'s Christmas?" - band ___'
-  },
+  { answer: 'aid', clue: 'The groups of celebrities who asked "do they know it\'s Christmas?" - band ___' },
   { answer: 'elf', clue: 'A christmas movie starring Will Ferrell' },
   { answer: 'mistletoe', clue: 'Have a Christmas kiss under this' },
   { answer: 'dickens', clue: 'Surname of the famous author who wrote A Christmas Carol' },
@@ -48,9 +40,7 @@ var WORD_LIST = [
   { answer: 'bubble', clue: 'Leftovers you cook up and eat on Boxing Day - ______ and squeak' },
   { answer: 'sleigh', clue: 'Pulled by Vixen, Prancer, Rudolph and co' },
   { answer: 'pear', clue: 'The type of tree you find partridges in' },
-  {
-    answer: 'pantomime', clue: 'A trip to the theatre at Christmas, "oh no he didn\'t"'
-  },
+  { answer: 'pantomime', clue: 'A trip to the theatre at Christmas, "oh no he didn\'t"' },
   { answer: 'snowman', clue: 'Built from snow with a carrot nose' },
   { answer: 'chimney', clue: 'Santa comes down this on Christmas Eve' },
   { answer: 'wizzard', clue: 'Band famous for the Christmas song, I wish it could be Christmas everyday' },
@@ -64,18 +54,33 @@ var WORD_LIST = [
   { answer: 'pogues', clue: 'Band - Fairytale of New York - The ______' },
   { answer: 'star', clue: 'Wise men followed this' },
   { answer: 'pout', clue: 'You better not ____' },
-  {
-    answer: 'list', clue: 'He\'s checking this twice'
-  },
+  { answer: 'list', clue: 'He\'s checking this twice' },
   { answer: 'naughty', clue: 'He\'s going to find out who\'s been _______ or nice' },
   { answer: 'nice', clue: 'He\'s going to find out who\'s been naughty or ____' },
-  {
-    answer: 'coal', clue: 'What to expect if you\'re on the naughty list'
-  },
-  {
-    answer: 'donkey', clue: 'Mary and Joseph\'s mode of transport'
-  },
-  { answer: 'brandy', clue: 'Spirit - used in making a dessert sauce }' }
+  { answer: 'coal', clue: 'What to expect if you\'re on the naughty list' },
+  { answer: 'donkey', clue: 'Mary and Joseph\'s mode of transport' },
+  { answer: 'brandy', clue: 'Spirit - used in making a dessert sauce }' },
+  { answer: 'north', clue: 'Where Santa starts his journey - _____ Pole' },
+  { answer: 'robin', clue: 'Red-breasted christmas bird' },
+  { answer: 'grotto', clue: 'You might meet Santa in one of these' },
+  { answer: 'angels', clue: '"Hark! the Herald ______ sing"' },
+  { answer: 'boxing', clue: 'The 26th of December is also know as ______ Day' },
+  { answer: 'kringle', clue: 'Another name for Santa Claus is Kris _______' },
+  { answer: 'gingerbread', clue: 'It\'s fun to build a house out of this at Christmas' },
+  { answer: 'elves', clue: 'Christmas helpers at the North Pole' },
+  { answer: 'gifts', clue: 'You give these to people at Christmas' },
+  { answer: 'another', clue: 'East 17 - Stay _______ Day' },
+  { answer: 'wonderful', clue: 'Paul McCartney - _________ Christmas Time' },
+  { answer: 'nativity', clue: 'A play that tells the Christmas story' },
+  { answer: 'want', clue: 'Famous christmas song released in 1994 - All I ____ for Christmas Is You ' },
+  { answer: 'bad', clue: 'Christmas film starring Billy Bob Thornton - ____ Santa' },
+  { answer: 'white', clue: 'Famous Christmas film starring Bing Crosby, Danny Kaye & Rosemary Clooney - ____ Christmas' },
+  { answer: 'national', clue: '80s Christmas movie - ______ Lampoon\'s Christmas Vacation' },
+  { answer: 'driving ', clue: '80s Christmas song - ______ Home for Christmas' },
+  { answer: 'another', clue: '90s Christmas song - Stay ______ Day' },
+  { answer: 'actually', clue: '2003 Christmas movie - Love ______' },
+  { answer: 'polar', clue: '2004 Animated Christmas movie starring Tom Hanks - The _____ Express' },
+  { answer: 'santa', clue: 'Christmas song performed by numerous artists but originally by Eartha Kitt - ______ Baby' }
 ];
 
 var directions = {
