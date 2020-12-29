@@ -2,9 +2,14 @@
 const _passport = require('passport');
 const { path } = require('ramda');
 
+const getReturnUrl = ({ returnUrl = '/' } = {}) =>
+  returnUrl.indexOf('://') > 0 || returnUrl.indexOf('//') === 0
+    ? '/'
+    : returnUrl;
+
 const createSignInMiddleware = (passport = _passport) =>
   function signIn(req, res, next) {
-    req.session.returnUrl = req.query.returnUrl || '/';
+    req.session.returnUrl = getReturnUrl(req.query);
     passport.authenticate('azure_ad_oauth2')(req, res, next);
   };
 
@@ -93,7 +98,7 @@ const createSignOutMiddleware = ({ logger, analyticsService }) =>
       sessionId: path(['session', 'id'], req),
       userAgent: path(['body', 'userAgent'], req),
     });
-    res.redirect(req.query.returnUrl || '/');
+    res.redirect(getReturnUrl(req.query));
   };
 
 module.exports = {
@@ -101,5 +106,6 @@ module.exports = {
   createSignInCallbackMiddleware,
   createSignOutMiddleware,
   isPrisonerId,
+  getReturnUrl,
   _authenticate,
 };
