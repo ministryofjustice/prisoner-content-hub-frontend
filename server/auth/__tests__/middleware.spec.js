@@ -3,6 +3,7 @@ const {
   createSignInCallbackMiddleware,
   createSignOutMiddleware,
   isPrisonerId,
+  getReturnUrl,
 } = require('../middleware');
 
 const AZURE_AD_OAUTH2_STRATEGY = 'azure_ad_oauth2';
@@ -54,6 +55,19 @@ describe('AuthMiddleware', () => {
           AZURE_AD_OAUTH2_STRATEGY,
         );
         expect(req.session.returnUrl).toBe(TEST_RETURN_URL);
+      });
+
+      it('should set the returnUrl to the home page if passed URL is not relative', () => {
+        const req = { session: {}, query: { returnUrl: 'http://foo.bar' } };
+
+        const signIn = createSignInMiddleware(passport);
+
+        signIn(req, {});
+
+        expect(passport.authenticate).toHaveBeenCalledWith(
+          AZURE_AD_OAUTH2_STRATEGY,
+        );
+        expect(req.session.returnUrl).toBe('/');
       });
     });
   });
@@ -217,6 +231,20 @@ describe('AuthMiddleware', () => {
         expect(res.redirect).toHaveBeenCalledWith(TEST_RETURN_URL);
       });
 
+      it('should call logOut and redirect to the homepage if passed a returnUrl that is not relative', () => {
+        req.query = { returnUrl: 'https://foo.bar' };
+
+        const signOut = createSignOutMiddleware({
+          analyticsService,
+          logger: MOCK_LOGGER,
+        });
+
+        signOut(req, res);
+
+        expect(req.logOut).toHaveBeenCalled();
+        expect(res.redirect).toHaveBeenCalledWith('/');
+      });
+
       it('should call logOut and redirect to the home page if not passed a returnUrl', () => {
         const signOut = createSignOutMiddleware({
           analyticsService,
@@ -242,6 +270,25 @@ describe('AuthMiddleware', () => {
       expect(isPrisonerId('')).toBe(false);
       expect(isPrisonerId(null)).toBe(false);
       expect(isPrisonerId(undefined)).toBe(false);
+    });
+  });
+
+  describe('getReturnUrl', () => {
+    it('should return the default when the URL is absolute or protocol-relative', () => {
+      expect(getReturnUrl({ returnUrl: 'http://foo.bar/baz' })).toBe('/');
+      expect(getReturnUrl({ returnUrl: 'https://foo.bar/baz' })).toBe('/');
+      expect(getReturnUrl({ returnUrl: 'http://foo.bar' })).toBe('/');
+      expect(getReturnUrl({ returnUrl: 'https://foo.bar' })).toBe('/');
+      expect(getReturnUrl({ returnUrl: '//foo.bar' })).toBe('/');
+    });
+
+    it('should return the URL when the URL is relative', () => {
+      expect(getReturnUrl({ returnUrl: '/foo' })).toBe('/foo');
+      expect(getReturnUrl({ returnUrl: '/foo/bar' })).toBe('/foo/bar');
+    });
+
+    it('should default to home if no URL is passed', () => {
+      expect(getReturnUrl()).toBe('/');
     });
   });
 });
