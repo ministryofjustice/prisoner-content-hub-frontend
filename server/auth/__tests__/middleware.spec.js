@@ -3,7 +3,7 @@ const {
   createSignInCallbackMiddleware,
   createSignOutMiddleware,
   isPrisonerId,
-  getReturnUrl,
+  getSafeReturnUrl,
 } = require('../middleware');
 
 const AZURE_AD_OAUTH2_STRATEGY = 'azure_ad_oauth2';
@@ -273,22 +273,26 @@ describe('AuthMiddleware', () => {
     });
   });
 
-  describe('getReturnUrl', () => {
+  describe('getSafeReturnUrl', () => {
     it('should return the default when the URL is absolute or protocol-relative', () => {
-      expect(getReturnUrl({ returnUrl: 'http://foo.bar/baz' })).toBe('/');
-      expect(getReturnUrl({ returnUrl: 'https://foo.bar/baz' })).toBe('/');
-      expect(getReturnUrl({ returnUrl: 'http://foo.bar' })).toBe('/');
-      expect(getReturnUrl({ returnUrl: 'https://foo.bar' })).toBe('/');
-      expect(getReturnUrl({ returnUrl: '//foo.bar' })).toBe('/');
+      expect(getSafeReturnUrl({ returnUrl: 'http://foo.bar/baz' })).toBe('/');
+      expect(getSafeReturnUrl({ returnUrl: 'https://foo.bar/baz' })).toBe('/');
+      expect(getSafeReturnUrl({ returnUrl: 'http://foo.bar' })).toBe('/');
+      expect(getSafeReturnUrl({ returnUrl: 'https://foo.bar' })).toBe('/');
+      expect(getSafeReturnUrl({ returnUrl: '//foo.bar' })).toBe('/');
     });
 
     it('should return the URL when the URL is relative', () => {
-      expect(getReturnUrl({ returnUrl: '/foo' })).toBe('/foo');
-      expect(getReturnUrl({ returnUrl: '/foo/bar' })).toBe('/foo/bar');
+      expect(getSafeReturnUrl({ returnUrl: '/foo' })).toBe('/foo');
+      expect(getSafeReturnUrl({ returnUrl: '/foo/bar' })).toBe('/foo/bar');
     });
 
     it('should default to home if no URL is passed', () => {
-      expect(getReturnUrl()).toBe('/');
+      expect(getSafeReturnUrl()).toBe('/');
+    });
+
+    it('should default to home if argument is not a string', () => {
+      expect(getSafeReturnUrl({ returnUrl: ['foo', 'bar'] })).toBe('/');
     });
   });
 });

@@ -2,16 +2,18 @@
 const _passport = require('passport');
 const { path } = require('ramda');
 
-const getReturnUrl = ({ returnUrl = '/' } = {}) =>
+const getSafeReturnUrl = ({ returnUrl = '/' } = {}) =>
   // type-check to mitigate "type confusion through parameter tampering", where an attacker
   // coerces the param to an array to bypass the indexOf checks
-  typeof returnUrl !== 'string' || returnUrl.indexOf('://') > 0 || returnUrl.indexOf('//') === 0
+  typeof returnUrl !== 'string' ||
+  returnUrl.indexOf('://') > 0 ||
+  returnUrl.indexOf('//') === 0
     ? '/'
     : returnUrl;
 
 const createSignInMiddleware = (passport = _passport) =>
   function signIn(req, res, next) {
-    req.session.returnUrl = getReturnUrl(req.query);
+    req.session.returnUrl = getSafeReturnUrl(req.query);
     passport.authenticate('azure_ad_oauth2')(req, res, next);
   };
 
@@ -100,7 +102,7 @@ const createSignOutMiddleware = ({ logger, analyticsService }) =>
       sessionId: path(['session', 'id'], req),
       userAgent: path(['body', 'userAgent'], req),
     });
-    res.redirect(getReturnUrl(req.query));
+    res.redirect(getSafeReturnUrl(req.query));
   };
 
 module.exports = {
@@ -108,6 +110,6 @@ module.exports = {
   createSignInCallbackMiddleware,
   createSignOutMiddleware,
   isPrisonerId,
-  getReturnUrl,
+  getSafeReturnUrl,
   _authenticate,
 };
