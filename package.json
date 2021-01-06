@@ -27,8 +27,8 @@
     "url": "https://github.com/ministryofjustice/prisoner-content-hub-frontend/"
   },
   "engines": {
-    "node": ">= 12",
-    "npm": ">=6.4.1"
+    "node": ">= 14",
+    "npm": ">=6.14.8"
   },
   "nodemonConfig": {
     "ignore": [
