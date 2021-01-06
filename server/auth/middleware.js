@@ -3,7 +3,9 @@ const _passport = require('passport');
 const { path } = require('ramda');
 
 const getReturnUrl = ({ returnUrl = '/' } = {}) =>
-  returnUrl.indexOf('://') > 0 || returnUrl.indexOf('//') === 0
+  // type-check to mitigate "type confusion through parameter tampering", where an attacker
+  // coerces the param to an array to bypass the indexOf checks
+  typeof returnUrl !== 'string' || returnUrl.indexOf('://') > 0 || returnUrl.indexOf('//') === 0
     ? '/'
     : returnUrl;
 
