@@ -190,14 +190,14 @@ workflows:
     jobs:
       - run_unit_and_integration_tests
 
+      - build_preview:
+          <<: *feature_branch
+
       - approve_preview_build:
           <<: *feature_branch
           type: approval
-
-      - build_preview:
-          <<: *feature_branch
           requires:
-            - approve_preview_build
+            - build_preview
 
       - deploy_cloud_platform:
           <<: *feature_branch
@@ -206,7 +206,7 @@ workflows:
             parameters:
               environment: ["development"]
           requires:
-            - build_preview
+            - approve_preview_build
 
       - build_production:
           <<: *main_branch
