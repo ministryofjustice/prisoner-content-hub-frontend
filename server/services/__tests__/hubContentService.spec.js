@@ -35,6 +35,26 @@ describe('#hubContentService', () => {
       });
     });
 
+    it('should handle when unable to find a Term', async () => {
+      const contentRepository = {
+        contentFor: jest.fn().mockReturnValue({
+          title: 'foo',
+          href: 'www.foo.com',
+          type: 'foo',
+          secondaryTags: [12],
+          categories: [13],
+          description: { raw: '' },
+        }),
+        termFor: jest.fn().mockReturnValue(null),
+      };
+      const service = createHubContentService({ contentRepository });
+      const result = await service.contentFor('contentId');
+
+      expect(result.tags.length).toEqual(0);
+      expect(result.secondaryTagNames.length).toEqual(0);
+      expect(result.categoryNames.length).toEqual(0);
+    });
+
     ['radio', 'video'].forEach(contentType => {
       it(`returns ${contentType} show content`, async () => {
         const contentRepository = {
