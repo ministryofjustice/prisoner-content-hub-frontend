@@ -18,7 +18,9 @@ function createHubContentService({
         tag => contentRepository.termFor(tag, establishmentId),
         secondaryTags,
       );
-      const tags = await Promise.all(tagsPromises);
+      const tags = (await Promise.all(tagsPromises)).filter(
+        secondaryTag => secondaryTag !== null,
+      ); // Filter out Terms that returned 404;
 
       content.tags = tags;
       content.secondaryTagNames = tags
@@ -34,7 +36,9 @@ function createHubContentService({
         categories,
       );
 
-      const categoryNames = await Promise.all(categoriesPromises);
+      const categoryNames = (await Promise.all(categoriesPromises)).filter(
+        category => category !== null,
+      ); // Filter out Categories that returned 404;
 
       content.categoryNames = categoryNames
         .map(category => category.name)
