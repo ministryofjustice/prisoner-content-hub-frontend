@@ -30,6 +30,22 @@ Jest is used for unit and integration tests
 
     npm run test
 
+### Running the E2E tests
+
 Cypress is used for E2E testing
 
+**Prerequisites**
+
+- Backing services will need to be run in Docker-Compose using the `prisoner-content-hub` repository
+- Your `/etc/hosts` will need to be configured such that `127.0.0.1 localhost` includes
+  - `wayland.prisoner-content-hub.local`
+  - `berwyn.prisoner-content-hub.local`
+  - `cookhamwood.prisoner-content-hub.local`
+
+To launch the application and open the Cypress test runner
+
     npm run test:e2e:dev
+
+To launch the application and run the Cypress tests
+
+    npm run test:e2e:run
