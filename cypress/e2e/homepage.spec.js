@@ -1,7 +1,7 @@
 describe('Homepage', () => {
   describe('Cookham Wood', () => {
     beforeEach(() => {
-      cy.visit('/?prison=cookhamwood');
+      cy.visit('http://cookhamwood.prisoner-content-hub.local:3000/');
     });
 
     describe('Navigation', () => {
@@ -29,7 +29,7 @@ describe('Homepage', () => {
   });
   describe('Berwyn', () => {
     beforeEach(() => {
-      cy.visit('/?prison=berwyn');
+      cy.visit('http://berwyn.prisoner-content-hub.local:3000/');
     });
 
     describe('Navigation', () => {
@@ -58,7 +58,7 @@ describe('Homepage', () => {
 
   describe('Wayland', () => {
     beforeEach(() => {
-      cy.visit('/?prison=wayland');
+      cy.visit('http://wayland.prisoner-content-hub.local:3000/');
     });
 
     describe('Navigation', () => {});
