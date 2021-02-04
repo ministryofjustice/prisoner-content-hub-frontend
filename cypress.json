@@ -1,6 +1,11 @@
 {
   "baseUrl": "http://wayland.prisoner-content-hub.local:3000",
-  "integrationFolder": "cypress/e2e",
+  "integrationFolder": "cypress/integrations",
+  "fixturesFolder": "cypress/fixtures",
+  "videosFolder": "cypress/artifacts/videos",
+  "screenshotsFolder": "cypress/artifacts/screenshots",
+  "pluginsFile": "cypress/plugins/index.js",
+  "supportFile": "cypress/support/index.js",
   "viewportWidth": 1280,
   "viewportHeight": 768,
   "chromeWebSecurity": false
