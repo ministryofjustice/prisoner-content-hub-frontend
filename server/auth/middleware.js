@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-underscore-dangle
 const _passport = require('passport');
 const { path } = require('ramda');
+const { User } = require('./user');
 
 const getSafeReturnUrl = ({ returnUrl = '/' } = {}) =>
   // type-check to mitigate "type confusion through parameter tampering", where an attacker
@@ -34,6 +35,34 @@ function isPrisonerId(id) {
   const pattern = new RegExp(/^[A-Z][0-9]{4}[A-Z]{2}$/i);
   return pattern.test(id);
 }
+
+const createMockSignIn = ({ offenderService }) =>
+  async function mockSignIn(req, res) {
+    const user = new User({
+      prisonerId: 'G2168GG',
+      firstName: 'Test',
+      lastName: 'User',
+    });
+
+    const { bookingId } = await offenderService.getOffenderDetailsFor(user);
+    user.setBookingId(bookingId);
+
+    req.session.passport = {
+      user: user.serialize(),
+    };
+
+    res.redirect(getSafeReturnUrl(req.query));
+  };
+
+const createMockSignOut = () =>
+  function mockSignOut(req, res) {
+    const user = path(['session', 'passport', 'user'], req);
+
+    if (user) {
+      delete req.session.passport.user;
+    }
+    res.redirect(getSafeReturnUrl(req.query));
+  };
 
 const createSignInCallbackMiddleware = ({
   logger,
@@ -109,6 +138,8 @@ module.exports = {
   createSignInMiddleware,
   createSignInCallbackMiddleware,
   createSignOutMiddleware,
+  createMockSignIn,
+  createMockSignOut,
   isPrisonerId,
   getSafeReturnUrl,
   _authenticate,

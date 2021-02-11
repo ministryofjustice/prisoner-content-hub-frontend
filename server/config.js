@@ -138,6 +138,7 @@ module.exports = {
     personalInformation:
       getEnv('ENABLE_PERSONAL_INFORMATION', 'false') === 'true',
     useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'true') === 'true',
+    useMockAuth: getEnv('ENABLE_MOCK_AUTH', 'false') === 'true',
     showStackTraces:
       getEnv('ENABLE_STACK_TRACES_ON_ERROR_PAGES', 'false') === 'true',
   },
