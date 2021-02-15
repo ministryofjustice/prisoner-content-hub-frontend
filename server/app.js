@@ -12,7 +12,6 @@ const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
 const { path: ramdaPath, pathOr } = require('ramda');
 const Sentry = require('@sentry/node');
-const config = require('./config');
 
 const { createIndexRouter } = require('./routes/index');
 const { createTopicsRouter } = require('./routes/topics');
@@ -35,14 +34,9 @@ const {
 } = require('./middleware/configureEstablishment');
 
 const { User } = require('./auth/user');
-const {
-  createSignOutMiddleware,
-  createSignInMiddleware,
-  createSignInCallbackMiddleware,
-  createMockSignIn,
-  createMockSignOut,
-} = require('./auth/middleware');
 const { getEnv } = require('../utils/index');
+const defaultConfig = require('./config');
+const defaultAuthMiddleware = require('./auth/middleware');
 
 const createApp = ({
   logger,
@@ -55,6 +49,8 @@ const createApp = ({
   searchService,
   analyticsService,
   feedbackService,
+  config = defaultConfig,
+  authMiddleware = defaultAuthMiddleware,
 }) => {
   const app = express();
 
@@ -178,11 +174,11 @@ const createApp = ({
       '/auth',
       createAuthRouter({
         logger,
-        signIn: createMockSignIn({
+        signIn: authMiddleware.createMockSignIn({
           offenderService,
         }),
         signInCallback: (req, res) => res.send('Not Implemented'),
-        signOut: createMockSignOut(),
+        signOut: authMiddleware.createMockSignOut(),
       }),
     );
   } else {
@@ -215,13 +211,16 @@ const createApp = ({
       '/auth',
       createAuthRouter({
         logger,
-        signIn: createSignInMiddleware(),
-        signInCallback: createSignInCallbackMiddleware({
+        signIn: authMiddleware.createSignInMiddleware(),
+        signInCallback: authMiddleware.createSignInCallbackMiddleware({
           offenderService,
           analyticsService,
           logger,
         }),
-        signOut: createSignOutMiddleware({ analyticsService, logger }),
+        signOut: authMiddleware.createSignOutMiddleware({
+          analyticsService,
+          logger,
+        }),
       }),
     );
   }
