@@ -20,5 +20,3 @@ Feature: Visits
     When I click the "Visits" link
     And click the "View your full timetable"
     Then I am on the "Timetable" page
-
-    sign in
