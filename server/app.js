@@ -10,9 +10,8 @@ const session = require('cookie-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
-const { pathOr } = require('ramda');
+const { path: ramdaPath, pathOr } = require('ramda');
 const Sentry = require('@sentry/node');
-const config = require('./config');
 
 const { createIndexRouter } = require('./routes/index');
 const { createTopicsRouter } = require('./routes/topics');
@@ -35,12 +34,9 @@ const {
 } = require('./middleware/configureEstablishment');
 
 const { User } = require('./auth/user');
-const {
-  createSignOutMiddleware,
-  createSignInMiddleware,
-  createSignInCallbackMiddleware,
-} = require('./auth/middleware');
 const { getEnv } = require('../utils/index');
+const defaultConfig = require('./config');
+const defaultAuthMiddleware = require('./auth/middleware');
 
 const createApp = ({
   logger,
@@ -53,6 +49,8 @@ const createApp = ({
   searchService,
   analyticsService,
   feedbackService,
+  config = defaultConfig,
+  authMiddleware = defaultAuthMiddleware,
 }) => {
   const app = express();
 
@@ -131,31 +129,6 @@ const createApp = ({
     }),
   );
 
-  passport.serializeUser((user, done) => done(null, user.serialize()));
-  passport.deserializeUser((serializedUser, done) =>
-    done(null, User.deserialize(serializedUser)),
-  );
-  app.use((req, res, next) => {
-    passport.use(
-      new AzureAdOAuth2Strategy(
-        {
-          clientID: config.auth.clientId,
-          clientSecret: config.auth.clientSecret,
-          callbackURL: `https://${pathOr(
-            'localhost',
-            ['headers', 'host'],
-            req,
-          )}${config.auth.callbackPath}`,
-        },
-        (accessToken, refreshToken, params, profile, done) =>
-          done(null, User.from(params.id_token)),
-      ),
-    );
-    next();
-  });
-  app.use(passport.initialize());
-  app.use(passport.session());
-
   [
     '../public',
     '../assets',
@@ -189,6 +162,69 @@ const createApp = ({
   // Health end point
   app.use('/health', createHealthRouter());
 
+  if (config.features.useMockAuth) {
+    app.use('*', (req, res, next) => {
+      const serializedUser = ramdaPath(['session', 'passport', 'user'], req);
+      if (serializedUser) {
+        req.user = User.deserialize(serializedUser);
+      }
+      next();
+    });
+    app.use(
+      '/auth',
+      createAuthRouter({
+        logger,
+        signIn: authMiddleware.createMockSignIn({
+          offenderService,
+        }),
+        signInCallback: (req, res) => res.send('Not Implemented'),
+        signOut: authMiddleware.createMockSignOut(),
+      }),
+    );
+  } else {
+    passport.serializeUser((user, done) => done(null, user.serialize()));
+    passport.deserializeUser((serializedUser, done) =>
+      done(null, User.deserialize(serializedUser)),
+    );
+    app.use((req, res, next) => {
+      passport.use(
+        new AzureAdOAuth2Strategy(
+          {
+            clientID: config.auth.clientId,
+            clientSecret: config.auth.clientSecret,
+            callbackURL: `https://${pathOr(
+              'localhost',
+              ['headers', 'host'],
+              req,
+            )}${config.auth.callbackPath}`,
+          },
+          (accessToken, refreshToken, params, profile, done) =>
+            done(null, User.from(params.id_token)),
+        ),
+      );
+      next();
+    });
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    app.use(
+      '/auth',
+      createAuthRouter({
+        logger,
+        signIn: authMiddleware.createSignInMiddleware(),
+        signInCallback: authMiddleware.createSignInCallbackMiddleware({
+          offenderService,
+          analyticsService,
+          logger,
+        }),
+        signOut: authMiddleware.createSignOutMiddleware({
+          analyticsService,
+          logger,
+        }),
+      }),
+    );
+  }
+
   // Routing
 
   app.use(
@@ -202,20 +238,6 @@ const createApp = ({
   );
 
   app.use('/topics', createTopicsRouter({ hubMenuService }));
-
-  app.use(
-    '/auth',
-    createAuthRouter({
-      logger,
-      signIn: createSignInMiddleware(),
-      signInCallback: createSignInCallbackMiddleware({
-        offenderService,
-        analyticsService,
-        logger,
-      }),
-      signOut: createSignOutMiddleware({ analyticsService, logger }),
-    }),
-  );
 
   app.use('/timetable', createTimetableRouter({ offenderService }));
 

@@ -99,6 +99,139 @@ describe('App', () => {
         expect(res.headers).toHaveProperty('x-xss-protection');
       });
   });
+
+  describe('Creating authentication routes', () => {
+    const mockSignIn = jest.fn((req, res) => res.send());
+    const mockSignOut = jest.fn((req, res) => res.send());
+    const createMockSignIn = jest.fn(() => mockSignIn);
+    const createMockSignOut = jest.fn(() => mockSignOut);
+    const signIn = jest.fn((req, res) => res.send());
+    const signInCallback = jest.fn((req, res) => res.send());
+    const signOut = jest.fn((req, res) => res.send());
+    const createSignInMiddleware = jest.fn(() => signIn);
+    const createSignOutMiddleware = jest.fn(() => signOut);
+    const createSignInCallbackMiddleware = jest.fn(() => signInCallback);
+
+    // We Stringify/Parse the config to deep-clone and restore before each test
+    // This avoids polluting the configuration
+    const originalConfig = JSON.stringify(config);
+    let testConfig;
+
+    beforeEach(() => {
+      testConfig = JSON.parse(originalConfig);
+      jest.clearAllMocks();
+    });
+
+    it('should use mock middleware when "useMockAuth" is set to true', async () => {
+      testConfig.features.useMockAuth = true;
+
+      const application = app({
+        config: testConfig,
+        authMiddleware: {
+          createMockSignIn,
+          createMockSignOut,
+          createSignInMiddleware,
+          createSignOutMiddleware,
+          createSignInCallbackMiddleware,
+        },
+      });
+
+      expect(createMockSignIn).toHaveBeenCalled();
+      expect(createMockSignOut).toHaveBeenCalled();
+
+      await request(application)
+        .get('/auth/sign-in')
+        .then(() => {
+          expect(mockSignIn).toHaveBeenCalled();
+        });
+
+      await request(application)
+        .get('/auth/sign-out')
+        .then(() => {
+          expect(mockSignOut).toHaveBeenCalled();
+        });
+    });
+
+    it('should not use mock middleware when "useMockAuth" is set to false', async () => {
+      testConfig.features.useMockAuth = false;
+
+      const application = app({
+        config: testConfig,
+        authMiddleware: {
+          createMockSignIn,
+          createMockSignOut,
+          createSignInMiddleware,
+          createSignOutMiddleware,
+          createSignInCallbackMiddleware,
+        },
+      });
+
+      expect(createSignInMiddleware).toHaveBeenCalled();
+      expect(createSignInCallbackMiddleware).toHaveBeenCalled();
+      expect(createSignOutMiddleware).toHaveBeenCalled();
+      expect(createMockSignIn).not.toHaveBeenCalled();
+      expect(createMockSignOut).not.toHaveBeenCalled();
+
+      await request(application)
+        .get('/auth/sign-in')
+        .then(() => {
+          expect(signIn).toHaveBeenCalled();
+          expect(mockSignIn).not.toHaveBeenCalled();
+        });
+
+      await request(application)
+        .get('/auth/provider/callback')
+        .then(() => {
+          expect(signInCallback).toHaveBeenCalled();
+        });
+
+      await request(application)
+        .get('/auth/sign-out')
+        .then(() => {
+          expect(signOut).toHaveBeenCalled();
+          expect(mockSignOut).not.toHaveBeenCalled();
+        });
+    });
+
+    it('should default "useMockAuth" to false', async () => {
+      const application = app({
+        config: testConfig,
+        authMiddleware: {
+          createMockSignIn,
+          createMockSignOut,
+          createSignInMiddleware,
+          createSignOutMiddleware,
+          createSignInCallbackMiddleware,
+        },
+      });
+
+      expect(createSignInMiddleware).toHaveBeenCalled();
+      expect(createSignInCallbackMiddleware).toHaveBeenCalled();
+      expect(createSignOutMiddleware).toHaveBeenCalled();
+      expect(createMockSignIn).not.toHaveBeenCalled();
+      expect(createMockSignOut).not.toHaveBeenCalled();
+
+      await request(application)
+        .get('/auth/sign-in')
+        .then(() => {
+          expect(signIn).toHaveBeenCalled();
+          expect(mockSignIn).not.toHaveBeenCalled();
+        });
+
+      await request(application)
+        .get('/auth/provider/callback')
+        .then(() => {
+          expect(signInCallback).toHaveBeenCalled();
+        });
+
+      await request(application)
+        .get('/auth/sign-out')
+        .then(() => {
+          expect(signOut).toHaveBeenCalled();
+          expect(mockSignOut).not.toHaveBeenCalled();
+        });
+    });
+  });
 });
 
 function app(opts) {
