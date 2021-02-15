@@ -2,7 +2,7 @@ Feature: Secondary Tag pages
 
   As a user of the Prisoner Content Hub
   I want to be able to browse content with the same secondary tag
-  So that I can I can find related content
+  So that I can find related content
 
   Scenario: I navigate to a secondary tag from the home page
     Given that I go to the Prisoner Content Hub for "Wayland"
