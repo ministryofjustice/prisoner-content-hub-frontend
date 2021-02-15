@@ -92,6 +92,8 @@ spec:
               value: {{ .Values.application.sentry_dsn }}
             - name: ENABLE_REDIS_CACHE
               value: {{ .Values.application.config.enableRedisCache | quote }}
+            - name: ENABLE_MOCK_AUTH
+              value: "false"
             - name: CACHE_SECRET
               valueFrom:
                 secretKeyRef:
