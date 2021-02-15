@@ -24,3 +24,11 @@ When('I click the {string} button', buttonText => {
 Then('I am taken to the {string} page', pageTitle => {
   cy.get('h1').contains(pageTitle);
 });
+
+Then('I am on the {string} page', personalizationPage => {
+  cy.get('h1').contains(personalizationPage);
+});
+
+And('I see related content for that category', () => {
+  cy.get('[data-featured-id]').its('length').should('be.gt', 0);
+});
