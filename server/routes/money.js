@@ -38,6 +38,31 @@ const createMoneyRouter = ({ hubContentService, offenderService }) => {
     }
   });
 
+  router.get('/transactions', async (req, res, next) => {
+    try {
+      const config = {
+        content: false,
+        header: false,
+        postscript: true,
+        detailsType: 'small',
+        returnUrl: req.originalUrl,
+      };
+
+      const { user } = req;
+
+      if (user) {
+        config.userName = user.getFullName();
+      }
+
+      return res.render('pages/transactions', {
+        title: 'Transactions',
+        config,
+      });
+    } catch (exp) {
+      return next(exp);
+    }
+  });
+
   return router;
 };
 
