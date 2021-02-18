@@ -1,4 +1,5 @@
 const { path } = require('ramda');
+const querystring = require('querystring');
 const config = require('../config');
 
 function validateOffenderNumberFor(offenderNo) {
@@ -7,6 +8,7 @@ function validateOffenderNumberFor(offenderNo) {
 }
 
 const getBookingsUrlFrom = path(['prisonApi', 'endpoints', 'bookings']);
+const getOffenderUrlFrom = path(['prisonApi', 'endpoints', 'offenders']);
 
 function offenderRepository(httpClient) {
   function getOffenderDetailsFor(offenderNo) {
@@ -27,6 +29,19 @@ function offenderRepository(httpClient) {
   function getBalancesFor(bookingId) {
     return httpClient.get(
       `${getBookingsUrlFrom(config)}/${bookingId}/balances`,
+    );
+  }
+
+  function getTransactionsFor(prisonerId, accountCode, fromDate, toDate) {
+    const query = querystring.encode({
+      account_code: accountCode,
+      from_date: fromDate,
+      to_date: toDate,
+    });
+    return httpClient.get(
+      `${getOffenderUrlFrom(
+        config,
+      )}/${prisonerId}/transaction-history?${query}`,
     );
   }
 
@@ -85,6 +100,7 @@ function offenderRepository(httpClient) {
     sentenceDetailsFor,
     getEventsForToday,
     getEventsFor,
+    getTransactionsFor,
   };
 }
 

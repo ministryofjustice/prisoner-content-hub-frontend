@@ -50,13 +50,23 @@ const createMoneyRouter = ({ hubContentService, offenderService }) => {
 
       const { user } = req;
 
+      const data = {};
+
       if (user) {
+        const transactions = await offenderService.getTransactionsFor(
+          user,
+          'spends',
+          '2021-01-16',
+          '2021-02-12',
+        );
+        data.transactions = transactions;
         config.userName = user.getFullName();
       }
 
       return res.render('pages/transactions', {
         title: 'Transactions',
         config,
+        data,
       });
     } catch (exp) {
       return next(exp);

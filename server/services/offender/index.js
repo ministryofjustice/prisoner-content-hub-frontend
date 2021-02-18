@@ -16,6 +16,7 @@ const createOffenderService = (
     ImportantDates,
     Timetable,
     TimetableEvent,
+    Transaction,
   } = responses,
 ) => {
   async function getOffenderDetailsFor(user) {
@@ -69,6 +70,34 @@ const createOffenderService = (
       logger.debug(e.stack);
       return {
         error: 'We are not able to show your balances at this time',
+      };
+    }
+  }
+
+  async function getTransactionsFor(user, accountCode, fromDate, toDate) {
+    try {
+      logger.info(
+        `OffenderService (getTransactionsFor) - User: ${user.prisonerId}`,
+      );
+
+      if (!user.prisonerId) {
+        throw new Error('No prisonerId passed');
+      }
+
+      const response = await repository.getTransactionsFor(
+        user.prisonerId,
+        accountCode,
+        fromDate,
+        toDate,
+      );
+      return response.map(t => Transaction.from(t).format());
+    } catch (e) {
+      logger.error(
+        `OffenderService (getTransactionsFor) - Failed: ${e.message} - User: ${user.prisonerId}`,
+      );
+      logger.debug(e.stack);
+      return {
+        error: 'We are not able to show your transactions at this time',
       };
     }
   }
@@ -257,6 +286,7 @@ const createOffenderService = (
     getEventsForToday,
     getEventsFor,
     getEmptyTimetable,
+    getTransactionsFor,
   };
 };
 

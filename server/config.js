@@ -129,6 +129,7 @@ module.exports = {
     },
     endpoints: {
       bookings: `${prisonApiBaseUrl}/api/bookings`,
+      offenders: `${prisonApiBaseUrl}/api/offenders`,
     },
   },
   elasticsearch: {

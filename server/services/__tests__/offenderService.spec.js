@@ -79,6 +79,42 @@ describe('Offender Service', () => {
     });
   });
 
+  describe('getTransactionsFor', () => {
+    it('returns formatted transaction data', async () => {
+      const repository = {
+        getTransactionsFor: jest
+          .fn()
+          .mockReturnValue([RAW_RESPONSE, RAW_RESPONSE, RAW_RESPONSE]),
+      };
+
+      const service = createPrisonApiOffenderService(repository, {
+        Transaction: mockAdapter,
+      });
+      const TEST_ACCOUNT_CODE = 'TEST_ACCOUNT_CODE';
+      const TEST_FROM_DATE = 'TEST_FROM_DATE';
+      const TEST_TO_DATE = 'TEST_TO_DATE';
+      const data = await service.getTransactionsFor(
+        TEST_USER,
+        TEST_ACCOUNT_CODE,
+        TEST_FROM_DATE,
+        TEST_TO_DATE,
+      );
+
+      expect(repository.getTransactionsFor).toHaveBeenCalledWith(
+        TEST_PRISONER_ID,
+        TEST_ACCOUNT_CODE,
+        TEST_FROM_DATE,
+        TEST_TO_DATE,
+      );
+      expect(mockAdapter.from).toHaveBeenCalledWith(RAW_RESPONSE);
+      expect(data).toStrictEqual([
+        FORMATTED_RESPONSE,
+        FORMATTED_RESPONSE,
+        FORMATTED_RESPONSE,
+      ]);
+    });
+  });
+
   describe('getKeyWorkerFor', () => {
     it('returns formatted KeyWorker data', async () => {
       const repository = {
