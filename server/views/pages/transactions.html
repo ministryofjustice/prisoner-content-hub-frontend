@@ -1,6 +1,10 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "../components/page-navigation/macro.njk" import pageNavigation %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "../components/transaction/macro.njk" import transaction %}
 {% from "../components/user-details/macro.njk" import userDetails %}
 
 {% extends "../components/template.njk" %}
@@ -42,6 +46,35 @@
 {% block homeNavigation %}{% endblock %}
 {% block search %}{% endblock %}
 
+{% block main %}
+{% set testIdPrefix = "spends-" %}
+
+<div class="govuk-width-container govuk-body">
+  <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Current balance</h2>
+  <p class="govuk-body-l" data-test="{{ testIdPrefix + 'current-balance' }}">{{transaction.balance}}</p>
+
+  {{ transaction({
+          data: data.transactions
+        }) }}
+
+  {% if spendsRows.length %}
+    {{ govukTable({
+      head: [
+        { text: "Date" },
+        { text: "Money in" },
+        { text: "Money out" },
+        { text: "Balance" },
+        { text: "Payment description" },
+        { text: "Location" }
+      ],
+      rows: spendsRows,
+      attributes: { "data-test": testIdPrefix + "table" }
+    }) }}
+  {% else %}
+    <p class="govuk-body" data-test="{{ testIdPrefix + 'no-transactions-message' }}">There are no payments in or out of this account for the selected month.</p>
+  {% endif %}
+  </div>
+{% endblock %}
 
 {% block bodyEnd %}
   <script src="/public/all.js"></script>

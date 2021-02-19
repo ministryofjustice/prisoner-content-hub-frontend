@@ -1,0 +1,11 @@
+{% if params %}
+  <div class="govuk-tabs govuk-!-display-none-print">
+    {% for transaction in params.data %}
+      <p>{{transaction.paymentDate}}
+      {{transaction.amount}}
+      {{transaction.balance}}
+      {{transaction.paymentDescription}}
+      {{transaction.prison}}</p>
+      {% endfor %}
+  </div>
+{% endif %}
