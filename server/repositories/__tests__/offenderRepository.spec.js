@@ -136,6 +136,19 @@ describe('offenderRepository', () => {
     });
   });
 
+  describe('getPrisonDetailsFor', () => {
+    it('calls the agencies endpoint for a agency ID', async () => {
+      const client = {
+        get: jest.fn().mockResolvedValue('SOME_RESULT'),
+      };
+      const repository = offenderRepository(client);
+      const result = await repository.getPrisonDetailsFor('FOO_ID');
+
+      expect(lastCall(client.get)[0]).toContain('/api/agencies/FOO_ID');
+      expect(result).toBe('SOME_RESULT');
+    });
+  });
+
   describe('getNextVisitFor', () => {
     it('calls the nextVisit endpoint for a given ID', async () => {
       const client = {

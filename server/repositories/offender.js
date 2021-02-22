@@ -9,6 +9,7 @@ function validateOffenderNumberFor(offenderNo) {
 
 const getBookingsUrlFrom = path(['prisonApi', 'endpoints', 'bookings']);
 const getOffenderUrlFrom = path(['prisonApi', 'endpoints', 'offenders']);
+const getBaseUrlFrom = path(['prisonApi', 'endpoints', 'base']);
 
 function offenderRepository(httpClient) {
   function getOffenderDetailsFor(offenderNo) {
@@ -89,6 +90,10 @@ function offenderRepository(httpClient) {
     return httpClient.get(`${endpoint}?${query.join('&')}`);
   }
 
+  function getPrisonDetailsFor(prisonId) {
+    return httpClient.get(`${getBaseUrlFrom(config)}/agencies/${[prisonId]}`);
+  }
+
   return {
     getOffenderDetailsFor,
     getIncentivesSummaryFor,
@@ -101,6 +106,7 @@ function offenderRepository(httpClient) {
     getEventsForToday,
     getEventsFor,
     getTransactionsFor,
+    getPrisonDetailsFor,
   };
 }
 
