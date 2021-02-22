@@ -1,5 +1,6 @@
 const { path } = require('ramda');
 const express = require('express');
+const { subDays, formatISO } = require('date-fns');
 
 const createMoneyRouter = ({ hubContentService, offenderService }) => {
   const router = express.Router();
@@ -53,13 +54,28 @@ const createMoneyRouter = ({ hubContentService, offenderService }) => {
       const data = {};
 
       if (user) {
-        const transactions = await offenderService.getTransactionsFor(
-          user,
-          'spends',
-          '2021-01-16',
-          '2021-02-12',
-        );
+        const accountTypes = ['spends', 'private', 'savings'];
+        const accountType = accountTypes.includes(req.query.accountType)
+          ? req.query.accountType
+          : accountTypes[0];
+
+        const transactionsTo = new Date();
+        const transactionsFrom = subDays(transactionsTo, 30);
+
+        const [transactions, balances] = await Promise.all([
+          offenderService.getTransactionsFor(
+            user,
+            accountType,
+            formatISO(transactionsFrom, { representation: 'date' }),
+            formatISO(transactionsTo, { representation: 'date' }),
+          ),
+          offenderService.getBalancesFor(user),
+        ]);
+
         data.transactions = transactions;
+        data.balance = balances[accountType];
+        data.selected = accountType;
+        data.accountTypes = accountTypes;
         config.userName = user.getFullName();
       }
 
