@@ -1,4 +1,8 @@
-const { fullNameOrDefault, formatBalanceOrDefault } = require('../string');
+const {
+  fullNameOrDefault,
+  formatBalanceOrDefault,
+  formatPrisonName,
+} = require('../string');
 
 describe('StringUtils', () => {
   describe('fullNameOrDefault', () => {
@@ -43,5 +47,22 @@ describe('StringUtils', () => {
       const balance = formatBalanceOrDefault('PLACEHOLDER', 5.0);
       expect(balance).toBe('PLACEHOLDER');
     });
+  });
+});
+
+describe('formatPrisonName', () => {
+  it('should format HMP prisons', () => {
+    const formatted = formatPrisonName('HMP TEST PRISON');
+    expect(formatted).toBe('HMP Test Prison');
+  });
+
+  it('should format HMYOI prisons', () => {
+    const formatted = formatPrisonName('HMYOI TEST PRISON');
+    expect(formatted).toBe('HMYOI Test Prison');
+  });
+
+  it('handle and empty string', () => {
+    const formatted = formatPrisonName('');
+    expect(formatted).toBe('');
   });
 });
