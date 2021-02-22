@@ -58,6 +58,11 @@ const createMoneyRouter = ({ hubContentService, offenderService }) => {
         const accountType = accountTypes.includes(req.query.accountType)
           ? req.query.accountType
           : accountTypes[0];
+        const accountTypeMachineName = {
+          spends: 'spends',
+          private: 'cash',
+          savings: 'savings',
+        };
 
         const transactionsTo = new Date();
         const transactionsFrom = subDays(transactionsTo, 30);
@@ -65,14 +70,37 @@ const createMoneyRouter = ({ hubContentService, offenderService }) => {
         const [transactions, balances] = await Promise.all([
           offenderService.getTransactionsFor(
             user,
-            accountType,
+            accountTypeMachineName[accountType],
             formatISO(transactionsFrom, { representation: 'date' }),
             formatISO(transactionsTo, { representation: 'date' }),
           ),
           offenderService.getBalancesFor(user),
         ]);
 
-        data.transactions = transactions;
+        const listOfPrisons = Array.from(
+          new Set(transactions.map(transaction => transaction.prison)),
+        );
+        const prisonDetails = await Promise.all(
+          listOfPrisons.map(prisonId =>
+            offenderService.getPrisonDetailsFor(prisonId),
+          ),
+        );
+        const prisonDetailsLookup = prisonDetails.reduce(
+          (accumulator, prison) => {
+            if (Object.hasOwnProperty.call(accumulator, prison.prisonId)) {
+              return accumulator;
+            }
+            const updated = { ...accumulator };
+            updated[prison.prisonId] = prison.longDescription;
+            return updated;
+          },
+          {},
+        );
+
+        data.transactions = transactions.map(transaction => ({
+          ...transaction,
+          prison: prisonDetailsLookup[transaction.prison],
+        }));
         data.balance = balances[accountType];
         data.selected = accountType;
         data.accountTypes = accountTypes;
