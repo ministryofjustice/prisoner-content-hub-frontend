@@ -1,39 +1,51 @@
-<ul class="govuk-tabs__list">
-  {% for accountType in params.accountTypes %}
-    <li class="govuk-tabs__list-item{% if accountType == params.selected %} govuk-tabs__list-item--selected{% endif %}">
-      <a class="govuk-tabs__tab" href="/money/transactions?accountType={{accountType}}">
-        {{ accountType | capitalize }}
-      </a>
-    </li>
-  {% endfor %}
-</ul>
-<div class="govuk-tabs__panel" id="past-day">
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Current balance</h2>
-  <p>{{ params.balance }}</P>
-  {% if params.transactions %}
-    <table class="govuk-table">
-      <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Payment date</th>
-          <th scope="col" class="govuk-table__header">Money in</th>
-          <th scope="col" class="govuk-table__header">Money out</th>
-          <th scope="col" class="govuk-table__header">Balance</th>
-          <th scope="col" class="govuk-table__header">Payment description</th>
-          <th scope="col" class="govuk-table__header">Prison</th>
-        </tr>
-      </thead>
-      <tbody class="govuk-table__body">
-        {% for t in params.transactions %}
-          <tr class="govuk-table__row">
-            <td class="govuk-table__cell">{{t.paymentDate}}</td>
-            <td class="govuk-table__cell">{{t.moneyIn}}</td>
-            <td class="govuk-table__cell">{{t.moneyOut}}</td>
-            <td class="govuk-table__cell">{{t.balance}}</td>
-            <td class="govuk-table__cell">{{t.paymentDescription}}</td>
-            <td class="govuk-table__cell">{{t.prison}}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+{% if params.data.error %}
+  <p class="govuk-!-font-size-24">
+    {{params.transactions.error}}, <a href="{{ params.authReturnUrl }}" class="govuk-link">try again</a>
+  </p>
+{% else %}
+  {% if not isLoggedIn %}
+    <p class="govuk-!-font-size-24">
+      <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your transactions
+    </p>
+  {% else %}
+    <ul class="govuk-tabs__list">
+      {% for accountType in params.accountTypes %}
+        <li class="govuk-tabs__list-item{% if accountType == params.selected %} govuk-tabs__list-item--selected{% endif %}">
+          <a class="govuk-tabs__tab" href="/money/transactions?accountType={{accountType}}">
+            {{ accountType | capitalize }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+    <div class="govuk-tabs__panel" id="past-day">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Current balance</h2>
+      <p>{{ params.balance }}</P>
+      {% if params.transactions %}
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Payment date</th>
+              <th scope="col" class="govuk-table__header">Money in</th>
+              <th scope="col" class="govuk-table__header">Money out</th>
+              <th scope="col" class="govuk-table__header">Balance</th>
+              <th scope="col" class="govuk-table__header">Payment description</th>
+              <th scope="col" class="govuk-table__header">Prison</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            {% for t in params.transactions %}
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell">{{t.paymentDate}}</td>
+                <td class="govuk-table__cell">{{t.moneyIn}}</td>
+                <td class="govuk-table__cell">{{t.moneyOut}}</td>
+                <td class="govuk-table__cell">{{t.balance}}</td>
+                <td class="govuk-table__cell">{{t.paymentDescription}}</td>
+                <td class="govuk-table__cell">{{t.prison}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    </div>
   {% endif %}
-</div>
+{% endif %}

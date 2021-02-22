@@ -54,27 +54,29 @@
         transactions: data.transactions,
         balance: data.balance,
         selected: data.selected,
-        accountTypes: data.accountTypes
-    }) }}
+        accountTypes: data.accountTypes,
+        authReturnUrl: config.returnUrl
+    }, config.userName) }}
 
     <div class="govuk-hub-article-feedback">
       <p class="govuk-body">Tell us what you think:</p>
       {{ hubFeedbackWidget({
-      title: data.title,
-      contentId: data.id,
-      contentType: data.contentType,
-      feedbackId: feedbackId,
-      categories: data.categories,
-      secondaryTags: data.secondaryTags
-    })}}
+        title: data.title,
+        contentId: data.id,
+        contentType: data.contentType,
+        feedbackId: feedbackId,
+        categories: data.categories,
+        secondaryTags: data.secondaryTags
+      }) }}
     </div>
-  {% endblock %}
+  </div>
+{% endblock %}
 
-  {% block bodyEnd %}
-    <script src="/public/all.js"></script>
-    <script>
-      window
-        .GOVUKFrontend
-        .initAll();
-    </script>
-  {% endblock %}
+{% block bodyEnd %}
+  <script src="/public/all.js"></script>
+  <script>
+    window
+      .GOVUKFrontend
+      .initAll();
+  </script>
+{% endblock %}
