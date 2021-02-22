@@ -17,6 +17,7 @@ const createOffenderService = (
     Timetable,
     TimetableEvent,
     Transaction,
+    Prison,
   } = responses,
 ) => {
   async function getOffenderDetailsFor(user) {
@@ -276,6 +277,27 @@ const createOffenderService = (
     return Timetable.create({ startDate, endDate }).build();
   }
 
+  async function getPrisonDetailsFor(prisonId) {
+    try {
+      logger.info(
+        `OffenderService (getPrisonDetailsFor) - prisonId: ${prisonId}`,
+      );
+
+      if (!prisonId) {
+        throw new Error('No prisonId passed');
+      }
+
+      const response = await repository.getPrisonDetailsFor(prisonId);
+      return Prison.from(response).format();
+    } catch (e) {
+      logger.error(
+        `OffenderService (getPrisonDetailsFor) - Failed: ${e.message} - prisonId: ${prisonId}`,
+      );
+      logger.debug(e.stack);
+      return null;
+    }
+  }
+
   return {
     getOffenderDetailsFor,
     getIncentivesSummaryFor,
@@ -287,6 +309,7 @@ const createOffenderService = (
     getEventsFor,
     getEmptyTimetable,
     getTransactionsFor,
+    getPrisonDetailsFor,
   };
 };
 

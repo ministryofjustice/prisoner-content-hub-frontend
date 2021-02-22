@@ -115,6 +115,24 @@ describe('Offender Service', () => {
     });
   });
 
+  describe('getPrisonDetailsFor', () => {
+    it('returns formatted Prison data', async () => {
+      const repository = {
+        getPrisonDetailsFor: jest.fn().mockReturnValue(RAW_RESPONSE),
+      };
+
+      const service = createPrisonApiOffenderService(repository, {
+        Prison: mockAdapter,
+      });
+
+      const data = await service.getPrisonDetailsFor(123);
+
+      expect(repository.getPrisonDetailsFor).toHaveBeenCalledWith(123);
+      expect(mockAdapter.from).toHaveBeenCalledWith(RAW_RESPONSE);
+      expect(data).toBe(FORMATTED_RESPONSE);
+    });
+  });
+
   describe('getKeyWorkerFor', () => {
     it('returns formatted KeyWorker data', async () => {
       const repository = {
