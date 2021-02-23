@@ -61,6 +61,15 @@ describe('formatPrisonName', () => {
     expect(formatted).toBe('HMYOI Test Prison');
   });
 
+  it('should not format strings that are not prefixed with HMP/HMYOI', () => {
+    const formatted = formatPrisonName('FOO bar');
+    expect(formatted).toBe('FOO bar');
+    const formatted2 = formatPrisonName('foo BAR');
+    expect(formatted2).toBe('foo BAR');
+    const formatted3 = formatPrisonName('foo BAR baz');
+    expect(formatted3).toBe('foo BAR baz');
+  });
+
   it('handle and empty string', () => {
     const formatted = formatPrisonName('');
     expect(formatted).toBe('');
