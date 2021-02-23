@@ -61,12 +61,9 @@
     <div class="govuk-hub-article-feedback">
       <p class="govuk-body">Tell us what you think:</p>
       {{ hubFeedbackWidget({
-        title: data.title,
-        contentId: data.id,
-        contentType: data.contentType,
-        feedbackId: feedbackId,
-        categories: data.categories,
-        secondaryTags: data.secondaryTags
+        title: title,
+        contentType: 'TRANSACTIONS',
+        feedbackId: feedbackId
       }) }}
     </div>
   </div>
