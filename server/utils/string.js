@@ -1,6 +1,9 @@
 const { capitalize } = require('./index');
 
 const formatPrisonName = description => {
+  if (typeof description !== 'string') {
+    return '';
+  }
   if (!description.match(/^(HMP|HMYOI) (.+)$/)) {
     return description;
   }

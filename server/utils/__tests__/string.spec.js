@@ -70,8 +70,25 @@ describe('formatPrisonName', () => {
     expect(formatted3).toBe('foo BAR baz');
   });
 
-  it('handle and empty string', () => {
+  it('should handle empty strings', () => {
     const formatted = formatPrisonName('');
     expect(formatted).toBe('');
+  });
+
+  it('should handle non-string values', () => {
+    const formatted = formatPrisonName(1);
+    expect(formatted).toBe('');
+    const formatted2 = formatPrisonName([]);
+    expect(formatted2).toBe('');
+    const formatted3 = formatPrisonName({});
+    expect(formatted3).toBe('');
+  });
+
+  it('should handle nullish values', () => {
+    const formatted = formatPrisonName(null);
+    expect(formatted).toBe('');
+
+    const formatted2 = formatPrisonName(undefined);
+    expect(formatted2).toBe('');
   });
 });
