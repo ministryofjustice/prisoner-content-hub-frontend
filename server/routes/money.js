@@ -77,31 +77,45 @@ const createMoneyRouter = ({ hubContentService, offenderService }) => {
           offenderService.getBalancesFor(user),
         ]);
 
-        const listOfPrisons = Array.from(
-          new Set(transactions.map(transaction => transaction.prison)),
-        );
-        const prisonDetails = await Promise.all(
-          listOfPrisons.map(prisonId =>
-            offenderService.getPrisonDetailsFor(prisonId),
-          ),
-        );
-        const prisonDetailsLookup = prisonDetails.reduce(
-          (accumulator, prison) => {
-            if (Object.hasOwnProperty.call(accumulator, prison.prisonId)) {
-              return accumulator;
-            }
-            const updated = { ...accumulator };
-            updated[prison.prisonId] = prison.longDescription;
-            return updated;
-          },
-          {},
-        );
+        if (!transactions.error) {
+          const listOfPrisons = Array.from(
+            new Set(transactions.map(transaction => transaction.prison)),
+          );
 
-        data.transactions = transactions.map(transaction => ({
-          ...transaction,
-          prison: prisonDetailsLookup[transaction.prison],
-        }));
-        data.balance = balances[accountType];
+          const prisonDetails = await Promise.all(
+            listOfPrisons.map(prisonId =>
+              offenderService.getPrisonDetailsFor(prisonId),
+            ),
+          );
+
+          const prisonDetailsLookup = prisonDetails
+            .filter(p => p !== null)
+            .reduce((accumulator, prison) => {
+              if (Object.hasOwnProperty.call(accumulator, prison.prisonId)) {
+                return accumulator;
+              }
+              const updated = { ...accumulator };
+              updated[prison.prisonId] = prison.longDescription;
+              return updated;
+            }, {});
+
+          if (Object.keys(prisonDetailsLookup).length > 0) {
+            data.transactions = transactions.map(transaction => ({
+              ...transaction,
+              prison: prisonDetailsLookup[transaction.prison],
+            }));
+          } else {
+            data.transactions = transactions;
+          }
+        } else {
+          data.transactions = {
+            error: transactions.error,
+          };
+        }
+
+        data.balance = balances.error
+          ? { error: balances.error }
+          : { amount: balances[accountType] };
         data.selected = accountType;
         data.accountTypes = accountTypes;
         config.userName = user.getFullName();
