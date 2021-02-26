@@ -1,6 +1,7 @@
 {% if not isLoggedIn %}
+  <h2 class="govuk-heading-m">You are signed out</h2>
   <p class="govuk-!-font-size-24">
-    <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your transactions
+    <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
     </p>
 {% else %}
   <ul class="govuk-tabs__list">
