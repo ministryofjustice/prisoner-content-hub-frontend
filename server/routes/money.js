@@ -122,7 +122,7 @@ const createMoneyRouter = ({ hubContentService, offenderService }) => {
       }
 
       return res.render('pages/transactions', {
-        title: 'Transactions',
+        title: 'Your transactions',
         config,
         data,
       });
