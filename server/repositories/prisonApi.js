@@ -1,18 +1,16 @@
-const { path } = require('ramda');
 const querystring = require('querystring');
 const { formatISO } = require('date-fns');
 const { logger } = require('../utils/logger');
-const defaultConfiguration = require('../config');
+const { getEnv } = require('../../utils');
 
 class PrisonApiRepository {
-  constructor({ client, config = defaultConfiguration }) {
+  constructor({ client, apiUrl }) {
     this.client = client;
-    this.config = config;
-  }
-
-  // We could eventually shunt this up in to the PrisonAPI client as the default base URL
-  getBaseUrl() {
-    return path(['prisonApi', 'endpoints', 'base'], this.config);
+    this.url =
+      apiUrl ||
+      getEnv('PRISON_API_BASE_URL', 'https://api.nomis', {
+        requireInProduction: true,
+      });
   }
 
   async getTransactionsFor(prisonerId, accountCode, fromDate, toDate) {
@@ -32,7 +30,7 @@ class PrisonApiRepository {
       );
 
       const response = await this.client.get(
-        `${this.getBaseUrl()}/offenders/${prisonerId}/transaction-history?${query}`,
+        `${this.url}/api/offenders/${prisonerId}/transaction-history?${query}`,
       );
 
       return response;
@@ -56,13 +54,33 @@ class PrisonApiRepository {
       );
 
       const response = await this.client.get(
-        `${this.getBaseUrl()}/offenders/${prisonId}/agencies/${[prisonId]}`,
+        `${this.url}/api/offenders/${prisonId}/agencies/${[prisonId]}`,
       );
 
       return response;
     } catch (e) {
       logger.error(
         `PrisonApiRepository (getPrisonDetailsFor) - Failed: ${e.message} - Prison ID: ${prisonId}`,
+      );
+      logger.debug(e.stack);
+      return null;
+    }
+  }
+
+  async getBalancesFor(bookingId) {
+    if (!bookingId) {
+      throw new Error('Incorrect parameters passed');
+    }
+
+    try {
+      const response = await this.client.get(
+        `${this.url}/api/bookings/${bookingId}/balances`,
+      );
+
+      return response;
+    } catch (e) {
+      logger.error(
+        `PrisonApiRepository (getBalancesFor) - Failed: ${e.message} - Booking ID: ${bookingId}`,
       );
       logger.debug(e.stack);
       return null;

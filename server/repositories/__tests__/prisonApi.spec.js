@@ -4,13 +4,7 @@ const { lastCall } = require('../../../test/test-helpers');
 describe('PrisonApiRepository', () => {
   const client = { get: jest.fn() };
 
-  const config = {
-    prisonApi: {
-      endpoints: {
-        base: '/api',
-      },
-    },
-  };
+  const apiUrl = 'http://foo.bar';
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -18,7 +12,7 @@ describe('PrisonApiRepository', () => {
 
   describe('getTransactionsFor', () => {
     it('should return when the transactions request succeeds', async () => {
-      const repository = new PrisonApiRepository({ client, config });
+      const repository = new PrisonApiRepository({ client, apiUrl });
 
       client.get.mockImplementation(() => Promise.resolve('API_RESPONSE'));
 
@@ -40,7 +34,7 @@ describe('PrisonApiRepository', () => {
     });
 
     it('should throw when no prisoner ID is passed', async () => {
-      const repository = new PrisonApiRepository({ client, config });
+      const repository = new PrisonApiRepository({ client, apiUrl });
 
       client.get.mockImplementation(() => Promise.resolve('API_RESPONSE'));
 
@@ -62,7 +56,7 @@ describe('PrisonApiRepository', () => {
     });
 
     it('should throw when no accountCode is passed', async () => {
-      const repository = new PrisonApiRepository({ client, config });
+      const repository = new PrisonApiRepository({ client, apiUrl });
 
       client.get.mockImplementation(() => Promise.resolve('API_RESPONSE'));
 
@@ -84,7 +78,7 @@ describe('PrisonApiRepository', () => {
     });
 
     it('should throw when no fromDate is passed', async () => {
-      const repository = new PrisonApiRepository({ client, config });
+      const repository = new PrisonApiRepository({ client, apiUrl });
 
       client.get.mockImplementation(() => Promise.resolve('API_RESPONSE'));
 
@@ -106,7 +100,7 @@ describe('PrisonApiRepository', () => {
     });
 
     it('should throw when no toDate is passed', async () => {
-      const repository = new PrisonApiRepository({ client, config });
+      const repository = new PrisonApiRepository({ client, apiUrl });
 
       client.get.mockImplementation(() => Promise.resolve('API_RESPONSE'));
 
@@ -128,7 +122,7 @@ describe('PrisonApiRepository', () => {
     });
 
     it('should swallow the error and return nothing when the request fails', async () => {
-      const repository = new PrisonApiRepository({ client, config });
+      const repository = new PrisonApiRepository({ client, apiUrl });
 
       client.get.mockImplementation(() => Promise.rejects('💥'));
 
@@ -145,7 +139,7 @@ describe('PrisonApiRepository', () => {
 
   describe('getPrisonDetailsFor', () => {
     it('should return when the prison details request succeeds', async () => {
-      const repository = new PrisonApiRepository({ client, config });
+      const repository = new PrisonApiRepository({ client, apiUrl });
 
       client.get.mockImplementation(() => Promise.resolve('API_RESPONSE'));
 
@@ -157,7 +151,7 @@ describe('PrisonApiRepository', () => {
     });
 
     it('should throw when no prisonId is passed', async () => {
-      const repository = new PrisonApiRepository({ client, config });
+      const repository = new PrisonApiRepository({ client, apiUrl });
 
       client.get.mockImplementation(() => Promise.resolve('API_RESPONSE'));
 
@@ -174,11 +168,52 @@ describe('PrisonApiRepository', () => {
     });
 
     it('should swallow the error and return nothing when the request fails', async () => {
-      const repository = new PrisonApiRepository({ client, config });
+      const repository = new PrisonApiRepository({ client, apiUrl });
 
       client.get.mockImplementation(() => Promise.rejects('💥'));
 
       const response = await repository.getPrisonDetailsFor('TST');
+
+      expect(response).toBeNull();
+    });
+  });
+
+  describe('getBalancesFor', () => {
+    it('should return when the balances request succeeds', async () => {
+      const repository = new PrisonApiRepository({ client, apiUrl });
+
+      client.get.mockImplementation(() => Promise.resolve('API_RESPONSE'));
+
+      const response = await repository.getBalancesFor('123456');
+
+      expect(lastCall(client.get)[0]).toContain('/bookings/123456/balances');
+
+      expect(response).toBe('API_RESPONSE');
+    });
+
+    it('should throw when no bookingId is passed', async () => {
+      const repository = new PrisonApiRepository({ client, apiUrl });
+
+      client.get.mockImplementation(() => Promise.resolve('API_RESPONSE'));
+
+      let hasThrown = false;
+
+      try {
+        await repository.getBalancesFor();
+      } catch (e) {
+        hasThrown = true;
+        expect(client.get).not.toHaveBeenCalled();
+      }
+
+      expect(hasThrown).toBe(true);
+    });
+
+    it('should swallow the error and return nothing when the request fails', async () => {
+      const repository = new PrisonApiRepository({ client, apiUrl });
+
+      client.get.mockImplementation(() => Promise.rejects('💥'));
+
+      const response = await repository.getBalancesFor('123456');
 
       expect(response).toBeNull();
     });
