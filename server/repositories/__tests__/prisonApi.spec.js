@@ -142,4 +142,45 @@ describe('PrisonApiRepository', () => {
       expect(response).toBeNull();
     });
   });
+
+  describe('getPrisonDetailsFor', () => {
+    it('should return when the prison details request succeeds', async () => {
+      const repository = new PrisonApiRepository({ client, config });
+
+      client.get.mockImplementation(() => Promise.resolve('API_RESPONSE'));
+
+      const response = await repository.getPrisonDetailsFor('TST');
+
+      expect(lastCall(client.get)[0]).toContain('/agencies/TST');
+
+      expect(response).toBe('API_RESPONSE');
+    });
+
+    it('should throw when no prisonId is passed', async () => {
+      const repository = new PrisonApiRepository({ client, config });
+
+      client.get.mockImplementation(() => Promise.resolve('API_RESPONSE'));
+
+      let hasThrown = false;
+
+      try {
+        await repository.getPrisonDetailsFor();
+      } catch (e) {
+        hasThrown = true;
+        expect(client.get).not.toHaveBeenCalled();
+      }
+
+      expect(hasThrown).toBe(true);
+    });
+
+    it('should swallow the error and return nothing when the request fails', async () => {
+      const repository = new PrisonApiRepository({ client, config });
+
+      client.get.mockImplementation(() => Promise.rejects('💥'));
+
+      const response = await repository.getPrisonDetailsFor('TST');
+
+      expect(response).toBeNull();
+    });
+  });
 });

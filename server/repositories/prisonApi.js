@@ -44,6 +44,30 @@ class PrisonApiRepository {
       return null;
     }
   }
+
+  async getPrisonDetailsFor(prisonId) {
+    if (!prisonId) {
+      throw new Error('Incorrect parameters passed');
+    }
+
+    try {
+      logger.info(
+        `PrisonApiRepository (getPrisonDetailsFor) - Prison ID: ${prisonId}`,
+      );
+
+      const response = await this.client.get(
+        `${this.getBaseUrl()}/offenders/${prisonId}/agencies/${[prisonId]}`,
+      );
+
+      return response;
+    } catch (e) {
+      logger.error(
+        `PrisonApiRepository (getPrisonDetailsFor) - Failed: ${e.message} - Prison ID: ${prisonId}`,
+      );
+      logger.debug(e.stack);
+      return null;
+    }
+  }
 }
 
 module.exports = {
