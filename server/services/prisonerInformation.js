@@ -1,3 +1,5 @@
+const { logger } = require('../utils/logger');
+
 function createPrisonMapFrom(prisonDetailsResponse) {
   return prisonDetailsResponse
     .filter(p => p !== null)
@@ -26,46 +28,54 @@ class PrisonerInformationService {
       throw new Error('Incorrect parameters passed');
     }
 
-    const [transactionsResponse, balancesResponse] = await Promise.all([
-      this.prisonApi.getTransactionsFor({
-        prisonerId: user.prisonerId,
-        accountCode,
-        fromDate,
-        toDate,
-      }),
-      this.prisonApi.getBalancesFor(user.bookingId),
-    ]);
+    try {
+      const [transactionsResponse, balancesResponse] = await Promise.all([
+        this.prisonApi.getTransactionsFor({
+          prisonerId: user.prisonerId,
+          accountCode,
+          fromDate,
+          toDate,
+        }),
+        this.prisonApi.getBalancesFor(user.bookingId),
+      ]);
 
-    const balances = balancesResponse || {
-      error: 'We are not able to show your balances at this time',
-    };
+      const balances = balancesResponse || {
+        error: 'We are not able to show your balances at this time',
+      };
 
-    if (transactionsResponse) {
-      const listOfPrisons = Array.from(
-        new Set(transactionsResponse.map(t => t.agencyId)),
-      );
-      const prisonDetailsResponse = await Promise.all(
-        listOfPrisons.map(p => this.prisonApi.getPrisonDetailsFor(p)),
-      );
+      if (transactionsResponse) {
+        const listOfPrisons = Array.from(
+          new Set(transactionsResponse.map(t => t.agencyId)),
+        );
+        const prisonDetailsResponse = await Promise.all(
+          listOfPrisons.map(p => this.prisonApi.getPrisonDetailsFor(p)),
+        );
 
-      const prisonDetailsMap = createPrisonMapFrom(prisonDetailsResponse);
-      const formattedTransactions = formatTransactionsWith(
-        transactionsResponse,
-        prisonDetailsMap,
-      );
+        const prisonDetailsMap = createPrisonMapFrom(prisonDetailsResponse);
+        const formattedTransactions = formatTransactionsWith(
+          transactionsResponse,
+          prisonDetailsMap,
+        );
+
+        return {
+          transactions: formattedTransactions,
+          balances,
+        };
+      }
 
       return {
-        transactions: formattedTransactions,
+        transactions: {
+          error: 'We are not able to show your transactions at this time',
+        },
         balances,
       };
+    } catch (e) {
+      logger.error(
+        `PrisonerInformationService (getTransactionInformationFor) - Failed: ${e.message}`,
+      );
+      logger.debug(e.stack);
+      return null;
     }
-
-    return {
-      transactions: {
-        error: 'We are not able to show your transactions at this time',
-      },
-      balances,
-    };
   }
 }
 

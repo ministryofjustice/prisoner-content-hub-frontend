@@ -343,5 +343,78 @@ describe('PrisonerInformation', () => {
 
       expect(hasThrown).toBe(true);
     });
+
+    it('swallows the exception and return null if an error is thrown getting transactions', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsFor = jest.fn(() =>
+        Promise.rejects('💥'),
+      );
+      prisonApiRepository.getBalancesFor = jest.fn(() =>
+        Promise.resolve(balances),
+      );
+      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
+        Promise.resolve(prison),
+      );
+
+      const result = await prisonerInformationService.getTransactionInformationFor(
+        user,
+        'spends',
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(result).toBeNull();
+    });
+
+    it('swallows the exception and return null if an error is thrown getting balances', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsFor = jest.fn(() =>
+        Promise.resolves(transactions),
+      );
+      prisonApiRepository.getBalancesFor = jest.fn(() => Promise.rejects('💥'));
+      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
+        Promise.resolve(prison),
+      );
+
+      const result = await prisonerInformationService.getTransactionInformationFor(
+        user,
+        'spends',
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(result).toBeNull();
+    });
+
+    it('swallows the exception and return null if an error is thrown getting prison details', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsFor = jest.fn(() =>
+        Promise.resolves(transactions),
+      );
+      prisonApiRepository.getBalancesFor = jest.fn(() =>
+        Promise.resolve(balances),
+      );
+      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
+        Promise.resolve('💥'),
+      );
+
+      const result = await prisonerInformationService.getTransactionInformationFor(
+        user,
+        'spends',
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(result).toBeNull();
+    });
   });
 });
