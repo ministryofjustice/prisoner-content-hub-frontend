@@ -54,7 +54,7 @@ class PrisonApiRepository {
       );
 
       const response = await this.client.get(
-        `${this.url}/api/offenders/${prisonId}/agencies/${[prisonId]}`,
+        `${this.url}/api/agencies/${[prisonId]}`,
       );
 
       return response;

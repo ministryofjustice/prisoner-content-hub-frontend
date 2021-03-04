@@ -46,6 +46,7 @@ const createApp = ({
   hubContentService,
   hubTagsService,
   offenderService,
+  prisonerInformationService,
   searchService,
   analyticsService,
   feedbackService,
@@ -262,6 +263,7 @@ const createApp = ({
     createMoneyRouter({
       hubContentService,
       offenderService,
+      prisonerInformationService,
     }),
   );
 

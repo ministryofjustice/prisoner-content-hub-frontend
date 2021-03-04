@@ -1,8 +1,46 @@
 const { path } = require('ramda');
 const express = require('express');
-const { subDays, formatISO } = require('date-fns');
+const { subDays } = require('date-fns');
+const { formatBalanceOrDefault, formatPrisonName } = require('../utils/string');
+const { formatDateOrDefault } = require('../utils/date');
 
-const createMoneyRouter = ({ hubContentService, offenderService }) => {
+function formatTransaction(t) {
+  return {
+    paymentDate: formatDateOrDefault('', 'd MMMM yyyy', t.entryDate),
+    balance: formatBalanceOrDefault(null, t.currentBalance / 100, t.currency),
+    moneyIn:
+      t.postingType === 'CR'
+        ? formatBalanceOrDefault(null, t.penceAmount / 100, t.currency)
+        : null,
+    moneyOut:
+      t.postingType === 'DR'
+        ? formatBalanceOrDefault(null, t.penceAmount / 100, t.currency)
+        : null,
+    paymentDescription: t.entryDescription,
+    prison: formatPrisonName(t.prison),
+  };
+}
+
+function getAccountCodeFor(accountType) {
+  const accountCodes = {
+    spends: 'spends',
+    private: 'cash',
+    savings: 'savings',
+  };
+
+  return accountCodes[accountType];
+}
+
+function formatBalanceFor(accountType, balances) {
+  const balance = balances[getAccountCodeFor(accountType)];
+  return formatBalanceOrDefault(null, balance, balances.currency);
+}
+
+const createMoneyRouter = ({
+  hubContentService,
+  offenderService,
+  prisonerInformationService,
+}) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
@@ -58,64 +96,31 @@ const createMoneyRouter = ({ hubContentService, offenderService }) => {
         const accountType = accountTypes.includes(req.query.accountType)
           ? req.query.accountType
           : accountTypes[0];
-        const accountTypeMachineName = {
-          spends: 'spends',
-          private: 'cash',
-          savings: 'savings',
-        };
 
-        const transactionsTo = new Date();
-        const transactionsFrom = subDays(transactionsTo, 30);
+        const toDate = new Date();
+        const fromDate = subDays(toDate, 30);
 
-        const [transactions, balances] = await Promise.all([
-          offenderService.getTransactionsFor(
-            user,
-            accountTypeMachineName[accountType],
-            formatISO(transactionsFrom, { representation: 'date' }),
-            formatISO(transactionsTo, { representation: 'date' }),
-          ),
-          offenderService.getBalancesFor(user),
-        ]);
+        const prisonerInformation = await prisonerInformationService.getTransactionInformationFor(
+          user,
+          getAccountCodeFor(accountType),
+          fromDate,
+          toDate,
+        );
 
-        if (!transactions.error) {
-          const listOfPrisons = Array.from(
-            new Set(transactions.map(transaction => transaction.prison)),
-          );
-
-          const prisonDetails = await Promise.all(
-            listOfPrisons.map(prisonId =>
-              offenderService.getPrisonDetailsFor(prisonId),
-            ),
-          );
-
-          const prisonDetailsLookup = prisonDetails
-            .filter(p => p !== null)
-            .reduce((accumulator, prison) => {
-              if (Object.hasOwnProperty.call(accumulator, prison.prisonId)) {
-                return accumulator;
-              }
-              const updated = { ...accumulator };
-              updated[prison.prisonId] = prison.longDescription;
-              return updated;
-            }, {});
-
-          if (Object.keys(prisonDetailsLookup).length > 0) {
-            data.transactions = transactions.map(transaction => ({
-              ...transaction,
-              prison: prisonDetailsLookup[transaction.prison],
-            }));
-          } else {
-            data.transactions = transactions;
-          }
-        } else {
-          data.transactions = {
-            error: transactions.error,
-          };
+        if (prisonerInformation) {
+          data.transactions = prisonerInformation.transactions.error
+            ? prisonerInformation.transactions
+            : prisonerInformation.transactions.map(formatTransaction);
+          data.balance = prisonerInformation.balances.error
+            ? prisonerInformation.balances
+            : {
+                amount: formatBalanceFor(
+                  accountType,
+                  prisonerInformation.balances,
+                ),
+              };
         }
 
-        data.balance = balances.error
-          ? { error: balances.error }
-          : { amount: balances[accountType] };
         data.selected = accountType;
         data.accountTypes = accountTypes;
         config.userName = user.getFullName();

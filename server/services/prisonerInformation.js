@@ -30,12 +30,12 @@ class PrisonerInformationService {
 
     try {
       const [transactionsResponse, balancesResponse] = await Promise.all([
-        this.prisonApi.getTransactionsFor({
-          prisonerId: user.prisonerId,
+        this.prisonApi.getTransactionsFor(
+          user.prisonerId,
           accountCode,
           fromDate,
           toDate,
-        }),
+        ),
         this.prisonApi.getBalancesFor(user.bookingId),
       ]);
 

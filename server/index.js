@@ -23,6 +23,9 @@ const { createPrisonApiOffenderService } = require('./services/offender');
 const { createSearchService } = require('./services/search');
 const { createAnalyticsService } = require('./services/analytics');
 const { createFeedbackService } = require('./services/feedback');
+const {
+  PrisonerInformationService,
+} = require('./services/prisonerInformation');
 
 // Repositories
 const {
@@ -37,9 +40,7 @@ const { offenderRepository } = require('./repositories/offender');
 const { searchRepository } = require('./repositories/search');
 const { analyticsRepository } = require('./repositories/analytics');
 const { feedbackRepository } = require('./repositories/feedback');
-
-const hubClient = new HubClient();
-const standardClient = new StandardClient();
+const { PrisonApiRepository } = require('./repositories/prisonApi');
 
 const cachingStrategy = path(['features', 'useRedisCache'], config)
   ? new RedisCachingStrategy(
@@ -47,6 +48,13 @@ const cachingStrategy = path(['features', 'useRedisCache'], config)
       redis.createClient(config.caching.redis),
     )
   : new InMemoryCachingStrategy();
+
+const hubClient = new HubClient();
+const standardClient = new StandardClient();
+const prisonApiClient = new PrisonApiClient({
+  prisonApi: config.prisonApi,
+  cachingStrategy,
+});
 
 module.exports = createApp({
   logger,
@@ -66,13 +74,11 @@ module.exports = createApp({
   }),
   hubTagsService: createHubTagsService(contentRepository(hubClient)),
   offenderService: createPrisonApiOffenderService(
-    offenderRepository(
-      new PrisonApiClient({
-        prisonApi: config.prisonApi,
-        cachingStrategy,
-      }),
-    ),
+    offenderRepository(prisonApiClient),
   ),
+  prisonerInformationService: new PrisonerInformationService({
+    prisonApiRepository: new PrisonApiRepository({ client: prisonApiClient }),
+  }),
   searchService: createSearchService({
     searchRepository: searchRepository(standardClient),
   }),

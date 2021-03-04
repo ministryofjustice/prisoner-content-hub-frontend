@@ -4,11 +4,9 @@ const createAxiosRequestError = require('axios/lib/core/createError');
 
 const { createMoneyRouter } = require('../money');
 const {
-  createPrisonApiOffenderService: createPrisonApiService,
-} = require('../../services/offender');
-const {
-  offenderRepository: createPrisonApiRepository,
-} = require('../../repositories/offender');
+  PrisonerInformationService,
+} = require('../../services/prisonerInformation');
+const { PrisonApiRepository } = require('../../repositories/prisonApi');
 const { User } = require('../../auth/user');
 
 const {
@@ -18,13 +16,16 @@ const {
 
 describe('GET /money/transactions', () => {
   let app;
-  const mockClient = { get: jest.fn() };
+  const client = { get: jest.fn() };
 
-  const offenderRepository = createPrisonApiRepository(mockClient);
-  const offenderService = createPrisonApiService(offenderRepository);
+  const prisonApiRepository = new PrisonApiRepository({ client });
+  const prisonerInformationService = new PrisonerInformationService({
+    prisonApiRepository,
+  });
   const moneyRouter = createMoneyRouter({
     hubContentService: () => {},
-    offenderService,
+    offenderService: () => {},
+    prisonerInformationService,
   });
 
   const testUser = new User({
@@ -87,7 +88,7 @@ describe('GET /money/transactions', () => {
   });
 
   it('should display the transactions when the user is signed in', async () => {
-    mockClient.get.mockImplementation(requestUrl => {
+    client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve(transactionApiResponse);
       }
@@ -127,7 +128,7 @@ describe('GET /money/transactions', () => {
   });
 
   it('should handle when there are no transactions to display', async () => {
-    mockClient.get.mockImplementation(requestUrl => {
+    client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve([]);
       }
@@ -156,7 +157,7 @@ describe('GET /money/transactions', () => {
   });
 
   it('should allow tabs to be selected', async () => {
-    mockClient.get.mockImplementation(requestUrl => {
+    client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve([]);
       }
@@ -185,7 +186,7 @@ describe('GET /money/transactions', () => {
   });
 
   it('should default when the selected tab is not valid', async () => {
-    mockClient.get.mockImplementation(requestUrl => {
+    client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return [];
       }
@@ -214,7 +215,7 @@ describe('GET /money/transactions', () => {
   });
 
   it('should notify the user when unable to fetch transaction data', async () => {
-    mockClient.get.mockImplementation(requestUrl => {
+    client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.reject(fiveOhThree);
       }
@@ -247,7 +248,7 @@ describe('GET /money/transactions', () => {
   });
 
   it('should handle failures to the agency API gracefully', async () => {
-    mockClient.get.mockImplementation(requestUrl => {
+    client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve(transactionApiResponse);
       }
@@ -283,7 +284,7 @@ describe('GET /money/transactions', () => {
   });
 
   it('should notify the user when unable to fetch balance data', async () => {
-    mockClient.get.mockImplementation(requestUrl => {
+    client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve(transactionApiResponse);
       }
