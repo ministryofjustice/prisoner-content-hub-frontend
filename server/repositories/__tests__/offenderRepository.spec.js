@@ -75,54 +75,6 @@ describe('offenderRepository', () => {
     });
   });
 
-  describe('getTransactionsFor', () => {
-    it('calls the transaction history endpoint for a given ID', async () => {
-      const client = {
-        get: jest.fn().mockResolvedValue('SOME_RESULT'),
-      };
-      const repository = offenderRepository(client);
-      const result = await repository.getTransactionsFor('FOO_ID');
-
-      expect(lastCall(client.get)[0]).toContain('/FOO_ID/transaction-history');
-      expect(result).toBe('SOME_RESULT');
-    });
-
-    it('should handle account code', async () => {
-      const client = {
-        get: jest.fn().mockResolvedValue('SOME_RESULT'),
-      };
-      const repository = offenderRepository(client);
-      const result = await repository.getTransactionsFor(
-        'FOO_ID',
-        'FOO_ACCOUNT_CODE',
-      );
-
-      expect(lastCall(client.get)[0]).toContain('/FOO_ID/transaction-history');
-      expect(lastCall(client.get)[0]).toContain(
-        'account_code=FOO_ACCOUNT_CODE',
-      );
-      expect(result).toBe('SOME_RESULT');
-    });
-
-    it('should handle date range', async () => {
-      const client = {
-        get: jest.fn().mockResolvedValue('SOME_RESULT'),
-      };
-      const repository = offenderRepository(client);
-      const result = await repository.getTransactionsFor(
-        'FOO_ID',
-        null,
-        'FOO_FROM_DATE',
-        'FOO_TO_DATE',
-      );
-
-      expect(lastCall(client.get)[0]).toContain('/FOO_ID/transaction-history');
-      expect(lastCall(client.get)[0]).toContain('from_date=FOO_FROM_DATE');
-      expect(lastCall(client.get)[0]).toContain('to_date=FOO_TO_DATE');
-      expect(result).toBe('SOME_RESULT');
-    });
-  });
-
   describe('getKeyWorkerFor', () => {
     it('calls the keyWorker endpoint for a given ID', async () => {
       const client = {
@@ -132,19 +84,6 @@ describe('offenderRepository', () => {
       const result = await repository.getKeyWorkerFor('FOO_ID');
 
       expect(lastCall(client.get)[0]).toContain('/FOO_ID/key-worker');
-      expect(result).toBe('SOME_RESULT');
-    });
-  });
-
-  describe('getPrisonDetailsFor', () => {
-    it('calls the agencies endpoint for a agency ID', async () => {
-      const client = {
-        get: jest.fn().mockResolvedValue('SOME_RESULT'),
-      };
-      const repository = offenderRepository(client);
-      const result = await repository.getPrisonDetailsFor('FOO_ID');
-
-      expect(lastCall(client.get)[0]).toContain('/api/agencies/FOO_ID');
       expect(result).toBe('SOME_RESULT');
     });
   });

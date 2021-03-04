@@ -8,7 +8,6 @@ module.exports = {
     PRETTY_DAY: 'EEEE',
     PRETTY_DAY_AND_MONTH: 'd MMMM',
     PRETTY_TIME: 'h:mmaaa',
-    TRANSACTION_FORMAT: 'd MMMM yyyy',
     ISO_DATE: 'yyyy-MM-dd',
     ISO_DATE_TIME: 'yyyy-MM-dd HH:mm',
     HOUR: 'H',

@@ -6,8 +6,6 @@ const { NextVisit } = require('./nextVisit');
 const { ImportantDates } = require('./importantDates');
 const { Timetable } = require('./timetable');
 const { TimetableEvent } = require('./timetableEvent');
-const { Transaction } = require('./transaction');
-const { Prison } = require('./prison');
 
 module.exports = {
   IncentivesSummary,
@@ -18,6 +16,4 @@ module.exports = {
   ImportantDates,
   Timetable,
   TimetableEvent,
-  Transaction,
-  Prison,
 };

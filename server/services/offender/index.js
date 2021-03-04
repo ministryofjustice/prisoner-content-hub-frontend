@@ -16,8 +16,6 @@ const createOffenderService = (
     ImportantDates,
     Timetable,
     TimetableEvent,
-    Transaction,
-    Prison,
   } = responses,
 ) => {
   async function getOffenderDetailsFor(user) {
@@ -71,34 +69,6 @@ const createOffenderService = (
       logger.debug(e.stack);
       return {
         error: 'We are not able to show your balances at this time',
-      };
-    }
-  }
-
-  async function getTransactionsFor(user, accountCode, fromDate, toDate) {
-    try {
-      logger.info(
-        `OffenderService (getTransactionsFor) - User: ${user.prisonerId}`,
-      );
-
-      if (!user.prisonerId) {
-        throw new Error('No prisonerId passed');
-      }
-
-      const response = await repository.getTransactionsFor(
-        user.prisonerId,
-        accountCode,
-        fromDate,
-        toDate,
-      );
-      return response.map(t => Transaction.from(t).format());
-    } catch (e) {
-      logger.error(
-        `OffenderService (getTransactionsFor) - Failed: ${e.message} - User: ${user.prisonerId}`,
-      );
-      logger.debug(e.stack);
-      return {
-        error: 'We are not able to show your transactions at this time',
       };
     }
   }
@@ -277,27 +247,6 @@ const createOffenderService = (
     return Timetable.create({ startDate, endDate }).build();
   }
 
-  async function getPrisonDetailsFor(prisonId) {
-    try {
-      logger.info(
-        `OffenderService (getPrisonDetailsFor) - prisonId: ${prisonId}`,
-      );
-
-      if (!prisonId) {
-        throw new Error('No prisonId passed');
-      }
-
-      const response = await repository.getPrisonDetailsFor(prisonId);
-      return Prison.from(response).format();
-    } catch (e) {
-      logger.error(
-        `OffenderService (getPrisonDetailsFor) - Failed: ${e.message} - prisonId: ${prisonId}`,
-      );
-      logger.debug(e.stack);
-      return null;
-    }
-  }
-
   return {
     getOffenderDetailsFor,
     getIncentivesSummaryFor,
@@ -308,8 +257,6 @@ const createOffenderService = (
     getEventsForToday,
     getEventsFor,
     getEmptyTimetable,
-    getTransactionsFor,
-    getPrisonDetailsFor,
   };
 };
 
