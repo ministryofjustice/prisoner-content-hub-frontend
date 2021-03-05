@@ -29,10 +29,10 @@ describe('GET /money/transactions', () => {
   });
 
   const testUser = new User({
-    prisonerId: 'PRISONER_ID',
+    prisonerId: 'A1234BC',
     firstName: 'Test',
     surname: 'User',
-    bookingId: 'BOOKING_ID',
+    bookingId: 5678,
   });
 
   const transactionApiResponse = [

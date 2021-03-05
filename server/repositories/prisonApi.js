@@ -1,6 +1,14 @@
 const querystring = require('querystring');
+const assert = require('assert');
 const { formatISO } = require('date-fns');
 const { logger } = require('../utils/logger');
+const {
+  isValidPrisonerId,
+  isValidAccountCode,
+  isValidDate,
+  isValidBookingId,
+  isValidPrisonId,
+} = require('../utils/validators');
 const { getEnv } = require('../../utils');
 
 class PrisonApiRepository {
@@ -14,9 +22,16 @@ class PrisonApiRepository {
   }
 
   async getTransactionsFor(prisonerId, accountCode, fromDate, toDate) {
-    if (!prisonerId || !accountCode || !fromDate || !toDate) {
-      throw new Error('Incorrect parameters passed');
-    }
+    assert(
+      isValidPrisonerId(prisonerId),
+      `Prisoner ID must be a string in the format "A1234BC" - Received: ${prisonerId}`,
+    );
+    assert(
+      isValidAccountCode(accountCode),
+      `Invalid account code - Received: ${accountCode}`,
+    );
+    assert(isValidDate(fromDate), 'From date must be a valid Date object');
+    assert(isValidDate(toDate), 'To date must be a valid Date object');
 
     try {
       const query = querystring.encode({
@@ -44,9 +59,10 @@ class PrisonApiRepository {
   }
 
   async getPrisonDetailsFor(prisonId) {
-    if (!prisonId) {
-      throw new Error('Incorrect parameters passed');
-    }
+    assert(
+      isValidPrisonId(prisonId),
+      `Prison ID must be a three letter code - Received: ${prisonId}`,
+    );
 
     try {
       logger.info(
@@ -68,9 +84,10 @@ class PrisonApiRepository {
   }
 
   async getBalancesFor(bookingId) {
-    if (!bookingId) {
-      throw new Error('Incorrect parameters passed');
-    }
+    assert(
+      isValidBookingId(bookingId),
+      `Booking ID must be in the format 1234 - Received: ${bookingId}`,
+    );
 
     try {
       const response = await this.client.get(

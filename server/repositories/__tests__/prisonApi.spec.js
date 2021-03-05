@@ -16,14 +16,14 @@ describe('PrisonApiRepository', () => {
       client.get.mockResolvedValue('API_RESPONSE');
 
       const response = await repository.getTransactionsFor(
-        'A123BC',
+        'A1234BC',
         'spends',
         new Date('2020-01-01'),
         new Date('2020-01-31'),
       );
 
       expect(client.get).toHaveBeenCalledWith(
-        'http://foo.bar/api/offenders/A123BC/transaction-history?account_code=spends&from_date=2020-01-01&to_date=2020-01-31',
+        'http://foo.bar/api/offenders/A1234BC/transaction-history?account_code=spends&from_date=2020-01-01&to_date=2020-01-31',
       );
 
       expect(response).toBe('API_RESPONSE');
@@ -53,7 +53,7 @@ describe('PrisonApiRepository', () => {
 
       await expect(
         repository.getTransactionsFor(
-          'A123BC',
+          'A1234BC',
           null,
           new Date('2020-01-01'),
           new Date('2020-01-31'),
@@ -70,7 +70,7 @@ describe('PrisonApiRepository', () => {
 
       await expect(
         repository.getTransactionsFor(
-          'A123BC',
+          'A1234BC',
           'spends',
           null,
           new Date('2020-01-31'),
@@ -85,7 +85,7 @@ describe('PrisonApiRepository', () => {
 
       await expect(
         repository.getTransactionsFor(
-          'A123BC',
+          'A1234BC',
           'spends',
           new Date('2020-01-01'),
           null,
@@ -101,7 +101,7 @@ describe('PrisonApiRepository', () => {
       client.get.mockRejectedValue('💥');
 
       const response = await repository.getTransactionsFor(
-        'A123BC',
+        'A1234BC',
         'spends',
         new Date('2020-01-01'),
         new Date('2020-01-31'),
@@ -153,10 +153,10 @@ describe('PrisonApiRepository', () => {
 
       client.get.mockResolvedValue('API_RESPONSE');
 
-      const response = await repository.getBalancesFor('123456');
+      const response = await repository.getBalancesFor(4567);
 
       expect(client.get).toHaveBeenCalledWith(
-        'http://foo.bar/api/bookings/123456/balances',
+        'http://foo.bar/api/bookings/4567/balances',
       );
 
       expect(response).toBe('API_RESPONSE');
@@ -177,7 +177,7 @@ describe('PrisonApiRepository', () => {
 
       client.get.mockRejectedValue('💥');
 
-      const response = await repository.getBalancesFor('123456');
+      const response = await repository.getBalancesFor(4567);
 
       expect(response).toBeNull();
     });
