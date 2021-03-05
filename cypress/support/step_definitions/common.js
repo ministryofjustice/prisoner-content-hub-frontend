@@ -13,11 +13,6 @@ Given('that I am viewing some content', () => {
   cy.get('.home-content a').first().click();
 });
 
-Given('that I am signed in on the money page', () => {
-  cy.visit('http://wayland.prisoner-content-hub.local:3000/money');
-  cy.get('a').contains('Sign in').click();
-});
-
 When('I click the {string} link', linkText => {
   cy.get('a').contains(linkText).click();
 });
