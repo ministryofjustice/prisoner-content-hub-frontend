@@ -48,15 +48,26 @@ describe('PrisonerInformation', () => {
     currency: 'GBP',
   };
 
-  const prison = {
-    agencyId: 'TST',
-    description: 'Test (HMP)',
-    longDescription: 'HMP Test',
-  };
+  const prisons = [
+    {
+      agencyId: 'TST',
+      description: 'Test (HMP)',
+      formattedDescription: 'Test (HMP)',
+    },
+    {
+      agencyId: 'TST2',
+      description: 'Test 2 (HMP)',
+      formattedDescription: 'Test 2 (HMP)',
+    },
+  ];
 
   beforeEach(() => {
     jest.clearAllMocks();
-    prisonApiRepository = {};
+    prisonApiRepository = {
+      getTransactionsFor: jest.fn(),
+      getBalancesFor: jest.fn(),
+      getPrisonDetails: jest.fn(),
+    };
   });
 
   describe('getTransactionInformationFor', () => {
@@ -65,15 +76,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor = jest.fn(() =>
-        Promise.resolve(transactions),
-      );
-      prisonApiRepository.getBalancesFor = jest.fn(() =>
-        Promise.resolve(balances),
-      );
-      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
-        Promise.resolve(prison),
-      );
+      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
       const data = await prisonerInformationService.getTransactionInformationFor(
         user,
@@ -92,7 +97,7 @@ describe('PrisonerInformation', () => {
         balance: 30,
         entryDescription: 'Received some money',
         agencyId: 'TST',
-        prison: 'HMP Test',
+        prison: 'Test (HMP)',
       });
     });
 
@@ -101,15 +106,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor = jest.fn(() =>
-        Promise.resolve(transactions),
-      );
-      prisonApiRepository.getBalancesFor = jest.fn(() =>
-        Promise.resolve(balances),
-      );
-      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
-        Promise.resolve(null),
-      );
+      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue([]);
 
       const data = await prisonerInformationService.getTransactionInformationFor(
         user,
@@ -137,15 +136,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor = jest.fn(() =>
-        Promise.resolve(null),
-      );
-      prisonApiRepository.getBalancesFor = jest.fn(() =>
-        Promise.resolve(balances),
-      );
-      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
-        Promise.resolve(prison),
-      );
+      prisonApiRepository.getTransactionsFor.mockResolvedValue(null);
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
       const data = await prisonerInformationService.getTransactionInformationFor(
         user,
@@ -163,15 +156,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor = jest.fn(() =>
-        Promise.resolve(transactions),
-      );
-      prisonApiRepository.getBalancesFor = jest.fn(() =>
-        Promise.resolve(balances),
-      );
-      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
-        Promise.resolve(prison),
-      );
+      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
       const data = await prisonerInformationService.getTransactionInformationFor(
         user,
@@ -189,13 +176,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor = jest.fn(() =>
-        Promise.resolve(transactions),
-      );
-      prisonApiRepository.getBalancesFor = jest.fn(() => Promise.resolve(null));
-      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
-        Promise.resolve(prison),
-      );
+      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getBalancesFor.mockResolvedValue(null);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
       const data = await prisonerInformationService.getTransactionInformationFor(
         user,
@@ -213,33 +196,22 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor = jest.fn(() =>
-        Promise.resolve(transactions),
-      );
-      prisonApiRepository.getBalancesFor = jest.fn(() =>
-        Promise.resolve(balances),
-      );
-      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
-        Promise.resolve(prison),
-      );
+      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      let hasThrown = false;
-
-      try {
-        await prisonerInformationService.getTransactionInformationFor(
+      await expect(
+        prisonerInformationService.getTransactionInformationFor(
           null,
           'spends',
           new Date('2021-01-01'),
           new Date('2021-01-01'),
-        );
-      } catch (e) {
-        expect(prisonApiRepository.getTransactionsFor).not.toHaveBeenCalled();
-        expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
-        expect(prisonApiRepository.getPrisonDetailsFor).not.toHaveBeenCalled();
-        hasThrown = true;
-      }
+        ),
+      ).rejects.toThrow();
 
-      expect(hasThrown).toBe(true);
+      expect(prisonApiRepository.getTransactionsFor).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getPrisonDetails).not.toHaveBeenCalled();
     });
 
     it('throws when called without an account code', async () => {
@@ -247,33 +219,22 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor = jest.fn(() =>
-        Promise.resolve(transactions),
-      );
-      prisonApiRepository.getBalancesFor = jest.fn(() =>
-        Promise.resolve(balances),
-      );
-      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
-        Promise.resolve(prison),
-      );
+      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      let hasThrown = false;
-
-      try {
-        await prisonerInformationService.getTransactionInformationFor(
+      await expect(
+        prisonerInformationService.getTransactionInformationFor(
           user,
           null,
           new Date('2021-01-01'),
           new Date('2021-01-01'),
-        );
-      } catch (e) {
-        expect(prisonApiRepository.getTransactionsFor).not.toHaveBeenCalled();
-        expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
-        expect(prisonApiRepository.getPrisonDetailsFor).not.toHaveBeenCalled();
-        hasThrown = true;
-      }
+        ),
+      ).rejects.toThrow();
 
-      expect(hasThrown).toBe(true);
+      expect(prisonApiRepository.getTransactionsFor).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getPrisonDetails).not.toHaveBeenCalled();
     });
 
     it('throws when called without a from-date', async () => {
@@ -281,33 +242,22 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor = jest.fn(() =>
-        Promise.resolve(transactions),
-      );
-      prisonApiRepository.getBalancesFor = jest.fn(() =>
-        Promise.resolve(balances),
-      );
-      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
-        Promise.resolve(prison),
-      );
+      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      let hasThrown = false;
-
-      try {
-        await prisonerInformationService.getTransactionInformationFor(
+      await expect(
+        prisonerInformationService.getTransactionInformationFor(
           user,
           'spends',
           null,
           new Date('2021-01-01'),
-        );
-      } catch (e) {
-        expect(prisonApiRepository.getTransactionsFor).not.toHaveBeenCalled();
-        expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
-        expect(prisonApiRepository.getPrisonDetailsFor).not.toHaveBeenCalled();
-        hasThrown = true;
-      }
+        ),
+      ).rejects.toThrow();
 
-      expect(hasThrown).toBe(true);
+      expect(prisonApiRepository.getTransactionsFor).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getPrisonDetails).not.toHaveBeenCalled();
     });
 
     it('throws when called without a to-date', async () => {
@@ -315,33 +265,22 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor = jest.fn(() =>
-        Promise.resolve(transactions),
-      );
-      prisonApiRepository.getBalancesFor = jest.fn(() =>
-        Promise.resolve(balances),
-      );
-      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
-        Promise.resolve(prison),
-      );
+      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      let hasThrown = false;
-
-      try {
-        await prisonerInformationService.getTransactionInformationFor(
+      await expect(
+        prisonerInformationService.getTransactionInformationFor(
           user,
           'spends',
           new Date('2021-01-01'),
           null,
-        );
-      } catch (e) {
-        expect(prisonApiRepository.getTransactionsFor).not.toHaveBeenCalled();
-        expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
-        expect(prisonApiRepository.getPrisonDetailsFor).not.toHaveBeenCalled();
-        hasThrown = true;
-      }
+        ),
+      ).rejects.toThrow();
 
-      expect(hasThrown).toBe(true);
+      expect(prisonApiRepository.getTransactionsFor).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getPrisonDetails).not.toHaveBeenCalled();
     });
 
     it('swallows the exception and return null if an error is thrown getting transactions', async () => {
@@ -349,15 +288,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor = jest.fn(() =>
-        Promise.rejects('💥'),
-      );
-      prisonApiRepository.getBalancesFor = jest.fn(() =>
-        Promise.resolve(balances),
-      );
-      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
-        Promise.resolve(prison),
-      );
+      prisonApiRepository.getTransactionsFor.mockRejectedValue('💥');
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
       const result = await prisonerInformationService.getTransactionInformationFor(
         user,
@@ -374,13 +307,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor = jest.fn(() =>
-        Promise.resolves(transactions),
-      );
-      prisonApiRepository.getBalancesFor = jest.fn(() => Promise.rejects('💥'));
-      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
-        Promise.resolve(prison),
-      );
+      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getBalancesFor.mockRejectedValue('💥');
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
       const result = await prisonerInformationService.getTransactionInformationFor(
         user,
@@ -397,15 +326,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor = jest.fn(() =>
-        Promise.resolves(transactions),
-      );
-      prisonApiRepository.getBalancesFor = jest.fn(() =>
-        Promise.resolve(balances),
-      );
-      prisonApiRepository.getPrisonDetailsFor = jest.fn(() =>
-        Promise.resolve('💥'),
-      );
+      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockRejectedValue('💥');
 
       const result = await prisonerInformationService.getTransactionInformationFor(
         user,

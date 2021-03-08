@@ -7,7 +7,6 @@ const {
   isValidAccountCode,
   isValidDate,
   isValidBookingId,
-  isValidPrisonId,
 } = require('../utils/validators');
 const { getEnv } = require('../../utils');
 
@@ -58,28 +57,19 @@ class PrisonApiRepository {
     }
   }
 
-  async getPrisonDetailsFor(prisonId) {
-    assert(
-      isValidPrisonId(prisonId),
-      `Prison ID must be a three letter code - Received: ${prisonId}`,
-    );
-
+  async getPrisonDetails() {
     try {
-      logger.info(
-        `PrisonApiRepository (getPrisonDetailsFor) - Prison ID: ${prisonId}`,
-      );
+      logger.info('PrisonApiRepository (getPrisonDetailsFor)');
 
-      const response = await this.client.get(
-        `${this.url}/api/agencies/${[prisonId]}`,
-      );
+      const response = await this.client.get(`${this.url}/api/agencies/prison`);
 
       return response;
     } catch (e) {
       logger.error(
-        `PrisonApiRepository (getPrisonDetailsFor) - Failed: ${e.message} - Prison ID: ${prisonId}`,
+        `PrisonApiRepository (getPrisonDetailsFor) - Failed: ${e.message}`,
       );
       logger.debug(e.stack);
-      return null;
+      return [];
     }
   }
 

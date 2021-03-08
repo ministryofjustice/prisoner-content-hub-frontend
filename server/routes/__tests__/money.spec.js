@@ -44,16 +44,18 @@ describe('GET /money/transactions', () => {
       penceAmount: 50,
       accountType: 'SPND',
       postingType: 'DR',
-      agencyId: 'TST',
+      agencyId: 'prison',
       currentBalance: -443,
     },
   ];
 
-  const agencyApiResponse = {
-    agencyId: 'TST',
-    description: 'Test (HMP)',
-    longDescription: 'HMP TEST',
-  };
+  const agencyApiResponse = [
+    {
+      agencyId: 'prison',
+      description: 'TEST (HMP)',
+      formattedDescription: 'Test (HMP)',
+    },
+  ];
 
   const balancesApiResponse = {
     spends: 123.45,
@@ -92,7 +94,7 @@ describe('GET /money/transactions', () => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve(transactionApiResponse);
       }
-      if (requestUrl.match(/\/agencies\/TST/i)) {
+      if (requestUrl.match(/\/agencies\/prison/i)) {
         return Promise.resolve(agencyApiResponse);
       }
       if (requestUrl.match(/\/balances/i)) {
@@ -123,7 +125,7 @@ describe('GET /money/transactions', () => {
         expect(firstTableRow).toContain('23 February 2021');
         expect(firstTableRow).toContain('£0.50');
         expect(firstTableRow).toContain('-£4.43');
-        expect(firstTableRow).toContain('HMP Test');
+        expect(firstTableRow).toContain('Test (HMP)');
       });
   });
 
@@ -252,7 +254,7 @@ describe('GET /money/transactions', () => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve(transactionApiResponse);
       }
-      if (requestUrl.match(/\/agencies\/TST/i)) {
+      if (requestUrl.match(/\/agencies\/prison/i)) {
         return Promise.reject(fiveOhThree);
       }
       if (requestUrl.match(/\/balances/i)) {
@@ -279,7 +281,7 @@ describe('GET /money/transactions', () => {
         expect(firstTableRow).toContain('23 February 2021');
         expect(firstTableRow).toContain('£0.50');
         expect(firstTableRow).toContain('-£4.43');
-        expect(firstTableRow).toContain('TST');
+        expect(firstTableRow).toContain('prison');
       });
   });
 
@@ -288,7 +290,7 @@ describe('GET /money/transactions', () => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve(transactionApiResponse);
       }
-      if (requestUrl.match(/\/agencies\/TST/i)) {
+      if (requestUrl.match(/\/agencies\/prison/i)) {
         return Promise.resolve(agencyApiResponse);
       }
       if (requestUrl.match(/\/balances/i)) {
@@ -321,7 +323,7 @@ describe('GET /money/transactions', () => {
         expect(firstTableRow).toContain('23 February 2021');
         expect(firstTableRow).toContain('£0.50');
         expect(firstTableRow).toContain('-£4.43');
-        expect(firstTableRow).toContain('HMP Test');
+        expect(firstTableRow).toContain('Test (HMP)');
       });
   });
 });

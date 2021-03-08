@@ -1,7 +1,7 @@
 const { path } = require('ramda');
 const express = require('express');
 const { subDays } = require('date-fns');
-const { formatBalanceOrDefault, formatPrisonName } = require('../utils/string');
+const { formatBalanceOrDefault } = require('../utils/string');
 const { formatDateOrDefault } = require('../utils/date');
 
 function formatTransaction(t) {
@@ -17,7 +17,7 @@ function formatTransaction(t) {
         ? formatBalanceOrDefault(null, t.penceAmount / 100, t.currency)
         : null,
     paymentDescription: t.entryDescription,
-    prison: formatPrisonName(t.prison),
+    prison: t.prison,
   };
 }
 
@@ -131,8 +131,8 @@ const createMoneyRouter = ({
         config,
         data,
       });
-    } catch (exp) {
-      return next(exp);
+    } catch (e) {
+      return next(e);
     }
   });
 

@@ -1,12 +1,10 @@
 const { logger } = require('../utils/logger');
 
 function createPrisonMapFrom(prisonDetailsResponse) {
-  return prisonDetailsResponse
-    .filter(p => p !== null)
-    .reduce((a, p) => {
-      a.set(p.agencyId, p.longDescription);
-      return a;
-    }, new Map());
+  return prisonDetailsResponse.reduce((a, p) => {
+    a.set(p.agencyId, p.formattedDescription);
+    return a;
+  }, new Map());
 }
 
 function formatTransactionsWith(transactions, prisonDetails) {
@@ -29,7 +27,11 @@ class PrisonerInformationService {
     }
 
     try {
-      const [transactionsResponse, balancesResponse] = await Promise.all([
+      const [
+        transactionsResponse,
+        balancesResponse,
+        listOfPrisons,
+      ] = await Promise.all([
         this.prisonApi.getTransactionsFor(
           user.prisonerId,
           accountCode,
@@ -37,6 +39,7 @@ class PrisonerInformationService {
           toDate,
         ),
         this.prisonApi.getBalancesFor(user.bookingId),
+        this.prisonApi.getPrisonDetails(),
       ]);
 
       const balances = balancesResponse || {
@@ -44,14 +47,7 @@ class PrisonerInformationService {
       };
 
       if (transactionsResponse) {
-        const listOfPrisons = Array.from(
-          new Set(transactionsResponse.map(t => t.agencyId)),
-        );
-        const prisonDetailsResponse = await Promise.all(
-          listOfPrisons.map(p => this.prisonApi.getPrisonDetailsFor(p)),
-        );
-
-        const prisonDetailsMap = createPrisonMapFrom(prisonDetailsResponse);
+        const prisonDetailsMap = createPrisonMapFrom(listOfPrisons);
         const formattedTransactions = formatTransactionsWith(
           transactionsResponse,
           prisonDetailsMap,

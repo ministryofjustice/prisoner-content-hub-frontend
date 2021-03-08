@@ -117,23 +117,13 @@ describe('PrisonApiRepository', () => {
 
       client.get.mockResolvedValue('API_RESPONSE');
 
-      const response = await repository.getPrisonDetailsFor('TST');
+      const response = await repository.getPrisonDetails();
 
       expect(client.get).toHaveBeenCalledWith(
-        'http://foo.bar/api/agencies/TST',
+        'http://foo.bar/api/agencies/prison',
       );
 
       expect(response).toBe('API_RESPONSE');
-    });
-
-    it('should throw when no prisonId is passed', async () => {
-      const repository = new PrisonApiRepository({ client, apiUrl });
-
-      client.get.mockResolvedValue('API_RESPONSE');
-
-      await expect(repository.getPrisonDetailsFor()).rejects.toThrow();
-
-      expect(client.get).not.toHaveBeenCalled();
     });
 
     it('should swallow the error and return nothing when the request fails', async () => {
@@ -141,9 +131,9 @@ describe('PrisonApiRepository', () => {
 
       client.get.mockRejectedValue('💥');
 
-      const response = await repository.getPrisonDetailsFor('TST');
+      const response = await repository.getPrisonDetails();
 
-      expect(response).toBeNull();
+      expect(response).toStrictEqual([]);
     });
   });
 
