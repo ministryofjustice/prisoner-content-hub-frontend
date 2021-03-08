@@ -8,16 +8,12 @@ const {
   isValidDate,
   isValidBookingId,
 } = require('../utils/validators');
-const { getEnv } = require('../../utils');
+const { getEnvironmentVariableOrThrow } = require('../../utils');
 
 class PrisonApiRepository {
   constructor({ client, apiUrl }) {
     this.client = client;
-    this.url =
-      apiUrl ||
-      getEnv('PRISON_API_BASE_URL', 'https://api.nomis', {
-        requireInProduction: true,
-      });
+    this.url = apiUrl || getEnvironmentVariableOrThrow('PRISON_API_BASE_URL');
   }
 
   async getTransactionsFor(prisonerId, accountCode, fromDate, toDate) {
