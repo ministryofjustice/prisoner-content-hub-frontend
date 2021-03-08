@@ -51,10 +51,10 @@
   <div class="govuk-width-container govuk-body">
 
     {{ personalTransactions({
-        transactions: data.transactions,
-        balance: data.balance,
-        selected: data.selected,
-        accountTypes: data.accountTypes,
+        transactions: prisonerInformation.transactions,
+        balance: prisonerInformation.balance,
+        selected: prisonerInformation.selected,
+        accountTypes: prisonerInformation.accountTypes,
         authReturnUrl: config.returnUrl
     }, config.userName) }}
 
