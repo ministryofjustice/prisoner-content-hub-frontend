@@ -1,3 +1,5 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
 {% if not isLoggedIn %}
   <h2 class="govuk-heading-m">You are signed out</h2>
   <p class="govuk-!-font-size-24">
@@ -27,6 +29,20 @@
         {{params.transactions.error}}, <a href="{{ params.authReturnUrl }}" class="govuk-link">try again</a>
       </p>
     {% else %}
+      <details class="govuk-details" data-module="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">
+          Help with your transactions
+        </span>
+        </summary>
+        <div class="govuk-details__text">
+          <p>The Hub team cannot help you with transaction queries.</p>
+
+          <p>If you're unsure about a transaction, you should submit an app or ask an officer.</p>
+
+          <a href="/content/8534" class="govuk-link">Read more about what the information on this page means.</a>
+        </div>
+      </details>
       <table class="govuk-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">

@@ -21,7 +21,7 @@ function formatTransaction(transaction) {
       transaction.postingType === 'DR'
         ? formatBalanceOrDefault(
             null,
-            transaction.penceAmount / 100,
+            0 - transaction.penceAmount / 100,
             transaction.currency,
           )
         : null,
