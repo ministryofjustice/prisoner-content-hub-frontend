@@ -28,8 +28,16 @@ const getEnv = (name, fallback, options = {}) => {
   throw new Error(`Missing env var ${name}`);
 };
 
+const getEnvironmentVariableOrThrow = name => {
+  if (process.env[name]) {
+    return process.env[name];
+  }
+  throw new Error(`Environment variable not set - ${name}`);
+};
+
 module.exports = {
   isProduction: production,
   recordBuildInfoTo,
   getEnv,
+  getEnvironmentVariableOrThrow,
 };
