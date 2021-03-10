@@ -93,7 +93,13 @@ jobs:
             - ./node_modules
       - run:
           name: Run Unit and Integration tests
-          command: npm run lint && npm run test
+          command: npm run test
+      - run:
+          name: Lint code
+          command: npm run lint
+      - run:
+          name: Prettier
+          command: npm run prettier -- --list-different
 
   build_preview:
     <<: *defaults
