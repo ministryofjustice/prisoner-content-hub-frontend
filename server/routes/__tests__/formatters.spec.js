@@ -43,7 +43,7 @@ describe('Responses', () => {
         relatedOffenderTransactions: [
           {
             transactionEntrySequence: 1,
-            calendarDate: '2021-03-08',
+            calendarDate: '2021-03-07',
             payTypeCode: 'TST2',
             eventId: null,
             payAmount: 50,
@@ -152,7 +152,7 @@ describe('Responses', () => {
           moneyIn: '£0.50',
           moneyOut: null,
           paymentDate: '8 March 2021',
-          paymentDescription: 'Test 2 from 8 March 2021',
+          paymentDescription: 'Test 1 from 8 March 2021',
           prison: 'HMP Test',
         },
         {
@@ -160,7 +160,7 @@ describe('Responses', () => {
           moneyIn: '£0.50',
           moneyOut: null,
           paymentDate: '8 March 2021',
-          paymentDescription: 'Test 1 from 8 March 2021',
+          paymentDescription: 'Test 2 from 7 March 2021',
           prison: 'HMP Test',
         },
       ]);

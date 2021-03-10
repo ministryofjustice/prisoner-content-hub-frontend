@@ -47,33 +47,32 @@ function flattenTransactions(transactions) {
     transaction1,
     transaction2,
   ) => {
-    if (transaction1.entryDate && transaction2.entryDate)
-      return (
-        parseISO(transaction2.entryDate).valueOf() -
-        parseISO(transaction1.entryDate).valueOf()
-      );
-    if (transaction1.entryDate) return -1;
-    if (transaction2.entryDate) return 1;
+    const diff =
+      parseISO(transaction2.entryDate).valueOf() -
+      parseISO(transaction1.entryDate).valueOf();
 
-    if (transaction1.calendarDate && transaction2.calendarDate)
+    if (diff !== 0) {
+      return diff;
+    }
+
+    if (transaction1.calendarDate && transaction2.calendarDate) {
       return (
         parseISO(transaction2.calendarDate).valueOf() -
         parseISO(transaction1.calendarDate).valueOf()
       );
-    if (transaction1.calendarDate) return -1;
-    if (transaction2.calendarDate) return 1;
+    }
 
     return 0;
   };
   const sortByOldestCalendarDate = (transaction1, transaction2) =>
-    sortByDateTime(transaction1.calendarDate, transaction2.calendarDate);
+    sortByDateTime(transaction2.calendarDate, transaction1.calendarDate);
 
   const relatedTransactions = transactions
     .filter(batchTransactionsOnly)
-    .sort(sortByOldestCalendarDate)
     .flatMap(batchTransaction => {
-      const related = batchTransaction.relatedOffenderTransactions.map(
-        relatedTransaction => ({
+      const related = batchTransaction.relatedOffenderTransactions
+        .sort(sortByOldestCalendarDate)
+        .map(relatedTransaction => ({
           entryDate: batchTransaction.entryDate,
           penceAmount: relatedTransaction.payAmount,
           entryDescription: `${
@@ -86,8 +85,7 @@ function flattenTransactions(transactions) {
           postingType: 'CR',
           currency: batchTransaction.currency,
           prison: batchTransaction.prison,
-        }),
-      );
+        }));
 
       let adjustedBalance = batchTransaction.currentBalance;
 
