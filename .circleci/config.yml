@@ -97,9 +97,10 @@ jobs:
       - run:
           name: Lint code
           command: npm run lint
-      - run:
-          name: Prettier
-          command: npm run prettier -- --list-different
+      # TODO: do we get value from Prettier in CI? This raises intermittent errors in CI
+      # - run:
+      #     name: Prettier
+      #     command: npm run prettier -- --list-different
 
   build_preview:
     <<: *defaults
