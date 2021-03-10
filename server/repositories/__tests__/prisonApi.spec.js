@@ -143,10 +143,10 @@ describe('PrisonApiRepository', () => {
 
       client.get.mockResolvedValue('API_RESPONSE');
 
-      const response = await repository.getBalancesFor(4567);
+      const response = await repository.getBalancesFor(1234567);
 
       expect(client.get).toHaveBeenCalledWith(
-        'http://foo.bar/api/bookings/4567/balances',
+        'http://foo.bar/api/bookings/1234567/balances',
       );
 
       expect(response).toBe('API_RESPONSE');
@@ -167,7 +167,7 @@ describe('PrisonApiRepository', () => {
 
       client.get.mockRejectedValue('💥');
 
-      const response = await repository.getBalancesFor(4567);
+      const response = await repository.getBalancesFor(1234567);
 
       expect(response).toBeNull();
     });

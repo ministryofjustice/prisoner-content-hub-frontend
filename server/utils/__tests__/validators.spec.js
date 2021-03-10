@@ -36,10 +36,6 @@ describe('Validators', () => {
       expect(isValidBookingId(4321)).toBeTruthy();
     });
 
-    it('returns null when the number passed is not 4 digits', () => {
-      expect(isValidBookingId(43213)).toBeFalsy();
-    });
-
     it('returns null when passed data of the wrong type', () => {
       expect(isValidBookingId('1234')).toBeFalsy();
       expect(isValidBookingId([])).toBeFalsy();
