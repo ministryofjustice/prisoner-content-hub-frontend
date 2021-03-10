@@ -1,4 +1,7 @@
+const Sentry = require('@sentry/node');
 const { PrisonApiRepository } = require('../prisonApi');
+
+jest.mock('@sentry/node');
 
 describe('PrisonApiRepository', () => {
   const client = { get: jest.fn() };
@@ -107,6 +110,7 @@ describe('PrisonApiRepository', () => {
         new Date('2020-01-31'),
       );
 
+      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
       expect(response).toBeNull();
     });
   });
@@ -133,6 +137,7 @@ describe('PrisonApiRepository', () => {
 
       const response = await repository.getPrisonDetails();
 
+      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
       expect(response).toStrictEqual([]);
     });
   });
@@ -169,6 +174,7 @@ describe('PrisonApiRepository', () => {
 
       const response = await repository.getBalancesFor(1234567);
 
+      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
       expect(response).toBeNull();
     });
   });

@@ -1,6 +1,8 @@
 const querystring = require('querystring');
 const assert = require('assert');
 const { formatISO } = require('date-fns');
+const Sentry = require('@sentry/node');
+
 const { logger } = require('../utils/logger');
 const {
   isValidPrisonerId,
@@ -45,6 +47,7 @@ class PrisonApiRepository {
 
       return response;
     } catch (e) {
+      Sentry.captureException(e);
       logger.error(
         `PrisonApiRepository (getTransactionsFor) - Failed: ${e.message} - User: ${prisonerId}`,
       );
@@ -61,6 +64,7 @@ class PrisonApiRepository {
 
       return response;
     } catch (e) {
+      Sentry.captureException(e);
       logger.error(
         `PrisonApiRepository (getPrisonDetailsFor) - Failed: ${e.message}`,
       );
@@ -82,6 +86,7 @@ class PrisonApiRepository {
 
       return response;
     } catch (e) {
+      Sentry.captureException(e);
       logger.error(
         `PrisonApiRepository (getBalancesFor) - Failed: ${e.message} - Booking ID: ${bookingId}`,
       );
