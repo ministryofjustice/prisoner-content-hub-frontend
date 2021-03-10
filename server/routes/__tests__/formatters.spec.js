@@ -13,6 +13,55 @@ describe('Responses', () => {
         postingType: 'DR',
         prison: 'HMP Test',
         currentBalance: 12345,
+        relatedOffenderTransactions: [],
+      },
+    ];
+
+    const relatedTransactions = [
+      {
+        entryDate: '2021-03-09',
+        transactionType: 'TELE',
+        entryDescription: 'Television',
+        currency: 'GBP',
+        penceAmount: 50,
+        accountType: 'SPND',
+        postingType: 'DR',
+        prison: 'HMP Test',
+        currentBalance: 12295,
+        relatedOffenderTransactions: [],
+      },
+      {
+        entryDate: '2021-03-08',
+        transactionType: 'A_EARN',
+        entryDescription: 'Payroll',
+        currency: 'GBP',
+        penceAmount: 100,
+        accountType: 'SPND',
+        postingType: 'CR',
+        prison: 'HMP Test',
+        currentBalance: 12345,
+        relatedOffenderTransactions: [
+          {
+            transactionEntrySequence: 1,
+            calendarDate: '2021-03-08',
+            payTypeCode: 'TST2',
+            eventId: null,
+            payAmount: 50,
+            pieceWork: 0,
+            bonusPay: 0,
+            paymentDescription: 'Test 2',
+          },
+          {
+            transactionEntrySequence: 1,
+            calendarDate: '2021-03-08',
+            payTypeCode: 'TST',
+            eventId: null,
+            payAmount: 50,
+            pieceWork: 0,
+            bonusPay: 0,
+            paymentDescription: 'Test 1',
+          },
+        ],
       },
     ];
 
@@ -41,15 +90,16 @@ describe('Responses', () => {
         balances: balancesApiResponse,
       });
 
-      expect(formatted.transactions.length).toBe(1);
-      expect(formatted.transactions[0]).toEqual({
-        balance: '£123.45',
-        moneyIn: '£0.50',
-        moneyOut: null,
-        paymentDate: '23 February 2021',
-        paymentDescription: 'Television',
-        prison: 'HMP Test',
-      });
+      expect(formatted.transactions).toEqual([
+        {
+          balance: '£123.45',
+          moneyIn: '£0.50',
+          moneyOut: null,
+          paymentDate: '23 February 2021',
+          paymentDescription: 'Television',
+          prison: 'HMP Test',
+        },
+      ]);
     });
 
     it('formats negative transactions when present', () => {
@@ -70,31 +120,50 @@ describe('Responses', () => {
         balances: balancesApiResponse,
       });
 
-      expect(formatted.transactions.length).toBe(1);
-      expect(formatted.transactions[0]).toEqual({
-        balance: '£123.45',
-        moneyIn: null,
-        moneyOut: '-£0.50',
-        paymentDate: '23 February 2021',
-        paymentDescription: 'Television',
-        prison: 'HMP Test',
-      });
+      expect(formatted.transactions).toEqual([
+        {
+          balance: '£123.45',
+          moneyIn: null,
+          moneyOut: '-£0.50',
+          paymentDate: '23 February 2021',
+          paymentDescription: 'Television',
+          prison: 'HMP Test',
+        },
+      ]);
     });
-    it('formats negative transactions when present', () => {
+
+    it('formats related transactions when present', () => {
       const formatted = formatTransactionPageData('spends', {
-        transactions: transactionApiResponse,
+        transactions: relatedTransactions,
         balances: balancesApiResponse,
       });
 
-      expect(formatted.transactions.length).toBe(1);
-      expect(formatted.transactions[0]).toEqual({
-        balance: '£123.45',
-        moneyIn: null,
-        moneyOut: '-£0.50',
-        paymentDate: '23 February 2021',
-        paymentDescription: 'Television',
-        prison: 'HMP Test',
-      });
+      expect(formatted.transactions).toEqual([
+        {
+          balance: '£122.95',
+          moneyIn: null,
+          moneyOut: '-£0.50',
+          paymentDate: '9 March 2021',
+          paymentDescription: 'Television',
+          prison: 'HMP Test',
+        },
+        {
+          balance: '£123.45',
+          moneyIn: '£0.50',
+          moneyOut: null,
+          paymentDate: '8 March 2021',
+          paymentDescription: 'Test 2 from 8 March 2021',
+          prison: 'HMP Test',
+        },
+        {
+          balance: '£122.95',
+          moneyIn: '£0.50',
+          moneyOut: null,
+          paymentDate: '8 March 2021',
+          paymentDescription: 'Test 1 from 8 March 2021',
+          prison: 'HMP Test',
+        },
+      ]);
     });
 
     it('returns an error notification when present for transactions', () => {
