@@ -34,9 +34,6 @@ ENV BUILD_NUMBER=${BUILD_NUMBER}
 ENV GIT_REF=${GIT_REF}
 ENV GIT_DATE=${GIT_DATE}
 
-# Run application verification
-RUN npm run verify
-
 RUN apk del git
 
 EXPOSE 3000
