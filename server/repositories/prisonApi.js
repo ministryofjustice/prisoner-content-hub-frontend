@@ -72,7 +72,7 @@ class PrisonApiRepository {
   async getBalancesFor(bookingId) {
     assert(
       isValidBookingId(bookingId),
-      `Booking ID must be in the format 1234 - Received: ${bookingId}`,
+      `Booking ID must be a number - Received: ${bookingId}`,
     );
 
     try {

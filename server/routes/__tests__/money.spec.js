@@ -32,7 +32,7 @@ describe('GET /money/transactions', () => {
     prisonerId: 'A1234BC',
     firstName: 'Test',
     surname: 'User',
-    bookingId: 5678,
+    bookingId: 1234567,
   });
 
   const transactionApiResponse = [
