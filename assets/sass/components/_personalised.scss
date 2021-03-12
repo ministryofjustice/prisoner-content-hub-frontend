@@ -163,3 +163,28 @@
     width: 29.3%;
   }
 }
+
+.transactions__selection_wrapper {
+  background: govuk-colour('light-grey');
+  padding: govuk-spacing(3);
+  margin-bottom: govuk-spacing(5);
+}
+
+.transactions__selection__form {
+  display: flex;
+  flex-flow: row wrap;
+
+  & .govuk-form-group {
+    margin-right: 15px;
+  }
+
+  & * {
+    width: auto;
+    margin-bottom: 0;
+  }
+
+  & button {
+    align-self: flex-end;
+    margin-bottom: 2px;
+  }
+}

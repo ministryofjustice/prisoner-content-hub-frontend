@@ -1,6 +1,7 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
 const createAxiosRequestError = require('axios/lib/core/createError');
+const FakeTimers = require('@sinonjs/fake-timers');
 
 const { createMoneyRouter } = require('../money');
 const {
@@ -77,7 +78,7 @@ describe('GET /money/transactions', () => {
     app = setupBasicApp();
   });
 
-  it('should prompt to sign in when the user is signed out', async () => {
+  it('prompts the user to sign in when they are signed out', async () => {
     app.use('/money', moneyRouter);
 
     await request(app)
@@ -89,7 +90,7 @@ describe('GET /money/transactions', () => {
       });
   });
 
-  it('should display the transactions when the user is signed in', async () => {
+  it('displays the transactions when the user is signed in', async () => {
     client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve(transactionApiResponse);
@@ -129,7 +130,7 @@ describe('GET /money/transactions', () => {
       });
   });
 
-  it('should handle when there are no transactions to display', async () => {
+  it('gracefully handles when there are no transactions to display', async () => {
     client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve([]);
@@ -158,7 +159,7 @@ describe('GET /money/transactions', () => {
       });
   });
 
-  it('should allow tabs to be selected', async () => {
+  it('allow tabs to be selected', async () => {
     client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve([]);
@@ -187,7 +188,7 @@ describe('GET /money/transactions', () => {
       });
   });
 
-  it('should default when the selected tab is not valid', async () => {
+  it('default to "spends" when the selected tab is not valid', async () => {
     client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return [];
@@ -216,7 +217,7 @@ describe('GET /money/transactions', () => {
       });
   });
 
-  it('should notify the user when unable to fetch transaction data', async () => {
+  it('notifies the user when unable to fetch transaction data', async () => {
     client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.reject(fiveOhThree);
@@ -249,7 +250,7 @@ describe('GET /money/transactions', () => {
       });
   });
 
-  it('should handle failures to the agency API gracefully', async () => {
+  it('handles failures to the agency API gracefully', async () => {
     client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve(transactionApiResponse);
@@ -285,7 +286,7 @@ describe('GET /money/transactions', () => {
       });
   });
 
-  it('should notify the user when unable to fetch balance data', async () => {
+  it('notifies the user when unable to fetch balance data', async () => {
     client.get.mockImplementation(requestUrl => {
       if (requestUrl.match(/\/transaction-history/i)) {
         return Promise.resolve(transactionApiResponse);
@@ -325,5 +326,113 @@ describe('GET /money/transactions', () => {
         expect(firstTableRow).toContain('-£4.43');
         expect(firstTableRow).toContain('Test (HMP)');
       });
+  });
+
+  it('allows the user to specify the month for transactions by passing a date', async () => {
+    const mockPrisonerInformationService = {
+      getTransactionInformationFor: jest.fn(() => ({
+        transactions: transactionApiResponse,
+        balances: balancesApiResponse,
+      })),
+    };
+
+    const mockedMoneyRouter = createMoneyRouter({
+      hubContentService: {},
+      offenderService: {},
+      prisonerInformationService: mockPrisonerInformationService,
+    });
+
+    app.use(setMockUser);
+    app.use('/money', mockedMoneyRouter);
+    app.use(consoleLogError);
+
+    await request(app)
+      .get('/money/transactions?selectedDate=2021-01-01')
+      .expect(200)
+      .then(() => {
+        expect(
+          mockPrisonerInformationService.getTransactionInformationFor,
+        ).toHaveBeenCalledWith(
+          testUser,
+          'spends',
+          new Date('2021-01-01T00:00:00.000Z'),
+          new Date('2021-01-31T23:59:59.999Z'),
+        );
+      });
+  });
+
+  it('defaults to the current month when passed an invalid date', async () => {
+    // Ideally we would use Jest's inbuilt methods for faking the clock, however we are using
+    // Sinon's FakeTimer here because Jest's implementation does not appear to work with Async functions.
+
+    // TODO: Remove @Sinon/fake-timers and use the Jest inbuilt method when the issue is resolved
+    // jest
+    //   .useFakeTimers('modern')
+    //   .setSystemTime(new Date('2021-03-10T12:00:00.000Z').getTime());
+
+    const clock = FakeTimers.install({
+      now: new Date('2021-03-10T12:00:00.000Z'),
+    });
+
+    const mockPrisonerInformationService = {
+      getTransactionInformationFor: jest.fn(() => ({
+        transactions: transactionApiResponse,
+        balances: balancesApiResponse,
+      })),
+    };
+
+    const mockedMoneyRouter = createMoneyRouter({
+      hubContentService: {},
+      offenderService: {},
+      prisonerInformationService: mockPrisonerInformationService,
+    });
+
+    app.use(setMockUser);
+    app.use('/money', mockedMoneyRouter);
+    app.use(consoleLogError);
+
+    await request(app)
+      .get('/money/transactions?selectedDate=potato')
+      .expect(200)
+      .then(() => {
+        expect(
+          mockPrisonerInformationService.getTransactionInformationFor,
+        ).toHaveBeenCalledWith(
+          testUser,
+          'spends',
+          new Date('2021-03-01T00:00:00.000Z'),
+          new Date('2021-03-10T12:00:00.000Z'),
+        );
+      });
+
+    await request(app)
+      .get('/money/transactions?selectedDate=')
+      .expect(200)
+      .then(() => {
+        expect(
+          mockPrisonerInformationService.getTransactionInformationFor,
+        ).toHaveBeenCalledWith(
+          testUser,
+          'spends',
+          new Date('2021-03-01T00:00:00.000Z'),
+          new Date('2021-03-10T12:00:00.000Z'),
+        );
+      });
+
+    await request(app)
+      .get('/money/transactions?selectedDate=2021-02-31')
+      .expect(200)
+      .then(() => {
+        expect(
+          mockPrisonerInformationService.getTransactionInformationFor,
+        ).toHaveBeenCalledWith(
+          testUser,
+          'spends',
+          new Date('2021-03-01T00:00:00.000Z'),
+          new Date('2021-03-10T12:00:00.000Z'),
+        );
+      });
+
+    clock.uninstall();
   });
 });
