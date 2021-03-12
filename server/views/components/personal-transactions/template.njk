@@ -1,4 +1,5 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% if not isLoggedIn %}
   <h2 class="govuk-heading-m">You are signed out</h2>
@@ -43,6 +44,26 @@
           <a href="/content/8534" class="govuk-link">Read more about what the information on this page means</a>.
         </div>
       </details>
+      {% from "govuk/components/select/macro.njk" import govukSelect %}
+      <div class="transactions__selection_wrapper">
+        <h3 class="govuk-heading-m">View by</h3>
+        <form method="GET">
+          <div class="transactions__selection__form">
+            <input type="hidden" name="accountType" value="{{ params.selected }}"/>
+            {{ govukSelect({
+              id: "selected-date",
+              name: "selectedDate",
+              label: {
+                text: "Date"
+              },
+              items: params.dateSelection
+            }) }}
+            {{ govukButton({
+              text: "View"
+            }) }}
+          </div>
+        </form>
+      </div>
       <table class="govuk-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">

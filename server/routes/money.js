@@ -1,7 +1,8 @@
 const { path } = require('ramda');
 const express = require('express');
-const { subDays } = require('date-fns');
+const { startOfMonth, parseISO, endOfMonth, isFuture } = require('date-fns');
 const { formatTransactionPageData } = require('./formatters');
+const { getDateSelection } = require('../utils/date');
 
 function getAccountCodeFor(accountType) {
   const accountCodes = {
@@ -76,8 +77,21 @@ const createMoneyRouter = ({
           : accountTypes[0];
         const accountCode = getAccountCodeFor(accountType);
 
-        const toDate = new Date();
-        const fromDate = subDays(toDate, 30);
+        const isValidDateSelection = (selectedDate, dateSelection) =>
+          dateSelection.filter(d => selectedDate === d.value).length > 0;
+
+        const { selectedDate } = req.query;
+        const dateSelection = getDateSelection(
+          new Date(),
+          parseISO(selectedDate),
+        );
+        const fromDate = isValidDateSelection(selectedDate, dateSelection)
+          ? parseISO(selectedDate)
+          : startOfMonth(new Date());
+        const endOfSelectedMonth = endOfMonth(fromDate);
+        const toDate = !isFuture(endOfSelectedMonth)
+          ? endOfSelectedMonth
+          : new Date();
 
         const transactionsData = await prisonerInformationService.getTransactionInformationFor(
           user,
@@ -92,7 +106,8 @@ const createMoneyRouter = ({
         );
         prisonerInformation.selected = accountType;
         prisonerInformation.accountTypes = accountTypes;
-
+        prisonerInformation.selectedDate = selectedDate;
+        prisonerInformation.dateSelection = dateSelection;
         templateData.prisonerInformation = prisonerInformation;
         templateData.config.userName = user.getFullName();
       }
