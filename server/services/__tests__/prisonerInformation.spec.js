@@ -1,5 +1,8 @@
+const Sentry = require('@sentry/node');
 const { PrisonerInformationService } = require('../prisonerInformation');
 const { User } = require('../../auth/user');
+
+jest.mock('@sentry/node');
 
 describe('PrisonerInformation', () => {
   let prisonApiRepository = {};
@@ -299,6 +302,7 @@ describe('PrisonerInformation', () => {
         new Date('2021-01-01'),
       );
 
+      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
       expect(result).toBeNull();
     });
 
@@ -318,6 +322,7 @@ describe('PrisonerInformation', () => {
         new Date('2021-01-01'),
       );
 
+      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
       expect(result).toBeNull();
     });
 
@@ -337,6 +342,7 @@ describe('PrisonerInformation', () => {
         new Date('2021-01-01'),
       );
 
+      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
       expect(result).toBeNull();
     });
   });

@@ -1,3 +1,5 @@
+const Sentry = require('@sentry/node');
+
 const { logger } = require('../utils/logger');
 
 function createPrisonMapFrom(prisonDetailsResponse) {
@@ -66,6 +68,7 @@ class PrisonerInformationService {
         balances,
       };
     } catch (e) {
+      Sentry.captureException(e);
       logger.error(
         `PrisonerInformationService (getTransactionInformationFor) - Failed: ${e.message}`,
       );
