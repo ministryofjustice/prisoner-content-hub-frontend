@@ -178,4 +178,41 @@ describe('PrisonApiRepository', () => {
       expect(response).toBeNull();
     });
   });
+
+  describe('getDamageObligationsFor', () => {
+    it('should return when the request for damage obligations succeeds', async () => {
+      const repository = new PrisonApiRepository({ client, apiUrl });
+
+      client.get.mockResolvedValue('API_RESPONSE');
+
+      const response = await repository.getDamageObligationsFor('A1234BC');
+
+      expect(client.get).toHaveBeenCalledWith(
+        'http://foo.bar/api/offenders/A1234BC/damage-obligations',
+      );
+
+      expect(response).toBe('API_RESPONSE');
+    });
+
+    it('should throw when no prisoner ID is passed', async () => {
+      const repository = new PrisonApiRepository({ client, apiUrl });
+
+      client.get.mockResolvedValue('API_RESPONSE');
+
+      await expect(repository.getDamageObligationsFor()).rejects.toThrow();
+
+      expect(client.get).not.toHaveBeenCalled();
+    });
+
+    it('should swallow the error and return nothing when the request fails', async () => {
+      const repository = new PrisonApiRepository({ client, apiUrl });
+
+      client.get.mockRejectedValue('💥');
+
+      const response = await repository.getDamageObligationsFor('A1234BC');
+
+      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
+      expect(response).toBeNull();
+    });
+  });
 });

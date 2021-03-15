@@ -94,6 +94,32 @@ class PrisonApiRepository {
       return null;
     }
   }
+
+  async getDamageObligationsFor(prisonerId) {
+    assert(
+      isValidPrisonerId(prisonerId),
+      `Prisoner ID must be a string in the format "A1234BC" - Received: ${prisonerId}`,
+    );
+
+    logger.info(
+      `PrisonApiRepository (getDamageObligationsFor) - User: ${prisonerId}`,
+    );
+
+    try {
+      const response = await this.client.get(
+        `${this.url}/api/offenders/${prisonerId}/damage-obligations`,
+      );
+
+      return response;
+    } catch (e) {
+      Sentry.captureException(e);
+      logger.error(
+        `PrisonApiRepository (getDamageObligationsFor) - Failed: ${e.message} - User: ${prisonerId}`,
+      );
+      logger.debug(e.stack);
+      return null;
+    }
+  }
 }
 
 module.exports = {
