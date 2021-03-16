@@ -18,6 +18,15 @@ function formatTransactionsWith(transactions, prisonDetails) {
   }));
 }
 
+function formatDamageObligationsWith(damageObligations, prisonDetails) {
+  return damageObligations.map(o => ({
+    ...o,
+    prison: prisonDetails.has(o.prisonId)
+      ? prisonDetails.get(o.prisonId)
+      : o.prisonId,
+  }));
+}
+
 class PrisonerInformationService {
   constructor({ prisonApiRepository }) {
     this.prisonApi = prisonApiRepository;
@@ -71,6 +80,40 @@ class PrisonerInformationService {
       Sentry.captureException(e);
       logger.error(
         `PrisonerInformationService (getTransactionInformationFor) - Failed: ${e.message}`,
+      );
+      logger.debug(e.stack);
+      return null;
+    }
+  }
+
+  async getDamageObligationsFor(user) {
+    if (!user) {
+      throw new Error('Incorrect parameters passed');
+    }
+
+    try {
+      const [damageObligations, listOfPrisons] = await Promise.all([
+        this.prisonApi.getDamageObligationsFor(user.prisonerId),
+        this.prisonApi.getPrisonDetails(),
+      ]);
+
+      if (damageObligations) {
+        const prisonDetailsMap = createPrisonMapFrom(listOfPrisons);
+        const formattedDamageObligations = formatDamageObligationsWith(
+          damageObligations,
+          prisonDetailsMap,
+        );
+
+        return formattedDamageObligations;
+      }
+
+      return {
+        error: 'We are unable to show your damage obligations at this time',
+      };
+    } catch (e) {
+      Sentry.captureException(e);
+      logger.error(
+        `PrisonerInformationService (getDamageObligationsFor) - Failed: ${e.message}`,
       );
       logger.debug(e.stack);
       return null;
