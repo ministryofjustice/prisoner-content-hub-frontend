@@ -90,6 +90,10 @@ spec:
               value: {{ .Values.application.config.analyticsSiteId }}
             - name: SENTRY_DSN
               value: {{ .Values.application.sentry_dsn }}
+            - name: SENTRY_ENVIRONMENT
+              value: {{ .Values.application.sentry_environment }}
+            - name: SENTRY_RELEASE
+              value: {{ .Values.application.sentry_release }}
             - name: ENABLE_REDIS_CACHE
               value: {{ .Values.application.config.enableRedisCache | quote }}
             - name: ENABLE_MOCK_AUTH

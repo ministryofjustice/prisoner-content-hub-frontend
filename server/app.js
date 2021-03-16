@@ -34,7 +34,6 @@ const {
 } = require('./middleware/configureEstablishment');
 
 const { User } = require('./auth/user');
-const { getEnv } = require('../utils/index');
 const defaultConfig = require('./config');
 const defaultAuthMiddleware = require('./auth/middleware');
 
@@ -81,9 +80,7 @@ const createApp = ({
 
   // Set up Sentry before (almost) everything else, so we can
   // capture any exceptions during startup
-  Sentry.init({
-    dsn: getEnv('SENTRY_DSN', ''),
-  });
+  Sentry.init();
   app.use(Sentry.Handlers.requestHandler());
 
   // Secure code best practice - see:

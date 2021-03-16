@@ -68,6 +68,8 @@ commands:
               --set application.contentConfigMapName="${HELM_BACKEND_RELEASE_NAME}" \
               --set application.nprConfigMapName="${HELM_NPR_CONFIG_MAP_NAME}" \
               --set application.sentry_dsn="${FRONTEND_SENTRY_DSN}" \
+              --set application.sentry_environment="<< parameters.environment >>" \
+              --set application.sentry_release="${VERSION_TO_DEPLOY}" \
               --set hmppsAuthClientId="${HMPPS_AUTH_CLIENT_ID}" \
               --set hmppsAuthClientSecret="${HMPPS_AUTH_CLIENT_SECRET}" \
               --set hmppsAuthBaseUrl="${HMPPS_AUTH_BASE_URL}" \
