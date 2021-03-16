@@ -149,42 +149,6 @@ describe('App', () => {
       });
   });
 
-  it('shows the stack trace on error pages', async () => {
-    const error = {
-      message: 'Something has gone horribly wrong',
-      stack: 'beep-boop',
-    };
-    const previousConfiguration = JSON.stringify(config.features);
-
-    config.auth.callbackPath = '/testPath';
-    config.features.showStackTraces = true;
-
-    await request(
-      app({
-        hubFeaturedContentService: {
-          hubFeaturedContent: jest.fn().mockRejectedValue(error),
-        },
-        offenderService: {
-          getEventsForToday: jest.fn().mockResolvedValue([]),
-          getEventsFor: jest.fn().mockResolvedValue([]),
-          getOffenderDetailsFor: jest.fn().mockResolvedValue({}),
-        },
-      }),
-    )
-      .get('/')
-      .expect(500)
-      .then(res => {
-        expect(res.text).toContain(
-          error.message,
-          'it should show the error message',
-        );
-        expect(res.text).toContain(error.stack, 'it should show the stack');
-
-        // restore config
-        config.features = JSON.parse(previousConfiguration);
-      });
-  });
-
   it('contains the correct security headers per request', async () => {
     config.auth.callbackPath = '/testPath';
     await request(app())
