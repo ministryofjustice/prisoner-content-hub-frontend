@@ -34,7 +34,6 @@ const {
 } = require('./middleware/configureEstablishment');
 
 const { User } = require('./auth/user');
-const { getEnv } = require('../utils/index');
 const defaultConfig = require('./config');
 const defaultAuthMiddleware = require('./auth/middleware');
 
@@ -81,11 +80,8 @@ const createApp = ({
 
   // Set up Sentry before (almost) everything else, so we can
   // capture any exceptions during startup
-  Sentry.init({
-    dsn: getEnv('SENTRY_DSN', ''),
-  });
+  Sentry.init();
   app.use(Sentry.Handlers.requestHandler());
-  app.use(Sentry.Handlers.errorHandler());
 
   // Secure code best practice - see:
   // 1. https://expressjs.com/en/advanced/best-practice-security.html,
@@ -286,6 +282,10 @@ const createApp = ({
     res.status(404);
     res.render('pages/404');
   });
+
+  // the sentry error handler has to be placed between our controllers and our error handler
+  // https://docs.sentry.io/platforms/node/guides/express/
+  app.use(Sentry.Handlers.errorHandler());
 
   app.use(renderErrors);
 

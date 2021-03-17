@@ -1,8 +1,70 @@
+const Sentry = require('@sentry/node');
 const request = require('supertest');
 
 const { createApp } = require('../app');
 const config = require('../config');
 const { logger } = require('../../test/test-helpers');
+
+jest.mock('@sentry/node', () => {
+  const errorHandlingMiddleware = jest.fn();
+  const requestHandlingMiddleware = jest.fn();
+  return {
+    init: jest.fn(),
+    Handlers: {
+      errorHandler: jest.fn(() => (err, req, res, next) => {
+        errorHandlingMiddleware();
+        next(err);
+      }),
+      requestHandler: jest.fn(() => (req, res, next) => {
+        requestHandlingMiddleware();
+        next();
+      }),
+    },
+    errorHandlingMiddleware,
+    requestHandlingMiddleware,
+  };
+});
+
+describe('Sentry', () => {
+  it('initializes Sentry', () => {
+    app();
+    expect(Sentry.init).toHaveBeenCalled();
+  });
+
+  it('creates the Sentry error handling middleware', () => {
+    app();
+    expect(Sentry.Handlers.errorHandler).toHaveBeenCalled();
+  });
+
+  it('creates the Sentry request handling middleware', () => {
+    app();
+    expect(Sentry.Handlers.requestHandler).toHaveBeenCalled();
+  });
+
+  it('does not call the Sentry error handling middleware when a request succeeds', async () => {
+    await request(app()).get('/games/chess').expect(200);
+
+    expect(Sentry.errorHandlingMiddleware).not.toHaveBeenCalled();
+  });
+
+  it('calls the Sentry error handling middleware when an error is thrown', async () => {
+    await request(
+      app({
+        requestLogger: () => (req, res, next) => next('💥'),
+      }),
+    )
+      .get('/games/chess')
+      .expect(500);
+
+    expect(Sentry.errorHandlingMiddleware).toHaveBeenCalled();
+  });
+
+  it('calls the Sentry request handling middleware when an request is made', async () => {
+    await request(app()).get('/games/chess').expect(200);
+
+    expect(Sentry.requestHandlingMiddleware).toHaveBeenCalled();
+  });
+});
 
 describe('App', () => {
   it('renders a 404 page correctly on invalid url', async () => {
