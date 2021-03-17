@@ -92,12 +92,13 @@ class PrisonerInformationService {
     }
 
     try {
-      const [damageObligations, listOfPrisons] = await Promise.all([
+      const [damageObligationsResponse, listOfPrisons] = await Promise.all([
         this.prisonApi.getDamageObligationsFor(user.prisonerId),
         this.prisonApi.getPrisonDetails(),
       ]);
 
-      if (damageObligations) {
+      if (damageObligationsResponse) {
+        const { damageObligations } = damageObligationsResponse;
         const prisonDetailsMap = createPrisonMapFrom(listOfPrisons);
         const formattedDamageObligations = formatDamageObligationsWith(
           damageObligations,

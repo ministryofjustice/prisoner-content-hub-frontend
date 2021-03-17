@@ -64,21 +64,23 @@ describe('PrisonerInformation', () => {
     },
   ];
 
-  const damageObligations = [
-    {
-      amountPaid: 10,
-      amountToPay: 50,
-      comment: 'Damages to canteen furniture',
-      currency: 'GBP',
-      endDateTime: '2021-03-15T11:49:58.502Z',
-      id: 1,
-      offenderNo: 'A1234BC',
-      prisonId: 'TST',
-      referenceNumber: '841177/1, A841821/1, 842371',
-      startDateTime: '2021-03-15T11:49:58.502Z',
-      status: 'ACTIVE',
-    },
-  ];
+  const damageObligations = {
+    damageObligations: [
+      {
+        amountPaid: 10,
+        amountToPay: 50,
+        comment: 'Damages to canteen furniture',
+        currency: 'GBP',
+        endDateTime: '2021-03-15T11:49:58.502Z',
+        id: 1,
+        offenderNo: 'A1234BC',
+        prisonId: 'TST',
+        referenceNumber: '841177/1, A841821/1, 842371',
+        startDateTime: '2021-03-15T11:49:58.502Z',
+        status: 'ACTIVE',
+      },
+    ],
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
