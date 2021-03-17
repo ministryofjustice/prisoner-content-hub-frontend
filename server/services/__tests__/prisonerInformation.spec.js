@@ -64,12 +64,31 @@ describe('PrisonerInformation', () => {
     },
   ];
 
+  const damageObligations = {
+    damageObligations: [
+      {
+        amountPaid: 10,
+        amountToPay: 50,
+        comment: 'Damages to canteen furniture',
+        currency: 'GBP',
+        endDateTime: '2021-03-15T11:49:58.502Z',
+        id: 1,
+        offenderNo: 'A1234BC',
+        prisonId: 'TST',
+        referenceNumber: '841177/1, A841821/1, 842371',
+        startDateTime: '2021-03-15T11:49:58.502Z',
+        status: 'ACTIVE',
+      },
+    ],
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
     prisonApiRepository = {
       getTransactionsFor: jest.fn(),
       getBalancesFor: jest.fn(),
       getPrisonDetails: jest.fn(),
+      getDamageObligationsFor: jest.fn(),
     };
   });
 
@@ -344,6 +363,122 @@ describe('PrisonerInformation', () => {
 
       expect(Sentry.captureException).toHaveBeenCalledWith('💥');
       expect(result).toBeNull();
+    });
+  });
+
+  describe('getDamageObligationsFor', async () => {
+    it('returns damage obligations data', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getDamageObligationsFor.mockResolvedValue(
+        damageObligations,
+      );
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      const data = await prisonerInformationService.getDamageObligationsFor(
+        user,
+      );
+
+      expect(prisonApiRepository.getDamageObligationsFor).toHaveBeenCalledWith(
+        user.prisonerId,
+      );
+      expect(data).toEqual([
+        {
+          amountPaid: 10,
+          amountToPay: 50,
+          comment: 'Damages to canteen furniture',
+          currency: 'GBP',
+          endDateTime: '2021-03-15T11:49:58.502Z',
+          id: 1,
+          offenderNo: 'A1234BC',
+          prisonId: 'TST',
+          prison: 'Test (HMP)',
+          referenceNumber: '841177/1, A841821/1, 842371',
+          startDateTime: '2021-03-15T11:49:58.502Z',
+          status: 'ACTIVE',
+        },
+      ]);
+    });
+
+    it('uses the prisonId when unable to find a prison name', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getDamageObligationsFor.mockResolvedValue(
+        damageObligations,
+      );
+      prisonApiRepository.getPrisonDetails.mockResolvedValue([]);
+
+      const data = await prisonerInformationService.getDamageObligationsFor(
+        user,
+      );
+
+      expect(prisonApiRepository.getDamageObligationsFor).toHaveBeenCalledWith(
+        user.prisonerId,
+      );
+      expect(data).toEqual([
+        {
+          amountPaid: 10,
+          amountToPay: 50,
+          comment: 'Damages to canteen furniture',
+          currency: 'GBP',
+          endDateTime: '2021-03-15T11:49:58.502Z',
+          id: 1,
+          offenderNo: 'A1234BC',
+          prisonId: 'TST',
+          prison: 'TST',
+          referenceNumber: '841177/1, A841821/1, 842371',
+          startDateTime: '2021-03-15T11:49:58.502Z',
+          status: 'ACTIVE',
+        },
+      ]);
+    });
+
+    it('returns a notification when unable to fetch damage obligations data', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getDamageObligationsFor.mockResolvedValue(null);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      const data = await prisonerInformationService.getDamageObligationsFor(
+        user,
+      );
+
+      expect(data).toHaveProperty('error');
+    });
+
+    it('swallows the exception and returns null if an error is thrown fetching damage obligations', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getDamageObligationsFor.mockRejectedValue('💥');
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      const data = await prisonerInformationService.getDamageObligationsFor(
+        user,
+      );
+
+      expect(data).toEqual(null);
+    });
+
+    it('throws when called without a user', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      await expect(
+        prisonerInformationService.getDamageObligationsFor(),
+      ).rejects.toThrow();
+
+      expect(
+        prisonApiRepository.getDamageObligationsFor,
+      ).not.toHaveBeenCalled();
     });
   });
 });
