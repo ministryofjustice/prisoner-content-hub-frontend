@@ -1,4 +1,5 @@
-// eslint-disable-next-line no-underscore-dangle
+/* eslint no-underscore-dangle: ["error", { "allow": ["_passport"] }] */
+const Sentry = require('@sentry/node');
 const _passport = require('passport');
 const { path } = require('ramda');
 const { User } = require('./user');
@@ -18,13 +19,14 @@ const createSignInMiddleware = (passport = _passport) =>
     passport.authenticate('azure_ad_oauth2')(req, res, next);
   };
 
-// eslint-disable-next-line no-underscore-dangle
+/* eslint no-underscore-dangle: ["error", { "allow": ["_passport", "_authenticate"] }] */
 const _authenticate = (req, res, next) =>
   new Promise((resolve, reject) => {
     _passport.authenticate('azure_ad_oauth2', (err, user) => {
       if (err) {
         reject(err);
       }
+
       req.logIn(user, loginErr =>
         loginErr ? reject(loginErr) : resolve(user),
       );
@@ -101,6 +103,7 @@ const createSignInCallbackMiddleware = ({
 
       return res.redirect(req.session.returnUrl);
     } catch (e) {
+      Sentry.captureException(e);
       logger.error(
         `SignInCallbackMiddleware (signInCallback) - Failed: ${e.message}`,
       );
