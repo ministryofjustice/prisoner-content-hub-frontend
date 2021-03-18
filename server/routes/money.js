@@ -1,7 +1,10 @@
 const { path } = require('ramda');
 const express = require('express');
 const { startOfMonth, parseISO, endOfMonth, isFuture } = require('date-fns');
-const { formatTransactionPageData } = require('./formatters');
+const {
+  formatTransactionPageData,
+  formatDamageObligations,
+} = require('./formatters');
 const { getDateSelection } = require('../utils/date');
 
 function getAccountCodeFor(accountType) {
@@ -52,6 +55,40 @@ const createMoneyRouter = ({
       });
     } catch (exp) {
       return next(exp);
+    }
+  });
+
+  router.get('/damage-obligations', async (req, res, next) => {
+    try {
+      const templateData = {
+        title: 'Your transactions',
+        config: {
+          content: false,
+          header: false,
+          postscript: true,
+          detailsType: 'small',
+          returnUrl: req.originalUrl,
+        },
+      };
+
+      const { user } = req;
+
+      if (user) {
+        const damageObligations = await prisonerInformationService.getDamageObligationsFor(
+          user,
+        );
+
+        templateData.prisonerInformation = {
+          damageObligations: formatDamageObligations(damageObligations),
+          selected: 'damage-obligations',
+          accountTypes: ['spends', 'private', 'savings'],
+        };
+        templateData.config.userName = user.getFullName();
+      }
+
+      return res.render('pages/transactions', templateData);
+    } catch (e) {
+      return next(e);
     }
   });
 

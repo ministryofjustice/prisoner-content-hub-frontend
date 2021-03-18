@@ -125,6 +125,73 @@ function formatTransactionPageData(accountType, transactionsData) {
   return {};
 }
 
+function formatDamageObligations(damageObligations) {
+  if (damageObligations.error) {
+    return damageObligations;
+  }
+
+  const activeDamageObligations = damageObligations.filter(
+    damageObligation => damageObligation.status === 'ACTIVE',
+  );
+
+  const totalRemainingAmount = activeDamageObligations
+    .filter(damageObligation => damageObligation.currency === 'GBP')
+    .reduce(
+      (runningTotal, damageObligation) =>
+        runningTotal +
+        (damageObligation.amountToPay - damageObligation.amountPaid),
+      0,
+    );
+
+  const rows = activeDamageObligations.map(damageObligation => {
+    const startDate = formatDateOrDefault(
+      'Unknown',
+      'd MMMM yyyy',
+      damageObligation.startDateTime,
+    );
+    const endDate = formatDateOrDefault(
+      'Unknown',
+      'd MMMM yyyy',
+      damageObligation.endDateTime,
+    );
+
+    return {
+      adjudicationNumber: damageObligation.referenceNumber,
+      timePeriod:
+        damageObligation.startDateTime && damageObligation.endDateTime
+          ? `${startDate} to ${endDate}`
+          : 'Unknown',
+      totalAmount: formatBalanceOrDefault(
+        null,
+        damageObligation.amountToPay,
+        damageObligation.currency,
+      ),
+      amountPaid: formatBalanceOrDefault(
+        null,
+        damageObligation.amountPaid,
+        damageObligation.currency,
+      ),
+      amountOwed: formatBalanceOrDefault(
+        null,
+        damageObligation.amountToPay - damageObligation.amountPaid,
+        damageObligation.currency,
+      ),
+      prison: damageObligation.prison,
+      description: damageObligation.comment,
+    };
+  });
+
+  return {
+    rows,
+    totalRemainingAmount: formatBalanceOrDefault(
+      null,
+      totalRemainingAmount,
+      'GBP',
+    ),
+  };
+}
+
 module.exports = {
   formatTransactionPageData,
+  formatDamageObligations,
 };

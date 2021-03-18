@@ -4,90 +4,131 @@
 {% if not isLoggedIn %}
   <h2 class="govuk-heading-m">You are signed out</h2>
   <p class="govuk-!-font-size-24">
-    <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
+    <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
     </p>
 {% else %}
   <ul class="govuk-tabs__list">
-    {% for accountType in params.accountTypes %}
-      <li class="govuk-tabs__list-item{% if accountType == params.selected %} govuk-tabs__list-item--selected{% endif %}">
+    {% for accountType in data.accountTypes %}
+      <li class="govuk-tabs__list-item{% if accountType == data.selected %} govuk-tabs__list-item--selected{% endif %}">
         <a class="govuk-tabs__tab" href="/money/transactions?accountType={{accountType}}">
           {{ accountType | capitalize }}
         </a>
       </li>
     {% endfor %}
+    <li class="govuk-tabs__list-item{% if data.selected == 'damage-obligations' %} govuk-tabs__list-item--selected{% endif %}">
+      <a class="govuk-tabs__tab" href="/money/damage-obligations">Damage obligations</a>
+    </li>
   </ul>
-  <div class="govuk-tabs__panel" id="past-day">
-    <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Current balance</h2>
-    {% if params.balance.error %}
-      <p class="govuk-!-font-size-24">
-        {{params.balance.error}}, <a href="{{ params.authReturnUrl }}" class="govuk-link">try again</a>
-      </p>
-    {% else %}
-      <p>{{ params.balance.amount }}</P>
-    {% endif %}
-    {% if params.transactions.error %}
-      <p class="govuk-!-font-size-24">
-        {{params.transactions.error}}, <a href="{{ params.authReturnUrl }}" class="govuk-link">try again</a>
-      </p>
-    {% else %}
-      <details class="govuk-details" data-module="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text">
+  <div class="govuk-tabs__panel">
+    {% if data.transactions %}
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Current balance</h2>
+      {% if data.balance.error %}
+        <p class="govuk-!-font-size-24">
+          {{data.balance.error}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>
+        </p>
+      {% else %}
+        <p>{{ data.balance.amount }}</P>
+      {% endif %}
+      {% if data.transactions.error %}
+        <p class="govuk-!-font-size-24">
+          {{data.transactions.error}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>
+        </p>
+      {% else %}
+        <details class="govuk-details" data-module="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
           Help with your transactions
         </span>
-        </summary>
-        <div class="govuk-details__text">
-          <p>The Hub team cannot help you with transaction queries.</p>
+          </summary>
+          <div class="govuk-details__text">
+            <p>The Hub team cannot help you with transaction queries.</p>
 
-          <p>If you're unsure about a transaction, you should submit an app or ask an officer.</p>
+            <p>If you're unsure about a transaction, you should submit an app or ask an officer.</p>
 
-          <a href="/content/8534" class="govuk-link">Read more about what the information on this page means</a>.
+            <a href="/content/8534" class="govuk-link">Read more about what the information on this page means</a>.
         </div>
-      </details>
-      {% from "govuk/components/select/macro.njk" import govukSelect %}
-      <div class="transactions__selection_wrapper">
-        <h3 class="govuk-heading-m">View by</h3>
-        <form method="GET">
-          <div class="transactions__selection__form">
-            <input type="hidden" name="accountType" value="{{ params.selected }}"/>
-            {{ govukSelect({
+        </details>
+        {% from "govuk/components/select/macro.njk" import govukSelect %}
+        <div class="transactions__selection_wrapper">
+          <h3 class="govuk-heading-m">View by</h3>
+          <form method="GET">
+            <div class="transactions__selection__form">
+              <input type="hidden" name="accountType" value="{{ data.selected }}"/>
+              {{ govukSelect({
               id: "selected-date",
               name: "selectedDate",
               label: {
                 text: "Date"
               },
-              items: params.dateSelection
+              items: data.dateSelection
             }) }}
-            {{ govukButton({
+              {{ govukButton({
               text: "View"
             }) }}
-          </div>
-        </form>
-      </div>
-      <table class="govuk-table">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Payment date</th>
-            <th scope="col" class="govuk-table__header">Money in</th>
-            <th scope="col" class="govuk-table__header">Money out</th>
-            <th scope="col" class="govuk-table__header">Balance</th>
-            <th scope="col" class="govuk-table__header">Payment description</th>
-            <th scope="col" class="govuk-table__header">Prison</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          {% for t in params.transactions %}
+            </div>
+          </form>
+        </div>
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-              <td class="govuk-table__cell">{{t.paymentDate}}</td>
-              <td class="govuk-table__cell">{{t.moneyIn}}</td>
-              <td class="govuk-table__cell">{{t.moneyOut}}</td>
-              <td class="govuk-table__cell">{{t.balance}}</td>
-              <td class="govuk-table__cell">{{t.paymentDescription}}</td>
-              <td class="govuk-table__cell">{{t.prison}}</td>
+              <th scope="col" class="govuk-table__header">Payment date</th>
+              <th scope="col" class="govuk-table__header">Money in</th>
+              <th scope="col" class="govuk-table__header">Money out</th>
+              <th scope="col" class="govuk-table__header">Balance</th>
+              <th scope="col" class="govuk-table__header">Payment description</th>
+              <th scope="col" class="govuk-table__header">Prison</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody class="govuk-table__body">
+            {% for t in data.transactions %}
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell">{{t.paymentDate}}</td>
+                <td class="govuk-table__cell">{{t.moneyIn}}</td>
+                <td class="govuk-table__cell">{{t.moneyOut}}</td>
+                <td class="govuk-table__cell">{{t.balance}}</td>
+                <td class="govuk-table__cell">{{t.paymentDescription}}</td>
+                <td class="govuk-table__cell">{{t.prison}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    {% elif data.damageObligations %}
+      {% if data.damageObligations.error %}
+        <p class="govuk-!-font-size-24">
+          {{data.damageObligations.error}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>
+        </p>
+      {% else %}
+        <h3 class="govuk-heading-m">Total for all damage obligations</h3>
+        <p>{{data.damageObligations.totalRemainingAmount}}</p>
+        <a href="#" class="govuk-link">Find out more about what the information on this page means</a>.
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Adjudication number</th>
+              <th scope="col" class="govuk-table__header">Payment start and end date</th>
+              <th scope="col" class="govuk-table__header">Total amount</th>
+              <th scope="col" class="govuk-table__header">Amount paid</th>
+              <th scope="col" class="govuk-table__header">Amount owed</th>
+              <th scope="col" class="govuk-table__header">Prison</th>
+              <th scope="col" class="govuk-table__header">Description</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            {% for o in data.damageObligations.rows %}
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell">{{o.adjudicationNumber}}</td>
+                <td class="govuk-table__cell">{{o.timePeriod}}</td>
+                <td class="govuk-table__cell">{{o.totalAmount}}</td>
+                <td class="govuk-table__cell">{{o.amountPaid}}</td>
+                <td class="govuk-table__cell">{{o.amountOwed}}</td>
+                <td class="govuk-table__cell">{{o.prison}}</td>
+                <td class="govuk-table__cell">{{o.description}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
     {% endif %}
   </div>
 {% endif %}

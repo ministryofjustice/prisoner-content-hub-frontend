@@ -50,15 +50,7 @@
 {% block main %}
   <div class="govuk-width-container govuk-body">
 
-    {{ personalTransactions({
-        transactions: prisonerInformation.transactions,
-        balance: prisonerInformation.balance,
-        selected: prisonerInformation.selected,
-        accountTypes: prisonerInformation.accountTypes,
-        selectedDate: prisonerInformation.selectedDate,
-        dateSelection: prisonerInformation.dateSelection,
-        authReturnUrl: config.returnUrl
-    }, config.userName) }}
+    {{ personalTransactions(prisonerInformation, config.returnUrl, config.userName) }}
 
     <div class="govuk-hub-article-feedback">
       <p class="govuk-body">Tell us what you think:</p>
