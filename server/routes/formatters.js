@@ -143,43 +143,50 @@ function formatDamageObligations(damageObligations) {
       0,
     );
 
-  const rows = activeDamageObligations.map(damageObligation => {
-    const startDate = formatDateOrDefault(
-      'Unknown',
-      'd MMMM yyyy',
-      damageObligation.startDateTime,
-    );
-    const endDate = formatDateOrDefault(
-      'Unknown',
-      'd MMMM yyyy',
-      damageObligation.endDateTime,
-    );
+  const rows = activeDamageObligations
+    .sort((damageObligation1, damageObligation2) =>
+      sortByDateTime(
+        damageObligation2.startDateTime,
+        damageObligation1.startDateTime,
+      ),
+    )
+    .map(damageObligation => {
+      const startDate = formatDateOrDefault(
+        'Unknown',
+        'd MMMM yyyy',
+        damageObligation.startDateTime,
+      );
+      const endDate = formatDateOrDefault(
+        'Unknown',
+        'd MMMM yyyy',
+        damageObligation.endDateTime,
+      );
 
-    return {
-      adjudicationNumber: damageObligation.referenceNumber,
-      timePeriod:
-        damageObligation.startDateTime && damageObligation.endDateTime
-          ? `${startDate} to ${endDate}`
-          : 'Unknown',
-      totalAmount: formatBalanceOrDefault(
-        null,
-        damageObligation.amountToPay,
-        damageObligation.currency,
-      ),
-      amountPaid: formatBalanceOrDefault(
-        null,
-        damageObligation.amountPaid,
-        damageObligation.currency,
-      ),
-      amountOwed: formatBalanceOrDefault(
-        null,
-        damageObligation.amountToPay - damageObligation.amountPaid,
-        damageObligation.currency,
-      ),
-      prison: damageObligation.prison,
-      description: damageObligation.comment,
-    };
-  });
+      return {
+        adjudicationNumber: damageObligation.referenceNumber,
+        timePeriod:
+          damageObligation.startDateTime && damageObligation.endDateTime
+            ? `${startDate} to ${endDate}`
+            : 'Unknown',
+        totalAmount: formatBalanceOrDefault(
+          null,
+          damageObligation.amountToPay,
+          damageObligation.currency,
+        ),
+        amountPaid: formatBalanceOrDefault(
+          null,
+          damageObligation.amountPaid,
+          damageObligation.currency,
+        ),
+        amountOwed: formatBalanceOrDefault(
+          null,
+          damageObligation.amountToPay - damageObligation.amountPaid,
+          damageObligation.currency,
+        ),
+        prison: damageObligation.prison,
+        description: damageObligation.comment,
+      };
+    });
 
   return {
     rows,
