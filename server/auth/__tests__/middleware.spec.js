@@ -1,3 +1,7 @@
+const Sentry = require('@sentry/node');
+
+jest.mock('@sentry/node');
+
 const {
   createSignInMiddleware,
   createSignInCallbackMiddleware,
@@ -97,6 +101,22 @@ describe('AuthMiddleware', () => {
         res.redirect.mockClear();
         offenderService.getOffenderDetailsFor.mockClear();
         next.mockClear();
+      });
+
+      it('should pass the error to Sentry if passport.authenticate() returns an error', async () => {
+        const authenticate = jest.fn().mockRejectedValue(TEST_CALLBACK_ERROR);
+
+        const signInCallback = createSignInCallbackMiddleware({
+          offenderService,
+          authenticate,
+          analyticsService,
+          logger: MOCK_LOGGER,
+        });
+
+        await signInCallback(req, res, next);
+        expect(Sentry.captureException).toHaveBeenCalledWith(
+          TEST_CALLBACK_ERROR,
+        );
       });
 
       it('should pass the error to next if passport.authenticate() returns an error', async () => {
