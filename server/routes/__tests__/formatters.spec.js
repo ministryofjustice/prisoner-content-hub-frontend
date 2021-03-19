@@ -72,6 +72,7 @@ describe('Responses', () => {
       spends: 123.45,
       cash: 456.78,
       savings: 890.12,
+      damageObligations: 50,
       currency: 'GBP',
     };
 
@@ -196,6 +197,27 @@ describe('Responses', () => {
 
       expect(formatted.balance).not.toHaveProperty('amount');
       expect(formatted.balance.error).toBe('💥');
+    });
+
+    it('sets the flag to display the damage obligations tab when there is money owed', () => {
+      const formatted = formatTransactionPageData('spends', {
+        transactions: transactionApiResponse,
+        balances: balancesApiResponse,
+      });
+
+      expect(formatted.shouldShowDamageObligationsTab).toBe(true);
+    });
+
+    it('sets the flag to not display the damage obligations tab when there is no money owed', () => {
+      const formatted = formatTransactionPageData('spends', {
+        transactions: transactionApiResponse,
+        balances: {
+          ...balancesApiResponse,
+          damageObligations: 0.0,
+        },
+      });
+
+      expect(formatted.shouldShowDamageObligationsTab).toBe(false);
     });
   });
 

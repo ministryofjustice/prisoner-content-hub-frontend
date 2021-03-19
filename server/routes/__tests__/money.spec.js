@@ -62,6 +62,7 @@ describe('Prisoner Money', () => {
     spends: 123.45,
     cash: 456.78,
     savings: 890.12,
+    damageObligations: 50,
     currency: 'GBP',
   };
 
@@ -230,6 +231,61 @@ describe('Prisoner Money', () => {
           // We should be presented the balance
           const selectedPanel = $('.govuk-tabs__panel').text();
           expect(selectedPanel).toContain('£456.78');
+        });
+    });
+
+    it('does not show the damage obligations tab if there are none to display', async () => {
+      client.get.mockImplementation(requestUrl => {
+        if (requestUrl.match(/\/transaction-history/i)) {
+          return Promise.resolve([]);
+        }
+        if (requestUrl.match(/\/balances/i)) {
+          return Promise.resolve({
+            ...balancesApiResponse,
+            damageObligations: 0.0,
+          });
+        }
+        return Promise.reject(fourOhFour);
+      });
+
+      app.use(setMockUser);
+      app.use('/money', moneyRouter);
+      app.use(consoleLogError);
+
+      await request(app)
+        .get('/money/transactions')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          // We should not display the damage obligations tab if there are none to display
+          const tabs = $('.govuk-tabs__list-item').text();
+          expect(tabs).not.toContain('Damage obligations');
+        });
+    });
+
+    it('shows the damage obligations tab if there are some to display', async () => {
+      client.get.mockImplementation(requestUrl => {
+        if (requestUrl.match(/\/transaction-history/i)) {
+          return Promise.resolve([]);
+        }
+        if (requestUrl.match(/\/balances/i)) {
+          return Promise.resolve(balancesApiResponse);
+        }
+        return Promise.reject(fourOhFour);
+      });
+
+      app.use(setMockUser);
+      app.use('/money', moneyRouter);
+      app.use(consoleLogError);
+
+      await request(app)
+        .get('/money/transactions')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          // We should display the damage obligations tab if there are some to display
+          const tabs = $('.govuk-tabs__list-item').text();
+          expect(tabs).toContain('Damage obligations');
         });
     });
 
