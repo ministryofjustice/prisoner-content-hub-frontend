@@ -6,6 +6,9 @@ const nock = require('nock');
 const { HubClient } = require('../hub');
 
 describe('HubClient', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   describe('.get', () => {
     it('makes a request simple GET request', async () => {
       nock('https://hub-api.com')
