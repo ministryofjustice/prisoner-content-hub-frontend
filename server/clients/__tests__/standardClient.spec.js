@@ -10,6 +10,10 @@ describe('StandardClient', () => {
     nock.cleanAll();
   });
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   afterEach(() => {
     nock.cleanAll();
   });
@@ -81,9 +85,7 @@ describe('StandardClient', () => {
       const result = await client.post('https://www.example.com/bar', {
         foo: 'bar',
       });
-      expect(Sentry.captureException).toHaveBeenCalledWith(
-        new Error('Request failed with status code 404'),
-      );
+
       expect(Sentry.captureException).toHaveBeenCalledWith(
         new Error('Request failed with status code 400'),
       );
