@@ -7,6 +7,20 @@
     <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
     </p>
 {% else %}
+  <details class="govuk-details" data-module="govuk-details">
+    <summary class="govuk-details__summary">
+      <span class="govuk-details__summary-text">
+          Help with your transactions
+        </span>
+    </summary>
+    <div class="govuk-details__text">
+      <p>The Hub team cannot help you with transaction queries.</p>
+
+      <p>If you're unsure about a transaction, you should submit an app or ask an officer.</p>
+
+      <a href="/content/8534" class="govuk-link">Read more about what the information on this page means</a>.
+        </div>
+  </details>
   <ul class="govuk-tabs__list">
     {% for accountType in data.accountTypes %}
       <li class="govuk-tabs__list-item{% if accountType == data.selected %} govuk-tabs__list-item--selected{% endif %}">
@@ -34,20 +48,6 @@
           {{data.transactions.error}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>
         </p>
       {% else %}
-        <details class="govuk-details" data-module="govuk-details">
-          <summary class="govuk-details__summary">
-            <span class="govuk-details__summary-text">
-          Help with your transactions
-        </span>
-          </summary>
-          <div class="govuk-details__text">
-            <p>The Hub team cannot help you with transaction queries.</p>
-
-            <p>If you're unsure about a transaction, you should submit an app or ask an officer.</p>
-
-            <a href="/content/8534" class="govuk-link">Read more about what the information on this page means</a>.
-        </div>
-        </details>
         {% from "govuk/components/select/macro.njk" import govukSelect %}
         <div class="transactions__selection_wrapper">
           <h3 class="govuk-heading-m">View by</h3>
@@ -101,7 +101,7 @@
       {% else %}
         <h3 class="govuk-heading-m">Total for all damage obligations</h3>
         <p>{{data.damageObligations.totalRemainingAmount}}</p>
-        <a href="#" class="govuk-link">Find out more about what the information on this page means</a>.
+        {# <a href="#" class="govuk-link">Find out more about what the information on this page means</a>. #}
         <table class="govuk-table">
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
