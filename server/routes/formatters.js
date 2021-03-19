@@ -116,6 +116,8 @@ function formatTransactionPageData(accountType, transactionsData) {
       balance: balances.error
         ? { error: balances.error }
         : formatBalance(accountType, balances),
+      shouldShowDamageObligationsTab:
+        balances && balances.damageObligations > 0,
       transactions: transactions.error
         ? { error: transactions.error }
         : flattenTransactions(transactions).map(formatTransaction),

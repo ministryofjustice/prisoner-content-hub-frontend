@@ -29,9 +29,11 @@
         </a>
       </li>
     {% endfor %}
-    <li class="govuk-tabs__list-item{% if data.selected == 'damage-obligations' %} govuk-tabs__list-item--selected{% endif %}">
-      <a class="govuk-tabs__tab" href="/money/damage-obligations">Damage obligations</a>
-    </li>
+    {% if (data.selected === 'damage-obligations') or (data.shouldShowDamageObligationsTab) %}
+      <li class="govuk-tabs__list-item{% if data.selected == 'damage-obligations' %} govuk-tabs__list-item--selected{% endif %}">
+        <a class="govuk-tabs__tab" href="/money/damage-obligations">Damage obligations</a>
+      </li>
+    {% endif %}
   </ul>
   <div class="govuk-tabs__panel">
     {% if data.transactions %}
