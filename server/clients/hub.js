@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node');
 const qs = require('querystring');
 const { baseClient } = require('./baseClient');
 const { logger } = require('../utils/logger');
@@ -23,6 +24,7 @@ class HubContentClient {
         return res.data;
       })
       .catch(e => {
+        Sentry.captureException(e);
         logger.error(
           `HubContentClient (GET) - ${endpoint}?${qs.stringify(
             queryString,

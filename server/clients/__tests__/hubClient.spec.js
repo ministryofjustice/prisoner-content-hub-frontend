@@ -1,7 +1,14 @@
+const Sentry = require('@sentry/node');
+
+jest.mock('@sentry/node');
+
 const nock = require('nock');
 const { HubClient } = require('../hub');
 
 describe('HubClient', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   describe('.get', () => {
     it('makes a request simple GET request', async () => {
       nock('https://hub-api.com')
@@ -59,6 +66,9 @@ describe('HubClient', () => {
       const client = new HubClient();
       const result = await client.get('https://hub-api.com/bar');
 
+      expect(Sentry.captureException).toHaveBeenCalledWith(
+        new Error('Request failed with status code 404'),
+      );
       expect(result).toStrictEqual(null);
     });
   });

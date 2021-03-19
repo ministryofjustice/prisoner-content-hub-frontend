@@ -1,3 +1,4 @@
+const Sentry = require('@sentry/node');
 const qs = require('querystring');
 const { path } = require('ramda');
 const { baseClient } = require('./baseClient');
@@ -16,6 +17,7 @@ class StandardClient {
         return res.data;
       })
       .catch(e => {
+        Sentry.captureException(e);
         logger.error(`StandardClient (GET) - Failed: ${e.message}`);
         logger.debug(e.stack);
         return null;
@@ -30,6 +32,7 @@ class StandardClient {
         return res.data;
       })
       .catch(e => {
+        Sentry.captureException(e);
         logger.error(`StandardClient (POST) - Failed: ${e.message}`);
         logger.debug(e.stack);
         return null;
@@ -59,6 +62,7 @@ class StandardClient {
         return res.data;
       })
       .catch(e => {
+        Sentry.captureException(e);
         logger.error(`StandardClient (POST URLENCODED) - Failed: ${e.message}`);
         logger.debug(e.stack);
         return null;

@@ -1,9 +1,17 @@
+const Sentry = require('@sentry/node');
+
+jest.mock('@sentry/node');
+
 const nock = require('nock');
 const { StandardClient } = require('../standard');
 
 describe('StandardClient', () => {
   beforeAll(() => {
     nock.cleanAll();
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
   afterEach(() => {
@@ -47,6 +55,9 @@ describe('StandardClient', () => {
       const client = new StandardClient();
       const result = await client.get('https://some-api.com/bar');
 
+      expect(Sentry.captureException).toHaveBeenCalledWith(
+        new Error('Request failed with status code 404'),
+      );
       expect(result).toStrictEqual(null);
     });
   });
@@ -75,6 +86,9 @@ describe('StandardClient', () => {
         foo: 'bar',
       });
 
+      expect(Sentry.captureException).toHaveBeenCalledWith(
+        new Error('Request failed with status code 400'),
+      );
       expect(result).toStrictEqual(null);
     });
   });
