@@ -1,5 +1,8 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
+const Sentry = require('@sentry/node');
+
+jest.mock('@sentry/node');
 
 const { createTopicsRouter } = require('../topics');
 const {
@@ -8,35 +11,45 @@ const {
 } = require('../../../test/test-helpers');
 
 describe('GET /topics', () => {
-  let hubMenuService;
-  let router;
-  let app;
-
   beforeEach(() => {
-    hubMenuService = {
+    jest.clearAllMocks();
+  });
+
+  it('passes exceptions to Sentry', async () => {
+    const hubMenuService = {
+      allTopics: jest.fn().mockRejectedValue('💥'),
+    };
+
+    const router = createTopicsRouter({ hubMenuService });
+
+    const app = setupBasicApp();
+    app.use('/topics', router);
+
+    await request(app).get('/topics').expect(500);
+    expect(Sentry.captureException).toHaveBeenCalledWith('💥');
+  });
+
+  describe('Topics', () => {
+    const hubMenuService = {
       allTopics: jest.fn().mockReturnValue([
         { linkText: 'foo', href: '/content/foo' },
         { linkText: 'bar', href: '/content/bar' },
       ]),
     };
-  });
 
-  describe('Topics', () => {
-    beforeEach(() => {
-      router = createTopicsRouter({ hubMenuService });
+    const router = createTopicsRouter({ hubMenuService });
 
-      app = setupBasicApp();
-      app.use((req, res, next) => {
-        req.session = {};
-        next();
-      });
-      app.use(router);
-      app.use(consoleLogError);
+    const app = setupBasicApp();
+    app.use((req, res, next) => {
+      req.session = {};
+      next();
     });
+    app.use('/topics', router);
+    app.use(consoleLogError);
 
     it('has a search bar', () =>
       request(app)
-        .get('/')
+        .get('/topics')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
@@ -45,7 +58,7 @@ describe('GET /topics', () => {
 
     it('renders a list of tags', () =>
       request(app)
-        .get('/')
+        .get('/topics')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
