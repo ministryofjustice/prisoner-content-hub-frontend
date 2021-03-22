@@ -1,5 +1,8 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
+const Sentry = require('@sentry/node');
+
+jest.mock('@sentry/node');
 
 const { createTagRouter } = require('../tags');
 const { setupBasicApp } = require('../../../test/test-helpers');
@@ -7,16 +10,32 @@ const { setupBasicApp } = require('../../../test/test-helpers');
 describe('GET /tags', () => {
   describe('/:id', () => {
     describe('on error', () => {
-      it('returns a 500 when incorrect data is returned', () => {
-        const invalidService = {
-          termFor: jest.fn().mockRejectedValue('error'),
+      beforeEach(() => {
+        jest.clearAllMocks();
+      });
+
+      it('passes caught exceptions to Sentry', async () => {
+        const hubTagsService = {
+          termFor: jest.fn().mockRejectedValue('💥'),
         };
-        const router = createTagRouter({ hubTagsService: invalidService });
+        const router = createTagRouter({ hubTagsService });
         const app = setupBasicApp();
 
         app.use('/tags', router);
 
-        return request(app).get('/tags/1').expect(500);
+        await request(app).get('/tags/1').expect(500);
+        expect(Sentry.captureException).toHaveBeenCalledWith('💥');
+      });
+      it('returns a 500 when incorrect data is returned', async () => {
+        const hubTagsService = {
+          termFor: jest.fn().mockRejectedValue('error'),
+        };
+        const router = createTagRouter({ hubTagsService });
+        const app = setupBasicApp();
+
+        app.use('/tags', router);
+
+        await request(app).get('/tags/1').expect(500);
       });
     });
 

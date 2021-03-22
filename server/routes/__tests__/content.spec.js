@@ -1,5 +1,8 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
+const Sentry = require('@sentry/node');
+
+jest.mock('@sentry/node');
 
 const { createContentRouter } = require('../content');
 const { setupBasicApp } = require('../../../test/test-helpers');
@@ -9,16 +12,32 @@ const videoShowResponse = require('../../../test/resources/videoShowServiceRespo
 const flatContentResponse = require('../../../test/resources/flatContentResponse.json');
 
 describe('GET /content/:id', () => {
-  it('returns a 404 when incorrect data is returned', () => {
-    const invalidService = {
-      contentFor: () => ({ type: 'invalid' }),
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('passes caught exceptions to Sentry', async () => {
+    const hubContentService = {
+      contentFor: jest.fn().mockRejectedValue('💥'),
     };
-    const router = createContentRouter({ hubContentService: invalidService });
+    const router = createContentRouter({ hubContentService });
     const app = setupBasicApp();
 
     app.use('/content', router);
 
-    return request(app).get('/content/1').expect(404);
+    await request(app).get('/content/1').expect(500);
+    expect(Sentry.captureException).toHaveBeenCalledWith('💥');
+  });
+  it('returns a 404 when incorrect data is returned', async () => {
+    const hubContentService = {
+      contentFor: () => ({ type: 'invalid' }),
+    };
+    const router = createContentRouter({ hubContentService });
+    const app = setupBasicApp();
+
+    app.use('/content', router);
+
+    await request(app).get('/content/1').expect(404);
   });
 
   describe('Radio page', () => {

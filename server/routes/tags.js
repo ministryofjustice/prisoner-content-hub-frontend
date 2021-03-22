@@ -1,5 +1,6 @@
 const express = require('express');
 const { path } = require('ramda');
+const Sentry = require('@sentry/node');
 
 const createTagRouter = ({ hubTagsService }) => {
   const router = express.Router();
@@ -35,8 +36,9 @@ const createTagRouter = ({ hubTagsService }) => {
         },
         config,
       });
-    } catch (exception) {
-      return next(exception);
+    } catch (e) {
+      Sentry.captureException(e);
+      return next(e);
     }
   });
 

@@ -1,5 +1,6 @@
 const express = require('express');
 const { path } = require('ramda');
+const Sentry = require('@sentry/node');
 
 const fixUrls = element => {
   const { id, description, href, linkText } = element;
@@ -35,8 +36,9 @@ const createTopicsRouter = ({ hubMenuService }) => {
         allTopics: topics.map(fixUrls),
         config,
       });
-    } catch (exception) {
-      next(exception);
+    } catch (e) {
+      Sentry.captureException(e);
+      next(e);
     }
   });
 
