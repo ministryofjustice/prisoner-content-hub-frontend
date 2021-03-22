@@ -4,6 +4,7 @@
 {% from "../components/personal-schedule-nav/macro.njk" import personalScheduleNav %}
 {% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../components/user-details/macro.njk" import userDetails %}
+{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 
 {% extends "../components/template.njk" %}
 
@@ -49,6 +50,16 @@
   {{personalScheduleOneDay({ data: events | first, authReturnUrl:  config.returnUrl }, config.userName)}}
   <div class="govuk-width-container govuk-body timetable-header timetable-footer">
     {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }, config.userName) }}
+  </div>
+  <div class="govuk-width-container govuk-body">
+    <div class="govuk-hub-article-feedback">
+      <p class="govuk-body">Tell us what you think:</p>
+      {{ hubFeedbackWidget({
+        title: title,
+        contentType: 'TIMETABLE',
+        feedbackId: feedbackId
+      })}}
+    </div>
   </div>
 {% endblock %}
 
