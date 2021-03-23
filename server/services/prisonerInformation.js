@@ -109,7 +109,7 @@ class PrisonerInformationService {
       }
 
       return {
-        error: 'We are unable to show your damage obligations at this time',
+        error: 'We are not able to show your damage obligations at this time',
       };
     } catch (e) {
       Sentry.captureException(e);
