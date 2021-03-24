@@ -23,9 +23,7 @@ const { createPrisonApiOffenderService } = require('./services/offender');
 const { createSearchService } = require('./services/search');
 const { createAnalyticsService } = require('./services/analytics');
 const { createFeedbackService } = require('./services/feedback');
-const {
-  PrisonerInformationService,
-} = require('./services/prisonerInformation');
+const PrisonerInformationService = require('./services/prisonerInformation');
 
 // Repositories
 const {
@@ -40,7 +38,7 @@ const { offenderRepository } = require('./repositories/offender');
 const { searchRepository } = require('./repositories/search');
 const { analyticsRepository } = require('./repositories/analytics');
 const { feedbackRepository } = require('./repositories/feedback');
-const { PrisonApiRepository } = require('./repositories/prisonApi');
+const PrisonApiRepository = require('./repositories/prisonApi');
 
 const cachingStrategy = path(['features', 'useRedisCache'], config)
   ? new RedisCachingStrategy(

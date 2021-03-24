@@ -18,7 +18,10 @@ class PrisonApiRepository {
     this.url = apiUrl || getEnvironmentVariableOrThrow('PRISON_API_BASE_URL');
   }
 
-  async getTransactionsFor(prisonerId, accountCode, fromDate, toDate) {
+  async getTransactionsForDateRange(
+    prisonerId,
+    { accountCode, fromDate, toDate } = {},
+  ) {
     assert(
       isValidPrisonerId(prisonerId),
       `Prisoner ID must be a string in the format "A1234BC" - Received: ${prisonerId}`,
@@ -35,6 +38,44 @@ class PrisonApiRepository {
         account_code: accountCode,
         from_date: formatISO(fromDate, { representation: 'date' }),
         to_date: formatISO(toDate, { representation: 'date' }),
+      });
+
+      logger.info(
+        `PrisonApiRepository (getTransactionsFor) - User: ${prisonerId}`,
+      );
+
+      const response = await this.client.get(
+        `${this.url}/api/offenders/${prisonerId}/transaction-history?${query}`,
+      );
+
+      return response;
+    } catch (e) {
+      Sentry.captureException(e);
+      logger.error(
+        `PrisonApiRepository (getTransactionsFor) - Failed: ${e.message} - User: ${prisonerId}`,
+      );
+      logger.debug(e.stack);
+      return null;
+    }
+  }
+
+  async getTransactionsByType(
+    prisonerId,
+    { accountCode, transactionType } = {},
+  ) {
+    assert(
+      isValidPrisonerId(prisonerId),
+      `Prisoner ID must be a string in the format "A1234BC" - Received: ${prisonerId}`,
+    );
+    assert(
+      isValidAccountCode(accountCode),
+      `Invalid account code - Received: ${accountCode}`,
+    );
+
+    try {
+      const query = querystring.encode({
+        account_code: accountCode,
+        transaction_type: transactionType,
       });
 
       logger.info(
@@ -122,6 +163,4 @@ class PrisonApiRepository {
   }
 }
 
-module.exports = {
-  PrisonApiRepository,
-};
+module.exports = PrisonApiRepository;
