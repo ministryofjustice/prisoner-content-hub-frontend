@@ -162,7 +162,7 @@ describe('PrisonApiRepository', () => {
       client.get.mockResolvedValue('API_RESPONSE');
 
       await expect(
-        repository.getTransactionsForDateRange('A1234BC', {
+        repository.getTransactionsByType('A1234BC', {
           accountCode: 'cash',
         }),
       ).rejects.toThrow();

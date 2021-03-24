@@ -9,6 +9,7 @@ const {
   isValidAccountCode,
   isValidDate,
   isValidBookingId,
+  isValidTransactionType,
 } = require('../utils/validators');
 const { getEnvironmentVariableOrThrow } = require('../../utils');
 
@@ -70,6 +71,10 @@ class PrisonApiRepository {
     assert(
       isValidAccountCode(accountCode),
       `Invalid account code - Received: ${accountCode}`,
+    );
+    assert(
+      isValidTransactionType(transactionType),
+      `Invalid transaction type - Received: ${transactionType}`,
     );
 
     try {

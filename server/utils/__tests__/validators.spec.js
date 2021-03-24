@@ -4,6 +4,7 @@ const {
   isValidAccountCode,
   isValidDate,
   isValidPrisonId,
+  isValidTransactionType,
 } = require('../validators');
 
 describe('Validators', () => {
@@ -104,6 +105,28 @@ describe('Validators', () => {
     it('returns null when passed no data', () => {
       expect(isValidPrisonId(null)).toBeFalsy();
       expect(isValidPrisonId(undefined)).toBeFalsy();
+    });
+  });
+
+  describe('isValidTransactionType', () => {
+    it('returns truthy when the string passed is a valid transaction type', () => {
+      expect(isValidTransactionType('HOA')).toBeTruthy();
+      expect(isValidTransactionType('WHF')).toBeTruthy();
+    });
+
+    it('returns null when the string passed is not a valid transaction type', () => {
+      expect(isValidTransactionType('thisWillFail')).toBeFalsy();
+    });
+
+    it('returns null when passed data of the wrong type', () => {
+      expect(isValidTransactionType(123)).toBeFalsy();
+      expect(isValidTransactionType(['HOA'])).toBeFalsy();
+      expect(isValidTransactionType({}));
+    });
+
+    it('returns null when passed no data', () => {
+      expect(isValidTransactionType(null)).toBeFalsy();
+      expect(isValidTransactionType(undefined)).toBeFalsy();
     });
   });
 });
