@@ -391,7 +391,7 @@ describe('PrisonerInformation', () => {
     });
   });
 
-  describe('getDamageObligationsFor', async () => {
+  describe('getDamageObligationsFor', () => {
     it('returns damage obligations data', async () => {
       const prisonerInformationService = new PrisonerInformationService({
         prisonApiRepository,
