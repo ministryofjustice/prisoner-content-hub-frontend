@@ -42,7 +42,7 @@ class PrisonApiRepository {
       });
 
       logger.info(
-        `PrisonApiRepository (getTransactionsFor) - User: ${prisonerId}`,
+        `PrisonApiRepository (getTransactionsForDateRange) - User: ${prisonerId}`,
       );
 
       const response = await this.client.get(
@@ -53,7 +53,7 @@ class PrisonApiRepository {
     } catch (e) {
       Sentry.captureException(e);
       logger.error(
-        `PrisonApiRepository (getTransactionsFor) - Failed: ${e.message} - User: ${prisonerId}`,
+        `PrisonApiRepository (getTransactionsForDateRange) - Failed: ${e.message} - User: ${prisonerId}`,
       );
       logger.debug(e.stack);
       return null;
@@ -84,7 +84,7 @@ class PrisonApiRepository {
       });
 
       logger.info(
-        `PrisonApiRepository (getTransactionsFor) - User: ${prisonerId}`,
+        `PrisonApiRepository (getTransactionsByType) - User: ${prisonerId}`,
       );
 
       const response = await this.client.get(
@@ -95,7 +95,7 @@ class PrisonApiRepository {
     } catch (e) {
       Sentry.captureException(e);
       logger.error(
-        `PrisonApiRepository (getTransactionsFor) - Failed: ${e.message} - User: ${prisonerId}`,
+        `PrisonApiRepository (getTransactionsByType) - Failed: ${e.message} - User: ${prisonerId}`,
       );
       logger.debug(e.stack);
       return null;
