@@ -5,6 +5,8 @@ const isValidPrisonId = s => typeof s === 'string' && s.match(/^[A-Z]{3}$/i);
 const isValidAccountCode = s =>
   typeof s === 'string' && ['spends', 'cash', 'savings'].includes(s);
 const isValidDate = d => d instanceof Date;
+const isValidTransactionType = t =>
+  typeof t === 'string' && ['HOA', 'WHF'].includes(t);
 
 module.exports = {
   isValidPrisonerId,
@@ -12,4 +14,5 @@ module.exports = {
   isValidPrisonId,
   isValidAccountCode,
   isValidDate,
+  isValidTransactionType,
 };

@@ -1,5 +1,5 @@
 const Sentry = require('@sentry/node');
-const { PrisonApiRepository } = require('../prisonApi');
+const PrisonApiRepository = require('../prisonApi');
 
 jest.mock('@sentry/node');
 
@@ -12,18 +12,17 @@ describe('PrisonApiRepository', () => {
     jest.clearAllMocks();
   });
 
-  describe('getTransactionsFor', () => {
+  describe('getTransactionsForDateRange', () => {
     it('should return when the transactions request succeeds', async () => {
       const repository = new PrisonApiRepository({ client, apiUrl });
 
       client.get.mockResolvedValue('API_RESPONSE');
 
-      const response = await repository.getTransactionsFor(
-        'A1234BC',
-        'spends',
-        new Date('2020-01-01'),
-        new Date('2020-01-31'),
-      );
+      const response = await repository.getTransactionsForDateRange('A1234BC', {
+        accountCode: 'spends',
+        fromDate: new Date('2020-01-01'),
+        toDate: new Date('2020-01-31'),
+      });
 
       expect(client.get).toHaveBeenCalledWith(
         'http://foo.bar/api/offenders/A1234BC/transaction-history?account_code=spends&from_date=2020-01-01&to_date=2020-01-31',
@@ -38,12 +37,11 @@ describe('PrisonApiRepository', () => {
       client.get.mockResolvedValue('API_RESPONSE');
 
       await expect(
-        repository.getTransactionsFor(
-          null,
-          'spends',
-          new Date('2020-01-01'),
-          new Date('2020-01-31'),
-        ),
+        repository.getTransactionsForDateRange(null, {
+          accountCode: 'spends',
+          fromDate: new Date('2020-01-01'),
+          toDate: new Date('2020-01-31'),
+        }),
       ).rejects.toThrow();
 
       expect(client.get).not.toHaveBeenCalled();
@@ -55,12 +53,11 @@ describe('PrisonApiRepository', () => {
       client.get.mockResolvedValue('API_RESPONSE');
 
       await expect(
-        repository.getTransactionsFor(
-          'A1234BC',
-          null,
-          new Date('2020-01-01'),
-          new Date('2020-01-31'),
-        ),
+        repository.getTransactionsForDateRange('A1234BC', {
+          accountCode: null,
+          fromDate: new Date('2020-01-01'),
+          toDate: new Date('2020-01-31'),
+        }),
       ).rejects.toThrow();
 
       expect(client.get).not.toHaveBeenCalled();
@@ -72,12 +69,11 @@ describe('PrisonApiRepository', () => {
       client.get.mockResolvedValue('API_RESPONSE');
 
       await expect(
-        repository.getTransactionsFor(
-          'A1234BC',
-          'spends',
-          null,
-          new Date('2020-01-31'),
-        ),
+        repository.getTransactionsForDateRange('A1234BC', {
+          accountCode: 'spends',
+          fromDate: 'expectToBreak',
+          toDate: new Date('2020-01-31'),
+        }),
       ).rejects.toThrow();
     });
 
@@ -87,12 +83,11 @@ describe('PrisonApiRepository', () => {
       client.get.mockResolvedValue('API_RESPONSE');
 
       await expect(
-        repository.getTransactionsFor(
-          'A1234BC',
-          'spends',
-          new Date('2020-01-01'),
-          null,
-        ),
+        repository.getTransactionsForDateRange('A1234BC', {
+          accountCode: 'spends',
+          fromDate: new Date('2020-01-01'),
+          toDate: 'expectToBreak',
+        }),
       ).rejects.toThrow();
 
       expect(client.get).not.toHaveBeenCalled();
@@ -103,15 +98,74 @@ describe('PrisonApiRepository', () => {
 
       client.get.mockRejectedValue('💥');
 
-      const response = await repository.getTransactionsFor(
-        'A1234BC',
-        'spends',
-        new Date('2020-01-01'),
-        new Date('2020-01-31'),
-      );
+      const response = await repository.getTransactionsForDateRange('A1234BC', {
+        accountCode: 'spends',
+        fromDate: new Date('2020-01-01'),
+        toDate: new Date('2020-01-31'),
+      });
 
       expect(Sentry.captureException).toHaveBeenCalledWith('💥');
       expect(response).toBeNull();
+    });
+  });
+
+  describe('getTransactionsByType', () => {
+    it('should return when the transactions request succeeds', async () => {
+      const repository = new PrisonApiRepository({ client, apiUrl });
+
+      client.get.mockResolvedValue('API_RESPONSE');
+
+      const response = await repository.getTransactionsByType('A1234BC', {
+        accountCode: 'cash',
+        transactionType: 'HOA',
+      });
+
+      expect(client.get).toHaveBeenCalledWith(
+        'http://foo.bar/api/offenders/A1234BC/transaction-history?account_code=cash&transaction_type=HOA',
+      );
+
+      expect(response).toBe('API_RESPONSE');
+    });
+
+    it('should throw when no prisoner ID is passed', async () => {
+      const repository = new PrisonApiRepository({ client, apiUrl });
+
+      client.get.mockResolvedValue('API_RESPONSE');
+
+      await expect(
+        repository.getTransactionsByType(null, {
+          accountCode: 'cash',
+          transactionType: 'HOA',
+        }),
+      ).rejects.toThrow();
+
+      expect(client.get).not.toHaveBeenCalled();
+    });
+
+    it('should throw when no accountCode is passed', async () => {
+      const repository = new PrisonApiRepository({ client, apiUrl });
+
+      client.get.mockResolvedValue('API_RESPONSE');
+
+      await expect(
+        repository.getTransactionsByType('A1234BC', {
+          transactionType: 'HOA',
+        }),
+      ).rejects.toThrow();
+
+      expect(client.get).not.toHaveBeenCalled();
+    });
+
+    it('should throw when no transactionType is passed', async () => {
+      const repository = new PrisonApiRepository({ client, apiUrl });
+
+      client.get.mockResolvedValue('API_RESPONSE');
+
+      await expect(
+        repository.getTransactionsByType('A1234BC', {
+          accountCode: 'cash',
+        }),
+      ).rejects.toThrow();
     });
   });
 
