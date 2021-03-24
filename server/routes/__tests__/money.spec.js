@@ -18,16 +18,9 @@ const {
 describe('Prisoner Money', () => {
   let app;
   const client = { get: jest.fn() };
-
-  const prisonApiRepository = new PrisonApiRepository({ client });
-  const prisonerInformationService = new PrisonerInformationService({
-    prisonApiRepository,
-  });
-  const moneyRouter = createMoneyRouter({
-    hubContentService: () => {},
-    offenderService: () => {},
-    prisonerInformationService,
-  });
+  let prisonApiRepository;
+  let prisonerInformationService;
+  let moneyRouter;
 
   const testUser = new User({
     prisonerId: 'A1234BC',
@@ -117,6 +110,25 @@ describe('Prisoner Money', () => {
     req.user = testUser;
     next();
   };
+
+  const oldEnv = process.env;
+
+  beforeAll(() => {
+    process.env.PRISON_API_BASE_URL = 'http://foo.bar/api';
+    prisonApiRepository = new PrisonApiRepository({ client });
+    prisonerInformationService = new PrisonerInformationService({
+      prisonApiRepository,
+    });
+    moneyRouter = createMoneyRouter({
+      hubContentService: () => {},
+      offenderService: () => {},
+      prisonerInformationService,
+    });
+  });
+
+  afterAll(() => {
+    process.env = oldEnv;
+  });
 
   beforeEach(() => {
     jest.clearAllMocks();
