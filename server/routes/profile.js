@@ -15,6 +15,10 @@ const createProfileRouter = () => {
         returnUrl: req.originalUrl,
       };
 
+      if (req.user) {
+        templateParams.signedInUser = req.user.getFullName();
+      }
+
       return res.render('pages/profile', templateParams);
     } catch (e) {
       return next(e);
