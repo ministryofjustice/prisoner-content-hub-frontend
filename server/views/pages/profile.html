@@ -26,15 +26,15 @@
   {{ topBar({
     establishmentDisplayName: establishmentDisplayName,
     showBar: false,
-    userName: config.userName,
-    returnUrl: config.returnUrl
+    userName: signedInUser,
+    returnUrl: returnUrl
   }) }}
 {% endblock %}
 
 {% block userDetails %}
   {{ userDetails({
-    detailsType: config.detailsType,
-    userName: config.userName
+    detailsType: detailsType,
+    userName: signedInUser
   }) }}
 {% endblock %}
 
@@ -50,7 +50,7 @@
 {% block main %}
   <div class="govuk-width-container govuk-body">
 
-{% if not config.isLoggedIn %}
+{% if not signedInUser %}
   <h2 class="govuk-heading-m">You are signed out</h2>
   <p class="govuk-!-font-size-24">
     <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.

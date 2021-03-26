@@ -165,6 +165,7 @@ const createApp = ({
       const serializedUser = ramdaPath(['session', 'passport', 'user'], req);
       if (serializedUser) {
         req.user = User.deserialize(serializedUser);
+        res.locals.signedInUser = req.user.getFullName();
       }
       next();
     });
