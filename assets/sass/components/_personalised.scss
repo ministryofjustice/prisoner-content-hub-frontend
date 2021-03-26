@@ -173,12 +173,11 @@
 .transactions__selection__form {
   display: flex;
   flex-flow: row wrap;
+  width: auto;
+  margin-bottom: 0;
 
   & .govuk-form-group {
     margin-right: 15px;
-  }
-
-  & * {
     width: auto;
     margin-bottom: 0;
   }

@@ -52,7 +52,6 @@
       {% else %}
         {% from "govuk/components/select/macro.njk" import govukSelect %}
         <div class="transactions__selection_wrapper">
-          <h3 class="govuk-heading-m">View by</h3>
           <form method="GET">
             <div class="transactions__selection__form">
               <input type="hidden" name="accountType" value="{{ data.selected }}"/>
@@ -60,7 +59,7 @@
               id: "selected-date",
               name: "selectedDate",
               label: {
-                text: "Date"
+                text: "View by month and year"
               },
               items: data.dateSelection
             }) }}
