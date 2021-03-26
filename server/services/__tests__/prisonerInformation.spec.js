@@ -1,8 +1,10 @@
 const Sentry = require('@sentry/node');
-const { PrisonerInformationService } = require('../prisonerInformation');
 const { User } = require('../../auth/user');
+const PrisonerInformationService = require('../prisonerInformation');
+const PrisonApi = require('../../repositories/prisonApi');
 
 jest.mock('@sentry/node');
+jest.mock('../../repositories/prisonApi');
 
 describe('PrisonerInformation', () => {
   let prisonApiRepository = {};
@@ -84,12 +86,7 @@ describe('PrisonerInformation', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    prisonApiRepository = {
-      getTransactionsFor: jest.fn(),
-      getBalancesFor: jest.fn(),
-      getPrisonDetails: jest.fn(),
-      getDamageObligationsFor: jest.fn(),
-    };
+    prisonApiRepository = new PrisonApi();
   });
 
   describe('getTransactionInformationFor', () => {
@@ -98,7 +95,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
@@ -128,7 +127,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue([]);
 
@@ -158,7 +159,7 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor.mockResolvedValue(null);
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(null);
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
@@ -178,7 +179,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
@@ -198,7 +201,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
       prisonApiRepository.getBalancesFor.mockResolvedValue(null);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
@@ -218,7 +223,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
@@ -231,7 +238,9 @@ describe('PrisonerInformation', () => {
         ),
       ).rejects.toThrow();
 
-      expect(prisonApiRepository.getTransactionsFor).not.toHaveBeenCalled();
+      expect(
+        prisonApiRepository.getTransactionsForDateRange,
+      ).not.toHaveBeenCalled();
       expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
       expect(prisonApiRepository.getPrisonDetails).not.toHaveBeenCalled();
     });
@@ -241,7 +250,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
@@ -254,7 +265,9 @@ describe('PrisonerInformation', () => {
         ),
       ).rejects.toThrow();
 
-      expect(prisonApiRepository.getTransactionsFor).not.toHaveBeenCalled();
+      expect(
+        prisonApiRepository.getTransactionsForDateRange,
+      ).not.toHaveBeenCalled();
       expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
       expect(prisonApiRepository.getPrisonDetails).not.toHaveBeenCalled();
     });
@@ -264,7 +277,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
@@ -277,7 +292,9 @@ describe('PrisonerInformation', () => {
         ),
       ).rejects.toThrow();
 
-      expect(prisonApiRepository.getTransactionsFor).not.toHaveBeenCalled();
+      expect(
+        prisonApiRepository.getTransactionsForDateRange,
+      ).not.toHaveBeenCalled();
       expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
       expect(prisonApiRepository.getPrisonDetails).not.toHaveBeenCalled();
     });
@@ -287,7 +304,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
@@ -300,7 +319,9 @@ describe('PrisonerInformation', () => {
         ),
       ).rejects.toThrow();
 
-      expect(prisonApiRepository.getTransactionsFor).not.toHaveBeenCalled();
+      expect(
+        prisonApiRepository.getTransactionsForDateRange,
+      ).not.toHaveBeenCalled();
       expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
       expect(prisonApiRepository.getPrisonDetails).not.toHaveBeenCalled();
     });
@@ -310,7 +331,7 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor.mockRejectedValue('💥');
+      prisonApiRepository.getTransactionsForDateRange.mockRejectedValue('💥');
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
@@ -330,7 +351,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
       prisonApiRepository.getBalancesFor.mockRejectedValue('💥');
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
@@ -350,7 +373,9 @@ describe('PrisonerInformation', () => {
         prisonApiRepository,
       });
 
-      prisonApiRepository.getTransactionsFor.mockResolvedValue(transactions);
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockRejectedValue('💥');
 
@@ -366,7 +391,7 @@ describe('PrisonerInformation', () => {
     });
   });
 
-  describe('getDamageObligationsFor', async () => {
+  describe('getDamageObligationsFor', () => {
     it('returns damage obligations data', async () => {
       const prisonerInformationService = new PrisonerInformationService({
         prisonApiRepository,

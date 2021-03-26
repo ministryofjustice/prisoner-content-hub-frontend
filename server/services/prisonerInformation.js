@@ -43,12 +43,11 @@ class PrisonerInformationService {
         balancesResponse,
         listOfPrisons,
       ] = await Promise.all([
-        this.prisonApi.getTransactionsFor(
-          user.prisonerId,
+        this.prisonApi.getTransactionsForDateRange(user.prisonerId, {
           accountCode,
           fromDate,
           toDate,
-        ),
+        }),
         this.prisonApi.getBalancesFor(user.bookingId),
         this.prisonApi.getPrisonDetails(),
       ]);
@@ -122,6 +121,4 @@ class PrisonerInformationService {
   }
 }
 
-module.exports = {
-  PrisonerInformationService,
-};
+module.exports = PrisonerInformationService;

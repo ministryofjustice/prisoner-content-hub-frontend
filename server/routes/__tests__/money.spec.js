@@ -4,10 +4,8 @@ const createAxiosRequestError = require('axios/lib/core/createError');
 const FakeTimers = require('@sinonjs/fake-timers');
 
 const { createMoneyRouter } = require('../money');
-const {
-  PrisonerInformationService,
-} = require('../../services/prisonerInformation');
-const { PrisonApiRepository } = require('../../repositories/prisonApi');
+const PrisonerInformationService = require('../../services/prisonerInformation');
+const PrisonApiRepository = require('../../repositories/prisonApi');
 const { User } = require('../../auth/user');
 
 const {
