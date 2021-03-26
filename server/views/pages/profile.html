@@ -1,0 +1,93 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "../components/page-navigation/macro.njk" import pageNavigation %}
+{% from "../components/user-details/macro.njk" import userDetails %}
+{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
+
+
+{% extends "../components/template.njk" %}
+
+{% block pageTitle %}
+  {{ title }}
+{% endblock %}
+
+{% block head %}
+  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block pageNavigation %}
+  {{ pageNavigation({ title: title }) }}
+{% endblock %}
+
+{% block topBar %}
+  {{ topBar({
+    establishmentDisplayName: establishmentDisplayName,
+    showBar: false,
+    userName: signedInUser,
+    returnUrl: returnUrl
+  }) }}
+{% endblock %}
+
+{% block userDetails %}
+  {{ userDetails({
+    detailsType: detailsType,
+    userName: signedInUser
+  }) }}
+{% endblock %}
+
+{% block header %}
+  <div class="govuk-width-container govuk-body">
+    <h1>{{ title }}</h1>
+  </div>
+{% endblock %}
+
+{% block homeNavigation %}{% endblock %}
+{% block search %}{% endblock %}
+
+{% block main %}
+  <div class="govuk-width-container govuk-body">
+
+{% if not signedInUser %}
+  <h2 class="govuk-heading-m">You are signed out</h2>
+  <p class="govuk-!-font-size-24">
+    <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
+    </p>
+{% else %}
+  <details class="govuk-details" data-module="govuk-details">
+    <summary class="govuk-details__summary">
+      <span class="govuk-details__summary-text">
+          Help with your profile
+        </span>
+    </summary>
+    <div class="govuk-details__text">
+      <p>The Hub team cannot help you with profile queries.</p>
+
+      <p>If you're unsure about information in your profile, you should submit an app or ask an officer.</p>
+
+      <a href="/content/" class="govuk-link">Read more about what the information on this page means</a>.
+        </div>
+  </details>
+{% endif %}
+
+    <div class="govuk-hub-article-feedback">
+      <p class="govuk-body">Tell us what you think:</p>
+      {{ hubFeedbackWidget({
+        title: title,
+        contentType: 'PROFILE',
+        feedbackId: feedbackId
+      }) }}
+    </div>
+  </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  <script src="/public/all.js"></script>
+  <script>
+    window
+      .GOVUKFrontend
+      .initAll();
+  </script>
+{% endblock %}

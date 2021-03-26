@@ -21,6 +21,7 @@ const { createContentRouter } = require('./routes/content');
 const { createVisitsRouter } = require('./routes/visits');
 const { createIncentivesRouter } = require('./routes/incentives');
 const { createMoneyRouter } = require('./routes/money');
+const { createProfileRouter } = require('./routes/profile');
 const { createTagRouter } = require('./routes/tags');
 const { createGamesRouter } = require('./routes/games');
 const { createAnalyticsRouter } = require('./routes/analytics');
@@ -164,6 +165,7 @@ const createApp = ({
       const serializedUser = ramdaPath(['session', 'passport', 'user'], req);
       if (serializedUser) {
         req.user = User.deserialize(serializedUser);
+        res.locals.signedInUser = req.user.getFullName();
       }
       next();
     });
@@ -257,6 +259,15 @@ const createApp = ({
   app.use(
     '/money',
     createMoneyRouter({
+      hubContentService,
+      offenderService,
+      prisonerInformationService,
+    }),
+  );
+
+  app.use(
+    '/profile',
+    createProfileRouter({
       hubContentService,
       offenderService,
       prisonerInformationService,
