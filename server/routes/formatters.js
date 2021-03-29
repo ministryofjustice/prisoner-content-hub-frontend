@@ -1,4 +1,7 @@
 const { parseISO } = require('date-fns');
+const Sentry = require('@sentry/node');
+
+const { logger } = require('../utils/logger');
 const { formatBalanceOrDefault } = require('../utils/string');
 const { formatDateOrDefault, sortByDateTime } = require('../utils/date');
 
@@ -46,6 +49,9 @@ function formatBalance(accountType, balances) {
       amount: formatBalanceOrDefault(null, balance, balances.currency),
     };
   } catch (e) {
+    Sentry.captureException(e);
+    logger.error('Failed to process balance response');
+    logger.debug(e.stack);
     return failureNotification;
   }
 }
@@ -129,6 +135,9 @@ function flattenTransactions(transactions) {
       .sort(sortByRecentEntryDateThenByRecentCalendarDate)
       .map(formatTransaction);
   } catch (e) {
+    Sentry.captureException(e);
+    logger.error('Failed to process transactions response');
+    logger.debug(e.stack);
     return failureNotification;
   }
 }
@@ -189,6 +198,9 @@ function createPendingTransactionsResponseFrom(pending) {
       })),
     };
   } catch (e) {
+    Sentry.captureException(e);
+    logger.error('Failed to process pending transactions response');
+    logger.debug(e.stack);
     return failureNotification;
   }
 }
@@ -270,6 +282,9 @@ function createDamageObligationsResponseFrom(damageObligations) {
       ),
     };
   } catch (e) {
+    Sentry.captureException(e);
+    logger.error('Failed to process damage obligations response');
+    logger.debug(e.stack);
     return failureNotification;
   }
 }

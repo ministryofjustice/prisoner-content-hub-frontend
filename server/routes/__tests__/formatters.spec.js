@@ -1,8 +1,11 @@
+const Sentry = require('@sentry/node');
 const {
   createTransactionsResponseFrom,
   createDamageObligationsResponseFrom,
   createPendingTransactionsResponseFrom,
 } = require('../formatters');
+
+jest.mock('@sentry/node');
 
 describe('Responses', () => {
   describe('createTransactionsResponseFrom', () => {
@@ -180,6 +183,15 @@ describe('Responses', () => {
       expect(formatted.transactions.userNotification).toBeDefined();
     });
 
+    it('captures the exception in Sentry when an exception is thrown', () => {
+      createTransactionsResponseFrom('spends', {
+        transactions: [undefined],
+        balances: balancesApiResponse,
+      });
+
+      expect(Sentry.captureException).toHaveBeenCalled();
+    });
+
     it('formats balance data when present', () => {
       const formatted = createTransactionsResponseFrom('spends', {
         transactions: transactionApiResponse,
@@ -338,6 +350,12 @@ describe('Responses', () => {
 
       expect(formatted.userNotification).toBeDefined();
     });
+
+    it('captures the exception in Sentry when an exception is thrown', () => {
+      createDamageObligationsResponseFrom([undefined]);
+
+      expect(Sentry.captureException).toHaveBeenCalled();
+    });
   });
 
   describe('createPendingTransactionsResponseFrom', () => {
@@ -403,6 +421,12 @@ describe('Responses', () => {
       const formatted = createPendingTransactionsResponseFrom();
 
       expect(formatted.userNotification).toBeDefined();
+    });
+
+    it('captures the exception in Sentry when an exception is thrown', () => {
+      createPendingTransactionsResponseFrom([undefined]);
+
+      expect(Sentry.captureException).toHaveBeenCalled();
     });
   });
 });
