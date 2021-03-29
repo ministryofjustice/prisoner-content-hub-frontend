@@ -2,8 +2,9 @@ const { path } = require('ramda');
 const express = require('express');
 const { startOfMonth, parseISO, endOfMonth, isFuture } = require('date-fns');
 const {
-  formatTransactionPageData,
-  formatDamageObligations,
+  createTransactionsResponseFrom,
+  createDamageObligationsResponseFrom,
+  createPendingTransactionsResponseFrom,
 } = require('./formatters');
 const { getDateSelection } = require('../utils/date');
 
@@ -79,7 +80,9 @@ const createMoneyRouter = ({
         );
 
         templateData.prisonerInformation = {
-          damageObligations: formatDamageObligations(damageObligations),
+          damageObligations: createDamageObligationsResponseFrom(
+            damageObligations,
+          ),
           selected: 'damage-obligations',
           accountTypes: ['spends', 'private', 'savings'],
         };
@@ -137,14 +140,36 @@ const createMoneyRouter = ({
           toDate,
         );
 
-        const prisonerInformation = formatTransactionPageData(
-          accountCode,
-          transactionsData,
-        );
+        if (!transactionsData) {
+          return next('Failed to fetch transaction data');
+        }
+
+        const {
+          transactions,
+          balances,
+          ...otherInformation
+        } = transactionsData;
+        const formatted = createTransactionsResponseFrom(accountCode, {
+          transactions,
+          balances,
+        });
+
+        const prisonerInformation = {};
+        prisonerInformation.transactions = formatted.transactions;
+        prisonerInformation.balance = formatted.balance;
+        prisonerInformation.shouldShowDamageObligationsTab =
+          formatted.shouldShowDamageObligationsTab;
         prisonerInformation.selected = accountType;
         prisonerInformation.accountTypes = accountTypes;
         prisonerInformation.selectedDate = selectedDate;
         prisonerInformation.dateSelection = dateSelection;
+
+        if (accountType === 'private') {
+          prisonerInformation.pendingTransactions = createPendingTransactionsResponseFrom(
+            otherInformation.pending,
+          );
+        }
+
         templateData.prisonerInformation = prisonerInformation;
         templateData.config.userName = user.getFullName();
       }

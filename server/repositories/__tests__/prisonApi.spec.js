@@ -192,7 +192,7 @@ describe('PrisonApiRepository', () => {
       const response = await repository.getPrisonDetails();
 
       expect(Sentry.captureException).toHaveBeenCalledWith('💥');
-      expect(response).toStrictEqual([]);
+      expect(response).toBeNull();
     });
   });
 

@@ -2,6 +2,10 @@ const { parseISO } = require('date-fns');
 const { formatBalanceOrDefault } = require('../utils/string');
 const { formatDateOrDefault, sortByDateTime } = require('../utils/date');
 
+function createUserNotification(message) {
+  return { userNotification: message };
+}
+
 function formatTransaction(transaction) {
   return {
     paymentDate: formatDateOrDefault('', 'd MMMM yyyy', transaction.entryDate),
@@ -32,175 +36,246 @@ function formatTransaction(transaction) {
 }
 
 function formatBalance(accountType, balances) {
-  const balance = balances[accountType];
-  return {
-    amount: formatBalanceOrDefault(null, balance, balances.currency),
-  };
+  const failureNotification = createUserNotification(
+    'We are not able to show your balance at this time',
+  );
+
+  try {
+    const balance = balances[accountType];
+    return {
+      amount: formatBalanceOrDefault(null, balance, balances.currency),
+    };
+  } catch (e) {
+    return failureNotification;
+  }
 }
 
 function flattenTransactions(transactions) {
-  const batchTransactionsOnly = transaction =>
-    Array.isArray(transaction.relatedOffenderTransactions) &&
-    transaction.relatedOffenderTransactions.length;
-
-  const sortByRecentEntryDateThenByRecentCalendarDate = (
-    transaction1,
-    transaction2,
-  ) => {
-    const diff =
-      parseISO(transaction2.entryDate).valueOf() -
-      parseISO(transaction1.entryDate).valueOf();
-
-    if (diff !== 0) {
-      return diff;
-    }
-
-    if (transaction1.calendarDate && transaction2.calendarDate) {
-      return (
-        parseISO(transaction2.calendarDate).valueOf() -
-        parseISO(transaction1.calendarDate).valueOf()
-      );
-    }
-
-    return 0;
-  };
-  const sortByOldestCalendarDate = (transaction1, transaction2) =>
-    sortByDateTime(transaction2.calendarDate, transaction1.calendarDate);
-
-  const relatedTransactions = transactions
-    .filter(batchTransactionsOnly)
-    .flatMap(batchTransaction => {
-      const related = batchTransaction.relatedOffenderTransactions
-        .sort(sortByOldestCalendarDate)
-        .map(relatedTransaction => ({
-          entryDate: batchTransaction.entryDate,
-          penceAmount: relatedTransaction.payAmount,
-          entryDescription: `${
-            relatedTransaction.paymentDescription
-          } from ${formatDateOrDefault(
-            '',
-            'd MMMM yyyy',
-            relatedTransaction.calendarDate,
-          )}`,
-          postingType: 'CR',
-          currency: batchTransaction.currency,
-          prison: batchTransaction.prison,
-        }));
-
-      let adjustedBalance = batchTransaction.currentBalance;
-
-      return related.map(current => {
-        const withBalance = {
-          ...current,
-          currentBalance: adjustedBalance,
-        };
-        adjustedBalance -= current.penceAmount;
-        return withBalance;
-      });
-    });
-
-  const transactionsExcludingRelated = transactions.filter(
-    transaction => !batchTransactionsOnly(transaction),
+  const failureNotification = createUserNotification(
+    'We are not able to show your transactions at this time',
   );
 
-  return [...transactionsExcludingRelated, ...relatedTransactions].sort(
-    sortByRecentEntryDateThenByRecentCalendarDate,
-  );
-}
+  try {
+    if (!Array.isArray(transactions)) {
+      return failureNotification;
+    }
 
-function formatTransactionPageData(accountType, transactionsData) {
-  if (transactionsData) {
-    const { balances, transactions } = transactionsData;
+    const batchTransactionsOnly = transaction =>
+      Array.isArray(transaction.relatedOffenderTransactions) &&
+      transaction.relatedOffenderTransactions.length;
 
-    return {
-      balance: balances.error
-        ? { error: balances.error }
-        : formatBalance(accountType, balances),
-      shouldShowDamageObligationsTab:
-        balances && balances.damageObligations > 0,
-      transactions: transactions.error
-        ? { error: transactions.error }
-        : flattenTransactions(transactions).map(formatTransaction),
+    const sortByRecentEntryDateThenByRecentCalendarDate = (
+      transaction1,
+      transaction2,
+    ) => {
+      const diff =
+        parseISO(transaction2.entryDate).valueOf() -
+        parseISO(transaction1.entryDate).valueOf();
+
+      if (diff !== 0) {
+        return diff;
+      }
+
+      if (transaction1.calendarDate && transaction2.calendarDate) {
+        return (
+          parseISO(transaction2.calendarDate).valueOf() -
+          parseISO(transaction1.calendarDate).valueOf()
+        );
+      }
+
+      return 0;
     };
-  }
 
-  return {};
-}
+    const sortByOldestCalendarDate = (transaction1, transaction2) =>
+      sortByDateTime(transaction2.calendarDate, transaction1.calendarDate);
 
-function formatDamageObligations(damageObligations) {
-  if (damageObligations.error) {
-    return damageObligations;
-  }
+    const relatedTransactions = transactions
+      .filter(batchTransactionsOnly)
+      .flatMap(batchTransaction => {
+        const related = batchTransaction.relatedOffenderTransactions
+          .sort(sortByOldestCalendarDate)
+          .map(relatedTransaction => ({
+            entryDate: batchTransaction.entryDate,
+            penceAmount: relatedTransaction.payAmount,
+            entryDescription: `${
+              relatedTransaction.paymentDescription
+            } from ${formatDateOrDefault(
+              '',
+              'd MMMM yyyy',
+              relatedTransaction.calendarDate,
+            )}`,
+            postingType: 'CR',
+            currency: batchTransaction.currency,
+            prison: batchTransaction.prison,
+          }));
 
-  const activeDamageObligations = damageObligations.filter(
-    damageObligation => damageObligation.status === 'ACTIVE',
-  );
+        let adjustedBalance = batchTransaction.currentBalance;
 
-  const totalRemainingAmount = activeDamageObligations
-    .filter(damageObligation => damageObligation.currency === 'GBP')
-    .reduce(
-      (runningTotal, damageObligation) =>
-        runningTotal +
-        (damageObligation.amountToPay - damageObligation.amountPaid),
-      0,
+        return related.map(current => {
+          const withBalance = {
+            ...current,
+            currentBalance: adjustedBalance,
+          };
+          adjustedBalance -= current.penceAmount;
+          return withBalance;
+        });
+      });
+
+    const transactionsExcludingRelated = transactions.filter(
+      transaction => !batchTransactionsOnly(transaction),
     );
 
-  const rows = activeDamageObligations
-    .sort((damageObligation1, damageObligation2) =>
-      sortByDateTime(
-        damageObligation2.startDateTime,
-        damageObligation1.startDateTime,
-      ),
-    )
-    .map(damageObligation => {
-      const startDate = formatDateOrDefault(
-        'Unknown',
-        'd MMMM yyyy',
-        damageObligation.startDateTime,
-      );
-      const endDate = formatDateOrDefault(
-        'Unknown',
-        'd MMMM yyyy',
-        damageObligation.endDateTime,
-      );
+    return [...transactionsExcludingRelated, ...relatedTransactions]
+      .sort(sortByRecentEntryDateThenByRecentCalendarDate)
+      .map(formatTransaction);
+  } catch (e) {
+    return failureNotification;
+  }
+}
 
-      return {
-        adjudicationNumber: damageObligation.referenceNumber,
-        timePeriod:
-          damageObligation.startDateTime && damageObligation.endDateTime
-            ? `${startDate} to ${endDate}`
-            : 'Unknown',
-        totalAmount: formatBalanceOrDefault(
-          null,
-          damageObligation.amountToPay,
-          damageObligation.currency,
-        ),
-        amountPaid: formatBalanceOrDefault(
-          null,
-          damageObligation.amountPaid,
-          damageObligation.currency,
-        ),
-        amountOwed: formatBalanceOrDefault(
-          null,
-          damageObligation.amountToPay - damageObligation.amountPaid,
-          damageObligation.currency,
-        ),
-        prison: damageObligation.prison,
-        description: damageObligation.comment,
-      };
-    });
+function createTransactionsResponseFrom(accountType, transactionsData) {
+  const { balances, transactions } = transactionsData;
 
   return {
-    rows,
-    totalRemainingAmount: formatBalanceOrDefault(
-      null,
-      totalRemainingAmount,
-      'GBP',
-    ),
+    balance: formatBalance(accountType, balances),
+    shouldShowDamageObligationsTab: balances && balances.damageObligations > 0,
+    transactions: flattenTransactions(transactions),
   };
+}
+
+function createPendingTransactionsResponseFrom(pending) {
+  const failureNotification = createUserNotification(
+    'We are not able to show your pending payments at this time',
+  );
+
+  try {
+    if (!Array.isArray(pending)) {
+      return failureNotification;
+    }
+
+    const totalPendingPenceAmount = pending
+      .filter(transaction => transaction.currency === 'GBP')
+      .reduce(
+        (runningTotal, transaction) =>
+          runningTotal +
+          (transaction.postingType === 'CR'
+            ? transaction.penceAmount
+            : transaction.penceAmount * -1),
+        0,
+      );
+
+    return {
+      total: formatBalanceOrDefault(null, totalPendingPenceAmount / 100, 'GBP'),
+      rows: pending.map(transaction => ({
+        paymentDate: formatDateOrDefault(
+          '',
+          'd MMMM yyyy',
+          transaction.entryDate,
+        ),
+        amount:
+          transaction.postingType === 'CR'
+            ? formatBalanceOrDefault(
+                null,
+                transaction.penceAmount / 100,
+                transaction.currency,
+              )
+            : formatBalanceOrDefault(
+                null,
+                0 - transaction.penceAmount / 100,
+                transaction.currency,
+              ),
+        paymentDescription: transaction.entryDescription,
+        prison: transaction.prison,
+      })),
+    };
+  } catch (e) {
+    return failureNotification;
+  }
+}
+
+function createDamageObligationsResponseFrom(damageObligations) {
+  const failureNotification = createUserNotification(
+    'We are not able to show your damage obligations at this time',
+  );
+
+  try {
+    if (!Array.isArray(damageObligations)) {
+      return failureNotification;
+    }
+
+    const activeDamageObligations = damageObligations.filter(
+      damageObligation => damageObligation.status === 'ACTIVE',
+    );
+
+    const totalRemainingAmount = activeDamageObligations
+      .filter(damageObligation => damageObligation.currency === 'GBP')
+      .reduce(
+        (runningTotal, damageObligation) =>
+          runningTotal +
+          (damageObligation.amountToPay - damageObligation.amountPaid),
+        0,
+      );
+
+    const rows = activeDamageObligations
+      .sort((damageObligation1, damageObligation2) =>
+        sortByDateTime(
+          damageObligation2.startDateTime,
+          damageObligation1.startDateTime,
+        ),
+      )
+      .map(damageObligation => {
+        const startDate = formatDateOrDefault(
+          'Unknown',
+          'd MMMM yyyy',
+          damageObligation.startDateTime,
+        );
+        const endDate = formatDateOrDefault(
+          'Unknown',
+          'd MMMM yyyy',
+          damageObligation.endDateTime,
+        );
+
+        return {
+          adjudicationNumber: damageObligation.referenceNumber,
+          timePeriod:
+            damageObligation.startDateTime && damageObligation.endDateTime
+              ? `${startDate} to ${endDate}`
+              : 'Unknown',
+          totalAmount: formatBalanceOrDefault(
+            null,
+            damageObligation.amountToPay,
+            damageObligation.currency,
+          ),
+          amountPaid: formatBalanceOrDefault(
+            null,
+            damageObligation.amountPaid,
+            damageObligation.currency,
+          ),
+          amountOwed: formatBalanceOrDefault(
+            null,
+            damageObligation.amountToPay - damageObligation.amountPaid,
+            damageObligation.currency,
+          ),
+          prison: damageObligation.prison,
+          description: damageObligation.comment,
+        };
+      });
+
+    return {
+      rows,
+      totalRemainingAmount: formatBalanceOrDefault(
+        null,
+        totalRemainingAmount,
+        'GBP',
+      ),
+    };
+  } catch (e) {
+    return failureNotification;
+  }
 }
 
 module.exports = {
-  formatTransactionPageData,
-  formatDamageObligations,
+  createTransactionsResponseFrom,
+  createDamageObligationsResponseFrom,
+  createPendingTransactionsResponseFrom,
 };

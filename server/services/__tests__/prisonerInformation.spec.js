@@ -154,7 +154,7 @@ describe('PrisonerInformation', () => {
       });
     });
 
-    it('returns a notification when unable to fetch transaction data', async () => {
+    it('returns null when unable to fetch transaction data', async () => {
       const prisonerInformationService = new PrisonerInformationService({
         prisonApiRepository,
       });
@@ -171,7 +171,7 @@ describe('PrisonerInformation', () => {
       );
 
       expect(data).toHaveProperty('transactions');
-      expect(data.transactions).toHaveProperty('error');
+      expect(data.transactions).toBeNull();
     });
 
     it('returns balance data', async () => {
@@ -196,7 +196,7 @@ describe('PrisonerInformation', () => {
       expect(data.balances).toEqual(balances);
     });
 
-    it('returns a notification when unable to fetch balance data', async () => {
+    it('returns null when unable to fetch balance data', async () => {
       const prisonerInformationService = new PrisonerInformationService({
         prisonApiRepository,
       });
@@ -215,7 +215,7 @@ describe('PrisonerInformation', () => {
       );
 
       expect(data).toHaveProperty('balances');
-      expect(data.balances).toHaveProperty('error');
+      expect(data.balances).toBeNull();
     });
 
     it('throws when called without a user', async () => {
@@ -462,7 +462,7 @@ describe('PrisonerInformation', () => {
       ]);
     });
 
-    it('returns a notification when unable to fetch damage obligations data', async () => {
+    it('returns null when unable to fetch damage obligations data', async () => {
       const prisonerInformationService = new PrisonerInformationService({
         prisonApiRepository,
       });
@@ -474,7 +474,7 @@ describe('PrisonerInformation', () => {
         user,
       );
 
-      expect(data).toHaveProperty('error');
+      expect(data).toBeNull();
     });
 
     it('swallows the exception and returns null if an error is thrown fetching damage obligations', async () => {

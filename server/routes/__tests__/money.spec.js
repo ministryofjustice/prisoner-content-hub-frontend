@@ -48,6 +48,33 @@ describe('Prisoner Money', () => {
     },
   ];
 
+  const pendingTransactionsApiResponse = [
+    {
+      entryDate: '2021-03-29',
+      transactionType: 'HOA',
+      entryDescription: 'Pending 1',
+      currency: 'GBP',
+      penceAmount: 5000,
+      accountType: 'REG',
+      postingType: 'CR',
+      agencyId: 'TST',
+      relatedOffenderTransactions: [],
+      currentBalance: 0,
+    },
+    {
+      entryDate: '2021-03-29',
+      transactionType: 'HOA',
+      entryDescription: 'Pending 2',
+      currency: 'GBP',
+      penceAmount: 2500,
+      accountType: 'REG',
+      postingType: 'DR',
+      agencyId: 'TST',
+      relatedOffenderTransactions: [],
+      currentBalance: 0,
+    },
+  ];
+
   const agencyApiResponse = [
     {
       agencyId: 'TST',
@@ -164,9 +191,7 @@ describe('Prisoner Money', () => {
           const selectedPanel = $('.govuk-tabs__panel').text();
           expect(selectedPanel).toContain('£123.45');
           // We should be presented with the transactions
-          const firstTableRow = $('.govuk-table__body .govuk-table__row')
-            .first()
-            .text();
+          const firstTableRow = $('#transactions tbody tr').first().text();
           expect(firstTableRow).toContain('23 February 2021');
           expect(firstTableRow).toContain('£0.50');
           expect(firstTableRow).toContain('-£4.43');
@@ -219,16 +244,16 @@ describe('Prisoner Money', () => {
       app.use(consoleLogError);
 
       await request(app)
-        .get('/money/transactions?accountType=private')
+        .get('/money/transactions?accountType=savings')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
           // We should be on the private account
           const selectedTab = $('.govuk-tabs__list-item--selected').text();
-          expect(selectedTab).toContain('Private');
+          expect(selectedTab).toContain('Savings');
           // We should be presented the balance
           const selectedPanel = $('.govuk-tabs__panel').text();
-          expect(selectedPanel).toContain('£456.78');
+          expect(selectedPanel).toContain('£890.12');
         });
     });
 
@@ -427,6 +452,133 @@ describe('Prisoner Money', () => {
         });
     });
 
+    it('shows pending transactions when on the "private" tab', async () => {
+      client.get.mockImplementation(requestUrl => {
+        if (
+          requestUrl.match(
+            /\/transaction-history\?account_code=cash&transaction_type=(HOA|WHF)/i,
+          )
+        ) {
+          return Promise.resolve(pendingTransactionsApiResponse);
+        }
+        if (requestUrl.match(/\/transaction-history/i)) {
+          return Promise.resolve(transactionApiResponse);
+        }
+        if (requestUrl.match(/\/agencies\/prison/i)) {
+          return Promise.resolve(agencyApiResponse);
+        }
+        if (requestUrl.match(/\/balances/i)) {
+          return Promise.resolve(balancesApiResponse);
+        }
+        return Promise.reject(fourOhFour);
+      });
+
+      app.use(setMockUser);
+      app.use('/money', moneyRouter);
+      app.use(consoleLogError);
+
+      await request(app)
+        .get('/money/transactions?accountType=private')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          // We should be showing data for the private account
+          const selectedTab = $('.govuk-tabs__list-item--selected').text();
+          expect(selectedTab).toContain('Private');
+          // We should be presented the balance
+          const [balance, totalPending] = $('.transaction__balances li').get();
+          expect($(balance).text()).toContain('£456.78');
+          expect($(totalPending).text()).toContain('£50.00');
+          // We should be presented with the pending transactions
+          const pendingTransactions = $('#pending-transactions tbody tr');
+          expect(pendingTransactions.length).toBe(4);
+          const firstPendingTransaction = pendingTransactions.first().text();
+          expect(firstPendingTransaction).toContain('29 March 2021');
+          expect(firstPendingTransaction).toContain('£50.00');
+          expect(firstPendingTransaction).toContain('Pending 1');
+          expect(firstPendingTransaction).toContain('Test (HMP)');
+        });
+    });
+
+    it('does not show pending transactions when not on the "private" tab', async () => {
+      client.get.mockImplementation(requestUrl => {
+        if (requestUrl.match(/\/transaction-history/i)) {
+          return Promise.resolve([]);
+        }
+        if (requestUrl.match(/\/balances/i)) {
+          return Promise.resolve(balancesApiResponse);
+        }
+        return Promise.reject(fourOhFour);
+      });
+
+      app.use(setMockUser);
+      app.use('/money', moneyRouter);
+      app.use(consoleLogError);
+
+      await request(app)
+        .get('/money/transactions?accountType=savings')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          // We should be on the savings account
+          const selectedTab = $('.govuk-tabs__list-item--selected').text();
+          expect(selectedTab).toContain('Savings');
+          // We not be show pending transactions
+          const pendingTransactions = $('#pending-transactions').get();
+          expect(pendingTransactions.length).toBe(0);
+        });
+    });
+
+    it('notifies the user when unable to fetch pending transactions data', async () => {
+      client.get.mockImplementation(requestUrl => {
+        if (
+          requestUrl.match(
+            /\/transaction-history\?account_code=cash&transaction_type=(HOA|WHF)/i,
+          )
+        ) {
+          return Promise.resolve(fiveOhThree);
+        }
+        if (requestUrl.match(/\/transaction-history/i)) {
+          return Promise.resolve(transactionApiResponse);
+        }
+        if (requestUrl.match(/\/agencies\/prison/i)) {
+          return Promise.resolve(agencyApiResponse);
+        }
+        if (requestUrl.match(/\/balances/i)) {
+          return Promise.resolve(balancesApiResponse);
+        }
+        return Promise.reject(fourOhFour);
+      });
+
+      app.use(setMockUser);
+      app.use('/money', moneyRouter);
+      app.use(consoleLogError);
+
+      await request(app)
+        .get('/money/transactions?accountType=private')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          // We should be showing data for the private account
+          const selectedTab = $('.govuk-tabs__list-item--selected').text();
+          expect(selectedTab).toContain('Private');
+          // We should be presented the balance
+          const [balance, totalPending] = $('.transaction__balances li').get();
+          expect($(balance).text()).toContain('£456.78');
+          expect(totalPending).toBeUndefined();
+          // We should not be presented with the pending transactions
+          const pendingTransactions = $('#pending-transactions').get();
+          expect(pendingTransactions.length).toBe(0);
+          const selectedPanel = $('.govuk-tabs__panel').text();
+          // We should be presented with a notification that we are unable to show pending transactions...
+          expect(selectedPanel).toMatch(
+            /not able to show your pending payments/im,
+          );
+          // ...and allow the user to try again
+          expect($('.govuk-tabs__panel a').text()).toMatch(/try again/im);
+        });
+    });
+
     it('allows the user to specify the month for transactions by passing a date', async () => {
       const mockPrisonerInformationService = {
         getTransactionInformationFor: jest.fn(() => ({
@@ -576,7 +728,7 @@ describe('Prisoner Money', () => {
           const selectedPanel = $('.govuk-tabs__panel').text();
           expect(selectedPanel).toContain('£470.00');
           // We should be presented with the damage obligation data
-          const table = $('.govuk-table__body .govuk-table__row');
+          const table = $('#damage-obligations tbody tr');
           expect(table.length).toEqual(2);
           const firstTableRow = table.first().text();
           expect(firstTableRow).toContain('841177/1, A841821/1, 842371');

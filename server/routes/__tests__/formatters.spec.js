@@ -1,10 +1,11 @@
 const {
-  formatTransactionPageData,
-  formatDamageObligations,
+  createTransactionsResponseFrom,
+  createDamageObligationsResponseFrom,
+  createPendingTransactionsResponseFrom,
 } = require('../formatters');
 
 describe('Responses', () => {
-  describe('formatTransactionPageData', () => {
+  describe('createTransactionsResponseFrom', () => {
     const transactionApiResponse = [
       {
         entryDate: '2021-02-23',
@@ -77,7 +78,7 @@ describe('Responses', () => {
     };
 
     it('formats positive transactions when present', () => {
-      const formatted = formatTransactionPageData('spends', {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: [
           {
             entryDate: '2021-02-23',
@@ -107,7 +108,7 @@ describe('Responses', () => {
     });
 
     it('formats negative transactions when present', () => {
-      const formatted = formatTransactionPageData('spends', {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: [
           {
             entryDate: '2021-02-23',
@@ -137,7 +138,7 @@ describe('Responses', () => {
     });
 
     it('formats related transactions when present', () => {
-      const formatted = formatTransactionPageData('spends', {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: relatedTransactions,
         balances: balancesApiResponse,
       });
@@ -170,17 +171,17 @@ describe('Responses', () => {
       ]);
     });
 
-    it('returns an error notification when present for transactions', () => {
-      const formatted = formatTransactionPageData('spends', {
-        transactions: { error: '💥' },
+    it('returns an error notification when unable to process transactions data', () => {
+      const formatted = createTransactionsResponseFrom('spends', {
+        transactions: null,
         balances: balancesApiResponse,
       });
 
-      expect(formatted.transactions.error).toBe('💥');
+      expect(formatted.transactions.userNotification).toBeDefined();
     });
 
     it('formats balance data when present', () => {
-      const formatted = formatTransactionPageData('spends', {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: transactionApiResponse,
         balances: balancesApiResponse,
       });
@@ -189,18 +190,18 @@ describe('Responses', () => {
       expect(formatted.balance).not.toHaveProperty('error');
     });
 
-    it('returns an error notification when present for balances', () => {
-      const formatted = formatTransactionPageData('spends', {
+    it('returns an error notification when unable to process balances data', () => {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: transactionApiResponse,
-        balances: { error: '💥' },
+        balances: null,
       });
 
       expect(formatted.balance).not.toHaveProperty('amount');
-      expect(formatted.balance.error).toBe('💥');
+      expect(formatted.balance.userNotification).toBeDefined();
     });
 
     it('sets the flag to display the damage obligations tab when there is money owed', () => {
-      const formatted = formatTransactionPageData('spends', {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: transactionApiResponse,
         balances: balancesApiResponse,
       });
@@ -209,7 +210,7 @@ describe('Responses', () => {
     });
 
     it('sets the flag to not display the damage obligations tab when there is no money owed', () => {
-      const formatted = formatTransactionPageData('spends', {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: transactionApiResponse,
         balances: {
           ...balancesApiResponse,
@@ -221,7 +222,7 @@ describe('Responses', () => {
     });
   });
 
-  describe('formatDamageObligations', () => {
+  describe('createDamageObligationsResponseFrom', () => {
     const damageObligations = [
       {
         amountPaid: 25,
@@ -252,7 +253,7 @@ describe('Responses', () => {
     ];
 
     it('formats damage obligations data when present', () => {
-      const formatted = formatDamageObligations(damageObligations);
+      const formatted = createDamageObligationsResponseFrom(damageObligations);
 
       expect(formatted.rows).toEqual([
         {
@@ -294,7 +295,9 @@ describe('Responses', () => {
         },
       ];
 
-      const formatted = formatDamageObligations(withPaidObligations);
+      const formatted = createDamageObligationsResponseFrom(
+        withPaidObligations,
+      );
 
       expect(formatted.rows).toEqual([
         {
@@ -319,21 +322,87 @@ describe('Responses', () => {
     });
 
     it('creates a total for the outstanding damage obligation amount', () => {
-      const formatted = formatDamageObligations(damageObligations);
+      const formatted = createDamageObligationsResponseFrom(damageObligations);
 
       expect(formatted.totalRemainingAmount).toEqual('£50.00');
     });
 
     it('creates a total when there are no damage obligations', () => {
-      const formatted = formatDamageObligations([]);
+      const formatted = createDamageObligationsResponseFrom([]);
 
       expect(formatted.totalRemainingAmount).toEqual('£0.00');
     });
 
-    it('returns the error notification when present', () => {
-      const formatted = formatDamageObligations({ error: '💥' });
+    it('returns an error notification when unable to process damage obligations data', () => {
+      const formatted = createDamageObligationsResponseFrom();
 
-      expect(formatted.error).toEqual('💥');
+      expect(formatted.userNotification).toBeDefined();
+    });
+  });
+
+  describe('createPendingTransactionsResponseFrom', () => {
+    const transactionApiResponse = [
+      {
+        entryDate: '2021-03-29',
+        transactionType: 'HOA',
+        entryDescription: 'Pending 1',
+        currency: 'GBP',
+        penceAmount: 5000,
+        accountType: 'REG',
+        postingType: 'CR',
+        agencyId: 'TST',
+        prison: 'Test (HMP)',
+        relatedOffenderTransactions: [],
+        currentBalance: 0,
+      },
+      {
+        entryDate: '2021-03-29',
+        transactionType: 'HOA',
+        entryDescription: 'Pending 2',
+        currency: 'GBP',
+        penceAmount: 2500,
+        accountType: 'REG',
+        postingType: 'DR',
+        agencyId: 'TST',
+        prison: 'Test (HMP)',
+        relatedOffenderTransactions: [],
+        currentBalance: 0,
+      },
+    ];
+
+    it('formats pending transaction data', () => {
+      const formatted = createPendingTransactionsResponseFrom(
+        transactionApiResponse,
+      );
+
+      expect(formatted.rows).toEqual([
+        {
+          amount: '£50.00',
+          paymentDate: '29 March 2021',
+          paymentDescription: 'Pending 1',
+          prison: 'Test (HMP)',
+        },
+        {
+          amount: '-£25.00',
+          paymentDate: '29 March 2021',
+          paymentDescription: 'Pending 2',
+          prison: 'Test (HMP)',
+        },
+      ]);
+    });
+
+    it('returns a total amount for pending transactions', () => {
+      const formatted = createPendingTransactionsResponseFrom(
+        transactionApiResponse,
+      );
+
+      expect(formatted.total).toBe('£25.00');
+    });
+
+    it('returns an error notification when unable to process pending transaction data', () => {
+      const formatted = createPendingTransactionsResponseFrom();
+
+      expect(formatted.userNotification).toBeDefined();
     });
   });
 });

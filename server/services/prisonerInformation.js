@@ -2,29 +2,16 @@ const Sentry = require('@sentry/node');
 
 const { logger } = require('../utils/logger');
 
-function createPrisonMapFrom(prisonDetailsResponse) {
-  return prisonDetailsResponse.reduce((a, p) => {
+function createPrisonFormatter(listOfPrisons, key) {
+  const lookup = listOfPrisons.reduce((a, p) => {
     a.set(p.agencyId, p.formattedDescription);
     return a;
   }, new Map());
-}
 
-function formatTransactionsWith(transactions, prisonDetails) {
-  return transactions.map(t => ({
-    ...t,
-    prison: prisonDetails.has(t.agencyId)
-      ? prisonDetails.get(t.agencyId)
-      : t.agencyId,
-  }));
-}
-
-function formatDamageObligationsWith(damageObligations, prisonDetails) {
-  return damageObligations.map(o => ({
-    ...o,
-    prison: prisonDetails.has(o.prisonId)
-      ? prisonDetails.get(o.prisonId)
-      : o.prisonId,
-  }));
+  return v => ({
+    ...v,
+    prison: lookup.has(v[key]) ? lookup.get(v[key]) : v[key],
+  });
 }
 
 class PrisonerInformationService {
@@ -41,7 +28,7 @@ class PrisonerInformationService {
       const [
         transactionsResponse,
         balancesResponse,
-        listOfPrisons,
+        listOfPrisonsResponse,
       ] = await Promise.all([
         this.prisonApi.getTransactionsForDateRange(user.prisonerId, {
           accountCode,
@@ -52,29 +39,41 @@ class PrisonerInformationService {
         this.prisonApi.getPrisonDetails(),
       ]);
 
-      const balances = balancesResponse || {
-        error: 'We are not able to show your balances at this time',
+      const listOfPrisons = listOfPrisonsResponse || [];
+      const formatPrison = createPrisonFormatter(listOfPrisons, 'agencyId');
+
+      const transactionData = {
+        transactions: transactionsResponse
+          ? transactionsResponse.map(formatPrison)
+          : null,
+        balances: balancesResponse,
       };
 
-      if (transactionsResponse) {
-        const prisonDetailsMap = createPrisonMapFrom(listOfPrisons);
-        const formattedTransactions = formatTransactionsWith(
-          transactionsResponse,
-          prisonDetailsMap,
+      if (accountCode === 'cash') {
+        const [addHoldFundsResponse, withheldFundsResponse] = await Promise.all(
+          [
+            this.prisonApi.getTransactionsByType(user.prisonerId, {
+              accountCode: 'cash',
+              transactionType: 'HOA',
+            }),
+            this.prisonApi.getTransactionsByType(user.prisonerId, {
+              accountCode: 'cash',
+              transactionType: 'WHF',
+            }),
+          ],
         );
 
-        return {
-          transactions: formattedTransactions,
-          balances,
-        };
+        transactionData.pending =
+          Array.isArray(addHoldFundsResponse) &&
+          Array.isArray(withheldFundsResponse)
+            ? [
+                ...addHoldFundsResponse.map(formatPrison),
+                ...withheldFundsResponse.map(formatPrison),
+              ]
+            : null;
       }
 
-      return {
-        transactions: {
-          error: 'We are not able to show your transactions at this time',
-        },
-        balances,
-      };
+      return transactionData;
     } catch (e) {
       Sentry.captureException(e);
       logger.error(
@@ -91,25 +90,21 @@ class PrisonerInformationService {
     }
 
     try {
-      const [damageObligationsResponse, listOfPrisons] = await Promise.all([
+      const [
+        damageObligationsResponse,
+        listOfPrisonsResponse,
+      ] = await Promise.all([
         this.prisonApi.getDamageObligationsFor(user.prisonerId),
         this.prisonApi.getPrisonDetails(),
       ]);
 
-      if (damageObligationsResponse) {
-        const { damageObligations } = damageObligationsResponse;
-        const prisonDetailsMap = createPrisonMapFrom(listOfPrisons);
-        const formattedDamageObligations = formatDamageObligationsWith(
-          damageObligations,
-          prisonDetailsMap,
-        );
+      const listOfPrisons = listOfPrisonsResponse || [];
+      const formatPrison = createPrisonFormatter(listOfPrisons, 'prisonId');
 
-        return formattedDamageObligations;
-      }
-
-      return {
-        error: 'We are not able to show your damage obligations at this time',
-      };
+      return damageObligationsResponse &&
+        Array.isArray(damageObligationsResponse.damageObligations)
+        ? damageObligationsResponse.damageObligations.map(formatPrison)
+        : null;
     } catch (e) {
       Sentry.captureException(e);
       logger.error(
