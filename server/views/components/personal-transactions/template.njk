@@ -35,11 +35,16 @@
   </ul>
   <div class="govuk-tabs__panel">
     <ul class="transaction__balances">
-      {% if data.balance and not data.balance.userNotification %}
+      {% if data.balance %}
         <li>
           <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Current balance</h2>
-
-          <p>{{ data.balance.amount }}</P>
+          {% if data.balance.userNotification %}
+            <p>
+              {{data.balance.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>.
+            </p>
+          {% elif data.balance.amount %}
+            <p>{{ data.balance.amount }}</P>
+          {% endif %}
         </li>
       {% endif %}
       {% if data.pendingTransactions and not data.pendingTransactions.userNotification %}
@@ -49,43 +54,44 @@
         </li>
       {% endif %}
     </ul>
-    {% if data.balance and data.balance.userNotification %}
-      <p class="govuk-!-font-size-24">
-        {{data.balance.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>
-      </p>
-    {% endif %}
-    {% if data.pendingTransactions and data.pendingTransactions.userNotification %}
-      <p class="govuk-!-font-size-24">
-        {{data.pendingTransactions.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>
-      </p>
-    {% elif data.pendingTransactions.rows %}
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Pending payments</h2>
-      <p>These are payments you have received but have not yet cleared. Pending payments do not show in your current balance.</p>
-      <table id="pending-transactions" class="govuk-table">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Date</th>
-            <th scope="col" class="govuk-table__header">Amount</th>
-            <th scope="col" class="govuk-table__header">Payment description</th>
-            <th scope="col" class="govuk-table__header">Prison</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          {% for t in data.pendingTransactions.rows %}
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell">{{t.paymentDate}}</td>
-              <td class="govuk-table__cell">{{t.amount}}</td>
-              <td class="govuk-table__cell">{{t.paymentDescription}}</td>
-              <td class="govuk-table__cell">{{t.prison}}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Completed payments</h2>
+    {% if data.pendingTransactions %}
+      <div id="pending-transactions__wrapper">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Pending payments</h2>
+        {% if data.pendingTransactions.userNotification %}
+          <p>
+            {{data.pendingTransactions.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>.
+          </p>
+        {% elif data.pendingTransactions.rows %}
+          <p>These are payments you have received but have not yet cleared. Pending payments do not show in your current balance.</p>
+          <table id="pending-transactions" class="govuk-table">
+            <thead class="govuk-table__head">
+              <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Date</th>
+                <th scope="col" class="govuk-table__header">Amount</th>
+                <th scope="col" class="govuk-table__header">Payment description</th>
+                <th scope="col" class="govuk-table__header">Prison</th>
+              </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+              {% for t in data.pendingTransactions.rows %}
+                <tr class="govuk-table__row">
+                  <td class="govuk-table__cell">{{t.paymentDate}}</td>
+                  <td class="govuk-table__cell">{{t.amount}}</td>
+                  <td class="govuk-table__cell">{{t.paymentDescription}}</td>
+                  <td class="govuk-table__cell">{{t.prison}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+      </div>
+      <div id="completed-payments__heading">
+        <h2  class="govuk-heading-m govuk-!-margin-bottom-1">Completed payments</h2>
+      </div>
     {% endif %}
     {% if data.transactions and data.transactions.userNotification %}
-      <p class="govuk-!-font-size-24">
-        {{data.transactions.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>
+      <p>
+        {{data.transactions.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>.
       </p>
     {% else %}
       {% from "govuk/components/select/macro.njk" import govukSelect %}
@@ -133,8 +139,8 @@
       </table>
     {% endif %}
     {% if data.damageObligations and data.damageObligations.userNotification %}
-      <p class="govuk-!-font-size-24">
-        {{data.damageObligations.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>
+      <p>
+        {{data.damageObligations.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>.
       </p>
     {% elif data.damageObligations.rows %}
       <h3 class="govuk-heading-m">You currently owe</h3>

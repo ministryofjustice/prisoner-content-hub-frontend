@@ -40,7 +40,7 @@ function formatTransaction(transaction) {
 
 function formatBalance(accountType, balances) {
   const failureNotification = createUserNotification(
-    'We are not able to show your balance at this time',
+    'We are not able to show your current balance at this time',
   );
 
   try {

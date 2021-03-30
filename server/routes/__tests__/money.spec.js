@@ -438,7 +438,9 @@ describe('Prisoner Money', () => {
           expect(selectedTab).toContain('Spends');
           // We should be presented with a notification that we are unable to show the balance...
           const selectedPanel = $('.govuk-tabs__panel').text();
-          expect(selectedPanel).toMatch(/are not able to show your balance/im);
+          expect(selectedPanel).toMatch(
+            /are not able to show your current balance/im,
+          );
           // ...and allow the user to try again...
           expect($('.govuk-tabs__panel a').text()).toMatch(/try again/im);
           // ..but should still be presented with the transactions
