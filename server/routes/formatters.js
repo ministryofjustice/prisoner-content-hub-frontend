@@ -9,6 +9,10 @@ function createUserNotification(message) {
   return { userNotification: message };
 }
 
+function toGovUkTableCells(text) {
+  return { text };
+}
+
 function formatTransaction(transaction) {
   return {
     paymentDate: formatDateOrDefault('', 'd MMMM yyyy', transaction.entryDate),
@@ -56,7 +60,7 @@ function formatBalance(accountType, balances) {
   }
 }
 
-function flattenTransactions(transactions) {
+function createTransactionTableFrom(transactions) {
   const failureNotification = createUserNotification(
     'We are not able to show your transactions at this time',
   );
@@ -131,9 +135,31 @@ function flattenTransactions(transactions) {
       transaction => !batchTransactionsOnly(transaction),
     );
 
-    return [...transactionsExcludingRelated, ...relatedTransactions]
+    const rows = [...transactionsExcludingRelated, ...relatedTransactions]
       .sort(sortByRecentEntryDateThenByRecentCalendarDate)
-      .map(formatTransaction);
+      .map(formatTransaction)
+      .map(t =>
+        [
+          t.paymentDate,
+          t.moneyIn,
+          t.moneyOut,
+          t.balance,
+          t.paymentDescription,
+          t.prison,
+        ].map(toGovUkTableCells),
+      );
+
+    return {
+      head: [
+        'Payment date',
+        'Money in',
+        'Money out',
+        'Balance',
+        'Payment description',
+        'Prison',
+      ].map(toGovUkTableCells),
+      rows,
+    };
   } catch (e) {
     Sentry.captureException(e);
     logger.error('Failed to process transactions response');
@@ -148,7 +174,7 @@ function createTransactionsResponseFrom(accountType, transactionsData) {
   return {
     balance: formatBalance(accountType, balances),
     shouldShowDamageObligationsTab: balances && balances.damageObligations > 0,
-    transactions: flattenTransactions(transactions),
+    transactions: createTransactionTableFrom(transactions),
   };
 }
 
@@ -175,27 +201,39 @@ function createPendingTransactionsResponseFrom(pending) {
 
     return {
       total: formatBalanceOrDefault(null, totalPendingPenceAmount / 100, 'GBP'),
-      rows: pending.map(transaction => ({
-        paymentDate: formatDateOrDefault(
-          '',
-          'd MMMM yyyy',
-          transaction.entryDate,
+      head: ['Date', 'Amount', 'Payment description', 'Prison'].map(
+        toGovUkTableCells,
+      ),
+      rows: pending
+        .map(transaction => ({
+          paymentDate: formatDateOrDefault(
+            '',
+            'd MMMM yyyy',
+            transaction.entryDate,
+          ),
+          amount:
+            transaction.postingType === 'CR'
+              ? formatBalanceOrDefault(
+                  null,
+                  transaction.penceAmount / 100,
+                  transaction.currency,
+                )
+              : formatBalanceOrDefault(
+                  null,
+                  0 - transaction.penceAmount / 100,
+                  transaction.currency,
+                ),
+          paymentDescription: transaction.entryDescription,
+          prison: transaction.prison,
+        }))
+        .map(transaction =>
+          [
+            transaction.paymentDate,
+            transaction.amount,
+            transaction.paymentDescription,
+            transaction.prison,
+          ].map(toGovUkTableCells),
         ),
-        amount:
-          transaction.postingType === 'CR'
-            ? formatBalanceOrDefault(
-                null,
-                transaction.penceAmount / 100,
-                transaction.currency,
-              )
-            : formatBalanceOrDefault(
-                null,
-                0 - transaction.penceAmount / 100,
-                transaction.currency,
-              ),
-        paymentDescription: transaction.entryDescription,
-        prison: transaction.prison,
-      })),
     };
   } catch (e) {
     Sentry.captureException(e);
@@ -271,9 +309,29 @@ function createDamageObligationsResponseFrom(damageObligations) {
           prison: damageObligation.prison,
           description: damageObligation.comment,
         };
-      });
+      })
+      .map(damageObligation =>
+        [
+          damageObligation.adjudicationNumber,
+          damageObligation.timePeriod,
+          damageObligation.totalAmount,
+          damageObligation.amountOwed,
+          damageObligation.amountPaid,
+          damageObligation.prison,
+          damageObligation.description,
+        ].map(toGovUkTableCells),
+      );
 
     return {
+      head: [
+        'Adjudication number',
+        'Payment start and end date',
+        'Total amount',
+        'Amount paid',
+        'Amount owed',
+        'Prison',
+        'Description',
+      ].map(toGovUkTableCells),
       rows,
       totalRemainingAmount: formatBalanceOrDefault(
         null,

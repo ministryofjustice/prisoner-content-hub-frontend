@@ -46,6 +46,21 @@ describe('PrisonerInformation', () => {
     },
   ];
 
+  const pendingTransactions = [
+    {
+      entryDate: '2021-03-29',
+      transactionType: 'HOA',
+      entryDescription: 'Pending',
+      currency: 'GBP',
+      penceAmount: 5000,
+      accountType: 'REG',
+      postingType: 'CR',
+      agencyId: 'TST',
+      relatedOffenderTransactions: [],
+      currentBalance: 0,
+    },
+  ];
+
   const balances = {
     spends: 123,
     cash: 456,
@@ -89,7 +104,7 @@ describe('PrisonerInformation', () => {
     prisonApiRepository = new PrisonApi();
   });
 
-  describe('getTransactionInformationFor', () => {
+  describe('getTransactionsFor', () => {
     it('returns transaction data', async () => {
       const prisonerInformationService = new PrisonerInformationService({
         prisonApiRepository,
@@ -101,7 +116,7 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      const data = await prisonerInformationService.getTransactionInformationFor(
+      const data = await prisonerInformationService.getTransactionsFor(
         user,
         'spends',
         new Date('2021-01-01'),
@@ -122,7 +137,7 @@ describe('PrisonerInformation', () => {
       });
     });
 
-    it('returns default to using the agencyId for prison name when unable to find a match', async () => {
+    it('defaults to using the agencyId for prison name when unable to find a match', async () => {
       const prisonerInformationService = new PrisonerInformationService({
         prisonApiRepository,
       });
@@ -133,7 +148,7 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue([]);
 
-      const data = await prisonerInformationService.getTransactionInformationFor(
+      const data = await prisonerInformationService.getTransactionsFor(
         user,
         'spends',
         new Date('2021-01-01'),
@@ -163,7 +178,7 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      const data = await prisonerInformationService.getTransactionInformationFor(
+      const data = await prisonerInformationService.getTransactionsFor(
         user,
         'spends',
         new Date('2021-01-01'),
@@ -185,7 +200,7 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      const data = await prisonerInformationService.getTransactionInformationFor(
+      const data = await prisonerInformationService.getTransactionsFor(
         user,
         'spends',
         new Date('2021-01-01'),
@@ -207,7 +222,7 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getBalancesFor.mockResolvedValue(null);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      const data = await prisonerInformationService.getTransactionInformationFor(
+      const data = await prisonerInformationService.getTransactionsFor(
         user,
         'spends',
         new Date('2021-01-01'),
@@ -230,7 +245,7 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
       await expect(
-        prisonerInformationService.getTransactionInformationFor(
+        prisonerInformationService.getTransactionsFor(
           null,
           'spends',
           new Date('2021-01-01'),
@@ -257,7 +272,7 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
       await expect(
-        prisonerInformationService.getTransactionInformationFor(
+        prisonerInformationService.getTransactionsFor(
           user,
           null,
           new Date('2021-01-01'),
@@ -284,7 +299,7 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
       await expect(
-        prisonerInformationService.getTransactionInformationFor(
+        prisonerInformationService.getTransactionsFor(
           user,
           'spends',
           null,
@@ -311,7 +326,7 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
       await expect(
-        prisonerInformationService.getTransactionInformationFor(
+        prisonerInformationService.getTransactionsFor(
           user,
           'spends',
           new Date('2021-01-01'),
@@ -335,7 +350,7 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      const result = await prisonerInformationService.getTransactionInformationFor(
+      const result = await prisonerInformationService.getTransactionsFor(
         user,
         'spends',
         new Date('2021-01-01'),
@@ -357,7 +372,7 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getBalancesFor.mockRejectedValue('💥');
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      const result = await prisonerInformationService.getTransactionInformationFor(
+      const result = await prisonerInformationService.getTransactionsFor(
         user,
         'spends',
         new Date('2021-01-01'),
@@ -379,9 +394,388 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
       prisonApiRepository.getPrisonDetails.mockRejectedValue('💥');
 
-      const result = await prisonerInformationService.getTransactionInformationFor(
+      const result = await prisonerInformationService.getTransactionsFor(
         user,
         'spends',
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('getPrivateTransactionsFor', () => {
+    it('returns transaction data', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(
+        pendingTransactions,
+      );
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      const data = await prisonerInformationService.getPrivateTransactionsFor(
+        user,
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(data).toHaveProperty('transactions');
+      expect(data.transactions.length).toBe(3);
+      expect(data.transactions[0]).toEqual({
+        paymentDate: '2021-01-03',
+        postingType: 'CR',
+        penceAmount: 10,
+        currency: 'GBP',
+        balance: 30,
+        entryDescription: 'Received some money',
+        agencyId: 'TST',
+        prison: 'Test (HMP)',
+      });
+    });
+    it('returns null when unable to fetch transaction data', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(null);
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(
+        pendingTransactions,
+      );
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      const data = await prisonerInformationService.getPrivateTransactionsFor(
+        user,
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(data).toHaveProperty('transactions');
+      expect(data.transactions).toBeNull();
+    });
+
+    it('returns pending transactions', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(
+        pendingTransactions,
+      );
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      const data = await prisonerInformationService.getPrivateTransactionsFor(
+        user,
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(data).toHaveProperty('pending');
+      expect(data.pending.length).toBe(2);
+      expect(data.pending[0]).toEqual({
+        accountType: 'REG',
+        entryDate: '2021-03-29',
+        postingType: 'CR',
+        penceAmount: 5000,
+        currency: 'GBP',
+        currentBalance: 0,
+        entryDescription: 'Pending',
+        agencyId: 'TST',
+        prison: 'Test (HMP)',
+        transactionType: 'HOA',
+        relatedOffenderTransactions: [],
+      });
+    });
+
+    it('returns null when unable to fetch pending transaction data', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(null);
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      const data = await prisonerInformationService.getPrivateTransactionsFor(
+        user,
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(data.pending).toBeNull();
+    });
+
+    it('defaults to using the agencyId when unable to find a match', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(
+        pendingTransactions,
+      );
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(null);
+
+      const data = await prisonerInformationService.getPrivateTransactionsFor(
+        user,
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(data).toHaveProperty('pending');
+      expect(data.pending.length).toBe(2);
+      expect(data.pending[0]).toEqual({
+        accountType: 'REG',
+        entryDate: '2021-03-29',
+        postingType: 'CR',
+        penceAmount: 5000,
+        currency: 'GBP',
+        currentBalance: 0,
+        entryDescription: 'Pending',
+        agencyId: 'TST',
+        prison: 'TST',
+        transactionType: 'HOA',
+        relatedOffenderTransactions: [],
+      });
+    });
+    it('returns balance data', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(
+        pendingTransactions,
+      );
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      const data = await prisonerInformationService.getPrivateTransactionsFor(
+        user,
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(data).toHaveProperty('balances');
+      expect(data.balances).toEqual(balances);
+    });
+    it('returns null when unable to fetch balance data', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(
+        pendingTransactions,
+      );
+      prisonApiRepository.getBalancesFor.mockResolvedValue(null);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      const data = await prisonerInformationService.getPrivateTransactionsFor(
+        user,
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(data.balances).toBeNull();
+    });
+
+    it('throws when called without a user', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(
+        pendingTransactions,
+      );
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      await expect(
+        prisonerInformationService.getPrivateTransactionsFor(
+          null,
+          new Date('2021-01-01'),
+          new Date('2021-01-01'),
+        ),
+      ).rejects.toThrow();
+
+      expect(
+        prisonApiRepository.getTransactionsForDateRange,
+      ).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getTransactionsByType).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getPrisonDetails).not.toHaveBeenCalled();
+    });
+
+    it('throws when called without a from-date', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(
+        pendingTransactions,
+      );
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      await expect(
+        prisonerInformationService.getPrivateTransactionsFor(
+          user,
+          null,
+          new Date('2021-01-01'),
+        ),
+      ).rejects.toThrow();
+
+      expect(
+        prisonApiRepository.getTransactionsForDateRange,
+      ).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getTransactionsByType).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getPrisonDetails).not.toHaveBeenCalled();
+    });
+
+    it('throws when called without a to-date', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(
+        pendingTransactions,
+      );
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      await expect(
+        prisonerInformationService.getPrivateTransactionsFor(
+          user,
+          new Date('2021-01-01'),
+          null,
+        ),
+      ).rejects.toThrow();
+
+      expect(
+        prisonApiRepository.getTransactionsForDateRange,
+      ).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getTransactionsByType).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getBalancesFor).not.toHaveBeenCalled();
+      expect(prisonApiRepository.getPrisonDetails).not.toHaveBeenCalled();
+    });
+
+    it('swallows the exception and return null if an error is thrown getting transactions', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockRejectedValue('💥');
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(
+        pendingTransactions,
+      );
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      const result = await prisonerInformationService.getPrivateTransactionsFor(
+        user,
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
+      expect(result).toBeNull();
+    });
+
+    it('swallows the exception and return null if an error is thrown getting pending transactions', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
+      prisonApiRepository.getTransactionsByType.mockRejectedValue('💥');
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      const result = await prisonerInformationService.getPrivateTransactionsFor(
+        user,
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
+      expect(result).toBeNull();
+    });
+
+    it('swallows the exception and return null if an error is thrown getting balances', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(
+        pendingTransactions,
+      );
+      prisonApiRepository.getBalancesFor.mockRejectedValue('💥');
+      prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
+
+      const result = await prisonerInformationService.getPrivateTransactionsFor(
+        user,
+        new Date('2021-01-01'),
+        new Date('2021-01-01'),
+      );
+
+      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
+      expect(result).toBeNull();
+    });
+
+    it('swallows the exception and return null if an error is thrown getting prison details', async () => {
+      const prisonerInformationService = new PrisonerInformationService({
+        prisonApiRepository,
+      });
+
+      prisonApiRepository.getTransactionsForDateRange.mockResolvedValue(
+        transactions,
+      );
+      prisonApiRepository.getTransactionsByType.mockResolvedValue(
+        pendingTransactions,
+      );
+      prisonApiRepository.getBalancesFor.mockResolvedValue(balances);
+      prisonApiRepository.getPrisonDetails.mockRejectedValue('💥');
+
+      const result = await prisonerInformationService.getPrivateTransactionsFor(
+        user,
         new Date('2021-01-01'),
         new Date('2021-01-01'),
       );

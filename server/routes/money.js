@@ -8,14 +8,27 @@ const {
 } = require('./formatters');
 const { getDateSelection } = require('../utils/date');
 
-function getAccountCodeFor(accountType) {
-  const accountCodes = {
-    spends: 'spends',
-    private: 'cash',
-    savings: 'savings',
-  };
+const accountTypes = ['spends', 'private', 'savings'];
 
-  return accountCodes[accountType];
+function isValidDateSelection(selectedDate, dateSelection) {
+  return dateSelection.filter(d => selectedDate === d.value).length > 0;
+}
+
+function processSelectedDate(selectedDate) {
+  const dateSelection = getDateSelection(new Date(), parseISO(selectedDate));
+  const fromDate = isValidDateSelection(selectedDate, dateSelection)
+    ? parseISO(selectedDate)
+    : startOfMonth(new Date());
+  const endOfSelectedMonth = endOfMonth(fromDate);
+  const toDate = !isFuture(endOfSelectedMonth)
+    ? endOfSelectedMonth
+    : new Date();
+
+  return {
+    dateSelection,
+    fromDate,
+    toDate,
+  };
 }
 
 const createMoneyRouter = ({
@@ -84,18 +97,85 @@ const createMoneyRouter = ({
             damageObligations,
           ),
           selected: 'damage-obligations',
-          accountTypes: ['spends', 'private', 'savings'],
+          accountTypes,
         };
         templateData.config.userName = user.getFullName();
       }
 
-      return res.render('pages/transactions', templateData);
+      return res.render('pages/damage-obligations', templateData);
     } catch (e) {
       return next(e);
     }
   });
 
-  router.get('/transactions', async (req, res, next) => {
+  router.get(
+    ['/transactions', '/transactions/spends'],
+    async (req, res, next) => {
+      try {
+        const templateData = {
+          title: 'Your transactions',
+          config: {
+            content: false,
+            header: false,
+            postscript: true,
+            detailsType: 'small',
+            returnUrl: req.originalUrl,
+          },
+        };
+
+        const { user } = req;
+
+        if (user) {
+          const accountCode = 'spends';
+
+          const { selectedDate } = req.query;
+          const { dateSelection, fromDate, toDate } = processSelectedDate(
+            selectedDate,
+          );
+
+          const transactionsData = await prisonerInformationService.getTransactionsFor(
+            user,
+            accountCode,
+            fromDate,
+            toDate,
+          );
+
+          if (!transactionsData) {
+            return next('Failed to fetch transaction data');
+          }
+
+          const { transactions, balances } = transactionsData;
+
+          const {
+            transactions: formattedTransactions,
+            balance: formattedBalances,
+            shouldShowDamageObligationsTab,
+          } = createTransactionsResponseFrom(accountCode, {
+            transactions,
+            balances,
+          });
+
+          templateData.prisonerInformation = {
+            transactions: formattedTransactions,
+            balance: formattedBalances,
+            shouldShowDamageObligationsTab,
+            selected: accountCode,
+            accountTypes,
+            selectedDate,
+            dateSelection,
+          };
+
+          templateData.config.userName = user.getFullName();
+        }
+
+        return res.render('pages/transactions', templateData);
+      } catch (e) {
+        return next(e);
+      }
+    },
+  );
+
+  router.get('/transactions/savings', async (req, res, next) => {
     try {
       const templateData = {
         title: 'Your transactions',
@@ -111,29 +191,14 @@ const createMoneyRouter = ({
       const { user } = req;
 
       if (user) {
-        const accountTypes = ['spends', 'private', 'savings'];
-        const accountType = accountTypes.includes(req.query.accountType)
-          ? req.query.accountType
-          : accountTypes[0];
-        const accountCode = getAccountCodeFor(accountType);
-
-        const isValidDateSelection = (selectedDate, dateSelection) =>
-          dateSelection.filter(d => selectedDate === d.value).length > 0;
+        const accountCode = 'savings';
 
         const { selectedDate } = req.query;
-        const dateSelection = getDateSelection(
-          new Date(),
-          parseISO(selectedDate),
+        const { dateSelection, fromDate, toDate } = processSelectedDate(
+          selectedDate,
         );
-        const fromDate = isValidDateSelection(selectedDate, dateSelection)
-          ? parseISO(selectedDate)
-          : startOfMonth(new Date());
-        const endOfSelectedMonth = endOfMonth(fromDate);
-        const toDate = !isFuture(endOfSelectedMonth)
-          ? endOfSelectedMonth
-          : new Date();
 
-        const transactionsData = await prisonerInformationService.getTransactionInformationFor(
+        const transactionsData = await prisonerInformationService.getTransactionsFor(
           user,
           accountCode,
           fromDate,
@@ -144,37 +209,97 @@ const createMoneyRouter = ({
           return next('Failed to fetch transaction data');
         }
 
+        const { transactions, balances } = transactionsData;
+
         const {
-          transactions,
-          balances,
-          ...otherInformation
-        } = transactionsData;
-        const formatted = createTransactionsResponseFrom(accountCode, {
+          transactions: formattedTransactions,
+          balance: formattedBalances,
+          shouldShowDamageObligationsTab,
+        } = createTransactionsResponseFrom(accountCode, {
           transactions,
           balances,
         });
 
-        const prisonerInformation = {};
-        prisonerInformation.transactions = formatted.transactions;
-        prisonerInformation.balance = formatted.balance;
-        prisonerInformation.shouldShowDamageObligationsTab =
-          formatted.shouldShowDamageObligationsTab;
-        prisonerInformation.selected = accountType;
-        prisonerInformation.accountTypes = accountTypes;
-        prisonerInformation.selectedDate = selectedDate;
-        prisonerInformation.dateSelection = dateSelection;
+        templateData.prisonerInformation = {
+          transactions: formattedTransactions,
+          balance: formattedBalances,
+          shouldShowDamageObligationsTab,
+          selected: accountCode,
+          accountTypes,
+          selectedDate,
+          dateSelection,
+        };
 
-        if (accountType === 'private') {
-          prisonerInformation.pendingTransactions = createPendingTransactionsResponseFrom(
-            otherInformation.pending,
-          );
-        }
-
-        templateData.prisonerInformation = prisonerInformation;
         templateData.config.userName = user.getFullName();
       }
 
       return res.render('pages/transactions', templateData);
+    } catch (e) {
+      return next(e);
+    }
+  });
+
+  router.get('/transactions/private', async (req, res, next) => {
+    try {
+      const templateData = {
+        title: 'Your transactions',
+        config: {
+          content: false,
+          header: false,
+          postscript: true,
+          detailsType: 'small',
+          returnUrl: req.originalUrl,
+        },
+      };
+
+      const { user } = req;
+
+      if (user) {
+        const { selectedDate } = req.query;
+        const { dateSelection, fromDate, toDate } = processSelectedDate(
+          selectedDate,
+        );
+
+        const transactionsData = await prisonerInformationService.getPrivateTransactionsFor(
+          user,
+          fromDate,
+          toDate,
+        );
+
+        if (!transactionsData) {
+          return next('Failed to fetch transaction data');
+        }
+
+        const { transactions, balances, pending } = transactionsData;
+
+        const {
+          transactions: formattedTransactions,
+          balance: formattedBalances,
+          shouldShowDamageObligationsTab,
+        } = createTransactionsResponseFrom('cash', {
+          transactions,
+          balances,
+        });
+
+        const formattedPendingTransactions = createPendingTransactionsResponseFrom(
+          pending,
+        );
+
+        templateData.prisonerInformation = {
+          transactions: formattedTransactions,
+          balance: formattedBalances,
+          pendingTransactions: formattedPendingTransactions,
+          shouldShowDamageObligationsTab,
+          selected: 'private',
+          accountTypes,
+          selectedDate,
+          dateSelection,
+        };
+
+        templateData.config.userName = user.getFullName();
+      }
+
+      return res.render('pages/transactions-private', templateData);
     } catch (e) {
       return next(e);
     }

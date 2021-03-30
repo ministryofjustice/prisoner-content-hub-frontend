@@ -1,176 +1,33 @@
-{% from "govuk/components/details/macro.njk" import govukDetails %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "../personal-transactions-help/macro.njk" import personalTransactionsHelp %}
+{% from "../personal-transactions-tabs/macro.njk" import personalTransactionsTabs %}
+{% from "../personal-transactions-date-selection/macro.njk" import personalTransactionsDateSelection %}
+{% from "../try-again/macro.njk" import tryAgainWithMessage %}
+{% from "../prompt-to-sign-in/macro.njk" import promptToSignIn %}
 
 {% if not isLoggedIn %}
-  <h2 class="govuk-heading-m">You are signed out</h2>
-  <p class="govuk-!-font-size-24">
-    <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
-    </p>
+  {{ promptToSignIn(returnUrl) }}
 {% else %}
-  <details class="govuk-details" data-module="govuk-details">
-    <summary class="govuk-details__summary">
-      <span class="govuk-details__summary-text">
-          Help with your transactions
-        </span>
-    </summary>
-    <div class="govuk-details__text">
-      <p>The Hub team cannot help you with transaction queries.</p>
-      <p>If you're unsure about a transaction, you should submit an app or ask an officer.</p>
-      <a href="/content/8534" class="govuk-link">Read more about what the information on this page means</a>.
-        </div>
-  </details>
-  <ul class="govuk-tabs__list">
-    {% for accountType in data.accountTypes %}
-      <li class="govuk-tabs__list-item{% if accountType == data.selected %} govuk-tabs__list-item--selected{% endif %}">
-        <a class="govuk-tabs__tab" href="/money/transactions?accountType={{accountType}}">
-          {{ accountType | capitalize }}
-        </a>
-      </li>
-    {% endfor %}
-    {% if (data.selected === 'damage-obligations') or data.shouldShowDamageObligationsTab %}
-      <li class="govuk-tabs__list-item{% if data.selected == 'damage-obligations' %} govuk-tabs__list-item--selected{% endif %}">
-        <a class="govuk-tabs__tab" href="/money/damage-obligations">Damage obligations</a>
-      </li>
-    {% endif %}
-  </ul>
+  {{ personalTransactionsHelp() }}
+  {{ personalTransactionsTabs(data.selected, data.accountTypes, data.shouldShowDamageObligationsTab) }}
   <div class="govuk-tabs__panel">
     <ul class="transaction__balances">
-      {% if data.balance %}
-        <li>
-          <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Current balance</h2>
-          {% if data.balance.userNotification %}
-            <p>
-              {{data.balance.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>.
-            </p>
-          {% elif data.balance.amount %}
-            <p>{{ data.balance.amount }}</P>
-          {% endif %}
-        </li>
-      {% endif %}
-      {% if data.pendingTransactions and not data.pendingTransactions.userNotification %}
-        <li>
-          <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Total pending payments</h2>
-          <p>{{ data.pendingTransactions.total }}</P>
-        </li>
-      {% endif %}
-    </ul>
-    {% if data.pendingTransactions %}
-      <div id="pending-transactions__wrapper">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Pending payments</h2>
-        {% if data.pendingTransactions.userNotification %}
-          <p>
-            {{data.pendingTransactions.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>.
-          </p>
-        {% elif data.pendingTransactions.rows %}
-          <p>These are payments you have received but have not yet cleared. Pending payments do not show in your current balance.</p>
-          <table id="pending-transactions" class="govuk-table">
-            <thead class="govuk-table__head">
-              <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">Date</th>
-                <th scope="col" class="govuk-table__header">Amount</th>
-                <th scope="col" class="govuk-table__header">Payment description</th>
-                <th scope="col" class="govuk-table__header">Prison</th>
-              </tr>
-            </thead>
-            <tbody class="govuk-table__body">
-              {% for t in data.pendingTransactions.rows %}
-                <tr class="govuk-table__row">
-                  <td class="govuk-table__cell">{{t.paymentDate}}</td>
-                  <td class="govuk-table__cell">{{t.amount}}</td>
-                  <td class="govuk-table__cell">{{t.paymentDescription}}</td>
-                  <td class="govuk-table__cell">{{t.prison}}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+      <li>
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Current balance</h2>
+        {% if data.balance.userNotification %}
+          {{ tryAgainWithMessage(data.balance.userNotification, returnUrl) }}
+        {% elif data.balance.amount %}
+          <p>{{ data.balance.amount }}</P>
         {% endif %}
-      </div>
-      <div id="completed-payments__heading">
-        <h2  class="govuk-heading-m govuk-!-margin-bottom-1">Completed payments</h2>
-      </div>
-    {% endif %}
-    {% if data.transactions and data.transactions.userNotification %}
-      <p>
-        {{data.transactions.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>.
-      </p>
+      </li>
+    </ul>
+    {% if data.transactions.userNotification %}
+      {{ tryAgainWithMessage(data.transactions.userNotification, returnUrl) }}
     {% else %}
-      {% from "govuk/components/select/macro.njk" import govukSelect %}
-      <div class="transactions__selection_wrapper">
-        <form method="GET">
-          <div class="transactions__selection__form">
-            <input type="hidden" name="accountType" value="{{ data.selected }}"/>
-            {{ govukSelect({
-              id: "selected-date",
-              name: "selectedDate",
-              label: {
-                text: "View by month and year"
-              },
-              items: data.dateSelection
-            }) }}
-            {{ govukButton({
-              text: "View"
-            }) }}
-          </div>
-        </form>
+      {{ personalTransactionsDateSelection(data.dateSelection, data.selected) }}
+      <div id="transactions">
+        {{ govukTable({ head: data.transactions.head, rows: data.transactions.rows }) }}
       </div>
-      <table id="transactions" class="govuk-table">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Payment date</th>
-            <th scope="col" class="govuk-table__header">Money in</th>
-            <th scope="col" class="govuk-table__header">Money out</th>
-            <th scope="col" class="govuk-table__header">Balance</th>
-            <th scope="col" class="govuk-table__header">Payment description</th>
-            <th scope="col" class="govuk-table__header">Prison</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          {% for t in data.transactions %}
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell">{{t.paymentDate}}</td>
-              <td class="govuk-table__cell">{{t.moneyIn}}</td>
-              <td class="govuk-table__cell">{{t.moneyOut}}</td>
-              <td class="govuk-table__cell">{{t.balance}}</td>
-              <td class="govuk-table__cell">{{t.paymentDescription}}</td>
-              <td class="govuk-table__cell">{{t.prison}}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% endif %}
-    {% if data.damageObligations and data.damageObligations.userNotification %}
-      <p>
-        {{data.damageObligations.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>.
-      </p>
-    {% elif data.damageObligations.rows %}
-      <h3 class="govuk-heading-m">You currently owe</h3>
-      <p>{{data.damageObligations.totalRemainingAmount}}</p>
-      <table id="damage-obligations" class="govuk-table">
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Adjudication number</th>
-            <th scope="col" class="govuk-table__header">Payment start and end date</th>
-            <th scope="col" class="govuk-table__header">Total amount</th>
-            <th scope="col" class="govuk-table__header">Amount paid</th>
-            <th scope="col" class="govuk-table__header">Amount owed</th>
-            <th scope="col" class="govuk-table__header">Prison</th>
-            <th scope="col" class="govuk-table__header">Description</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          {% for o in data.damageObligations.rows %}
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell">{{o.adjudicationNumber}}</td>
-              <td class="govuk-table__cell">{{o.timePeriod}}</td>
-              <td class="govuk-table__cell">{{o.totalAmount}}</td>
-              <td class="govuk-table__cell">{{o.amountPaid}}</td>
-              <td class="govuk-table__cell">{{o.amountOwed}}</td>
-              <td class="govuk-table__cell">{{o.prison}}</td>
-              <td class="govuk-table__cell">{{o.description}}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
     {% endif %}
   </div>
 {% endif %}

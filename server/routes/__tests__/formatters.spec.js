@@ -98,15 +98,15 @@ describe('Responses', () => {
         balances: balancesApiResponse,
       });
 
-      expect(formatted.transactions).toEqual([
-        {
-          balance: '£123.45',
-          moneyIn: '£0.50',
-          moneyOut: null,
-          paymentDate: '23 February 2021',
-          paymentDescription: 'Television',
-          prison: 'HMP Test',
-        },
+      expect(formatted.transactions.rows).toEqual([
+        [
+          { text: '23 February 2021' },
+          { text: '£0.50' },
+          { text: null },
+          { text: '£123.45' },
+          { text: 'Television' },
+          { text: 'HMP Test' },
+        ],
       ]);
     });
 
@@ -128,15 +128,15 @@ describe('Responses', () => {
         balances: balancesApiResponse,
       });
 
-      expect(formatted.transactions).toEqual([
-        {
-          balance: '£123.45',
-          moneyIn: null,
-          moneyOut: '-£0.50',
-          paymentDate: '23 February 2021',
-          paymentDescription: 'Television',
-          prison: 'HMP Test',
-        },
+      expect(formatted.transactions.rows).toEqual([
+        [
+          { text: '23 February 2021' },
+          { text: null },
+          { text: '-£0.50' },
+          { text: '£123.45' },
+          { text: 'Television' },
+          { text: 'HMP Test' },
+        ],
       ]);
     });
 
@@ -146,31 +146,31 @@ describe('Responses', () => {
         balances: balancesApiResponse,
       });
 
-      expect(formatted.transactions).toEqual([
-        {
-          balance: '£122.95',
-          moneyIn: null,
-          moneyOut: '-£0.50',
-          paymentDate: '9 March 2021',
-          paymentDescription: 'Television',
-          prison: 'HMP Test',
-        },
-        {
-          balance: '£123.45',
-          moneyIn: '£0.50',
-          moneyOut: null,
-          paymentDate: '8 March 2021',
-          paymentDescription: 'Test 1 from 8 March 2021',
-          prison: 'HMP Test',
-        },
-        {
-          balance: '£122.95',
-          moneyIn: '£0.50',
-          moneyOut: null,
-          paymentDate: '8 March 2021',
-          paymentDescription: 'Test 2 from 7 March 2021',
-          prison: 'HMP Test',
-        },
+      expect(formatted.transactions.rows).toEqual([
+        [
+          { text: '9 March 2021' },
+          { text: null },
+          { text: '-£0.50' },
+          { text: '£122.95' },
+          { text: 'Television' },
+          { text: 'HMP Test' },
+        ],
+        [
+          { text: '8 March 2021' },
+          { text: '£0.50' },
+          { text: null },
+          { text: '£123.45' },
+          { text: 'Test 1 from 8 March 2021' },
+          { text: 'HMP Test' },
+        ],
+        [
+          { text: '8 March 2021' },
+          { text: '£0.50' },
+          { text: null },
+          { text: '£122.95' },
+          { text: 'Test 2 from 7 March 2021' },
+          { text: 'HMP Test' },
+        ],
       ]);
     });
 
@@ -268,24 +268,24 @@ describe('Responses', () => {
       const formatted = createDamageObligationsResponseFrom(damageObligations);
 
       expect(formatted.rows).toEqual([
-        {
-          adjudicationNumber: '841177/1, A841821/1, 842371',
-          timePeriod: '15 March 2021 to 15 March 2021',
-          totalAmount: '£50.00',
-          amountPaid: '£25.00',
-          amountOwed: '£25.00',
-          prison: 'Test (HMP)',
-          description: 'Some description',
-        },
-        {
-          adjudicationNumber: '841187/1, A842821/1, 843371',
-          timePeriod: '15 February 2020 to 15 February 2021',
-          totalAmount: '£50.00',
-          amountPaid: '£25.00',
-          amountOwed: '£25.00',
-          prison: 'Test (HMP)',
-          description: 'Some description',
-        },
+        [
+          { text: '841177/1, A841821/1, 842371' },
+          { text: '15 March 2021 to 15 March 2021' },
+          { text: '£50.00' },
+          { text: '£25.00' },
+          { text: '£25.00' },
+          { text: 'Test (HMP)' },
+          { text: 'Some description' },
+        ],
+        [
+          { text: '841187/1, A842821/1, 843371' },
+          { text: '15 February 2020 to 15 February 2021' },
+          { text: '£50.00' },
+          { text: '£25.00' },
+          { text: '£25.00' },
+          { text: 'Test (HMP)' },
+          { text: 'Some description' },
+        ],
       ]);
     });
 
@@ -312,24 +312,24 @@ describe('Responses', () => {
       );
 
       expect(formatted.rows).toEqual([
-        {
-          adjudicationNumber: '841177/1, A841821/1, 842371',
-          timePeriod: '15 March 2021 to 15 March 2021',
-          totalAmount: '£50.00',
-          amountPaid: '£25.00',
-          amountOwed: '£25.00',
-          prison: 'Test (HMP)',
-          description: 'Some description',
-        },
-        {
-          adjudicationNumber: '841187/1, A842821/1, 843371',
-          timePeriod: '15 February 2020 to 15 February 2021',
-          totalAmount: '£50.00',
-          amountPaid: '£25.00',
-          amountOwed: '£25.00',
-          prison: 'Test (HMP)',
-          description: 'Some description',
-        },
+        [
+          { text: '841177/1, A841821/1, 842371' },
+          { text: '15 March 2021 to 15 March 2021' },
+          { text: '£50.00' },
+          { text: '£25.00' },
+          { text: '£25.00' },
+          { text: 'Test (HMP)' },
+          { text: 'Some description' },
+        ],
+        [
+          { text: '841187/1, A842821/1, 843371' },
+          { text: '15 February 2020 to 15 February 2021' },
+          { text: '£50.00' },
+          { text: '£25.00' },
+          { text: '£25.00' },
+          { text: 'Test (HMP)' },
+          { text: 'Some description' },
+        ],
       ]);
     });
 
@@ -394,18 +394,18 @@ describe('Responses', () => {
       );
 
       expect(formatted.rows).toEqual([
-        {
-          amount: '£50.00',
-          paymentDate: '29 March 2021',
-          paymentDescription: 'Pending 1',
-          prison: 'Test (HMP)',
-        },
-        {
-          amount: '-£25.00',
-          paymentDate: '29 March 2021',
-          paymentDescription: 'Pending 2',
-          prison: 'Test (HMP)',
-        },
+        [
+          { text: '29 March 2021' },
+          { text: '£50.00' },
+          { text: 'Pending 1' },
+          { text: 'Test (HMP)' },
+        ],
+        [
+          { text: '29 March 2021' },
+          { text: '-£25.00' },
+          { text: 'Pending 2' },
+          { text: 'Test (HMP)' },
+        ],
       ]);
     });
 

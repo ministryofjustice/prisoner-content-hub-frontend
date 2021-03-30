@@ -19,7 +19,70 @@ class PrisonerInformationService {
     this.prisonApi = prisonApiRepository;
   }
 
-  async getTransactionInformationFor(user, accountCode, fromDate, toDate) {
+  async getPrivateTransactionsFor(user, fromDate, toDate) {
+    if (!user || !fromDate || !toDate) {
+      throw new Error('Incorrect parameters passed');
+    }
+
+    try {
+      const [
+        transactionsResponse,
+        balancesResponse,
+        listOfPrisonsResponse,
+        addHoldFundsResponse,
+        withheldFundsResponse,
+      ] = await Promise.all([
+        this.prisonApi.getTransactionsForDateRange(user.prisonerId, {
+          accountCode: 'cash',
+          fromDate,
+          toDate,
+        }),
+        this.prisonApi.getBalancesFor(user.bookingId),
+        this.prisonApi.getPrisonDetails(),
+        this.prisonApi.getTransactionsByType(user.prisonerId, {
+          accountCode: 'cash',
+          transactionType: 'HOA',
+        }),
+        this.prisonApi.getTransactionsByType(user.prisonerId, {
+          accountCode: 'cash',
+          transactionType: 'WHF',
+        }),
+      ]);
+
+      const listOfPrisons = listOfPrisonsResponse || [];
+      const convertPrisonIdToText = createPrisonFormatter(
+        listOfPrisons,
+        'agencyId',
+      );
+
+      const transactionData = {
+        transactions: transactionsResponse
+          ? transactionsResponse.map(convertPrisonIdToText)
+          : null,
+        balances: balancesResponse,
+      };
+
+      transactionData.pending =
+        Array.isArray(addHoldFundsResponse) &&
+        Array.isArray(withheldFundsResponse)
+          ? [
+              ...addHoldFundsResponse.map(convertPrisonIdToText),
+              ...withheldFundsResponse.map(convertPrisonIdToText),
+            ]
+          : null;
+
+      return transactionData;
+    } catch (e) {
+      Sentry.captureException(e);
+      logger.error(
+        `PrisonerInformationService (getPrivateTransactionsDataFor) - Failed: ${e.message}`,
+      );
+      logger.debug(e.stack);
+      return null;
+    }
+  }
+
+  async getTransactionsFor(user, accountCode, fromDate, toDate) {
     if (!user || !accountCode || !fromDate || !toDate) {
       throw new Error('Incorrect parameters passed');
     }
@@ -40,38 +103,17 @@ class PrisonerInformationService {
       ]);
 
       const listOfPrisons = listOfPrisonsResponse || [];
-      const formatPrison = createPrisonFormatter(listOfPrisons, 'agencyId');
+      const convertPrisonIdToText = createPrisonFormatter(
+        listOfPrisons,
+        'agencyId',
+      );
 
       const transactionData = {
         transactions: transactionsResponse
-          ? transactionsResponse.map(formatPrison)
+          ? transactionsResponse.map(convertPrisonIdToText)
           : null,
         balances: balancesResponse,
       };
-
-      if (accountCode === 'cash') {
-        const [addHoldFundsResponse, withheldFundsResponse] = await Promise.all(
-          [
-            this.prisonApi.getTransactionsByType(user.prisonerId, {
-              accountCode: 'cash',
-              transactionType: 'HOA',
-            }),
-            this.prisonApi.getTransactionsByType(user.prisonerId, {
-              accountCode: 'cash',
-              transactionType: 'WHF',
-            }),
-          ],
-        );
-
-        transactionData.pending =
-          Array.isArray(addHoldFundsResponse) &&
-          Array.isArray(withheldFundsResponse)
-            ? [
-                ...addHoldFundsResponse.map(formatPrison),
-                ...withheldFundsResponse.map(formatPrison),
-              ]
-            : null;
-      }
 
       return transactionData;
     } catch (e) {
