@@ -188,7 +188,16 @@ function createPendingTransactionsResponseFrom(pending) {
       return failureNotification;
     }
 
-    const totalPendingPenceAmount = pending
+    const holdingNotCleared = pending
+      .sort((transaction1, transaction2) =>
+        sortByDateTime(
+          transaction2.createDateTime,
+          transaction1.createDateTime,
+        ),
+      )
+      .filter(transaction => !transaction.holdingCleared);
+
+    const totalPendingPenceAmount = holdingNotCleared
       .filter(transaction => transaction.currency === 'GBP')
       .reduce(
         (runningTotal, transaction) =>
@@ -204,7 +213,7 @@ function createPendingTransactionsResponseFrom(pending) {
       head: ['Date', 'Amount', 'Payment description', 'Prison'].map(
         toGovUkTableCells,
       ),
-      rows: pending
+      rows: holdingNotCleared
         .map(transaction => ({
           paymentDate: formatDateOrDefault(
             '',

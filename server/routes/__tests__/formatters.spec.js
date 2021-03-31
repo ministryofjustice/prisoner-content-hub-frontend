@@ -361,6 +361,20 @@ describe('Responses', () => {
   describe('createPendingTransactionsResponseFrom', () => {
     const transactionApiResponse = [
       {
+        entryDate: '2021-03-28',
+        transactionType: 'HOA',
+        entryDescription: 'Pending 2',
+        currency: 'GBP',
+        penceAmount: 2500,
+        accountType: 'REG',
+        postingType: 'DR',
+        agencyId: 'TST',
+        prison: 'Test (HMP)',
+        relatedOffenderTransactions: [],
+        currentBalance: 0,
+        holdingCleared: false,
+      },
+      {
         entryDate: '2021-03-29',
         transactionType: 'HOA',
         entryDescription: 'Pending 1',
@@ -372,11 +386,12 @@ describe('Responses', () => {
         prison: 'Test (HMP)',
         relatedOffenderTransactions: [],
         currentBalance: 0,
+        holdingCleared: false,
       },
       {
-        entryDate: '2021-03-29',
+        entryDate: '2021-03-27',
         transactionType: 'HOA',
-        entryDescription: 'Pending 2',
+        entryDescription: 'Pending 3',
         currency: 'GBP',
         penceAmount: 2500,
         accountType: 'REG',
@@ -385,6 +400,7 @@ describe('Responses', () => {
         prison: 'Test (HMP)',
         relatedOffenderTransactions: [],
         currentBalance: 0,
+        holdingCleared: true,
       },
     ];
 
@@ -395,15 +411,15 @@ describe('Responses', () => {
 
       expect(formatted.rows).toEqual([
         [
-          { text: '29 March 2021' },
-          { text: '£50.00' },
-          { text: 'Pending 1' },
+          { text: '28 March 2021' },
+          { text: '-£25.00' },
+          { text: 'Pending 2' },
           { text: 'Test (HMP)' },
         ],
         [
           { text: '29 March 2021' },
-          { text: '-£25.00' },
-          { text: 'Pending 2' },
+          { text: '£50.00' },
+          { text: 'Pending 1' },
           { text: 'Test (HMP)' },
         ],
       ]);
@@ -415,6 +431,14 @@ describe('Responses', () => {
       );
 
       expect(formatted.total).toBe('£25.00');
+    });
+
+    it('filters pending transactions where holding is cleared', () => {
+      const formatted = createPendingTransactionsResponseFrom(
+        transactionApiResponse,
+      );
+
+      expect(formatted.rows.length).toBe(2);
     });
 
     it('returns an error notification when unable to process pending transaction data', () => {
