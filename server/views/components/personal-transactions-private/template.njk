@@ -32,7 +32,7 @@
         {% if data.pendingTransactions.userNotification %}
           {{ tryAgainWithMessage(data.pendingTransactions.userNotification, returnUrl) }}
         {% elif data.pendingTransactions.rows %}
-          <p>These are payments you have received but have not yet cleared. Pending payments do not show in your current balance.</p>
+          <p>These are payments you've sent or have received, but have not yet cleared. Pending payments do not show in your current balance.</p>
           <div id="pending-transactions">
             {{ govukTable({ head: data.pendingTransactions.head, rows: data.pendingTransactions.rows }) }}
           </div>
