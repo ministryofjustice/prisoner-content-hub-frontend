@@ -1,10 +1,14 @@
+const Sentry = require('@sentry/node');
 const {
-  formatTransactionPageData,
-  formatDamageObligations,
+  createTransactionsResponseFrom,
+  createDamageObligationsResponseFrom,
+  createPendingTransactionsResponseFrom,
 } = require('../formatters');
 
+jest.mock('@sentry/node');
+
 describe('Responses', () => {
-  describe('formatTransactionPageData', () => {
+  describe('createTransactionsResponseFrom', () => {
     const transactionApiResponse = [
       {
         entryDate: '2021-02-23',
@@ -77,7 +81,7 @@ describe('Responses', () => {
     };
 
     it('formats positive transactions when present', () => {
-      const formatted = formatTransactionPageData('spends', {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: [
           {
             entryDate: '2021-02-23',
@@ -94,20 +98,20 @@ describe('Responses', () => {
         balances: balancesApiResponse,
       });
 
-      expect(formatted.transactions).toEqual([
-        {
-          balance: '£123.45',
-          moneyIn: '£0.50',
-          moneyOut: null,
-          paymentDate: '23 February 2021',
-          paymentDescription: 'Television',
-          prison: 'HMP Test',
-        },
+      expect(formatted.transactions.rows).toEqual([
+        [
+          { text: '23 February 2021' },
+          { text: '£0.50' },
+          { text: null },
+          { text: '£123.45' },
+          { text: 'Television' },
+          { text: 'HMP Test' },
+        ],
       ]);
     });
 
     it('formats negative transactions when present', () => {
-      const formatted = formatTransactionPageData('spends', {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: [
           {
             entryDate: '2021-02-23',
@@ -124,63 +128,72 @@ describe('Responses', () => {
         balances: balancesApiResponse,
       });
 
-      expect(formatted.transactions).toEqual([
-        {
-          balance: '£123.45',
-          moneyIn: null,
-          moneyOut: '-£0.50',
-          paymentDate: '23 February 2021',
-          paymentDescription: 'Television',
-          prison: 'HMP Test',
-        },
+      expect(formatted.transactions.rows).toEqual([
+        [
+          { text: '23 February 2021' },
+          { text: null },
+          { text: '-£0.50' },
+          { text: '£123.45' },
+          { text: 'Television' },
+          { text: 'HMP Test' },
+        ],
       ]);
     });
 
     it('formats related transactions when present', () => {
-      const formatted = formatTransactionPageData('spends', {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: relatedTransactions,
         balances: balancesApiResponse,
       });
 
-      expect(formatted.transactions).toEqual([
-        {
-          balance: '£122.95',
-          moneyIn: null,
-          moneyOut: '-£0.50',
-          paymentDate: '9 March 2021',
-          paymentDescription: 'Television',
-          prison: 'HMP Test',
-        },
-        {
-          balance: '£123.45',
-          moneyIn: '£0.50',
-          moneyOut: null,
-          paymentDate: '8 March 2021',
-          paymentDescription: 'Test 1 from 8 March 2021',
-          prison: 'HMP Test',
-        },
-        {
-          balance: '£122.95',
-          moneyIn: '£0.50',
-          moneyOut: null,
-          paymentDate: '8 March 2021',
-          paymentDescription: 'Test 2 from 7 March 2021',
-          prison: 'HMP Test',
-        },
+      expect(formatted.transactions.rows).toEqual([
+        [
+          { text: '9 March 2021' },
+          { text: null },
+          { text: '-£0.50' },
+          { text: '£122.95' },
+          { text: 'Television' },
+          { text: 'HMP Test' },
+        ],
+        [
+          { text: '8 March 2021' },
+          { text: '£0.50' },
+          { text: null },
+          { text: '£123.45' },
+          { text: 'Test 1 from 8 March 2021' },
+          { text: 'HMP Test' },
+        ],
+        [
+          { text: '8 March 2021' },
+          { text: '£0.50' },
+          { text: null },
+          { text: '£122.95' },
+          { text: 'Test 2 from 7 March 2021' },
+          { text: 'HMP Test' },
+        ],
       ]);
     });
 
-    it('returns an error notification when present for transactions', () => {
-      const formatted = formatTransactionPageData('spends', {
-        transactions: { error: '💥' },
+    it('returns an error notification when unable to process transactions data', () => {
+      const formatted = createTransactionsResponseFrom('spends', {
+        transactions: null,
         balances: balancesApiResponse,
       });
 
-      expect(formatted.transactions.error).toBe('💥');
+      expect(formatted.transactions.userNotification).toBeDefined();
+    });
+
+    it('captures the exception in Sentry when an exception is thrown', () => {
+      createTransactionsResponseFrom('spends', {
+        transactions: [undefined],
+        balances: balancesApiResponse,
+      });
+
+      expect(Sentry.captureException).toHaveBeenCalled();
     });
 
     it('formats balance data when present', () => {
-      const formatted = formatTransactionPageData('spends', {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: transactionApiResponse,
         balances: balancesApiResponse,
       });
@@ -189,18 +202,18 @@ describe('Responses', () => {
       expect(formatted.balance).not.toHaveProperty('error');
     });
 
-    it('returns an error notification when present for balances', () => {
-      const formatted = formatTransactionPageData('spends', {
+    it('returns an error notification when unable to process balances data', () => {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: transactionApiResponse,
-        balances: { error: '💥' },
+        balances: null,
       });
 
       expect(formatted.balance).not.toHaveProperty('amount');
-      expect(formatted.balance.error).toBe('💥');
+      expect(formatted.balance.userNotification).toBeDefined();
     });
 
     it('sets the flag to display the damage obligations tab when there is money owed', () => {
-      const formatted = formatTransactionPageData('spends', {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: transactionApiResponse,
         balances: balancesApiResponse,
       });
@@ -209,7 +222,7 @@ describe('Responses', () => {
     });
 
     it('sets the flag to not display the damage obligations tab when there is no money owed', () => {
-      const formatted = formatTransactionPageData('spends', {
+      const formatted = createTransactionsResponseFrom('spends', {
         transactions: transactionApiResponse,
         balances: {
           ...balancesApiResponse,
@@ -221,7 +234,7 @@ describe('Responses', () => {
     });
   });
 
-  describe('formatDamageObligations', () => {
+  describe('createDamageObligationsResponseFrom', () => {
     const damageObligations = [
       {
         amountPaid: 25,
@@ -252,27 +265,27 @@ describe('Responses', () => {
     ];
 
     it('formats damage obligations data when present', () => {
-      const formatted = formatDamageObligations(damageObligations);
+      const formatted = createDamageObligationsResponseFrom(damageObligations);
 
       expect(formatted.rows).toEqual([
-        {
-          adjudicationNumber: '841177/1, A841821/1, 842371',
-          timePeriod: '15 March 2021 to 15 March 2021',
-          totalAmount: '£50.00',
-          amountPaid: '£25.00',
-          amountOwed: '£25.00',
-          prison: 'Test (HMP)',
-          description: 'Some description',
-        },
-        {
-          adjudicationNumber: '841187/1, A842821/1, 843371',
-          timePeriod: '15 February 2020 to 15 February 2021',
-          totalAmount: '£50.00',
-          amountPaid: '£25.00',
-          amountOwed: '£25.00',
-          prison: 'Test (HMP)',
-          description: 'Some description',
-        },
+        [
+          { text: '841177/1, A841821/1, 842371' },
+          { text: '15 March 2021 to 15 March 2021' },
+          { text: '£50.00' },
+          { text: '£25.00' },
+          { text: '£25.00' },
+          { text: 'Test (HMP)' },
+          { text: 'Some description' },
+        ],
+        [
+          { text: '841187/1, A842821/1, 843371' },
+          { text: '15 February 2020 to 15 February 2021' },
+          { text: '£50.00' },
+          { text: '£25.00' },
+          { text: '£25.00' },
+          { text: 'Test (HMP)' },
+          { text: 'Some description' },
+        ],
       ]);
     });
 
@@ -294,46 +307,150 @@ describe('Responses', () => {
         },
       ];
 
-      const formatted = formatDamageObligations(withPaidObligations);
+      const formatted = createDamageObligationsResponseFrom(
+        withPaidObligations,
+      );
 
       expect(formatted.rows).toEqual([
-        {
-          adjudicationNumber: '841177/1, A841821/1, 842371',
-          timePeriod: '15 March 2021 to 15 March 2021',
-          totalAmount: '£50.00',
-          amountPaid: '£25.00',
-          amountOwed: '£25.00',
-          prison: 'Test (HMP)',
-          description: 'Some description',
-        },
-        {
-          adjudicationNumber: '841187/1, A842821/1, 843371',
-          timePeriod: '15 February 2020 to 15 February 2021',
-          totalAmount: '£50.00',
-          amountPaid: '£25.00',
-          amountOwed: '£25.00',
-          prison: 'Test (HMP)',
-          description: 'Some description',
-        },
+        [
+          { text: '841177/1, A841821/1, 842371' },
+          { text: '15 March 2021 to 15 March 2021' },
+          { text: '£50.00' },
+          { text: '£25.00' },
+          { text: '£25.00' },
+          { text: 'Test (HMP)' },
+          { text: 'Some description' },
+        ],
+        [
+          { text: '841187/1, A842821/1, 843371' },
+          { text: '15 February 2020 to 15 February 2021' },
+          { text: '£50.00' },
+          { text: '£25.00' },
+          { text: '£25.00' },
+          { text: 'Test (HMP)' },
+          { text: 'Some description' },
+        ],
       ]);
     });
 
     it('creates a total for the outstanding damage obligation amount', () => {
-      const formatted = formatDamageObligations(damageObligations);
+      const formatted = createDamageObligationsResponseFrom(damageObligations);
 
       expect(formatted.totalRemainingAmount).toEqual('£50.00');
     });
 
     it('creates a total when there are no damage obligations', () => {
-      const formatted = formatDamageObligations([]);
+      const formatted = createDamageObligationsResponseFrom([]);
 
       expect(formatted.totalRemainingAmount).toEqual('£0.00');
     });
 
-    it('returns the error notification when present', () => {
-      const formatted = formatDamageObligations({ error: '💥' });
+    it('returns an error notification when unable to process damage obligations data', () => {
+      const formatted = createDamageObligationsResponseFrom();
 
-      expect(formatted.error).toEqual('💥');
+      expect(formatted.userNotification).toBeDefined();
+    });
+
+    it('captures the exception in Sentry when an exception is thrown', () => {
+      createDamageObligationsResponseFrom([undefined]);
+
+      expect(Sentry.captureException).toHaveBeenCalled();
+    });
+  });
+
+  describe('createPendingTransactionsResponseFrom', () => {
+    const transactionApiResponse = [
+      {
+        entryDate: '2021-03-28',
+        transactionType: 'HOA',
+        entryDescription: 'Pending 2',
+        currency: 'GBP',
+        penceAmount: 2500,
+        accountType: 'REG',
+        postingType: 'DR',
+        agencyId: 'TST',
+        prison: 'Test (HMP)',
+        relatedOffenderTransactions: [],
+        currentBalance: 0,
+        holdingCleared: false,
+      },
+      {
+        entryDate: '2021-03-29',
+        transactionType: 'HOA',
+        entryDescription: 'Pending 1',
+        currency: 'GBP',
+        penceAmount: 5000,
+        accountType: 'REG',
+        postingType: 'CR',
+        agencyId: 'TST',
+        prison: 'Test (HMP)',
+        relatedOffenderTransactions: [],
+        currentBalance: 0,
+        holdingCleared: false,
+      },
+      {
+        entryDate: '2021-03-27',
+        transactionType: 'HOA',
+        entryDescription: 'Pending 3',
+        currency: 'GBP',
+        penceAmount: 2500,
+        accountType: 'REG',
+        postingType: 'DR',
+        agencyId: 'TST',
+        prison: 'Test (HMP)',
+        relatedOffenderTransactions: [],
+        currentBalance: 0,
+        holdingCleared: true,
+      },
+    ];
+
+    it('formats pending transaction data', () => {
+      const formatted = createPendingTransactionsResponseFrom(
+        transactionApiResponse,
+      );
+
+      expect(formatted.rows).toEqual([
+        [
+          { text: '28 March 2021' },
+          { text: '-£25.00' },
+          { text: 'Pending 2' },
+          { text: 'Test (HMP)' },
+        ],
+        [
+          { text: '29 March 2021' },
+          { text: '£50.00' },
+          { text: 'Pending 1' },
+          { text: 'Test (HMP)' },
+        ],
+      ]);
+    });
+
+    it('returns a total amount for pending transactions', () => {
+      const formatted = createPendingTransactionsResponseFrom(
+        transactionApiResponse,
+      );
+
+      expect(formatted.total).toBe('£25.00');
+    });
+
+    it('filters pending transactions where holding is cleared', () => {
+      const formatted = createPendingTransactionsResponseFrom(
+        transactionApiResponse,
+      );
+
+      expect(formatted.rows.length).toBe(2);
+    });
+
+    it('returns an error notification when unable to process pending transaction data', () => {
+      const formatted = createPendingTransactionsResponseFrom();
+
+      expect(formatted.userNotification).toBeDefined();
+    });
+
+    it('captures the exception in Sentry when an exception is thrown', () => {
+      createPendingTransactionsResponseFrom([undefined]);
+
+      expect(Sentry.captureException).toHaveBeenCalled();
     });
   });
 });

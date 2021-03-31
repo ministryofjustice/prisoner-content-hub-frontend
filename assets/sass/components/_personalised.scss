@@ -187,3 +187,26 @@
     margin-bottom: 2px;
   }
 }
+
+.transaction__balances {
+  display: flex;
+  flex-flow: row wrap;
+  list-style: none;
+  padding: 0;
+
+  & li {
+    margin-right: 120px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+#pending-transactions__wrapper {
+  margin-bottom: 50px;
+}
+
+#completed-payments__heading {
+  margin-bottom: 30px;
+}

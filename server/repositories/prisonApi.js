@@ -115,7 +115,7 @@ class PrisonApiRepository {
         `PrisonApiRepository (getPrisonDetailsFor) - Failed: ${e.message}`,
       );
       logger.debug(e.stack);
-      return [];
+      return null;
     }
   }
 
