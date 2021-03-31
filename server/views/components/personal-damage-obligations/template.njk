@@ -15,8 +15,8 @@
       </p>
     {% elif data.damageObligations.rows %}
       <h3 class="govuk-heading-m">You currently owe</h3>
-      <p>{{data.damageObligations.totalRemainingAmount}}</p>
-      <div id="damage-obligations">
+      <p  data-hj-suppress>{{data.damageObligations.totalRemainingAmount}}</p>
+      <div id="damage-obligations" data-hj-suppress>
         {{ govukTable({ head: data.damageObligations.head, rows: data.damageObligations.rows }) }}
       </div>
     {% endif %}

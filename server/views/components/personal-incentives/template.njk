@@ -15,7 +15,7 @@
         {% if params.data.incentivesLevel === 'Basic' %}incentives-indicator--basic{% endif %}
         {% if params.data.incentivesLevel === 'Standard' %}incentives-indicator--standard{% endif %}
         {% if params.data.incentivesLevel === 'Enhanced' %}incentives-indicator--enhanced{% endif %}
-      ">
+      " data-hj-suppress>
           <span>Your current</span>
           <span>incentive level</span>
         </p>
@@ -29,7 +29,7 @@
           Your incentive level is unavailable
         </p>
       {% endif %}
-      <p class="incentivesReview">
+      <p class="incentivesReview" data-hj-suppress>
         {% if params.data.reviewDate %}
         Your incentive level can be reviewed on <span>{{ params.data.reviewDate }}</span>
         {% else %}

@@ -18,18 +18,18 @@
     <div id="visits">
       <div class="next-visit">
         <h3>Your next visit</h3>
-        <p class="next-visit-day">{{ params.data.nextVisitDay }}</p>
-        <p class="next-visit-date">{{ params.data.nextVisitDate }}</p>
+        <p class="next-visit-day" data-hj-suppress>{{ params.data.nextVisitDay }}</p>
+        <p class="next-visit-date" data-hj-suppress>{{ params.data.nextVisitDate }}</p>
       </div>
       <div class="type-of-visit">
         <h3>Type of visit</h3>
-        <p class="next-visit-type">{{ params.data.visitType }}</p>
+        <p class="next-visit-type" data-hj-suppress>{{ params.data.visitType }}</p>
       </div>
       {% if params.data.visitorName %}
         <div class="visitor-name-block">
           <h3>Visitor name</h3>
           <button type="button" class="govuk-button" id="show-visitor-name" onclick="showHiddenBlock('visitor-name')">Show visitor name</button>
-          <p id="visitor-name" class="hidden-block-text">{{ params.data.visitorName }}</p>
+          <p id="visitor-name" class="hidden-block-text" data-hj-suppress>{{ params.data.visitorName }}</p>
         </div>
       {% endif %}
     </div>

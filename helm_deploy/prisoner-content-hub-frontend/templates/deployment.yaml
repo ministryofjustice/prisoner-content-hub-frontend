@@ -98,6 +98,8 @@ spec:
               value: {{ .Values.application.config.enableRedisCache | quote }}
             - name: ENABLE_MOCK_AUTH
               value: "false"
+            - name: HOTJAR_ID
+              value: {{ .Values.hotJarId }}
             - name: CACHE_SECRET
               valueFrom:
                 secretKeyRef:

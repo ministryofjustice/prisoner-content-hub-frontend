@@ -8,7 +8,10 @@
 <html lang="{{ htmlLang | default('en') }}" class="govuk-template {{ htmlClasses }}">
   <head>
     <meta charset="utf-8"/>
-    <title>{% block pageTitle %}{{establishmentDisplayName}}{% endblock %}</title>
+    <title>
+      {% block pageTitle %}{{establishmentDisplayName}}
+      {% endblock %}
+    </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="{{ themeColor | default('#0b0c0c') }}"/>
     <meta name="robots" content="noindex, nofollow, noimageindex">
@@ -23,10 +26,31 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152065860-4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag() {
+        dataLayer.push(arguments);
+      }
       gtag('js', new Date());
       gtag('config', 'UA-152065860-4');
     </script>
+    {% if hotJarId %}
+      {# Load HotJar #}
+      <script>
+        (function (h, o, t, j, a, r) {
+          h.hj = h.hj || function () {
+            (h.hj.q = h.hj.q || []).push(arguments)
+          };
+          h._hjSettings = {
+            hjid: '{{hotJarId}}',
+            hjsv: 6
+          };
+          a = o.getElementsByTagName('head')[0];
+          r = o.createElement('script');
+          r.async = 1;
+          r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+          a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+      </script>
+    {% endif %}
   </head>
   <body class="govuk-template__body {{ bodyClasses }}">
     <script>
@@ -110,19 +134,19 @@
 
     {% block bodyEnd %}{% endblock %}
     {% block analytics %}
-    <script>
-      sendPageTrack({
-        hostname: document.location.hostname,
-        page: document.location.pathname + document.location.search,
-        title: "{{title}}",
-        userAgent: navigator.userAgent,
-        screen: window.screen.width + 'x' + window.screen.height,
-        viewport: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'x' + Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
-        categories: "{{data.categoryNames}}",
-        secondaryTags: "{{data.secondaryTagNames}}",
-        series: "{{data.seriesName}}"
-      });
-    </script>
+      <script>
+        sendPageTrack({
+          hostname: document.location.hostname,
+          page: document.location.pathname + document.location.search,
+          title: "{{title}}",
+          userAgent: navigator.userAgent,
+          screen: window.screen.width + 'x' + window.screen.height,
+          viewport: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'x' + Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+          categories: "{{data.categoryNames}}",
+          secondaryTags: "{{data.secondaryTagNames}}",
+          series: "{{data.seriesName}}"
+        });
+      </script>
     {% endblock %}
 
   </body>

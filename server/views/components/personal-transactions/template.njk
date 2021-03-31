@@ -17,7 +17,7 @@
         {% if data.balance.userNotification %}
           {{ tryAgainWithMessage(data.balance.userNotification, returnUrl) }}
         {% elif data.balance.amount %}
-          <p>{{ data.balance.amount }}</P>
+          <p  data-hj-suppress>{{ data.balance.amount }}</P>
         {% endif %}
       </li>
     </ul>
@@ -25,7 +25,7 @@
       {{ tryAgainWithMessage(data.transactions.userNotification, returnUrl) }}
     {% else %}
       {{ personalTransactionsDateSelection(data.dateSelection, data.selected) }}
-      <div id="transactions">
+      <div id="transactions" data-hj-suppress>
         {{ govukTable({ head: data.transactions.head, rows: data.transactions.rows }) }}
       </div>
     {% endif %}
