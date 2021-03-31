@@ -141,7 +141,7 @@ const createMoneyRouter = ({
           );
 
           if (!transactionsData) {
-            return next('Failed to fetch transaction data');
+            return next(new Error('Failed to fetch transaction data'));
           }
 
           const { transactions, balances } = transactionsData;
@@ -206,7 +206,7 @@ const createMoneyRouter = ({
         );
 
         if (!transactionsData) {
-          return next('Failed to fetch transaction data');
+          return next(new Error('Failed to fetch transaction data'));
         }
 
         const { transactions, balances } = transactionsData;
@@ -267,7 +267,7 @@ const createMoneyRouter = ({
         );
 
         if (!transactionsData) {
-          return next('Failed to fetch transaction data');
+          return next(new Error('Failed to fetch transaction data'));
         }
 
         const { transactions, balances, pending } = transactionsData;
