@@ -99,7 +99,7 @@ spec:
             - name: ENABLE_MOCK_AUTH
               value: "false"
             - name: HOTJAR_ID
-              value: {{ .Values.hotJarId }}
+              value: {{ .Values.hotJarId | quote }}
             - name: CACHE_SECRET
               valueFrom:
                 secretKeyRef:
