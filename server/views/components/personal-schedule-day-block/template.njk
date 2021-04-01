@@ -13,14 +13,14 @@
   {% endif %}
 {% else %}
   {% if timetableHasEvents %}
-    <div class="govuk-body{% if params.finished %} day-block-finished{% endif %}">
+    <div class="govuk-body{% if params.finished %} day-block-finished{% endif %}" data-hj-suppress>
       <div class="timetable-empty">
         <div class="timetable-time">{{event.timeString}}</div>
         <strong>No activities</strong>
       </div>
     </div>
   {% else %}
-    <div class="govuk-body day-block--placeholder">
+    <div class="govuk-body day-block--placeholder" data-hj-suppress>
       <div class="timetable-empty">
         <div class="timetable-time">{{defaultTimeRange}}</div>
       </div>
