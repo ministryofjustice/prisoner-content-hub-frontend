@@ -77,6 +77,7 @@ commands:
               --set cacheSecret="${CACHE_SECRET}" \
               --set prisonerAuthAD.clientId=${AZURE_AD_CLIENT_ID} \
               --set prisonerAuthAD.clientSecret=${AZURE_AD_CLIENT_SECRET} \
+              --set hotJarId=${HOTJAR_ID} \
               --set image.tag=${VERSION_TO_DEPLOY}
 
 jobs:

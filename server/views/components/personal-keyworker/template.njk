@@ -13,29 +13,31 @@
 {% else %}
   <div class="govuk-grid-column-two-thirds" id="keyWorker">
     <h2 class="govuk-heading-m">Key worker</h2>
-    {{
-      govukSummaryList({
-          classes: 'govuk-summary-list--no-border',
-          rows: [
-            {
-              key: {
-                text: "Current key worker"
+    <div id="keyworker-information" data-hj-suppress>
+      {{
+        govukSummaryList({
+            classes: 'govuk-summary-list--no-border',
+            rows: [
+              {
+                key: {
+                  text: "Current key worker"
+                },
+                value: {
+                  text: params.current
+                }
               },
-              value: {
-                text: params.current
+              {
+                key: {
+                  text: "Last meeting"
+                },
+                value: {
+                  text: params.lastMeeting
+                }
               }
-            },
-            {
-              key: {
-                text: "Last meeting"
-              },
-              value: {
-                text: params.lastMeeting
-              }
-            }
-          ]
-      })
-    }}
+            ]
+        })
+      }}
+    </div>
     <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
   </div>
 {% endif %}

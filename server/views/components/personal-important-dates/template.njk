@@ -13,44 +13,46 @@
 {% else %}
   <div class="govuk-grid-column-two-thirds" id="keyDates">
     <h2 class="govuk-heading-m">Important Dates</h2>
-    {{
-      govukSummaryList({
-        classes: 'govuk-summary-list--no-border',
-        rows: [
-          {
-            key: {
-              text: "Re-categorisation"
+    <div id="important-date-information" data-hj-suppress>
+      {{
+        govukSummaryList({
+          classes: 'govuk-summary-list--no-border',
+          rows: [
+            {
+              key: {
+                text: "Re-categorisation"
+              },
+              value: {
+                text: params.reCategorisationDate
+              }
             },
-            value: {
-              text: params.reCategorisationDate
-            }
-          },
-          {
-            key: {
-              text: "HDC eligibility"
+            {
+              key: {
+                text: "HDC eligibility"
+              },
+              value: {
+                text: params.hdcEligibilityDate
+              }
             },
-            value: {
-              text: params.hdcEligibilityDate
-            }
-          },
-          {
-            key: {
-              text: "Conditional release"
+            {
+              key: {
+                text: "Conditional release"
+              },
+              value: {
+                text: params.conditionalReleaseDate
+              }
             },
-            value: {
-              text: params.conditionalReleaseDate
+            {
+              key: {
+                text: "Licence expires"
+              },
+              value: {
+                text: params.licenceExpiryDate
+              }
             }
-          },
-          {
-            key: {
-              text: "Licence expires"
-            },
-            value: {
-              text: params.licenceExpiryDate
-            }
-          }
-        ]
-      })
-    }}
+          ]
+        })
+      }}
+    </div>
   </div>
 {% endif %}

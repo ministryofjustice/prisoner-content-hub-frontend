@@ -11,14 +11,16 @@
       </div>
     {% else %}
       {% if params.data.incentivesLevel %}
-        <p class="incentives-indicator
-        {% if params.data.incentivesLevel === 'Basic' %}incentives-indicator--basic{% endif %}
-        {% if params.data.incentivesLevel === 'Standard' %}incentives-indicator--standard{% endif %}
-        {% if params.data.incentivesLevel === 'Enhanced' %}incentives-indicator--enhanced{% endif %}
-      ">
-          <span>Your current</span>
-          <span>incentive level</span>
-        </p>
+        <div data-hj-suppress>
+          <p class="incentives-indicator
+            {% if params.data.incentivesLevel === 'Basic' %}incentives-indicator--basic{% endif %}
+            {% if params.data.incentivesLevel === 'Standard' %}incentives-indicator--standard{% endif %}
+            {% if params.data.incentivesLevel === 'Enhanced' %}incentives-indicator--enhanced{% endif %}
+          ">
+            <span>Your current</span>
+            <span>incentive level</span>
+          </p>
+        </div>
         <div class="incentives-levels govuk-clearfix">
           <div class="incentives-level incentives-level--basic">Basic</div>
           <div class="incentives-level incentives-level--standard">Standard</div>
@@ -29,7 +31,7 @@
           Your incentive level is unavailable
         </p>
       {% endif %}
-      <p class="incentivesReview">
+      <p class="incentivesReview" data-hj-suppress>
         {% if params.data.reviewDate %}
         Your incentive level can be reviewed on <span>{{ params.data.reviewDate }}</span>
         {% else %}

@@ -17,7 +17,7 @@
     {% else %}
       {% for event in params.data.events %}
         {% if loop.first %}
-          <div>
+          <div data-hj-suppress>
           {% endif %}
           <span class="timetable-time">{{event.timeString}}</span>
           <span>

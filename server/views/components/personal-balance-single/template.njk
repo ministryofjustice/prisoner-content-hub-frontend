@@ -1,7 +1,7 @@
 <div class="balance">
   <h3>{{ params.type | capitalize}}</h3>
   {% if params.amount %}
-    <p class="balance-amount" data-amount="{{ params.amount }}">{{ params.amount }}</p>
+    <p class="balance-amount" data-amount="{{ params.amount }}" data-hj-suppress>{{ params.amount }}</p>
   {% else %}
     <p class="balance-unavailable">Unavailable</p>
   {% endif %}
