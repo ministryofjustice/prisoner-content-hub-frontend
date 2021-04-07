@@ -224,12 +224,12 @@ const createApp = ({
   }
 
   // Routing
+  if (!process.env.HOTJAR_ID) {
+    logger.warn('HOTJAR_ID not set');
+  }
 
   app.use((req, res, next) => {
     const hotJarId = process.env.HOTJAR_ID;
-    if (!hotJarId) {
-      logger.warn('HOTJAR_ID not set');
-    }
     res.locals.hotJarId = hotJarId;
     next();
   });
