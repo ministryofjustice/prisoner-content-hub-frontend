@@ -226,6 +226,7 @@ const createApp = ({
   // Routing
   if (!process.env.HOTJAR_ID) {
     logger.warn('HOTJAR_ID not set');
+    Sentry.captureMessage('HOTJAR_ID not set', 'warning');
   }
 
   app.use((req, res, next) => {

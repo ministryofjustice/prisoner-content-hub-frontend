@@ -20,6 +20,7 @@ jest.mock('@sentry/node', () => {
         next();
       }),
     },
+    captureMessage: jest.fn(),
     errorHandlingMiddleware,
     requestHandlingMiddleware,
   };
