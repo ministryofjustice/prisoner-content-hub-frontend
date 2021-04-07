@@ -4,7 +4,7 @@ const { logger } = require('../utils/logger');
 
 function createPrisonFormatter(listOfPrisons, key) {
   const lookup = listOfPrisons.reduce((a, p) => {
-    a.set(p.agencyId, p.formattedDescription);
+    a.set(p.agencyId, p.description);
     return a;
   }, new Map());
 

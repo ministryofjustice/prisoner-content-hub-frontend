@@ -106,7 +106,9 @@ class PrisonApiRepository {
     try {
       logger.info('PrisonApiRepository (getPrisonDetailsFor)');
 
-      const response = await this.client.get(`${this.url}/api/agencies/prison`);
+      const response = await this.client.get(
+        `${this.url}/api/agencies/type/INST?activeOnly=false`,
+      );
 
       return response;
     } catch (e) {
