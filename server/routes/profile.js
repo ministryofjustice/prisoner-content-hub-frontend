@@ -1,6 +1,7 @@
 const express = require('express');
+const { format } = require('date-fns');
 
-const createProfileRouter = () => {
+const createProfileRouter = ({ offenderService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
@@ -15,9 +16,24 @@ const createProfileRouter = () => {
         returnUrl: req.originalUrl,
       };
 
-      if (req.user) {
-        templateParams.signedInUser = req.user.getFullName();
+      const today = new Date();
+      const todayDate = format(today, 'yyyy-MM-dd');
+      const { user } = req;
+
+      if (user) {
+        templateParams.events = await Promise.all([
+          offenderService.getEventsFor(user, todayDate, todayDate),
+        ]);
+        templateParams.signedInUser = user.getFullName();
+      } else {
+        templateParams.events = [
+          offenderService.getEmptyTimetable(todayDate, todayDate),
+        ];
       }
+
+      templateParams.morning =
+        templateParams.events[0].events[todayDate].morning;
+      console.log(JSON.stringify(templateParams.morning));
 
       return res.render('pages/profile', templateParams);
     } catch (e) {

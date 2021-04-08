@@ -5,8 +5,9 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../components/user-details/macro.njk" import userDetails %}
+{% from "../components/card/macro.njk" import card %}
+{% from "../components/personal-schedule-one-day/macro.njk" import personalScheduleOneDay %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-
 
 {% extends "../components/template.njk" %}
 
@@ -56,20 +57,47 @@
     <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
     </p>
 {% else %}
-  <details class="govuk-details" data-module="govuk-details">
-    <summary class="govuk-details__summary">
-      <span class="govuk-details__summary-text">
-          Help with your profile
-        </span>
-    </summary>
-    <div class="govuk-details__text">
-      <p>The Hub team cannot help you with profile queries.</p>
+  <div class="govuk-width-container">
+      <ul class="govuk-grid-row card-group">
+          <li class="govuk-grid-column-one-quarter card-group__item">
+            {{ card({
+              "img": "",
+              "clickable": "false",
+              "heading": 'Morning',
+              "description": morning.events[0].description,
+              "startTime":  morning.events[0].startTime,
+              "endTime":  morning.events[0].endTime,
+              "location":   morning.events[0].location,
+              "id": 'id'
+            }) }}
+          </li>
+            <li class="govuk-grid-column-one-quarter card-group__item">
+            {{ card({
+              "clickable": "false",
+              "heading": 'Afternoon',
+              "description": 'test',
+              "id": 'id'
+            }) }}
+          </li>
+            <li class="govuk-grid-column-one-quarter card-group__item">
+            {{ card({
+              "clickable": "false",
+              "heading": 'Evening',
+              "description": 'test',
+              "id": 'id'
+            }) }}
+          </li>
+            <li class="govuk-grid-column-one-quarter card-group__item">
+            {{ card({
 
-      <p>If you're unsure about information in your profile, you should submit an app or ask an officer.</p>
-
-      <a href="/content/" class="govuk-link">Read more about what the information on this page means</a>.
-        </div>
-  </details>
+              "href": '/timetable',
+              "clickable": "true",
+              "heading": 'View your full timetable',
+              "id": 'id'
+            }) }}
+          </li>
+      </ul>
+    </div>
 {% endif %}
 
     <div class="govuk-hub-article-feedback">
