@@ -120,10 +120,8 @@ Kubernetes cluster connection details. See [here](https://user-guide.cloud-platf
 kubectl get secrets -n <namespace> <secret-name> -o json | jq " .data | map_values(@base64d)
 ```
 
-We also add some app-specific environment variables:
+We also add an app-specific environment variable:
 
 - `HELM_BACKEND_RELEASE_NAME=prisoner-content-hub-backend`
-- `SECRET_NOMIS_API_ENDPOINT`
-- `SECRET_NOMIS_API_TOKEN`
 
 > `HELM_BACKEND_RELEASE_NAME` can be set to anything, but needs to match between frontend and CMS deploys so they are wired up correctly.

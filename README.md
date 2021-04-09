@@ -6,7 +6,7 @@ The frontend for the Digital Hub service using Node
 
 ### Prerequisites
 
-    Node >= v10.15.3
+    Node >= v14
 
 ### Install dependencies
 
