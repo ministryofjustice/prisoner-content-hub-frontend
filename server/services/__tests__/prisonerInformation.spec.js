@@ -72,12 +72,10 @@ describe('PrisonerInformation', () => {
     {
       agencyId: 'TST',
       description: 'Test (HMP)',
-      formattedDescription: 'Test (HMP)',
     },
     {
       agencyId: 'TST2',
       description: 'Test 2 (HMP)',
-      formattedDescription: 'Test 2 (HMP)',
     },
   ];
 

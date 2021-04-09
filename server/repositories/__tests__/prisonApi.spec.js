@@ -178,7 +178,7 @@ describe('PrisonApiRepository', () => {
       const response = await repository.getPrisonDetails();
 
       expect(client.get).toHaveBeenCalledWith(
-        'http://foo.bar/api/agencies/prison',
+        'http://foo.bar/api/agencies/type/INST?activeOnly=false',
       );
 
       expect(response).toBe('API_RESPONSE');

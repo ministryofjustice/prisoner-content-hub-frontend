@@ -78,8 +78,7 @@ describe('Prisoner Money', () => {
   const agencyApiResponse = [
     {
       agencyId: 'TST',
-      description: 'TEST (HMP)',
-      formattedDescription: 'Test (HMP)',
+      description: 'Test (HMP)',
     },
   ];
 
@@ -154,7 +153,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/transaction-history/i)) {
           return Promise.resolve(transactionApiResponse);
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.resolve(agencyApiResponse);
         }
         if (requestUrl.match(/\/balances/i)) {
@@ -305,7 +304,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/transaction-history/i)) {
           return Promise.resolve(transactionApiResponse);
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.reject(fiveOhThree);
         }
         if (requestUrl.match(/\/balances/i)) {
@@ -341,7 +340,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/transaction-history/i)) {
           return Promise.resolve(transactionApiResponse);
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.resolve(agencyApiResponse);
         }
         if (requestUrl.match(/\/balances/i)) {
@@ -494,7 +493,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/transaction-history/i)) {
           return Promise.resolve(transactionApiResponse);
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.resolve(agencyApiResponse);
         }
         if (requestUrl.match(/\/balances/i)) {
@@ -612,7 +611,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/transaction-history/i)) {
           return Promise.resolve(transactionApiResponse);
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.resolve(agencyApiResponse);
         }
         if (requestUrl.match(/\/balances/i)) {
@@ -745,7 +744,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/transaction-history/i)) {
           return Promise.resolve(transactionApiResponse);
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.reject(fiveOhThree);
         }
         if (requestUrl.match(/\/balances/i)) {
@@ -785,7 +784,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/transaction-history/i)) {
           return Promise.resolve(transactionApiResponse);
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.resolve(agencyApiResponse);
         }
         if (requestUrl.match(/\/balances/i)) {
@@ -922,7 +921,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/transaction-history/i)) {
           return Promise.resolve(transactionApiResponse);
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.resolve(agencyApiResponse);
         }
         if (requestUrl.match(/\/balances/i)) {
@@ -1073,7 +1072,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/transaction-history/i)) {
           return Promise.resolve(transactionApiResponse);
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.reject(fiveOhThree);
         }
         if (requestUrl.match(/\/balances/i)) {
@@ -1106,7 +1105,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/transaction-history/i)) {
           return Promise.resolve(transactionApiResponse);
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.resolve(agencyApiResponse);
         }
         if (requestUrl.match(/\/balances/i)) {
@@ -1261,7 +1260,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/damage-obligations/i)) {
           return Promise.resolve(damageObligationsApiResponse);
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.resolve(agencyApiResponse);
         }
         return Promise.reject(fourOhFour);
@@ -1300,7 +1299,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/damage-obligations/i)) {
           return Promise.resolve({ damageObligations: [] });
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.resolve(agencyApiResponse);
         }
         return Promise.reject(fourOhFour);
@@ -1328,7 +1327,7 @@ describe('Prisoner Money', () => {
         if (requestUrl.match(/\/damage-obligations/i)) {
           return Promise.reject(fiveOhThree);
         }
-        if (requestUrl.match(/\/agencies\/prison/i)) {
+        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
           return Promise.resolve(agencyApiResponse);
         }
         return Promise.reject(fourOhFour);
