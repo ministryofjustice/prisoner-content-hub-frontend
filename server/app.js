@@ -7,7 +7,6 @@ const nunjucks = require('nunjucks');
 const path = require('path');
 const sassMiddleware = require('node-sass-middleware');
 const session = require('cookie-session');
-const bodyParser = require('body-parser');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
 const { path: ramdaPath, pathOr } = require('ramda');
@@ -99,8 +98,8 @@ const createApp = ({
   // Resource Delivery Configuration
   app.use(compression());
 
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
   if (!config.isProduction) {
     app.use(

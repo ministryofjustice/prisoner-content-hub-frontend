@@ -2,11 +2,10 @@ const Sentry = require('@sentry/node');
 
 const { logger } = require('../utils/logger');
 
-function createPrisonFormatter(listOfPrisons, key) {
-  const lookup = listOfPrisons.reduce((a, p) => {
-    a.set(p.agencyId, p.description);
-    return a;
-  }, new Map());
+function createPrisonFormatter(prisons, key) {
+  const lookup = new Map(
+    prisons.map(({ agencyId, description }) => [agencyId, description]),
+  );
 
   return v => ({
     ...v,
