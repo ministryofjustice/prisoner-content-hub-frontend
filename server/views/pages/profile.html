@@ -48,6 +48,18 @@
 {% block homeNavigation %}{% endblock %}
 {% block search %}{% endblock %}
 
+{% macro eventsSummary(events) %}
+   {% for event in events %}
+      <div class="govuk-!-padding-bottom-4">
+        <strong>{{event.description}}</strong><br/>
+        {{event.startTime | lower }} to {{event.endTime | lower }}<br/>
+        {{event.location}}
+      </div>
+      {% else %}
+        <strong>No activities scheduled</strong>
+    {% endfor %}
+{% endmacro %}
+
 {% block main %}
   <div class="govuk-width-container govuk-body">
 
@@ -58,45 +70,28 @@
     </p>
 {% else %}
   <div class="govuk-width-container">
+    <h2 class="govuk-heading-m">Today's timetable</h2>
+    {% if events.error %}
+      <p class="govuk-!-font-size-24">We are not able to show your timetable at this time, <a href="{{ params.returnUrl }}" class="govuk-link">try again</a></p>
+    {% else %}
       <ul class="govuk-grid-row card-group">
           <li class="govuk-grid-column-one-quarter card-group__item">
-            {{ card({
-              "img": "",
-              "clickable": "false",
-              "heading": 'Morning',
-              "description": morning.events[0].description,
-              "startTime":  morning.events[0].startTime,
-              "endTime":  morning.events[0].endTime,
-              "location":   morning.events[0].location,
-              "id": 'id'
-            }) }}
+            {% call card({ id: 'morningEvents', heading: 'Morning'}) -%}
+              {{ eventsSummary(events.morning.events) }}
+            {%- endcall %}
           </li>
-            <li class="govuk-grid-column-one-quarter card-group__item">
-            {{ card({
-              "clickable": "false",
-              "heading": 'Afternoon',
-              "description": 'test',
-              "id": 'id'
-            }) }}
+          <li class="govuk-grid-column-one-quarter card-group__item">
+            {% call card({ id: 'afternoonEvents', heading: 'Afternoon'}) -%}
+              {{ eventsSummary(events.afternoon.events) }}
+            {%- endcall %}
           </li>
-            <li class="govuk-grid-column-one-quarter card-group__item">
-            {{ card({
-              "clickable": "false",
-              "heading": 'Evening',
-              "description": 'test',
-              "id": 'id'
-            }) }}
-          </li>
-            <li class="govuk-grid-column-one-quarter card-group__item">
-            {{ card({
-
-              "href": '/timetable',
-              "clickable": "true",
-              "heading": 'View your full timetable',
-              "id": 'id'
-            }) }}
+          <li class="govuk-grid-column-one-quarter card-group__item">
+            {% call card({ id: 'eveningEvents', heading: 'Evening'}) -%}
+              {{ eventsSummary(events.evening.events) }}
+            {%- endcall %}
           </li>
       </ul>
+    {% endif %}
     </div>
 {% endif %}
 

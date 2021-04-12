@@ -56,7 +56,7 @@ const createIndexRouter = ({
         const userName = user.getFullName();
         pageConfig.userName = userName;
         pageConfig.welcomeMessage = `Hi, ${userName}`;
-        todaysEvents = await offenderService.getEventsForToday(user);
+        todaysEvents = await offenderService.getEventsListForToday(user);
       }
 
       res.render('pages/home', {

@@ -1,12 +1,27 @@
 const express = require('express');
-const { format } = require('date-fns');
 
 const createProfileRouter = ({ offenderService }) => {
   const router = express.Router();
 
+  const getPersonalisation = async user => {
+    const events = await offenderService.getEventsForToday(user);
+
+    const timetableError = events?.error;
+    const { morning, afternoon, evening } = events || {};
+    const signedInUser = user.getFullName();
+
+    return {
+      signedInUser,
+      events: { error: timetableError, morning, afternoon, evening },
+    };
+  };
+
   router.get('/', async (req, res, next) => {
     try {
-      const templateParams = {
+      const { user } = req;
+      const personalisation = user ? await getPersonalisation(user) : {};
+
+      return res.render('pages/profile', {
         title: 'Your profile',
         content: true,
         header: false,
@@ -14,28 +29,8 @@ const createProfileRouter = ({ offenderService }) => {
         detailsType: 'small',
         category: 'profile',
         returnUrl: req.originalUrl,
-      };
-
-      const today = new Date();
-      const todayDate = format(today, 'yyyy-MM-dd');
-      const { user } = req;
-
-      if (user) {
-        templateParams.events = await Promise.all([
-          offenderService.getEventsFor(user, todayDate, todayDate),
-        ]);
-        templateParams.signedInUser = user.getFullName();
-      } else {
-        templateParams.events = [
-          offenderService.getEmptyTimetable(todayDate, todayDate),
-        ];
-      }
-
-      templateParams.morning =
-        templateParams.events[0].events[todayDate].morning;
-      console.log(JSON.stringify(templateParams.morning));
-
-      return res.render('pages/profile', templateParams);
+        ...personalisation,
+      });
     } catch (e) {
       return next(e);
     }
