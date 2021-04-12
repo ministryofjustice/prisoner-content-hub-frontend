@@ -246,10 +246,7 @@ const createOffenderService = (
   async function getEventsForToday(user, today = new Date()) {
     const todayString = format(today, 'yyyy-MM-dd');
     const results = await getEventsFor(user, todayString, todayString);
-    if (results.error) {
-      return results;
-    }
-    return results?.events?.[todayString];
+    return results.error ? results : results.events?.[todayString];
   }
 
   function getEmptyTimetable(startDate, endDate) {

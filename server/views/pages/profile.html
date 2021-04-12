@@ -56,7 +56,7 @@
         {{event.location}}
       </div>
       {% else %}
-        <strong>No activities scheduled</strong>
+        <strong data-test="no-activities">No activities scheduled</strong>
     {% endfor %}
 {% endmacro %}
 
@@ -65,14 +65,14 @@
 
 {% if not signedInUser %}
   <h2 class="govuk-heading-m">You are signed out</h2>
-  <p class="govuk-!-font-size-24">
+  <p class="govuk-!-font-size-24" data-test="signin-prompt">
     <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
     </p>
 {% else %}
   <div class="govuk-width-container">
     <h2 class="govuk-heading-m">Today's timetable</h2>
     {% if events.error %}
-      <p class="govuk-!-font-size-24">We are not able to show your timetable at this time, <a href="{{ params.returnUrl }}" class="govuk-link">try again</a></p>
+      <p class="govuk-!-font-size-24" data-test="timetable-error">We are not able to show your timetable at this time, <a href="{{ params.returnUrl }}" class="govuk-link">try again</a></p>
     {% else %}
       <ul class="govuk-grid-row card-group">
           <li class="govuk-grid-column-one-quarter card-group__item">
