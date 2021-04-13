@@ -90,6 +90,12 @@
               {{ eventsSummary(events.evening.events) }}
             {%- endcall %}
           </li>
+          <li class="govuk-grid-column-one-quarter card-group__item">
+            {% call card({ id: 'timetableLink', clickable: true }) -%}
+            <img class="hub-logo" src="/public/images/timetable-image.png" alt="logo">
+              <h3> <a href="/timetable" class="govuk-link govuk-link--no-visited-state govuk-!-font-size-27">View your full timetable</a></h3>
+            {%- endcall %}
+          </li>
       </ul>
     {% endif %}
     </div>
@@ -108,6 +114,7 @@
 
 {% block bodyEnd %}
   <script src="/public/all.js"></script>
+  <script src="/public/javascript/card.js"></script>
   <script>
     window
       .GOVUKFrontend

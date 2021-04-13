@@ -226,4 +226,35 @@ describe('GET /profile', () => {
         ).toBe(1);
       });
   });
+
+  it('displays the timetable link', () => {
+    const router = createProfileRouter({ offenderService });
+    const app = setupBasicApp({
+      buildInfo: {
+        buildNumber: 'foo-number',
+        gitRef: 'foo-ref',
+        gitDate: 'foo-date',
+      },
+    });
+    app.use(setMockUser);
+    app.use('/profile', router);
+    offenderService.getEventsForToday.mockResolvedValue({
+      afternoon: { events: [], finished: true },
+      evening: { events: [], finished: true },
+      morning: { events: [], finished: true },
+      title: 'Thursday 7 March',
+    });
+
+    return request(app)
+      .get('/profile')
+      .expect(200)
+      .expect('Content-Type', /text\/html/)
+      .then(response => {
+        const $ = cheerio.load(response.text);
+
+        expect($('[data-test="timetableLink"] a').attr('href')).toBe(
+          '/timetable',
+        );
+      });
+  });
 });
