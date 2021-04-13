@@ -6,8 +6,7 @@ const createProfileRouter = ({ offenderService }) => {
   const getPersonalisation = async user => {
     const events = await offenderService.getEventsForToday(user);
 
-    const timetableError = events?.error;
-    const { morning, afternoon, evening } = events || {};
+    const { morning, afternoon, evening, error: timetableError } = events || {};
     const signedInUser = user.getFullName();
 
     return {
