@@ -160,7 +160,7 @@ const createOffenderService = (
     }
 
     return {
-      events: await repository.getEventsForToday(user.bookingId),
+      events: await repository.getEventsListForToday(user.bookingId),
       isTomorrow: false,
     };
   }
@@ -169,10 +169,10 @@ const createOffenderService = (
    * Note this actually gets tomorrow's events if it's after 7pm as per this requirement:
    * https://trello.com/c/m5yt4sgm
    */
-  async function getEventsForToday(user, time = new Date()) {
+  async function getEventsListForToday(user, time = new Date()) {
     try {
       logger.info(
-        `OffenderService (getEventsForToday) - User: ${user.prisonerId}`,
+        `OffenderService (getEventsListForToday) - User: ${user.prisonerId}`,
       );
 
       if (!user.bookingId) {
@@ -191,7 +191,7 @@ const createOffenderService = (
           };
     } catch (e) {
       logger.error(
-        `OffenderService (getEventsForToday) - Failed: ${e.message} - User: ${user.prisonerId}`,
+        `OffenderService (getEventsListForToday) - Failed: ${e.message} - User: ${user.prisonerId}`,
       );
       logger.debug(e.stack);
       return {
@@ -215,7 +215,7 @@ const createOffenderService = (
         throw new Error('Invalid dates supplied');
       }
 
-      if (!isBefore(startDateObj, endDateObj)) {
+      if (isBefore(endDateObj, startDateObj)) {
         throw new Error('Start date is after end date');
       }
 
@@ -243,6 +243,12 @@ const createOffenderService = (
     }
   }
 
+  async function getEventsForToday(user, today = new Date()) {
+    const todayString = format(today, 'yyyy-MM-dd');
+    const results = await getEventsFor(user, todayString, todayString);
+    return results.error ? results : results.events?.[todayString];
+  }
+
   function getEmptyTimetable(startDate, endDate) {
     return Timetable.create({ startDate, endDate }).build();
   }
@@ -254,8 +260,9 @@ const createOffenderService = (
     getKeyWorkerFor,
     getVisitsFor,
     getImportantDatesFor,
-    getEventsForToday,
+    getEventsListForToday,
     getEventsFor,
+    getEventsForToday,
     getEmptyTimetable,
   };
 };

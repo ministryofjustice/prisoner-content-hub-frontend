@@ -130,7 +130,7 @@ describe('App', () => {
           hubFeaturedContent: jest.fn().mockRejectedValue(error),
         },
         offenderService: {
-          getEventsForToday: jest.fn().mockResolvedValue([]),
+          getEventsListForToday: jest.fn().mockResolvedValue([]),
           getEventsFor: jest.fn().mockResolvedValue([]),
           getOffenderDetailsFor: jest.fn().mockResolvedValue({}),
         },

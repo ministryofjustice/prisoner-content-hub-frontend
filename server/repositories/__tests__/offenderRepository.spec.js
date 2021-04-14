@@ -127,13 +127,13 @@ describe('offenderRepository', () => {
     });
   });
 
-  describe('getEventsForToday', () => {
-    it('calls the getEventsForToday endpoint for a given ID', async () => {
+  describe('getEventsListForToday', () => {
+    it('calls the getEventsListForToday endpoint for a given ID', async () => {
       const client = {
         get: jest.fn().mockResolvedValue('SOME_RESULT'),
       };
       const repository = offenderRepository(client);
-      const result = await repository.getEventsForToday('FOO_ID');
+      const result = await repository.getEventsListForToday('FOO_ID');
 
       expect(lastCall(client.get)[0]).toContain('/FOO_ID/events/today');
       expect(result).toBe('SOME_RESULT');

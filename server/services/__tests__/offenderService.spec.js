@@ -1,3 +1,4 @@
+const { parseISO } = require('date-fns');
 const { createPrisonApiOffenderService } = require('../offender');
 const { lastCall } = require('../../../test/test-helpers');
 
@@ -135,7 +136,7 @@ describe('Offender Service', () => {
     });
   });
 
-  describe('getEventsForToday', () => {});
+  describe('getEventsListForToday', () => {});
 
   describe('getEventsFor', () => {
     const create = jest.fn();
@@ -195,7 +196,7 @@ describe('Offender Service', () => {
       expect(data.error).toBeDefined();
     });
 
-    it('should return an error response when passed an invalid date range', async () => {
+    it('should return an error response when passed an descending date range', async () => {
       const repository = {
         getEventsFor: jest.fn().mockReturnValue([]),
       };
@@ -205,14 +206,54 @@ describe('Offender Service', () => {
       });
 
       const data = await service.getEventsFor(
-        TEST_BOOKING_ID,
+        TEST_USER,
         '2019-03-07',
-        '2019-02-07',
+        '2019-03-06',
       );
 
       expect(repository.getEventsFor).not.toHaveBeenCalled();
       expect(mockTimetableAdapter.create).not.toHaveBeenCalled();
-      expect(data.error).toBeDefined;
+      expect(data.error).toBeDefined();
+    });
+
+    it('should return an error response when passed an ascending date range', async () => {
+      const repository = {
+        getEventsFor: jest.fn().mockReturnValue([]),
+      };
+
+      const service = createPrisonApiOffenderService(repository, {
+        Timetable: mockTimetableAdapter,
+      });
+
+      const data = await service.getEventsFor(
+        TEST_USER,
+        '2019-03-06',
+        '2019-03-07',
+      );
+
+      expect(repository.getEventsFor).toHaveBeenCalled();
+      expect(mockTimetableAdapter.create).toHaveBeenCalled();
+      expect(data.error).not.toBeDefined();
+    });
+
+    it('should not error when retrieving events for a single day', async () => {
+      const repository = {
+        getEventsFor: jest.fn().mockReturnValue([]),
+      };
+
+      const service = createPrisonApiOffenderService(repository, {
+        Timetable: mockTimetableAdapter,
+      });
+
+      const data = await service.getEventsFor(
+        TEST_USER,
+        '2019-03-07',
+        '2019-03-07',
+      );
+
+      expect(repository.getEventsFor).toHaveBeenCalled();
+      expect(mockTimetableAdapter.create).toHaveBeenCalled();
+      expect(data.error).not.toBeDefined();
     });
 
     it('should return an error response if the repository returns malformed data', async () => {
@@ -237,6 +278,97 @@ describe('Offender Service', () => {
       );
       expect(mockTimetableAdapter.create).not.toHaveBeenCalled();
       expect(data.error).toBeDefined;
+    });
+  });
+
+  describe('getEventsForToday', () => {
+    it('should call the repository service with the correct bookingId', async () => {
+      const repository = {
+        getEventsFor: jest.fn().mockReturnValue([
+          {
+            bookingId: 6699,
+            eventClass: 'INT_MOV',
+            eventStatus: 'SCH',
+            eventType: 'APP',
+            eventTypeDesc: 'Appointment',
+            eventSubType: 'CALA',
+            eventSubTypeDesc: 'Case - Legal Aid',
+            eventDate: '2019-03-07',
+            startTime: '2019-03-07T22:10:00',
+            endTime: '2019-03-07T22:45:00',
+            eventLocation: 'BODY REPAIR',
+            eventSource: 'APP',
+            eventSourceCode: 'APP',
+          },
+        ]),
+      };
+
+      const service = createPrisonApiOffenderService(repository);
+
+      const data = await service.getEventsForToday(
+        TEST_USER,
+        parseISO('2019-03-07'),
+      );
+
+      expect(lastCall(repository.getEventsFor)[0]).toBe(
+        TEST_BOOKING_ID,
+        '2019-03-07',
+        '2019-03-07',
+      );
+      expect(data).toEqual({
+        afternoon: { events: [], finished: true },
+        evening: {
+          events: [
+            {
+              description: 'Case - Legal Aid',
+              endTime: '10:45PM',
+              eventType: 'APP',
+              finished: false,
+              location: 'Body repair',
+              paid: undefined,
+              startTime: '10:10PM',
+              status: 'SCH',
+              timeString: '10:10PM to 10:45PM',
+            },
+          ],
+          finished: true,
+        },
+        morning: { events: [], finished: true },
+        title: 'Thursday 7 March',
+      });
+    });
+
+    it('should return an error when no booking Id is passed', async () => {
+      const repository = {
+        getEventsFor: jest.fn().mockReturnValue([]),
+      };
+
+      const service = createPrisonApiOffenderService(repository);
+
+      const data = await service.getEventsForToday({}, parseISO('2019-03-07'));
+
+      expect(data).toEqual({
+        error: 'We are not able to show your timetable at this time',
+      });
+    });
+
+    it('should handle when no events returned from the API', async () => {
+      const repository = {
+        getEventsFor: jest.fn().mockReturnValue([]),
+      };
+
+      const service = createPrisonApiOffenderService(repository);
+
+      const data = await service.getEventsForToday(
+        TEST_USER,
+        parseISO('2019-03-07'),
+      );
+      expect(data).toEqual({
+        morning: { finished: true, events: [] },
+        afternoon: { finished: true, events: [] },
+        evening: { finished: true, events: [] },
+        title: 'Thursday 7 March',
+      });
     });
   });
 });

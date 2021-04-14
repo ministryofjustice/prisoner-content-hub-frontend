@@ -1,11 +1,26 @@
 const express = require('express');
 
-const createProfileRouter = () => {
+const createProfileRouter = ({ offenderService }) => {
   const router = express.Router();
+
+  const getPersonalisation = async user => {
+    const events = await offenderService.getEventsForToday(user);
+
+    const { morning, afternoon, evening, error: timetableError } = events || {};
+    const signedInUser = user.getFullName();
+
+    return {
+      signedInUser,
+      events: { error: timetableError, morning, afternoon, evening },
+    };
+  };
 
   router.get('/', async (req, res, next) => {
     try {
-      const templateParams = {
+      const { user } = req;
+      const personalisation = user ? await getPersonalisation(user) : {};
+
+      return res.render('pages/profile', {
         title: 'Your profile',
         content: true,
         header: false,
@@ -13,13 +28,8 @@ const createProfileRouter = () => {
         detailsType: 'small',
         category: 'profile',
         returnUrl: req.originalUrl,
-      };
-
-      if (req.user) {
-        templateParams.signedInUser = req.user.getFullName();
-      }
-
-      return res.render('pages/profile', templateParams);
+        ...personalisation,
+      });
     } catch (e) {
       return next(e);
     }
