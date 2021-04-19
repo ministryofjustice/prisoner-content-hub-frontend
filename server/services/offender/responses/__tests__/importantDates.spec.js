@@ -32,8 +32,8 @@ describe('ImportantDates', () => {
     expect(formatted).toStrictEqual(
       {
         reCategorisationDate: DEFAULT,
-        hdcEligibilityDate: 'Saturday 07 December 2019',
-        conditionalReleaseDate: 'Saturday 07 December 2019',
+        hdcEligibilityDate: 'Saturday 7 December 2019',
+        conditionalReleaseDate: 'Saturday 7 December 2019',
         licenceExpiryDate: DEFAULT,
       },
       'Should handle missing visitor name or type',
@@ -51,9 +51,9 @@ describe('ImportantDates', () => {
 
     expect(formatted).toStrictEqual({
       reCategorisationDate: DEFAULT,
-      hdcEligibilityDate: 'Saturday 07 December 2019',
-      conditionalReleaseDate: 'Saturday 07 December 2019',
-      licenceExpiryDate: 'Saturday 07 December 2019',
+      hdcEligibilityDate: 'Saturday 7 December 2019',
+      conditionalReleaseDate: 'Saturday 7 December 2019',
+      licenceExpiryDate: 'Saturday 7 December 2019',
     });
   });
 });

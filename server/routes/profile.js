@@ -4,9 +4,10 @@ const createProfileRouter = ({ offenderService }) => {
   const router = express.Router();
 
   const getPersonalisation = async user => {
-    const [events, incentivesSummary] = await Promise.all([
+    const [events, incentivesSummary, visitsSummary] = await Promise.all([
       offenderService.getEventsForToday(user),
       offenderService.getIncentivesSummaryFor(user),
+      offenderService.getVisitsFor(user),
     ]);
 
     const { morning, afternoon, evening, error: timetableError } = events;
@@ -16,6 +17,12 @@ const createProfileRouter = ({ offenderService }) => {
       reviewDate,
       error: incentivesError,
     } = incentivesSummary;
+    const {
+      nextVisit,
+      visitType,
+      visitorName,
+      error: visitsError,
+    } = visitsSummary;
 
     return {
       signedInUser,
@@ -25,6 +32,13 @@ const createProfileRouter = ({ offenderService }) => {
         incentivesLevel,
         reviewDate,
         link: '/incentives',
+      },
+      visitsSummary: {
+        error: visitsError,
+        nextVisit,
+        visitType,
+        visitorName,
+        link: '/visits',
       },
     };
   };

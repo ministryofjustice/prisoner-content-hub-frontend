@@ -44,7 +44,7 @@ describe('incentivesSummary', () => {
     expect(formatted).toStrictEqual({
       incentivesLevel: DEFAULT,
       daysSinceReview: '16 days',
-      reviewDate: 'Tuesday 17 September',
+      reviewDate: 'Tuesday 17 September 2019',
     });
   });
 
@@ -61,7 +61,7 @@ describe('incentivesSummary', () => {
     expect(formatted).toStrictEqual({
       incentivesLevel: TEST_INCENTIVES_LEVEL,
       daysSinceReview: '16 days',
-      reviewDate: 'Tuesday 17 September',
+      reviewDate: 'Tuesday 17 September 2019',
     });
   });
 });

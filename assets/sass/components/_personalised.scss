@@ -27,6 +27,10 @@
   @include govuk-font(24, 'bold');
 }
 
+.hidden {
+  display: none;
+}
+
 .hidden-block-text {
   display: none;
   margin: 0 0 13px;
@@ -209,14 +213,4 @@
 
 #completed-payments__heading {
   margin-bottom: 30px;
-}
-
-.profile__section {
-  padding-top: govuk-spacing(5);
-  padding-left: govuk-spacing(5);
-  padding-right: govuk-spacing(5);
-}
-
-.profile__section__alt {
-  background: govuk-colour('light-grey');
 }

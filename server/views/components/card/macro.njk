@@ -10,11 +10,23 @@
   </div>
 {% endmacro %}
 
+{% macro cardSensitiveData(params) %}
+  <div class="card card__content card--clickable  sensitive-card"  data-test="{{ params.id }}">
+    {%- if params.heading %}
+      <h3 class="govuk-heading-m card__heading card-title">
+        <a href="#" class="govuk-link govuk-link--no-visited-state card_link">{{ params.heading }}</a><span class="reveal-sign">+</span>
+      </h3>
+    {%- endif %}
+    <p class="govuk-body card__description" data-hj-suppress>{{ caller() }}
+    </p>
+  </div>
+{% endmacro %}
+
 {% macro imageCard(params) %}
-  <div class="card card--clickable"  data-test="{{ params.id }}">
+  <div class="card card--clickable content-card"  data-test="{{ params.id }}">
     <img src="{{ params.src }}" alt="{{ params.alt }}">
-    <h3>
-      <a href="{{ params.link }}" class="govuk-link govuk-link--no-visited-state govuk-!-font-size-27 card_link">{{ params.description }}</a>
+    <h3 class="govuk-heading-m">
+      <a href="{{ params.link }}" class="card__content govuk-link govuk-link--no-visited-state card_link">{{ params.description }}</a>
     </h3>
   </div>
 {% endmacro %}

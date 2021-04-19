@@ -38,7 +38,7 @@ describe('NextVisit', () => {
     expect(formatted).toStrictEqual(
       {
         hasStartTime: true,
-        nextVisit: 'Saturday 07 December 2019',
+        nextVisit: 'Saturday 7 December 2019',
         nextVisitDate: '7 December',
         nextVisitDay: 'Saturday',
         visitType: DEFAULT,
@@ -60,7 +60,7 @@ describe('NextVisit', () => {
 
     expect(formatted).toStrictEqual({
       hasStartTime: true,
-      nextVisit: 'Saturday 07 December 2019',
+      nextVisit: 'Saturday 7 December 2019',
       nextVisitDate: '7 December',
       nextVisitDay: 'Saturday',
       visitType: 'TVT',
