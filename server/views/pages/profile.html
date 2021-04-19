@@ -1,12 +1,9 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
-{% from "govuk/components/tabs/macro.njk" import govukTabs %}
-{% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../components/user-details/macro.njk" import userDetails %}
-{% from "../components/card/macro.njk" import card %}
-{% from "../components/personal-schedule-one-day/macro.njk" import personalScheduleOneDay %}
+{% from "../components/card/macro.njk" import card, imageCard %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 
 {% extends "../components/template.njk" %}
@@ -69,7 +66,7 @@
     <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
     </p>
 {% else %}
-  <div class="govuk-width-container">
+  <div class="govuk-width-container profile__section">
     <h2 class="govuk-heading-m">Today's timetable</h2>
     {% if events.error %}
       <p class="govuk-!-font-size-24" data-test="timetable-error">We are not able to show your timetable at this time, <a href="{{ params.returnUrl }}" class="govuk-link">try again</a></p>
@@ -91,13 +88,33 @@
             {%- endcall %}
           </li>
           <li class="govuk-grid-column-one-quarter card-group__item">
-            {% call card({ id: 'timetableLink', clickable: true }) -%}
-            <img class="hub-logo" src="/public/images/timetable-image.png" alt="logo">
-              <h3> <a href="/timetable" class="govuk-link govuk-link--no-visited-state govuk-!-font-size-27">View your full timetable</a></h3>
-            {%- endcall %}
+            {{imageCard({ id: 'timetableLink', src: "/public/images/image_timetable.jpg", alt: "timetable picture", link: "/timetable", description: "View your full timetable" }) }}
           </li>
       </ul>
     {% endif %}
+    </div>
+
+    <div class="govuk-width-container profile__section profile__section__alt">
+      <h2 class="govuk-heading-m">Incentive level</h2>
+      {% if incentivesSummary.error %}
+        <p class="govuk-!-font-size-24" data-test="incentives-error">We are not able to show your Incentive level at this time, <a href="{{ params.returnUrl }}" class="govuk-link">try again</a></p>
+      {% else %}
+        <ul class="govuk-grid-row card-group">
+            <li class="govuk-grid-column-one-quarter card-group__item">
+              {% call card({ id: 'currentLevel', heading: 'Your current incentive level is'}) -%}
+                {{ incentivesSummary.incentivesLevel }}
+              {%- endcall %}
+            </li>
+            <li class="govuk-grid-column-one-quarter card-group__item">
+              {% call card({ id: 'reviewDate', heading: 'This can be reviewed from'}) -%}
+                {{ incentivesSummary.reviewDate }}
+              {%- endcall %}
+            </li>
+            <li class="govuk-grid-column-one-quarter card-group__item">
+            {{imageCard({ id: 'incentivesLink', src: "/public/images/image_incentive_level.jpg", alt: "incentives picture", link: incentivesSummary.link, description: "Read more about incentive levels" }) }}
+            </li>
+        </ul>
+      {% endif %}
     </div>
 {% endif %}
 

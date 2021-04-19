@@ -13,7 +13,10 @@ $card-border-color: lighten($card-border-hover-color, 15%);
   border: $card-border-width solid $card-border-color;
   position: relative;
   width: 100%;
-  padding: govuk-spacing(5);
+
+  &__content {
+    padding: govuk-spacing(5);
+  }
 
   &__heading {
     margin-top: 0;
@@ -28,6 +31,11 @@ $card-border-color: lighten($card-border-hover-color, 15%);
       ========================================================================== */
   &--clickable {
     border-bottom-width: $card-border-bottom-width;
+
+    a {
+      padding: govuk-spacing(5);
+      display: inline-block;
+    }
 
     &:hover,
     &:active {
