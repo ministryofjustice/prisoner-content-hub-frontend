@@ -126,6 +126,39 @@
 
   <div>
     <div class="govuk-width-container">
+      <h2 class="govuk-heading-m card-title">Money<a href='#' class="govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">open all balances</a></h2>
+      {% if moneySummary.error %}
+        <p class="govuk-!-font-size-24" data-test="money-error">We are not able to show your balances or transactions at this time. <a href="{{ params.returnUrl }}" class="govuk-link">try again</a> or <a href="{{ moneySummary.link }}" class="govuk-link">find out more about money and debt</a>.</p>
+      {% else %}
+        <ul class="govuk-grid-row card-group">
+            <li class="govuk-grid-column-one-quarter card-group__item">
+              {% call cardSensitiveData({ id: 'moneySpends', heading: 'Spends' }) -%}
+                <p>Spends account current balance</p>
+                <strong class="hidden sensitive" data-test="money-spends">{{ moneySummary.spends }}</strong>
+              {%- endcall %}
+            </li>
+             <li class="govuk-grid-column-one-quarter card-group__item">
+              {% call cardSensitiveData({ id: 'moneyPrivate', heading: 'Private' }) -%}
+                <p>Savings account current balance</p>
+                <strong class="hidden sensitive" data-test="money-private">{{ moneySummary.private }}</strong>
+              {%- endcall %}
+            </li>
+            <li class="govuk-grid-column-one-quarter card-group__item">
+              {% call cardSensitiveData({ id: 'moneySavings', heading: 'Savings' }) -%}
+                <p>Savings account current balance</p>
+                <strong class="hidden sensitive" data-test="money-savings">{{ moneySummary.savings }}</strong>
+              {%- endcall %}
+            </li>
+            <li class="govuk-grid-column-one-quarter card-group__item">
+            {{imageCard({ id: 'moneyLink', src: "/public/images/image_money.jpg", alt: "money picture", link: moneySummary.link, description: "View your transactions" }) }}
+            </li>
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="grey-background">
+    <div class="govuk-width-container">
       <h2 class="govuk-heading-m">Visits</h2>
       {% if visitsSummary.error %}
         <p class="govuk-!-font-size-24" data-test="visits-error">We are not able to show your visit information at this time. <a href="{{ params.returnUrl }}" class="govuk-link">try again</a> or <a href="{{ visitsSummary.link }}" class="govuk-link">find out more about visits</a>.</p>

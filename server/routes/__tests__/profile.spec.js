@@ -10,6 +10,7 @@ describe('GET /profile', () => {
     getEventsForToday: jest.fn().mockResolvedValue({}),
     getIncentivesSummaryFor: jest.fn().mockResolvedValue({}),
     getVisitsFor: jest.fn().mockResolvedValue({}),
+    getBalancesFor: jest.fn().mockResolvedValue({}),
   };
 
   const testUser = new User({
@@ -321,6 +322,59 @@ describe('GET /profile', () => {
           const $ = cheerio.load(response.text);
 
           expect($('[data-test="visitsLink"] a').attr('href')).toBe('/visits');
+        }));
+  });
+
+  describe('Retrieve money information', () => {
+    it('notifies the user when retrieving money information fails', () => {
+      offenderService.getBalancesFor.mockResolvedValue({
+        error: 'We are not able to show your money and transactions at this time',
+      });
+
+      return request(app)
+        .get('/profile')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="money-error"]').length).toBe(1);
+        });
+    });
+
+    it('displays the money information when the user is signed in', () => {
+      offenderService.getBalancesFor.mockResolvedValue({
+        spends: '£751.11',
+        cash: '10.10',
+        savings: '£10.10',
+      });
+
+      return request(app)
+        .get('/profile')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="money-error"]').length).toBe(0);
+
+          const spends = $('[data-test="spends"]').text();
+          expect(spends).toContain('£751.11');
+
+          const cash = $('[data-test="private"]').text();
+          expect(cash).toContain('10.10');
+
+          const savings = $('[data-test="savings"]').text();
+          expect(savings).toContain('£10.10');
+        });
+    });
+    it('displays the money link', () =>
+      request(app)
+        .get('/profile')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+
+          expect($('[data-test="moneyLink"] a').attr('href')).toBe('/money');
         }));
   });
 });

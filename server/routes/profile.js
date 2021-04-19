@@ -4,10 +4,11 @@ const createProfileRouter = ({ offenderService }) => {
   const router = express.Router();
 
   const getPersonalisation = async user => {
-    const [events, incentivesSummary, visitsSummary] = await Promise.all([
+    const [events, incentivesSummary, visitsSummary, moneySummary] = await Promise.all([
       offenderService.getEventsForToday(user),
       offenderService.getIncentivesSummaryFor(user),
       offenderService.getVisitsFor(user),
+      offenderService.getBalancesFor(user),
     ]);
 
     const { morning, afternoon, evening, error: timetableError } = events;
@@ -23,6 +24,16 @@ const createProfileRouter = ({ offenderService }) => {
       visitorName,
       error: visitsError,
     } = visitsSummary;
+    const {
+      spends,
+      private ,
+      savings,
+      error: moneyError,
+    } = moneySummary;
+
+
+  console.log(moneySummary);
+
 
     return {
       signedInUser,
@@ -39,6 +50,13 @@ const createProfileRouter = ({ offenderService }) => {
         visitType,
         visitorName,
         link: '/visits',
+      },
+      moneySummary: {
+        error: moneyError,
+        spends,
+        private,
+        savings,
+        link: '/money',
       },
     };
   };
