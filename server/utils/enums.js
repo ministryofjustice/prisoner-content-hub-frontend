@@ -4,7 +4,7 @@ module.exports = {
   },
   dateFormats: {
     LONG_PRETTY_DATE: 'EEEE d MMMM',
-    PRETTY_DATE: 'EEEE dd MMMM yyyy',
+    PRETTY_DATE: 'EEEE d MMMM yyyy',
     PRETTY_DAY: 'EEEE',
     PRETTY_DAY_AND_MONTH: 'd MMMM',
     PRETTY_TIME: 'h:mmaaa',

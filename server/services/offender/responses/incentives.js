@@ -1,7 +1,7 @@
 const { addMonths, parseISO } = require('date-fns');
 const {
   placeholders: { DEFAULT },
-  dateFormats: { LONG_PRETTY_DATE },
+  dateFormats: { PRETTY_DATE },
 } = require('../../../utils/enums');
 const {
   formatDateOrDefault,
@@ -28,7 +28,7 @@ class IncentivesSummary {
       incentivesLevel: this.incentivesLevel || DEFAULT,
       reviewDate: formatDateOrDefault(
         DEFAULT,
-        LONG_PRETTY_DATE,
+        PRETTY_DATE,
         this.nextIncentivesReviewDate,
       ),
       daysSinceReview: formatTimeBetweenOrDefault(

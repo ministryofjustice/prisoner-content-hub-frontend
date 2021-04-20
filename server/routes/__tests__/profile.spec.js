@@ -9,6 +9,7 @@ describe('GET /profile', () => {
   const offenderService = {
     getEventsForToday: jest.fn().mockResolvedValue({}),
     getIncentivesSummaryFor: jest.fn().mockResolvedValue({}),
+    getVisitsFor: jest.fn().mockResolvedValue({}),
   };
 
   const testUser = new User({
@@ -267,6 +268,59 @@ describe('GET /profile', () => {
           expect($('[data-test="incentivesLink"] a').attr('href')).toBe(
             '/incentives',
           );
+        }));
+  });
+
+  describe('Retrieve visits information', () => {
+    it('notifies the user when retrieving incentives information fails', () => {
+      offenderService.getVisitsFor.mockResolvedValue({
+        error: 'We are not able to show your visits information at this time',
+      });
+
+      return request(app)
+        .get('/profile')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="visits-error"]').length).toBe(1);
+        });
+    });
+
+    it('displays the visits information when the user is signed in', () => {
+      offenderService.getVisitsFor.mockResolvedValue({
+        nextVisit: 'Tuesday 20 April 2021',
+        visitType: 'Social',
+        visitorName: '',
+      });
+
+      return request(app)
+        .get('/profile')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="visits-error"]').length).toBe(0);
+
+          const nextVisit = $('[data-test="nextVisit"]').text();
+          expect(nextVisit).toContain('Tuesday 20 April 2021');
+
+          const visitType = $('[data-test="visitType"]').text();
+          expect(visitType).toContain('Social');
+
+          const visitorName = $('[data-test="visitorName"]').text();
+          expect(visitorName).toContain('');
+        });
+    });
+    it('displays the visit link', () =>
+      request(app)
+        .get('/profile')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+
+          expect($('[data-test="visitsLink"] a').attr('href')).toBe('/visits');
         }));
   });
 });
