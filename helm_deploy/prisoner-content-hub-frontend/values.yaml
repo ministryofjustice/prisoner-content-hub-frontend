@@ -73,6 +73,7 @@ ingress:
     ark-data-center-5: "194.33.193.0/25"
     ark-data-center-6: "194.33.196.0/25"
     ark-data-center-7: "194.33.197.0/25"
+    moj-official: "51.149.250.0/24"
     pfs-egress-dp-primary: "18.130.83.42/32"
     pfs-egress-dp-secondary: "52.56.168.163/32"
     pfs-egress-public-ip-1: "51.132.208.67/32"
