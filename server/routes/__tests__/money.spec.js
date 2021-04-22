@@ -1,8 +1,13 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
-const createAxiosRequestError = require('axios/lib/core/createError');
 const FakeTimers = require('@sinonjs/fake-timers');
 
+const {
+  mockServer,
+  success,
+  failure,
+  fiveOhThree,
+} = require('../../../test/mockServer');
 const { createMoneyRouter } = require('../money');
 const PrisonerInformationService = require('../../services/prisonerInformation');
 const PrisonApiRepository = require('../../repositories/prisonApi');
@@ -13,10 +18,18 @@ const {
   consoleLogError,
 } = require('../../../test/test-helpers');
 
+const api = {
+  transactionHistory: /\/transaction-history/i,
+  pendingTransactions: /\/transaction-history\?account_code=cash&transaction_type=(HOA|WHF)/i,
+  agencies: /\/agencies\/type\/INST\?activeOnly=false/i,
+  balances: /\/balances/i,
+  damageObligations: /\/damage-obligations/i,
+};
+
 describe('Prisoner Money', () => {
   let app;
   const client = { get: jest.fn() };
-
+  const stubApiCalls = mockServer(client);
   const prisonApiRepository = new PrisonApiRepository({ client });
   const prisonerInformationService = new PrisonerInformationService({
     prisonApiRepository,
@@ -134,37 +147,32 @@ describe('Prisoner Money', () => {
     ],
   };
 
-  const fourOhFour = createAxiosRequestError('🤷‍♂️', null, 404);
-  const fiveOhThree = createAxiosRequestError('💥', null, 503);
-
-  const setMockUser = (req, res, next) => {
-    req.user = testUser;
-    next();
-  };
+  const currentUser = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
+    currentUser.mockReturnValue(testUser);
+
     app = setupBasicApp();
+    app.use((req, res, next) => {
+      req.user = currentUser();
+      next();
+    });
+    app.use('/money', moneyRouter);
+    app.use(consoleLogError);
   });
 
   describe('GET /money/transactions/spends', () => {
     beforeEach(() => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve(transactionApiResponse);
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.resolve(agencyApiResponse);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
+      stubApiCalls([
+        [api.transactionHistory, success(transactionApiResponse)],
+        [api.agencies, success(agencyApiResponse)],
+        [api.balances, success(balancesApiResponse)],
+      ]);
     });
 
     it('prompts the user to sign in when they are signed out', async () => {
-      app.use('/money', moneyRouter);
+      currentUser.mockReturnValue(undefined);
 
       await request(app)
         .get('/money/transactions/spends')
@@ -176,10 +184,6 @@ describe('Prisoner Money', () => {
     });
 
     it('displays the transactions when the user is signed in', async () => {
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
-
       await request(app)
         .get('/money/transactions/spends')
         .expect(200)
@@ -203,19 +207,10 @@ describe('Prisoner Money', () => {
     });
 
     it('gracefully handles when there are no transactions to display', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve([]);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.transactionHistory, success([])],
+        [api.balances, success(balancesApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/transactions/spends')
@@ -228,22 +223,16 @@ describe('Prisoner Money', () => {
     });
 
     it('does not show the damage obligations tab if there are none to display', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve([]);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve({
+      stubApiCalls([
+        [api.transactionHistory, success([])],
+        [
+          api.balances,
+          success({
             ...balancesApiResponse,
             damageObligations: 0.0,
-          });
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+          }),
+        ],
+      ]);
 
       await request(app)
         .get('/money/transactions/spends')
@@ -257,10 +246,6 @@ describe('Prisoner Money', () => {
     });
 
     it('shows the damage obligations tab if there are some to display', async () => {
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
-
       await request(app)
         .get('/money/transactions/spends')
         .expect(200)
@@ -272,19 +257,10 @@ describe('Prisoner Money', () => {
         });
     });
     it('notifies the user when unable to fetch transaction data', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.reject(fiveOhThree);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.transactionHistory, failure(fiveOhThree)],
+        [api.balances, success(balancesApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/transactions/spends')
@@ -300,22 +276,11 @@ describe('Prisoner Money', () => {
     });
 
     it('handles failures to the agency API gracefully', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve(transactionApiResponse);
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.reject(fiveOhThree);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.transactionHistory, success(transactionApiResponse)],
+        [api.agencies, failure(fiveOhThree)],
+        [api.balances, success(balancesApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/transactions/spends')
@@ -336,22 +301,11 @@ describe('Prisoner Money', () => {
     });
 
     it('notifies the user when unable to fetch balance data', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve(transactionApiResponse);
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.resolve(agencyApiResponse);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.reject(fiveOhThree);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.transactionHistory, success(transactionApiResponse)],
+        [api.agencies, success(agencyApiResponse)],
+        [api.balances, failure(fiveOhThree)],
+      ]);
 
       await request(app)
         .get('/money/transactions/spends')
@@ -372,30 +326,13 @@ describe('Prisoner Money', () => {
     });
 
     it('allows the user to specify the month for transactions by passing a date', async () => {
-      const mockPrisonerInformationService = {
-        getTransactionsFor: jest.fn(() => ({
-          transactions: transactionApiResponse,
-          balances: balancesApiResponse,
-        })),
-      };
-
-      const mockedMoneyRouter = createMoneyRouter({
-        hubContentService: {},
-        offenderService: {},
-        prisonerInformationService: mockPrisonerInformationService,
-      });
-
-      app.use(setMockUser);
-      app.use('/money', mockedMoneyRouter);
-      app.use(consoleLogError);
+      const spy = jest.spyOn(prisonerInformationService, 'getTransactionsFor');
 
       await request(app)
         .get('/money/transactions/spends?selectedDate=2021-01-01')
         .expect(200)
         .then(() => {
-          expect(
-            mockPrisonerInformationService.getTransactionsFor,
-          ).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             testUser,
             'spends',
             new Date('2021-01-01T00:00:00.000Z'),
@@ -417,30 +354,12 @@ describe('Prisoner Money', () => {
         now: new Date('2021-03-10T12:00:00.000Z'),
       });
 
-      const mockPrisonerInformationService = {
-        getTransactionsFor: jest.fn(() => ({
-          transactions: transactionApiResponse,
-          balances: balancesApiResponse,
-        })),
-      };
-
-      const mockedMoneyRouter = createMoneyRouter({
-        hubContentService: {},
-        offenderService: {},
-        prisonerInformationService: mockPrisonerInformationService,
-      });
-
-      app.use(setMockUser);
-      app.use('/money', mockedMoneyRouter);
-      app.use(consoleLogError);
-
+      const spy = jest.spyOn(prisonerInformationService, 'getTransactionsFor');
       await request(app)
         .get('/money/transactions/spends?selectedDate=potato')
         .expect(200)
         .then(() => {
-          expect(
-            mockPrisonerInformationService.getTransactionsFor,
-          ).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             testUser,
             'spends',
             new Date('2021-03-01T00:00:00.000Z'),
@@ -452,9 +371,7 @@ describe('Prisoner Money', () => {
         .get('/money/transactions/spends?selectedDate=')
         .expect(200)
         .then(() => {
-          expect(
-            mockPrisonerInformationService.getTransactionsFor,
-          ).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             testUser,
             'spends',
             new Date('2021-03-01T00:00:00.000Z'),
@@ -466,9 +383,7 @@ describe('Prisoner Money', () => {
         .get('/money/transactions/spends?selectedDate=2021-02-31')
         .expect(200)
         .then(() => {
-          expect(
-            mockPrisonerInformationService.getTransactionsFor,
-          ).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             testUser,
             'spends',
             new Date('2021-03-01T00:00:00.000Z'),
@@ -482,30 +397,16 @@ describe('Prisoner Money', () => {
 
   describe('GET /money/transactions/private', () => {
     beforeEach(() => {
-      client.get.mockImplementation(requestUrl => {
-        if (
-          requestUrl.match(
-            /\/transaction-history\?account_code=cash&transaction_type=(HOA|WHF)/i,
-          )
-        ) {
-          return Promise.resolve(pendingTransactionsApiResponse);
-        }
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve(transactionApiResponse);
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.resolve(agencyApiResponse);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
+      stubApiCalls([
+        [api.pendingTransactions, success(pendingTransactionsApiResponse)],
+        [api.transactionHistory, success(transactionApiResponse)],
+        [api.agencies, success(agencyApiResponse)],
+        [api.balances, success(balancesApiResponse)],
+      ]);
     });
 
     it('prompts the user to sign in when they are signed out', async () => {
-      app.use('/money', moneyRouter);
-
+      currentUser.mockReturnValue(undefined);
       await request(app)
         .get('/money/transactions/private')
         .expect(200)
@@ -516,10 +417,6 @@ describe('Prisoner Money', () => {
     });
 
     it('displays the transactions when the user is signed in', async () => {
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
-
       await request(app)
         .get('/money/transactions/private')
         .expect(200)
@@ -543,26 +440,11 @@ describe('Prisoner Money', () => {
     });
 
     it('gracefully handles when there are no transactions to display', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (
-          requestUrl.match(
-            /\/transaction-history\?account_code=cash&transaction_type=(HOA|WHF)/i,
-          )
-        ) {
-          return Promise.resolve(pendingTransactionsApiResponse);
-        }
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve([]);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.pendingTransactions, success(pendingTransactionsApiResponse)],
+        [api.transactionHistory, success([])],
+        [api.balances, success(balancesApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/transactions/private')
@@ -575,10 +457,6 @@ describe('Prisoner Money', () => {
     });
 
     it('shows pending transactions', async () => {
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
-
       await request(app)
         .get('/money/transactions/private')
         .expect(200)
@@ -600,29 +478,11 @@ describe('Prisoner Money', () => {
     });
 
     it('notifies the user when unable to fetch pending transactions data', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (
-          requestUrl.match(
-            /\/transaction-history\?account_code=cash&transaction_type=(HOA|WHF)/i,
-          )
-        ) {
-          return Promise.resolve(fiveOhThree);
-        }
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve(transactionApiResponse);
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.resolve(agencyApiResponse);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.pendingTransactions, failure(fiveOhThree)],
+        [api.transactionHistory, success(transactionApiResponse)],
+        [api.balances, success(balancesApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/transactions/private')
@@ -647,29 +507,17 @@ describe('Prisoner Money', () => {
     });
 
     it('does not show the damage obligations tab if there are none to display', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (
-          requestUrl.match(
-            /\/transaction-history\?account_code=cash&transaction_type=(HOA|WHF)/i,
-          )
-        ) {
-          return Promise.resolve(pendingTransactionsApiResponse);
-        }
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve([]);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve({
+      stubApiCalls([
+        [api.pendingTransactions, success(pendingTransactionsApiResponse)],
+        [api.transactionHistory, success([])],
+        [
+          api.balances,
+          success({
             ...balancesApiResponse,
             damageObligations: 0.0,
-          });
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+          }),
+        ],
+      ]);
 
       await request(app)
         .get('/money/transactions/private')
@@ -683,10 +531,6 @@ describe('Prisoner Money', () => {
     });
 
     it('shows the damage obligations tab if there are some to display', async () => {
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
-
       await request(app)
         .get('/money/transactions')
         .expect(200)
@@ -698,26 +542,11 @@ describe('Prisoner Money', () => {
         });
     });
     it('notifies the user when unable to fetch transaction data', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (
-          requestUrl.match(
-            /\/transaction-history\?account_code=cash&transaction_type=(HOA|WHF)/i,
-          )
-        ) {
-          return Promise.resolve(pendingTransactionsApiResponse);
-        }
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.reject(fiveOhThree);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.pendingTransactions, success(pendingTransactionsApiResponse)],
+        [api.transactionHistory, failure(fiveOhThree)],
+        [api.balances, success(balancesApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/transactions/private')
@@ -733,29 +562,12 @@ describe('Prisoner Money', () => {
     });
 
     it('handles failures to the agency API gracefully', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (
-          requestUrl.match(
-            /\/transaction-history\?account_code=cash&transaction_type=(HOA|WHF)/i,
-          )
-        ) {
-          return Promise.resolve(pendingTransactionsApiResponse);
-        }
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve(transactionApiResponse);
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.reject(fiveOhThree);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.pendingTransactions, success(pendingTransactionsApiResponse)],
+        [api.transactionHistory, success(transactionApiResponse)],
+        [api.balances, success(balancesApiResponse)],
+        [api.agencies, failure(fiveOhThree)],
+      ]);
 
       await request(app)
         .get('/money/transactions/private')
@@ -773,29 +585,12 @@ describe('Prisoner Money', () => {
     });
 
     it('notifies the user when unable to fetch balance data', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (
-          requestUrl.match(
-            /\/transaction-history\?account_code=cash&transaction_type=(HOA|WHF)/i,
-          )
-        ) {
-          return Promise.resolve(pendingTransactionsApiResponse);
-        }
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve(transactionApiResponse);
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.resolve(agencyApiResponse);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.reject(fiveOhThree);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.pendingTransactions, success(pendingTransactionsApiResponse)],
+        [api.transactionHistory, success(transactionApiResponse)],
+        [api.balances, failure(fiveOhThree)],
+        [api.agencies, success(agencyApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/transactions/private')
@@ -811,30 +606,16 @@ describe('Prisoner Money', () => {
     });
 
     it('allows the user to specify the month for transactions by passing a date', async () => {
-      const mockPrisonerInformationService = {
-        getPrivateTransactionsFor: jest.fn(() => ({
-          transactions: transactionApiResponse,
-          balances: balancesApiResponse,
-        })),
-      };
-
-      const mockedMoneyRouter = createMoneyRouter({
-        hubContentService: {},
-        offenderService: {},
-        prisonerInformationService: mockPrisonerInformationService,
-      });
-
-      app.use(setMockUser);
-      app.use('/money', mockedMoneyRouter);
-      app.use(consoleLogError);
+      const spy = jest.spyOn(
+        prisonerInformationService,
+        'getPrivateTransactionsFor',
+      );
 
       await request(app)
         .get('/money/transactions/private?selectedDate=2021-01-01')
         .expect(200)
         .then(() => {
-          expect(
-            mockPrisonerInformationService.getPrivateTransactionsFor,
-          ).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             testUser,
             new Date('2021-01-01T00:00:00.000Z'),
             new Date('2021-01-31T23:59:59.999Z'),
@@ -855,30 +636,15 @@ describe('Prisoner Money', () => {
         now: new Date('2021-03-10T12:00:00.000Z'),
       });
 
-      const mockPrisonerInformationService = {
-        getPrivateTransactionsFor: jest.fn(() => ({
-          transactions: transactionApiResponse,
-          balances: balancesApiResponse,
-        })),
-      };
-
-      const mockedMoneyRouter = createMoneyRouter({
-        hubContentService: {},
-        offenderService: {},
-        prisonerInformationService: mockPrisonerInformationService,
-      });
-
-      app.use(setMockUser);
-      app.use('/money', mockedMoneyRouter);
-      app.use(consoleLogError);
-
+      const spy = jest.spyOn(
+        prisonerInformationService,
+        'getPrivateTransactionsFor',
+      );
       await request(app)
         .get('/money/transactions/private?selectedDate=potato')
         .expect(200)
         .then(() => {
-          expect(
-            mockPrisonerInformationService.getPrivateTransactionsFor,
-          ).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             testUser,
             new Date('2021-03-01T00:00:00.000Z'),
             new Date('2021-03-10T12:00:00.000Z'),
@@ -889,9 +655,7 @@ describe('Prisoner Money', () => {
         .get('/money/transactions/private?selectedDate=')
         .expect(200)
         .then(() => {
-          expect(
-            mockPrisonerInformationService.getPrivateTransactionsFor,
-          ).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             testUser,
             new Date('2021-03-01T00:00:00.000Z'),
             new Date('2021-03-10T12:00:00.000Z'),
@@ -902,9 +666,7 @@ describe('Prisoner Money', () => {
         .get('/money/transactions/private?selectedDate=2021-02-31')
         .expect(200)
         .then(() => {
-          expect(
-            mockPrisonerInformationService.getPrivateTransactionsFor,
-          ).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             testUser,
             new Date('2021-03-01T00:00:00.000Z'),
             new Date('2021-03-10T12:00:00.000Z'),
@@ -917,23 +679,15 @@ describe('Prisoner Money', () => {
 
   describe('GET /money/transactions/savings', () => {
     beforeEach(() => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve(transactionApiResponse);
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.resolve(agencyApiResponse);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
+      stubApiCalls([
+        [api.transactionHistory, success(transactionApiResponse)],
+        [api.balances, success(balancesApiResponse)],
+        [api.agencies, success(agencyApiResponse)],
+      ]);
     });
 
     it('prompts the user to sign in when they are signed out', async () => {
-      app.use('/money', moneyRouter);
-
+      currentUser.mockReturnValue(undefined);
       await request(app)
         .get('/money/transactions/savings')
         .expect(200)
@@ -944,10 +698,6 @@ describe('Prisoner Money', () => {
     });
 
     it('displays the transactions when the user is signed in', async () => {
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
-
       await request(app)
         .get('/money/transactions/savings')
         .expect(200)
@@ -971,19 +721,10 @@ describe('Prisoner Money', () => {
     });
 
     it('gracefully handles when there are no transactions to display', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve([]);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.transactionHistory, success([])],
+        [api.balances, success(balancesApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/transactions/savings')
@@ -996,22 +737,16 @@ describe('Prisoner Money', () => {
     });
 
     it('does not show the damage obligations tab if there are none to display', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve([]);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve({
+      stubApiCalls([
+        [api.transactionHistory, success([])],
+        [
+          api.balances,
+          success({
             ...balancesApiResponse,
             damageObligations: 0.0,
-          });
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+          }),
+        ],
+      ]);
 
       await request(app)
         .get('/money/transactions/savings')
@@ -1025,10 +760,6 @@ describe('Prisoner Money', () => {
     });
 
     it('shows the damage obligations tab if there are some to display', async () => {
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
-
       await request(app)
         .get('/money/transactions/savings')
         .expect(200)
@@ -1039,20 +770,12 @@ describe('Prisoner Money', () => {
           expect(tabs).toContain('Damage obligations');
         });
     });
-    it('notifies the user when unable to fetch transaction data', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.reject(fiveOhThree);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
 
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+    it('notifies the user when unable to fetch transaction data', async () => {
+      stubApiCalls([
+        [api.transactionHistory, failure(fiveOhThree)],
+        [api.balances, success(balancesApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/transactions/savings')
@@ -1068,22 +791,11 @@ describe('Prisoner Money', () => {
     });
 
     it('handles failures to the agency API gracefully', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve(transactionApiResponse);
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.reject(fiveOhThree);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.resolve(balancesApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.transactionHistory, success(transactionApiResponse)],
+        [api.balances, success(balancesApiResponse)],
+        [api.agencies, failure(fiveOhThree)],
+      ]);
 
       await request(app)
         .get('/money/transactions/savings')
@@ -1101,22 +813,11 @@ describe('Prisoner Money', () => {
     });
 
     it('notifies the user when unable to fetch balance data', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/transaction-history/i)) {
-          return Promise.resolve(transactionApiResponse);
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.resolve(agencyApiResponse);
-        }
-        if (requestUrl.match(/\/balances/i)) {
-          return Promise.reject(fiveOhThree);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.transactionHistory, success(transactionApiResponse)],
+        [api.balances, failure(fiveOhThree)],
+        [api.agencies, success(agencyApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/transactions/savings')
@@ -1134,30 +835,13 @@ describe('Prisoner Money', () => {
     });
 
     it('allows the user to specify the month for transactions by passing a date', async () => {
-      const mockPrisonerInformationService = {
-        getTransactionsFor: jest.fn(() => ({
-          transactions: transactionApiResponse,
-          balances: balancesApiResponse,
-        })),
-      };
-
-      const mockedMoneyRouter = createMoneyRouter({
-        hubContentService: {},
-        offenderService: {},
-        prisonerInformationService: mockPrisonerInformationService,
-      });
-
-      app.use(setMockUser);
-      app.use('/money', mockedMoneyRouter);
-      app.use(consoleLogError);
+      const spy = jest.spyOn(prisonerInformationService, 'getTransactionsFor');
 
       await request(app)
         .get('/money/transactions/savings?selectedDate=2021-01-01')
         .expect(200)
         .then(() => {
-          expect(
-            mockPrisonerInformationService.getTransactionsFor,
-          ).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             testUser,
             'savings',
             new Date('2021-01-01T00:00:00.000Z'),
@@ -1179,30 +863,12 @@ describe('Prisoner Money', () => {
         now: new Date('2021-03-10T12:00:00.000Z'),
       });
 
-      const mockPrisonerInformationService = {
-        getTransactionsFor: jest.fn(() => ({
-          transactions: transactionApiResponse,
-          balances: balancesApiResponse,
-        })),
-      };
-
-      const mockedMoneyRouter = createMoneyRouter({
-        hubContentService: {},
-        offenderService: {},
-        prisonerInformationService: mockPrisonerInformationService,
-      });
-
-      app.use(setMockUser);
-      app.use('/money', mockedMoneyRouter);
-      app.use(consoleLogError);
-
+      const spy = jest.spyOn(prisonerInformationService, 'getTransactionsFor');
       await request(app)
         .get('/money/transactions/savings?selectedDate=potato')
         .expect(200)
         .then(() => {
-          expect(
-            mockPrisonerInformationService.getTransactionsFor,
-          ).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             testUser,
             'savings',
             new Date('2021-03-01T00:00:00.000Z'),
@@ -1214,9 +880,7 @@ describe('Prisoner Money', () => {
         .get('/money/transactions/savings?selectedDate=')
         .expect(200)
         .then(() => {
-          expect(
-            mockPrisonerInformationService.getTransactionsFor,
-          ).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             testUser,
             'savings',
             new Date('2021-03-01T00:00:00.000Z'),
@@ -1228,9 +892,7 @@ describe('Prisoner Money', () => {
         .get('/money/transactions/savings?selectedDate=2021-02-31')
         .expect(200)
         .then(() => {
-          expect(
-            mockPrisonerInformationService.getTransactionsFor,
-          ).toHaveBeenCalledWith(
+          expect(spy).toHaveBeenCalledWith(
             testUser,
             'savings',
             new Date('2021-03-01T00:00:00.000Z'),
@@ -1244,8 +906,7 @@ describe('Prisoner Money', () => {
 
   describe('GET /money/damage-obligations', () => {
     it('prompts the user to sign in when they are signed out', async () => {
-      app.use('/money', moneyRouter);
-
+      currentUser.mockReturnValue(undefined);
       await request(app)
         .get('/money/damage-obligations')
         .expect(200)
@@ -1256,19 +917,10 @@ describe('Prisoner Money', () => {
     });
 
     it('displays damage obligations when the user is signed in', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/damage-obligations/i)) {
-          return Promise.resolve(damageObligationsApiResponse);
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.resolve(agencyApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.damageObligations, success(damageObligationsApiResponse)],
+        [api.agencies, success(agencyApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/damage-obligations')
@@ -1295,19 +947,10 @@ describe('Prisoner Money', () => {
         });
     });
     it('gracefully handles when there are no damage obligations to display', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/damage-obligations/i)) {
-          return Promise.resolve({ damageObligations: [] });
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.resolve(agencyApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.damageObligations, success({ damageObligations: [] })],
+        [api.agencies, success(agencyApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/damage-obligations')
@@ -1323,19 +966,10 @@ describe('Prisoner Money', () => {
         });
     });
     it('notifies the user when unable to fetch damage obligations', async () => {
-      client.get.mockImplementation(requestUrl => {
-        if (requestUrl.match(/\/damage-obligations/i)) {
-          return Promise.reject(fiveOhThree);
-        }
-        if (requestUrl.match(/\/agencies\/type\/INST\?activeOnly=false/i)) {
-          return Promise.resolve(agencyApiResponse);
-        }
-        return Promise.reject(fourOhFour);
-      });
-
-      app.use(setMockUser);
-      app.use('/money', moneyRouter);
-      app.use(consoleLogError);
+      stubApiCalls([
+        [api.damageObligations, failure(fiveOhThree)],
+        [api.agencies, success(agencyApiResponse)],
+      ]);
 
       await request(app)
         .get('/money/damage-obligations')
