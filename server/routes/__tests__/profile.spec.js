@@ -273,7 +273,7 @@ describe('GET /profile', () => {
   });
 
   describe('Retrieve visits information', () => {
-    it('notifies the user when retrieving incentives information fails', () => {
+    it('notifies the user when retrieving visits fails', () => {
       offenderService.getVisitsFor.mockResolvedValue({
         error: 'We are not able to show your visits information at this time',
       });
@@ -292,7 +292,7 @@ describe('GET /profile', () => {
       offenderService.getVisitsFor.mockResolvedValue({
         nextVisit: 'Tuesday 20 April 2021',
         visitType: 'Social',
-        visitorName: '',
+        visitorName: 'Bob Visitor',
       });
 
       return request(app)
@@ -310,7 +310,7 @@ describe('GET /profile', () => {
           expect(visitType).toContain('Social');
 
           const visitorName = $('[data-test="visitorName"]').text();
-          expect(visitorName).toContain('');
+          expect(visitorName).toContain('Bob Visitor');
         });
     });
     it('displays the visit link', () =>
@@ -328,7 +328,8 @@ describe('GET /profile', () => {
   describe('Retrieve money information', () => {
     it('notifies the user when retrieving money information fails', () => {
       offenderService.getBalancesFor.mockResolvedValue({
-        error: 'We are not able to show your money and transactions at this time',
+        error:
+          'We are not able to show your money and transactions at this time',
       });
 
       return request(app)
@@ -344,7 +345,7 @@ describe('GET /profile', () => {
     it('displays the money information when the user is signed in', () => {
       offenderService.getBalancesFor.mockResolvedValue({
         spends: '£751.11',
-        cash: '10.10',
+        private: '10.10',
         savings: '£10.10',
       });
 
@@ -356,13 +357,13 @@ describe('GET /profile', () => {
           const $ = cheerio.load(response.text);
           expect($('[data-test="money-error"]').length).toBe(0);
 
-          const spends = $('[data-test="spends"]').text();
+          const spends = $('[data-test="money-spends"]').text();
           expect(spends).toContain('£751.11');
 
-          const cash = $('[data-test="private"]').text();
+          const cash = $('[data-test="money-private"]').text();
           expect(cash).toContain('10.10');
 
-          const savings = $('[data-test="savings"]').text();
+          const savings = $('[data-test="money-savings"]').text();
           expect(savings).toContain('£10.10');
         });
     });

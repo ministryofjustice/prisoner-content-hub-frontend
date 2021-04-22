@@ -47,7 +47,7 @@
 {% block search %}{% endblock %}
 
 {% macro eventsSummary(events) %}
-   {% for event in events %}
+    {% for event in events %}
       <div class="govuk-!-padding-bottom-4">
         <strong>{{event.description}}</strong><br/>
         {{event.startTime | lower }} to {{event.endTime | lower }}<br/>
@@ -73,7 +73,7 @@
       <div class="govuk-width-container">
         <h2 class="govuk-heading-m">Today's timetable</h2>
         {% if events.error %}
-          <p class="govuk-!-font-size-24" data-test="timetable-error">We are not able to show your timetable at this time, <a href="{{ params.returnUrl }}" class="govuk-link">try again</a></p>
+          <p class="govuk-!-font-size-24" data-test="timetable-error">We are not able to show your timetable at this time, <a href="{{ params.returnUrl }}" class="govuk-link">Try again</a></p>
         {% else %}
           <ul class="govuk-grid-row card-group">
               <li class="govuk-grid-column-one-quarter card-group__item">
@@ -103,7 +103,7 @@
     <div class="govuk-width-container">
       <h2 class="govuk-heading-m">Incentive level</h2>
       {% if incentivesSummary.error %}
-        <p class="govuk-!-font-size-24" data-test="incentives-error">We are not able to show your incentive level at this time. <a href="{{ params.returnUrl }}" class="govuk-link">try again</a> or <a href="{{ incentiveSummary.link }}" class="govuk-link">find out more about incentive levels</a>.</p>
+        <p class="govuk-!-font-size-24" data-test="incentives-error">We are not able to show your incentive level at this time. <a href="{{ params.returnUrl }}" class="govuk-link">Try again</a> or <a href="{{ incentivesSummary.link }}" class="govuk-link">find out more about incentive levels</a>.</p>
       {% else %}
         <ul class="govuk-grid-row card-group">
             <li class="govuk-grid-column-one-quarter card-group__item">
@@ -125,19 +125,26 @@
   </div>
 
   <div>
-    <div class="govuk-width-container">
-      <h2 class="govuk-heading-m card-title">Money<a href='#' class="govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">open all balances</a></h2>
+    <div class="govuk-width-container sensitive-card-container">
+      <h2 class="govuk-heading-m card-title">Money 
+        {% if not moneySummary.error %}
+          <a href='#' class="sensitive-card-control govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state" data-is-closed="true">
+            <span class="open">Open all balances</span>
+            <span class="closed hidden">Close all balances</span>
+          </a>
+        {% endif %}
+      </h2>
       {% if moneySummary.error %}
-        <p class="govuk-!-font-size-24" data-test="money-error">We are not able to show your balances or transactions at this time. <a href="{{ params.returnUrl }}" class="govuk-link">try again</a> or <a href="{{ moneySummary.link }}" class="govuk-link">find out more about money and debt</a>.</p>
+        <p class="govuk-!-font-size-24" data-test="money-error">We are not able to show your balances or transactions at this time. <a href="{{ params.returnUrl }}" class="govuk-link">Try again</a> or <a href="{{ moneySummary.link }}" class="govuk-link">find out more about money and debt</a>.</p>
       {% else %}
-        <ul class="govuk-grid-row card-group">
+        <ul class="govuk-grid-row card-group sensitive-cards">
             <li class="govuk-grid-column-one-quarter card-group__item">
               {% call cardSensitiveData({ id: 'moneySpends', heading: 'Spends' }) -%}
                 <p>Spends account current balance</p>
                 <strong class="hidden sensitive" data-test="money-spends">{{ moneySummary.spends }}</strong>
               {%- endcall %}
             </li>
-             <li class="govuk-grid-column-one-quarter card-group__item">
+            <li class="govuk-grid-column-one-quarter card-group__item">
               {% call cardSensitiveData({ id: 'moneyPrivate', heading: 'Private' }) -%}
                 <p>Savings account current balance</p>
                 <strong class="hidden sensitive" data-test="money-private">{{ moneySummary.private }}</strong>
@@ -161,7 +168,7 @@
     <div class="govuk-width-container">
       <h2 class="govuk-heading-m">Visits</h2>
       {% if visitsSummary.error %}
-        <p class="govuk-!-font-size-24" data-test="visits-error">We are not able to show your visit information at this time. <a href="{{ params.returnUrl }}" class="govuk-link">try again</a> or <a href="{{ visitsSummary.link }}" class="govuk-link">find out more about visits</a>.</p>
+        <p class="govuk-!-font-size-24" data-test="visits-error">We are not able to show your visit information at this time. <a href="{{ params.returnUrl }}" class="govuk-link">Try again</a> or <a href="{{ visitsSummary.link }}" class="govuk-link">find out more about visits</a>.</p>
       {% else %}
         <ul class="govuk-grid-row card-group">
             <li class="govuk-grid-column-one-quarter card-group__item">
@@ -175,7 +182,7 @@
               {%- endcall %}
             </li>
             <li class="govuk-grid-column-one-quarter card-group__item">
-              {% call cardSensitiveData({ id: 'leadVisitor', heading: 'Lead visitor' }) -%}
+              {% call cardSensitiveData({ id: 'visitorName', heading: 'Lead visitor' }) -%}
                 <p>Name of the lead visitor</p>
                 <strong class="hidden sensitive" data-test="visitor-name">{{ visitsSummary.visitorName }}</strong>
               {%- endcall %}
