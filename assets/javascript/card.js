@@ -1,9 +1,10 @@
 const SENSITIVE_CARD = '.sensitive-card';
 const SENSITIVE_CARD_CONTAINER = '.sensitive-card-container';
+const HIDDEN = 'hidden';
 
 const updateClasses = f => items => items.forEach(item => f(item.classList));
-const hideAll = updateClasses(classes => classes.add('hidden'));
-const showAll = updateClasses(classes => classes.remove('hidden'));
+const hideAll = updateClasses(classes => classes.add(HIDDEN));
+const showAll = updateClasses(classes => classes.remove(HIDDEN));
 
 const wrapContainer = container => {
   const control = container.querySelector('.sensitive-card-control');
