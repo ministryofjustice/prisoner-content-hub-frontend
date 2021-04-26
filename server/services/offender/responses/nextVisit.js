@@ -13,13 +13,13 @@ class NextVisit {
     this.visitType = options.visitType;
   }
 
-  hasStartTime() {
+  hasNextVisit() {
     return this.startTime != null;
   }
 
   format() {
     return {
-      hasStartTime: this.hasStartTime(),
+      hasNextVisit: this.hasNextVisit(),
       nextVisit: formatDateOrDefault(DEFAULT, PRETTY_DATE, this.startTime),
       nextVisitDay: formatDateOrDefault(DEFAULT, PRETTY_DAY, this.startTime),
       nextVisitDate: formatDateOrDefault(

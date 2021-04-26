@@ -27,6 +27,7 @@ const createProfileRouter = ({ offenderService }) => {
       nextVisit,
       visitType,
       visitorName,
+      hasNextVisit,
       error: visitsError,
     } = visitsSummary;
     const {
@@ -47,6 +48,7 @@ const createProfileRouter = ({ offenderService }) => {
       },
       visitsSummary: {
         error: visitsError,
+        hasNextVisit,
         nextVisit,
         visitType,
         visitorName,

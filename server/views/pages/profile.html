@@ -173,22 +173,24 @@
         <ul class="govuk-grid-row card-group">
             <li class="govuk-grid-column-one-quarter card-group__item">
               {% call card({ id: 'nextVisit', heading: 'Your next visit'}) -%}
-                {{ visitsSummary.nextVisit }}
+                {{ visitsSummary.nextVisit if visitsSummary.hasNextVisit else 'No upcoming visit' }}
               {%- endcall %}
             </li>
+            {% if visitsSummary.hasNextVisit %}
+              <li class="govuk-grid-column-one-quarter card-group__item">
+                {% call card({ id: 'visitType', heading: 'Type of visit'}) -%}
+                  {{ visitsSummary.visitType }}
+                {%- endcall %}
+              </li>
+              <li class="govuk-grid-column-one-quarter card-group__item">
+                {% call cardSensitiveData({ id: 'visitorName', heading: 'Lead visitor' }) -%}
+                  <p>Name of the lead visitor</p>
+                  <strong class="hidden sensitive" data-test="visitor-name">{{ visitsSummary.visitorName }}</strong>
+                {%- endcall %}
+              </li>
+            {%- endif %}
             <li class="govuk-grid-column-one-quarter card-group__item">
-              {% call card({ id: 'visitType', heading: 'Type of visit'}) -%}
-                {{ visitsSummary.visitType }}
-              {%- endcall %}
-            </li>
-            <li class="govuk-grid-column-one-quarter card-group__item">
-              {% call cardSensitiveData({ id: 'visitorName', heading: 'Lead visitor' }) -%}
-                <p>Name of the lead visitor</p>
-                <strong class="hidden sensitive" data-test="visitor-name">{{ visitsSummary.visitorName }}</strong>
-              {%- endcall %}
-            </li>
-            <li class="govuk-grid-column-one-quarter card-group__item">
-            {{imageCard({ id: 'visitsLink', src: "/public/images/image_visits.jpg", alt: "visits picture", link: visitsSummary.link, description: "Read more about visits" }) }}
+              {{imageCard({ id: 'visitsLink', src: "/public/images/image_visits.jpg", alt: "visits picture", link: visitsSummary.link, description: "Read more about visits" }) }}
             </li>
         </ul>
       {% endif %}

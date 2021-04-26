@@ -16,7 +16,7 @@ describe('NextVisit', () => {
 
     expect(formatted).toStrictEqual(
       {
-        hasStartTime: false,
+        hasNextVisit: false,
         nextVisit: DEFAULT,
         nextVisitDate: DEFAULT,
         nextVisitDay: DEFAULT,
@@ -37,7 +37,7 @@ describe('NextVisit', () => {
 
     expect(formatted).toStrictEqual(
       {
-        hasStartTime: true,
+        hasNextVisit: true,
         nextVisit: 'Saturday 7 December 2019',
         nextVisitDate: '7 December',
         nextVisitDay: 'Saturday',
@@ -59,7 +59,7 @@ describe('NextVisit', () => {
     const formatted = NextVisit.from(response).format();
 
     expect(formatted).toStrictEqual({
-      hasStartTime: true,
+      hasNextVisit: true,
       nextVisit: 'Saturday 7 December 2019',
       nextVisitDate: '7 December',
       nextVisitDay: 'Saturday',
