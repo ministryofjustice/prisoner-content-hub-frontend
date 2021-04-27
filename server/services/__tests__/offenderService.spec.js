@@ -136,7 +136,7 @@ describe('Offender Service', () => {
     });
   });
 
-  describe('getEventsListForToday', () => {});
+  describe('getCurrentEvents', () => {});
 
   describe('getEventsFor', () => {
     const create = jest.fn();

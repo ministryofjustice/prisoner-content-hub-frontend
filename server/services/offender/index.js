@@ -160,7 +160,7 @@ const createOffenderService = (
     }
 
     return {
-      events: await repository.getEventsListForToday(user.bookingId),
+      events: await repository.getCurrentEvents(user.bookingId),
       isTomorrow: false,
     };
   }
@@ -169,10 +169,10 @@ const createOffenderService = (
    * Note this actually gets tomorrow's events if it's after 7pm as per this requirement:
    * https://trello.com/c/m5yt4sgm
    */
-  async function getEventsListForToday(user, time = new Date()) {
+  async function getCurrentEvents(user, time = new Date()) {
     try {
       logger.info(
-        `OffenderService (getEventsListForToday) - User: ${user.prisonerId}`,
+        `OffenderService (getCurrentEvents) - User: ${user.prisonerId}`,
       );
 
       if (!user.bookingId) {
@@ -182,16 +182,16 @@ const createOffenderService = (
       const { events, isTomorrow } = await getActualHomeEvents(user, time);
 
       return !Array.isArray(events)
-        ? { todaysEvents: [], isTomorrow: false }
+        ? { events: [], isTomorrow: false }
         : {
-            todaysEvents: events.map(eventResponse =>
+            events: events.map(eventResponse =>
               TimetableEvent.from(eventResponse).format(),
             ),
             isTomorrow,
           };
     } catch (e) {
       logger.error(
-        `OffenderService (getEventsListForToday) - Failed: ${e.message} - User: ${user.prisonerId}`,
+        `OffenderService (getCurrentEvents) - Failed: ${e.message} - User: ${user.prisonerId}`,
       );
       logger.debug(e.stack);
       return {
@@ -260,7 +260,7 @@ const createOffenderService = (
     getKeyWorkerFor,
     getVisitsFor,
     getImportantDatesFor,
-    getEventsListForToday,
+    getCurrentEvents,
     getEventsFor,
     getEventsForToday,
     getEmptyTimetable,
