@@ -293,6 +293,7 @@ describe('GET /profile', () => {
         nextVisit: 'Tuesday 20 April 2021',
         visitType: 'Social',
         visitorName: 'Bob Visitor',
+        hasNextVisit: true,
       });
 
       return request(app)
@@ -313,6 +314,31 @@ describe('GET /profile', () => {
           expect(visitorName).toContain('Bob Visitor');
         });
     });
+
+    it('displays the no visits information when the user is signed in', () => {
+      offenderService.getVisitsFor.mockResolvedValue({
+        nextVisit: 'Tuesday 20 April 2021',
+        visitType: 'Social',
+        visitorName: 'Bob Visitor',
+        hasNextVisit: false,
+      });
+
+      return request(app)
+        .get('/profile')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="visits-error"]').length).toBe(0);
+
+          const nextVisit = $('[data-test="nextVisit"]').text();
+          expect(nextVisit).toContain('No upcoming visit');
+
+          expect($('[data-test="visitType"]').length).toBe(0);
+          expect($('[data-test="visitorName"]').length).toBe(0);
+        });
+    });
+
     it('displays the visit link', () =>
       request(app)
         .get('/profile')
