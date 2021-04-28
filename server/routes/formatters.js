@@ -217,34 +217,33 @@ function createPendingTransactionsResponseFrom(pending) {
         'Payment description',
         'Prison',
       ].map(toGovUkTableCells),
-      rows: holdingNotCleared
-        .map(
-          ({
-            entryDate,
-            postingType,
-            penceAmount,
-            currency,
-            entryDescription: paymentDescription,
-            prison,
-          }) => ({
-            paymentDate: formatDateOrDefault('', 'd MMMM yyyy', entryDate),
-            moneyIn:
-              postingType === 'CR'
-                ? formatBalanceOrDefault(null, penceAmount / 100, currency)
-                : '',
-            moneyOut:
-              postingType === 'CR'
-                ? ''
-                : formatBalanceOrDefault(null, 0 - penceAmount / 100, currency),
+      rows: holdingNotCleared.map(
+        ({
+          entryDate,
+          postingType,
+          penceAmount,
+          currency,
+          entryDescription: paymentDescription,
+          prison,
+        }) => {
+          const paymentDate = formatDateOrDefault('', 'd MMMM yyyy', entryDate);
+          const moneyIn =
+            postingType === 'CR'
+              ? formatBalanceOrDefault(null, penceAmount / 100, currency)
+              : '';
+          const moneyOut =
+            postingType === 'CR'
+              ? ''
+              : formatBalanceOrDefault(null, 0 - penceAmount / 100, currency);
+          return [
+            paymentDate,
+            moneyIn,
+            moneyOut,
             paymentDescription,
             prison,
-          }),
-        )
-        .map(({ paymentDate, moneyIn, moneyOut, paymentDescription, prison }) =>
-          [paymentDate, moneyIn, moneyOut, paymentDescription, prison].map(
-            toGovUkTableCells,
-          ),
-        ),
+          ].map(toGovUkTableCells);
+        },
+      ),
     };
   } catch (e) {
     Sentry.captureException(e);
