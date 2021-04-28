@@ -1,5 +1,6 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
+const { User } = require('../../auth/user');
 
 const { createIndexRouter } = require('../index');
 const {
@@ -10,6 +11,7 @@ const {
 describe('GET /', () => {
   let featuredItem;
   let hubFeaturedContentService;
+  let offenderService;
   let router;
   let app;
 
@@ -30,6 +32,10 @@ describe('GET /', () => {
 
     const featuredItemWithId = setIdWith(featuredItem);
 
+    offenderService = {
+      getCurrentEvents: jest.fn().mockResolvedValue({}),
+    };
+
     hubFeaturedContentService = {
       hubFeaturedContent: jest.fn().mockReturnValue({
         featured: [
@@ -44,6 +50,17 @@ describe('GET /', () => {
   });
 
   describe('Homepage', () => {
+    const establishmentPersonalisationToggle = jest.fn();
+
+    const testUser = new User({
+      prisonerId: 'A1234BC',
+      firstName: 'Test',
+      surname: 'User',
+      bookingId: 1234567,
+    });
+
+    const userSupplier = jest.fn();
+
     beforeEach(() => {
       const config = {
         establishments: {
@@ -65,6 +82,7 @@ describe('GET /', () => {
       };
       router = createIndexRouter({
         hubFeaturedContentService,
+        offenderService,
         config,
       });
 
@@ -72,13 +90,43 @@ describe('GET /', () => {
       app.use((req, res, next) => {
         req.session = {
           establishmentId: 1,
-          establishmentPersonalisationEnabled: true,
+          establishmentPersonalisationEnabled: establishmentPersonalisationToggle(),
         };
+        res.locals = {
+          features: { personalInformation: true },
+        };
+        req.user = userSupplier();
         next();
       });
       app.use(router);
       app.use(consoleLogError);
+      userSupplier.mockReturnValue(testUser);
+      establishmentPersonalisationToggle.mockReturnValue(true);
     });
+
+    it('prompts the user to sign in when they are signed out', () => {
+      userSupplier.mockReturnValue(undefined);
+      return request(app)
+        .get('/')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="signin-prompt"]').length).toBe(1);
+          expect($('[data-test="user-name"]').length).toBe(0);
+        });
+    });
+
+    it('does not prompt the user to sign in when they are signed in', () =>
+      request(app)
+        .get('/')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="signin-prompt"]').length).toBe(0);
+          expect($('[data-test="user-name"]').length).toBe(1);
+        }));
 
     it('renders featured content', () =>
       request(app)
@@ -143,5 +191,136 @@ describe('GET /', () => {
             'Correct number of menu items',
           );
         }));
+
+    it('renders the home page events for today', () => {
+      const currentEvents = {
+        events: [
+          {
+            description: 'SUSPENDED ACTIVITY',
+            startTime: '8:10AM',
+            endTime: '11:25AM',
+            location: 'Main exercise yard',
+            timeString: '8:10AM to 11:25AM',
+            eventType: 'PRISON_ACT',
+            finished: false,
+            status: 'SCH',
+            paid: false,
+          },
+          {
+            description: 'EDU IT AM',
+            startTime: '8:10AM',
+            endTime: '11:25AM',
+            location: 'New education',
+            timeString: '8:10AM to 11:25AM',
+            eventType: 'PRISON_ACT',
+            finished: false,
+            status: 'SCH',
+            paid: false,
+          },
+        ],
+        isTomorrow: false,
+      };
+
+      offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
+
+      return request(app)
+        .get('/')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('div.todays-events').first().find('h3').text()).toBe(
+            "Today's events",
+          );
+          expect($('[data-test="event"]').length).toBe(
+            2,
+            'Correct number of events',
+          );
+        });
+    });
+
+    it('renders the home page events for tomorrow', () => {
+      const currentEvents = {
+        events: [
+          {
+            description: 'SUSPENDED ACTIVITY',
+            startTime: '8:10AM',
+            endTime: '11:25AM',
+            location: 'Main exercise yard',
+            timeString: '8:10AM to 11:25AM',
+            eventType: 'PRISON_ACT',
+            finished: false,
+            status: 'SCH',
+            paid: false,
+          },
+          {
+            description: 'EDU IT AM',
+            startTime: '8:10AM',
+            endTime: '11:25AM',
+            location: 'New education',
+            timeString: '8:10AM to 11:25AM',
+            eventType: 'PRISON_ACT',
+            finished: false,
+            status: 'SCH',
+            paid: false,
+          },
+        ],
+        isTomorrow: true,
+      };
+
+      offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
+
+      return request(app)
+        .get('/')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('div.todays-events').first().find('h3').text()).toBe(
+            "Tomorrow's events",
+          );
+          expect($('[data-test="event"]').length).toBe(
+            2,
+            'Correct number of events',
+          );
+        });
+    });
+
+    it('renders the home page with no events', () => {
+      const currentEvents = {
+        events: [],
+        isTomorrow: false,
+      };
+
+      offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
+
+      return request(app)
+        .get('/')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="event"]').length).toBe(0);
+          expect($('[data-test="no-events"]').length).toBe(1);
+        });
+    });
+
+    it('renders the home page with no events when user is logged out', () => {
+
+      userSupplier.mockReturnValue(undefined);
+
+      return request(app)
+        .get('/')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($(".todays-events__placeholder").length).toBe(1);
+        });
+    });
+
+    it('renders an error when the home page cannot retrieve events', () => {
+
+      offenderService.getCurrentEvents.mockResolvedValue({error: 'We are not able to show your schedule for today at this time'});
+
+      return request(app)
+        .get('/')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="event-error"]').length).toBe(1);
+        });
+    });
   });
 });

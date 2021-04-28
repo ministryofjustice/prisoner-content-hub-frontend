@@ -61,7 +61,7 @@ function offenderRepository(httpClient) {
     );
   }
 
-  function getEventsListForToday(bookingId) {
+  function getCurrentEvents(bookingId) {
     return httpClient.get(
       `${getBookingsUrlFrom(config)}/${bookingId}/events/today`,
     );
@@ -83,7 +83,7 @@ function offenderRepository(httpClient) {
     getLastVisitFor,
     getVisitsFor,
     sentenceDetailsFor,
-    getEventsListForToday,
+    getCurrentEvents,
     getEventsFor,
   };
 }

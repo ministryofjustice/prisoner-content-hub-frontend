@@ -49,23 +49,22 @@ const createIndexRouter = ({
         returnUrl: req.originalUrl,
       };
 
-      let todaysEvents = {};
+      let currentEvents = {};
       const { user } = req;
 
       if (user) {
         const userName = user.getFullName();
         pageConfig.userName = userName;
         pageConfig.welcomeMessage = `Hi, ${userName}`;
-        todaysEvents = await offenderService.getEventsListForToday(user);
+        currentEvents = await offenderService.getCurrentEvents(user);
       }
-
       res.render('pages/home', {
         config: pageConfig,
         title: 'Home',
         homePageLinks,
         homePageLinksTitle,
         featuredContent: featuredContent.featured[0],
-        todaysEvents,
+        currentEvents,
       });
     } catch (error) {
       next(error);
