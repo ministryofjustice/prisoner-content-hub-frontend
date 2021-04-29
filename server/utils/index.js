@@ -1,50 +1,26 @@
-const { path, pathOr, isNil, isEmpty } = require('ramda');
-const defaultConfig = require('../config');
+const { isNil, isEmpty } = require('ramda');
+const defaultEstablishmentData = require('../content/establishmentData');
 
 const isEmptyResponse = val => isEmpty(val) || isNil(val);
 
-function getEstablishmentId(name, config = defaultConfig) {
-  return Object.keys(config.establishments).reduce(
-    (matchingEstablishmentId, establishmentId) =>
-      config.establishments[establishmentId].name === name
-        ? parseInt(establishmentId, 10)
-        : matchingEstablishmentId,
-    0,
-  );
-}
+const getEstablishmentId = (establishmentName, establishmentData = defaultEstablishmentData) => 
+parseInt(Object.keys(establishmentData).find( id => establishmentData?.[id]?.name === establishmentName), 10)
 
-function getEstablishmentName(id, config = defaultConfig) {
-  return path(['establishments', id, 'name'], config);
-}
+const getEstablishmentName = (id, establishmentData = defaultEstablishmentData) => establishmentData?.[id]?.name
 
-function getEstablishmentPrefix(id, config = defaultConfig) {
-  return pathOr('HMP', ['establishments', id, 'prefix'], config);
-}
+const getEstablishmentPrefix = (id, establishmentData = defaultEstablishmentData) => establishmentData?.[id]?.prefix ?? 'HMP'
 
-function getEstablishmentFormattedName(id, config = defaultConfig) {
-  return path(['establishments', id, 'formattedName'], config);
-}
+const getEstablishmentFormattedName = (id, establishmentData = defaultEstablishmentData) => establishmentData?.[id]?.formattedName
 
-function getEstablishmentUiId(id, config = defaultConfig) {
-  return path(['establishments', id, 'uuId'], config);
-}
+const getEstablishmentUiId = (id, establishmentData = defaultEstablishmentData) => establishmentData?.[id]?.uuId
 
-function getEstablishmentHomepageLinks(id, config = defaultConfig) {
-  return path(['establishments', id, 'homePageLinks'], config);
-}
+const getEstablishmentHomepageLinks = (id, establishmentData = defaultEstablishmentData) => establishmentData?.[id]?.homePageLinks
 
-function getEstablishmentHomepageLinksTitle(id, config = defaultConfig) {
-  return path(['establishments', id, 'homePageLinksTitle'], config);
-}
+const getEstablishmentHomepageLinksTitle = (id, establishmentData = defaultEstablishmentData) =>  establishmentData?.[id]?.homePageLinksTitle
 
-function getEstablishmentPersonalisation(id, config = defaultConfig) {
-  return path(['establishments', id, 'personalInformation'], config);
-}
+const getEstablishmentPersonalisation = (id, establishmentData = defaultEstablishmentData) => establishmentData?.[id]?.personalInformation
 
-const capitalize = (str = '') => {
-  if (str === '') return '';
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-};
+const capitalize = (str = '') => str === '' ? '' : str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
 
 function capitalizeAll(input, separator = ' ') {
   if (input === '') return '';
@@ -64,25 +40,9 @@ function capitalizePersonName(input, separator = ' ') {
     .join(separator);
 }
 
-function fillContentItems(contentItems = [], number = 4) {
-  const numberItems = contentItems.length;
-
-  if (numberItems % number === 0) {
-    return contentItems;
-  }
-
-  const remainingItems =
-    contentItems.length < number
-      ? number - contentItems.length
-      : number - (contentItems.length % number);
-  let newItems = [];
-
-  if (remainingItems > 0) {
-    newItems = new Array(remainingItems);
-  }
-
-  return contentItems.concat(newItems);
-}
+const fillContentItems = (contentItems = [], number = 4) => contentItems.length % number 
+  ? contentItems.concat(new Array( number - (contentItems.length % number )))
+  : contentItems
 
 module.exports = {
   getEstablishmentId,
