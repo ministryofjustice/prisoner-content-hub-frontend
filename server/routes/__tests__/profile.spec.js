@@ -371,7 +371,7 @@ describe('GET /profile', () => {
     it('displays the money information when the user is signed in', () => {
       offenderService.getBalancesFor.mockResolvedValue({
         spends: '£751.11',
-        private: '10.10',
+        privateAccount: '10.10',
         savings: '£10.10',
       });
 
@@ -386,8 +386,8 @@ describe('GET /profile', () => {
           const spends = $('[data-test="money-spends"]').text();
           expect(spends).toContain('£751.11');
 
-          const cash = $('[data-test="money-private"]').text();
-          expect(cash).toContain('10.10');
+          const privateAccount = $('[data-test="money-private"]').text();
+          expect(privateAccount).toContain('10.10');
 
           const savings = $('[data-test="money-savings"]').text();
           expect(savings).toContain('£10.10');

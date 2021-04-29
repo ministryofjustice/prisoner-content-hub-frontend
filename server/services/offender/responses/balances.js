@@ -6,7 +6,7 @@ class Balances {
   constructor(options = {}) {
     const { spends, cash, savings, currency } = options;
     this.spends = spends;
-    this.private = cash;
+    this.privateAccount = cash;
     this.savings = savings;
     this.currency = currency;
   }
@@ -14,7 +14,11 @@ class Balances {
   format() {
     return {
       spends: formatBalanceOrDefault(DEFAULT, this.spends, this.currency),
-      private: formatBalanceOrDefault(DEFAULT, this.private, this.currency),
+      privateAccount: formatBalanceOrDefault(
+        DEFAULT,
+        this.privateAccount,
+        this.currency,
+      ),
       savings: formatBalanceOrDefault(DEFAULT, this.savings, this.currency),
       currency: this.currency || DEFAULT,
     };
