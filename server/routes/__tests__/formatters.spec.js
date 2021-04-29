@@ -412,6 +412,7 @@ describe('Responses', () => {
       expect(formatted.rows).toEqual([
         [
           { text: '28 March 2021' },
+          { text: '' },
           { text: '-£25.00' },
           { text: 'Pending 2' },
           { text: 'Test (HMP)' },
@@ -419,6 +420,7 @@ describe('Responses', () => {
         [
           { text: '29 March 2021' },
           { text: '£50.00' },
+          { text: '' },
           { text: 'Pending 1' },
           { text: 'Test (HMP)' },
         ],
