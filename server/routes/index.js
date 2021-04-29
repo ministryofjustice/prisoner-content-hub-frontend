@@ -8,7 +8,7 @@ const {
 const createIndexRouter = ({
   hubFeaturedContentService,
   offenderService,
-  config,
+  establishmentData,
 }) => {
   const router = express.Router();
 
@@ -27,12 +27,12 @@ const createIndexRouter = ({
 
       const homePageLinks = getEstablishmentHomepageLinks(
         establishmentId,
-        config,
+        establishmentData,
       );
 
       const homePageLinksTitle = getEstablishmentHomepageLinksTitle(
         establishmentId,
-        config,
+        establishmentData,
       );
 
       const featuredContent = await hubFeaturedContentService.hubFeaturedContent(
