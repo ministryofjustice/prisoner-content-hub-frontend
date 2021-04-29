@@ -3,6 +3,7 @@ const request = require('supertest');
 
 const { createApp } = require('../app');
 const config = require('../config');
+const establishmentData = require('../content/establishmentData.json');
 const { logger } = require('../../test/test-helpers');
 
 jest.mock('@sentry/node', () => {
@@ -178,10 +179,13 @@ describe('App', () => {
     // We Stringify/Parse the config to deep-clone and restore before each test
     // This avoids polluting the configuration
     const originalConfig = JSON.stringify(config);
+    const originalEstablishmentData = JSON.stringify(establishmentData);
     let testConfig;
+    let testEstablishmentData;
 
     beforeEach(() => {
       testConfig = JSON.parse(originalConfig);
+      testEstablishmentData = JSON.parse(originalEstablishmentData);
       jest.clearAllMocks();
     });
 
@@ -190,6 +194,7 @@ describe('App', () => {
 
       const application = app({
         config: testConfig,
+        establishmentData: testEstablishmentData,
         authMiddleware: {
           createMockSignIn,
           createMockSignOut,
@@ -220,6 +225,7 @@ describe('App', () => {
 
       const application = app({
         config: testConfig,
+        establishmentData: testEstablishmentData,
         authMiddleware: {
           createMockSignIn,
           createMockSignOut,
@@ -259,6 +265,7 @@ describe('App', () => {
     it('should default "useMockAuth" to false', async () => {
       const application = app({
         config: testConfig,
+        establishmentData: testEstablishmentData,
         authMiddleware: {
           createMockSignIn,
           createMockSignOut,

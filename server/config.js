@@ -24,65 +24,6 @@ const elasticsearchIndexName = getEnv(
 const drupalDatabaseName = getEnv('DRUPAL_DATABASE_NAME', 'hubdb', {
   requireInProduction: true,
 });
-const establishments = {
-  792: {
-    name: 'berwyn',
-    formattedName: 'Berwyn',
-    prefix: 'HMP',
-    uuId: 'fd1e1db7-d0be-424a-a3a6-3b0f49e33293',
-    homePageLinksTitle: 'Popular topics',
-    homePageLinks: {
-      Coronavirus: '/tags/894',
-      Visits: '/content/4203',
-      Games: '/content/3621',
-      Inspiration: '/content/3659',
-      'Music & talk': '/content/3662',
-      'PSIs & PSOs': '/tags/796',
-      'Facilities list & catalogues': '/content/3990',
-      'Healthy mind & body': '/content/3657',
-      Chaplaincy: '/tags/901',
-    },
-    personalInformation: false,
-  },
-  793: {
-    name: 'wayland',
-    formattedName: 'Wayland',
-    prefix: 'HMP',
-    uuId: 'b73767ea-2cbb-4ad5-ba22-09379cc07241',
-    homePageLinksTitle: 'Popular topics',
-    homePageLinks: {
-      'Money & debt': '/money',
-      Visits: '/visits',
-      'Incentive level': '/incentives',
-      Inspiration: '/content/3659',
-      'Music & talk': '/content/3662',
-      Chaplaincy: '/tags/901',
-      'Healthy mind & body': '/content/3657',
-      Exercise: '/tags/907',
-      Games: '/content/3621',
-    },
-    personalInformation: true,
-  },
-  959: {
-    name: 'cookhamwood',
-    formattedName: 'Cookham Wood',
-    prefix: 'HMYOI',
-    uuId: '9969cd5a-90fa-476c-9f14-3f85b26d23bc',
-    homePageLinksTitle: 'Popular topics',
-    homePageLinks: {
-      'Money & debt': '/money',
-      Visits: '/visits',
-      'Incentive level': '/incentives',
-      Inspiration: '/content/3659',
-      'Music & talk': '/content/3662',
-      Chaplaincy: '/tags/901',
-      'Healthy mind & body': '/content/3657',
-      Exercise: '/tags/907',
-      Games: '/content/3621',
-    },
-    personalInformation: true,
-  },
-};
 
 module.exports = {
   isProduction,
@@ -92,7 +33,6 @@ module.exports = {
     gitDate: getEnv('GIT_DATE', '2020-06-21 12:12:12'),
   },
   cookieSecret: getEnv('COOKIE_SECRET', 'keyboard cat'),
-  establishments,
   auth: {
     clientId: getEnv('AZURE_AD_CLIENT_ID', { requireInProduction: true }),
     clientSecret: getEnv('AZURE_AD_CLIENT_SECRET', {

@@ -35,6 +35,7 @@ const {
 
 const { User } = require('./auth/user');
 const defaultConfig = require('./config');
+const defaultEstablishmentData = require('./content/establishmentData.json');
 const defaultAuthMiddleware = require('./auth/middleware');
 
 const createApp = ({
@@ -50,6 +51,7 @@ const createApp = ({
   analyticsService,
   feedbackService,
   config = defaultConfig,
+  establishmentData = defaultEstablishmentData,
   authMiddleware = defaultAuthMiddleware,
 }) => {
   const app = express();
@@ -241,6 +243,7 @@ const createApp = ({
       hubFeaturedContentService,
       offenderService,
       config,
+      establishmentData,
     }),
   );
 
