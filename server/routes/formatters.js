@@ -210,39 +210,40 @@ function createPendingTransactionsResponseFrom(pending) {
 
     return {
       total: formatBalanceOrDefault(null, totalPendingPenceAmount / 100, 'GBP'),
-      head: ['Date', 'Amount', 'Payment description', 'Prison'].map(
-        toGovUkTableCells,
+      head: [
+        'Payment date',
+        'Money in',
+        'Money out',
+        'Payment description',
+        'Prison',
+      ].map(toGovUkTableCells),
+      rows: holdingNotCleared.map(
+        ({
+          entryDate,
+          postingType,
+          penceAmount,
+          currency,
+          entryDescription: paymentDescription,
+          prison,
+        }) => {
+          const paymentDate = formatDateOrDefault('', 'd MMMM yyyy', entryDate);
+          const moneyIn =
+            postingType === 'CR'
+              ? formatBalanceOrDefault(null, penceAmount / 100, currency)
+              : '';
+          const moneyOut =
+            postingType === 'CR'
+              ? ''
+              : formatBalanceOrDefault(null, 0 - penceAmount / 100, currency);
+          return [
+            paymentDate,
+            moneyIn,
+            moneyOut,
+            paymentDescription,
+            prison,
+          ].map(toGovUkTableCells);
+        },
       ),
-      rows: holdingNotCleared
-        .map(transaction => ({
-          paymentDate: formatDateOrDefault(
-            '',
-            'd MMMM yyyy',
-            transaction.entryDate,
-          ),
-          amount:
-            transaction.postingType === 'CR'
-              ? formatBalanceOrDefault(
-                  null,
-                  transaction.penceAmount / 100,
-                  transaction.currency,
-                )
-              : formatBalanceOrDefault(
-                  null,
-                  0 - transaction.penceAmount / 100,
-                  transaction.currency,
-                ),
-          paymentDescription: transaction.entryDescription,
-          prison: transaction.prison,
-        }))
-        .map(transaction =>
-          [
-            transaction.paymentDate,
-            transaction.amount,
-            transaction.paymentDescription,
-            transaction.prison,
-          ].map(toGovUkTableCells),
-        ),
     };
   } catch (e) {
     Sentry.captureException(e);
