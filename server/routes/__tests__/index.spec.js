@@ -298,20 +298,20 @@ describe('GET /', () => {
     });
 
     it('renders the home page with no events when user is logged out', () => {
-
       userSupplier.mockReturnValue(undefined);
 
       return request(app)
         .get('/')
         .then(response => {
           const $ = cheerio.load(response.text);
-          expect($(".todays-events__placeholder").length).toBe(1);
+          expect($('.todays-events__placeholder').length).toBe(1);
         });
     });
 
     it('renders an error when the home page cannot retrieve events', () => {
-
-      offenderService.getCurrentEvents.mockResolvedValue({error: 'We are not able to show your schedule for today at this time'});
+      offenderService.getCurrentEvents.mockResolvedValue({
+        error: 'We are not able to show your schedule for today at this time',
+      });
 
       return request(app)
         .get('/')
