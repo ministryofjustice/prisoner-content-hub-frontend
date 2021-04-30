@@ -20,34 +20,30 @@
           <p data-hj-suppress>{{ data.balance.amount }}</P>
         {% endif %}
       </li>
-      {% if not data.pendingTransactions.userNotification %}
-        <li>
-          <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Total pending payments</h2>
-          <p data-hj-suppress>{{ data.pendingTransactions.total }}</P>
-        </li>
-        {% endif%}
-      </ul>
-      <div id="pending-transactions__wrapper">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Pending payments</h2>
-        {% if data.pendingTransactions.userNotification %}
-          {{ tryAgainWithMessage(data.pendingTransactions.userNotification, returnUrl) }}
-        {% elif data.pendingTransactions.rows %}
-          <p>These are payments you've sent or have received, but have not yet cleared. Pending payments do not show in your current balance.</p>
-          <div id="pending-transactions" data-hj-suppress>
-            {{ govukTable({ head: data.pendingTransactions.head, rows: data.pendingTransactions.rows }) }}
-          </div>
-        {% endif %}
-      </div>
-      <div id="completed-payments__heading">
-        <h2  class="govuk-heading-m govuk-!-margin-bottom-1">Completed payments</h2>
-      </div>
-      {% if data.transactions.userNotification %}
-        {{ tryAgainWithMessage(data.transactions.userNotification, returnUrl)}}
+    </ul>
+    {% if data.pendingTransactions.rows.length > 0 or data.pendingTransactions.userNotification %}
+    <div id="pending-transactions__wrapper">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Pending payments</h2>
+      {% if data.pendingTransactions.userNotification %}
+        {{ tryAgainWithMessage(data.pendingTransactions.userNotification, returnUrl) }}
       {% else %}
-        {{ personalTransactionsDateSelection(data.dateSelection, data.selected) }}
-        <div id="transactions" data-hj-suppress>
-          {{ govukTable({ head: data.transactions.head, rows: data.transactions.rows }) }}
+        <p>These are payments you've sent or have received, but have not yet cleared. Pending payments do not show in your current balance.</p>
+        <div id="pending-transactions" data-hj-suppress>
+          {{ govukTable({ head: data.pendingTransactions.head, rows: data.pendingTransactions.rows }) }}
         </div>
       {% endif %}
+    </div>
+    <div id="completed-payments__heading">
+      <h2  class="govuk-heading-m govuk-!-margin-bottom-1">Completed payments</h2>
+    </div>
+    {% endif %}
+    {% if data.transactions.userNotification %}
+      {{ tryAgainWithMessage(data.transactions.userNotification, returnUrl)}}
+    {% else %}
+      {{ personalTransactionsDateSelection(data.dateSelection, data.selected) }}
+      <div id="transactions" data-hj-suppress>
+        {{ govukTable({ head: data.transactions.head, rows: data.transactions.rows }) }}
+      </div>
+    {% endif %}
     </div>
   {% endif %}
