@@ -197,19 +197,7 @@ function createPendingTransactionsResponseFrom(pending) {
       )
       .filter(transaction => !transaction.holdingCleared);
 
-    const totalPendingPenceAmount = holdingNotCleared
-      .filter(transaction => transaction.currency === 'GBP')
-      .reduce(
-        (runningTotal, transaction) =>
-          runningTotal +
-          (transaction.postingType === 'CR'
-            ? transaction.penceAmount
-            : transaction.penceAmount * -1),
-        0,
-      );
-
     return {
-      total: formatBalanceOrDefault(null, totalPendingPenceAmount / 100, 'GBP'),
       head: [
         'Payment date',
         'Money in',
