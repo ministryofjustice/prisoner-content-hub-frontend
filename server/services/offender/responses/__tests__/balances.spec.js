@@ -3,7 +3,7 @@ const { Balances } = require('../balances');
 const DEFAULT = null;
 
 describe('Balances', () => {
-  it('Should handle an empty response', () => {
+  it('should handle an empty response', () => {
     const balances = Balances.from();
 
     expect(balances.spends).not.toBeDefined();
@@ -19,37 +19,36 @@ describe('Balances', () => {
     expect(formatted.currency).toBe(DEFAULT);
   });
 
-  it('should handle an incomplete response', () => {
-    let response = {
+  it('should not assume the currency when handling an incomplete response', () => {
+    const response = {
       spends: '100',
       cash: '100',
       savings: '0',
     };
 
-    let formatted = Balances.from(response).format();
-
-    expect(formatted).toStrictEqual(
-      {
-        spends: DEFAULT,
-        privateAccount: DEFAULT,
-        savings: DEFAULT,
-        currency: DEFAULT,
-      },
-      'It should not assume the currency',
-    );
-
-    response = {
-      spends: '100',
-      currency: 'GBP',
-    };
-
-    formatted = Balances.from(response).format();
+    const formatted = Balances.from(response).format();
 
     expect(formatted).toStrictEqual({
-      spends: '£100.00',
+      spends: DEFAULT,
       privateAccount: DEFAULT,
       savings: DEFAULT,
-      currency: 'GBP',
+      currency: DEFAULT,
+    });
+  });
+
+  it('should format to the prescribed currency', () => {
+    const response = {
+      spends: '100',
+      currency: 'HKD',
+    };
+
+    const formatted = Balances.from(response).format();
+
+    expect(formatted).toStrictEqual({
+      spends: 'HK$100.00',
+      privateAccount: DEFAULT,
+      savings: DEFAULT,
+      currency: 'HKD',
     });
   });
 
