@@ -1,37 +1,7 @@
 const { hubMenuRepository } = require('../hubMenu');
-const topicsResponse = require('../../../test/resources/tagsContent.json');
 const categoryMenuResponse = require('../../../test/resources/categoryMenuResponse.json');
-const vocabularyResponse = require('../../../test/resources/vocabularyResponse.json');
 
 describe('hubMenuRepository', () => {
-  describe('topicsMenu', () => {
-    it('returns a topicsMenu', async () => {
-      const httpClient = {
-        get: jest.fn().mockReturnValue(topicsResponse),
-      };
-
-      const repository = hubMenuRepository(httpClient);
-      const expected = [
-        { linkText: 'Bat', href: '/tags/1', id: '1', description: undefined },
-        { linkText: 'Baz', href: '/tags/0', id: '0', description: undefined },
-      ];
-      const result = await repository.tagsMenu();
-
-      expect(result).toStrictEqual(expected);
-    });
-
-    it('returns and empty array when there is no data returned', async () => {
-      const httpClient = {
-        get: jest.fn().mockReturnValue(null),
-      };
-      const repository = hubMenuRepository(httpClient);
-      const expected = [];
-      const result = await repository.tagsMenu();
-
-      expect(result).toStrictEqual(expected);
-    });
-  });
-
   describe('categoryMenu', () => {
     it('it returns a category menu', async () => {
       const httpClient = {
@@ -62,36 +32,6 @@ describe('hubMenuRepository', () => {
 
       const result = await repository.categoryMenu({
         categoryId: 1,
-        prisonId: 2,
-      });
-
-      expect(result).toStrictEqual(expected);
-    });
-  });
-
-  describe('tagsMenu', () => {
-    it('it returns a tag menu', async () => {
-      const httpClient = {
-        get: jest.fn().mockReturnValue(vocabularyResponse),
-      };
-
-      const repository = hubMenuRepository(httpClient);
-      const expected = [
-        {
-          id: 729,
-          linkText: 'Resettlement',
-          href: '/tags/729',
-          description: '<p>Challenges faced when getting out.</p> ',
-        },
-        {
-          id: 724,
-          linkText: 'Success stories',
-          href: '/tags/724',
-          description: '<p>Real stories from real people.</p> ',
-        },
-      ];
-
-      const result = await repository.tagsMenu({
         prisonId: 2,
       });
 
