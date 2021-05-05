@@ -93,9 +93,6 @@ describe('App', () => {
         hubFeaturedContentService: {
           hubFeaturedContent: jest.fn().mockRejectedValue(error),
         },
-        hubMenuService: {
-          tagsMenu: jest.fn().mockResolvedValue({}),
-        },
         offenderService: {
           getOffenderDetailsFor: jest.fn().mockResolvedValue({}),
         },
@@ -308,9 +305,6 @@ function app(opts) {
   const services = {
     hubFeaturedContentService: {
       hubFeaturedContent: jest.fn().mockResolvedValue([]),
-    },
-    hubMenuService: {
-      navigationMenu: jest.fn().mockReturnValue({ topicsMenu: [] }),
     },
     offenderService: {
       getOffenderDetailsFor: jest.fn().mockResolvedValue({}),
