@@ -13,11 +13,13 @@
   padding-bottom: govuk-spacing(8);
 }
 
-.grey-background {
-  background: govuk-colour('light-grey');
-  margin-bottom: govuk-spacing(5);
-  padding-bottom: govuk-spacing(1);
+.card-background {
+  padding-bottom: govuk-spacing(5);
   padding-top: govuk-spacing(5);
+}
+
+.card-background.grey {
+  background: govuk-colour('light-grey');
 }
 
 .govuk-hub-comment-form,
