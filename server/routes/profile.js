@@ -30,12 +30,7 @@ const createProfileRouter = ({ offenderService }) => {
       hasNextVisit,
       error: visitsError,
     } = visitsSummary;
-    const {
-      spends,
-      private: privateFunds,
-      savings,
-      error: moneyError,
-    } = moneySummary;
+    const { spends, privateAccount, savings, error: moneyError } = moneySummary;
 
     return {
       signedInUser,
@@ -57,7 +52,7 @@ const createProfileRouter = ({ offenderService }) => {
       moneySummary: {
         error: moneyError,
         spends,
-        private: privateFunds,
+        privateAccount,
         savings,
         link: 'money/transactions',
       },
