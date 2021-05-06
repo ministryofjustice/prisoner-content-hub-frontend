@@ -538,7 +538,7 @@ describe('Prisoner Money', () => {
             const selectedPanel = $('.govuk-tabs__panel').text();
             // We should be presented with a notification that we are unable to show pending transactions...
             expect(selectedPanel).toMatch(
-              /not able to show your pending payments/im,
+              /not able to show information about pending payments/im,
             );
             // ...and allow the user to try again
             expect($('.govuk-tabs__panel a').text()).toMatch(/try again/im);
