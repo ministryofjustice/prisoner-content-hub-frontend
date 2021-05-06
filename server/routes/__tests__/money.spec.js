@@ -456,16 +456,14 @@ describe('Prisoner Money', () => {
         });
     });
 
-    it('shows pending transactions', async () => {
+    it('shows pending transactions when there are some', async () => {
       await request(app)
         .get('/money/transactions/private')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
           // We should be presented the balance
-          const [balance, totalPending] = $('.transaction__balances li').get();
-          expect($(balance).text()).toContain('£456.78');
-          expect($(totalPending).text()).toContain('£50.00');
+          expect($('.transaction__balances li').text()).toContain('£456.78');
           // We should be presented with the pending transactions
           const pendingTransactions = $('#pending-transactions table tbody tr');
           expect(pendingTransactions.length).toBe(4);
@@ -477,33 +475,85 @@ describe('Prisoner Money', () => {
         });
     });
 
-    it('notifies the user when unable to fetch pending transactions data', async () => {
-      stubApiCalls([
-        [api.pendingTransactions, failure(fiveOhThree)],
-        [api.transactionHistory, success(transactionApiResponse)],
-        [api.balances, success(balancesApiResponse)],
-      ]);
-
+    it('shows the "Completed payments" title', async () => {
       await request(app)
         .get('/money/transactions/private')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
-          // We should be showing data for the private account
-          const selectedTab = $('.govuk-tabs__list-item--selected').text();
-          expect(selectedTab).toContain('Private');
-          // We should be presented the balance
-          const [balance, totalPending] = $('.transaction__balances li').get();
-          expect($(balance).text()).toContain('£456.78');
-          expect(totalPending).toBeUndefined();
-          const selectedPanel = $('.govuk-tabs__panel').text();
-          // We should be presented with a notification that we are unable to show pending transactions...
-          expect(selectedPanel).toMatch(
-            /not able to show your pending payments/im,
-          );
-          // ...and allow the user to try again
-          expect($('.govuk-tabs__panel a').text()).toMatch(/try again/im);
+          expect( $('#completed-payments__heading h2').text()).toBe('Completed payments');
         });
+    });
+
+    describe('when there are no pending transactions', () => {
+      beforeEach(() => {
+        stubApiCalls([
+          [api.balances, success(balancesApiResponse)],
+          [api.pendingTransactions, success([])],
+        ]);
+      });
+    it('does not show pending transactions', async () => {
+      await request(app)
+        .get('/money/transactions/private')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          // We should be presented the balance
+          expect($('.transaction__balances li').text()).toContain('£456.78');
+          // We should be presented with the pending transactions
+          expect($('#pending-transactions').length).toBe(0);
+        });
+      });
+      it('does not show the "Completed payments" title', async () => {
+        await request(app)
+          .get('/money/transactions/private')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect( $('#completed-payments__heading h2').length).toBe(0);
+          });
+        });
+    });
+
+    describe('when unable to fetch pending transactions data', () => {
+      beforeEach(() => {
+        stubApiCalls([
+          [api.pendingTransactions, failure(fiveOhThree)],
+          [api.transactionHistory, success(transactionApiResponse)],
+          [api.balances, success(balancesApiResponse)],
+        ]);
+      })
+    it('notifies the user', async () => {
+
+        await request(app)
+          .get('/money/transactions/private')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            // We should be showing data for the private account
+            const selectedTab = $('.govuk-tabs__list-item--selected').text();
+            expect(selectedTab).toContain('Private');
+            // We should be presented the balance
+            expect($('.transaction__balances li').text()).toContain('£456.78');
+            const selectedPanel = $('.govuk-tabs__panel').text();
+            // We should be presented with a notification that we are unable to show pending transactions...
+            expect(selectedPanel).toMatch(
+              /not able to show information about pending payments/im,
+            );
+            // ...and allow the user to try again
+            expect($('.govuk-tabs__panel a').text()).toMatch(/try again/im);
+          });
+      });
+
+      it('shows the "Completed payments" title', async () => {
+        await request(app)
+          .get('/money/transactions/private')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect( $('#completed-payments__heading h2').text()).toBe('Completed payments');
+          });
+      });
     });
 
     it('does not show the damage obligations tab if there are none to display', async () => {

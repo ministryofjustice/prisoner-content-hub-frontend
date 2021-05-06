@@ -427,14 +427,6 @@ describe('Responses', () => {
       ]);
     });
 
-    it('returns a total amount for pending transactions', () => {
-      const formatted = createPendingTransactionsResponseFrom(
-        transactionApiResponse,
-      );
-
-      expect(formatted.total).toBe('£25.00');
-    });
-
     it('filters pending transactions where holding is cleared', () => {
       const formatted = createPendingTransactionsResponseFrom(
         transactionApiResponse,
