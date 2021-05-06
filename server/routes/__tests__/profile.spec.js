@@ -401,7 +401,9 @@ describe('GET /profile', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('[data-test="moneyLink"] a').attr('href')).toBe('/money');
+          expect($('[data-test="moneyLink"] a').attr('href')).toBe(
+            'money/transactions',
+          );
         }));
   });
 });

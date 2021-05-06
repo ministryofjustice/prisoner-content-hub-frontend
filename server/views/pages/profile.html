@@ -69,7 +69,7 @@
     </p>
 </div>
 {% else %}
-  <div class="govuk-width-container">
+  <div class="card-background">
       <div class="govuk-width-container">
         <h2 class="govuk-heading-m">Today's timetable</h2>
         {% if events.error %}
@@ -99,7 +99,7 @@
       </div>
   </div>
 
-  <div class="grey-background">
+  <div class="card-background grey">
     <div class="govuk-width-container">
       <h2 class="govuk-heading-m">Incentive level</h2>
       {% if incentivesSummary.error %}
@@ -124,9 +124,9 @@
     </div>
   </div>
 
-  <div>
+  <div class="card-background">
     <div class="govuk-width-container sensitive-card-container">
-      <h2 class="govuk-heading-m card-title">Money 
+      <h2 class="govuk-heading-m card-title">Money
         {% if not moneySummary.error %}
           <a href='#' class="sensitive-card-control govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state" data-is-closed="true">
             <span class="open">Open all balances</span>
@@ -157,14 +157,17 @@
               {%- endcall %}
             </li>
             <li class="govuk-grid-column-one-quarter card-group__item">
-            {{imageCard({ id: 'moneyLink', src: "/public/images/image_money.jpg", alt: "money picture", link: moneySummary.link, description: "View your transactions" }) }}
+            {{imageCard({ id: 'moneyLink', src: "/public/images/image_transactions.jpg", alt: "money picture", link: moneySummary.link, description: "View your transactions" }) }}
             </li>
         </ul>
+        <a href= '/money' }} class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">
+          <span>Read more about money and debt</span>
+        </a>
       {% endif %}
     </div>
   </div>
 
-  <div class="grey-background">
+  <div class="card-background grey">
     <div class="govuk-width-container">
       <h2 class="govuk-heading-m">Visits</h2>
       {% if visitsSummary.error %}

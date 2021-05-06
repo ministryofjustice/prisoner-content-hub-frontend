@@ -54,7 +54,7 @@ const createProfileRouter = ({ offenderService }) => {
         spends,
         privateAccount,
         savings,
-        link: '/money',
+        link: 'money/transactions',
       },
     };
   };
