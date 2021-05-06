@@ -93,8 +93,6 @@ function hubMenuRepository(httpClient, jsonClient) {
   }
 
   return {
-    tagsMenu,
-    primaryMenu,
     categoryMenu,
     allTopics,
   };
