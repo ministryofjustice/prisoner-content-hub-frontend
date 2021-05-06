@@ -180,7 +180,7 @@ function createTransactionsResponseFrom(accountType, transactionsData) {
 
 function createPendingTransactionsResponseFrom(pending) {
   const failureNotification = createUserNotification(
-    'We are not able to show your pending payments at this time',
+    'We are not able to show information about pending payments at this time'
   );
 
   try {
