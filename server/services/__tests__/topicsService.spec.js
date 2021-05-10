@@ -68,16 +68,6 @@ describe('Topics Service', () => {
       expect(cmsApi.primaryMenu).toHaveBeenCalledWith(1);
     });
 
-    it('Sources to have been called correctly', async () => {
-      hubMenuRepo.tagsMenu.mockResolvedValue([]);
-      cmsApi.primaryMenu.mockResolvedValue([]);
-
-      await topicService.getTopics(1);
-
-      expect(hubMenuRepo.tagsMenu).toHaveBeenCalledWith(1);
-      expect(cmsApi.primaryMenu).toHaveBeenCalledWith(1);
-    });
-
     it('Propagates errors from cmsApi', async () => {
       hubMenuRepo.tagsMenu.mockRejectedValue(Error('some error!'));
       cmsApi.primaryMenu.mockResolvedValue([]);

@@ -1,15 +1,19 @@
 const caseInsensitive = new Intl.Collator('en', { caseFirst: 'lower' });
 
 class TopicsService {
+  #hubMenuRepository;
+
+  #cmsApi;
+
   constructor(hubMenuRepository, cmsApi) {
-    this.hubMenuRepository = hubMenuRepository;
-    this.cmsApi = cmsApi;
+    this.#hubMenuRepository = hubMenuRepository;
+    this.#cmsApi = cmsApi;
   }
 
   async getTopics(prisonId) {
     const [tags, primary] = await Promise.all([
-      this.hubMenuRepository.tagsMenu(prisonId),
-      this.cmsApi.primaryMenu(prisonId),
+      this.#hubMenuRepository.tagsMenu(prisonId),
+      this.#cmsApi.primaryMenu(prisonId),
     ]);
 
     return tags
