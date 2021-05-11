@@ -1,47 +1,45 @@
 const request = require('supertest');
+const express = require('express')
 
 const { createHealthRouter } = require('../health');
-const { setupBasicApp } = require('../../../test/test-helpers');
 
-describe('GET /health', () => {
-  it('returns the health status of the application', () => {
-    const router = createHealthRouter();
-    const app = setupBasicApp({
+describe('GET healthchecks', () => {
+  let config;
+  let app;
+  const BUILD_NUMBER = 'foo-number'
+  const GIT_REF = 'foo-ref'
+  const GIT_DATE = 'foo-date'
+  beforeEach(() => {
+    config = {
       buildInfo: {
-        buildNumber: 'foo-number',
-        gitRef: 'foo-ref',
-        gitDate: 'foo-date',
+        buildNumber: BUILD_NUMBER,
+        gitRef: GIT_REF,
+        gitDate: GIT_DATE,
       },
-    });
-
-    app.use('/health', router);
-
-    return request(app)
+    };
+    app = express()
+    app.use('/health', createHealthRouter(config));
+  })
+  it('returns the health status of the application on /health', () => 
+    request(app)
       .get('/health')
       .expect(200)
       .expect('Content-Type', /json/)
       .then(res => {
         expect(res.body).toStrictEqual({
-          status: 'OK',
+          build: {
+            buildNumber: BUILD_NUMBER,
+            gitDate: GIT_DATE,
+            gitRef: GIT_REF,
+          },
+          healthy: true,
+          uptime: expect.any(Number),
+          version: BUILD_NUMBER,
         });
-      });
-  });
-});
-
-describe('GET /health/readiness', () => {
-  it('returns the readiness status of the application', () => {
-    const router = createHealthRouter();
-    const app = setupBasicApp({
-      buildInfo: {
-        buildNumber: 'foo-number',
-        gitRef: 'foo-ref',
-        gitDate: 'foo-date',
-      },
-    });
-
-    app.use('/health/readiness', router);
-
-    return request(app)
+      })
+  );
+  it('returns the readiness status of the application', () => 
+    request(app)
       .get('/health/readiness')
       .expect(200)
       .expect('Content-Type', /json/)
@@ -49,6 +47,6 @@ describe('GET /health/readiness', () => {
         expect(res.body).toStrictEqual({
           status: 'OK',
         });
-      });
-  });
+      })
+  );
 });

@@ -159,7 +159,7 @@ const createApp = ({
   app.use(configureEstablishment());
 
   // Health end point
-  app.use('/health', createHealthRouter());
+  app.use('/health', createHealthRouter(config));
 
   if (config.features.useMockAuth) {
     app.use('*', (req, res, next) => {
