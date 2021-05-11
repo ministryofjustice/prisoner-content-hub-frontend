@@ -41,13 +41,13 @@ module.exports = {
     callbackPath: '/auth/provider/callback',
   },
   api: {
+    hubEndpoint,
     hubContent: `${hubEndpoint}/v1/api/content`,
     hubCategoryFeatured: `${hubEndpoint}/v1/api/category/featured`,
     categoryMenu: `${hubEndpoint}/v1/api/category-menu`,
     hubTerm: `${hubEndpoint}/v1/api/term`,
     series: `${hubEndpoint}/v1/api/content/series`,
     tags: `${hubEndpoint}/v1/api/vocabulary/tags`,
-    primary: `${hubEndpoint}/jsonapi/node/landing_page?fields[node--landing_page]=title,field_moj_description,drupal_internal__nid,field_moj_prisons`,
   },
   apiV2: {
     hubContentFeatured: `${hubEndpoint}/v2/api/content/featured`,

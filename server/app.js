@@ -42,7 +42,7 @@ const createApp = ({
   logger,
   requestLogger,
   hubFeaturedContentService,
-  hubMenuService,
+  topicsService,
   hubContentService,
   hubTagsService,
   offenderService,
@@ -247,7 +247,7 @@ const createApp = ({
     }),
   );
 
-  app.use('/topics', createTopicsRouter({ hubMenuService }));
+  app.use('/topics', createTopicsRouter({ topicsService }));
 
   app.use('/timetable', createTimetableRouter({ offenderService }));
 

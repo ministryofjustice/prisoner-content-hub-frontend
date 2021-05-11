@@ -16,11 +16,11 @@ describe('GET /topics', () => {
   });
 
   it('passes exceptions to Sentry', async () => {
-    const hubMenuService = {
-      allTopics: jest.fn().mockRejectedValue('💥'),
+    const topicsService = {
+      getTopics: jest.fn().mockRejectedValue('💥'),
     };
 
-    const router = createTopicsRouter({ hubMenuService });
+    const router = createTopicsRouter({ topicsService });
 
     const app = setupBasicApp();
     app.use('/topics', router);
@@ -30,14 +30,14 @@ describe('GET /topics', () => {
   });
 
   describe('Topics', () => {
-    const hubMenuService = {
-      allTopics: jest.fn().mockReturnValue([
+    const topicsService = {
+      getTopics: jest.fn().mockReturnValue([
         { linkText: 'foo', href: '/content/foo' },
         { linkText: 'bar', href: '/content/bar' },
       ]),
     };
 
-    const router = createTopicsRouter({ hubMenuService });
+    const router = createTopicsRouter({ topicsService });
 
     const app = setupBasicApp();
     app.use((req, res, next) => {
