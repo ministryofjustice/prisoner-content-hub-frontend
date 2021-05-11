@@ -40,7 +40,7 @@ const createApp = ({
   logger,
   requestLogger,
   hubFeaturedContentService,
-  hubMenuService,
+  topicsService,
   hubContentService,
   hubTagsService,
   offenderService,
@@ -157,7 +157,7 @@ const createApp = ({
   app.use(configureEstablishment());
 
   // Health end point
-  app.use('/health', createHealthRouter());
+  app.use('/health', createHealthRouter(config));
 
   if (config.features.useMockAuth) {
     app.use('*', (req, res, next) => {
@@ -245,7 +245,7 @@ const createApp = ({
     }),
   );
 
-  app.use('/topics', createTopicsRouter({ hubMenuService }));
+  app.use('/topics', createTopicsRouter({ topicsService }));
 
   app.use('/timetable', createTimetableRouter({ offenderService }));
 

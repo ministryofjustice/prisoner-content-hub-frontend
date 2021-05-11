@@ -1,6 +1,13 @@
 {
   "restartable": "rs",
-  "ignore": [".git", "node_modules/**/node_modules", "assets/stylesheets"],
+  "ignore": [
+    ".git",
+    "node_modules/**/node_modules",
+    "assets/stylesheets",
+    "**/__tests__/**",
+    ".circleci/*",
+    "build-info.json"
+  ],
   "verbose": true,
   "execMap": {
     "js": "node --harmony"
@@ -13,5 +20,6 @@
   "env": {
     "NODE_ENV": "development"
   },
-  "ext": "js,json,css,scss,njk,html"
+  "ext": "js,json,css,scss,njk,html",
+  "delay": "2500"
 }
