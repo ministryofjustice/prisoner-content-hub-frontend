@@ -21,7 +21,8 @@
     "record-build-info": "node ./bin/record-build-info",
     "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|scss|md)\"",
     "verify": "npm run lint && npm run prettier -- --list-different && npm run test",
-    "format": "npm run prettier -- --write"
+    "format": "npm run prettier -- --write",
+    "security_audit": "npx audit-ci --config audit-ci.json"
   },
   "repository": {
     "type": "git",

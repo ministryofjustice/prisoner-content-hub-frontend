@@ -14,7 +14,7 @@ WORKDIR /home/node/app
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 COPY package*.json ./
-RUN CYPRESS_INSTALL_BINARY=0 npm install
+RUN CYPRESS_INSTALL_BINARY=0  npm ci --no-audit npm install
 
 # Bundle app source
 COPY . /home/node/app
