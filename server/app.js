@@ -17,8 +17,6 @@ const { createTopicsRouter } = require('./routes/topics');
 const { createTimetableRouter } = require('./routes/timetable');
 const { createHealthRouter } = require('./routes/health');
 const { createContentRouter } = require('./routes/content');
-const { createVisitsRouter } = require('./routes/visits');
-const { createIncentivesRouter } = require('./routes/incentives');
 const { createMoneyRouter } = require('./routes/money');
 const { createProfileRouter } = require('./routes/profile');
 const { createTagRouter } = require('./routes/tags');
@@ -252,26 +250,8 @@ const createApp = ({
   app.use('/timetable', createTimetableRouter({ offenderService }));
 
   app.use(
-    '/visits',
-    createVisitsRouter({
-      hubContentService,
-      offenderService,
-    }),
-  );
-
-  app.use(
-    '/incentives',
-    createIncentivesRouter({
-      hubContentService,
-      offenderService,
-    }),
-  );
-
-  app.use(
     '/money',
     createMoneyRouter({
-      hubContentService,
-      offenderService,
       prisonerInformationService,
     }),
   );

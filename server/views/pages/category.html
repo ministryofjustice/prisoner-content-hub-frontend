@@ -43,17 +43,6 @@
   <div class="govuk-width-container govuk-body govuk-clearfix hub-header">
     <div>
       <h1 class="govuk-heading-l" id="title">{{ title }}</h1>
-      <div class="personalised-section">
-        {% if config.category === 'visits' %}
-          {{ personalVisits({data: data.personalisedData, authReturnUrl: config.returnUrl }, config.userName) }}
-        {% endif %}
-        {% if config.category === 'incentives' %}
-          {{ personalIncentives({data: data.personalisedData, authReturnUrl: config.returnUrl }, config.userName) }}
-        {% endif %}
-        {% if config.category === 'money' %}
-          {{ personalBalances({ data: data.personalisedData, authReturnUrl: config.returnUrl }, config.userName) }}
-        {% endif %}
-      </div>
     </div>
     <div class="help-container-tablet">
       <h2 class="govuk-heading-m">In this section</h2>
