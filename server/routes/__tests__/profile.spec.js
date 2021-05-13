@@ -67,7 +67,7 @@ describe('GET /profile', () => {
   describe('Retrieve timetable information', () => {
     it('notifies the user when retrieving timetable information fails', () => {
       offenderService.getEventsForToday.mockResolvedValue({
-        error: 'We are not able to show your timetable at this time',
+        error: true,
       });
 
       return request(app)
@@ -223,8 +223,7 @@ describe('GET /profile', () => {
   describe('Retrieve incentives information', () => {
     it('notifies the user when retrieving incentives information fails', () => {
       offenderService.getIncentivesSummaryFor.mockResolvedValue({
-        error:
-          'We are not able to show your incentive level summary at this time',
+        error: true,
       });
 
       return request(app)
@@ -267,7 +266,7 @@ describe('GET /profile', () => {
           const $ = cheerio.load(response.text);
 
           expect($('[data-test="incentivesLink"] a').attr('href')).toBe(
-            '/incentives',
+            '/content/4204',
           );
         }));
   });
@@ -275,7 +274,7 @@ describe('GET /profile', () => {
   describe('Retrieve visits information', () => {
     it('notifies the user when retrieving visits fails', () => {
       offenderService.getVisitsFor.mockResolvedValue({
-        error: 'We are not able to show your visits information at this time',
+        error: true,
       });
 
       return request(app)
@@ -347,15 +346,16 @@ describe('GET /profile', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('[data-test="visitsLink"] a').attr('href')).toBe('/visits');
+          expect($('[data-test="visitsLink"] a').attr('href')).toBe(
+            '/content/4203',
+          );
         }));
   });
 
   describe('Retrieve money information', () => {
     it('notifies the user when retrieving money information fails', () => {
       offenderService.getBalancesFor.mockResolvedValue({
-        error:
-          'We are not able to show your money and transactions at this time',
+        error: true,
       });
 
       return request(app)
@@ -402,7 +402,7 @@ describe('GET /profile', () => {
           const $ = cheerio.load(response.text);
 
           expect($('[data-test="moneyLink"] a').attr('href')).toBe(
-            'money/transactions',
+            '/money/transactions',
           );
         }));
   });

@@ -348,7 +348,7 @@ describe('Offender Service', () => {
       const data = await service.getEventsForToday({}, parseISO('2019-03-07'));
 
       expect(data).toEqual({
-        error: 'We are not able to show your timetable at this time',
+        error: true,
       });
     });
 
