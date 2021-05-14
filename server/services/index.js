@@ -6,6 +6,8 @@ const config = require('../config');
 const { HubClient } = require('../clients/hub');
 const { StandardClient } = require('../clients/standard');
 const { PrisonApiClient } = require('../clients/prisonApiClient');
+const { JsonApiClient } = require('../clients/jsonApiClient');
+
 const {
   RedisCachingStrategy,
   InMemoryCachingStrategy,
@@ -24,10 +26,11 @@ const { offenderRepository } = require('../repositories/offender');
 const { searchRepository } = require('../repositories/search');
 const { analyticsRepository } = require('../repositories/analytics');
 const { feedbackRepository } = require('../repositories/feedback');
+const { CmsApi } = require('../repositories/cmsApi');
 const PrisonApiRepository = require('../repositories/prisonApi');
 
 // Services
-const { createHubMenuService } = require('./hubMenu');
+const { TopicsService } = require('./topics');
 const { createHubFeaturedContentService } = require('./hubFeaturedContent');
 const { createHubContentService } = require('./hubContent');
 const { createHubTagsService } = require('./hubTags');
@@ -57,8 +60,9 @@ module.exports = {
   hubFeaturedContentService: createHubFeaturedContentService(
     hubFeaturedContentRepository(hubClient),
   ),
-  hubMenuService: createHubMenuService(
-    hubMenuRepository(hubClient, standardClient),
+  topicsService: new TopicsService(
+    hubMenuRepository(hubClient),
+    new CmsApi(new JsonApiClient(config.api.hubEndpoint)),
   ),
   hubContentService: createHubContentService({
     contentRepository: contentRepository(hubClient),

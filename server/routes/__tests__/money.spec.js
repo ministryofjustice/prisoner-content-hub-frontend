@@ -481,7 +481,9 @@ describe('Prisoner Money', () => {
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
-          expect( $('#completed-payments__heading h2').text()).toBe('Completed payments');
+          expect($('#completed-payments__heading h2').text()).toBe(
+            'Completed payments',
+          );
         });
     });
 
@@ -492,17 +494,17 @@ describe('Prisoner Money', () => {
           [api.pendingTransactions, success([])],
         ]);
       });
-    it('does not show pending transactions', async () => {
-      await request(app)
-        .get('/money/transactions/private')
-        .expect(200)
-        .then(response => {
-          const $ = cheerio.load(response.text);
-          // We should be presented the balance
-          expect($('.transaction__balances li').text()).toContain('£456.78');
-          // We should be presented with the pending transactions
-          expect($('#pending-transactions').length).toBe(0);
-        });
+      it('does not show pending transactions', async () => {
+        await request(app)
+          .get('/money/transactions/private')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            // We should be presented the balance
+            expect($('.transaction__balances li').text()).toContain('£456.78');
+            // We should be presented with the pending transactions
+            expect($('#pending-transactions').length).toBe(0);
+          });
       });
       it('does not show the "Completed payments" title', async () => {
         await request(app)
@@ -510,9 +512,9 @@ describe('Prisoner Money', () => {
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
-            expect( $('#completed-payments__heading h2').length).toBe(0);
+            expect($('#completed-payments__heading h2').length).toBe(0);
           });
-        });
+      });
     });
 
     describe('when unable to fetch pending transactions data', () => {
@@ -522,9 +524,8 @@ describe('Prisoner Money', () => {
           [api.transactionHistory, success(transactionApiResponse)],
           [api.balances, success(balancesApiResponse)],
         ]);
-      })
-    it('notifies the user', async () => {
-
+      });
+      it('notifies the user', async () => {
         await request(app)
           .get('/money/transactions/private')
           .expect(200)
@@ -551,7 +552,9 @@ describe('Prisoner Money', () => {
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
-            expect( $('#completed-payments__heading h2').text()).toBe('Completed payments');
+            expect($('#completed-payments__heading h2').text()).toBe(
+              'Completed payments',
+            );
           });
       });
     });

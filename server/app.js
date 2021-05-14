@@ -17,8 +17,6 @@ const { createTopicsRouter } = require('./routes/topics');
 const { createTimetableRouter } = require('./routes/timetable');
 const { createHealthRouter } = require('./routes/health');
 const { createContentRouter } = require('./routes/content');
-const { createVisitsRouter } = require('./routes/visits');
-const { createIncentivesRouter } = require('./routes/incentives');
 const { createMoneyRouter } = require('./routes/money');
 const { createProfileRouter } = require('./routes/profile');
 const { createTagRouter } = require('./routes/tags');
@@ -42,7 +40,7 @@ const createApp = ({
   logger,
   requestLogger,
   hubFeaturedContentService,
-  hubMenuService,
+  topicsService,
   hubContentService,
   hubTagsService,
   offenderService,
@@ -161,7 +159,7 @@ const createApp = ({
   app.use(configureEstablishment());
 
   // Health end point
-  app.use('/health', createHealthRouter());
+  app.use('/health', createHealthRouter(config));
 
   if (config.features.useMockAuth) {
     app.use('*', (req, res, next) => {
@@ -249,31 +247,13 @@ const createApp = ({
     }),
   );
 
-  app.use('/topics', createTopicsRouter({ hubMenuService }));
+  app.use('/topics', createTopicsRouter({ topicsService }));
 
   app.use('/timetable', createTimetableRouter({ offenderService }));
 
   app.use(
-    '/visits',
-    createVisitsRouter({
-      hubContentService,
-      offenderService,
-    }),
-  );
-
-  app.use(
-    '/incentives',
-    createIncentivesRouter({
-      hubContentService,
-      offenderService,
-    }),
-  );
-
-  app.use(
     '/money',
     createMoneyRouter({
-      hubContentService,
-      offenderService,
       prisonerInformationService,
     }),
   );

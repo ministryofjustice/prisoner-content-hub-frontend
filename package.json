@@ -31,16 +31,6 @@
     "node": ">= 14",
     "npm": ">=6.14.8"
   },
-  "nodemonConfig": {
-    "ignore": [
-      ".circleci/*",
-      "migrations/*",
-      "node_modules/*",
-      "**/__tests__/**",
-      "build-info.json"
-    ],
-    "delay": "2500"
-  },
   "jest": {
     "verbose": true,
     "testMatch": ["**/__tests__/**/*.[jt]s?(x)"]

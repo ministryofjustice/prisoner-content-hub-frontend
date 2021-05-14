@@ -1,6 +1,7 @@
 const express = require('express');
 const { path } = require('ramda');
 const Sentry = require('@sentry/node');
+const { logger } = require('../utils/logger');
 
 const fixUrls = element => {
   const { id, description, href, linkText } = element;
@@ -13,14 +14,14 @@ const fixUrls = element => {
   }
 };
 
-const createTopicsRouter = ({ hubMenuService }) => {
+const createTopicsRouter = ({ topicsService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
     try {
       const userName = req.user && req.user.getFullName();
       const establishmentId = path(['session', 'establishmentId'], req);
-      const topics = await hubMenuService.allTopics(establishmentId);
+      const topics = await topicsService.getTopics(establishmentId);
 
       const config = {
         content: false,
@@ -37,6 +38,7 @@ const createTopicsRouter = ({ hubMenuService }) => {
         config,
       });
     } catch (e) {
+      logger.error(`Error loading topics: ${e.message}`);
       Sentry.captureException(e);
       next(e);
     }
