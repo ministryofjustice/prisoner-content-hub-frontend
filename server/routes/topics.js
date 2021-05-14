@@ -1,18 +1,6 @@
 const express = require('express');
-const { path } = require('ramda');
 const Sentry = require('@sentry/node');
 const { logger } = require('../utils/logger');
-
-const fixUrls = element => {
-  const { id, description, href, linkText } = element;
-  switch (element.href) {
-    // TODO: Re-enable when Incentives personalization feature released
-    // case '/content/4204':
-    //   return { id, description, href: '/incentives', linkText };
-    default:
-      return { id, description, href, linkText };
-  }
-};
 
 const createTopicsRouter = ({ topicsService }) => {
   const router = express.Router();
@@ -20,8 +8,10 @@ const createTopicsRouter = ({ topicsService }) => {
   router.get('/', async (req, res, next) => {
     try {
       const userName = req.user && req.user.getFullName();
-      const establishmentId = path(['session', 'establishmentId'], req);
-      const topics = await topicsService.getTopics(establishmentId);
+      const { establishmentId, establishmentName } = req.session;
+      const topics = await topicsService.getTopics(
+        establishmentId && establishmentName,
+      );
 
       const config = {
         content: false,
@@ -34,7 +24,7 @@ const createTopicsRouter = ({ topicsService }) => {
 
       res.render('pages/topics', {
         title: 'Browse the Content Hub',
-        allTopics: topics.map(fixUrls),
+        allTopics: topics,
         config,
       });
     } catch (e) {

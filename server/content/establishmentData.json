@@ -3,7 +3,6 @@
     "name": "berwyn",
     "formattedName": "Berwyn",
     "prefix": "HMP",
-    "uuId": "fd1e1db7-d0be-424a-a3a6-3b0f49e33293",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Coronavirus": "/tags/894",
@@ -23,7 +22,6 @@
     "name": "cookhamwood",
     "formattedName": "Cookham Wood",
     "prefix": "HMYOI",
-    "uuId": "9969cd5a-90fa-476c-9f14-3f85b26d23bc",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -263,7 +261,6 @@
     "name": "wayland",
     "formattedName": "Wayland",
     "prefix": "HMP",
-    "uuId": "b73767ea-2cbb-4ad5-ba22-09379cc07241",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",

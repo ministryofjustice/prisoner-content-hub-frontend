@@ -29,11 +29,6 @@ const getEstablishmentFormattedName = (
   establishmentData = defaultEstablishmentData,
 ) => establishmentData?.[id]?.formattedName;
 
-const getEstablishmentUiId = (
-  id,
-  establishmentData = defaultEstablishmentData,
-) => establishmentData?.[id]?.uuId;
-
 const getEstablishmentHomepageLinks = (
   id,
   establishmentData = defaultEstablishmentData,
@@ -79,7 +74,6 @@ module.exports = {
   getEstablishmentId,
   getEstablishmentName,
   getEstablishmentFormattedName,
-  getEstablishmentUiId,
   getEstablishmentPrefix,
   getEstablishmentHomepageLinks,
   getEstablishmentHomepageLinksTitle,

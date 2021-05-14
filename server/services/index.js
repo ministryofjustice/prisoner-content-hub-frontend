@@ -61,7 +61,6 @@ module.exports = {
     hubFeaturedContentRepository(hubClient),
   ),
   topicsService: new TopicsService(
-    hubMenuRepository(hubClient),
     new CmsApi(new JsonApiClient(config.api.hubEndpoint)),
   ),
   hubContentService: createHubContentService({

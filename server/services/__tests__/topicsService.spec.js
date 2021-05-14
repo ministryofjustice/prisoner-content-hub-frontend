@@ -1,13 +1,12 @@
 const { TopicsService } = require('../topics');
 
 describe('Topics Service', () => {
-  const hubMenuRepo = { tagsMenu: jest.fn() };
-  const cmsApi = { primaryMenu: jest.fn() };
+  const cmsApi = { getTopics: jest.fn() };
   let topicService;
 
   beforeEach(() => {
     jest.resetAllMocks();
-    topicService = new TopicsService(hubMenuRepo, cmsApi);
+    topicService = new TopicsService(cmsApi);
   });
 
   const createTopic = name => ({
@@ -18,70 +17,45 @@ describe('Topics Service', () => {
   });
 
   describe('getTopics', () => {
-    it('returns topics from both sources', async () => {
-      hubMenuRepo.tagsMenu.mockResolvedValue([createTopic('Hub menu topic')]);
-      cmsApi.primaryMenu.mockResolvedValue([createTopic('Primary menu topic')]);
+    it('returns topics', async () => {
+      cmsApi.getTopics.mockResolvedValue([createTopic('topic')]);
 
-      const result = await topicService.getTopics(1);
+      const result = await topicService.getTopics('berwyn');
 
       expect(result).toStrictEqual([
         {
-          description: 'Hub menu topic Desc',
+          description: 'topic Desc',
           href: '/content/1',
           id: '1',
-          linkText: 'Hub menu topic',
-        },
-        {
-          description: 'Primary menu topic Desc',
-          href: '/content/1',
-          id: '1',
-          linkText: 'Primary menu topic',
+          linkText: 'topic',
         },
       ]);
     });
 
     it('sorts topic by link text ignoring case', async () => {
-      hubMenuRepo.tagsMenu.mockResolvedValue([
+      cmsApi.getTopics.mockResolvedValue([
         createTopic('Ad'),
         createTopic('Aa'),
         createTopic('ab'),
       ]);
-      cmsApi.primaryMenu.mockResolvedValue([createTopic('Ac')]);
 
-      const result = await topicService.getTopics(1);
+      const result = await topicService.getTopics('berwyn');
 
-      expect(result.map(r => r.linkText)).toStrictEqual([
-        'Aa',
-        'ab',
-        'Ac',
-        'Ad',
-      ]);
+      expect(result.map(r => r.linkText)).toStrictEqual(['Aa', 'ab', 'Ad']);
     });
 
-    it('Sources to have been called correctly', async () => {
-      hubMenuRepo.tagsMenu.mockResolvedValue([]);
-      cmsApi.primaryMenu.mockResolvedValue([]);
+    it('Source to have been called correctly', async () => {
+      cmsApi.getTopics.mockResolvedValue([]);
 
-      await topicService.getTopics(1);
+      await topicService.getTopics('berwyn');
 
-      expect(hubMenuRepo.tagsMenu).toHaveBeenCalledWith(1);
-      expect(cmsApi.primaryMenu).toHaveBeenCalledWith(1);
+      expect(cmsApi.getTopics).toHaveBeenCalledWith('berwyn');
     });
 
     it('Propagates errors from cmsApi', async () => {
-      hubMenuRepo.tagsMenu.mockRejectedValue(Error('some error!'));
-      cmsApi.primaryMenu.mockResolvedValue([]);
+      cmsApi.getTopics.mockRejectedValue(Error('some error!'));
 
-      return expect(topicService.getTopics(1)).rejects.toEqual(
-        Error('some error!'),
-      );
-    });
-
-    it('Propagates errors from hub menu repo', async () => {
-      hubMenuRepo.tagsMenu.mockResolvedValue([]);
-      cmsApi.primaryMenu.mockRejectedValue(Error('some error!'));
-
-      return expect(topicService.getTopics(1)).rejects.toEqual(
+      return expect(topicService.getTopics('berwyn')).rejects.toEqual(
         Error('some error!'),
       );
     });

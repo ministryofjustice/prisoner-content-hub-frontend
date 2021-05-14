@@ -1,37 +1,70 @@
-const { getEstablishmentUiId } = require('../utils');
+/* eslint-disable class-methods-use-this */
+const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
+
+const topicsQuery = new Query()
+  .addFields('taxonomy_term--tags', [
+    'drupal_internal__tid',
+    'name',
+    'description',
+  ])
+  .addFields('taxonomy_term--moj_categories', [
+    'name',
+    'description',
+    'field_legacy_landing_page',
+  ])
+  .addFilter(
+    'vid.meta.drupal_internal__target_id',
+    ['moj_categories', 'tags'],
+    'IN',
+  )
+  .addPageLimit(100)
+  .getQueryString();
 
 class CmsApi {
   constructor(jsonApiClient) {
     this.jsonApiClient = jsonApiClient;
   }
 
-  async primaryMenu(prisonId = 0) {
-    const response = await this.jsonApiClient.get(
-      `/jsonapi/node/landing_page?fields[node--landing_page]=title,field_moj_description,drupal_internal__nid,field_moj_prisons`,
+  async getTopics(establishmentName) {
+    if (!establishmentName) {
+      return [];
+    }
+
+    const { data } = await this.jsonApiClient.get(
+      `/jsonapi/prison/${establishmentName}/taxonomy_term?${topicsQuery}`,
     );
-    return this.transform(response?.data || {}, prisonId);
+
+    return this.transform(data || []);
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  transform(data, prisonId) {
-    const items = Object.values(data)
-      .filter(({ relationships }) => {
-        const prisons = relationships?.field_moj_prisons?.data;
-        const matchingPrison = prisons.some(
-          prison => prison.id === getEstablishmentUiId(prisonId),
-        );
+  asTag({ attributes }) {
+    const id = attributes.drupal_internal__tid;
+    return {
+      id,
+      linkText: attributes.name,
+      description: attributes?.description?.processed,
+      href: `/tags/${id}`,
+    };
+  }
 
-        return prisons.length === 0 || matchingPrison;
-      })
-      .map(({ attributes }) => ({
-        id: attributes.drupal_internal__nid,
-        linkText: attributes.title,
-        description: attributes?.field_moj_description?.processed,
-        href: `/content/${attributes.drupal_internal__nid}`,
-      }));
+  asCategory({ attributes, relationships }) {
+    const id =
+      relationships?.field_legacy_landing_page?.data?.meta
+        ?.drupal_internal__target_id;
+    return {
+      id,
+      linkText: attributes.name,
+      description: attributes?.description?.processed,
+      href: `/content/${id}`,
+    };
+  }
 
-    return items;
+  transform(items) {
+    return items.map(item => {
+      const isTag = item.type === 'taxonomy_term--tags';
+      return isTag ? this.asTag(item) : this.asCategory(item);
+    });
   }
 }
 
-module.exports = { CmsApi };
+module.exports = { CmsApi, topicsQuery };

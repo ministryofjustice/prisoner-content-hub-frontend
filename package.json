@@ -45,6 +45,7 @@
     "cookie-session": "^2.0.0-rc.1",
     "date-fns": "^2.21.1",
     "dotenv": "^8.2.0",
+    "drupal-jsonapi-params": "^1.1.12",
     "elastic-builder": "^2.13.0",
     "express": "~4.17.1",
     "express-request-id": "^1.4.1",
