@@ -35,8 +35,8 @@ function searchRepository(httpClient) {
               .operator('and'),
           )
           .should([
-            esb.termQuery('prison_name', prison),
-            esb.boolQuery().mustNot([esb.existsQuery('prison_name')]),
+            esb.termQuery('prison_name.keyword', prison),
+            esb.boolQuery().mustNot([esb.existsQuery('prison_name.keyword')]),
           ])
           .minimumShouldMatch(1),
       )
@@ -108,8 +108,8 @@ function searchRepository(httpClient) {
               .minimumShouldMatch(1),
           )
           .should([
-            esb.termQuery('prison_name', prison),
-            esb.boolQuery().mustNot([esb.existsQuery('prison_name')]),
+            esb.termQuery('prison_name.keyword', prison),
+            esb.boolQuery().mustNot([esb.existsQuery('prison_name.keyword')]),
           ])
           .minimumShouldMatch(1),
       )

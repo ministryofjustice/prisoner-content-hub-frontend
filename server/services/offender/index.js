@@ -44,8 +44,7 @@ const createOffenderService = (
       );
       logger.debug(e.stack);
       return {
-        error:
-          'We are not able to show your incentive level summary at this time',
+        error: true,
       };
     }
   }
@@ -68,7 +67,7 @@ const createOffenderService = (
       );
       logger.debug(e.stack);
       return {
-        error: 'We are not able to show your balances at this time',
+        error: true,
       };
     }
   }
@@ -112,7 +111,7 @@ const createOffenderService = (
       );
       logger.debug(e.stack);
       return {
-        error: 'We are not able to show your visits at this time',
+        error: true,
       };
     }
   }
@@ -246,7 +245,7 @@ const createOffenderService = (
   async function getEventsForToday(user, today = new Date()) {
     const todayString = format(today, 'yyyy-MM-dd');
     const results = await getEventsFor(user, todayString, todayString);
-    return results.error ? results : results.events?.[todayString];
+    return results.error ? { error: true } : results.events?.[todayString];
   }
 
   function getEmptyTimetable(startDate, endDate) {
