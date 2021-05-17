@@ -1,11 +1,21 @@
 /* eslint-disable no-console */
+const { Jsona, SwitchCaseJsonMapper } = require('jsona');
 require('dotenv').config();
+
+const dataFormatter = new Jsona({
+  jsonPropertiesMapper: new SwitchCaseJsonMapper({
+    camelizeAttributes: true,
+    camelizeRelationships: true,
+    camelizeType: false,
+    camelizeMeta: true,
+    switchChar: '_',
+  }),
+});
 
 const { DrupalJsonApiParams: QueryParams } = require('drupal-jsonapi-params');
 const { diff } = require('deep-diff');
 
 const { JsonApiClient } = require('../server/clients/jsonApiClient');
-const { linkUpIncludes } = require('./processResponse');
 const { createFeaturedContentResponse } = require('./featuredContent');
 
 const hostname = process.env.HUB_API_ENDPOINT;
@@ -50,12 +60,12 @@ const run = async () => {
     `/jsonapi/prison/cookhamwood/node/featured_articles?${query.getQueryString()}`,
   );
 
-  const featuredContent = createFeaturedContentResponse(
-    linkUpIncludes(response),
-  );
+  const data = dataFormatter.deserialize(response, {});
+
+  const featuredContent = createFeaturedContentResponse(data);
 
   // Raw response
-  // console.log(JSON.stringify(response, null, 2));
+  // console.log(JSON.stringify(featuredContent, null, 2));
 
   // transformed payload
   // console.log(JSON.stringify(featuredContent, null, 2));

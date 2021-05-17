@@ -1,23 +1,21 @@
-const createTiles = ({ data: items }) =>
+const createTiles = items =>
   items.map(item => {
-    const image =
-      item.relationships?.field_moj_thumbnail_image?.data ||
-      item.relationships?.field_image?.data;
-
+    const image = item.fieldMojThumbnailImage || item.fieldImage;
+    const meta = image.resourceIdObjMeta;
     return {
-      id: item.attributes.drupal_internal__nid.toString(),
-      title: item.attributes.title,
+      id: item.drupalInternal_Nid.toString(),
+      title: item.title,
       content_type: item.type.replace('node--', ''),
-      summary: item.attributes.field_moj_description?.summary,
+      summary: item?.fieldMojDescription?.summary,
       image: {
-        target_id: image.attributes.drupal_internal__fid,
-        alt: image.meta.alt,
-        title: image.meta.title,
-        width: image.meta.width,
-        height: image.meta.height,
+        target_id: image.drupalInternal_Fid,
+        alt: meta.alt,
+        title: meta.title,
+        width: meta.width,
+        height: meta.height,
         target_type: 'file',
         target_uuid: image.id,
-        url: image.attributes.uri.url,
+        url: image.uri.url,
       },
       series: [],
     };
@@ -25,15 +23,11 @@ const createTiles = ({ data: items }) =>
 
 const createFeaturedContentResponse = data => {
   const {
-    attributes,
-    relationships: {
-      field_moj_featured_tile_large: largeTiles,
-      field_moj_featured_tile_small: smallTiles,
-    },
+    drupalInternal_Nid: id,
+    title,
+    fieldMojFeaturedTileLarge: largeTiles,
+    fieldMojFeaturedTileSmall: smallTiles,
   } = data[0];
-
-  const { drupal_internal__nid: id, title } = attributes;
-
   return {
     id: id.toString(),
     title,
