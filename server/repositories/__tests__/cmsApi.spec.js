@@ -35,14 +35,6 @@ describe('CmsApi', () => {
       expect(response).toStrictEqual([]);
     });
 
-    it('should handle empty responses', async () => {
-      mockDrupal.get(path).reply(200);
-
-      const response = await cmsApi.getTopics('berwyn');
-
-      expect(response).toStrictEqual([]);
-    });
-
     it('should propagate errors', () => {
       mockDrupal.get(path).reply(500, 'unexpected error');
 

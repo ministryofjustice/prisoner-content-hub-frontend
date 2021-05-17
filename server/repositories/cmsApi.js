@@ -1,5 +1,16 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
+const { Jsona, SwitchCaseJsonMapper } = require('jsona');
+
+const dataFormatter = new Jsona({
+  jsonPropertiesMapper: new SwitchCaseJsonMapper({
+    camelizeAttributes: true,
+    camelizeRelationships: true,
+    camelizeType: false,
+    camelizeMeta: true,
+    switchChar: '_',
+  }),
+});
 
 const topicsQuery = new Query()
   .addFields('taxonomy_term--tags', [
@@ -30,31 +41,30 @@ class CmsApi {
       return [];
     }
 
-    const { data } = await this.jsonApiClient.get(
+    const response = await this.jsonApiClient.get(
       `/jsonapi/prison/${establishmentName}/taxonomy_term?${topicsQuery}`,
     );
 
-    return this.transform(data || []);
+    const items = dataFormatter.deserialize(response);
+    return this.transform(items);
   }
 
-  asTag({ attributes }) {
-    const id = attributes.drupal_internal__tid;
+  asTag({ drupalInternal_Tid: id, name, description }) {
     return {
       id,
-      linkText: attributes.name,
-      description: attributes?.description?.processed,
+      linkText: name,
+      description: description?.processed,
       href: `/tags/${id}`,
     };
   }
 
-  asCategory({ attributes, relationships }) {
+  asCategory({ name, description, fieldLegacyLandingPage }) {
     const id =
-      relationships?.field_legacy_landing_page?.data?.meta
-        ?.drupal_internal__target_id;
+      fieldLegacyLandingPage?.resourceIdObjMeta?.drupal_internal__target_id;
     return {
       id,
-      linkText: attributes.name,
-      description: attributes?.description?.processed,
+      linkText: name,
+      description: description?.processed,
       href: `/content/${id}`,
     };
   }
