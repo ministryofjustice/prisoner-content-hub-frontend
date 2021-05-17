@@ -46,7 +46,7 @@
 {% block homeNavigation %}{% endblock %}
 {% block search %}{% endblock %}
 
-{% macro eventsSummary(events) %}
+{% macro eventsSummaryCard(events) %}
     {% for event in events %}
       <div class="govuk-!-padding-bottom-4">
         <strong>{{event.description}}</strong><br/>
@@ -72,27 +72,27 @@
   <div class="card-background">
       <div class="govuk-width-container">
         <h2 class="govuk-heading-m">Today's timetable</h2>
-        {% if events.error %}
+        {% if eventsSummary.error %}
           <p class="govuk-!-font-size-24" data-test="timetable-error">We are not able to show your timetable at this time, <a href="{{ params.returnUrl }}" class="govuk-link">Try again</a></p>
         {% else %}
           <ul class="govuk-grid-row card-group">
               <li class="govuk-grid-column-one-quarter card-group__item">
                 {% call card({ id: 'morningEvents', heading: 'Morning'}) -%}
-                  {{ eventsSummary(events.morning.events) }}
+                  {{ eventsSummaryCard(eventsSummary.morning.events) }}
                 {%- endcall %}
               </li>
               <li class="govuk-grid-column-one-quarter card-group__item">
                 {% call card({ id: 'afternoonEvents', heading: 'Afternoon'}) -%}
-                  {{ eventsSummary(events.afternoon.events) }}
+                  {{ eventsSummaryCard(eventsSummary.afternoon.events) }}
                 {%- endcall %}
               </li>
               <li class="govuk-grid-column-one-quarter card-group__item">
                 {% call card({ id: 'eveningEvents', heading: 'Evening'}) -%}
-                  {{ eventsSummary(events.evening.events) }}
+                  {{ eventsSummaryCard(eventsSummary.evening.events) }}
                 {%- endcall %}
               </li>
               <li class="govuk-grid-column-one-quarter card-group__item">
-                {{imageCard({ id: 'timetableLink', src: "/public/images/image_timetable.jpg", alt: "timetable picture", link: "/timetable", description: "View your full timetable" }) }}
+                {{imageCard({ id: 'timetableLink', src: "/public/images/image_timetable.jpg", alt: "timetable picture", link: eventsSummary.link, description: "View your full timetable" }) }}
               </li>
           </ul>
         {% endif %}
@@ -157,10 +157,10 @@
               {%- endcall %}
             </li>
             <li class="govuk-grid-column-one-quarter card-group__item">
-            {{imageCard({ id: 'moneyLink', src: "/public/images/image_transactions.jpg", alt: "money picture", link: moneySummary.link, description: "View your transactions" }) }}
+            {{imageCard({ id: 'moneyLink', src: "/public/images/image_transactions.jpg", alt: "money picture", link: moneySummary.transactionsLink, description: "View your transactions" }) }}
             </li>
         </ul>
-        <a href= '/money' }} class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">
+        <a href= '{{moneySummary.contentLink}}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">
           <span>Read more about money and debt</span>
         </a>
       {% endif %}

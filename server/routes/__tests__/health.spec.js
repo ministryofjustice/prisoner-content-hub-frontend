@@ -1,14 +1,14 @@
 const request = require('supertest');
-const express = require('express')
+const express = require('express');
 
 const { createHealthRouter } = require('../health');
 
 describe('GET healthchecks', () => {
   let config;
   let app;
-  const BUILD_NUMBER = 'foo-number'
-  const GIT_REF = 'foo-ref'
-  const GIT_DATE = 'foo-date'
+  const BUILD_NUMBER = 'foo-number';
+  const GIT_REF = 'foo-ref';
+  const GIT_DATE = 'foo-date';
   beforeEach(() => {
     config = {
       buildInfo: {
@@ -17,10 +17,10 @@ describe('GET healthchecks', () => {
         gitDate: GIT_DATE,
       },
     };
-    app = express()
+    app = express();
     app.use('/health', createHealthRouter(config));
-  })
-  it('returns the health status of the application on /health', () => 
+  });
+  it('returns the health status of the application on /health', () =>
     request(app)
       .get('/health')
       .expect(200)
@@ -36,9 +36,8 @@ describe('GET healthchecks', () => {
           uptime: expect.any(Number),
           version: BUILD_NUMBER,
         });
-      })
-  );
-  it('returns the readiness status of the application', () => 
+      }));
+  it('returns the readiness status of the application', () =>
     request(app)
       .get('/health/readiness')
       .expect(200)
@@ -47,6 +46,5 @@ describe('GET healthchecks', () => {
         expect(res.body).toStrictEqual({
           status: 'OK',
         });
-      })
-  );
+      }));
 });

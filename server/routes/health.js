@@ -1,6 +1,6 @@
 const express = require('express');
 
-const createHealthRouter = ({ buildInfo:build }) => {
+const createHealthRouter = ({ buildInfo: build }) => {
   const router = express.Router();
 
   router.get('/', (_, res) => res.json(addAppInfo({ healthy: true }, build)));
@@ -14,9 +14,9 @@ function addAppInfo(result, build) {
     uptime: process.uptime(),
     build,
     version: build && build.buildNumber,
-  }
+  };
 
-  return { ...result, ...buildInfo }
+  return { ...result, ...buildInfo };
 }
 
 module.exports = {

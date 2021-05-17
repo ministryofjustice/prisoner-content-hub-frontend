@@ -5,7 +5,7 @@ const createProfileRouter = ({ offenderService }) => {
 
   const getPersonalisation = async user => {
     const [
-      events,
+      eventsSummary,
       incentivesSummary,
       visitsSummary,
       moneySummary,
@@ -16,13 +16,21 @@ const createProfileRouter = ({ offenderService }) => {
       offenderService.getBalancesFor(user),
     ]);
 
-    const { morning, afternoon, evening, error: timetableError } = events;
     const signedInUser = user.getFullName();
+
+    const {
+      morning,
+      afternoon,
+      evening,
+      error: timetableError,
+    } = eventsSummary;
+
     const {
       incentivesLevel,
       reviewDate,
       error: incentivesError,
     } = incentivesSummary;
+
     const {
       nextVisit,
       visitType,
@@ -30,16 +38,24 @@ const createProfileRouter = ({ offenderService }) => {
       hasNextVisit,
       error: visitsError,
     } = visitsSummary;
+
     const { spends, privateAccount, savings, error: moneyError } = moneySummary;
 
     return {
       signedInUser,
-      events: { error: timetableError, morning, afternoon, evening },
+      eventsSummary: {
+        error: timetableError,
+        morning,
+        afternoon,
+        evening,
+        link: '/timetable',
+      },
+
       incentivesSummary: {
         error: incentivesError,
         incentivesLevel,
         reviewDate,
-        link: '/incentives',
+        link: '/content/4204',
       },
       visitsSummary: {
         error: visitsError,
@@ -47,14 +63,15 @@ const createProfileRouter = ({ offenderService }) => {
         nextVisit,
         visitType,
         visitorName,
-        link: '/visits',
+        link: '/content/4203',
       },
       moneySummary: {
         error: moneyError,
         spends,
         privateAccount,
         savings,
-        link: 'money/transactions',
+        contentLink: '/content/4201',
+        transactionsLink: '/money/transactions',
       },
     };
   };
