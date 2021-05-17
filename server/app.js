@@ -145,6 +145,8 @@ const createApp = ({
     ),
   );
 
+  app.use('/favicon.ico', express.static(path.join(process.cwd(), `/assets/images/favicon.ico`), cacheControl))
+
   // Don't cache dynamic resources
   app.use(noCache());
 
