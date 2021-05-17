@@ -2,10 +2,10 @@ const utils = require('../utils');
 
 const createSearchService = ({
   searchRepository,
-  getEstablishmentName = utils.getEstablishmentName,
+  getEstablishmentFormattedName = utils.getEstablishmentFormattedName,
 }) => {
   function find({ query, limit, from, establishmentId }) {
-    const prison = getEstablishmentName(establishmentId);
+    const prison = getEstablishmentFormattedName(establishmentId);
 
     if (query === '') {
       return [];
@@ -15,7 +15,7 @@ const createSearchService = ({
   }
 
   function typeAhead({ query, limit, establishmentId }) {
-    const prison = getEstablishmentName(establishmentId);
+    const prison = getEstablishmentFormattedName(establishmentId);
 
     if (query === '') {
       return [];

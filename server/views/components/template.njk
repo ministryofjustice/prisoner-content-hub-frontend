@@ -16,7 +16,9 @@
     <meta name="theme-color" content="{{ themeColor | default('#0b0c0c') }}"/>
     <meta name="robots" content="noindex, nofollow, noimageindex">
     {# Hardcoded value of $govuk-black #}
-
+    {% block headIcons %}
+      <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/public/images/favicon.ico" type="image/x-icon" />
+    {% endblock %}
     {% block head %}{% endblock %}
 
     {# The default og:image is added below head so that scrapers see any custom metatags first, and this is just a fallback #}

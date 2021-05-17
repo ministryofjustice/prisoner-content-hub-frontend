@@ -261,6 +261,8 @@ workflows:
       - hmpps/npm_security_audit:
           context:
             - hmpps-common-vars
+          slack_channel: pfs-alerts
       - hmpps/veracode_pipeline_scan:
           context:
             - hmpps-common-vars
+          slack_channel: pfs-alerts
