@@ -252,11 +252,11 @@ workflows:
   security:
     triggers:
       - schedule:
-          cron: "35 15 * * 1-5"
+          cron: "0 6 * * 1-5"
           filters:
             branches:
               only:
-                - feature/security-audit
+                - main
     jobs:
       - hmpps/npm_security_audit:
           context:
