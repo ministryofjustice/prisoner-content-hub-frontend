@@ -2,10 +2,6 @@ defaults: &defaults
   working_directory: ~/workspace
   docker:
     - image: mojdigitalstudio/circleci-build-container
-default_machine: &default_machine
-  machine:
-    enabled: true
-  working_directory: ~/workspace
 test_setup: &test_setup
   docker:
     - image: circleci/node:14-buster-browsers
@@ -160,9 +156,9 @@ jobs:
       - store_test_results:
           path: test-results
       - store_artifacts:
-          path: cypress/videos
+          path: cypress/artifacts/videos
       - store_artifacts:
-          path: cypress/screenshots
+          path: cypress/artifacts/screenshots
 
   build_preview:
     <<: *defaults

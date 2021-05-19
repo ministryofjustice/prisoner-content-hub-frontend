@@ -9,5 +9,9 @@
   "supportFile": "cypress/support/index.js",
   "viewportWidth": 1280,
   "viewportHeight": 768,
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "reporter": "cypress-multi-reporters",
+  "reporterOptions": {
+    "configFile": "reporter-config.json"
+  }
 }
