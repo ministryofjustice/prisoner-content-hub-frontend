@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://wayland.prisoner-content-hub.local:3000",
+  "baseUrl": "http://localhost:3000",
   "testFiles": "**/*.feature",
   "integrationFolder": "cypress/features",
   "fixturesFolder": "cypress/fixtures",

@@ -1,11 +1,3 @@
-defaults: &defaults
-  working_directory: ~/workspace
-  docker:
-    - image: mojdigitalstudio/circleci-build-container
-test_setup: &test_setup
-  docker:
-    - image: circleci/node:14-buster-browsers
-  working_directory: ~/workspace
 main_branch: &main_branch
   filters:
     branches:
@@ -21,6 +13,16 @@ orbs:
   kubernetes: circleci/kubernetes@0.11.2
   helm: circleci/helm@1.2.0
   hmpps: ministryofjustice/hmpps@3.1.2
+
+executors:
+  build_executor:
+    docker:
+    - image: mojdigitalstudio/circleci-build-container
+    working_directory: ~/workspace
+  test_executor:
+    docker:
+      - image: circleci/node:14-buster-browsers
+    working_directory: ~/workspace
 
 commands:
   set_up_helm:
@@ -107,40 +109,27 @@ jobs:
             - assets/stylesheets
             - .cache/Cypress
 
-  run_unit_and_integration_tests:
-    <<: *test_setup
+  run_unit_tests:
+    executor: test_executor
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/workspace
       - restore_cache:
           key: dependency-cache-1-{{ checksum "package-lock.json" }}
-      - run:
-          name: Install dependencies
-          command: npm install
-      - save_cache:
-          key: dependency-cache-1-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
-            - ~/.cache
       - run:
           name: Run Unit and Integration tests
           command: npm run test
       - run:
           name: Lint code
           command: npm run lint
-      # TODO: do we get value from Prettier in CI? This raises intermittent errors in CI
-      # - run:
-      #     name: Prettier
-      #     command: npm run prettier -- --list-different
 
-  e2e_test:
-    <<: *test_setup
+  run_e2e_tests:
+    executor: test_executor
     steps:
       - checkout
       - attach_workspace:
           at: ~/workspace
-      - run:
-          name: Install missing OS dependency
-          command: sudo apt-get install libxss1
       - restore_cache:
           key: dependency-cache-1-{{ checksum "package-lock.json" }}
       - run:
@@ -161,7 +150,7 @@ jobs:
           path: cypress/artifacts/screenshots
 
   build_preview:
-    <<: *defaults
+    executor: build_executor
     steps:
       - checkout
       - setup_remote_docker:
@@ -196,7 +185,7 @@ jobs:
             - version-to-deploy.txt
 
   build_production:
-    <<: *defaults
+    executor: build_executor
     steps:
       - checkout
       - setup_remote_docker:
@@ -238,7 +227,7 @@ jobs:
             - version-to-deploy.txt
 
   deploy_cloud_platform:
-    <<: *defaults
+    executor: build_executor
     parameters:
       environment:
         type: string
@@ -254,10 +243,12 @@ workflows:
   build-test-deploy:
     jobs:
       - build
-      - e2e_test:
+      - run_unit_tests:
           requires:
             - build
-
+      - run_e2e_tests:
+          requires:
+            - build
 
       - build_preview:
           <<: *feature_branch
@@ -280,7 +271,8 @@ workflows:
       - build_production:
           <<: *main_branch
           requires:
-            - e2e_test
+            - run_unit_tests
+            - run_e2e_tests
 
       - deploy_cloud_platform:
           <<: *main_branch
