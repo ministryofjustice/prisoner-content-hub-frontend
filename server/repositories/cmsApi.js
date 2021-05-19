@@ -28,6 +28,7 @@ const topicsQuery = new Query()
     ['moj_categories', 'tags'],
     'IN',
   )
+  .addSort('name')
   .addPageLimit(100)
   .getQueryString();
 
@@ -37,10 +38,6 @@ class CmsApi {
   }
 
   async getTopics(establishmentName) {
-    if (!establishmentName) {
-      return [];
-    }
-
     const response = await this.jsonApiClient.get(
       `/jsonapi/prison/${establishmentName}/taxonomy_term?${topicsQuery}`,
     );

@@ -86,16 +86,14 @@ describe('GET /topics', () => {
           expect(topicsService.getTopics).toHaveBeenCalledWith('berwyn');
         }));
 
-    it('does not pass establishment name when no establishment Id', () => {
-      sessionProvider.mockReturnValue({
-        establishmentName: 'berwyn',
-      });
+    it('Should error when no establishment present', () => {
+      sessionProvider.mockReturnValue({});
 
       return request(app)
         .get('/topics')
-        .expect(200)
+        .expect(500)
         .then(() => {
-          expect(topicsService.getTopics).toHaveBeenCalledWith(undefined);
+          expect(topicsService.getTopics).not.toHaveBeenCalled();
         });
     });
   });

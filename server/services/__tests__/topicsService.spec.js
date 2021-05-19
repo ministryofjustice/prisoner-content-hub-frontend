@@ -32,18 +32,6 @@ describe('Topics Service', () => {
       ]);
     });
 
-    it('sorts topic by link text ignoring case', async () => {
-      cmsApi.getTopics.mockResolvedValue([
-        createTopic('Ad'),
-        createTopic('Aa'),
-        createTopic('ab'),
-      ]);
-
-      const result = await topicService.getTopics('berwyn');
-
-      expect(result.map(r => r.linkText)).toStrictEqual(['Aa', 'ab', 'Ad']);
-    });
-
     it('Source to have been called correctly', async () => {
       cmsApi.getTopics.mockResolvedValue([]);
 

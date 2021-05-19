@@ -84,11 +84,5 @@ describe('CmsApi', () => {
         },
       ]);
     });
-
-    it('Defaults to all content if prison not passed', async () => {
-      const response = await cmsApi.getTopics(null);
-
-      expect(response).toStrictEqual([]);
-    });
   });
 });
