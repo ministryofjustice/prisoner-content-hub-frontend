@@ -24,6 +24,7 @@ version: 2.1
 orbs:
   kubernetes: circleci/kubernetes@0.11.2
   helm: circleci/helm@1.2.0
+  hmpps: ministryofjustice/hmpps@3.1.2
 
 commands:
   set_up_helm:
@@ -247,3 +248,21 @@ workflows:
               environment: ["production"]
           requires:
             - approve_deploy_production
+
+  security:
+    triggers:
+      - schedule:
+          cron: "0 6 * * 1-5"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - hmpps/npm_security_audit:
+          context:
+            - hmpps-common-vars
+          slack_channel: pfs-alerts
+      - hmpps/veracode_pipeline_scan:
+          context:
+            - hmpps-common-vars
+          slack_channel: pfs-alerts
