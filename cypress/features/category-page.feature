@@ -6,5 +6,5 @@ Feature: Category pages
 
   Scenario: I navigate to the category page
     Given that I go to the Prisoner Content Hub for "Wayland"
-    When I click the "Money & debt" link
-    Then I am taken to the "Money and Debt" page
+    When I click the "Music & talk" link
+    Then I am taken to the "Music and talk" page

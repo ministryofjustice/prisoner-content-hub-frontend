@@ -106,6 +106,34 @@ jobs:
       #     name: Prettier
       #     command: npm run prettier -- --list-different
 
+  e2e_test:
+    <<: *test_setup
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Install missing OS dependency
+          command: sudo apt-get install libxss1
+      - run:
+          name: Run the node app.
+          command: npm run start
+          background: true
+      - run:
+          name: Wait for node app to start
+          command: sleep 5
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: e2e tests
+          command: npm run test:file
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots
+
   build_preview:
     <<: *defaults
     steps:
@@ -200,6 +228,7 @@ workflows:
   build-test-deploy:
     jobs:
       - run_unit_and_integration_tests
+      - e2e_test
 
       - build_preview:
           <<: *feature_branch
