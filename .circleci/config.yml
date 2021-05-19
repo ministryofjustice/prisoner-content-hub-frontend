@@ -141,7 +141,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/app
+          at: ~/workspace
       - run:
           name: Install missing OS dependency
           command: sudo apt-get install libxss1
