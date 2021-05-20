@@ -113,25 +113,6 @@
     "personalInformation": true
   },
 
-  "1076": {
-    "name": "lindholme",
-    "displayName": "HMP Lindholme",
-    "searchName": "Lindholme",
-    "homePageLinksTitle": "Popular topics",
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "Music & talk": "/content/3662",
-      "Chaplaincy": "/tags/901",
-      "Inspiration": "/content/3659",
-      "Exercise": "/tags/907",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/content/3657",
-      "PSIs & PSOs": "/tags/796",
-      "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
-  },
-
   "1077": {
     "name": "newhall",
     "displayName": "HMPYOI New Hall",
@@ -283,6 +264,7 @@
     },
     "personalInformation": true
   },
+<<<<<<< HEAD
 
   "1086": {
     "name": "wetherby",

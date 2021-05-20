@@ -2,24 +2,40 @@ const { configureEstablishment } = require('../configureEstablishment');
 
 describe('configureEstablishment', () => {
   const next = jest.fn();
+  let res;
 
   beforeEach(() => {
+    res = { locals: {} };
     next.mockClear();
   });
 
-  it('should use the set the session from the config', () => {
+  it('should use the default prison if no session data', () => {
     const req = {
-      session: {
-        establishmentName: 'wayland',
-        establishmentId: 793,
-      },
+      session: {},
     };
-
-    const res = { locals: {} };
 
     configureEstablishment()(req, res, next);
 
     expect(res.locals.establishmentDisplayName).toBe('HMP Wayland');
+    expect(req.session.establishmentName).toBe('wayland');
+    expect(req.session.establishmentPersonalisationEnabled).toBe(true);
+
+    expect(next).toHaveBeenCalled();
+  });
+
+  it('should use session data if already set', () => {
+    const req = {
+      session: {
+        id: 1,
+        establishmentName: 'berwyn',
+        establishmentId: 792,
+        establishmentPersonalisationEnabled: true,
+      },
+    };
+
+    configureEstablishment()(req, res, next);
+
+    expect(res.locals.establishmentDisplayName).toBe('HMP Berwyn');
     expect(next).toHaveBeenCalled();
   });
 
@@ -32,10 +48,8 @@ describe('configureEstablishment', () => {
       session: {},
     };
 
-    const res = { locals: {} };
-
     configureEstablishment()(req, res, next);
 
-    expect(res.locals.establishmentDisplayName).toBe(`HMYOI Cookham Wood`);
+    expect(res.locals.establishmentDisplayName).toBe('HMYOI Cookham Wood');
   });
 });
