@@ -30,7 +30,10 @@ describe('Prisoner Money', () => {
   let app;
   const client = { get: jest.fn() };
   const stubApiCalls = mockServer(client);
-  const prisonApiRepository = new PrisonApiRepository({ client });
+  const prisonApiRepository = new PrisonApiRepository({
+    client,
+    apiUrl: 'http://some-host/api',
+  });
   const prisonerInformationService = new PrisonerInformationService({
     prisonApiRepository,
   });
