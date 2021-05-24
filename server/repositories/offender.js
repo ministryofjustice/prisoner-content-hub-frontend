@@ -1,4 +1,3 @@
-const { path } = require('ramda');
 const config = require('../config');
 
 function validateOffenderNumberFor(offenderNo) {
@@ -6,69 +5,57 @@ function validateOffenderNumberFor(offenderNo) {
   return pattern.test(offenderNo);
 }
 
-const getBookingsUrlFrom = path(['prisonApi', 'endpoints', 'bookings']);
+const baseUrl = `${config.prisonApi.baseUrl}/api`;
 
 function offenderRepository(httpClient) {
   function getOffenderDetailsFor(offenderNo) {
     if (validateOffenderNumberFor(offenderNo)) {
       return httpClient.get(
-        `${getBookingsUrlFrom(config)}/offenderNo/${offenderNo.toUpperCase()}`,
+        `${baseUrl}/bookings/offenderNo/${offenderNo.toUpperCase()}`,
       );
     }
     throw new Error('Invalid offender number');
   }
 
   function getIncentivesSummaryFor(bookingId) {
-    return httpClient.get(
-      `${getBookingsUrlFrom(config)}/${bookingId}/iepSummary`,
-    );
+    return httpClient.get(`${baseUrl}/bookings/${bookingId}/iepSummary`);
   }
 
   function getBalancesFor(bookingId) {
-    return httpClient.get(
-      `${getBookingsUrlFrom(config)}/${bookingId}/balances`,
-    );
+    return httpClient.get(`${baseUrl}/bookings/${bookingId}/balances`);
   }
 
   function getKeyWorkerFor(offenderNo) {
     return httpClient.get(
-      `${getBookingsUrlFrom(config)}/offenderNo/${offenderNo}/key-worker`,
+      `${baseUrl}/bookings/offenderNo/${offenderNo}/key-worker`,
     );
   }
 
   function getNextVisitFor(bookingId) {
-    return httpClient.get(
-      `${getBookingsUrlFrom(config)}/${bookingId}/visits/next`,
-    );
+    return httpClient.get(`${baseUrl}/bookings/${bookingId}/visits/next`);
   }
 
   function getLastVisitFor(bookingId) {
-    return httpClient.get(
-      `${getBookingsUrlFrom(config)}/${bookingId}/visits/last`,
-    );
+    return httpClient.get(`${baseUrl}/bookings/${bookingId}/visits/last`);
   }
 
   function getVisitsFor(bookingId, startDate) {
-    const endpoint = `${getBookingsUrlFrom(config)}/${bookingId}/visits`;
+    const endpoint = `${baseUrl}/bookings/${bookingId}/visits`;
     const query = [`fromDate=${startDate}`, `toDate=${startDate}`];
 
     return httpClient.get(`${endpoint}?${query.join('&')}`);
   }
 
   function sentenceDetailsFor(bookingId) {
-    return httpClient.get(
-      `${getBookingsUrlFrom(config)}/${bookingId}/sentenceDetail`,
-    );
+    return httpClient.get(`${baseUrl}/bookings/${bookingId}/sentenceDetail`);
   }
 
   function getCurrentEvents(bookingId) {
-    return httpClient.get(
-      `${getBookingsUrlFrom(config)}/${bookingId}/events/today`,
-    );
+    return httpClient.get(`${baseUrl}/bookings/${bookingId}/events/today`);
   }
 
   function getEventsFor(bookingId, startDate, endDate) {
-    const endpoint = `${getBookingsUrlFrom(config)}/${bookingId}/events`;
+    const endpoint = `${baseUrl}/bookings/${bookingId}/events`;
     const query = [`fromDate=${startDate}`, `toDate=${endDate}`];
 
     return httpClient.get(`${endpoint}?${query.join('&')}`);
