@@ -38,10 +38,22 @@ Cypress is used for E2E testing
 
 - Backing services will need to be run in Docker-Compose using the `prisoner-content-hub` repository
 - Your `/etc/hosts` will need to be configured such that `127.0.0.1 localhost` includes
-  - `wayland.prisoner-content-hub.local`
   - `berwyn.prisoner-content-hub.local`
   - `cookhamwood.prisoner-content-hub.local`
+  - `erlestoke.prisoner-content-hub.local`
+  - `felthama.prisoner-content-hub.local`
+  - `felthamb.prisoner-content-hub.local`
+  - `garth.prisoner-content-hub.local`
   - `lindholme.prisoner-content-hub.local`
+  - `newhall.prisoner-content-hub.local`
+  - `ranby.prisoner-content-hub.local`
+  - `stokeheath.prisoner-content-hub.local`
+  - `styal.prisoner-content-hub.local`
+  - `swaleside.prisoner-content-hub.local`
+  - `themount.prisoner-content-hub.local`
+  - `wayland.prisoner-content-hub.local`
+  - `werrington.prisoner-content-hub.local`
+  - `wetherby.prisoner-content-hub.local`
 
 To launch the application and open the Cypress test runner
 

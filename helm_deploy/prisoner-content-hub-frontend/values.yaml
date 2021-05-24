@@ -56,9 +56,21 @@ ingress:
   path: /
   prefixes:
     - berwyn
-    - wayland
     - cookhamwood
+    - erlestoke
+    - felthama
+    - felthamb
+    - garth
     - lindholme
+    - newhall
+    - ranby
+    - stokeheath
+    - styal
+    - swaleside
+    - themount
+    - wayland
+    - werrington
+    - wetherby
   allowed:
     sheffieldoffice: "217.33.148.210/29"
     mojvpn: "81.134.202.29/32"
