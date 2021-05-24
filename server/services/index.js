@@ -76,7 +76,10 @@ module.exports = {
     offenderRepository(prisonApiClient),
   ),
   prisonerInformationService: new PrisonerInformationService({
-    prisonApiRepository: new PrisonApiRepository({ client: prisonApiClient }),
+    prisonApiRepository: new PrisonApiRepository({
+      client: prisonApiClient,
+      apiUrl: config.prisonApi.baseUrl,
+    }),
   }),
   searchService: createSearchService({
     searchRepository: searchRepository(standardClient),

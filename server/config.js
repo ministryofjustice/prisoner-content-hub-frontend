@@ -1,9 +1,6 @@
 const { getEnv, isProduction } = require('../utils/index');
 
 const hubEndpoint = getEnv('HUB_API_ENDPOINT', { requireInProduction: true });
-const prisonApiBaseUrl = getEnv('PRISON_API_BASE_URL', 'https://api.nomis', {
-  requireInProduction: true,
-});
 const hmppsAuthBaseUrl = getEnv('HMPPS_AUTH_BASE_URL', 'https://api.nomis', {
   requireInProduction: true,
 });
@@ -67,9 +64,9 @@ module.exports = {
       clientSecret: getEnv('HMPPS_AUTH_CLIENT_SECRET', 'UNSET'),
       authUrl: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
     },
-    endpoints: {
-      bookings: `${prisonApiBaseUrl}/api/bookings`,
-    },
+    baseUrl: getEnv('PRISON_API_BASE_URL', 'https://api.nomis', {
+      requireInProduction: true,
+    }),
   },
   elasticsearch: {
     search: `${elasticsearchEndpoint}/elasticsearch_index_${drupalDatabaseName}_${elasticsearchIndexName}/_search`,

@@ -12,7 +12,7 @@ version: 2.1
 orbs:
   kubernetes: circleci/kubernetes@0.11.2
   helm: circleci/helm@1.2.0
-  hmpps: ministryofjustice/hmpps@3.1.2
+  hmpps: ministryofjustice/hmpps@3.2
 
 executors:
   build_executor:
@@ -309,10 +309,12 @@ workflows:
                 - main
     jobs:
       - hmpps/npm_security_audit:
+          slack_channel: pfs-alerts
           context:
             - hmpps-common-vars
+      - hmpps/veracode_policy_scan:
+          docker_image_app_dir: /home/node/app
           slack_channel: pfs-alerts
-      - hmpps/veracode_pipeline_scan:
           context:
             - hmpps-common-vars
-          slack_channel: pfs-alerts
+            - veracode-credentials

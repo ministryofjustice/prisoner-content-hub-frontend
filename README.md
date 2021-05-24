@@ -41,6 +41,7 @@ Cypress is used for E2E testing
   - `wayland.prisoner-content-hub.local`
   - `berwyn.prisoner-content-hub.local`
   - `cookhamwood.prisoner-content-hub.local`
+  - `lindholme.prisoner-content-hub.local`
 
 To launch the application and open the Cypress test runner
 
