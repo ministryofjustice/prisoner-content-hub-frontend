@@ -11,12 +11,11 @@ const {
   isValidBookingId,
   isValidTransactionType,
 } = require('../utils/validators');
-const { getEnvironmentVariableOrThrow } = require('../../utils');
 
 class PrisonApiRepository {
   constructor({ client, apiUrl }) {
     this.client = client;
-    this.url = apiUrl || getEnvironmentVariableOrThrow('PRISON_API_BASE_URL');
+    this.url = apiUrl;
   }
 
   async getTransactionsForDateRange(
