@@ -171,7 +171,8 @@ describe('#hubContentService', () => {
 
     it('returns landing page content', async () => {
       const contentRepository = createContentRepository();
-      const categoryFeaturedContentRepository = createCategoryFeaturedContentRepository();
+      const categoryFeaturedContentRepository =
+        createCategoryFeaturedContentRepository();
       const menuRepository = createMenuRepository();
       const service = createHubContentService({
         contentRepository,
@@ -193,7 +194,8 @@ describe('#hubContentService', () => {
 
     it('calls for the featured content', async () => {
       const contentRepository = createContentRepository();
-      const categoryFeaturedContentRepository = createCategoryFeaturedContentRepository();
+      const categoryFeaturedContentRepository =
+        createCategoryFeaturedContentRepository();
       const menuRepository = createMenuRepository();
       const service = createHubContentService({
         contentRepository,
@@ -211,7 +213,8 @@ describe('#hubContentService', () => {
 
     it('calls for the categoryFeaturedContentRepository', async () => {
       const contentRepository = createContentRepository();
-      const categoryFeaturedContentRepository = createCategoryFeaturedContentRepository();
+      const categoryFeaturedContentRepository =
+        createCategoryFeaturedContentRepository();
       const menuRepository = createMenuRepository();
       const service = createHubContentService({
         contentRepository,
@@ -234,7 +237,8 @@ describe('#hubContentService', () => {
 
     it('call for the categoryMenu', async () => {
       const contentRepository = createContentRepository();
-      const categoryFeaturedContentRepository = createCategoryFeaturedContentRepository();
+      const categoryFeaturedContentRepository =
+        createCategoryFeaturedContentRepository();
       const menuRepository = createMenuRepository();
       const service = createHubContentService({
         contentRepository,

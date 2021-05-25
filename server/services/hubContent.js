@@ -106,21 +106,18 @@ function createHubContentService({
     const featuredContentId = prop('featuredContentId', data);
     const categoryId = prop('categoryId', data);
 
-    const [
-      featuredContent,
-      categoryFeaturedContent,
-      categoryMenu,
-    ] = await Promise.all([
-      contentRepository.contentFor(featuredContentId),
-      categoryFeaturedContentRepository.contentFor({
-        categoryId,
-        establishmentId,
-      }),
-      menuRepository.categoryMenu({
-        categoryId,
-        prisonId: establishmentId,
-      }),
-    ]);
+    const [featuredContent, categoryFeaturedContent, categoryMenu] =
+      await Promise.all([
+        contentRepository.contentFor(featuredContentId),
+        categoryFeaturedContentRepository.contentFor({
+          categoryId,
+          establishmentId,
+        }),
+        menuRepository.categoryMenu({
+          categoryId,
+          prisonId: establishmentId,
+        }),
+      ]);
 
     return {
       ...data,

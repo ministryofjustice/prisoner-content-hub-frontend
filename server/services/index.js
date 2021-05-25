@@ -66,9 +66,8 @@ module.exports = {
   hubContentService: createHubContentService({
     contentRepository: contentRepository(hubClient),
     menuRepository: hubMenuRepository(hubClient),
-    categoryFeaturedContentRepository: categoryFeaturedContentRepository(
-      hubClient,
-    ),
+    categoryFeaturedContentRepository:
+      categoryFeaturedContentRepository(hubClient),
   }),
   hubTagsService: createHubTagsService(contentRepository(hubClient)),
   offenderService: createPrisonApiOffenderService(

@@ -4,17 +4,13 @@ const createProfileRouter = ({ offenderService }) => {
   const router = express.Router();
 
   const getPersonalisation = async user => {
-    const [
-      eventsSummary,
-      incentivesSummary,
-      visitsSummary,
-      moneySummary,
-    ] = await Promise.all([
-      offenderService.getEventsForToday(user),
-      offenderService.getIncentivesSummaryFor(user),
-      offenderService.getVisitsFor(user),
-      offenderService.getBalancesFor(user),
-    ]);
+    const [eventsSummary, incentivesSummary, visitsSummary, moneySummary] =
+      await Promise.all([
+        offenderService.getEventsForToday(user),
+        offenderService.getIncentivesSummaryFor(user),
+        offenderService.getVisitsFor(user),
+        offenderService.getBalancesFor(user),
+      ]);
 
     const signedInUser = user.getFullName();
 

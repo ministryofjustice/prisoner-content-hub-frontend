@@ -20,7 +20,8 @@ const {
 
 const api = {
   transactionHistory: /\/transaction-history/i,
-  pendingTransactions: /\/transaction-history\?account_code=cash&transaction_type=(HOA|WHF)/i,
+  pendingTransactions:
+    /\/transaction-history\?account_code=cash&transaction_type=(HOA|WHF)/i,
   agencies: /\/agencies\/type\/INST\?activeOnly=false/i,
   balances: /\/balances/i,
   damageObligations: /\/damage-obligations/i,

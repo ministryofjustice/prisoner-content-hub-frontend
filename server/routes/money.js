@@ -49,14 +49,12 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
       const { user } = req;
 
       if (user) {
-        const damageObligations = await prisonerInformationService.getDamageObligationsFor(
-          user,
-        );
+        const damageObligations =
+          await prisonerInformationService.getDamageObligationsFor(user);
 
         templateData.prisonerInformation = {
-          damageObligations: createDamageObligationsResponseFrom(
-            damageObligations,
-          ),
+          damageObligations:
+            createDamageObligationsResponseFrom(damageObligations),
           selected: 'damage-obligations',
           accountTypes,
         };
@@ -90,16 +88,16 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
           const accountCode = 'spends';
 
           const { selectedDate } = req.query;
-          const { dateSelection, fromDate, toDate } = processSelectedDate(
-            selectedDate,
-          );
+          const { dateSelection, fromDate, toDate } =
+            processSelectedDate(selectedDate);
 
-          const transactionsData = await prisonerInformationService.getTransactionsFor(
-            user,
-            accountCode,
-            fromDate,
-            toDate,
-          );
+          const transactionsData =
+            await prisonerInformationService.getTransactionsFor(
+              user,
+              accountCode,
+              fromDate,
+              toDate,
+            );
 
           if (!transactionsData) {
             return next(new Error('Failed to fetch transaction data'));
@@ -155,16 +153,16 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
         const accountCode = 'savings';
 
         const { selectedDate } = req.query;
-        const { dateSelection, fromDate, toDate } = processSelectedDate(
-          selectedDate,
-        );
+        const { dateSelection, fromDate, toDate } =
+          processSelectedDate(selectedDate);
 
-        const transactionsData = await prisonerInformationService.getTransactionsFor(
-          user,
-          accountCode,
-          fromDate,
-          toDate,
-        );
+        const transactionsData =
+          await prisonerInformationService.getTransactionsFor(
+            user,
+            accountCode,
+            fromDate,
+            toDate,
+          );
 
         if (!transactionsData) {
           return next(new Error('Failed to fetch transaction data'));
@@ -217,15 +215,15 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
 
       if (user) {
         const { selectedDate } = req.query;
-        const { dateSelection, fromDate, toDate } = processSelectedDate(
-          selectedDate,
-        );
+        const { dateSelection, fromDate, toDate } =
+          processSelectedDate(selectedDate);
 
-        const transactionsData = await prisonerInformationService.getPrivateTransactionsFor(
-          user,
-          fromDate,
-          toDate,
-        );
+        const transactionsData =
+          await prisonerInformationService.getPrivateTransactionsFor(
+            user,
+            fromDate,
+            toDate,
+          );
 
         if (!transactionsData) {
           return next(new Error('Failed to fetch transaction data'));
@@ -242,9 +240,8 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
           balances,
         });
 
-        const formattedPendingTransactions = createPendingTransactionsResponseFrom(
-          pending,
-        );
+        const formattedPendingTransactions =
+          createPendingTransactionsResponseFrom(pending);
 
         templateData.prisonerInformation = {
           transactions: formattedTransactions,
