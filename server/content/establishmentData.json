@@ -248,7 +248,7 @@
 
   "1085": {
     "name": "werrington",
-    "displayName": "HMPYOI Werrington",
+    "displayName": "HMYOI Werrington",
     "searchName": "Werrington",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
@@ -264,12 +264,11 @@
     },
     "personalInformation": true
   },
-<<<<<<< HEAD
 
   "1086": {
     "name": "wetherby",
     "formattedName": "Wetherby",
-    "displayName": "HMPYOI Wetherby",
+    "displayName": "HMYOI Wetherby",
     "searchName": "Wetherby",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
