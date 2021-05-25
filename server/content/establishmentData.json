@@ -58,7 +58,7 @@
 
   "1083": {
     "name": "felthama",
-    "displayName": "HMPYOI Feltham A",
+    "displayName": "HMYOI Feltham A",
     "searchName": "Feltham A",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
@@ -77,7 +77,7 @@
 
   "1084": {
     "name": "felthamb",
-    "displayName": "HMPYOI Feltham B",
+    "displayName": "HMYOI Feltham B",
     "searchName": "Feltham B",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
@@ -98,6 +98,25 @@
     "name": "garth",
     "displayName": "HMP Garth",
     "searchName": "Garth",
+    "homePageLinksTitle": "Popular topics",
+    "homePageLinks": {
+      "Your profile": "/profile",
+      "Music & talk": "/content/3662",
+      "Chaplaincy": "/tags/901",
+      "Inspiration": "/content/3659",
+      "Exercise": "/tags/907",
+      "Games": "/content/3621",
+      "Healthy mind & body": "/content/3657",
+      "PSIs & PSOs": "/tags/796",
+      "Facilities list & catalogues": "/content/4539"
+    },
+    "personalInformation": true
+  },
+
+  "1076": {
+    "name": "lindholme",
+    "displayName": "HMP Lindholme",
+    "searchName": "Lindholme",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
