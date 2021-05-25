@@ -6,9 +6,9 @@ build:
 
 push:
 	@docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
-	docker tag prisoner-content-hub-frontend mojdigitalstudio/prisoner-content-hub-frontend:build-$(APP_VERSION)
+	docker tag prisoner-content-hub-frontend mojdigitalstudio/prisoner-content-hub-frontend:$(APP_VERSION)
 	docker tag prisoner-content-hub-frontend mojdigitalstudio/prisoner-content-hub-frontend:latest
-	docker push mojdigitalstudio/prisoner-content-hub-frontend:build-$(APP_VERSION)
+	docker push mojdigitalstudio/prisoner-content-hub-frontend:$(APP_VERSION)
 	docker push mojdigitalstudio/prisoner-content-hub-frontend:latest
 
 push-preview:
