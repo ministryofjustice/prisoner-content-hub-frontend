@@ -60,6 +60,7 @@ commands:
           name: Release to << parameters.environment >>
           command: |
             VERSION_TO_DEPLOY=$(cat /tmp/build-info/version-to-deploy.txt)
+            sed -i "s/appVersion:.*/appVersion: \"${VERSION_TO_DEPLOY}\"/g" "./helm_deploy/prisoner-content-hub-frontend/Chart.yaml"
             helm upgrade << parameters.releaseName >> ./helm_deploy/prisoner-content-hub-frontend \
               --install --wait --force --reset-values --timeout 360s \
               --namespace=${KUBE_NAMESPACE} \
@@ -157,10 +158,10 @@ jobs:
           docker_layer_caching: true
       - restore_cache:
           key: dependency-cache-1-{{ checksum "package-lock.json" }}
+      - hmpps/create_app_version
       - run:
           name: Build frontend Docker image
           command: |
-            BUILD_NUMBER="$CIRCLE_BUILD_NUM" \
             GIT_REF="$CIRCLE_SHA1" \
             GIT_DATE="$(git log --format=%cd -n1 --date=iso $CIRCLE_SHA1)" \
             make build
@@ -178,7 +179,7 @@ jobs:
           name: Save build number (for deployment)
           command: |
             mkdir -p /tmp/build-info
-            echo preview > /tmp/build-info/version-to-deploy.txt
+            echo $APP_VERSION > /tmp/build-info/version-to-deploy.txt
       - persist_to_workspace:
           root: /tmp/build-info
           paths:
@@ -192,10 +193,11 @@ jobs:
           docker_layer_caching: true
       - restore_cache:
           key: dependency-cache-1-{{ checksum "package-lock.json" }}
+      - hmpps/create_app_version
       - run:
           name: Build frontend Docker image
           command: |
-            BUILD_NUMBER="$CIRCLE_BUILD_NUM" \
+            BUILD_NUMBER="$APP_VERSION" \
             GIT_REF="$CIRCLE_SHA1" \
             GIT_DATE="$(git log --format=%cd -n1 --date=iso $CIRCLE_SHA1)" \
             make build
@@ -214,13 +216,13 @@ jobs:
           command: |
             git config user.name "Circle CI"
             git config user.email "circle@circleci.com"
-            git tag -a "$(date '+%Y-%m-%d')-$CIRCLE_BUILD_NUM" $CIRCLE_SHA1 -m "$(git log $(git describe --tags --abbrev=0)..HEAD --pretty=%B)"
-            git push origin "$(date '+%Y-%m-%d')-$CIRCLE_BUILD_NUM"
+            git tag -a "$APP_VERSION" $CIRCLE_SHA1 -m "$(git log $(git describe --tags --abbrev=0)..HEAD --pretty=%B)"
+            git push origin "$APP_VERSION"
       - run:
           name: Save build number (for deployment)
           command: |
             mkdir -p /tmp/build-info
-            echo build-${CIRCLE_BUILD_NUM} > /tmp/build-info/version-to-deploy.txt
+            echo ${APP_VERSION} > /tmp/build-info/version-to-deploy.txt
       - persist_to_workspace:
           root: /tmp/build-info
           paths:
