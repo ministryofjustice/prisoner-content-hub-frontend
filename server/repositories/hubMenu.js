@@ -8,17 +8,6 @@ const {
 const caseInsensitive = new Intl.Collator('en', { caseFirst: 'lower' });
 
 function hubMenuRepository(httpClient) {
-  async function tagsMenu(prisonId) {
-    const query = {
-      _prison: prisonId,
-    };
-    const response = await httpClient.get(config.api.tags, { query });
-
-    if (response === null) return [];
-
-    return parseTagsResponse(response);
-  }
-
   async function categoryMenu({ categoryId, prisonId }) {
     const query = {
       _category: categoryId,
@@ -46,7 +35,6 @@ function hubMenuRepository(httpClient) {
 
   return {
     categoryMenu,
-    tagsMenu,
   };
 }
 

@@ -1,6 +1,7 @@
 node_modules
 assets/javascript/games
 **/*.min.js
+package.json
 package-lock.json
 assets/stylesheets
 assets/javascript/all.js

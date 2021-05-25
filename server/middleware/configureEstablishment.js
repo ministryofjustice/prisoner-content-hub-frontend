@@ -1,10 +1,8 @@
 const { v4: uuid } = require('uuid');
-const { pathOr } = require('ramda');
 const {
   getEstablishmentId,
-  getEstablishmentFormattedName,
-  getEstablishmentPrefix,
   getEstablishmentPersonalisation,
+  getEstablishmentDisplayName,
 } = require('../utils');
 
 const configureEstablishment = () => (req, res, next) => {
@@ -15,22 +13,27 @@ const configureEstablishment = () => (req, res, next) => {
       req.session.establishmentPersonalisationEnabled === undefined)
   ) {
     const replaceUrl = /-prisoner-content-hub.*$/g;
-    const establishmentName = pathOr('wayland', ['headers', 'host'], req)
+
+    const establishmentName = (req.headers?.host || 'wayland')
       .split('.')[0]
       .replace(replaceUrl, '');
 
+    const establishmentId = getEstablishmentId(establishmentName);
+
     req.session.id = uuid();
-    req.session.establishmentName = establishmentName;
-    req.session.establishmentId = getEstablishmentId(establishmentName);
-    req.session.establishmentPersonalisationEnabled = getEstablishmentPersonalisation(
-      req.session.establishmentId,
-    );
+    if (typeof establishmentId !== 'undefined') {
+      req.session.establishmentId = establishmentId;
+      req.session.establishmentName = establishmentName;
+      req.session.establishmentPersonalisationEnabled = getEstablishmentPersonalisation(
+        establishmentId,
+      );
+    }
   }
 
   res.locals.feedbackId = uuid();
-  res.locals.establishmentDisplayName = `${getEstablishmentPrefix(
+  res.locals.establishmentDisplayName = `${getEstablishmentDisplayName(
     req.session.establishmentId,
-  )} ${getEstablishmentFormattedName(req.session.establishmentId)}`;
+  )}`;
 
   next();
 };

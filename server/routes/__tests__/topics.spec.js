@@ -11,41 +11,42 @@ const {
 } = require('../../../test/test-helpers');
 
 describe('GET /topics', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it('passes exceptions to Sentry', async () => {
-    const topicsService = {
-      getTopics: jest.fn().mockRejectedValue('💥'),
-    };
-
-    const router = createTopicsRouter({ topicsService });
-
-    const app = setupBasicApp();
-    app.use('/topics', router);
-
-    await request(app).get('/topics').expect(500);
-    expect(Sentry.captureException).toHaveBeenCalledWith('💥');
-  });
-
   describe('Topics', () => {
     const topicsService = {
-      getTopics: jest.fn().mockReturnValue([
-        { linkText: 'foo', href: '/content/foo' },
-        { linkText: 'bar', href: '/content/bar' },
-      ]),
+      getTopics: jest.fn(),
     };
+    const sessionProvider = jest.fn();
 
     const router = createTopicsRouter({ topicsService });
 
     const app = setupBasicApp();
-    app.use((req, res, next) => {
-      req.session = {};
-      next();
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+
+      sessionProvider.mockReturnValue({
+        establishmentId: 123,
+        establishmentName: 'berwyn',
+      });
+
+      app.use((req, res, next) => {
+        req.session = sessionProvider();
+        next();
+      });
+      app.use('/topics', router);
+      app.use(consoleLogError);
+
+      topicsService.getTopics.mockReturnValue([
+        { linkText: 'foo', href: '/content/foo' },
+        { linkText: 'bar', href: '/content/bar' },
+      ]);
     });
-    app.use('/topics', router);
-    app.use(consoleLogError);
+
+    it('passes exceptions to Sentry', async () => {
+      topicsService.getTopics.mockRejectedValue('💥');
+      await request(app).get('/topics').expect(500);
+      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
+    });
 
     it('has a search bar', () =>
       request(app)
@@ -76,5 +77,24 @@ describe('GET /topics', () => {
             'The correct topic link should be rendered',
           );
         }));
+
+    it('calls service with correct parameters', () =>
+      request(app)
+        .get('/topics')
+        .expect(200)
+        .then(() => {
+          expect(topicsService.getTopics).toHaveBeenCalledWith('berwyn');
+        }));
+
+    it('Should error when no establishment present', () => {
+      sessionProvider.mockReturnValue({});
+
+      return request(app)
+        .get('/topics')
+        .expect(500)
+        .then(() => {
+          expect(topicsService.getTopics).not.toHaveBeenCalled();
+        });
+    });
   });
 });

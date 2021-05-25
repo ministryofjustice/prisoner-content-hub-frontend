@@ -5,18 +5,18 @@ describe('SearchService', () => {
     find: jest.fn(),
     typeAhead: jest.fn(),
   };
-  const getEstablishmentFormattedName = jest
+  const getEstablishmentSearchName = jest
     .fn()
     .mockReturnValue('HMP Development');
   let service;
 
   beforeEach(() => {
     jest.resetAllMocks();
-    getEstablishmentFormattedName.mockReturnValue('HMP Development');
+    getEstablishmentSearchName.mockReturnValue('HMP Development');
 
     service = createSearchService({
       searchRepository,
-      getEstablishmentFormattedName,
+      getEstablishmentSearchName,
     });
   });
 
@@ -44,8 +44,8 @@ describe('SearchService', () => {
         from: 5,
       });
 
-      expect(getEstablishmentFormattedName).toHaveBeenCalledTimes(1);
-      expect(getEstablishmentFormattedName).toHaveBeenCalledWith(123);
+      expect(getEstablishmentSearchName).toHaveBeenCalledTimes(1);
+      expect(getEstablishmentSearchName).toHaveBeenCalledWith(123);
       expect(Array.isArray(result)).toBe(true);
     });
 
@@ -87,8 +87,8 @@ describe('SearchService', () => {
         limit: 3,
       });
 
-      expect(getEstablishmentFormattedName).toHaveBeenCalledTimes(1);
-      expect(getEstablishmentFormattedName).toHaveBeenCalledWith(123);
+      expect(getEstablishmentSearchName).toHaveBeenCalledTimes(1);
+      expect(getEstablishmentSearchName).toHaveBeenCalledWith(123);
       expect(Array.isArray(result)).toBe(true);
     });
 

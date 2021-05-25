@@ -14,25 +14,15 @@ const getEstablishmentId = (
     10,
   );
 
-const getEstablishmentName = (
+const getEstablishmentSearchName = (
   id,
   establishmentData = defaultEstablishmentData,
-) => establishmentData?.[id]?.name;
+) => establishmentData?.[id]?.searchName;
 
-const getEstablishmentPrefix = (
+const getEstablishmentDisplayName = (
   id,
   establishmentData = defaultEstablishmentData,
-) => establishmentData?.[id]?.prefix ?? 'HMP';
-
-const getEstablishmentFormattedName = (
-  id,
-  establishmentData = defaultEstablishmentData,
-) => establishmentData?.[id]?.formattedName;
-
-const getEstablishmentUiId = (
-  id,
-  establishmentData = defaultEstablishmentData,
-) => establishmentData?.[id]?.uuId;
+) => establishmentData?.[id]?.displayName;
 
 const getEstablishmentHomepageLinks = (
   id,
@@ -77,10 +67,8 @@ const fillContentItems = (contentItems = [], number = 4) =>
 
 module.exports = {
   getEstablishmentId,
-  getEstablishmentName,
-  getEstablishmentFormattedName,
-  getEstablishmentUiId,
-  getEstablishmentPrefix,
+  getEstablishmentDisplayName,
+  getEstablishmentSearchName,
   getEstablishmentHomepageLinks,
   getEstablishmentHomepageLinksTitle,
   getEstablishmentPersonalisation,
