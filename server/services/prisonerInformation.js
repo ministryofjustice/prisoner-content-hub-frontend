@@ -87,19 +87,16 @@ class PrisonerInformationService {
     }
 
     try {
-      const [
-        transactionsResponse,
-        balancesResponse,
-        listOfPrisonsResponse,
-      ] = await Promise.all([
-        this.prisonApi.getTransactionsForDateRange(user.prisonerId, {
-          accountCode,
-          fromDate,
-          toDate,
-        }),
-        this.prisonApi.getBalancesFor(user.bookingId),
-        this.prisonApi.getPrisonDetails(),
-      ]);
+      const [transactionsResponse, balancesResponse, listOfPrisonsResponse] =
+        await Promise.all([
+          this.prisonApi.getTransactionsForDateRange(user.prisonerId, {
+            accountCode,
+            fromDate,
+            toDate,
+          }),
+          this.prisonApi.getBalancesFor(user.bookingId),
+          this.prisonApi.getPrisonDetails(),
+        ]);
 
       const listOfPrisons = listOfPrisonsResponse || [];
       const convertPrisonIdToText = createPrisonFormatter(
@@ -131,13 +128,11 @@ class PrisonerInformationService {
     }
 
     try {
-      const [
-        damageObligationsResponse,
-        listOfPrisonsResponse,
-      ] = await Promise.all([
-        this.prisonApi.getDamageObligationsFor(user.prisonerId),
-        this.prisonApi.getPrisonDetails(),
-      ]);
+      const [damageObligationsResponse, listOfPrisonsResponse] =
+        await Promise.all([
+          this.prisonApi.getDamageObligationsFor(user.prisonerId),
+          this.prisonApi.getPrisonDetails(),
+        ]);
 
       const listOfPrisons = listOfPrisonsResponse || [];
       const formatPrison = createPrisonFormatter(listOfPrisons, 'prisonId');

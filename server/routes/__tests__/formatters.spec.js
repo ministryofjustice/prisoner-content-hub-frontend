@@ -307,9 +307,8 @@ describe('Responses', () => {
         },
       ];
 
-      const formatted = createDamageObligationsResponseFrom(
-        withPaidObligations,
-      );
+      const formatted =
+        createDamageObligationsResponseFrom(withPaidObligations);
 
       expect(formatted.rows).toEqual([
         [
