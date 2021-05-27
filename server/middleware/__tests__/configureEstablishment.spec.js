@@ -42,8 +42,7 @@ describe('configureEstablishment', () => {
   it('should retrieve establishment from the header name', () => {
     const req = {
       headers: {
-        host:
-          'cookhamwood-prisoner-content-hub-development.apps.live-1.cloud-platform.service.justice.gov.uk/',
+        host: 'cookhamwood-prisoner-content-hub-development.apps.live-1.cloud-platform.service.justice.gov.uk/',
       },
       session: {},
     };

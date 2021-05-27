@@ -35,12 +35,8 @@ class NextVisit {
   }
 
   static from(response = {}) {
-    const {
-      startTime,
-      eventStatus,
-      leadVisitor,
-      visitTypeDescription,
-    } = response;
+    const { startTime, eventStatus, leadVisitor, visitTypeDescription } =
+      response;
 
     return new NextVisit({
       startTime,

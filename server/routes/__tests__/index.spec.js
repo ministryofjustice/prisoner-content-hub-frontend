@@ -88,7 +88,8 @@ describe('GET /', () => {
       app.use((req, res, next) => {
         req.session = {
           establishmentId: 1,
-          establishmentPersonalisationEnabled: establishmentPersonalisationToggle(),
+          establishmentPersonalisationEnabled:
+            establishmentPersonalisationToggle(),
         };
         res.locals = {
           features: { personalInformation: true },

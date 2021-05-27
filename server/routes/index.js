@@ -35,9 +35,8 @@ const createIndexRouter = ({
         establishmentData,
       );
 
-      const featuredContent = await hubFeaturedContentService.hubFeaturedContent(
-        { establishmentId },
-      );
+      const featuredContent =
+        await hubFeaturedContentService.hubFeaturedContent({ establishmentId });
 
       const pageConfig = {
         content: true,

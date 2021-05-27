@@ -24,9 +24,8 @@ const configureEstablishment = () => (req, res, next) => {
     if (typeof establishmentId !== 'undefined') {
       req.session.establishmentId = establishmentId;
       req.session.establishmentName = establishmentName;
-      req.session.establishmentPersonalisationEnabled = getEstablishmentPersonalisation(
-        establishmentId,
-      );
+      req.session.establishmentPersonalisationEnabled =
+        getEstablishmentPersonalisation(establishmentId);
     }
   }
 
