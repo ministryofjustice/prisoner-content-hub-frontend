@@ -143,6 +143,13 @@ jobs:
           command: npm run start:e2e
           background: true
       - run:
+          name: Get wiremock
+          command: curl -o wiremock.jar https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/2.27.2/wiremock-standalone-2.27.2.jar
+      - run:
+          name: Run wiremock
+          command: java -jar wiremock.jar --port 9091
+          background: true
+      - run:
           name: Wait for node app to start
           command: sleep 5
       - run:

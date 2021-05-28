@@ -38,21 +38,25 @@ function isPrisonerId(id) {
 }
 
 const createMockSignIn = ({ offenderService }) =>
-  async function mockSignIn(req, res) {
-    const user = new User({
-      prisonerId: 'G2168GG',
-      firstName: 'Test',
-      lastName: 'User',
-    });
+  async function mockSignIn(req, res, next) {
+    try {
+      const user = new User({
+        prisonerId: 'G2168GG',
+        firstName: 'Test',
+        lastName: 'User',
+      });
 
-    const { bookingId } = await offenderService.getOffenderDetailsFor(user);
-    user.setBookingId(bookingId);
+      const { bookingId } = await offenderService.getOffenderDetailsFor(user);
+      user.setBookingId(bookingId);
 
-    req.session.passport = {
-      user: user.serialize(),
-    };
+      req.session.passport = {
+        user: user.serialize(),
+      };
 
-    res.redirect(getSafeReturnUrl(req.query));
+      res.redirect(getSafeReturnUrl(req.query));
+    } catch (e) {
+      next(e);
+    }
   };
 
 const createMockSignOut = () =>

@@ -6,7 +6,7 @@
     </p>
   {% else %}
     {% if not isLoggedIn %}
-      <p class="govuk-!-font-size-24">
+      <p class="govuk-!-font-size-24" data-test="signin-prompt">
         <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your timetable
       </p>
     {% endif %}
