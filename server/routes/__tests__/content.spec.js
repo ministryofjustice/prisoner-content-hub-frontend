@@ -1,6 +1,5 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
-const Sentry = require('@sentry/node');
 
 jest.mock('@sentry/node');
 
@@ -16,7 +15,7 @@ describe('GET /content/:id', () => {
     jest.clearAllMocks();
   });
 
-  it('passes caught exceptions to Sentry', async () => {
+  it('passes caught exceptions to next', async () => {
     const hubContentService = {
       contentFor: jest.fn().mockRejectedValue('💥'),
     };
@@ -26,7 +25,6 @@ describe('GET /content/:id', () => {
     app.use('/content', router);
 
     await request(app).get('/content/1').expect(500);
-    expect(Sentry.captureException).toHaveBeenCalledWith('💥');
   });
   it('returns a 404 when incorrect data is returned', async () => {
     const hubContentService = {
