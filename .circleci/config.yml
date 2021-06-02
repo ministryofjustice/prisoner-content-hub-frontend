@@ -154,7 +154,7 @@ jobs:
           command: sleep 5
       - run:
           name: e2e tests
-          command: npm run cy:run
+          command: npm run test:e2e:ci
       - store_test_results:
           path: test-results
       - store_artifacts:

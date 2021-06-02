@@ -7,7 +7,7 @@ const createClientCredsToken = () => {
     token_type: 'bearer',
     expires_in: 1199,
     scope: 'read',
-    sub: 'use-of-force-system',
+    sub: 'hub-sub',
     auth_source: 'none',
     iss: 'https://sign-in-dev.hmpps.service.justice.gov.uk/auth/issuer',
   };

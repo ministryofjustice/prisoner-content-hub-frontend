@@ -1,8 +1,8 @@
 version: '3.1'
-  services:
-    book-video-link-wiremock:
-      image: rodolpheche/wiremock
-      container_name: prisoner-content-hub-frontend-wiremock
-      restart: always
-      ports:
-        - "9091:8080"
+services:
+  wiremock:
+    image: rodolpheche/wiremock
+    container_name: prisoner-content-hub-frontend-wiremock
+    restart: always
+    ports:
+      - "9091:8080"

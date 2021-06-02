@@ -32,12 +32,6 @@
       "options": {
         "parser": "scss"
       }
-    },
-    {
-      "files": "*.yaml",
-      "options": {
-        "parser": "yaml"
-      }
     }
   ]
 }
