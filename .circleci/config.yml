@@ -311,12 +311,12 @@ workflows:
                 - main
     jobs:
       - hmpps/npm_security_audit:
-          slack_channel: pfs-alerts
+          slack_channel: hub_frontend
           context:
             - hmpps-common-vars
       - hmpps/veracode_policy_scan:
           docker_image_app_dir: /home/node/app
-          slack_channel: pfs-alerts
+          slack_channel: hub_frontend
           context:
             - hmpps-common-vars
             - veracode-credentials
