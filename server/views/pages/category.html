@@ -85,21 +85,14 @@
     <h2>Featured</h2>
     <div class="category-content">
       {{ contentTileLarge({content: data.categoryFeaturedContent.data[0], imageAlign: 'right'}) }}
-      {% for tile in data.categoryFeaturedContent.data %}
-        {% if loop.index === 1 or loop.index === 5 %}
-          <div class="category-content__three-items">
-          {% endif %}
-          {% if loop.index > 1 and loop.index <= 7 %}
-            {{ contentTileSmall(tile) }}
-          {% endif %}
-          {% if loop.index === 4 or loop.index === 7 %}
-          </div>
-        {% endif %}
-      {% endfor %}
-      {% if data.categoryFeaturedContent.data.length !== 4 and data.categoryFeaturedContent.data.length !== 7 and data.categoryFeaturedContent.data.length < 8 %}
+      {%- for tiles in data.categoryFeaturedContent.data | skip(1) | batch(3) %}
+      <div class="category-content__three-items">
+        {%- for tile in tiles %}
+          {{ contentTileSmall(tile) }}
+        {%- endfor %}
       </div>
-    {% endif %}
-  </div>
+      {%- endfor %}
+    </div>
   <div class="feedback-tablet">
     <h2 class="govuk-heading-m">Give us feedback</h2>
     {{ hubFeedbackWidget({

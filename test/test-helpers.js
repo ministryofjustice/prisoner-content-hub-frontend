@@ -1,22 +1,12 @@
 const express = require('express');
-const path = require('path');
-const nunjucks = require('nunjucks');
 const chance = require('chance')();
+const nunjucksSetup = require('../server/utils/nunjucksSetup');
 
 function setupBasicApp(config = {}) {
   const app = express();
-  app.set('views', path.join(__dirname, '../server/views'));
   app.set('view engine', 'html');
 
-  const appViews = [
-    path.join(__dirname, '../node_modules/govuk-frontend/'),
-    path.join(__dirname, '../server/views/'),
-  ];
-
-  nunjucks.configure(appViews, {
-    express: app,
-    autoescape: true,
-  });
+  nunjucksSetup(app);
 
   app.locals.config = config;
 
