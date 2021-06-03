@@ -79,6 +79,7 @@ commands:
               --set prisonerAuthAD.clientSecret=${AZURE_AD_CLIENT_SECRET} \
               --set hotJarId=${HOTJAR_ID} \
               --set image.tag=${VERSION_TO_DEPLOY}
+              --set ingress.hosts[0].suffix="-prisoner-content-hub-development-testa.apps.live-1.cloud-platform.service.justice.gov.uk"
 
 jobs:
   build:
