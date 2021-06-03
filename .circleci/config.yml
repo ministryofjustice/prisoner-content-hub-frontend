@@ -78,7 +78,8 @@ commands:
               --set prisonerAuthAD.clientId=${AZURE_AD_CLIENT_ID} \
               --set prisonerAuthAD.clientSecret=${AZURE_AD_CLIENT_SECRET} \
               --set hotJarId=${HOTJAR_ID} \
-              --set image.tag=${VERSION_TO_DEPLOY}
+              --set image.tag=${VERSION_TO_DEPLOY} \
+              --name=test \
               --set ingress.hosts[0].suffix="-prisoner-content-hub-development-testa.apps.live-1.cloud-platform.service.justice.gov.uk"
 
 jobs:
@@ -246,13 +247,6 @@ workflows:
   build-test-deploy:
     jobs:
       - build
-      - run_unit_tests:
-          requires:
-            - build
-      - run_e2e_tests:
-          requires:
-            - build
-
       - build_preview:
           <<: *feature_branch
 
@@ -273,9 +267,6 @@ workflows:
 
       - build_production:
           <<: *main_branch
-          requires:
-            - run_unit_tests
-            - run_e2e_tests
 
       - deploy_cloud_platform:
           <<: *main_branch
