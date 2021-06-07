@@ -11,4 +11,4 @@ ingress:
   hosts:
     - suffix: .content-hub.prisoner.service.justice.gov.uk
       cert_secret: prisoner-content-hub-frontend-certificate
-    - suffix: -prisoner-content-hub-production.apps.live-1.cloud-platform.service.justice.gov.uk
+    - suffix: -production.apps.live-1.cloud-platform.service.justice.gov.uk

@@ -39,6 +39,8 @@ commands:
         type: string
       releaseName:
         type: string
+      qualifier:
+        type: string  
     steps:
       - attach_workspace:
           at: /tmp/build-info
@@ -61,7 +63,7 @@ commands:
           command: |
             VERSION_TO_DEPLOY=$(cat /tmp/build-info/version-to-deploy.txt)
             sed -i "s/appVersion:.*/appVersion: \"${VERSION_TO_DEPLOY}\"/g" "./helm_deploy/prisoner-content-hub-frontend/Chart.yaml"
-            helm upgrade << parameters.releaseName >> ./helm_deploy/prisoner-content-hub-frontend \
+            helm upgrade << parameters.releaseName >><< parameters.qualifier >> ./helm_deploy/prisoner-content-hub-frontend \
               --install --wait --force --reset-values --timeout 360s \
               --namespace=${KUBE_NAMESPACE} \
               --values ./helm_deploy/prisoner-content-hub-frontend/values.<< parameters.environment >>.yaml \
@@ -78,7 +80,8 @@ commands:
               --set prisonerAuthAD.clientId=${AZURE_AD_CLIENT_ID} \
               --set prisonerAuthAD.clientSecret=${AZURE_AD_CLIENT_SECRET} \
               --set hotJarId=${HOTJAR_ID} \
-              --set image.tag=${VERSION_TO_DEPLOY}
+              --set image.tag=${VERSION_TO_DEPLOY} \
+              --set ingress.qualifier="<< parameters.qualifier >>"
 
 jobs:
   build:
@@ -233,56 +236,43 @@ jobs:
     parameters:
       environment:
         type: string
+      qualifier:
+        type: string
+        default: ""    
     steps:
       - checkout
       - set_up_helm
       - release_to_namespace:
           environment: "<< parameters.environment >>"
           releaseName: "prisoner-content-hub-frontend"
+          qualifier: "<< parameters.qualifier >>"
 
 workflows:
   version: 2
   build-test-deploy:
     jobs:
-      - build
-      - run_unit_tests:
-          requires:
-            - build
-      - run_e2e_tests:
-          requires:
-            - build
-
       - build_preview:
           <<: *feature_branch
-
-      - approve_preview_build:
-          <<: *feature_branch
-          type: approval
-          requires:
-            - build_preview
 
       - deploy_cloud_platform:
           <<: *feature_branch
           context: prisoner-content-hub-development
-          matrix:
-            parameters:
-              environment: ["development"]
+          environment: "development"
+          qualifier: "-${CIRCLE_PULL_REQUEST##*/}"
           requires:
-            - approve_preview_build
+            - build_preview
 
       - build_production:
           <<: *main_branch
-          requires:
-            - run_unit_tests
-            - run_e2e_tests
+#          requires:
+#            - run_unit_tests
+#            - run_e2e_tests
 
       - deploy_cloud_platform:
           <<: *main_branch
           context: prisoner-content-hub-staging
-          matrix:
-            alias: deploy_to_staging
-            parameters:
-              environment: ["staging"]
+          name: deploy_to_staging
+          environment: "staging"
           requires:
             - build_production
 
@@ -295,9 +285,7 @@ workflows:
       - deploy_cloud_platform:
           <<: *main_branch
           context: prisoner-content-hub-prod
-          matrix:
-            parameters:
-              environment: ["production"]
+          environment: "production"
           requires:
             - approve_deploy_production
 
