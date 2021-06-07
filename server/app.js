@@ -3,7 +3,6 @@ const addRequestId = require('express-request-id')();
 const compression = require('compression');
 const helmet = require('helmet');
 const noCache = require('nocache');
-const nunjucks = require('nunjucks');
 const path = require('path');
 const sassMiddleware = require('node-sass-middleware');
 const session = require('cookie-session');
@@ -11,6 +10,7 @@ const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
 const { path: ramdaPath, pathOr } = require('ramda');
 const Sentry = require('@sentry/node');
+const nunjucksSetup = require('./utils/nunjucksSetup');
 
 const { createIndexRouter } = require('./routes/index');
 const { createTopicsRouter } = require('./routes/topics');
@@ -54,21 +54,12 @@ const createApp = ({
 }) => {
   const app = express();
 
-  const appViews = [
-    path.join(__dirname, '../node_modules/govuk-frontend/'),
-    path.join(__dirname, '/views/'),
-  ];
-
   app.locals.config = config;
 
   // View Engine Configuration
-  app.set('views', path.join(__dirname, '../server/views'));
   app.set('view engine', 'html');
-  nunjucks.configure(appViews, {
-    express: app,
-    autoescape: true,
-  });
 
+  nunjucksSetup(app);
   app.set('json spaces', 2);
 
   // Configure Express for running behind proxies
