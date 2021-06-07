@@ -27,9 +27,8 @@ class User {
   }
 
   static deserialize(serialized) {
-    const { prisonerId, firstName, lastName, bookingId } = JSON.parse(
-      serialized,
-    );
+    const { prisonerId, firstName, lastName, bookingId } =
+      JSON.parse(serialized);
 
     return new User({
       prisonerId,

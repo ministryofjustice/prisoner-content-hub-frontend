@@ -1,5 +1,5 @@
 const { isNil, isEmpty } = require('ramda');
-const defaultEstablishmentData = require('../content/establishmentData');
+const defaultEstablishmentData = require('../content/establishmentData.json');
 
 const isEmptyResponse = val => isEmpty(val) || isNil(val);
 

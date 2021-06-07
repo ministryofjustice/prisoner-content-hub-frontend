@@ -88,12 +88,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: dependency-cache-1-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: Install Dependencies
           command: npm ci
       - save_cache:
-          key: dependency-cache-1-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
             - ~/.cache
@@ -117,7 +117,7 @@ jobs:
       - attach_workspace:
           at: ~/workspace
       - restore_cache:
-          key: dependency-cache-1-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: Run Unit and Integration tests
           command: npm run test
@@ -132,7 +132,7 @@ jobs:
       - attach_workspace:
           at: ~/workspace
       - restore_cache:
-          key: dependency-cache-1-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: Run the node app.
           command: npm run start:e2e
@@ -157,7 +157,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - restore_cache:
-          key: dependency-cache-1-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
       - hmpps/create_app_version
       - run:
           name: Build frontend Docker image
@@ -166,7 +166,7 @@ jobs:
             GIT_DATE="$(git log --format=%cd -n1 --date=iso $CIRCLE_SHA1)" \
             make build
       - save_cache:
-          key: dependency-cache-1-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
       - run:
@@ -192,7 +192,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - restore_cache:
-          key: dependency-cache-1-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
       - hmpps/create_app_version
       - run:
           name: Build frontend Docker image
@@ -202,7 +202,7 @@ jobs:
             GIT_DATE="$(git log --format=%cd -n1 --date=iso $CIRCLE_SHA1)" \
             make build
       - save_cache:
-          key: dependency-cache-1-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
       - run:
@@ -311,12 +311,12 @@ workflows:
                 - main
     jobs:
       - hmpps/npm_security_audit:
-          slack_channel: pfs-alerts
+          slack_channel: hub_frontend
           context:
             - hmpps-common-vars
       - hmpps/veracode_policy_scan:
           docker_image_app_dir: /home/node/app
-          slack_channel: pfs-alerts
+          slack_channel: hub_frontend
           context:
             - hmpps-common-vars
             - veracode-credentials
