@@ -21,18 +21,9 @@ application:
     endpoint: /health/readiness
     delaySeconds: 10
     timeoutSeconds: 5
-  config:
-    enablePersonalInformation: false
-    analyticsEndpoint: https://www.google-analytics.com/collect
-    elasticsearchIndexName: content_index
-    enableRedisCache: false
   contentConfigMapName: prisoner-content-hub-drupal
   nprConfigMapName: npr-live
   dbSecretName: drupal-rds
-
-imagePullSecrets: [] # Are we using ECR?
-
-podSecurityContext: {}
 
 securityContext:
   capabilities:
@@ -41,10 +32,6 @@ securityContext:
   runAsNonRoot: true
   runAsUser: 1000
   runAsGroup: 1000
-
-resources: {}
-
-affinity: {}
 
 service:
   type: ClusterIP
