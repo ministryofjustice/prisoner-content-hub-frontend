@@ -3,9 +3,9 @@ Ingress not enabled
 {{ else }}
 Application is running at:
   {{- range .Values.ingress.hosts }}
-    {{- $domainSuffix := .suffix -}}
+    {{- $domainPattern := .pattern -}}
     {{- range $.Values.ingress.prefixes }}
-    - {{ . }}{{ $domainSuffix }}
+    - {{ tpl $domainPattern (dict "prison" . "qualifier" $.Values.ingress.qualifier "Template" $.Template) }}
     {{- end }}
   {{- end }}
 {{- end }}

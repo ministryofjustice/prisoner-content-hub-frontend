@@ -12,4 +12,4 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: nginx
   hosts:
-    - suffix: -development.apps.live-1.cloud-platform.service.justice.gov.uk
+    - pattern: "{{ .prison }}-prisoner-content-hub-development-{{ .qualifier }}.apps.live-1.cloud-platform.service.justice.gov.uk"
