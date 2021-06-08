@@ -1,6 +1,4 @@
 const express = require('express');
-const Sentry = require('@sentry/node');
-const { logger } = require('../utils/logger');
 
 const createTopicsRouter = ({ topicsService }) => {
   const router = express.Router();
@@ -29,8 +27,7 @@ const createTopicsRouter = ({ topicsService }) => {
         },
       });
     } catch (e) {
-      logger.error(`Error loading topics: ${e.message}`);
-      Sentry.captureException(e);
+      e.message = `Error loading topics: ${e.message}`;
       next(e);
     }
   });

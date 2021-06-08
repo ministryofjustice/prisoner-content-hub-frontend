@@ -1,5 +1,4 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["_passport"] }] */
-const Sentry = require('@sentry/node');
 const _passport = require('passport');
 const { path } = require('ramda');
 const { User } = require('./user');
@@ -103,11 +102,7 @@ const createSignInCallbackMiddleware = ({
 
       return res.redirect(req.session.returnUrl);
     } catch (e) {
-      Sentry.captureException(e);
-      logger.error(
-        `SignInCallbackMiddleware (signInCallback) - Failed: ${e.message}`,
-      );
-      logger.debug(e.stack);
+      e.message = `SignInCallbackMiddleware (signInCallback) - Failed: ${e.message}`;
 
       analyticsService.sendEvent({
         category: 'Signin',

@@ -1,6 +1,5 @@
 const { prop, path, propOr } = require('ramda');
 const express = require('express');
-const Sentry = require('@sentry/node');
 
 const createContentRouter = ({ hubContentService, analyticsService }) => {
   const router = express.Router();
@@ -95,7 +94,6 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
           return next();
       }
     } catch (exp) {
-      Sentry.captureException(exp);
       return next(exp);
     }
   });

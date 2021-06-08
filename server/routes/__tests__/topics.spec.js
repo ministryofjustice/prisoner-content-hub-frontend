@@ -1,6 +1,5 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
-const Sentry = require('@sentry/node');
 
 jest.mock('@sentry/node');
 
@@ -42,10 +41,9 @@ describe('GET /topics', () => {
       ]);
     });
 
-    it('passes exceptions to Sentry', async () => {
+    it('exceptions call the error middleware', async () => {
       topicsService.getTopics.mockRejectedValue('💥');
       await request(app).get('/topics').expect(500);
-      expect(Sentry.captureException).toHaveBeenCalledWith('💥');
     });
 
     it('has a search bar', () =>
