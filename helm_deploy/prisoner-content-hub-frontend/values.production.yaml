@@ -9,6 +9,6 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: nginx
   hosts:
-    - suffix: .content-hub.prisoner.service.justice.gov.uk
+    - pattern: "{{ .prison }}.content-hub.prisoner.service.justice.gov.uk"
       cert_secret: prisoner-content-hub-frontend-certificate
-    - suffix: -production.apps.live-1.cloud-platform.service.justice.gov.uk
+    - pattern: "{{ .prison }}-prisoner-content-hub-production.apps.live-1.cloud-platform.service.justice.gov.uk"

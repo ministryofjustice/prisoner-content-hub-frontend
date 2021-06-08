@@ -13,20 +13,20 @@ metadata:
     nginx.ingress.kubernetes.io/whitelist-source-range: {{ include "app.joinListWithComma" .Values.ingress.allowed | quote }}
 spec:
   tls:
-   {{- range .Values.ingress.hosts }}
+  {{- range .Values.ingress.hosts }}
   {{- $certSecret := .cert_secret -}}
-  {{- $domainSuffix := .suffix }}
+  {{- $domainPattern := .pattern }}
   - hosts:
     {{- range $.Values.ingress.prefixes }}
-      - {{ . }}-prisoner-content-hub{{ if $.Values.ingress.qualifier }}{{$.Values.ingress.qualifier}}{{- end}}{{ $domainSuffix }}
+      - {{ tpl $domainPattern (dict "prison" . "qualifier" $.Values.ingress.qualifier "Template" $.Template) }}
     {{ if $certSecret }}secretName: {{ $certSecret }}{{ end }}
     {{- end }}
   {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
-    {{- $domainSuffix := .suffix -}}
+    {{- $domainPattern := .pattern -}}
     {{- range $.Values.ingress.prefixes }}
-    - host: {{ . }}-prisoner-content-hub{{ if $.Values.ingress.qualifier }}{{$.Values.ingress.qualifier}}{{- end}}{{ $domainSuffix }}
+    - host: {{ tpl $domainPattern (dict "prison" . "qualifier" $.Values.ingress.qualifier "Template" $.Template) }}
       http:
         paths:
           - path: "/"
