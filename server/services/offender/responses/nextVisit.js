@@ -1,13 +1,19 @@
 const { capitalizePersonName } = require('../../../utils');
 const {
   placeholders: { DEFAULT },
-  dateFormats: { PRETTY_DAY, PRETTY_DAY_AND_MONTH, PRETTY_DATE },
+  dateFormats: {
+    PRETTY_DAY,
+    PRETTY_DAY_AND_MONTH,
+    LONG_PRETTY_DATE,
+    PRETTY_TIME,
+  },
 } = require('../../../utils/enums');
 const { formatDateOrDefault } = require('../../../utils/date');
 
 class NextVisit {
   constructor(options = {}) {
     this.startTime = options.startTime;
+    this.endTime = options.endTime;
     this.status = options.status;
     this.visitorName = options.visitorName;
     this.visitType = options.visitType;
@@ -20,7 +26,7 @@ class NextVisit {
   format() {
     return {
       hasNextVisit: this.hasNextVisit(),
-      nextVisit: formatDateOrDefault(DEFAULT, PRETTY_DATE, this.startTime),
+      nextVisit: formatDateOrDefault(DEFAULT, LONG_PRETTY_DATE, this.startTime),
       nextVisitDay: formatDateOrDefault(DEFAULT, PRETTY_DAY, this.startTime),
       nextVisitDate: formatDateOrDefault(
         DEFAULT,
@@ -31,15 +37,23 @@ class NextVisit {
         ? capitalizePersonName(this.visitorName)
         : DEFAULT,
       visitType: this.visitType ? this.visitType.split(' ').shift() : DEFAULT,
+      startTime: formatDateOrDefault(DEFAULT, PRETTY_TIME, this.startTime),
+      endTime: formatDateOrDefault(DEFAULT, PRETTY_TIME, this.endTime),
     };
   }
 
   static from(response = {}) {
-    const { startTime, eventStatus, leadVisitor, visitTypeDescription } =
-      response;
+    const {
+      startTime,
+      endTime,
+      eventStatus,
+      leadVisitor,
+      visitTypeDescription,
+    } = response;
 
     return new NextVisit({
       startTime,
+      endTime,
       status: eventStatus,
       visitorName: leadVisitor,
       visitType: visitTypeDescription,

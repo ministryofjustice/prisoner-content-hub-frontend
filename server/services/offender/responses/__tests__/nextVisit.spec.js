@@ -22,6 +22,8 @@ describe('NextVisit', () => {
         nextVisitDay: DEFAULT,
         visitType: DEFAULT,
         visitorName: DEFAULT,
+        startTime: DEFAULT,
+        endTime: DEFAULT,
       },
       'Should return a notification when no start time or status is available',
     );
@@ -30,6 +32,7 @@ describe('NextVisit', () => {
   it('should handle an incomplete response', () => {
     const response = {
       startTime: '2019-12-07T11:30:30',
+      endTime: '2019-12-07T13:00:30',
       eventStatus: 'SCH',
     };
 
@@ -38,11 +41,13 @@ describe('NextVisit', () => {
     expect(formatted).toStrictEqual(
       {
         hasNextVisit: true,
-        nextVisit: 'Saturday 7 December 2019',
+        nextVisit: 'Saturday 7 December',
         nextVisitDate: '7 December',
         nextVisitDay: 'Saturday',
         visitType: DEFAULT,
         visitorName: DEFAULT,
+        startTime: '11:30am',
+        endTime: '1:00pm',
       },
       'Should handle missing visitor name or type',
     );
@@ -51,6 +56,7 @@ describe('NextVisit', () => {
   it('should format data when passed', () => {
     const response = {
       startTime: '2019-12-07T11:30:30',
+      endTime: '2019-12-07T12:30:30',
       eventStatus: 'SCH',
       visitTypeDescription: 'TVT test visit type',
       leadVisitor: 'MICKY MOUSE',
@@ -60,11 +66,13 @@ describe('NextVisit', () => {
 
     expect(formatted).toStrictEqual({
       hasNextVisit: true,
-      nextVisit: 'Saturday 7 December 2019',
+      nextVisit: 'Saturday 7 December',
       nextVisitDate: '7 December',
       nextVisitDay: 'Saturday',
       visitType: 'TVT',
       visitorName: 'Micky Mouse',
+      startTime: '11:30am',
+      endTime: '12:30pm',
     });
   });
 });

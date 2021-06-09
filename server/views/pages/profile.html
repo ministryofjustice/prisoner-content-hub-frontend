@@ -50,7 +50,7 @@
     {% for event in events %}
       <div class="govuk-!-padding-bottom-4">
         <strong>{{event.description}}</strong><br/>
-        {{event.startTime | lower }} to {{event.endTime | lower }}<br/>
+        {{event.startTime }} to {{event.endTime }}<br/>
         {{event.location}}
       </div>
       {% else %}
@@ -176,7 +176,12 @@
         <ul class="govuk-grid-row card-group">
             <li class="govuk-grid-column-one-quarter card-group__item">
               {% call card({ id: 'nextVisit', heading: 'Your next visit'}) -%}
-                {{ visitsSummary.nextVisit if visitsSummary.hasNextVisit else 'No upcoming visit' }}
+                {% if visitsSummary.hasNextVisit %}
+                  <strong>{{ visitsSummary.nextVisit }}</strong>
+                  <p>{{ visitsSummary.startTime }} to {{ visitsSummary.endTime }}</p>
+                {% else %}
+                  No upcoming visit
+                {% endif %}
               {%- endcall %}
             </li>
             {% if visitsSummary.hasNextVisit %}

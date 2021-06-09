@@ -127,10 +127,6 @@
       text-transform: capitalize;
     }
 
-    & > div > .timetable-time {
-      text-transform: lowercase;
-    }
-
     @media (min-width: $desktop-breakpoint) {
       flex: 1 1 70%;
     }
