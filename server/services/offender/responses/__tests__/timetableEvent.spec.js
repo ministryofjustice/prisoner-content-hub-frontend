@@ -47,10 +47,10 @@ describe('TimetableEvent', () => {
     expect(formatted).toStrictEqual(
       {
         description: 'Sub Type Desc',
-        startTime: '11:30AM',
+        startTime: '11:30am',
         endTime: '',
         location: 'A wing',
-        timeString: '11:30AM',
+        timeString: '11:30am',
         eventType: 'TEST',
         finished: false,
         status: 'SCH',
@@ -77,10 +77,10 @@ describe('TimetableEvent', () => {
 
     expect(formatted).toStrictEqual({
       description: 'Sub Type Desc',
-      startTime: '11:30AM',
-      endTime: '12:30PM',
+      startTime: '11:30am',
+      endTime: '12:30pm',
       location: 'A wing',
-      timeString: '11:30AM to 12:30PM',
+      timeString: '11:30am to 12:30pm',
       eventType: 'TEST',
       finished: false,
       status: 'SCH',
@@ -105,10 +105,10 @@ describe('TimetableEvent', () => {
 
     expect(formatted).toStrictEqual({
       description: 'A test event',
-      startTime: '11:30AM',
-      endTime: '12:30PM',
+      startTime: '11:30am',
+      endTime: '12:30pm',
       location: 'A wing',
-      timeString: '11:30AM to 12:30PM',
+      timeString: '11:30am to 12:30pm',
       eventType: 'TEST',
       finished: false,
       status: 'SCH',

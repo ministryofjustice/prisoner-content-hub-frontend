@@ -32,6 +32,8 @@ const createProfileRouter = ({ offenderService }) => {
       visitType,
       visitorName,
       hasNextVisit,
+      startTime,
+      endTime,
       error: visitsError,
     } = visitsSummary;
 
@@ -59,6 +61,8 @@ const createProfileRouter = ({ offenderService }) => {
         nextVisit,
         visitType,
         visitorName,
+        startTime,
+        endTime,
         link: '/content/4203',
       },
       moneySummary: {

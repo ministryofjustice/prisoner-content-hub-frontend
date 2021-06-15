@@ -258,9 +258,7 @@ const createApp = ({
   app.use(
     '/profile',
     createProfileRouter({
-      hubContentService,
       offenderService,
-      prisonerInformationService,
     }),
   );
 
