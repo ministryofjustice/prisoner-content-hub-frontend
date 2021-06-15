@@ -177,8 +177,8 @@
             <li class="govuk-grid-column-one-quarter card-group__item">
               {% call card({ id: 'nextVisit', heading: 'Your next visit'}) -%}
                 {% if visitsSummary.hasNextVisit %}
-                  <strong>{{ visitsSummary.nextVisit }}</strong>
-                  <p>{{ visitsSummary.startTime }} to {{ visitsSummary.endTime }}</p>
+                  <strong>{{ visitsSummary.nextVisit }}</strong><br/>
+                  {{ visitsSummary.startTime }} to {{ visitsSummary.endTime }}
                 {% else %}
                   No upcoming visit
                 {% endif %}
