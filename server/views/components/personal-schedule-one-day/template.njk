@@ -6,7 +6,7 @@
     </p>
   {% else %}
     {% if not isLoggedIn %}
-      <p class="govuk-!-font-size-24">
+      <p class="govuk-!-font-size-24" data-test="signin-prompt">
         <a href="/auth/sign-in?returnUrl={{ params.authReturnUrl }}" class="govuk-link">Sign in</a> to see your timetable
       </p>
     {% endif %}
@@ -23,7 +23,7 @@
           <h4>Evening</h4>
         {% endif %}
       </div>
-      <div class="timetable-day-blocks">
+      <div class="timetable-day-blocks" data-test="{{event.title}}">
         {{ personalScheduleDayBlock(event.morning, params.data.hasEvents, '8:30am to 12:00pm') }}
         {{ personalScheduleDayBlock(event.afternoon, params.data.hasEvents, '12:00pm to 5:00pm') }}
         {{ personalScheduleDayBlock(event.evening, params.data.hasEvents, '5:00pm to 7:30pm') }}
