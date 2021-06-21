@@ -1,42 +1,42 @@
-FROM node:14-alpine
-
-RUN apk add --no-cache git \
-  python \
-  make
+# First stage
+FROM node:14.17-buster as builder
 
 ARG BUILD_NUMBER
 ARG GIT_REF
 ARG GIT_DATE
 
-# Create app directory
-WORKDIR /home/node/app
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
-RUN CYPRESS_INSTALL_BINARY=0  npm ci --no-audit
+RUN apt-get update && \
+    apt-get upgrade -y
 
-# Bundle app source
-COPY . /home/node/app
+WORKDIR /app
 
-# Add curl
-RUN apk add --update \
-  curl \
-  && rm -rf /var/cache/apk/*
+COPY . .
 
-# Generate styles
-RUN ./node_modules/node-sass/bin/node-sass $@ \
-  /home/node/app/assets/sass/style.scss \
-  /home/node/app/assets/stylesheets/application.css
+RUN CYPRESS_INSTALL_BINARY=0 npm ci --no-audit --production && npm run build
+
+# Second stage
+FROM node:14.17-buster-slim
+LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
+
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN addgroup --gid 2000 --system appgroup && \
+    adduser --uid 2000 --system appuser --gid 2000
+
+RUN mkdir /app && chown appuser:appgroup /app
+
+WORKDIR /app
+
+COPY --from=builder --chown=appuser:appgroup /app /app
 
 ENV BUILD_NUMBER=${BUILD_NUMBER}
 ENV GIT_REF=${GIT_REF}
 ENV GIT_DATE=${GIT_DATE}
-
-RUN apk del git
+ENV PORT=3000
 
 EXPOSE 3000
-RUN chown -R 1000:1000 /home/node/app
-
-USER 1000
+USER 2000
 CMD [ "npm", "start" ]

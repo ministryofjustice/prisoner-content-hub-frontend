@@ -172,7 +172,7 @@
 }
 
 .category-content__three-items {
-  justify-content: space-between;
+  justify-content: flex-start;
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 0;
@@ -191,6 +191,7 @@
   }
 
   & > a {
+    margin-right: 0.5%;
     text-decoration: none;
     padding: 0;
     flex: 0 0 33%;
@@ -225,6 +226,10 @@
       }
       visibility: visible;
     }
+  }
+
+  & > a:last-child {
+    margin-right: 0;
   }
 
   & > div {
