@@ -15,7 +15,7 @@ COPY . .
 RUN CYPRESS_INSTALL_BINARY=0 npm ci --no-audit --production && npm run build
 
 # Second stage
-FROM node:14.15-buster-slim
+FROM node:14.17-buster-slim
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 
 RUN apt-get update && \
