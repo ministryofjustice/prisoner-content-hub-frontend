@@ -129,6 +129,16 @@ const createOffenderService = (
       logger.info(
         `OffenderService (getImportantDatesFor) - User: ${prisonerId}`,
       );
+<<<<<<< HEAD
+=======
+      logger.debug(e.stack);
+      return {
+        error: true,
+      };
+    }
+  }
+
+>>>>>>> bfcc418... feature/display-number-of-visits-remaining
       const response = await repository.sentenceDetailsFor(bookingId);
       return ImportantDates.from(response).format();
     } catch (e) {

@@ -212,6 +212,11 @@
                   <strong>{{ visitsSummary.visitsRemaining}}</strong>
                 {%- endcall %}
               </li>
+              <li class="govuk-grid-column-one-quarter card-group__item">
+                {% call card({ id: 'visitsRemaining', heading: 'Total visits remaining'}) -%}
+                  <strong>{{ visitsSummary.visitsRemaining}}</strong>
+                {%- endcall %}
+              </li>
             {%- endif %}
             <li class="govuk-grid-column-one-quarter card-group__item">
               {{imageCard({ id: 'visitsLink', src: "/public/images/image_visits.jpg", alt: "visits picture", link: visitsSummary.link, description: "Read more about visits" }) }}
