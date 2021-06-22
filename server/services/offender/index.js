@@ -120,6 +120,12 @@ const createOffenderService = (
       logger.info(
         `OffenderService (getImportantDatesFor) - User: ${prisonerId}`,
       );
+      logger.debug(e.stack);
+      return {
+        error: true,
+      };
+    }
+  }
 
       const response = await repository.sentenceDetailsFor(bookingId);
       return ImportantDates.from(response).format();

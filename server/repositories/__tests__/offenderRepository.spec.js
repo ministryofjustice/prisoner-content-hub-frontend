@@ -118,6 +118,21 @@ describe('offenderRepository', () => {
     });
   });
 
+  describe('getVisitBalances', () => {
+    it('calls the visitBalances endpoint for a given ID', async () => {
+      const client = {
+        get: jest.fn().mockResolvedValue('SOME_RESULT'),
+      };
+      const repository = offenderRepository(client);
+      const result = await repository.getVisitBalances('FOO_ID');
+
+      expect(lastCall(client.get)[0]).toContain(
+        'offenderNo/FOO_ID/visit/balances',
+      );
+      expect(result).toBe('SOME_RESULT');
+    });
+  });
+
   describe('sentenceDetailsFor', () => {
     it('calls the sentenceDetails endpoint for a given ID', async () => {
       const client = {

@@ -288,7 +288,11 @@ describe('GET /profile', () => {
         });
     });
     it('notifies the user when retrieving visit balances fails', () => {
+<<<<<<< HEAD
       offenderService.getVisitsRemaining.mockResolvedValue({
+=======
+      offenderService.getVisitBalances.mockResolvedValue({
+>>>>>>> 5b6c26c... feature/display-number-of-visits-remaining
         error: true,
       });
 
@@ -314,7 +318,11 @@ describe('GET /profile', () => {
 >>>>>>> 54aa43a... fix_tests
         hasNextVisit: true,
       });
+<<<<<<< HEAD
       offenderService.getVisitsRemaining.mockResolvedValue({
+=======
+      offenderService.getVisitBalances.mockResolvedValue({
+>>>>>>> 5b6c26c... feature/display-number-of-visits-remaining
         visitsRemaining: 42,
       });
 
@@ -339,8 +347,16 @@ describe('GET /profile', () => {
           const visitsRemaining = $('[data-test="visitsRemaining"]').text();
           expect(visitsRemaining).toContain('42');
 
+<<<<<<< HEAD
           const visitors = $('[data-test="visitors"]').text();
           expect(visitors).toContain('Bob Visitor');
+=======
+          const visitsRemaining = $('[data-test="visitsRemaining"]').text();
+          expect(visitsRemaining).toContain('42');
+
+          const visitorName = $('[data-test="visitorName"]').text();
+          expect(visitorName).toContain('Bob Visitor');
+>>>>>>> 5b6c26c... feature/display-number-of-visits-remaining
         });
     });
 
