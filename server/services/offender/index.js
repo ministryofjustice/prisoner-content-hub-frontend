@@ -242,7 +242,11 @@ const createOffenderService = (
     getBalancesFor,
     getKeyWorkerFor,
     getVisitsFor,
+<<<<<<< HEAD
     getVisitsRemaining,
+=======
+    getVisitBalances,
+>>>>>>> 5b6c26c... feature/display-number-of-visits-remaining
     getImportantDatesFor,
     getCurrentEvents,
     getEventsFor,
