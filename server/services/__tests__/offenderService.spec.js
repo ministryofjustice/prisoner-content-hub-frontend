@@ -340,7 +340,7 @@ describe('Offender Service', () => {
 
     it('should return an error when no booking Id is passed', async () => {
       const repository = {
-        getEventsFor: jest.fn().mockReturnValue([]),
+        getEventsFor: jest.fn().mockReturnValue({ error: true }),
       };
 
       const service = createPrisonApiOffenderService(repository);

@@ -87,7 +87,7 @@ $card-border-color: lighten($card-border-hover-color, 15%);
 .card-group {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: govuk-spacing(4);
+  margin-bottom: 0;
   padding: 0;
 
   @include govuk-media-query($until: desktop) {
@@ -97,7 +97,7 @@ $card-border-color: lighten($card-border-hover-color, 15%);
   &__item {
     display: flex;
     list-style-type: none;
-    margin-bottom: 0;
+    margin-bottom: govuk-spacing(4);
 
     @include govuk-media-query($until: desktop) {
       flex: 0 0 100%;
