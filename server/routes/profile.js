@@ -14,7 +14,7 @@ const createProfileRouter = ({ offenderService }) => {
       offenderService.getEventsForToday(user),
       offenderService.getIncentivesSummaryFor(user),
       offenderService.getVisitsFor(user),
-      offenderService.getVisitBalances(user),
+      offenderService.getVisitsRemaining(user),
       offenderService.getBalancesFor(user),
     ]);
 

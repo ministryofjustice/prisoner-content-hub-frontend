@@ -96,9 +96,9 @@ const createOffenderService = (
     }
   }
 
-  async function getVisitBalances({ prisonerId }) {
+  async function getVisitsRemaining({ prisonerId }) {
     try {
-      logger.info(`OffenderService (getVisitBalances) - User: ${prisonerId}`);
+      logger.info(`OffenderService (getVisitsRemaining) - User: ${prisonerId}`);
       const { remainingPvo = 0, remainingVo = 0 } =
         await repository.getVisitBalances(prisonerId);
       return { visitsRemaining: remainingPvo + remainingVo };
@@ -240,7 +240,7 @@ const createOffenderService = (
     getBalancesFor,
     getKeyWorkerFor,
     getVisitsFor,
-    getVisitBalances,
+    getVisitsRemaining,
     getImportantDatesFor,
     getCurrentEvents,
     getEventsFor,

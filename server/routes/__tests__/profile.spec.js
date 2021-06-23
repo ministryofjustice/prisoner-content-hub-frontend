@@ -10,7 +10,7 @@ describe('GET /profile', () => {
     getEventsForToday: jest.fn().mockResolvedValue({}),
     getIncentivesSummaryFor: jest.fn().mockResolvedValue({}),
     getVisitsFor: jest.fn().mockResolvedValue({}),
-    getVisitBalances: jest.fn().mockResolvedValue({}),
+    getVisitsRemaining: jest.fn().mockResolvedValue({}),
     getBalancesFor: jest.fn().mockResolvedValue({}),
   };
 
@@ -288,7 +288,7 @@ describe('GET /profile', () => {
         });
     });
     it('notifies the user when retrieving visit balances fails', () => {
-      offenderService.getVisitBalances.mockResolvedValue({
+      offenderService.getVisitsRemaining.mockResolvedValue({
         error: true,
       });
 
@@ -309,7 +309,7 @@ describe('GET /profile', () => {
         visitorName: 'Bob Visitor',
         hasNextVisit: true,
       });
-      offenderService.getVisitBalances.mockResolvedValue({
+      offenderService.getVisitsRemaining.mockResolvedValue({
         visitsRemaining: 42,
       });
 
