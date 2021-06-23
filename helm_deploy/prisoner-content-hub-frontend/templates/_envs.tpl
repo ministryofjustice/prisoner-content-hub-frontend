@@ -74,7 +74,7 @@ env:
       value: {{ .Values.application.sentry_release }}
 
     - name: ENABLE_MOCK_AUTH
-      value: "false"
+      value: {{ .Values.application.config.mockAuthEnabled | quote }}
 
     - name: HOTJAR_ID
       value: {{ .Values.hotJarId | quote }}
