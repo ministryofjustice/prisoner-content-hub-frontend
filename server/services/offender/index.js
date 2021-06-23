@@ -130,6 +130,7 @@ const createOffenderService = (
         `OffenderService (getImportantDatesFor) - User: ${prisonerId}`,
       );
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       logger.debug(e.stack);
       return {
@@ -139,6 +140,8 @@ const createOffenderService = (
   }
 
 >>>>>>> bfcc418... feature/display-number-of-visits-remaining
+=======
+>>>>>>> 2686bf1... Initial commit of visitor list
       const response = await repository.sentenceDetailsFor(bookingId);
       return ImportantDates.from(response).format();
     } catch (e) {
