@@ -17,7 +17,7 @@ module.exports = (response = []) => {
   }
 
   const { visitDetails, visitors } = response[0];
-  const { startTime, endTime, visitTypeDescription: visitType } = visitDetails;
+  const { startTime, endTime, visitType } = visitDetails;
 
   return {
     hasNextVisit: startTime != null,

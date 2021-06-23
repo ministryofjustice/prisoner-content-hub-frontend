@@ -180,7 +180,7 @@
                   <strong>{{ visitsSummary.nextVisit }}</strong><br/>
                   {{ visitsSummary.startTime }} to {{ visitsSummary.endTime }}
                   <br/><br/>
-                  {{ visitsSummary.visitType }} visit
+                  {{ visitsSummary.visitType }}
                 {% else %}
                   No upcoming visit
                 {% endif %}
@@ -190,21 +190,19 @@
               <li class="govuk-grid-column-one-quarter card-group__item">
                 {% call cardSensitiveData({ id: 'visitors', heading: 'Visitors coming to your next visit' }) -%}
                   
-                <div class="hidden sensitive" data-test="visitors">
-                  <ol class="hidden sensitive visitors-names" data-test="visitors">
-                    {% for visit in visitsSummary.visitors %}
-                      <li class="govuk-!-padding-bottom-2">{{ visit }}</li>
+                  <div class="hidden sensitive" data-test="visitors">
+                    {% if visitsSummary.visitors.length > 1 %}
+                      <ol class="hidden sensitive visitors-names" data-test="visitors">
+                        {% for visit in visitsSummary.visitors %}
+                          <li class="govuk-!-padding-bottom-2">{{ visit }}</li>
+                        {% else %}
+                          <strong data-test="no-activities">No activities scheduled</strong>
+                        {% endfor %}
+                      </ol>
                     {% else %}
-                      <strong data-test="no-activities">No activities scheduled</strong>
-                    {% endfor %}
-                  </ol>
-
+                      {{ visitsSummary.visitors[0] }}
+                    {% endif %}
                   </div>
-                {%- endcall %}
-              </li>
-              <li class="govuk-grid-column-one-quarter card-group__item">
-                {% call card({ id: 'visitsRemaining', heading: 'Total visits remaining'}) -%}
-                  <strong>{{ visitsSummary.visitsRemaining}}</strong>
                 {%- endcall %}
               </li>
               <li class="govuk-grid-column-one-quarter card-group__item">

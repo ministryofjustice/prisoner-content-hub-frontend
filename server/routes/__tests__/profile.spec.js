@@ -288,11 +288,7 @@ describe('GET /profile', () => {
         });
     });
     it('notifies the user when retrieving visit balances fails', () => {
-<<<<<<< HEAD
       offenderService.getVisitsRemaining.mockResolvedValue({
-=======
-      offenderService.getVisitBalances.mockResolvedValue({
->>>>>>> 5b6c26c... feature/display-number-of-visits-remaining
         error: true,
       });
 
@@ -309,20 +305,11 @@ describe('GET /profile', () => {
     it('displays the visits information when the user is signed in', () => {
       offenderService.getVisitsFor.mockResolvedValue({
         nextVisit: 'Tuesday 20 April 2021',
-<<<<<<< HEAD
-        visitType: 'Social visit',
-        visitorName: 'Bob Visitor',
-=======
         visitType: 'Social',
         visitors: ['Bob Visitor'],
->>>>>>> 54aa43a... fix_tests
         hasNextVisit: true,
       });
-<<<<<<< HEAD
       offenderService.getVisitsRemaining.mockResolvedValue({
-=======
-      offenderService.getVisitBalances.mockResolvedValue({
->>>>>>> 5b6c26c... feature/display-number-of-visits-remaining
         visitsRemaining: 42,
       });
 
@@ -336,27 +323,13 @@ describe('GET /profile', () => {
 
           const nextVisit = $('[data-test="nextVisit"]').text();
           expect(nextVisit).toContain('Tuesday 20 April 2021');
-<<<<<<< HEAD
-          expect(nextVisit).toContain('Social visit');
-=======
-
-          const visitType = $('[data-test="nextVisit"]').text();
-          expect(visitType).toContain('Social');
->>>>>>> 54aa43a... fix_tests
+          expect(nextVisit).toContain('Social');
 
           const visitsRemaining = $('[data-test="visitsRemaining"]').text();
           expect(visitsRemaining).toContain('42');
 
-<<<<<<< HEAD
-          const visitors = $('[data-test="visitors"]').text();
-          expect(visitors).toContain('Bob Visitor');
-=======
-          const visitsRemaining = $('[data-test="visitsRemaining"]').text();
-          expect(visitsRemaining).toContain('42');
-
-          const visitorName = $('[data-test="visitorName"]').text();
+          const visitorName = $('[data-test="visitors"]').text();
           expect(visitorName).toContain('Bob Visitor');
->>>>>>> 5b6c26c... feature/display-number-of-visits-remaining
         });
     });
 

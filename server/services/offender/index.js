@@ -105,8 +105,9 @@ const createOffenderService = (
         await repository.getVisitBalances(prisonerId);
       return { visitsRemaining: remainingPvo + remainingVo };
     } catch (e) {
+      if (e?.response?.status === 404) return { visitsRemaining: 0 };
       logger.error(
-        `OffenderService (getVisitBalances) - Failed: ${e.message} - User: ${prisonerId}`,
+        `OffenderService (getVisitsRemaining) - Failed: ${e.message} - User: ${prisonerId}`,
       );
       logger.debug(e.stack);
       return {
@@ -120,13 +121,6 @@ const createOffenderService = (
       logger.info(
         `OffenderService (getImportantDatesFor) - User: ${prisonerId}`,
       );
-      logger.debug(e.stack);
-      return {
-        error: true,
-      };
-    }
-  }
-
       const response = await repository.sentenceDetailsFor(bookingId);
       return ImportantDates.from(response).format();
     } catch (e) {

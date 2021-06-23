@@ -1,4 +1,7 @@
 const nextVisit = require('../nextVisit');
+const visitTypeDisplayText = require('../../../../content/visitType.json');
+
+const VISIT_TYPE = 'SCON';
 
 describe('NextVisit', () => {
   it('Should handle an empty response', () => {
@@ -17,7 +20,7 @@ describe('NextVisit', () => {
         visitDetails: {
           startTime: '2019-12-07T11:30:30',
           endTime: '2019-12-07T13:00:30',
-          visitTypeDescription: 'Social',
+          visitType: VISIT_TYPE,
         },
         visitors: [],
       },
@@ -32,7 +35,7 @@ describe('NextVisit', () => {
       nextVisitDay: 'Saturday',
       startTime: '11:30am',
       endTime: '1:00pm',
-      visitType: 'Social',
+      visitType: visitTypeDisplayText[VISIT_TYPE],
       visitors: [],
     });
   });
@@ -43,7 +46,7 @@ describe('NextVisit', () => {
         visitDetails: {
           startTime: '2019-12-07T11:30:30',
           endTime: '2019-12-07T12:30:30',
-          visitTypeDescription: 'TVT test visit type',
+          visitType: VISIT_TYPE,
         },
         visitors: [{ firstName: 'Donald', lastName: 'Mouse' }],
       },
@@ -56,7 +59,7 @@ describe('NextVisit', () => {
       nextVisit: 'Saturday 7 December',
       nextVisitDate: '7 December',
       nextVisitDay: 'Saturday',
-      visitType: 'TVT',
+      visitType: visitTypeDisplayText[VISIT_TYPE],
       visitors: ['Donald Mouse'],
       startTime: '11:30am',
       endTime: '12:30pm',
