@@ -50,12 +50,6 @@ function offenderRepository(httpClient) {
     );
   }
 
-  function getVisitBalances(offenderNo) {
-    return httpClient.get(
-      `${baseUrl}/bookings/offenderNo/${offenderNo}/visit/balances`,
-    );
-  }
-
   function sentenceDetailsFor(bookingId) {
     return httpClient.get(`${baseUrl}/bookings/${bookingId}/sentenceDetail`);
   }
@@ -77,11 +71,6 @@ function offenderRepository(httpClient) {
     getBalancesFor,
     getKeyWorkerFor,
     getNextVisitFor,
-<<<<<<< HEAD
-=======
-    getLastVisitFor,
-    getVisitsFor,
->>>>>>> 5b6c26c... feature/display-number-of-visits-remaining
     getVisitBalances,
     sentenceDetailsFor,
     getCurrentEvents,
