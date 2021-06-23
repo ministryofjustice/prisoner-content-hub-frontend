@@ -86,7 +86,11 @@ const createOffenderService = (
       const today = new Date();
       const startDate = format(today, 'yyyy-MM-dd');
       const response = await repository.getNextVisitFor(bookingId, startDate);
+<<<<<<< HEAD
       return nextVisit(response?.content);
+=======
+      return NextVisit(response?.content);
+>>>>>>> b9f2427... Initial commit of visitor list
     } catch (e) {
       logger.error(
         `OffenderService (getVisitsFor) - Failed: ${e.message} - User: ${prisonerId}`,
