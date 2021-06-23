@@ -36,7 +36,7 @@ const createProfileRouter = ({ offenderService }) => {
     const {
       nextVisit,
       visitType,
-      visitorName,
+      visitors,
       hasNextVisit,
       startTime,
       endTime,
@@ -69,7 +69,7 @@ const createProfileRouter = ({ offenderService }) => {
         hasNextVisit,
         nextVisit,
         visitType,
-        visitorName,
+        visitors,
         startTime,
         endTime,
         link: '/content/4203',

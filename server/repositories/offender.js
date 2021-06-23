@@ -1,3 +1,4 @@
+const querystring = require('querystring');
 const config = require('../config');
 
 function validateOffenderNumberFor(offenderNo) {
@@ -31,19 +32,16 @@ function offenderRepository(httpClient) {
     );
   }
 
-  function getNextVisitFor(bookingId) {
-    return httpClient.get(`${baseUrl}/bookings/${bookingId}/visits/next`);
-  }
-
-  function getLastVisitFor(bookingId) {
-    return httpClient.get(`${baseUrl}/bookings/${bookingId}/visits/last`);
-  }
-
-  function getVisitsFor(bookingId, startDate) {
-    const endpoint = `${baseUrl}/bookings/${bookingId}/visits`;
-    const query = [`fromDate=${startDate}`, `toDate=${startDate}`];
-
-    return httpClient.get(`${endpoint}?${query.join('&')}`);
+  function getNextVisitFor(bookingId, today) {
+    const query = querystring.encode({
+      fromDate: today,
+      size: 1,
+      page: 0,
+      visitStatus: 'SCH',
+    });
+    return httpClient.get(
+      `${baseUrl}/bookings/${bookingId}/visits-with-visitors?${query}`,
+    );
   }
 
   function getVisitBalances(offenderNo) {
@@ -73,8 +71,6 @@ function offenderRepository(httpClient) {
     getBalancesFor,
     getKeyWorkerFor,
     getNextVisitFor,
-    getLastVisitFor,
-    getVisitsFor,
     getVisitBalances,
     sentenceDetailsFor,
     getCurrentEvents,

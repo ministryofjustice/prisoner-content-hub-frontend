@@ -83,8 +83,10 @@ const createOffenderService = (
     try {
       logger.info(`OffenderService (getVisitsFor) - User: ${prisonerId}`);
 
-      const response = await repository.getNextVisitFor(bookingId);
-      return NextVisit.from(response).format();
+      const today = new Date();
+      const startDate = format(today, 'yyyy-MM-dd');
+      const response = await repository.getNextVisitFor(bookingId, startDate);
+      return NextVisit(response?.content);
     } catch (e) {
       logger.error(
         `OffenderService (getVisitsFor) - Failed: ${e.message} - User: ${prisonerId}`,
