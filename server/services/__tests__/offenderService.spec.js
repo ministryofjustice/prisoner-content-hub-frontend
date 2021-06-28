@@ -21,11 +21,14 @@ describe('Offender Service', () => {
     format.mockReturnValue(FORMATTED_RESPONSE);
     from.mockReturnValue({ format });
   });
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
 
   describe('getOffenderDetailsFor', () => {
     it('returns formatted Offender data', async () => {
       const repository = {
-        getOffenderDetailsFor: jest.fn().mockReturnValue(RAW_RESPONSE),
+        getOffenderDetailsFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -45,7 +48,7 @@ describe('Offender Service', () => {
   describe('getIncentivesSummaryFor', () => {
     it('returns formatted incentives data', async () => {
       const repository = {
-        getIncentivesSummaryFor: jest.fn().mockReturnValue(RAW_RESPONSE),
+        getIncentivesSummaryFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -65,7 +68,7 @@ describe('Offender Service', () => {
   describe('getBalancesFor', () => {
     it('returns formatted Balances data', async () => {
       const repository = {
-        getBalancesFor: jest.fn().mockReturnValue(RAW_RESPONSE),
+        getBalancesFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -83,7 +86,7 @@ describe('Offender Service', () => {
   describe('getKeyWorkerFor', () => {
     it('returns formatted KeyWorker data', async () => {
       const repository = {
-        getKeyWorkerFor: jest.fn().mockReturnValue(RAW_RESPONSE),
+        getKeyWorkerFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -101,7 +104,7 @@ describe('Offender Service', () => {
   describe('getVisitsFor', () => {
     it('returns formatted Visits data', async () => {
       const repository = {
-        getNextVisitFor: jest.fn().mockReturnValue(RAW_RESPONSE),
+        getNextVisitFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -116,10 +119,31 @@ describe('Offender Service', () => {
     });
   });
 
+  describe('getVisitRemaining', () => {
+    it('returns the total visitsRemaining', async () => {
+      const repository = {
+        getVisitBalances: jest
+          .fn()
+          .mockResolvedValue({ remainingPvo: 40, remainingVo: 2 }),
+      };
+
+      const service = createPrisonApiOffenderService(repository, {
+        NextVisit: mockAdapter,
+      });
+
+      const data = await service.getVisitsRemaining(TEST_USER);
+
+      expect(repository.getVisitBalances).toHaveBeenCalledWith(
+        TEST_PRISONER_ID,
+      );
+      expect(data).toStrictEqual({ visitsRemaining: 42 });
+    });
+  });
+
   describe('getImportantDatesFor', () => {
     it('returns formatted ImportantDates data', async () => {
       const repository = {
-        sentenceDetailsFor: jest.fn().mockReturnValue(RAW_RESPONSE),
+        sentenceDetailsFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -154,7 +178,7 @@ describe('Offender Service', () => {
 
     it('should call the repository service with the correct bookingId', async () => {
       const repository = {
-        getEventsFor: jest.fn().mockReturnValue(['FOO', 'BAR']),
+        getEventsFor: jest.fn().mockResolvedValue(['FOO', 'BAR']),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -182,7 +206,7 @@ describe('Offender Service', () => {
 
     it('should return an error response when passed invalid dates', async () => {
       const repository = {
-        getEventsFor: jest.fn().mockReturnValue([]),
+        getEventsFor: jest.fn().mockResolvedValue([]),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -198,7 +222,7 @@ describe('Offender Service', () => {
 
     it('should return an error response when passed an descending date range', async () => {
       const repository = {
-        getEventsFor: jest.fn().mockReturnValue([]),
+        getEventsFor: jest.fn().mockResolvedValue([]),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -218,7 +242,7 @@ describe('Offender Service', () => {
 
     it('should return an error response when passed an ascending date range', async () => {
       const repository = {
-        getEventsFor: jest.fn().mockReturnValue([]),
+        getEventsFor: jest.fn().mockResolvedValue([]),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -238,7 +262,7 @@ describe('Offender Service', () => {
 
     it('should not error when retrieving events for a single day', async () => {
       const repository = {
-        getEventsFor: jest.fn().mockReturnValue([]),
+        getEventsFor: jest.fn().mockResolvedValue([]),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -258,7 +282,7 @@ describe('Offender Service', () => {
 
     it('should return an error response if the repository returns malformed data', async () => {
       const repository = {
-        getEventsFor: jest.fn().mockReturnValue('FOO'),
+        getEventsFor: jest.fn().mockResolvedValue('FOO'),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -284,7 +308,7 @@ describe('Offender Service', () => {
   describe('getEventsForToday', () => {
     it('should call the repository service with the correct bookingId', async () => {
       const repository = {
-        getEventsFor: jest.fn().mockReturnValue([
+        getEventsFor: jest.fn().mockResolvedValue([
           {
             bookingId: 6699,
             eventClass: 'INT_MOV',
@@ -340,7 +364,7 @@ describe('Offender Service', () => {
 
     it('should return an error when no booking Id is passed', async () => {
       const repository = {
-        getEventsFor: jest.fn().mockReturnValue([]),
+        getEventsFor: jest.fn().mockResolvedValue({ error: true }),
       };
 
       const service = createPrisonApiOffenderService(repository);
@@ -354,7 +378,7 @@ describe('Offender Service', () => {
 
     it('should handle when no events returned from the API', async () => {
       const repository = {
-        getEventsFor: jest.fn().mockReturnValue([]),
+        getEventsFor: jest.fn().mockResolvedValue([]),
       };
 
       const service = createPrisonApiOffenderService(repository);

@@ -46,6 +46,12 @@ function offenderRepository(httpClient) {
     return httpClient.get(`${endpoint}?${query.join('&')}`);
   }
 
+  function getVisitBalances(offenderNo) {
+    return httpClient.get(
+      `${baseUrl}/bookings/offenderNo/${offenderNo}/visit/balances`,
+    );
+  }
+
   function sentenceDetailsFor(bookingId) {
     return httpClient.get(`${baseUrl}/bookings/${bookingId}/sentenceDetail`);
   }
@@ -69,6 +75,7 @@ function offenderRepository(httpClient) {
     getNextVisitFor,
     getLastVisitFor,
     getVisitsFor,
+    getVisitBalances,
     sentenceDetailsFor,
     getCurrentEvents,
     getEventsFor,

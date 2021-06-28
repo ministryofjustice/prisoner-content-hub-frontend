@@ -10,6 +10,7 @@ describe('GET /profile', () => {
     getEventsForToday: jest.fn().mockResolvedValue({}),
     getIncentivesSummaryFor: jest.fn().mockResolvedValue({}),
     getVisitsFor: jest.fn().mockResolvedValue({}),
+    getVisitsRemaining: jest.fn().mockResolvedValue({}),
     getBalancesFor: jest.fn().mockResolvedValue({}),
   };
 
@@ -286,6 +287,20 @@ describe('GET /profile', () => {
           expect($('[data-test="visits-error"]').length).toBe(1);
         });
     });
+    it('notifies the user when retrieving visit balances fails', () => {
+      offenderService.getVisitsRemaining.mockResolvedValue({
+        error: true,
+      });
+
+      return request(app)
+        .get('/profile')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="visits-error"]').length).toBe(1);
+        });
+    });
 
     it('displays the visits information when the user is signed in', () => {
       offenderService.getVisitsFor.mockResolvedValue({
@@ -293,6 +308,9 @@ describe('GET /profile', () => {
         visitType: 'Social',
         visitorName: 'Bob Visitor',
         hasNextVisit: true,
+      });
+      offenderService.getVisitsRemaining.mockResolvedValue({
+        visitsRemaining: 42,
       });
 
       return request(app)
@@ -308,6 +326,9 @@ describe('GET /profile', () => {
 
           const visitType = $('[data-test="visitType"]').text();
           expect(visitType).toContain('Social');
+
+          const visitsRemaining = $('[data-test="visitsRemaining"]').text();
+          expect(visitsRemaining).toContain('42');
 
           const visitorName = $('[data-test="visitorName"]').text();
           expect(visitorName).toContain('Bob Visitor');
