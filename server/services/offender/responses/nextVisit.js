@@ -11,7 +11,7 @@ const { formatDateOrDefault } = require('../../../utils/date');
 const { fullNameOrDefault } = require('../../../utils/string');
 const visitTypeDisplayText = require('../../../content/visitType.json');
 
-module.exports = function NextVisit(response = []) {
+module.exports = (response = []) => {
   if (!response?.length) {
     return { hasNextVisit: false };
   }
@@ -28,8 +28,8 @@ module.exports = function NextVisit(response = []) {
       PRETTY_DAY_AND_MONTH,
       startTime,
     ),
-    visitors: visitors.map(v =>
-      fullNameOrDefault(DEFAULT, v.firstName, v.lastName),
+    visitors: visitors.map(({ firstName, lastName }) =>
+      fullNameOrDefault(DEFAULT, firstName, lastName),
     ),
     visitType: visitTypeDisplayText?.[visitType] || DEFAULT,
     startTime: formatDateOrDefault(DEFAULT, PRETTY_TIME, startTime),

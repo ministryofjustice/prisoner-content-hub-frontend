@@ -180,7 +180,7 @@
                   <strong>{{ visitsSummary.nextVisit }}</strong><br/>
                   {{ visitsSummary.startTime }} to {{ visitsSummary.endTime }}
                   <br/><br/>
-                  {{ visitsSummary.visitType }}
+                  {{ visitsSummary.visitType }} visit
                 {% else %}
                   No upcoming visit
                 {% endif %}
@@ -188,9 +188,18 @@
             </li>
             {% if visitsSummary.hasNextVisit %}
               <li class="govuk-grid-column-one-quarter card-group__item">
-                {% call cardSensitiveData({ id: 'visitorName', heading: 'Lead visitor' }) -%}
-                  <p>Name of the lead visitor</p>
-                  <strong class="hidden sensitive" data-test="visitor-name">{{ visitsSummary.visitorName }}</strong>
+                {% call cardSensitiveData({ id: 'visitors', heading: 'Visitors coming to your next visit' }) -%}
+                  
+                <div class="hidden sensitive" data-test="visitors">
+                  <ol class="hidden sensitive visitors-names" data-test="visitors">
+                    {% for visit in visitsSummary.visitors %}
+                      <li class="govuk-!-padding-bottom-2">{{ visit }}</li>
+                    {% else %}
+                      <strong data-test="no-activities">No activities scheduled</strong>
+                    {% endfor %}
+                  </ol>
+
+                  </div>
                 {%- endcall %}
               </li>
               <li class="govuk-grid-column-one-quarter card-group__item">

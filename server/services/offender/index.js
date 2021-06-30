@@ -12,7 +12,7 @@ const createOffenderService = (
     IncentivesSummary,
     Balances,
     KeyWorker,
-    NextVisit,
+    nextVisit,
     ImportantDates,
     Timetable,
     TimetableEvent,
@@ -86,7 +86,7 @@ const createOffenderService = (
       const today = new Date();
       const startDate = format(today, 'yyyy-MM-dd');
       const response = await repository.getNextVisitFor(bookingId, startDate);
-      return NextVisit(response?.content);
+      return nextVisit(response?.content);
     } catch (e) {
       logger.error(
         `OffenderService (getVisitsFor) - Failed: ${e.message} - User: ${prisonerId}`,
@@ -242,11 +242,7 @@ const createOffenderService = (
     getBalancesFor,
     getKeyWorkerFor,
     getVisitsFor,
-<<<<<<< HEAD
     getVisitsRemaining,
-=======
-    getVisitBalances,
->>>>>>> 5b6c26c... feature/display-number-of-visits-remaining
     getImportantDatesFor,
     getCurrentEvents,
     getEventsFor,
