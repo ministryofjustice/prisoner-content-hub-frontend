@@ -2,6 +2,9 @@ const { NextVisit } = require('../nextVisit');
 const {
   placeholders: { DEFAULT },
 } = require('../../../../utils/enums');
+const visitTypeDisplayText = require('../../../../content/visitType.json');
+
+const VISIT_TYPE = 'SCON';
 
 describe('NextVisit', () => {
   it('Should handle an empty response', () => {
@@ -20,7 +23,7 @@ describe('NextVisit', () => {
         nextVisit: DEFAULT,
         nextVisitDate: DEFAULT,
         nextVisitDay: DEFAULT,
-        visitType: DEFAULT,
+        visitType: null,
         visitorName: DEFAULT,
         startTime: DEFAULT,
         endTime: DEFAULT,
@@ -44,7 +47,7 @@ describe('NextVisit', () => {
         nextVisit: 'Saturday 7 December',
         nextVisitDate: '7 December',
         nextVisitDay: 'Saturday',
-        visitType: DEFAULT,
+        visitType: null,
         visitorName: DEFAULT,
         startTime: '11:30am',
         endTime: '1:00pm',
@@ -58,7 +61,7 @@ describe('NextVisit', () => {
       startTime: '2019-12-07T11:30:30',
       endTime: '2019-12-07T12:30:30',
       eventStatus: 'SCH',
-      visitTypeDescription: 'TVT test visit type',
+      visitType: VISIT_TYPE,
       leadVisitor: 'MICKY MOUSE',
     };
 
@@ -69,7 +72,7 @@ describe('NextVisit', () => {
       nextVisit: 'Saturday 7 December',
       nextVisitDate: '7 December',
       nextVisitDay: 'Saturday',
-      visitType: 'TVT',
+      visitType: visitTypeDisplayText[VISIT_TYPE],
       visitorName: 'Micky Mouse',
       startTime: '11:30am',
       endTime: '12:30pm',
