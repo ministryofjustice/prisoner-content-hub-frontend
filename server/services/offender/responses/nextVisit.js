@@ -10,6 +10,11 @@ const {
 } = require('../../../utils/enums');
 const { formatDateOrDefault } = require('../../../utils/date');
 
+const visitTypeDisplayText = {
+  OFFI: 'Official visit',
+  SCON: 'Social visit',
+};
+
 class NextVisit {
   constructor(options = {}) {
     this.startTime = options.startTime;
@@ -36,7 +41,7 @@ class NextVisit {
       visitorName: this.visitorName
         ? capitalizePersonName(this.visitorName)
         : DEFAULT,
-      visitType: this.visitType ? this.visitType.split(' ').shift() : DEFAULT,
+      visitType: visitTypeDisplayText?.[this.visitType],
       startTime: formatDateOrDefault(DEFAULT, PRETTY_TIME, this.startTime),
       endTime: formatDateOrDefault(DEFAULT, PRETTY_TIME, this.endTime),
     };
