@@ -10,10 +10,7 @@ const {
 } = require('../../../utils/enums');
 const { formatDateOrDefault } = require('../../../utils/date');
 
-const visitTypeDisplayText = {
-  OFFI: 'Official visit',
-  SCON: 'Social visit',
-};
+const visitTypeDisplayText = require('../../../content/visitType.json');
 
 class NextVisit {
   constructor(options = {}) {
@@ -41,27 +38,22 @@ class NextVisit {
       visitorName: this.visitorName
         ? capitalizePersonName(this.visitorName)
         : DEFAULT,
-      visitType: visitTypeDisplayText?.[this.visitType],
+      visitType: visitTypeDisplayText?.[this.visitType] || null,
       startTime: formatDateOrDefault(DEFAULT, PRETTY_TIME, this.startTime),
       endTime: formatDateOrDefault(DEFAULT, PRETTY_TIME, this.endTime),
     };
   }
 
   static from(response = {}) {
-    const {
-      startTime,
-      endTime,
-      eventStatus,
-      leadVisitor,
-      visitTypeDescription,
-    } = response;
+    const { startTime, endTime, eventStatus, leadVisitor, visitType } =
+      response;
 
     return new NextVisit({
       startTime,
       endTime,
       status: eventStatus,
       visitorName: leadVisitor,
-      visitType: visitTypeDescription,
+      visitType,
     });
   }
 }

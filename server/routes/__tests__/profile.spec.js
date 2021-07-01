@@ -305,7 +305,7 @@ describe('GET /profile', () => {
     it('displays the visits information when the user is signed in', () => {
       offenderService.getVisitsFor.mockResolvedValue({
         nextVisit: 'Tuesday 20 April 2021',
-        visitType: 'Social',
+        visitType: 'Social visit',
         visitorName: 'Bob Visitor',
         hasNextVisit: true,
       });
@@ -323,9 +323,7 @@ describe('GET /profile', () => {
 
           const nextVisit = $('[data-test="nextVisit"]').text();
           expect(nextVisit).toContain('Tuesday 20 April 2021');
-
-          const visitType = $('[data-test="visitType"]').text();
-          expect(visitType).toContain('Social');
+          expect(nextVisit).toContain('Social visit');
 
           const visitsRemaining = $('[data-test="visitsRemaining"]').text();
           expect(visitsRemaining).toContain('42');
