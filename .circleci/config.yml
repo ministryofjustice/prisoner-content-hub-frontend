@@ -42,7 +42,7 @@ commands:
             QUALIFIER=<< parameters.qualifier >>
             RELEASE_NAME=<< parameters.releaseName >>${QUALIFIER:+-$QUALIFIER}
             helm upgrade $RELEASE_NAME ./helm_deploy/prisoner-content-hub-frontend \
-              --install --wait --force --reset-values --timeout 360s \
+              --install --wait --reset-values --timeout 360s \
               --namespace=${KUBE_NAMESPACE} \
               --values ./helm_deploy/prisoner-content-hub-frontend/values-<< parameters.environment >>.yaml \
               --set application.contentConfigMapName="${HELM_BACKEND_RELEASE_NAME}" \
@@ -60,6 +60,43 @@ commands:
               --set hotJarId=${HOTJAR_ID} \
               --set image.tag=${VERSION_TO_DEPLOY} \
               --set ingress.qualifier="<< parameters.qualifier >>"
+      - slack/notify:
+          channel: hub-test-releases
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*${CIRCLE_PROJECT_REPONAME}* version `${RELEASE_NAME}` deploy to *<< parameters.environment >>*"
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "View job"
+                    },
+                    "url": "${CIRCLE_BUILD_URL}"
+                  }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": ":circleci-${CCI_STATUS}: Deploy ${CCI_STATUS}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "\nReleased to [here](https://cookhamwood-prisoner-content-hub-<< parameters.environment >>${QUALIFIER:+-$QUALIFIER}.apps.live-1.cloud-platform.service.justice.gov.uk/)"
+                    }
+                  ]
+                }
+              ]
+            }
+          event: always
+
 
 jobs:
   build:
@@ -236,42 +273,6 @@ jobs:
           environment: "<< parameters.environment >>"
           releaseName: "prisoner-content-hub-frontend"
           qualifier: "<< parameters.qualifier >>"
-      - slack/notify:
-          channel: hub-test-releases
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*${CIRCLE_PROJECT_REPONAME}* version `${APP_VERSION}` deploy to *<< parameters.environment >>*"
-                  },
-                  "accessory": {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "View job"
-                    },
-                    "url": "${CIRCLE_BUILD_URL}"
-                  }
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": ":circleci-${CCI_STATUS}: Deploy ${CCI_STATUS}"
-                    },
-                    {
-                      "type": "plain_text",
-                      "text": "\n${DEPLOYMENT_CHANGELOG_JSON}"
-                    }
-                  ]
-                }
-              ]
-            }
-          event: always
 
 workflows:
   version: 2
