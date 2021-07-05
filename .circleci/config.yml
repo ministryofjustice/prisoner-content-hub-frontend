@@ -60,6 +60,7 @@ commands:
               --set hotJarId=${HOTJAR_ID} \
               --set image.tag=${VERSION_TO_DEPLOY} \
               --set ingress.qualifier="<< parameters.qualifier >>"
+              NOTES=$(helm -n ${KUBE_NAMESPACE} get notes ${RELEASE_NAME})
       - slack/notify:
           channel: hub-test-releases
           custom: |
@@ -85,12 +86,8 @@ commands:
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": ":circleci-${CCI_STATUS}: Deploy ${CCI_STATUS}"
+                      "text": "${NOTES}\n:circleci-${CCI_STATUS}: Deploy ${CCI_STATUS}"
                     },
-                    {
-                      "type": "mrkdwn",
-                      "text": "\nReleased to [here](https://cookhamwood-prisoner-content-hub-<< parameters.environment >>${QUALIFIER:+-$QUALIFIER}.apps.live-1.cloud-platform.service.justice.gov.uk/)"
-                    }
                   ]
                 }
               ]
