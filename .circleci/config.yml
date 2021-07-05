@@ -10,16 +10,13 @@ feature_branch: &feature_branch
 version: 2.1
 
 orbs:
-  kubernetes: circleci/kubernetes@0.11.2
-  helm: circleci/helm@1.2.0
-  hmpps: ministryofjustice/hmpps@3.2
-  slack: circleci/slack@4.4.2
+  hmpps: ministryofjustice/hmpps@3.8
+  slack: circleci/slack@4.4
 
-executors:
-  test_executor:
-    docker:
-      - image: circleci/node:14-buster-browsers
-    working_directory: ~/app
+parameters:
+  node-version:
+    type: string
+    default: 14.17-browsers
 
 commands:
   release_to_namespace:
@@ -60,9 +57,14 @@ commands:
               --set hotJarId=${HOTJAR_ID} \
               --set image.tag=${VERSION_TO_DEPLOY} \
               --set ingress.qualifier="<< parameters.qualifier >>"
-              echo "export NOTES=$(helm -n ${KUBE_NAMESPACE} get notes ${RELEASE_NAME})" >> $BASH_ENV
-              echo "export RELEASE_NAME" >> $BASH_ENV
-              
+
+              CIRCLE_PR_BRANCH=$(curl -s "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls/${CIRCLE_PULL_REQUEST##*/}" | jq -r 'try .head.ref catch null')
+              GIT_MSG=$(git --no-pager log -1 --pretty=format:"%h : %s" | jq -Rs) 
+
+              echo "export NOTES=$(helm -n ${KUBE_NAMESPACE} get notes ${RELEASE_NAME} | jq -Rs)" >> $BASH_ENV
+              echo "export RELEASE_NAME=${RELEASE_NAME}" >> $BASH_ENV              
+              echo "export PR_NAME=${CIRCLE_PR_BRANCH}" >> $BASH_ENV
+              echo "export GIT_MSG=${GIT_MSG}" >> $BASH_ENV
       - slack/notify:
           channel: hub-test-releases
           custom: |
@@ -88,7 +90,11 @@ commands:
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "${NOTES}\n:circleci-${CCI_STATUS}: Deploy ${CCI_STATUS}"
+                      "text": "\nDeployed branch: *${PR_NAME}*\nMost recent change: *${GIT_MSG}*\n${NOTES}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "\n:circleci-${CCI_STATUS}: Deploy ${CCI_STATUS}"
                     }
                   ]
                 }
@@ -101,7 +107,7 @@ jobs:
   build:
     executor:
       name: hmpps/node
-      tag: 14.15-browsers
+      tag: << pipeline.parameters.node-version >>
     steps:
       - checkout
       - restore_cache:
@@ -128,7 +134,9 @@ jobs:
             - .cache/Cypress
 
   run_unit_tests:
-    executor: test_executor
+    executor:
+      name: hmpps/node
+      tag: << pipeline.parameters.node-version >>
     steps:
       - checkout
       - attach_workspace:
@@ -143,7 +151,9 @@ jobs:
           command: npm run lint
 
   run_e2e_tests:
-    executor: test_executor
+    executor:
+      name: hmpps/node
+      tag: << pipeline.parameters.node-version >>
     steps:
       - checkout
       - attach_workspace:
@@ -177,7 +187,7 @@ jobs:
   build_preview:
     executor:
       name: hmpps/node
-      tag: 14.15-browsers
+      tag: << pipeline.parameters.node-version >>
     steps:
       - checkout
       - setup_remote_docker:
@@ -208,7 +218,7 @@ jobs:
   build_production:
     executor:
       name: hmpps/node
-      tag: 14.15-browsers
+      tag: << pipeline.parameters.node-version >>
     steps:
       - checkout
       - setup_remote_docker:
@@ -253,7 +263,7 @@ jobs:
   deploy_cloud_platform:
     executor:
       name: hmpps/node
-      tag: 14.15-browsers
+      tag: << pipeline.parameters.node-version >>
     parameters:
       environment:
         type: string
