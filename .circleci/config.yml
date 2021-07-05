@@ -16,14 +16,10 @@ orbs:
   slack: circleci/slack@4.4.2
 
 executors:
-  build_executor:
-    docker:
-    - image: mojdigitalstudio/circleci-build-container
-    working_directory: ~/workspace
   test_executor:
     docker:
       - image: circleci/node:14-buster-browsers
-    working_directory: ~/workspace
+    working_directory: ~/app
 
 commands:
   release_to_namespace:
@@ -100,7 +96,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/workspace
+          at: ~/app
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
@@ -115,7 +111,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/workspace
+          at: ~/app
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
@@ -143,7 +139,9 @@ jobs:
           path: cypress/artifacts/screenshots
 
   build_preview:
-    executor: build_executor
+    executor:
+      name: hmpps/node
+      tag: 14.15-browsers
     steps:
       - checkout
       - setup_remote_docker:
@@ -172,7 +170,9 @@ jobs:
             - version-to-deploy.txt
 
   build_production:
-    executor: build_executor
+    executor:
+      name: hmpps/node
+      tag: 14.15-browsers
     steps:
       - checkout
       - setup_remote_docker:
@@ -215,7 +215,9 @@ jobs:
             - version-to-deploy.txt
 
   deploy_cloud_platform:
-    executor: build_executor
+    executor:
+      name: hmpps/node
+      tag: 14.15-browsers
     parameters:
       environment:
         type: string
