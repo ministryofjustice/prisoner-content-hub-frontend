@@ -13,6 +13,7 @@ orbs:
   kubernetes: circleci/kubernetes@0.11.2
   helm: circleci/helm@1.2.0
   hmpps: ministryofjustice/hmpps@3.2
+  slack: circleci/slack@4.4.2
 
 executors:
   build_executor:
@@ -25,13 +26,6 @@ executors:
     working_directory: ~/workspace
 
 commands:
-  set_up_helm:
-    description: "Set up Kubernetes/Helm"
-    steps:
-      - kubernetes/install
-      - helm/install-helm-client:
-          version: v3.2.1
-
   release_to_namespace:
     description: "Release with Helm"
     parameters:
@@ -45,20 +39,6 @@ commands:
       - attach_workspace:
           at: /tmp/build-info
       - run:
-          name: Configure kubectl context
-          command: |
-            echo -n ${KUBE_CLUSTER_CERT} | base64 -d > /tmp/cluster-ca.crt
-            kubectl config set-cluster ${KUBE_CLUSTER_NAME} \
-              --certificate-authority=/tmp/cluster-ca.crt \
-              --server="https://api.${KUBE_CLUSTER_NAME}"
-            kubectl config set-credentials circleci \
-              --token=${KUBE_TOKEN}
-            kubectl config set-context ${KUBE_CLUSTER_NAME} \
-              --cluster=${KUBE_CLUSTER_NAME} \
-              --user=circleci \
-              --namespace=${KUBE_NAMESPACE}
-            kubectl config use-context ${KUBE_CLUSTER_NAME}
-      - run:
           name: Release to << parameters.environment >>
           command: |
             VERSION_TO_DEPLOY=$(cat /tmp/build-info/version-to-deploy.txt)
@@ -68,7 +48,7 @@ commands:
             helm upgrade $RELEASE_NAME ./helm_deploy/prisoner-content-hub-frontend \
               --install --wait --force --reset-values --timeout 360s \
               --namespace=${KUBE_NAMESPACE} \
-              --values ./helm_deploy/prisoner-content-hub-frontend/values.<< parameters.environment >>.yaml \
+              --values ./helm_deploy/prisoner-content-hub-frontend/values-<< parameters.environment >>.yaml \
               --set application.contentConfigMapName="${HELM_BACKEND_RELEASE_NAME}" \
               --set application.nprConfigMapName="${HELM_NPR_CONFIG_MAP_NAME}" \
               --set application.sentry_dsn="${FRONTEND_SENTRY_DSN}" \
@@ -168,8 +148,6 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
       - hmpps/create_app_version
       - run:
           name: Build frontend Docker image
@@ -177,10 +155,6 @@ jobs:
             GIT_REF="$CIRCLE_SHA1" \
             GIT_DATE="$(git log --format=%cd -n1 --date=iso $CIRCLE_SHA1)" \
             make build
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
       - run:
           name: Push frontend Docker image
           command: make push-preview
@@ -250,11 +224,52 @@ jobs:
         default: ""    
     steps:
       - checkout
-      - set_up_helm
+      - hmpps/k8s_setup:
+          ca-cert: KUBE_CLUSTER_CERT
+          cluster-name: KUBE_CLUSTER_NAME
+          kube-namespace: KUBE_NAMESPACE
+          kube-token: KUBE_TOKEN
+      - hmpps/install_helm
       - release_to_namespace:
           environment: "<< parameters.environment >>"
           releaseName: "prisoner-content-hub-frontend"
           qualifier: "<< parameters.qualifier >>"
+      - slack/notify:
+          channel: hub-test-releases
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*${CIRCLE_PROJECT_REPONAME}* version `${APP_VERSION}` deploy to *<< parameters.environment >>*"
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "View job"
+                    },
+                    "url": "${CIRCLE_BUILD_URL}"
+                  }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": ":circleci-${CCI_STATUS}: Deploy ${CCI_STATUS}"
+                    },
+                    {
+                      "type": "plain_text",
+                      "text": "\n${DEPLOYMENT_CHANGELOG_JSON}"
+                    }
+                  ]
+                }
+              ]
+            }
+          event: always
 
 workflows:
   version: 2
@@ -272,7 +287,9 @@ workflows:
 
       - deploy_cloud_platform:
           <<: *feature_branch
-          context: prisoner-content-hub-development
+          context:
+            - hmpps-common-vars
+            - prisoner-content-hub-development
           environment: "development"
           qualifier: "${CIRCLE_PULL_REQUEST##*/}"
           requires:
@@ -286,7 +303,9 @@ workflows:
 
       - deploy_cloud_platform:
           <<: *main_branch
-          context: prisoner-content-hub-staging
+          context: 
+            - hmpps-common-vars
+            - prisoner-content-hub-staging
           name: deploy_to_staging
           environment: "staging"
           requires:
@@ -300,7 +319,9 @@ workflows:
 
       - deploy_cloud_platform:
           <<: *main_branch
-          context: prisoner-content-hub-prod
+          context: 
+            - hmpps-common-vars
+            - prisoner-content-hub-prod
           environment: "production"
           requires:
             - approve_deploy_production
