@@ -87,7 +87,7 @@ commands:
                     {
                       "type": "mrkdwn",
                       "text": "${NOTES}\n:circleci-${CCI_STATUS}: Deploy ${CCI_STATUS}"
-                    },
+                    }
                   ]
                 }
               ]
