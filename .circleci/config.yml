@@ -60,7 +60,9 @@ commands:
               --set hotJarId=${HOTJAR_ID} \
               --set image.tag=${VERSION_TO_DEPLOY} \
               --set ingress.qualifier="<< parameters.qualifier >>"
-              NOTES=$(helm -n ${KUBE_NAMESPACE} get notes ${RELEASE_NAME})
+              echo "export NOTES=$(helm -n ${KUBE_NAMESPACE} get notes ${RELEASE_NAME})" >> $BASH_ENV
+              echo "export RELEASE_NAME" >> $BASH_ENV
+              
       - slack/notify:
           channel: hub-test-releases
           custom: |
