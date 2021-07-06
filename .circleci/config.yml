@@ -28,6 +28,8 @@ commands:
         type: string
       qualifier:
         type: string  
+      releaseChannel:
+        type: string      
     steps:
       - attach_workspace:
           at: /tmp/build-info
@@ -66,7 +68,7 @@ commands:
               echo "export PR_NAME=${CIRCLE_PR_BRANCH}" >> $BASH_ENV
               echo "export GIT_MSG=${GIT_MSG}" >> $BASH_ENV
       - slack/notify:
-          channel: hub-test-releases
+          channel: << parameters.releaseChannel >>
           custom: |
             {
               "blocks": [
@@ -270,6 +272,8 @@ jobs:
       qualifier:
         type: string
         default: ""    
+      releaseChannel:
+        type: string
     steps:
       - checkout
       - hmpps/k8s_setup:
@@ -282,6 +286,7 @@ jobs:
           environment: "<< parameters.environment >>"
           releaseName: "prisoner-content-hub-frontend"
           qualifier: "<< parameters.qualifier >>"
+          releaseChannel: "<< parameters.releaseChannel >>"
 
 workflows:
   version: 2
@@ -304,6 +309,7 @@ workflows:
             - prisoner-content-hub-development
           environment: "development"
           qualifier: "${CIRCLE_PULL_REQUEST##*/}"
+          releaseChannel: "hub_dev_releases"
           requires:
             - build_preview
 
@@ -320,6 +326,7 @@ workflows:
             - prisoner-content-hub-staging
           name: deploy_to_staging
           environment: "staging"
+          releaseChannel: "hub_dev_releases"
           requires:
             - build_production
 
@@ -335,6 +342,7 @@ workflows:
             - hmpps-common-vars
             - prisoner-content-hub-prod
           environment: "production"
+          releaseChannel: "hub_releases"
           requires:
             - approve_deploy_production
 
