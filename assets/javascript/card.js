@@ -33,11 +33,10 @@ const wrapContainer = container => {
 const wrapCard = card => {
   const sensitiveItems = [...card.querySelectorAll('.sensitive')];
   const openContent = card.querySelector('.open');
-  const closedContent = card.querySelector('.closed');
   const container = card.closest(SENSITIVE_CARD_CONTAINER);
 
   const itemsPresentWhenOpen = [openContent, ...sensitiveItems];
-  const itemsPresentWhenClosed = [closedContent];
+  const itemsPresentWhenClosed = [...card.querySelectorAll('.closed')];
 
   return {
     hasContainer: () => Boolean(container),

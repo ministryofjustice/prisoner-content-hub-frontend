@@ -189,7 +189,9 @@
             {% if visitsSummary.hasNextVisit %}
               <li class="govuk-grid-column-one-quarter card-group__item">
                 {% call cardSensitiveData({ id: 'visitors', heading: 'Visitors coming to your next visit' }) -%}
-                  
+                  <div class="closed">
+                    See who’s coming to your next visit
+                  </div>
                   <div class="hidden sensitive" data-test="visitors">
                     {% if visitsSummary.visitors.length > 1 %}
                       <ol class="hidden sensitive visitors-names" data-test="visitors">
