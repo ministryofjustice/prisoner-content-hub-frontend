@@ -63,7 +63,7 @@ commands:
               CIRCLE_PR_BRANCH=$(curl -s "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls/${CIRCLE_PULL_REQUEST##*/}" | jq -r 'try .head.ref catch null')
               GIT_MSG=$(git --no-pager log -1 --pretty=format:"%h : %s" | jq -Rs) 
 
-              echo "export NOTES=$(helm -n ${KUBE_NAMESPACE} get notes ${RELEASE_NAME} | jq -Rs)" >> $BASH_ENV
+              echo "export NOTES=$(helm -n ${KUBE_NAMESPACE} get notes ${RELEASE_NAME} | head -n 10 | jq -Rs)" >> $BASH_ENV
               echo "export RELEASE_NAME=${RELEASE_NAME}" >> $BASH_ENV              
               echo "export PR_NAME=${CIRCLE_PR_BRANCH}" >> $BASH_ENV
               echo "export GIT_MSG=${GIT_MSG}" >> $BASH_ENV
