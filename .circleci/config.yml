@@ -60,9 +60,10 @@ commands:
               --set image.tag=${VERSION_TO_DEPLOY} \
               --set ingress.qualifier="<< parameters.qualifier >>"
 
-              if [ ! -z ${CIRCLE_PULL_REQUEST##*/} ]; then
-                  BRANCH=$(curl -s "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls/${CIRCLE_PULL_REQUEST##*/}" | jq -r 'try .head.ref catch null')
-                  CIRCLE_PR_BRANCH="\nDeployed branch: *${BRANCH}*"
+              PULL_REQUEST=${CIRCLE_PULL_REQUEST##*/}
+              if [ ! -z $PULL_REQUEST ]; then
+                  BRANCH=$(curl -s "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls/${PULL_REQUEST}" | jq -r 'try .head.ref catch null')
+                  CIRCLE_PR_BRANCH=$( echo "Deployed branch: *${BRANCH}*" | jq -Rs)
               fi
               GIT_MSG=$(git --no-pager log -1 --pretty=format:"%h : %s" | jq -Rs) 
 
@@ -95,7 +96,7 @@ commands:
                   "elements": [
                     {
                       "type": "mrkdwn",
-                      "text": "${PR_NAME}\nMost recent change: *${GIT_MSG}*\n${NOTES}"
+                      "text": "\n${PR_NAME}\nMost recent change: *${GIT_MSG}*\n\n${NOTES}"
                     },
                     {
                       "type": "mrkdwn",
