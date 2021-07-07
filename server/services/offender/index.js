@@ -12,7 +12,7 @@ const createOffenderService = (
     IncentivesSummary,
     Balances,
     KeyWorker,
-    NextVisit,
+    nextVisit,
     ImportantDates,
     Timetable,
     TimetableEvent,
@@ -83,8 +83,10 @@ const createOffenderService = (
     try {
       logger.info(`OffenderService (getVisitsFor) - User: ${prisonerId}`);
 
-      const response = await repository.getNextVisitFor(bookingId);
-      return NextVisit.from(response).format();
+      const today = new Date();
+      const startDate = format(today, 'yyyy-MM-dd');
+      const response = await repository.getNextVisitFor(bookingId, startDate);
+      return nextVisit(response?.content);
     } catch (e) {
       logger.error(
         `OffenderService (getVisitsFor) - Failed: ${e.message} - User: ${prisonerId}`,
@@ -103,8 +105,9 @@ const createOffenderService = (
         await repository.getVisitBalances(prisonerId);
       return { visitsRemaining: remainingPvo + remainingVo };
     } catch (e) {
+      if (e?.response?.status === 404) return { visitsRemaining: 0 };
       logger.error(
-        `OffenderService (getVisitBalances) - Failed: ${e.message} - User: ${prisonerId}`,
+        `OffenderService (getVisitsRemaining) - Failed: ${e.message} - User: ${prisonerId}`,
       );
       logger.debug(e.stack);
       return {
@@ -118,7 +121,6 @@ const createOffenderService = (
       logger.info(
         `OffenderService (getImportantDatesFor) - User: ${prisonerId}`,
       );
-
       const response = await repository.sentenceDetailsFor(bookingId);
       return ImportantDates.from(response).format();
     } catch (e) {

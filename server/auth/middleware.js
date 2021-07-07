@@ -37,7 +37,14 @@ function isPrisonerId(id) {
   return pattern.test(id);
 }
 
-// G1727GV, G2320VD, G2732GG, G2168GG, G9374GG
+/* 
+  id        initials  visits  visitors
+  G2168GG   OC        1       1
+  G9374GG   YX        1       4
+  G1727GV   DB        1       3
+  G2320VD   YA        In reception        
+  G2732GG   ON        0       N/A       
+*/
 const createMockSignIn = ({ offenderService }) =>
   async function mockSignIn(req, res, next) {
     try {

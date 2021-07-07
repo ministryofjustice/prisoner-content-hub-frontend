@@ -1,79 +1,66 @@
-const { NextVisit } = require('../nextVisit');
-const {
-  placeholders: { DEFAULT },
-} = require('../../../../utils/enums');
+const nextVisit = require('../nextVisit');
 const visitTypeDisplayText = require('../../../../content/visitType.json');
 
 const VISIT_TYPE = 'SCON';
 
 describe('NextVisit', () => {
   it('Should handle an empty response', () => {
-    const nextVisit = NextVisit.from();
+    const nextVisitData = nextVisit();
 
-    expect(nextVisit.startTime).not.toBeDefined();
-    expect(nextVisit.status).not.toBeDefined();
-    expect(nextVisit.visitorName).not.toBeDefined();
-    expect(nextVisit.visitType).not.toBeDefined();
-
-    const formatted = nextVisit.format();
-
-    expect(formatted).toStrictEqual(
-      {
-        hasNextVisit: false,
-        nextVisit: DEFAULT,
-        nextVisitDate: DEFAULT,
-        nextVisitDay: DEFAULT,
-        visitType: null,
-        visitorName: DEFAULT,
-        startTime: DEFAULT,
-        endTime: DEFAULT,
-      },
-      'Should return a notification when no start time or status is available',
-    );
+    expect(nextVisitData.startTime).not.toBeDefined();
+    expect(nextVisitData.status).not.toBeDefined();
+    expect(nextVisitData.visitorName).not.toBeDefined();
+    expect(nextVisitData.visitType).not.toBeDefined();
+    expect(nextVisitData.hasNextVisit).toStrictEqual(false);
   });
 
-  it('should handle an incomplete response', () => {
-    const response = {
-      startTime: '2019-12-07T11:30:30',
-      endTime: '2019-12-07T13:00:30',
-      eventStatus: 'SCH',
-    };
-
-    const formatted = NextVisit.from(response).format();
-
-    expect(formatted).toStrictEqual(
+  it('should handle visit details', () => {
+    const response = [
       {
-        hasNextVisit: true,
-        nextVisit: 'Saturday 7 December',
-        nextVisitDate: '7 December',
-        nextVisitDay: 'Saturday',
-        visitType: null,
-        visitorName: DEFAULT,
-        startTime: '11:30am',
-        endTime: '1:00pm',
+        visitDetails: {
+          startTime: '2019-12-07T11:30:30',
+          endTime: '2019-12-07T13:00:30',
+          visitType: VISIT_TYPE,
+        },
+        visitors: [],
       },
-      'Should handle missing visitor name or type',
-    );
+    ];
+
+    const nextVisitData = nextVisit(response);
+
+    expect(nextVisitData).toStrictEqual({
+      hasNextVisit: true,
+      nextVisit: 'Saturday 7 December',
+      nextVisitDate: '7 December',
+      nextVisitDay: 'Saturday',
+      startTime: '11:30am',
+      endTime: '1:00pm',
+      visitType: visitTypeDisplayText[VISIT_TYPE],
+      visitors: [],
+    });
   });
 
   it('should format data when passed', () => {
-    const response = {
-      startTime: '2019-12-07T11:30:30',
-      endTime: '2019-12-07T12:30:30',
-      eventStatus: 'SCH',
-      visitType: VISIT_TYPE,
-      leadVisitor: 'MICKY MOUSE',
-    };
+    const response = [
+      {
+        visitDetails: {
+          startTime: '2019-12-07T11:30:30',
+          endTime: '2019-12-07T12:30:30',
+          visitType: VISIT_TYPE,
+        },
+        visitors: [{ firstName: 'Donald', lastName: 'Mouse' }],
+      },
+    ];
 
-    const formatted = NextVisit.from(response).format();
+    const nextVisitData = nextVisit(response);
 
-    expect(formatted).toStrictEqual({
+    expect(nextVisitData).toStrictEqual({
       hasNextVisit: true,
       nextVisit: 'Saturday 7 December',
       nextVisitDate: '7 December',
       nextVisitDay: 'Saturday',
       visitType: visitTypeDisplayText[VISIT_TYPE],
-      visitorName: 'Micky Mouse',
+      visitors: ['Donald Mouse'],
       startTime: '11:30am',
       endTime: '12:30pm',
     });

@@ -302,35 +302,59 @@ describe('GET /profile', () => {
         });
     });
 
-    it('displays the visits information when the user is signed in', () => {
-      offenderService.getVisitsFor.mockResolvedValue({
-        nextVisit: 'Tuesday 20 April 2021',
-        visitType: 'Social visit',
-        visitorName: 'Bob Visitor',
-        hasNextVisit: true,
+    describe('when the user is signed in and has visits', () => {
+      let visitors;
+      beforeEach(() => {
+        visitors = ['Bob Visitor'];
+        offenderService.getVisitsFor.mockResolvedValue({
+          nextVisit: 'Tuesday 20 April 2021',
+          visitType: 'Social',
+          visitors,
+          hasNextVisit: true,
+        });
+        offenderService.getVisitsRemaining.mockResolvedValue({
+          visitsRemaining: 42,
+        });
       });
-      offenderService.getVisitsRemaining.mockResolvedValue({
-        visitsRemaining: 42,
-      });
-
-      return request(app)
-        .get('/profile')
-        .expect(200)
-        .expect('Content-Type', /text\/html/)
-        .then(response => {
-          const $ = cheerio.load(response.text);
+      describe('with a single visitor', () => {
+        let $;
+        beforeEach(async () => {
+          const response = await request(app).get('/profile');
+          $ = cheerio.load(response.text);
+        });
+        it('does not display the visits error', () => {
           expect($('[data-test="visits-error"]').length).toBe(0);
-
+        });
+        it('shows the visits information', () => {
           const nextVisit = $('[data-test="nextVisit"]').text();
           expect(nextVisit).toContain('Tuesday 20 April 2021');
-          expect(nextVisit).toContain('Social visit');
-
+          expect(nextVisit).toContain('Social');
+        });
+        it('shows the visits remaining', () => {
           const visitsRemaining = $('[data-test="visitsRemaining"]').text();
           expect(visitsRemaining).toContain('42');
-
-          const visitorName = $('[data-test="visitorName"]').text();
+        });
+        it('shows a single visitor', () => {
+          const visitorName = $('[data-test="visitors"]').text();
           expect(visitorName).toContain('Bob Visitor');
         });
+      });
+      describe('with a multiple visitors', () => {
+        let $;
+        beforeEach(async () => {
+          visitors.push('Pam Visitor');
+          const response = await request(app).get('/profile');
+          $ = cheerio.load(response.text);
+        });
+        it('shows a multiple visitors in a list', () => {
+          expect($('[data-test="visitors"] ol li:first').text()).toBe(
+            'Bob Visitor',
+          );
+          expect($('[data-test="visitors"] ol li:last').text()).toBe(
+            'Pam Visitor',
+          );
+        });
+      });
     });
 
     it('displays the no visits information when the user is signed in', () => {

@@ -96,20 +96,24 @@ describe('offenderRepository', () => {
       const repository = offenderRepository(client);
       const result = await repository.getNextVisitFor('FOO_ID');
 
-      expect(lastCall(client.get)[0]).toContain('/FOO_ID/visits/next');
+      expect(lastCall(client.get)[0]).toContain(
+        '/FOO_ID/visits-with-visitors?fromDate=&size=1&page=0&visitStatus=SCH',
+      );
       expect(result).toBe('SOME_RESULT');
     });
   });
 
-  describe('getLastVisitFor', () => {
-    it('calls the lastVisits endpoint for a given ID', async () => {
+  describe('getVisitBalances', () => {
+    it('calls the visitBalances endpoint for a given ID', async () => {
       const client = {
         get: jest.fn().mockResolvedValue('SOME_RESULT'),
       };
       const repository = offenderRepository(client);
-      const result = await repository.getLastVisitFor('FOO_ID');
+      const result = await repository.getVisitBalances('FOO_ID');
 
-      expect(lastCall(client.get)[0]).toContain('/FOO_ID/visits/last');
+      expect(lastCall(client.get)[0]).toContain(
+        'offenderNo/FOO_ID/visit/balances',
+      );
       expect(result).toBe('SOME_RESULT');
     });
   });
