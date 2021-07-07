@@ -60,7 +60,7 @@ commands:
               --set image.tag=${VERSION_TO_DEPLOY} \
               --set ingress.qualifier="<< parameters.qualifier >>"
 
-              if [ $(echo ${CIRCLE_PULL_REQUEST##*/} | jq length) -eq 0 ]; then
+              if [ ! -z ${CIRCLE_PULL_REQUEST##*/} ]; then
                   BRANCH=$(curl -s "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls/${CIRCLE_PULL_REQUEST##*/}" | jq -r 'try .head.ref catch null')
                   CIRCLE_PR_BRANCH="\nDeployed branch: *${BRANCH}*"
               fi
