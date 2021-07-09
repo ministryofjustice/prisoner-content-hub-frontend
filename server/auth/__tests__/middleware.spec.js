@@ -247,6 +247,20 @@ describe('AuthMiddleware', () => {
         expect(res.redirect).toHaveBeenCalledWith(TEST_RETURN_URL);
       });
 
+      it('should not fail when already logged out', () => {
+        req.query = { returnUrl: TEST_RETURN_URL };
+
+        const signOut = createSignOutMiddleware({
+          analyticsService,
+          logger: MOCK_LOGGER,
+        });
+
+        signOut({ ...req, user: undefined }, res);
+
+        expect(req.logOut).not.toHaveBeenCalled();
+        expect(res.redirect).toHaveBeenCalledWith(TEST_RETURN_URL);
+      });
+
       it('should call logOut and redirect to the homepage if passed a returnUrl that is not relative', () => {
         req.query = { returnUrl: 'https://foo.bar' };
 

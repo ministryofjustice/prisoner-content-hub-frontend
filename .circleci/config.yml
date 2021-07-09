@@ -312,7 +312,6 @@ workflows:
             - hmpps-common-vars
             - prisoner-content-hub-development
           environment: "development"
-          qualifier: "${CIRCLE_PULL_REQUEST##*/}"
           releaseChannel: "hub_dev_releases"
           requires:
             - build_preview
