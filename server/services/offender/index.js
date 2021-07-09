@@ -86,15 +86,7 @@ const createOffenderService = (
       const today = new Date();
       const startDate = format(today, 'yyyy-MM-dd');
       const response = await repository.getNextVisitFor(bookingId, startDate);
-<<<<<<< HEAD
-<<<<<<< HEAD
       return nextVisit(response?.content);
-=======
-      return NextVisit(response?.content);
->>>>>>> b9f2427... Initial commit of visitor list
-=======
-      return nextVisit(response?.content);
->>>>>>> 9ceedcd... fix_tests
     } catch (e) {
       logger.error(
         `OffenderService (getVisitsFor) - Failed: ${e.message} - User: ${prisonerId}`,
@@ -129,19 +121,6 @@ const createOffenderService = (
       logger.info(
         `OffenderService (getImportantDatesFor) - User: ${prisonerId}`,
       );
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-      logger.debug(e.stack);
-      return {
-        error: true,
-      };
-    }
-  }
-
->>>>>>> bfcc418... feature/display-number-of-visits-remaining
-=======
->>>>>>> 2686bf1... Initial commit of visitor list
       const response = await repository.sentenceDetailsFor(bookingId);
       return ImportantDates.from(response).format();
     } catch (e) {
