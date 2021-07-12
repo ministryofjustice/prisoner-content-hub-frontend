@@ -131,16 +131,18 @@ const createSignInCallbackMiddleware = ({
 
 const createSignOutMiddleware = ({ logger, analyticsService }) =>
   function signOut(req, res) {
-    logger.info(`SignOutMiddleware (signOut) - User: ${req.user.prisonerId}`);
-    req.logOut();
-    analyticsService.sendEvent({
-      category: 'Signin',
-      action: 'signout',
-      label: 'success',
-      value: 1,
-      sessionId: path(['session', 'id'], req),
-      userAgent: path(['body', 'userAgent'], req),
-    });
+    if (req.user) {
+      logger.info(`SignOutMiddleware (signOut) - User: ${req.user.prisonerId}`);
+      req.logOut();
+      analyticsService.sendEvent({
+        category: 'Signin',
+        action: 'signout',
+        label: 'success',
+        value: 1,
+        sessionId: path(['session', 'id'], req),
+        userAgent: path(['body', 'userAgent'], req),
+      });
+    }
     res.redirect(getSafeReturnUrl(req.query));
   };
 
