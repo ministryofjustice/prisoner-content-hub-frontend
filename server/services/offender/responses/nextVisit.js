@@ -1,4 +1,3 @@
-const { capitalizePersonName } = require('../../../utils');
 const {
   placeholders: { DEFAULT },
   dateFormats: {
@@ -9,55 +8,31 @@ const {
   },
 } = require('../../../utils/enums');
 const { formatDateOrDefault } = require('../../../utils/date');
-
+const { fullNameOrDefault } = require('../../../utils/string');
 const visitTypeDisplayText = require('../../../content/visitType.json');
 
-class NextVisit {
-  constructor(options = {}) {
-    this.startTime = options.startTime;
-    this.endTime = options.endTime;
-    this.status = options.status;
-    this.visitorName = options.visitorName;
-    this.visitType = options.visitType;
+module.exports = (response = []) => {
+  if (!response?.length) {
+    return { hasNextVisit: false };
   }
 
-  hasNextVisit() {
-    return this.startTime != null;
-  }
+  const { visitDetails, visitors } = response[0];
+  const { startTime, endTime, visitType } = visitDetails;
 
-  format() {
-    return {
-      hasNextVisit: this.hasNextVisit(),
-      nextVisit: formatDateOrDefault(DEFAULT, LONG_PRETTY_DATE, this.startTime),
-      nextVisitDay: formatDateOrDefault(DEFAULT, PRETTY_DAY, this.startTime),
-      nextVisitDate: formatDateOrDefault(
-        DEFAULT,
-        PRETTY_DAY_AND_MONTH,
-        this.startTime,
-      ),
-      visitorName: this.visitorName
-        ? capitalizePersonName(this.visitorName)
-        : DEFAULT,
-      visitType: visitTypeDisplayText?.[this.visitType] || null,
-      startTime: formatDateOrDefault(DEFAULT, PRETTY_TIME, this.startTime),
-      endTime: formatDateOrDefault(DEFAULT, PRETTY_TIME, this.endTime),
-    };
-  }
-
-  static from(response = {}) {
-    const { startTime, endTime, eventStatus, leadVisitor, visitType } =
-      response;
-
-    return new NextVisit({
+  return {
+    hasNextVisit: startTime != null,
+    nextVisit: formatDateOrDefault(DEFAULT, LONG_PRETTY_DATE, startTime),
+    nextVisitDay: formatDateOrDefault(DEFAULT, PRETTY_DAY, startTime),
+    nextVisitDate: formatDateOrDefault(
+      DEFAULT,
+      PRETTY_DAY_AND_MONTH,
       startTime,
-      endTime,
-      status: eventStatus,
-      visitorName: leadVisitor,
-      visitType,
-    });
-  }
-}
-
-module.exports = {
-  NextVisit,
+    ),
+    visitors: visitors.map(({ firstName, lastName }) =>
+      fullNameOrDefault(DEFAULT, firstName, lastName),
+    ),
+    visitType: visitTypeDisplayText?.[visitType] || DEFAULT,
+    startTime: formatDateOrDefault(DEFAULT, PRETTY_TIME, startTime),
+    endTime: formatDateOrDefault(DEFAULT, PRETTY_TIME, endTime),
+  };
 };
