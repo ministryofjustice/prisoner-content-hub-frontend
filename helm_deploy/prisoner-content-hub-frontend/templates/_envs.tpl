@@ -46,9 +46,6 @@ env:
           name: {{ .Values.application.dbSecretName }}
           key: database_name
 
-    - name: ENABLE_PERSONAL_INFORMATION
-      value: "true"
-
     - name: FEEDBACK_URL
       value: {{ include "prisoner-content-hub-frontend.feedbackUrl" . }}
 
