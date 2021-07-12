@@ -8,6 +8,7 @@ const showAll = updateClasses(classes => classes.remove(HIDDEN));
 
 const wrapContainer = container => {
   const control = container.querySelector('.sensitive-card-control');
+  if (!control) return null;
   const openContent = control.querySelector('.open');
   const closedContent = control.querySelector('.closed');
   const cards = container.querySelectorAll(SENSITIVE_CARD);
@@ -60,7 +61,7 @@ window.onload = function () {
     .querySelectorAll(SENSITIVE_CARD_CONTAINER)
     .forEach(sensitiveContainer => {
       const container = wrapContainer(sensitiveContainer);
-
+      if (!container) return;
       container.control.addEventListener('click', e => {
         e.preventDefault();
 
