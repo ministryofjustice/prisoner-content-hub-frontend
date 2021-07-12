@@ -72,8 +72,6 @@ module.exports = {
     search: `${elasticsearchEndpoint}/elasticsearch_index_${drupalDatabaseName}_${elasticsearchIndexName}/_search`,
   },
   features: {
-    personalInformation:
-      getEnv('ENABLE_PERSONAL_INFORMATION', 'false') === 'true',
     useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'false') === 'true',
     useMockAuth: getEnv('ENABLE_MOCK_AUTH', 'false') === 'true',
     showStackTraces:

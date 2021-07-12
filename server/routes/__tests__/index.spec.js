@@ -91,9 +91,6 @@ describe('GET /', () => {
           establishmentPersonalisationEnabled:
             establishmentPersonalisationToggle(),
         };
-        res.locals = {
-          features: { personalInformation: true },
-        };
         req.user = userSupplier();
         next();
       });
