@@ -4,7 +4,7 @@ const stubOffenderDetails = () => {
   return stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/prisonapi/api/bookings/offenderNo/.+`,
+      urlPattern: `/prisonapi/api/bookings/offenderNo/[^/]+$`,
     },
     response: {
       status: 200,
@@ -37,7 +37,41 @@ const stubEvents = events => {
   });
 };
 
+const stubVisits = visits => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/prisonapi/api/bookings/.*?/visits-with-visitors\\?.*?`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: visits,
+    },
+  });
+};
+
+const stubVisitsRemaining = visitsRemaining => {
+  return stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/prisonapi/api/bookings/offenderNo/.*?/visit/balances`,
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: visitsRemaining,
+    },
+  });
+};
+
 module.exports = {
   stubOffenderDetails,
   stubEvents,
+  stubVisits,
+  stubVisitsRemaining,
 };

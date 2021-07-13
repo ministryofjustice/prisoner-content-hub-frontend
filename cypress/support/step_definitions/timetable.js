@@ -1,5 +1,6 @@
 import { And, Then, When } from 'cypress-cucumber-preprocessor/steps';
 import { activity, appointment } from '../../mockApis/data';
+import { horizontalTableToObject } from './utils';
 
 import { format, addDays } from 'date-fns';
 
@@ -10,18 +11,8 @@ Then('I am displayed todays timetable', () => {
 
 const daysFromNow = n => format(addDays(new Date(), n), 'yyyy-MM-dd');
 
-const tableToObject = table => {
-  const [keys, ...rows] = table.rawTable;
-  return rows.map(values =>
-    keys.reduce((o, k, i) => {
-      o[k] = values[i];
-      return o;
-    }, {}),
-  );
-};
-
 When('I have the following up coming events', args => {
-  const rows = tableToObject(args);
+  const rows = horizontalTableToObject(args);
 
   const events = rows.map(row => {
     const date = row.when === 'today' ? daysFromNow(0) : daysFromNow(1);
@@ -39,7 +30,7 @@ And('I log into the hub', () => {
 });
 
 Then('I am shown my time table', args => {
-  const days = tableToObject(args);
+  const days = horizontalTableToObject(args);
 
   days.forEach(day => {
     ['8:30am to 12:00pm', '12:00pm to 5:00pm', '5:00pm to 7:30pm'].forEach(

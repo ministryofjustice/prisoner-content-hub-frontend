@@ -13,6 +13,14 @@ Given('that I am viewing some content', () => {
   cy.get('.home-content a').first().click();
 });
 
+Given('that I go to the {string} page', val => {
+  cy.visit(`/${val}`);
+});
+
+Then('I am displayed the {string} link', siginIn => {
+  cy.get('a').contains(siginIn).first();
+});
+
 When('I click the {string} link', linkText => {
   cy.get('a').contains(linkText).click();
 });
@@ -31,4 +39,9 @@ Then('I am on the {string} page', personalizationPage => {
 
 And('I see related content for that category', () => {
   cy.get('[data-featured-id]').its('length').should('be.gt', 0);
+});
+
+And('I log into the hub', () => {
+  cy.task('stubPrisonerSignIn');
+  cy.get('[data-test="signin-prompt"] > .govuk-link').click();
 });
