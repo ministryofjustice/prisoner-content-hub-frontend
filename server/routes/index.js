@@ -1,5 +1,5 @@
 const express = require('express');
-const { path } = require('ramda');
+
 const {
   getEstablishmentHomepageLinks,
   getEstablishmentHomepageLinksTitle,
@@ -14,16 +14,10 @@ const createIndexRouter = ({
 
   router.get('/', async (req, res, next) => {
     try {
-      const establishmentId = path(['session', 'establishmentId'], req);
-
-      const envPersonalisationEnabled = path(
-        ['locals', 'features', 'personalInformation'],
-        res,
-      );
+      const establishmentId = req.session?.establishmentId;
 
       const personalInformation =
-        path(['session', 'establishmentPersonalisationEnabled'], req) &&
-        envPersonalisationEnabled;
+        req.session?.establishmentPersonalisationEnabled;
 
       const homePageLinks = getEstablishmentHomepageLinks(
         establishmentId,
