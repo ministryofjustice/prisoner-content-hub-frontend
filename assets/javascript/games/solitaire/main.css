@@ -6,8 +6,7 @@
   font-family: 'Suit-Regular';
   src: url("/public/javascript/games/solitaire/fonts/suit-regular.eot") format('embedded-opentype'),
         url("/public/javascript/games/solitaire/fonts/suit-regular.woff") format('woff'),
-        url("/public/javascript/games/solitaire/fonts/suit-regular.ttf") format('truetype'),
-        url("/public/javascript/games/solitaire/fonts/suit-regular.svg#suit-regular") format('svg');
+        url("/public/javascript/games/solitaire/fonts/suit-regular.ttf") format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -92,7 +91,7 @@
   border-left: 4px solid #fff;
   font-size: 10px;
 }
-#restart {
+#score .restart {
   color: #fff;
 }
 #score.active .timer button,
