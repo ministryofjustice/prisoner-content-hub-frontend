@@ -91,7 +91,7 @@
   border-left: 4px solid #fff;
   font-size: 10px;
 }
-#score .restart {
+#restart {
   color: #fff;
 }
 #score.active .timer button,

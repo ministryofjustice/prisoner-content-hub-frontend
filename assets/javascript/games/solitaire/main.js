@@ -234,13 +234,6 @@ function move(source, dest, pop, selectedCardsIn) {
 // render table
 function render(table, playedCards) {
   // console.log('Rendering Table...');
-  $('#restart').on(
-    'click',
-    function(e) {
-      e.preventDefault();
-      document.location.reload();
-    }
-  );
 
   // check for played cards
   playedCards = checkForPlayedCards(playedCards);
@@ -1435,3 +1428,12 @@ function throwConfetti() {
   };
   tick();
 }
+
+//setup the restart/page reload
+$('#restart').on(
+  'click',
+  function(e) {
+    e.preventDefault();
+    document.location.reload();
+  }
+);
