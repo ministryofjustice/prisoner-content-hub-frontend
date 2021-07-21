@@ -8,7 +8,7 @@ const dataFormatter = new Jsona({
     camelizeRelationships: true,
     camelizeType: false,
     camelizeMeta: true,
-    switchChar: '_',
+    switchChar: '_  ',
   }),
 });
 
