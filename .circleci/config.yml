@@ -311,10 +311,12 @@ jobs:
 
             deployments_to_delete=($(comm -23 deployments.txt prs.txt))
 
-            echo "deleting deployments:"
+            echo "Deployments to delete: ${#deployments_to_delete[@]}"
             for i in "${deployments_to_delete[@]}"
               do
-                echo "* $i"
+                DEPLOYMENT="prisoner-content-hub-frontend-${i}"
+                echo "Uninstalling deployment: ${DEPLOYMENT}"
+                helm -n prisoner-content-hub-development uninstall "${DEPLOYMENT}"
             done
 
 workflows:
