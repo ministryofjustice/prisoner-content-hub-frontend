@@ -323,9 +323,6 @@ workflows:
   version: 2
   build-test-deploy:
     jobs:
-      - clean_up_dev_deployments:
-          context:
-            - prisoner-content-hub-development
       - build
       - run_unit_tests:
           requires:
@@ -398,3 +395,6 @@ workflows:
           context:
             - hmpps-common-vars
             - veracode-credentials
+      - clean_up_dev_deployments:
+          context:
+            - prisoner-content-hub-development
