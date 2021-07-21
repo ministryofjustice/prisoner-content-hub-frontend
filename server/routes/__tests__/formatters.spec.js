@@ -51,6 +51,7 @@ describe('Responses', () => {
           {
             transactionEntrySequence: 1,
             calendarDate: '2021-03-07',
+            currentBalance: 12295,
             payTypeCode: 'TST2',
             eventId: null,
             payAmount: 50,
@@ -58,9 +59,11 @@ describe('Responses', () => {
             bonusPay: 0,
             paymentDescription: 'Test 2',
           },
+
           {
             transactionEntrySequence: 1,
             calendarDate: '2021-03-08',
+            currentBalance: 12345,
             payTypeCode: 'TST',
             eventId: null,
             payAmount: 50,

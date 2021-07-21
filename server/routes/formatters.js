@@ -107,6 +107,7 @@ function createTransactionTableFrom(transactions) {
           .map(relatedTransaction => ({
             entryDate: batchTransaction.entryDate,
             penceAmount: relatedTransaction.payAmount,
+            currentBalance: relatedTransaction.currentBalance,
             entryDescription: `${
               relatedTransaction.paymentDescription
             } from ${formatDateOrDefault(
@@ -119,16 +120,7 @@ function createTransactionTableFrom(transactions) {
             prison: batchTransaction.prison,
           }));
 
-        let adjustedBalance = batchTransaction.currentBalance;
-
-        return related.map(current => {
-          const withBalance = {
-            ...current,
-            currentBalance: adjustedBalance,
-          };
-          adjustedBalance -= current.penceAmount;
-          return withBalance;
-        });
+        return related;
       });
 
     const transactionsExcludingRelated = transactions.filter(
