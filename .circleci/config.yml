@@ -307,7 +307,7 @@ jobs:
           name: Clean up dev deployments
           command: |
             curl -s "https://api.github.com/repos/ministryofjustice/prisoner-content-hub-frontend/pulls" | jq  '.[].number' | sort > prs.txt
-            helm --namespace prisoner-content-hub-development list | awk '{ print $1 }' | tail -n +2 | grep 'frontend-' | sed "s/[^0-9]//g" | sort >> deployments.txt
+            helm --namespace prisoner-content-hub-development list | awk '{ print $1 }' | grep 'frontend-' | sed "s/[^0-9]//g" | sort > deployments.txt
 
             deployments_to_delete=($(comm -23 deployments.txt prs.txt))
 
