@@ -48,6 +48,7 @@ const cachingStrategy = path(['features', 'useRedisCache'], config)
   : new InMemoryCachingStrategy();
 
 const hubClient = new HubClient();
+const jsonApiClient = new JsonApiClient(config.api.hubEndpoint);
 const standardClient = new StandardClient();
 const prisonApiClient = new PrisonApiClient({
   prisonApi: config.prisonApi,
@@ -61,7 +62,7 @@ module.exports = {
     hubFeaturedContentRepository(hubClient),
   ),
   topicsService: new TopicsService(
-    new CmsApi(new JsonApiClient(config.api.hubEndpoint)),
+    new CmsApi(jsonApiClient),
   ),
   hubContentService: createHubContentService({
     contentRepository: contentRepository(hubClient),
@@ -80,7 +81,7 @@ module.exports = {
     }),
   }),
   searchService: createSearchService({
-    searchRepository: searchRepository(standardClient),
+    searchRepository: searchRepository(jsonApiClient),
   }),
   analyticsService: createAnalyticsService({
     analyticsRepository: analyticsRepository(standardClient),

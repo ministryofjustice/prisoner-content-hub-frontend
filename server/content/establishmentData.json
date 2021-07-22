@@ -2,7 +2,6 @@
   "792": {
     "name": "berwyn",
     "displayName": "HMP Berwyn",
-    "searchName": "Berwyn",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Coronavirus": "/tags/894",
@@ -21,7 +20,6 @@
   "959": {
     "name": "cookhamwood",
     "displayName": "HMYOI Cookham Wood",
-    "searchName": "Cookham Wood",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -40,7 +38,6 @@
   "1074": {
     "name": "erlestoke",
     "displayName": "HMP Erlestoke",
-    "searchName": "Erlestoke",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -59,7 +56,6 @@
   "1083": {
     "name": "felthama",
     "displayName": "HMYOI Feltham A",
-    "searchName": "Feltham A",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -78,7 +74,6 @@
   "1084": {
     "name": "felthamb",
     "displayName": "HMYOI Feltham B",
-    "searchName": "Feltham B",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -97,7 +92,6 @@
   "1075": {
     "name": "garth",
     "displayName": "HMP Garth",
-    "searchName": "Garth",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -116,7 +110,6 @@
   "1076": {
     "name": "lindholme",
     "displayName": "HMP Lindholme",
-    "searchName": "Lindholme",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -135,7 +128,6 @@
   "1077": {
     "name": "newhall",
     "displayName": "HMPYOI New Hall",
-    "searchName": "New Hall",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -154,7 +146,6 @@
   "1078": {
     "name": "ranby",
     "displayName": "HMP Ranby",
-    "searchName": "Ranby",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -173,7 +164,6 @@
   "1079": {
     "name": "stokeheath",
     "displayName": "HMPYOI Stoke Heath",
-    "searchName": "Stoke Heath",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -192,7 +182,6 @@
   "1080": {
     "name": "styal",
     "displayName": "HMPYOI Styal",
-    "searchName": "Styal",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -211,7 +200,6 @@
   "1081": {
     "name": "swaleside",
     "displayName": "HMP Swaleside",
-    "searchName": "Swaleside",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -230,7 +218,6 @@
   "1082": {
     "name": "themount",
     "displayName": "HMP The Mount",
-    "searchName": "The Mount",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -249,7 +236,6 @@
   "793": {
     "name": "wayland",
     "displayName": "HMP Wayland",
-    "searchName": "Wayland",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -268,7 +254,6 @@
   "1085": {
     "name": "werrington",
     "displayName": "HMYOI Werrington",
-    "searchName": "Werrington",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
@@ -288,7 +273,6 @@
     "name": "wetherby",
     "formattedName": "Wetherby",
     "displayName": "HMYOI Wetherby",
-    "searchName": "Wetherby",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
       "Your profile": "/profile",
