@@ -1,77 +1,51 @@
 const { stubFor } = require('./wiremock');
 
-const stubOffenderDetails = () => {
-  return stubFor({
+const stub = (urlPattern, jsonBody) =>
+  stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/prisonapi/api/bookings/offenderNo/[^/]+$`,
+      urlPattern,
     },
     response: {
       status: 200,
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      jsonBody: {
-        bookingId: 14,
-        firstName: 'John',
-        lastName: 'Smith',
-        agencyId: 'MDI',
-      },
+      jsonBody,
     },
   });
-};
 
-const stubEvents = events => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/prisonapi/api/bookings/.*?/events\\?fromDate=.*?&toDate=.*?`,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: events,
-    },
+const stubOffenderDetails = () =>
+  stub(`/prisonapi/api/bookings/offenderNo/[^/]+$`, {
+    bookingId: 14,
+    firstName: 'John',
+    lastName: 'Smith',
+    agencyId: 'MDI',
   });
-};
 
-const stubVisits = visits => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/prisonapi/api/bookings/.*?/visits-with-visitors\\?.*?`,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: visits,
-    },
-  });
-};
+const stubEvents = events =>
+  stub(`/prisonapi/api/bookings/.*?/events\\?fromDate=.*?&toDate=.*?`, events);
 
-const stubVisitsRemaining = visitsRemaining => {
-  return stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/prisonapi/api/bookings/offenderNo/.*?/visit/balances`,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: visitsRemaining,
-    },
-  });
-};
+const stubIncentives = incentives =>
+  stub(`/prisonapi/api/bookings/.*?/iepSummary`, incentives);
+
+const stubBalancesFor = incentives =>
+  stub(`/prisonapi/api/bookings/.*?/balances`, incentives);
+
+const stubVisits = visits =>
+  stub(`/prisonapi/api/bookings/.*?/visits-with-visitors\\?.*?`, visits);
+
+const stubVisitsRemaining = visitsRemaining =>
+  stub(
+    `/prisonapi/api/bookings/offenderNo/.*?/visit/balances`,
+    visitsRemaining,
+  );
 
 module.exports = {
   stubOffenderDetails,
   stubEvents,
+  stubIncentives,
+  stubBalancesFor,
   stubVisits,
   stubVisitsRemaining,
 };

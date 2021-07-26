@@ -339,8 +339,8 @@ describe('Prisoner Money', () => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
             'spends',
-            new Date('2021-01-01T00:00:00.000Z'),
-            new Date('2021-01-31T23:59:59.999Z'),
+            new Date('2021-01-01T00:00:00.000'),
+            new Date('2021-01-31T23:59:59.999'),
           );
         });
     });
@@ -352,10 +352,10 @@ describe('Prisoner Money', () => {
       // TODO: Remove @Sinon/fake-timers and use the Jest inbuilt method when the issue is resolved
       // jest
       //   .useFakeTimers('modern')
-      //   .setSystemTime(new Date('2021-03-10T12:00:00.000Z').getTime());
+      //   .setSystemTime(new Date('2021-03-10T12:00:00.000').getTime());
 
       const clock = FakeTimers.install({
-        now: new Date('2021-03-10T12:00:00.000Z'),
+        now: new Date('2021-03-10T12:00:00.000'),
       });
 
       const spy = jest.spyOn(prisonerInformationService, 'getTransactionsFor');
@@ -366,8 +366,8 @@ describe('Prisoner Money', () => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
             'spends',
-            new Date('2021-03-01T00:00:00.000Z'),
-            new Date('2021-03-10T12:00:00.000Z'),
+            new Date('2021-03-01T00:00:00.000'),
+            new Date('2021-03-10T12:00:00.000'),
           );
         });
 
@@ -378,8 +378,8 @@ describe('Prisoner Money', () => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
             'spends',
-            new Date('2021-03-01T00:00:00.000Z'),
-            new Date('2021-03-10T12:00:00.000Z'),
+            new Date('2021-03-01T00:00:00.000'),
+            new Date('2021-03-10T12:00:00.000'),
           );
         });
 
@@ -390,8 +390,8 @@ describe('Prisoner Money', () => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
             'spends',
-            new Date('2021-03-01T00:00:00.000Z'),
-            new Date('2021-03-10T12:00:00.000Z'),
+            new Date('2021-03-01T00:00:00.000'),
+            new Date('2021-03-10T12:00:00.000'),
           );
         });
 
@@ -674,8 +674,8 @@ describe('Prisoner Money', () => {
         .then(() => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
-            new Date('2021-01-01T00:00:00.000Z'),
-            new Date('2021-01-31T23:59:59.999Z'),
+            new Date('2021-01-01T00:00:00.000'),
+            new Date('2021-01-31T23:59:59.999'),
           );
         });
     });
@@ -687,10 +687,10 @@ describe('Prisoner Money', () => {
       // TODO: Remove @Sinon/fake-timers and use the Jest inbuilt method when the issue is resolved
       // jest
       //   .useFakeTimers('modern')
-      //   .setSystemTime(new Date('2021-03-10T12:00:00.000Z').getTime());
+      //   .setSystemTime(new Date('2021-03-10T12:00:00.000').getTime());
 
       const clock = FakeTimers.install({
-        now: new Date('2021-03-10T12:00:00.000Z'),
+        now: new Date('2021-03-10T12:00:00.000'),
       });
 
       const spy = jest.spyOn(
@@ -703,8 +703,8 @@ describe('Prisoner Money', () => {
         .then(() => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
-            new Date('2021-03-01T00:00:00.000Z'),
-            new Date('2021-03-10T12:00:00.000Z'),
+            new Date('2021-03-01T00:00:00.000'),
+            new Date('2021-03-10T12:00:00.000'),
           );
         });
 
@@ -714,8 +714,8 @@ describe('Prisoner Money', () => {
         .then(() => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
-            new Date('2021-03-01T00:00:00.000Z'),
-            new Date('2021-03-10T12:00:00.000Z'),
+            new Date('2021-03-01T00:00:00.000'),
+            new Date('2021-03-10T12:00:00.000'),
           );
         });
 
@@ -725,8 +725,8 @@ describe('Prisoner Money', () => {
         .then(() => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
-            new Date('2021-03-01T00:00:00.000Z'),
-            new Date('2021-03-10T12:00:00.000Z'),
+            new Date('2021-03-01T00:00:00.000'),
+            new Date('2021-03-10T12:00:00.000'),
           );
         });
 
@@ -901,8 +901,8 @@ describe('Prisoner Money', () => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
             'savings',
-            new Date('2021-01-01T00:00:00.000Z'),
-            new Date('2021-01-31T23:59:59.999Z'),
+            new Date('2021-01-01T00:00:00.000'),
+            new Date('2021-01-31T23:59:59.999'),
           );
         });
     });
@@ -914,10 +914,10 @@ describe('Prisoner Money', () => {
       // TODO: Remove @Sinon/fake-timers and use the Jest inbuilt method when the issue is resolved
       // jest
       //   .useFakeTimers('modern')
-      //   .setSystemTime(new Date('2021-03-10T12:00:00.000Z').getTime());
+      //   .setSystemTime(new Date('2021-03-10T12:00:00.000').getTime());
 
       const clock = FakeTimers.install({
-        now: new Date('2021-03-10T12:00:00.000Z'),
+        now: new Date('2021-03-10T12:00:00.000'),
       });
 
       const spy = jest.spyOn(prisonerInformationService, 'getTransactionsFor');
@@ -928,8 +928,8 @@ describe('Prisoner Money', () => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
             'savings',
-            new Date('2021-03-01T00:00:00.000Z'),
-            new Date('2021-03-10T12:00:00.000Z'),
+            new Date('2021-03-01T00:00:00.000'),
+            new Date('2021-03-10T12:00:00.000'),
           );
         });
 
@@ -940,8 +940,8 @@ describe('Prisoner Money', () => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
             'savings',
-            new Date('2021-03-01T00:00:00.000Z'),
-            new Date('2021-03-10T12:00:00.000Z'),
+            new Date('2021-03-01T00:00:00.000'),
+            new Date('2021-03-10T12:00:00.000'),
           );
         });
 
@@ -952,8 +952,8 @@ describe('Prisoner Money', () => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
             'savings',
-            new Date('2021-03-01T00:00:00.000Z'),
-            new Date('2021-03-10T12:00:00.000Z'),
+            new Date('2021-03-01T00:00:00.000'),
+            new Date('2021-03-10T12:00:00.000'),
           );
         });
 
