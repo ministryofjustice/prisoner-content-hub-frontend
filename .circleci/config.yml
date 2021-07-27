@@ -344,6 +344,11 @@ workflows:
           requires:
             - build_preview
 
+      - clean_up_dev_deployments:
+          <<: *main_branch
+          context:
+            - prisoner-content-hub-development
+      
       - build_production:
           <<: *main_branch
           requires:
@@ -395,6 +400,3 @@ workflows:
           context:
             - hmpps-common-vars
             - veracode-credentials
-      - clean_up_dev_deployments:
-          context:
-            - prisoner-content-hub-development
