@@ -1,11 +1,33 @@
 const nock = require('nock');
+const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const {
   jsonApiResponse,
   category,
   tag,
 } = require('../../../test/resources/topics');
 const { JsonApiClient } = require('../../clients/jsonApiClient');
-const { CmsApi, topicsQuery } = require('../cmsApi');
+const { CmsApi } = require('../cmsApi');
+const { TopicsQuery } = require('../cmsQueries/topicsQuery');
+
+const topicsQuery = new Query()
+  .addFields('taxonomy_term--tags', [
+    'drupal_internal__tid',
+    'name',
+    'description',
+  ])
+  .addFields('taxonomy_term--moj_categories', [
+    'name',
+    'description',
+    'field_legacy_landing_page',
+  ])
+  .addFilter(
+    'vid.meta.drupal_internal__target_id',
+    ['moj_categories', 'tags'],
+    'IN',
+  )
+  .addSort('name')
+  .addPageLimit(100)
+  .getQueryString();
 
 describe('CmsApi', () => {
   let cmsApi;
@@ -24,13 +46,13 @@ describe('CmsApi', () => {
     nock.restore();
   });
 
-  describe('getTopics', () => {
+  describe('get', () => {
     const path = `/jsonapi/prison/berwyn/taxonomy_term?${topicsQuery}`;
 
     it('should handle returning no items', async () => {
       mockDrupal.get(path).reply(200, jsonApiResponse([]));
 
-      const response = await cmsApi.getTopics('berwyn');
+      const response = await cmsApi.get(new TopicsQuery('berwyn'));
 
       expect(response).toStrictEqual([]);
     });
@@ -38,7 +60,7 @@ describe('CmsApi', () => {
     it('should propagate errors', () => {
       mockDrupal.get(path).reply(500, 'unexpected error');
 
-      return expect(cmsApi.getTopics('berwyn')).rejects.toEqual(
+      return expect(cmsApi.get(new TopicsQuery('berwyn'))).rejects.toEqual(
         Error('Request failed with status code 500'),
       );
     });
@@ -46,7 +68,7 @@ describe('CmsApi', () => {
     it('propogates 404 as error', () => {
       mockDrupal.get(path).reply(404, 'unexpected error');
 
-      return expect(cmsApi.getTopics('berwyn')).rejects.toEqual(
+      return expect(cmsApi.get(new TopicsQuery('berwyn'))).rejects.toEqual(
         Error('Request failed with status code 404'),
       );
     });
@@ -67,7 +89,7 @@ describe('CmsApi', () => {
           }),
         ]),
       );
-      const response = await cmsApi.getTopics('berwyn');
+      const response = await cmsApi.get(new TopicsQuery('berwyn'));
 
       expect(response).toStrictEqual([
         {

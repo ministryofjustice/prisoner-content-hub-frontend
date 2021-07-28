@@ -1,3 +1,5 @@
+const { TopicsQuery } = require('../repositories/cmsQueries/topicsQuery');
+
 class TopicsService {
   #cmsApi;
 
@@ -6,7 +8,7 @@ class TopicsService {
   }
 
   async getTopics(prisonId) {
-    return this.#cmsApi.getTopics(prisonId);
+    return this.#cmsApi.get(new TopicsQuery(prisonId));
   }
 }
 
