@@ -209,7 +209,7 @@ jobs:
           command: make push-preview
       - add_ssh_keys:
           fingerprints:
-            - "0a:04:a1:27:17:3e:3d:8a:20:91:79:a1:9e:af:85:6c"
+            - "12:7d:f1:9e:93:67:11:0e:93:ea:9a:c0:d3:6e:dc:4c"
       - run:
           name: Save build number (for deployment)
           command: |
@@ -247,7 +247,7 @@ jobs:
           command: make push
       - add_ssh_keys:
           fingerprints:
-            - "0a:04:a1:27:17:3e:3d:8a:20:91:79:a1:9e:af:85:6c"
+            - "12:7d:f1:9e:93:67:11:0e:93:ea:9a:c0:d3:6e:dc:4c"
       - run:
           name: Create Git Tag
           command: |
