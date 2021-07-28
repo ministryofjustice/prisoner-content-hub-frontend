@@ -19,7 +19,7 @@ const { createTimetableRouter } = require('./routes/timetable');
 const { createHealthRouter } = require('./routes/health');
 const { createContentRouter } = require('./routes/content');
 const { createMoneyRouter } = require('./routes/money');
-const { createVisitorRouter } = require('./routes/visitors');
+const { createApprovedVisitorsRouter } = require('./routes/approvedVisitors');
 const { createProfileRouter } = require('./routes/profile');
 const { createTagRouter } = require('./routes/tags');
 const { createGamesRouter } = require('./routes/games');
@@ -289,8 +289,8 @@ const createApp = ({
   );
 
   app.use(
-    '/visitors',
-    createVisitorRouter({
+    '/approved-visitors',
+    createApprovedVisitorsRouter({
       offenderService,
     }),
   );

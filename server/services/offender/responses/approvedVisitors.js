@@ -1,9 +1,7 @@
 const { capitalizePersonName } = require('../../../utils/index');
 
-const sortContacts = ({ createDateTime: a }, { createDateTime: b }) => {
-  if (a < b) return -1;
-  return a > b ? 1 : 0;
-};
+const sortContacts = ({ createDateTime: a }, { createDateTime: b }) =>
+  new Date(b) - new Date(a);
 
 module.exports = ({ nextOfKin, otherContacts }) =>
   [...nextOfKin, ...otherContacts]

@@ -15,7 +15,7 @@
     "clear_jest": "jest --clearCache",
     "start:e2e": "export $(cat feature.env) && node server.js",
     "test:e2e:run": "start-server-and-test start:e2e http://localhost:3000 test:e2e:ci",
-    "test:e2e:ci": "cypress run --spec cypress/features/timetable.feature cypress/features/profile.feature",
+    "test:e2e:ci": "cypress run --spec cypress/features/timetable.feature,cypress/features/profile.feature,cypress/features/approved-visitors.feature",
     "test:e2e:ui": "cypress open",
     "record-build-info": "node ./bin/record-build-info",
     "prettier": "prettier \"**/*.+(js|jsx|json|css|scss|md)\"",
