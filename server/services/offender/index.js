@@ -13,6 +13,7 @@ const createOffenderService = (
     Balances,
     KeyWorker,
     nextVisit,
+    approvedVisitors,
     ImportantDates,
     Timetable,
     TimetableEvent,
@@ -75,6 +76,22 @@ const createOffenderService = (
       logger.debug(e.stack);
       return {
         error: 'We are not able to show Key Worker information at this time',
+      };
+    }
+  }
+
+  async function getVisitorsFor({ prisonerId, bookingId }) {
+    try {
+      logger.info(`OffenderService (getVisitorsFor) - User: ${prisonerId}`);
+      const response = await repository.getVisitorsFor(bookingId);
+      return approvedVisitors(response);
+    } catch (e) {
+      logger.error(
+        `OffenderService (getVisitorsFor) - Failed: ${e.message} - User: ${prisonerId}`,
+      );
+      logger.debug(e.stack);
+      return {
+        error: true,
       };
     }
   }
@@ -241,6 +258,7 @@ const createOffenderService = (
     getIncentivesSummaryFor,
     getBalancesFor,
     getKeyWorkerFor,
+    getVisitorsFor,
     getVisitsFor,
     getVisitsRemaining,
     getImportantDatesFor,

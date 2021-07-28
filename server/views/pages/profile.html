@@ -214,6 +214,9 @@
               </li>
             {%- endif %}
             <li class="govuk-grid-column-one-quarter card-group__item">
+              {{imageCard({ id: 'visitorsLink', src: "/public/images/image_visitors.jpg", alt: "visitor picture", link: visitsSummary.visitorsLink, description: "View your full list of approved visitors" }) }}
+            </li>
+            <li class="govuk-grid-column-one-quarter card-group__item">
               {{imageCard({ id: 'visitsLink', src: "/public/images/image_visits.jpg", alt: "visits picture", link: visitsSummary.link, description: "Read more about visits" }) }}
             </li>
         </ul>

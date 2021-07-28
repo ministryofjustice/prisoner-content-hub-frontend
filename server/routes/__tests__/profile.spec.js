@@ -381,6 +381,19 @@ describe('GET /profile', () => {
         });
     });
 
+    it('displays the visitors link', () =>
+      request(app)
+        .get('/profile')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+
+          expect($('[data-test="visitorsLink"] a').attr('href')).toBe(
+            '/visitors',
+          );
+        }));
+
     it('displays the visit link', () =>
       request(app)
         .get('/profile')
