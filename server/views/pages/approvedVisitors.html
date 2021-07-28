@@ -1,0 +1,97 @@
+{% from "moj/components/pagination/macro.njk" import mojPagination %}
+{% from "../components/page-navigation/macro.njk" import pageNavigation %}
+{% from "../components/user-details/macro.njk" import userDetails %}
+{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
+
+
+{% extends "../components/template.njk" %}
+
+{% block pageTitle %}
+  {{ title }}
+{% endblock %}
+
+{% block head %}
+  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block pageNavigation %}
+  {{ pageNavigation({ title: title }) }}
+{% endblock %}
+
+{% block topBar %}
+  {{ topBar({
+    establishmentDisplayName: establishmentDisplayName,
+    showBar: false,
+    userName: signedInUser,
+    returnUrl: returnUrl
+  }) }}
+{% endblock %}
+
+{% block userDetails %}
+  {{ userDetails({
+    detailsType: detailsType,
+    userName: signedInUser
+  }) }}
+{% endblock %}
+
+{% block header %}
+  <div class="govuk-width-container govuk-body">
+    <h1>{{ title }}</h1>
+  </div>
+{% endblock %}
+
+{% block homeNavigation %}{% endblock %}
+{% block search %}{% endblock %}
+
+{% block main %}
+  <div class="govuk-body">
+    {% if not signedInUser %}
+      <div class= "govuk-width-container">
+        <h2 class="govuk-heading-m">You are signed out</h2>
+        <p class="govuk-!-font-size-24" data-test="signin-prompt">
+          <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
+          </p>
+      </div>
+    {% else %}
+      <div class= "govuk-width-container  govuk-!-padding-bottom-9">
+        {% if error %}
+          <p class="govuk-!-font-size-24" data-test="approved-visitors-error">We are not able to show your approved visitor list information at this time, <a href="{{ params.returnUrl }}" class="govuk-link">try again</a>.</p>
+        {% else %}
+          {% if approvedVisitors.length > 0 %}
+            <dl class="govuk-summary-list" data-test="approved-visitors-list" data-hj-suppress>
+              {% for approvedVisitor in approvedVisitors %}
+                <div class="govuk-summary-list__row">
+                  <dd class="govuk-summary-list__value">
+                    {{ approvedVisitor }}
+                  </dd>
+                </div>
+              {% endfor %}
+            </dl>
+            {% if pageData.totalPages > 1 %}
+              {{ mojPagination( pageData | toPagination(rawQuery) ) }}
+            {% endif %}
+          {% else %}
+            <p class="govuk-!-font-size-24" data-test="no-approved-visitors">You do not have any approved visitors yet</p>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="govuk-width-container govuk-hub-article-feedback">
+        <p class="govuk-body">Tell us what you think:</p>
+        {{ hubFeedbackWidget({
+          title: title,
+          contentType: 'PROFILE',
+          feedbackId: feedbackId
+        }) }}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  <script src="/public/all.js"></script>
+  <script>
+    window
+      .GOVUKFrontend
+      .initAll();
+  </script>
+{% endblock %}

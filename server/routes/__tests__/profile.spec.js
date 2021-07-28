@@ -389,8 +389,8 @@ describe('GET /profile', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('[data-test="visitorsLink"] a').attr('href')).toBe(
-            '/visitors',
+          expect($('[data-test="approvedVisitors"] a').attr('href')).toBe(
+            '/approved-visitors',
           );
         }));
 

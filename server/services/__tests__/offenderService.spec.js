@@ -101,6 +101,25 @@ describe('Offender Service', () => {
     });
   });
 
+  describe('getApprovedVisitorsFor', () => {
+    it('returns the total visitsRemaining', async () => {
+      const repository = {
+        getVisitorsFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
+      };
+      const mockApprovedVisitors = jest.fn();
+      mockApprovedVisitors.mockReturnValue(FORMATTED_RESPONSE);
+      const service = createPrisonApiOffenderService(repository, {
+        approvedVisitors: mockApprovedVisitors,
+      });
+
+      const data = await service.getApprovedVisitorsFor(TEST_USER);
+
+      expect(repository.getVisitorsFor).toHaveBeenCalledWith(TEST_BOOKING_ID);
+      expect(mockApprovedVisitors).toHaveBeenCalledWith(RAW_RESPONSE);
+      expect(data).toStrictEqual({ approvedVisitors: FORMATTED_RESPONSE });
+    });
+  });
+
   describe('getVisitsFor', () => {
     const TEST_DATE = '1993-02-02';
     const mockNextVisit = jest.fn();

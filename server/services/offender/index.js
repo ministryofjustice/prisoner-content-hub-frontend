@@ -80,14 +80,16 @@ const createOffenderService = (
     }
   }
 
-  async function getVisitorsFor({ prisonerId, bookingId }) {
+  async function getApprovedVisitorsFor({ prisonerId, bookingId }) {
     try {
-      logger.info(`OffenderService (getVisitorsFor) - User: ${prisonerId}`);
+      logger.info(
+        `OffenderService (getApprovedVisitorsFor) - User: ${prisonerId}`,
+      );
       const response = await repository.getVisitorsFor(bookingId);
-      return approvedVisitors(response);
+      return { approvedVisitors: approvedVisitors(response) };
     } catch (e) {
       logger.error(
-        `OffenderService (getVisitorsFor) - Failed: ${e.message} - User: ${prisonerId}`,
+        `OffenderService (getApprovedVisitorsFor) - Failed: ${e.message} - User: ${prisonerId}`,
       );
       logger.debug(e.stack);
       return {
@@ -258,7 +260,7 @@ const createOffenderService = (
     getIncentivesSummaryFor,
     getBalancesFor,
     getKeyWorkerFor,
-    getVisitorsFor,
+    getApprovedVisitorsFor,
     getVisitsFor,
     getVisitsRemaining,
     getImportantDatesFor,
