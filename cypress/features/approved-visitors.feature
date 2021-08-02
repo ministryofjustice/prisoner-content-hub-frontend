@@ -23,11 +23,11 @@ Feature: Approved visitors
   Scenario: I want to see my sorted approved visitors
     Given that I go to the "approved-visitors" page
     When I have the following approved visitors
-    | firstName | lastName         | createdDate                | numberOfVisitors  | nextOfKin | active  | approved  |
-    | Test      | Visitor1         | 2007-07-29T04:17:40.59704  | 5                 | true      | true    | true      |
-    | Test      | Visitor2         | 2007-06-29T04:17:40.59704  | 5                 | false     | true    | true      |
-    | Test      | Visitor3         | 2007-08-29T04:17:40.59704  | 5                 | true      | true    | true      |
-    | Test      | Visitor3         | 2007-09-29T04:17:40.59704  | 5                 | true      | true    | false      |
+    | firstName | lastName | createdDate                | count | nextOfKin | active  | approved  |
+    | Test      | Visitor1 | 2007-07-29T04:17:40.59704  | 5     | true      | true    | true      |
+    | Test      | Visitor2 | 2007-06-29T04:17:40.59704  | 5     | false     | true    | true      |
+    | Test      | Visitor3 | 2007-08-29T04:17:40.59704  | 5     | true      | true    | true      |
+    | Test      | Visitor3 | 2007-09-29T04:17:40.59704  | 5     | true      | true    | false     |
     And I log into the hub
     Then I see the following approved visitors
     | name          | count |

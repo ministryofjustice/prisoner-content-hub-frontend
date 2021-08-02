@@ -21,19 +21,17 @@ const flatMapVisitors = ({
   firstName,
   lastName,
   createdDate: createDateTime,
-  numberOfVisitors,
+  count,
   active,
   approved,
 }) =>
-  new Array(numberOfVisitors)
-    .fill('')
-    .map(() => ({
-      firstName,
-      lastName,
-      createDateTime,
-      activeFlag: active === 'true',
-      approvedVisitorFlag: approved === 'true',
-    }));
+  new Array(count).fill('').map(() => ({
+    firstName,
+    lastName,
+    createDateTime,
+    activeFlag: active === 'true',
+    approvedVisitorFlag: approved === 'true',
+  }));
 
 When('I have the following approved visitors', args => {
   const rows = horizontalTableToObject(args);
