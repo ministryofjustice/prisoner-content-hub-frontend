@@ -19,6 +19,7 @@ const { createTimetableRouter } = require('./routes/timetable');
 const { createHealthRouter } = require('./routes/health');
 const { createContentRouter } = require('./routes/content');
 const { createMoneyRouter } = require('./routes/money');
+const { createApprovedVisitorsRouter } = require('./routes/approvedVisitors');
 const { createProfileRouter } = require('./routes/profile');
 const { createTagRouter } = require('./routes/tags');
 const { createGamesRouter } = require('./routes/games');
@@ -143,6 +144,7 @@ const createApp = ({
     '../assets',
     '../assets/stylesheets',
     '../node_modules/govuk-frontend/govuk/',
+    '../node_modules/@ministryofjustice/frontend/moj/',
     '../node_modules/jquery/dist',
     '../node_modules/video.js/dist',
   ].forEach(dir => {
@@ -153,6 +155,16 @@ const createApp = ({
     '/assets',
     express.static(
       path.join(__dirname, '../node_modules/govuk-frontend/govuk/assets'),
+      cacheControl,
+    ),
+  );
+  app.use(
+    '/assets',
+    express.static(
+      path.join(
+        __dirname,
+        '/node_modules/@ministryofjustice/frontend/moj/assets',
+      ),
       cacheControl,
     ),
   );
@@ -273,6 +285,13 @@ const createApp = ({
     '/money',
     createMoneyRouter({
       prisonerInformationService,
+    }),
+  );
+
+  app.use(
+    '/approved-visitors',
+    createApprovedVisitorsRouter({
+      offenderService,
     }),
   );
 
