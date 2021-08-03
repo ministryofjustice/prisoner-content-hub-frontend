@@ -14,7 +14,7 @@ const createApprovedVisitorsRouter = ({ offenderService }) => {
     const rawPage = Math.round(rawQuery.page) || 1;
     const page = rawPage > 0 && rawPage <= totalPages ? rawPage : 1;
     const max = Math.min(page * maxVisitorsPerPage, totalCount);
-    const min = Math.min((page - 1) * maxVisitorsPerPage) + 1;
+    const min = (page - 1) * maxVisitorsPerPage + 1;
     const pageData = { page, totalPages, min, max, totalCount };
 
     const approvedVisitors = rawApprovedVisitors.slice(min - 1, max);

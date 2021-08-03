@@ -133,7 +133,6 @@ describe('GET /approved-visitors', () => {
           ],
         });
       });
-      describe('the first page', () => {});
       describe('the first page', () => {
         let $;
         beforeEach(async () => {

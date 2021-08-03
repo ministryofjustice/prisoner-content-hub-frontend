@@ -102,7 +102,7 @@ describe('Offender Service', () => {
   });
 
   describe('getApprovedVisitorsFor', () => {
-    it('returns the total visitsRemaining', async () => {
+    it('returns the approved visitors list', async () => {
       const repository = {
         getVisitorsFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
