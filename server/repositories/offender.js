@@ -45,7 +45,7 @@ function offenderRepository(httpClient) {
   }
 
   function getVisitorsFor(bookingId) {
-    return httpClient.get(`${baseUrl}/bookings/${bookingId}/contacts`);
+    throw new Error("dfdf");
   }
 
   function getVisitBalances(offenderNo) {
