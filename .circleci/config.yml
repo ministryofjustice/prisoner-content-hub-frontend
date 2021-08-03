@@ -40,10 +40,12 @@ commands:
             sed -i "s/appVersion:.*/appVersion: \"${VERSION_TO_DEPLOY}\"/g" "./helm_deploy/prisoner-content-hub-frontend/Chart.yaml"
             QUALIFIER=<< parameters.qualifier >>
             RELEASE_NAME=<< parameters.releaseName >>${QUALIFIER:+-$QUALIFIER}
+            kubectl -n ${KUBE_NAMESPACE} get secret ip-allowlist -o json | jq '{ ingress: { allowed: .data |  map_values(@base64d) } } ' | \
             helm upgrade $RELEASE_NAME ./helm_deploy/prisoner-content-hub-frontend \
               --install --wait --reset-values --timeout 360s \
               --namespace=${KUBE_NAMESPACE} \
               --values ./helm_deploy/prisoner-content-hub-frontend/values-<< parameters.environment >>.yaml \
+              --values - \
               --set application.contentConfigMapName="${HELM_BACKEND_RELEASE_NAME}" \
               --set application.nprConfigMapName="${HELM_NPR_CONFIG_MAP_NAME}" \
               --set application.sentry_dsn="${FRONTEND_SENTRY_DSN}" \
