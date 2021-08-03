@@ -38,18 +38,18 @@ function isPrisonerId(id) {
 }
 
 /* 
-  id        initials  visits  visitors
-  G2168GG   OC        1       1
-  G9374GG   YX        1       4
-  G1727GV   DB        1       3
-  G2320VD   YA        In reception        
-  G2732GG   ON        0       N/A       
+  id        initials  visits  visitors ApproveVisitors
+  G2168GG   OC        1       1           2
+  G9374GG   YX        1       4           5
+  G1727GV   DB        1       3           32
+  G2320VD   YA        In reception        0
+  G2732GG   ON        0       N/A         4
 */
 const createMockSignIn = ({ offenderService }) =>
   async function mockSignIn(req, res, next) {
     try {
       const user = new User({
-        prisonerId: 'G2168GG',
+        prisonerId: 'G2320VD',
         firstName: 'Test',
         lastName: 'User',
       });
