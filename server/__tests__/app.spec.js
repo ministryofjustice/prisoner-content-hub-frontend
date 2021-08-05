@@ -107,18 +107,11 @@ describe('App', () => {
       });
   });
 
-  it('hides the stack trace on error pages', async () => {
+  it('hides the error on error pages', async () => {
     config.auth.callbackPath = '/testPath';
-    const error = {
-      message: 'Something has gone horribly wrong',
-      stack: 'beep-boop',
-    };
 
     await request(
       app({
-        hubFeaturedContentService: {
-          hubFeaturedContent: jest.fn().mockRejectedValue(error),
-        },
         offenderService: {
           getOffenderDetailsFor: jest.fn().mockResolvedValue({}),
         },
@@ -127,22 +120,14 @@ describe('App', () => {
       .get('/')
       .expect(500)
       .then(response => {
+        expect(response.text).toContain('Something went wrong');
         expect(response.text).not.toContain(
-          error.stack,
-          'it should not show the error message',
-        );
-        expect(response.text).not.toContain(
-          error.stack,
-          'it should not show the stack',
+          'Could not determine establishment',
         );
       });
   });
 
-  it('shows the stack trace on error pages', async () => {
-    const error = {
-      message: 'Something has gone horribly wrong',
-      stack: 'beep-boop',
-    };
+  it('shows the error on error pages', async () => {
     const previousConfiguration = JSON.stringify(config.features);
 
     config.auth.callbackPath = '/testPath';
@@ -150,9 +135,6 @@ describe('App', () => {
 
     await request(
       app({
-        hubFeaturedContentService: {
-          hubFeaturedContent: jest.fn().mockRejectedValue(error),
-        },
         offenderService: {
           getCurrentEvents: jest.fn().mockResolvedValue([]),
           getEventsFor: jest.fn().mockResolvedValue([]),
@@ -163,12 +145,7 @@ describe('App', () => {
       .get('/')
       .expect(500)
       .then(res => {
-        expect(res.text).toContain(
-          error.message,
-          'it should show the error message',
-        );
-        expect(res.text).toContain(error.stack, 'it should show the stack');
-
+        expect(res.text).toContain('Could not determine establishment');
         // restore config
         config.features = JSON.parse(previousConfiguration);
       });
@@ -329,8 +306,8 @@ describe('App', () => {
 
 function app(opts) {
   const services = {
-    hubFeaturedContentService: {
-      hubFeaturedContent: jest.fn().mockResolvedValue([]),
+    cmsService: {
+      getHomepage: jest.fn().mockResolvedValue([]),
     },
     offenderService: {
       getOffenderDetailsFor: jest.fn().mockResolvedValue({}),

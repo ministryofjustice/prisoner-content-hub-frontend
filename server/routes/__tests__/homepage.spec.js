@@ -2,7 +2,7 @@ const request = require('supertest');
 const cheerio = require('cheerio');
 const { User } = require('../../auth/user');
 
-const { createIndexRouter } = require('../index');
+const { createHomepageRouter } = require('../homepage');
 const {
   setupBasicApp,
   consoleLogError,
@@ -10,7 +10,7 @@ const {
 
 describe('GET /', () => {
   let featuredItem;
-  let hubFeaturedContentService;
+  let cmsService;
   let offenderService;
   let router;
   let app;
@@ -36,15 +36,11 @@ describe('GET /', () => {
       getCurrentEvents: jest.fn().mockResolvedValue({}),
     };
 
-    hubFeaturedContentService = {
-      hubFeaturedContent: jest.fn().mockReturnValue({
-        featured: [
-          {
-            upperFeatured: featuredItemWithId('large'),
-            lowerFeatured: featuredItemWithId('large'),
-            smallTiles: new Array(4).fill(featuredItemWithId('small')),
-          },
-        ],
+    cmsService = {
+      getHomepage: jest.fn().mockReturnValue({
+        upperFeatured: featuredItemWithId('large'),
+        lowerFeatured: featuredItemWithId('large'),
+        smallTiles: new Array(4).fill(featuredItemWithId('small')),
       }),
     };
   });
@@ -78,8 +74,8 @@ describe('GET /', () => {
           },
         },
       };
-      router = createIndexRouter({
-        hubFeaturedContentService,
+      router = createHomepageRouter({
+        cmsService,
         offenderService,
         establishmentData,
       });
@@ -87,6 +83,7 @@ describe('GET /', () => {
       app = setupBasicApp();
       app.use((req, res, next) => {
         req.session = {
+          establishmentName: 'berwyn',
           establishmentId: 1,
           establishmentPersonalisationEnabled:
             establishmentPersonalisationToggle(),
@@ -124,7 +121,7 @@ describe('GET /', () => {
           expect($('[data-test="user-name"]').length).toBe(1);
         }));
 
-    it('renders featured content', () =>
+    it('renders homepage content', () =>
       request(app)
         .get('/')
         .expect(200)

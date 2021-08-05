@@ -13,7 +13,7 @@ const Sentry = require('@sentry/node');
 const Tracing = require('@sentry/tracing');
 const nunjucksSetup = require('./utils/nunjucksSetup');
 
-const { createIndexRouter } = require('./routes/index');
+const { createHomepageRouter } = require('./routes/homepage');
 const { createTopicsRouter } = require('./routes/topics');
 const { createTimetableRouter } = require('./routes/timetable');
 const { createHealthRouter } = require('./routes/health');
@@ -41,8 +41,7 @@ const defaultAuthMiddleware = require('./auth/middleware');
 const createApp = ({
   logger,
   requestLogger,
-  hubFeaturedContentService,
-  topicsService,
+  cmsService,
   hubContentService,
   hubTagsService,
   offenderService,
@@ -268,16 +267,16 @@ const createApp = ({
 
   app.use(
     '/',
-    createIndexRouter({
+    createHomepageRouter({
       logger,
-      hubFeaturedContentService,
+      cmsService,
       offenderService,
       config,
       establishmentData,
     }),
   );
 
-  app.use('/topics', createTopicsRouter({ topicsService }));
+  app.use('/topics', createTopicsRouter({ cmsService }));
 
   app.use('/timetable', createTimetableRouter({ offenderService }));
 

@@ -1,6 +1,6 @@
 const express = require('express');
 
-const createTopicsRouter = ({ topicsService }) => {
+const createTopicsRouter = ({ cmsService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
@@ -12,7 +12,7 @@ const createTopicsRouter = ({ topicsService }) => {
         throw new Error('Could not determine establishment!');
       }
 
-      const topics = await topicsService.getTopics(establishmentName);
+      const topics = await cmsService.getTopics(establishmentName);
 
       res.render('pages/topics', {
         title: 'Browse the Content Hub',

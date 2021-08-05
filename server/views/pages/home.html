@@ -66,13 +66,13 @@
 
 {% block content %}
   <div class="govuk-body home-content">
-    {{ contentTileLarge({content: featuredContent.upperFeatured, imageAlign: 'right'}) }}
+    {{ contentTileLarge({content: homepage.upperFeatured, imageAlign: 'right'}) }}
     <div class="home-content__four-items">
-      {% for tile in featuredContent.smallTiles %}
+      {% for tile in homepage.smallTiles %}
         {{ contentTileSmall(tile) }}
       {% endfor %}
     </div>
-    {{ contentTileLarge({content: featuredContent.lowerFeatured, imageAlign: 'left'}) }}
+    {{ contentTileLarge({content: homepage.lowerFeatured, imageAlign: 'left'}) }}
   </div>
 {% endblock %}
 
