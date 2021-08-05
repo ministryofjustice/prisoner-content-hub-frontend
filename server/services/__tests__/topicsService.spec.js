@@ -1,7 +1,8 @@
+const { TopicsQuery } = require('../../repositories/cmsQueries/topicsQuery');
 const { TopicsService } = require('../topics');
 
 describe('Topics Service', () => {
-  const cmsApi = { getTopics: jest.fn() };
+  const cmsApi = { get: jest.fn() };
   let topicService;
 
   beforeEach(() => {
@@ -18,7 +19,7 @@ describe('Topics Service', () => {
 
   describe('getTopics', () => {
     it('returns topics', async () => {
-      cmsApi.getTopics.mockResolvedValue([createTopic('topic')]);
+      cmsApi.get.mockResolvedValue([createTopic('topic')]);
 
       const result = await topicService.getTopics('berwyn');
 
@@ -33,15 +34,15 @@ describe('Topics Service', () => {
     });
 
     it('Source to have been called correctly', async () => {
-      cmsApi.getTopics.mockResolvedValue([]);
+      cmsApi.get.mockResolvedValue([]);
 
       await topicService.getTopics('berwyn');
 
-      expect(cmsApi.getTopics).toHaveBeenCalledWith('berwyn');
+      expect(cmsApi.get).toHaveBeenCalledWith(new TopicsQuery('berwyn'));
     });
 
     it('Propagates errors from cmsApi', async () => {
-      cmsApi.getTopics.mockRejectedValue(Error('some error!'));
+      cmsApi.get.mockRejectedValue(Error('some error!'));
 
       return expect(topicService.getTopics('berwyn')).rejects.toEqual(
         Error('some error!'),

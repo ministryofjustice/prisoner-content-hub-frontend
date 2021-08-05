@@ -23,7 +23,6 @@ const {
 const { hubMenuRepository } = require('../repositories/hubMenu');
 const { contentRepository } = require('../repositories/hubContent');
 const { offenderRepository } = require('../repositories/offender');
-const { searchRepository } = require('../repositories/search');
 const { analyticsRepository } = require('../repositories/analytics');
 const { feedbackRepository } = require('../repositories/feedback');
 const { CmsApi } = require('../repositories/cmsApi');
@@ -48,11 +47,14 @@ const cachingStrategy = path(['features', 'useRedisCache'], config)
   : new InMemoryCachingStrategy();
 
 const hubClient = new HubClient();
+const jsonApiClient = new JsonApiClient(config.api.hubEndpoint);
 const standardClient = new StandardClient();
 const prisonApiClient = new PrisonApiClient({
   prisonApi: config.prisonApi,
   cachingStrategy,
 });
+
+const cmsApi = new CmsApi(jsonApiClient);
 
 module.exports = {
   logger,
@@ -60,9 +62,7 @@ module.exports = {
   hubFeaturedContentService: createHubFeaturedContentService(
     hubFeaturedContentRepository(hubClient),
   ),
-  topicsService: new TopicsService(
-    new CmsApi(new JsonApiClient(config.api.hubEndpoint)),
-  ),
+  topicsService: new TopicsService(cmsApi),
   hubContentService: createHubContentService({
     contentRepository: contentRepository(hubClient),
     menuRepository: hubMenuRepository(hubClient),
@@ -80,7 +80,7 @@ module.exports = {
     }),
   }),
   searchService: createSearchService({
-    searchRepository: searchRepository(standardClient),
+    cmsApi,
   }),
   analyticsService: createAnalyticsService({
     analyticsRepository: analyticsRepository(standardClient),

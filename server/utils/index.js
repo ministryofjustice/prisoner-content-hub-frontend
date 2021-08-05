@@ -17,7 +17,7 @@ const getEstablishmentId = (
 const getEstablishmentSearchName = (
   id,
   establishmentData = defaultEstablishmentData,
-) => establishmentData?.[id]?.searchName;
+) => establishmentData?.[id]?.name;
 
 const getEstablishmentDisplayName = (
   id,

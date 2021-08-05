@@ -47,7 +47,6 @@
     "date-fns": "^2.22.1",
     "dotenv": "^10.0.0",
     "drupal-jsonapi-params": "^1.2.2",
-    "elastic-builder": "^2.16.0",
     "express": "~4.17.1",
     "express-request-id": "^1.4.1",
     "govuk-frontend": "^3.13.0",
