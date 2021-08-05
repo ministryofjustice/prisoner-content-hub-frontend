@@ -5,8 +5,8 @@ const {
   getEstablishmentHomepageLinksTitle,
 } = require('../utils');
 
-const createIndexRouter = ({
-  hubFeaturedContentService,
+const createHomepageRouter = ({
+  cmsService,
   offenderService,
   establishmentData,
 }) => {
@@ -29,8 +29,13 @@ const createIndexRouter = ({
         establishmentData,
       );
 
-      const featuredContent =
-        await hubFeaturedContentService.hubFeaturedContent({ establishmentId });
+      const { establishmentName } = req.session;
+
+      if (!establishmentId) {
+        throw new Error('Could not determine establishment!');
+      }
+
+      const homepage = await cmsService.getHomepage(establishmentName);
 
       const pageConfig = {
         content: true,
@@ -56,7 +61,7 @@ const createIndexRouter = ({
         title: 'Home',
         homePageLinks,
         homePageLinksTitle,
-        featuredContent: featuredContent.featured[0],
+        homepage,
         currentEvents,
       });
     } catch (error) {
@@ -68,5 +73,5 @@ const createIndexRouter = ({
 };
 
 module.exports = {
-  createIndexRouter,
+  createHomepageRouter,
 };

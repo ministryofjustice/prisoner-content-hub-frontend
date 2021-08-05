@@ -11,12 +11,12 @@ const {
 
 describe('GET /topics', () => {
   describe('Topics', () => {
-    const topicsService = {
+    const cmsService = {
       getTopics: jest.fn(),
     };
     const sessionProvider = jest.fn();
 
-    const router = createTopicsRouter({ topicsService });
+    const router = createTopicsRouter({ cmsService });
 
     const app = setupBasicApp();
 
@@ -35,14 +35,14 @@ describe('GET /topics', () => {
       app.use('/topics', router);
       app.use(consoleLogError);
 
-      topicsService.getTopics.mockReturnValue([
+      cmsService.getTopics.mockReturnValue([
         { linkText: 'foo', href: '/content/foo' },
         { linkText: 'bar', href: '/content/bar' },
       ]);
     });
 
     it('exceptions call the error middleware', async () => {
-      topicsService.getTopics.mockRejectedValue('💥');
+      cmsService.getTopics.mockRejectedValue('💥');
       await request(app).get('/topics').expect(500);
     });
 
@@ -81,7 +81,7 @@ describe('GET /topics', () => {
         .get('/topics')
         .expect(200)
         .then(() => {
-          expect(topicsService.getTopics).toHaveBeenCalledWith('berwyn');
+          expect(cmsService.getTopics).toHaveBeenCalledWith('berwyn');
         }));
 
     it('Should error when no establishment present', () => {
@@ -91,7 +91,7 @@ describe('GET /topics', () => {
         .get('/topics')
         .expect(500)
         .then(() => {
-          expect(topicsService.getTopics).not.toHaveBeenCalled();
+          expect(cmsService.getTopics).not.toHaveBeenCalled();
         });
     });
   });

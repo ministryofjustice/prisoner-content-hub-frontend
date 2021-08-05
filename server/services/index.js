@@ -15,9 +15,6 @@ const {
 
 // Repositories
 const {
-  hubFeaturedContentRepository,
-} = require('../repositories/hubFeaturedContent');
-const {
   categoryFeaturedContentRepository,
 } = require('../repositories/categoryFeaturedContent');
 const { hubMenuRepository } = require('../repositories/hubMenu');
@@ -29,8 +26,7 @@ const { CmsApi } = require('../repositories/cmsApi');
 const PrisonApiRepository = require('../repositories/prisonApi');
 
 // Services
-const { TopicsService } = require('./topics');
-const { createHubFeaturedContentService } = require('./hubFeaturedContent');
+const { CmsService } = require('./cms');
 const { createHubContentService } = require('./hubContent');
 const { createHubTagsService } = require('./hubTags');
 const { createPrisonApiOffenderService } = require('./offender');
@@ -59,10 +55,7 @@ const cmsApi = new CmsApi(jsonApiClient);
 module.exports = {
   logger,
   requestLogger,
-  hubFeaturedContentService: createHubFeaturedContentService(
-    hubFeaturedContentRepository(hubClient),
-  ),
-  topicsService: new TopicsService(cmsApi),
+  cmsService: new CmsService(cmsApi),
   hubContentService: createHubContentService({
     contentRepository: contentRepository(hubClient),
     menuRepository: hubMenuRepository(hubClient),
