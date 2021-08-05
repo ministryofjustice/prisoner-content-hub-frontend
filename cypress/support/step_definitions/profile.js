@@ -6,6 +6,16 @@ Before(() => {
   cy.task('reset');
 });
 
+When('I have the following incentives', args => {
+  const { level: iepLevel, date: iepDate } = horizontalTableToObject(args)[0];
+  cy.task('stubIncentives', { iepLevel, iepDate });
+});
+
+When('I have the following money summary', args => {
+  const balances = verticalTableToObject(args);
+  cy.task('stubBalancesFor', balances[0]);
+});
+
 When('I have the following visits', args => {
   const rows = horizontalTableToObject(args);
   const visits = {
@@ -34,20 +44,25 @@ And('I have the the following remaining visits', args => {
   cy.task('stubVisitsRemaining', horizontalTableToObject(args)[0]);
 });
 
-const testCard = ({ dataTest, title, content }) => {
-  const contentArr = Array.isArray(content) ? content : [content];
-  cy.get(`[data-test="${dataTest}"]`).should(card => {
-    expect(card.find('h3')).to.contain.text(title);
-    contentArr.forEach(contentValue => {
-      expect(card).to.contain.text(contentValue);
-    });
+const makeArray = content => (Array.isArray(content) ? content : [content]);
+
+const testCard = ({ card, title, content }) => {
+  const contentArr = content && makeArray(content);
+  cy.get(`[data-test="${card}"]`).should(cardElement => {
+    expect(cardElement.find('h3')).to.contain.text(title);
+    if (contentArr)
+      contentArr.forEach(contentValue => {
+        expect(cardElement).to.contain.text(contentValue);
+      });
   });
 };
-const testSensitiveCard = ({ dataTest, sensitive }) => {
-  const sensitiveArr = Array.isArray(sensitive) ? sensitive : [sensitive];
-  cy.get(`[data-test="${dataTest}"] .sensitive`).should(card => {
-    sensitiveArr.forEach(sensitiveValue => {
-      expect(card).to.contain.text(sensitiveValue);
+const testSensitiveCard = ({ card, closedContent }) => {
+  const closedContentArr = Array.isArray(closedContent)
+    ? closedContent
+    : [closedContent];
+  cy.get(`[data-test="${card}"] .sensitive`).should(cardElement => {
+    closedContentArr.forEach(closedContentValue => {
+      expect(cardElement).to.contain.text(closedContentValue);
     });
   });
 };

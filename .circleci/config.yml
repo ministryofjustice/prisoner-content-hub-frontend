@@ -40,10 +40,12 @@ commands:
             sed -i "s/appVersion:.*/appVersion: \"${VERSION_TO_DEPLOY}\"/g" "./helm_deploy/prisoner-content-hub-frontend/Chart.yaml"
             QUALIFIER=<< parameters.qualifier >>
             RELEASE_NAME=<< parameters.releaseName >>${QUALIFIER:+-$QUALIFIER}
+            kubectl -n ${KUBE_NAMESPACE} get secret ip-allowlist -o json | jq '{ ingress: { allowed: .data |  map_values(@base64d) } } ' | \
             helm upgrade $RELEASE_NAME ./helm_deploy/prisoner-content-hub-frontend \
               --install --wait --reset-values --timeout 360s \
               --namespace=${KUBE_NAMESPACE} \
               --values ./helm_deploy/prisoner-content-hub-frontend/values-<< parameters.environment >>.yaml \
+              --values - \
               --set application.contentConfigMapName="${HELM_BACKEND_RELEASE_NAME}" \
               --set application.nprConfigMapName="${HELM_NPR_CONFIG_MAP_NAME}" \
               --set application.sentry_dsn="${FRONTEND_SENTRY_DSN}" \
@@ -107,7 +109,6 @@ commands:
               ]
             }
           event: always
-
 
 jobs:
   build:
@@ -210,7 +211,7 @@ jobs:
           command: make push-preview
       - add_ssh_keys:
           fingerprints:
-            - "0a:04:a1:27:17:3e:3d:8a:20:91:79:a1:9e:af:85:6c"
+            - "12:7d:f1:9e:93:67:11:0e:93:ea:9a:c0:d3:6e:dc:4c"
       - run:
           name: Save build number (for deployment)
           command: |
@@ -248,7 +249,7 @@ jobs:
           command: make push
       - add_ssh_keys:
           fingerprints:
-            - "0a:04:a1:27:17:3e:3d:8a:20:91:79:a1:9e:af:85:6c"
+            - "12:7d:f1:9e:93:67:11:0e:93:ea:9a:c0:d3:6e:dc:4c"
       - run:
           name: Create Git Tag
           command: |
@@ -292,6 +293,34 @@ jobs:
           qualifier: "<< parameters.qualifier >>"
           releaseChannel: "<< parameters.releaseChannel >>"
 
+  clean_up_dev_deployments:
+    executor:
+      name: hmpps/node
+      tag: << pipeline.parameters.node-version >>
+    steps:
+      - checkout
+      - hmpps/k8s_setup:
+          ca-cert: KUBE_CLUSTER_CERT
+          cluster-name: KUBE_CLUSTER_NAME
+          kube-namespace: KUBE_NAMESPACE
+          kube-token: KUBE_TOKEN
+      - hmpps/install_helm
+      - run:
+          name: Clean up dev deployments
+          command: |
+            curl -s "https://api.github.com/repos/ministryofjustice/prisoner-content-hub-frontend/pulls" | jq  '.[].number' | sort > prs.txt
+            helm --namespace prisoner-content-hub-development list | awk '{ print $1 }' | grep 'frontend-' | sed "s/[^0-9]//g" | sort > deployments.txt
+
+            deployments_to_delete=($(comm -23 deployments.txt prs.txt))
+
+            echo "Deployments to delete: ${#deployments_to_delete[@]}"
+            for i in "${deployments_to_delete[@]}"
+              do
+                DEPLOYMENT="prisoner-content-hub-frontend-${i}"
+                echo "Uninstalling deployment: ${DEPLOYMENT}"
+                helm -n prisoner-content-hub-development uninstall "${DEPLOYMENT}"
+            done
+
 workflows:
   version: 2
   build-test-deploy:
@@ -317,6 +346,11 @@ workflows:
           requires:
             - build_preview
 
+      - clean_up_dev_deployments:
+          <<: *main_branch
+          context:
+            - prisoner-content-hub-development
+      
       - build_production:
           <<: *main_branch
           requires:

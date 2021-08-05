@@ -9,8 +9,21 @@ const { logger } = require('../../test/test-helpers');
 jest.mock('@sentry/node', () => {
   const errorHandlingMiddleware = jest.fn();
   const requestHandlingMiddleware = jest.fn();
+  const tracingHandlingMiddleware = jest.fn();
+  const httpHandlingMiddleware = jest.fn();
+  const expressHandlingMiddleware = jest.fn();
   return {
     init: jest.fn(),
+    Integrations: {
+      Http: jest.fn(() => (req, res, next) => {
+        httpHandlingMiddleware();
+        next();
+      }),
+      Express: jest.fn(() => (req, res, next) => {
+        expressHandlingMiddleware();
+        next();
+      }),
+    },
     Handlers: {
       errorHandler: jest.fn(() => (err, req, res, next) => {
         errorHandlingMiddleware();
@@ -20,10 +33,18 @@ jest.mock('@sentry/node', () => {
         requestHandlingMiddleware();
         next();
       }),
+      tracingHandler: jest.fn(() => (req, res, next) => {
+        tracingHandlingMiddleware();
+        next();
+      }),
     },
+
     captureMessage: jest.fn(),
     errorHandlingMiddleware,
     requestHandlingMiddleware,
+    tracingHandlingMiddleware,
+    httpHandlingMiddleware,
+    expressHandlingMiddleware,
   };
 });
 
@@ -41,6 +62,11 @@ describe('Sentry', () => {
   it('creates the Sentry request handling middleware', () => {
     app();
     expect(Sentry.Handlers.requestHandler).toHaveBeenCalled();
+  });
+
+  it('creates the Sentry tracing handling middleware', () => {
+    app();
+    expect(Sentry.Handlers.tracingHandler).toHaveBeenCalled();
   });
 
   it('does not call the Sentry error handling middleware when a request succeeds', async () => {

@@ -1,4 +1,7 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
+import { activity, appointment } from '../../mockApis/data';
+import { horizontalTableToObject } from './utils';
+import { format, addDays } from 'date-fns';
 
 Given('that I go to the Prisoner Content Hub for {string}', location => {
   cy.visit(
@@ -19,6 +22,10 @@ Given('that I go to the {string} page', val => {
 
 Then('I am displayed the {string} link', siginIn => {
   cy.get('a').contains(siginIn).first();
+});
+
+Then('I am displayed the {string} link in {string}', (link, testContext) => {
+  cy.get(`[data-test="${testContext}"] a`).contains(link).first();
 });
 
 When('I click the {string} link', linkText => {
@@ -44,4 +51,18 @@ And('I see related content for that category', () => {
 And('I log into the hub', () => {
   cy.task('stubPrisonerSignIn');
   cy.get('[data-test="signin-prompt"] > .govuk-link').click();
+});
+
+const daysFromNow = n => format(addDays(new Date(), n), 'yyyy-MM-dd');
+
+When('I have the following up coming events', args => {
+  const rows = horizontalTableToObject(args);
+
+  const events = rows.map(row => {
+    const date = row.when === 'tomorrow' ? daysFromNow(1) : daysFromNow(0);
+    return row.type === 'activity'
+      ? activity(date, row.start, row.end, row.name, row.location)
+      : appointment(date, row.start, row.end, row.name, row.location);
+  });
+  cy.task('stubEvents', events);
 });

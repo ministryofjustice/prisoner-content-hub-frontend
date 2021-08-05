@@ -73,6 +73,7 @@ const createProfileRouter = ({ offenderService }) => {
         startTime,
         endTime,
         link: '/content/4203',
+        visitorsLink: '/approved-visitors',
         visitsRemaining,
       },
       moneySummary: {
