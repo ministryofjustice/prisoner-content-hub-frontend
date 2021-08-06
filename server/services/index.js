@@ -51,16 +51,18 @@ const prisonApiClient = new PrisonApiClient({
 });
 
 const cmsApi = new CmsApi(jsonApiClient);
+const cmsService = new CmsService(cmsApi);
 
 module.exports = {
   logger,
   requestLogger,
-  cmsService: new CmsService(cmsApi),
+  cmsService,
   hubContentService: createHubContentService({
     contentRepository: contentRepository(hubClient),
     menuRepository: hubMenuRepository(hubClient),
     categoryFeaturedContentRepository:
       categoryFeaturedContentRepository(hubClient),
+    cmsService,
   }),
   hubTagsService: createHubTagsService(contentRepository(hubClient)),
   offenderService: createPrisonApiOffenderService(
