@@ -37,13 +37,13 @@ function isPrisonerId(id) {
   return pattern.test(id);
 }
 
-/*
-   id        initials  visits  visitors ApproveVisitors
-  G2168GG   OC        1       1           2
-  G9374GG   YX        1       4           5
-  G1727GV   DB        1       3           32
-  G2320VD   YA        In reception        0
-  G2732GG   ON        0       N/A         4
+/* 
+  id        initials  visits  visitors
+  G2168GG   OC        1       1
+  G9374GG   YX        1       4
+  G1727GV   DB        1       3
+  G2320VD   YA        In reception        
+  G2732GG   ON        0       N/A       
 */
 const createMockSignIn = ({ offenderService }) =>
   async function mockSignIn(req, res, next) {

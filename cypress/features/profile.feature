@@ -136,9 +136,6 @@ Feature: Profile
     | content   | See who’s coming to your next visit |
     | closedContent | Bob Visitor                     |
     | closedContent | Pam Visitor                     |
-    Then I am shown the following card
-    | card      | approvedVisitors                          |
-    | title     | View your full list of approved visitors  |
     Then the "visitors" sensitive card is closed
     When I click on the "visitors" card
     Then the "visitors" sensitive card is open
