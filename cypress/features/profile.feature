@@ -44,7 +44,7 @@ Feature: Profile
     | card      | eveningEvents           |
     | title     | Evening                 |
     | content   | No activities scheduled |
-  
+
   Scenario: I want to view my incentives
     Given that I go to the "profile" page
     When I have the following incentives
@@ -112,33 +112,33 @@ Feature: Profile
     Then the "moneyPrivate" sensitive card is closed
     Then the "moneySavings" sensitive card is closed
 
-  Scenario: I want to view visit information on the profile page
-    Given that I go to the "profile" page
-    When I have the following visits
-    | startTime           | endTime             | visitType | visitors                  |
-    | 2021-12-12T09:00:00 | 2021-12-12T09:59:00 | SCON      | Bob Visitor, Pam Visitor  |
-    And I have the the following remaining visits
-    | remainingPvo  | remainingVo |
-    | 20            | 4           |
-    And I log into the hub
-    Then I am shown the following card
-    | card      | nextVisit           |
-    | title     | Your next visit     |
-    | content   | Sunday 12 December  |
-    | content   | 9:00am to 9:59am    |
-    Then I am shown the following card
-    | card      | visitsRemaining         |
-    | title     | Total visits remaining  |
-    | content   | 24                      |
-    Then I am shown the following closed sensitive card
-    | card      | visitors                            |
-    | title     | Visitors coming to your next visit  |
-    | content   | See who’s coming to your next visit |
-    | closedContent | Bob Visitor                     |
-    | closedContent | Pam Visitor                     |
-    Then I am shown the following card
-    | card      | approvedVisitors                          |
-    | title     | View your full list of approved visitors  |
-    Then the "visitors" sensitive card is closed
-    When I click on the "visitors" card
-    Then the "visitors" sensitive card is open
+  # Scenario: I want to view visit information on the profile page
+    # Given that I go to the "profile" page
+    # When I have the following visits
+    # | startTime           | endTime             | visitType | visitors                  |
+    # | 2021-12-12T09:00:00 | 2021-12-12T09:59:00 | SCON      | Bob Visitor, Pam Visitor  |
+    # And I have the the following remaining visits
+    # | remainingPvo  | remainingVo |
+    # | 20            | 4           |
+    # And I log into the hub
+    # Then I am shown the following card
+    # | card      | nextVisit           |
+    # | title     | Your next visit     |
+    # | content   | Sunday 12 December  |
+    # | content   | 9:00am to 9:59am    |
+    # Then I am shown the following card
+    # | card      | visitsRemaining         |
+    # | title     | Total visits remaining  |
+    # | content   | 24                      |
+    # Then I am shown the following closed sensitive card
+    # | card      | visitors                            |
+    # | title     | Visitors coming to your next visit  |
+    # | content   | See who’s coming to your next visit |
+    # | closedContent | Bob Visitor                     |
+    # | closedContent | Pam Visitor                     |
+    # Then I am shown the following card
+    # | card      | approvedVisitors                          |
+    # | title     | View your full list of approved visitors  |
+    # Then the "visitors" sensitive card is closed
+    # When I click on the "visitors" card
+    # Then the "visitors" sensitive card is open
