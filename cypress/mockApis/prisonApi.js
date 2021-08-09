@@ -32,9 +32,6 @@ const stubIncentives = incentives =>
 const stubBalancesFor = incentives =>
   stub(`/prisonapi/api/bookings/.*?/balances`, incentives);
 
-const stubVisitors = visitors =>
-  stub(`/prisonapi/api/bookings/.*?/contacts`, visitors);
-
 const stubVisits = visits =>
   stub(`/prisonapi/api/bookings/.*?/visits-with-visitors\\?.*?`, visits);
 
@@ -49,7 +46,6 @@ module.exports = {
   stubEvents,
   stubIncentives,
   stubBalancesFor,
-  stubVisitors,
   stubVisits,
   stubVisitsRemaining,
 };
