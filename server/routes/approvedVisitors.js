@@ -16,7 +16,6 @@ const createApprovedVisitorsRouter = () => {
   //   const max = Math.min(page * maxVisitorsPerPage, totalCount);
   //   const min = (page - 1) * maxVisitorsPerPage + 1;
   //   const pageData = { page, totalPages, min, max, totalCount };
-
   //   const approvedVisitors = rawApprovedVisitors.slice(min - 1, max);
   //   return {
   //     signedInUser: user.getFullName(),
