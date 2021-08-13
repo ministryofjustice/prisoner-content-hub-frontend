@@ -43,7 +43,7 @@
           <h1 id="title" class="govuk-heading-xl govuk-!-margin-bottom-6 govuk-!-margin-top-3">{{data.title}}</h1>
           <p id="stand-first" class="govuk-body-l">{{data.standFirst}}</p>
           <div id="body" class="gov-uk-dynamic-content">
-            {{data.description.sanitized | safe }}
+            {{data.description | safe }}
           </div>
         </div>
       </div>

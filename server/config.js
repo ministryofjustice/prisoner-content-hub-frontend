@@ -40,12 +40,14 @@ module.exports = {
   api: {
     hubEndpoint,
     hubContent: `${hubEndpoint}/v1/api/content`,
+    hubContentRouter: `${hubEndpoint}/router/translate-path`,
     hubCategoryFeatured: `${hubEndpoint}/v1/api/category/featured`,
     categoryMenu: `${hubEndpoint}/v1/api/category-menu`,
     hubTerm: `${hubEndpoint}/v1/api/term`,
     series: `${hubEndpoint}/v1/api/content/series`,
     tags: `${hubEndpoint}/v1/api/vocabulary/tags`,
   },
+
   caching: {
     secret: getEnv('CACHE_SECRET', { requireInProduction: true }),
     redis: {

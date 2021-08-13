@@ -1,5 +1,8 @@
 /* eslint-disable class-methods-use-this */
 const { Jsona, SwitchCaseJsonMapper } = require('jsona');
+const {
+  api: { hubContentRouter },
+} = require('../config');
 
 const dataFormatter = new Jsona({
   jsonPropertiesMapper: new SwitchCaseJsonMapper({
@@ -17,12 +20,13 @@ class CmsApi {
 
   async lookupContent(contentId) {
     // this will need to use config to get host name
-    const response = await this.jsonApiClient.get(
-      `https://drupal.justice.gov.uk/router/translate-path?path=content/${contentId}`,
+    const { jsonapi: { resourceName, individual }} = await this.jsonApiClient.get(
+      `${hubContentRouter}?path=content/${contentId}`,
     );
+
     return {
-      type: response.jsonapi.resourceName,
-      location: response.jsonapi.individual,
+      type: resourceName,
+      location: individual,
     };
   }
 
