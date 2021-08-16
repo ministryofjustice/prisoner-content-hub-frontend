@@ -38,7 +38,7 @@ function isPrisonerId(id) {
 }
 
 /*
-   id        initials  visits  visitors ApproveVisitors
+   id        initials  visits  visitors ApprovedVisitors
   G2168GG   OC        1       1           2
   G9374GG   YX        1       4           5
   G1727GV   DB        1       3           32
