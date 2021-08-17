@@ -26,7 +26,12 @@ class HomepageQuery {
       .addFields('node--moj_radio_item', HomepageQuery.#TILE_FIELDS)
       .addFields('node--moj_pdf_item', HomepageQuery.#TILE_FIELDS)
       .addFields('node--landing_page', HomepageQuery.#TILE_FIELDS)
-      .addFields('file--file', ['drupal_internal__fid', 'id', 'uri'])
+      .addFields('file--file', [
+        'drupal_internal__fid',
+        'id',
+        'uri',
+        'image_style_uri',
+      ])
 
       .addInclude([
         'field_moj_featured_tile_large.field_moj_thumbnail_image',
@@ -44,9 +49,11 @@ class HomepageQuery {
 
   transform(item) {
     const [upperFeatured, lowerFeatured] = item.fieldMojFeaturedTileLarge.map(
-      this.#asTile,
+      this.#asTile('tile_large'),
     );
-    const smallTiles = item.fieldMojFeaturedTileSmall.map(this.#asTile);
+    const smallTiles = item.fieldMojFeaturedTileSmall.map(
+      this.#asTile('tile_small'),
+    );
 
     return {
       upperFeatured,
@@ -55,18 +62,25 @@ class HomepageQuery {
     };
   }
 
-  #asTile = item => ({
-    id: item.drupalInternal_Nid,
-    contentUrl: `/content/${item.drupalInternal_Nid}`,
-    contentType: item.type.replace(/^node--/, ''),
-    isSeries: Boolean(item.fieldMojSeries),
-    title: item.title,
-    summary: item.fieldMojDescription?.summary,
-    image: {
-      url: item.fieldMojThumbnailImage?.uri?.url,
-      alt: item.fieldMojThumbnailImage?.resourceIdObjMeta?.alt,
-    },
-  });
+  #asTile = type => item => {
+    const url =
+      item.fieldMojThumbnailImage?.imageStyleUri
+        ?.map(image => image[type])
+        .find(image => Boolean(image)) || item.fieldMojThumbnailImage?.uri?.url;
+
+    return {
+      id: item.drupalInternal_Nid,
+      contentUrl: `/content/${item.drupalInternal_Nid}`,
+      contentType: item.type.replace(/^node--/, ''),
+      isSeries: Boolean(item.fieldMojSeries),
+      title: item.title,
+      summary: item.fieldMojDescription?.summary,
+      image: {
+        url,
+        alt: item.fieldMojThumbnailImage?.resourceIdObjMeta?.alt,
+      },
+    };
+  };
 }
 
 module.exports = { HomepageQuery };
