@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 
-// will need tests
 class BasicPageQuery {
   constructor(location) {
     this.location = location;

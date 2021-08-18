@@ -6,6 +6,10 @@ jest.mock('../cms');
 
 describe('#hubContentService', () => {
   const cmsService = new CmsService(null);
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
   describe('content', () => {
     it('returns content for a given ID', async () => {
       const contentRepository = {
@@ -141,6 +145,35 @@ describe('#hubContentService', () => {
           'The nextEpisodeFor method was called incorrectly',
         );
       });
+    });
+
+    it(`returns content provided by CMS service`, async () => {
+      cmsService.getContent.mockResolvedValue({
+        categories: [1234],
+        contentType: 'node--page',
+        description: 'Education content for prisoners',
+        id: 5923,
+        secondaryTags: [2345],
+        standFirst: 'Education',
+        title: 'Novus',
+      });
+
+      const service = createHubContentService({
+        cmsService,
+      });
+      const result = await service.contentFor(1, 794, 'berwyn');
+
+      expect(result).toStrictEqual({
+        categories: [1234],
+        contentType: 'node--page',
+        description: 'Education content for prisoners',
+        id: 5923,
+        secondaryTags: [2345],
+        standFirst: 'Education',
+        title: 'Novus',
+      });
+
+      expect(cmsService.getContent).toHaveBeenCalledWith('berwyn', 1);
     });
   });
 

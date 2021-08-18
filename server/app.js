@@ -143,8 +143,8 @@ const createApp = ({
     '../assets',
     '../assets/stylesheets',
     '../node_modules/govuk-frontend/govuk/',
-    '../node_modules/@ministryofjustice/frontend/moj/',
     '../node_modules/jquery/dist',
+    '../node_modules/@ministryofjustice/frontend/moj/',
     '../node_modules/video.js/dist',
   ].forEach(dir => {
     app.use('/public', express.static(path.join(__dirname, dir), cacheControl));
@@ -157,6 +157,7 @@ const createApp = ({
       cacheControl,
     ),
   );
+
   app.use(
     '/assets',
     express.static(
