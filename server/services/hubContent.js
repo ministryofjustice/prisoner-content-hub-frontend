@@ -11,8 +11,8 @@ function createHubContentService({
     if (!id) {
       return {};
     }
-    // will need tests and eventually pass in establishmentName when leon make change 
-    const result = await cmsService.getContent(id);
+
+    const result = await cmsService.getContent(establishmentName, id);
     if (result) {
       return result;
     }

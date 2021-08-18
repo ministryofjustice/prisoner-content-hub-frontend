@@ -5,7 +5,6 @@ const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 class BasicPageQuery {
   constructor(location) {
     this.location = location;
-    // possibly add includes here if we need to retrieve secondary tags and categories.
     this.query = new Query()
 
       .addFields('node--page', [
@@ -21,18 +20,16 @@ class BasicPageQuery {
       .getQueryString();
   }
 
-  path() {
+  url() {
     return `${this.location}?${this.query}`;
   }
 
-  #flattenDrupalInternalTargetId(arr) {
-    return arr.flatMap(
+  #flattenDrupalInternalTargetId = arr =>
+    arr.flatMap(
       ({ resourceIdObjMeta: { drupal_internal__target_id: id } }) => id,
     );
-  }
 
   transform(item) {
-
     return {
       id: item.drupalInternal_Nid,
       title: item.title,
@@ -45,7 +42,6 @@ class BasicPageQuery {
       secondaryTags: this.#flattenDrupalInternalTargetId(
         item.fieldMojSecondaryTags,
       ),
-      // // need to check with leon if any of the content does have categories/basic tags
     };
   }
 }

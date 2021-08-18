@@ -1,8 +1,5 @@
 /* eslint-disable class-methods-use-this */
 const { Jsona, SwitchCaseJsonMapper } = require('jsona');
-const {
-  api: { hubContentRouter },
-} = require('../config');
 
 const dataFormatter = new Jsona({
   jsonPropertiesMapper: new SwitchCaseJsonMapper({
@@ -18,10 +15,11 @@ class CmsApi {
     this.jsonApiClient = jsonApiClient;
   }
 
-  async lookupContent(contentId) {
-    // this will need to use config to get host name
-    const { jsonapi: { resourceName, individual }} = await this.jsonApiClient.get(
-      `${hubContentRouter}?path=content/${contentId}`,
+  async lookupContent(establishmentName, contentId) {
+    const {
+      jsonapi: { resourceName, individual },
+    } = await this.jsonApiClient.getRelative(
+      `/router/prison/${establishmentName}/translate-path?path=content/${contentId}`,
     );
 
     return {
@@ -31,16 +29,15 @@ class CmsApi {
   }
 
   async get(query) {
-    const response = await this.jsonApiClient.get(query.path());
-    const items = dataFormatter.deserialize(response);
-    return items.map(item => query.transform(item));
-  }
-
-  // this will need tests
-  async getSingle(query) {
-    const response = await this.jsonApiClient.get(query.path());
-    const item = dataFormatter.deserialize(response);
-    return query.transform(item);
+    const request = query.path
+      ? this.jsonApiClient.getRelative(query.path())
+      : this.jsonApiClient.getUrl(query.url());
+    const response = await request;
+    const deserializedResponse = dataFormatter.deserialize(response);
+    if (Array.isArray(deserializedResponse)) {
+      return deserializedResponse.map(item => query.transform(item));
+    }
+    return query.transform(deserializedResponse);
   }
 }
 

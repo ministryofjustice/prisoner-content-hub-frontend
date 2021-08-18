@@ -1,7 +1,11 @@
 const { createHubContentService } = require('../hubContent');
 const { lastCall, lastCallLastArg } = require('../../../test/test-helpers');
+const { CmsService } = require('../cms');
+
+jest.mock('../cms');
 
 describe('#hubContentService', () => {
+  const cmsService = new CmsService(null);
   describe('content', () => {
     it('returns content for a given ID', async () => {
       const contentRepository = {
@@ -17,7 +21,10 @@ describe('#hubContentService', () => {
           .fn()
           .mockReturnValue({ name: 'foo series name', id: 'foo' }),
       };
-      const service = createHubContentService({ contentRepository });
+      const service = createHubContentService({
+        contentRepository,
+        cmsService,
+      });
       const result = await service.contentFor('contentId');
 
       expect(result).toStrictEqual({
@@ -47,7 +54,10 @@ describe('#hubContentService', () => {
         }),
         termFor: jest.fn().mockReturnValue(null),
       };
-      const service = createHubContentService({ contentRepository });
+      const service = createHubContentService({
+        contentRepository,
+        cmsService,
+      });
       const result = await service.contentFor('contentId');
 
       expect(result.tags.length).toEqual(0);
@@ -83,7 +93,10 @@ describe('#hubContentService', () => {
           ]),
         };
 
-        const service = createHubContentService({ contentRepository });
+        const service = createHubContentService({
+          contentRepository,
+          cmsService,
+        });
         const result = await service.contentFor(1);
 
         expect(result).toStrictEqual({
@@ -178,6 +191,7 @@ describe('#hubContentService', () => {
         contentRepository,
         menuRepository,
         categoryFeaturedContentRepository,
+        cmsService,
       });
       const result = await service.contentFor(content.id, establishmentId);
 
@@ -201,6 +215,7 @@ describe('#hubContentService', () => {
         contentRepository,
         menuRepository,
         categoryFeaturedContentRepository,
+        cmsService,
       });
 
       await service.contentFor(content.id, establishmentId);
@@ -220,6 +235,7 @@ describe('#hubContentService', () => {
         contentRepository,
         menuRepository,
         categoryFeaturedContentRepository,
+        cmsService,
       });
 
       await service.contentFor(content.id, establishmentId);
@@ -244,6 +260,7 @@ describe('#hubContentService', () => {
         contentRepository,
         menuRepository,
         categoryFeaturedContentRepository,
+        cmsService,
       });
 
       const expectedResult = {

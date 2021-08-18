@@ -9,13 +9,15 @@ class CmsService {
     this.#cmsApi = cmsApi;
   }
 
-  // will need tests
-  async getContent(contentId) {
-    const { type, location } = await this.#cmsApi.lookupContent(contentId);
+  async getContent(establishmentName, contentId) {
+    const { type, location } = await this.#cmsApi.lookupContent(
+      establishmentName,
+      contentId,
+    );
 
     switch (type) {
       case 'node--page':
-        return this.#cmsApi.getSingle(new BasicPageQuery(location));
+        return this.#cmsApi.get(new BasicPageQuery(location));
       /// ...other types go here
       default:
         // log unsupported type
