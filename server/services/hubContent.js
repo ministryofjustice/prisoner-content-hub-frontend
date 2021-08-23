@@ -1,15 +1,21 @@
 const { prop, filter, not, equals, map } = require('ramda');
 
+// Eventually will remove this file and call cms service directly
 function createHubContentService({
   contentRepository,
   menuRepository,
   categoryFeaturedContentRepository,
+  cmsService,
 }) {
-  async function contentFor(id, establishmentId) {
+  async function contentFor(id, establishmentId, establishmentName) {
     if (!id) {
       return {};
     }
 
+    const result = await cmsService.getContent(establishmentName, id);
+    if (result) {
+      return result;
+    }
     const content = await contentRepository.contentFor(id, establishmentId);
     const secondaryTags = prop('secondaryTags', content);
 

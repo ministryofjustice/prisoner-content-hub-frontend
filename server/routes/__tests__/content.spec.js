@@ -8,8 +8,22 @@ const { setupBasicApp } = require('../../../test/test-helpers');
 
 const radioShowResponse = require('../../../test/resources/radioShowServiceResponse.json');
 const videoShowResponse = require('../../../test/resources/videoShowServiceResponse.json');
-const flatContentResponse = require('../../../test/resources/flatContentResponse.json');
+const basicPageResponse = require('../../../test/resources/basicPageResponse.json');
 
+const setupApp = services => {
+  const router = createContentRouter(services);
+  const app = setupBasicApp();
+
+  app.use((req, res, next) => {
+    req.session = {
+      establishmentName: 'berwyn',
+    };
+    next();
+  });
+
+  app.use('/content', router);
+  return app;
+};
 describe('GET /content/:id', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -19,10 +33,7 @@ describe('GET /content/:id', () => {
     const hubContentService = {
       contentFor: jest.fn().mockRejectedValue('💥'),
     };
-    const router = createContentRouter({ hubContentService });
-    const app = setupBasicApp();
-
-    app.use('/content', router);
+    const app = setupApp({ hubContentService });
 
     await request(app).get('/content/1').expect(500);
   });
@@ -30,10 +41,7 @@ describe('GET /content/:id', () => {
     const hubContentService = {
       contentFor: () => ({ type: 'invalid' }),
     };
-    const router = createContentRouter({ hubContentService });
-    const app = setupBasicApp();
-
-    app.use('/content', router);
+    const app = setupApp({ hubContentService });
 
     await request(app).get('/content/1').expect(404);
   });
@@ -50,13 +58,10 @@ describe('GET /content/:id', () => {
         sendEvent: jest.fn(),
       };
 
-      const router = createContentRouter({
+      app = setupApp({
         hubContentService,
         analyticsService,
       });
-      app = setupBasicApp();
-
-      app.use('/content', router);
     });
 
     it('returns the correct content for a radio page', () =>
@@ -152,13 +157,10 @@ describe('GET /content/:id', () => {
         sendEvent: jest.fn(),
       };
 
-      const router = createContentRouter({
+      app = setupApp({
         hubContentService,
         analyticsService,
       });
-      app = setupBasicApp();
-
-      app.use('/content', router);
     });
 
     it('returns the correct content for a video page', () =>
@@ -301,45 +303,35 @@ describe('GET /content/:id', () => {
         }));
   });
 
-  describe('Flat page content', () => {
+  describe('Basic page content', () => {
     let app;
 
     beforeEach(() => {
       const hubContentService = {
-        contentFor: jest.fn().mockReturnValue(flatContentResponse),
+        contentFor: jest.fn().mockReturnValue(basicPageResponse),
       };
       const analyticsService = {
         sendPageTrack: jest.fn(),
         sendEvent: jest.fn(),
       };
-      const router = createContentRouter({
+      app = setupApp({
         hubContentService,
         analyticsService,
       });
-      app = setupBasicApp();
-
-      app.use('/content', router);
     });
 
-    it('returns the correct content for a flat content page', () =>
+    it('returns the correct content for a basic content page', () =>
       request(app)
         .get('/content/1')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('#title').text()).toContain(
-            'The jobs noticeboard',
-            'Page title did not match',
-          );
+          expect($('#title').text()).toContain('The jobs noticeboard');
           expect($('#stand-first').text()).toContain(
             'Some incredible foo stand first',
-            'Article stand first did not match',
           );
-          expect($('#body').text()).toContain(
-            'Foo paragraph',
-            'Article body did not match',
-          );
+          expect($('#body').text()).toContain('Foo paragraph');
         }));
   });
 
@@ -358,13 +350,10 @@ describe('GET /content/:id', () => {
     };
 
     it('returns a PDF', () => {
-      const router = createContentRouter({
+      const app = setupApp({
         hubContentService,
         analyticsService,
       });
-      const app = setupBasicApp();
-
-      app.use('/content', router);
 
       return request(app)
         .get('/content/1')
@@ -430,13 +419,10 @@ describe('GET /content/:id', () => {
         sendPageTrack: jest.fn(),
         sendEvent: jest.fn(),
       };
-      const router = createContentRouter({
+      const app = setupApp({
         hubContentService,
         analyticsService,
       });
-      const app = setupBasicApp();
-
-      app.use('/content', router);
 
       return request(app)
         .get('/content/1')

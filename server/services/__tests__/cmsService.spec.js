@@ -1,16 +1,80 @@
+const { CmsApi } = require('../../repositories/cmsApi');
+const {
+  BasicPageQuery,
+} = require('../../repositories/cmsQueries/basicPageQuery');
 const {
   HomepageQuery,
 } = require('../../repositories/cmsQueries/homepageQuery');
 const { TopicsQuery } = require('../../repositories/cmsQueries/topicsQuery');
 const { CmsService } = require('../cms');
 
+jest.mock('../../repositories/cmsApi');
+
 describe('cms Service', () => {
-  const cmsApi = { get: jest.fn() };
+  const cmsApi = new CmsApi();
   let cmsService;
 
   beforeEach(() => {
     jest.resetAllMocks();
     cmsService = new CmsService(cmsApi);
+  });
+
+  describe('getContent', () => {
+    const createBasicPage = () => ({
+      id: 5923,
+      title: 'Novus',
+      contentType: 'node--page',
+      description: 'Education content for prisoners',
+      standFirst: 'Education',
+      categories: [1234],
+      secondaryTags: [2345],
+    });
+
+    it('returns basic pages', async () => {
+      cmsApi.get.mockResolvedValue(createBasicPage());
+      cmsApi.lookupContent.mockResolvedValue({
+        type: 'node--page',
+        location: 'https://cms.org/content/1234',
+      });
+
+      const result = await cmsService.getContent(1234);
+
+      expect(result).toStrictEqual({
+        categories: [1234],
+        contentType: 'node--page',
+        description: 'Education content for prisoners',
+        id: 5923,
+        secondaryTags: [2345],
+        standFirst: 'Education',
+        title: 'Novus',
+      });
+    });
+
+    it('handles unknown content', async () => {
+      cmsApi.lookupContent.mockResolvedValue({
+        type: 'node--unknown',
+        location: 'https://cms.org/content/1234',
+      });
+
+      const result = await cmsService.getContent(1234);
+
+      expect(result).toStrictEqual(null);
+    });
+
+    it('Source to have been called correctly', async () => {
+      cmsApi.get.mockResolvedValue(createBasicPage());
+      cmsApi.lookupContent.mockResolvedValue({
+        type: 'node--page',
+        location: 'https://cms.org/content/1234',
+      });
+
+      await cmsService.getContent(1234);
+
+      expect(cmsApi.lookupContent).toHaveBeenCalledWith(1234, undefined);
+      expect(cmsApi.get).toHaveBeenCalledWith(
+        new BasicPageQuery('https://cms.org/content/1234'),
+      );
+    });
   });
 
   describe('getTopics', () => {

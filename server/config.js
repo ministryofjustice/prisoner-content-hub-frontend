@@ -46,6 +46,7 @@ module.exports = {
     series: `${hubEndpoint}/v1/api/content/series`,
     tags: `${hubEndpoint}/v1/api/vocabulary/tags`,
   },
+
   caching: {
     secret: getEnv('CACHE_SECRET', { requireInProduction: true }),
     redis: {

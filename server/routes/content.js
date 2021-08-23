@@ -23,9 +23,14 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
 
     const establishmentId = path(['session', 'establishmentId'], req);
     const userAgent = path(['headers', 'user-agent'], req);
+    const { establishmentName } = req.session;
 
     try {
-      const data = await hubContentService.contentFor(id, establishmentId);
+      const data = await hubContentService.contentFor(
+        id,
+        establishmentId,
+        establishmentName,
+      );
       const contentType = prop('contentType', data);
       const sessionId = path(['session', 'id'], req);
       const getCategoriesFrom = propOr([], 'categories');

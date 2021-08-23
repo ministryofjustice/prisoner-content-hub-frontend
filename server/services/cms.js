@@ -1,11 +1,28 @@
 const { TopicsQuery } = require('../repositories/cmsQueries/topicsQuery');
 const { HomepageQuery } = require('../repositories/cmsQueries/homepageQuery');
+const { BasicPageQuery } = require('../repositories/cmsQueries/basicPageQuery');
 
 class CmsService {
   #cmsApi;
 
   constructor(cmsApi) {
     this.#cmsApi = cmsApi;
+  }
+
+  async getContent(establishmentName, contentId) {
+    const { type, location } = await this.#cmsApi.lookupContent(
+      establishmentName,
+      contentId,
+    );
+
+    switch (type) {
+      case 'node--page':
+        return this.#cmsApi.get(new BasicPageQuery(location));
+      /// ...other types go here
+      default:
+        // log unsupported type
+        return null;
+    }
   }
 
   async getTopics(prisonId) {
