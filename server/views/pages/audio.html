@@ -86,15 +86,15 @@
       series: data.seriesName,
       feedbackId: feedbackId,
       categories: data.categories,
-      secondaryTags: data.secondaryTags
+      secondaryTags: data.secondaryTagIds
     }) }}
 
     <div class="govuk-hub-media-player__description">
-      <div id="body" class="govuk-body">{{ data.description.sanitized | safe }}</div>
+      <div id="body" class="govuk-body">{{ data.description | safe }}</div>
     </div>
 
     <ul id="tags-list" class="secondary-tags-list govuk-body">
-      {% for tagItem in data.tags %}
+      {% for tagItem in data.secondaryTags %}
         {% if tagItem.name %}
           <li class="govuk-hub-navigation__list-item govuk-hub-navigation__list-item-topic">
             <a title="{{tagItem.name}}" href="/tags/{{tagItem.id}}">{{tagItem.name}}</a>
@@ -104,7 +104,7 @@
     </ul>
 
     <div id="next-episodes" class="govuk-hub-media-player__watch-next">
-      {{ nextEpisodesContent({ data: data.season }) }}
+      {{ nextEpisodesContent({ data: data.nextEpisodes }) }}
     </div>
   </div>
   <div class="govuk-grid-row">

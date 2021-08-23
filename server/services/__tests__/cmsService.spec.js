@@ -13,10 +13,20 @@ jest.mock('../../repositories/cmsApi');
 describe('cms Service', () => {
   const cmsApi = new CmsApi();
   let cmsService;
+  let contentRepository;
 
   beforeEach(() => {
     jest.resetAllMocks();
-    cmsService = new CmsService(cmsApi);
+    contentRepository = {
+      suggestedContentFor: jest
+        .fn()
+        .mockReturnValue([{ title: 'foo', href: 'www.foo.com', type: 'foo' }]),
+      nextEpisodesFor: jest.fn().mockReturnValue([
+        { id: 1, title: 'foo episode' },
+        { id: 2, title: 'bar episode' },
+      ]),
+    };
+    cmsService = new CmsService(cmsApi, contentRepository);
   });
 
   describe('getContent', () => {
@@ -28,6 +38,31 @@ describe('cms Service', () => {
       standFirst: 'Education',
       categories: [1234],
       secondaryTags: [2345],
+    });
+
+    const createAudioPage = () => ({
+      categories: [648],
+      contentType: 'node--moj_radio_item',
+      description: 'Education content for prisoners',
+      episodeId: 1036,
+      id: 6236,
+      image: {
+        alt: 'faith',
+        url: 'https://cms.org/jdajsgjdfj.jpg',
+      },
+      media: 'https://cms.org/jdajsgjdfj.mp3',
+      programmeCode: 'FAITH138',
+      seasonId: 1,
+      secondaryTags: [
+        {
+          id: 741,
+          name: 'Self-help',
+        },
+      ],
+      seriesId: 923,
+      seriesName: 'Buddhist',
+      seriesPath: '/tags/923',
+      title: 'Buddhist reflection: 29 July',
     });
 
     it('returns basic pages', async () => {
@@ -47,6 +82,69 @@ describe('cms Service', () => {
         secondaryTags: [2345],
         standFirst: 'Education',
         title: 'Novus',
+      });
+    });
+
+    it(`returns audio content provided by CMS service`, async () => {
+      cmsApi.get.mockResolvedValue(createAudioPage());
+      cmsApi.lookupContent.mockResolvedValue({
+        type: 'node--moj_radio_item',
+        location: 'https://cms.org/content/1234',
+      });
+
+      const result = await cmsService.getContent('berwyn', 793, 1234);
+
+      expect(result).toStrictEqual({
+        categories: [648],
+        contentType: 'node--moj_radio_item',
+        description: 'Education content for prisoners',
+        episodeId: 1036,
+        id: 6236,
+        image: {
+          alt: 'faith',
+          url: 'https://cms.org/jdajsgjdfj.jpg',
+        },
+        media: 'https://cms.org/jdajsgjdfj.mp3',
+        nextEpisodes: [
+          {
+            id: 1,
+            title: 'foo episode',
+          },
+          {
+            id: 2,
+            title: 'bar episode',
+          },
+        ],
+        programmeCode: 'FAITH138',
+        seasonId: 1,
+        secondaryTags: [
+          {
+            id: 741,
+            name: 'Self-help',
+          },
+        ],
+        seriesId: 923,
+        seriesName: 'Buddhist',
+        seriesPath: '/tags/923',
+        suggestedContent: [
+          {
+            href: 'www.foo.com',
+            title: 'foo',
+            type: 'foo',
+          },
+        ],
+        title: 'Buddhist reflection: 29 July',
+      });
+
+      expect(contentRepository.nextEpisodesFor).toHaveBeenCalledWith({
+        episodeId: 1036,
+        establishmentId: 793,
+        id: 923,
+        perPage: 3,
+      });
+      expect(contentRepository.suggestedContentFor).toHaveBeenCalledWith({
+        establishmentId: 793,
+        id: 6236,
       });
     });
 

@@ -39,13 +39,6 @@ class CmsApi {
     }
     return query.transform(deserializedResponse);
   }
-
-  // this will need tests
-  async getSingle(query) {
-    const response = await this.jsonApiClient.get(query.path());
-    const item = dataFormatter.deserialize(response);
-    return query.transform(item);
-  }
 }
 
 module.exports = { CmsApi };
