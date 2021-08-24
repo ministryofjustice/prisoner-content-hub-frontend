@@ -1,13 +1,33 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable class-methods-use-this */
 const nock = require('nock');
 const { jsonApiResponse } = require('../../../test/resources/jsonApi');
 const { JsonApiClient } = require('../../clients/jsonApiClient');
 const { CmsApi } = require('../cmsApi');
 
+const host = 'http://localhost:3333';
 const path = `/jsonapi/test`;
 class TestQuery {
   path() {
     return path;
+  }
+
+  transform(item) {
+    const { name, description, fieldLegacyLandingPage } = item;
+    const id =
+      fieldLegacyLandingPage?.resourceIdObjMeta?.drupal_internal__target_id;
+    return {
+      id,
+      linkText: name,
+      description: description?.processed,
+      href: `/content/${id}`,
+    };
+  }
+}
+
+class TestUrlQuery {
+  url() {
+    return `${host}${path}`;
   }
 
   transform(item) {
@@ -60,7 +80,6 @@ describe('CmsApi', () => {
     if (!nock.isActive()) {
       nock.activate();
     }
-    const host = 'http://localhost:3333';
     cmsApi = new CmsApi(new JsonApiClient(host));
     mockDrupal = nock(host);
   });
@@ -94,7 +113,28 @@ describe('CmsApi', () => {
       );
     });
 
-    it('should format and return matching item', async () => {
+    it('should format and return single value', async () => {
+      mockDrupal.get(path).reply(
+        200,
+        jsonApiResponse(
+          testItem({
+            id: '1',
+            title: 'One',
+            processed: 'Desc 1',
+          }),
+        ),
+      );
+      const response = await cmsApi.get(new TestQuery());
+
+      expect(response).toStrictEqual({
+        description: 'Desc 1',
+        href: '/content/1',
+        id: '1',
+        linkText: 'One',
+      });
+    });
+
+    it('should format and return matching items', async () => {
       mockDrupal.get(path).reply(
         200,
         jsonApiResponse([
@@ -115,6 +155,79 @@ describe('CmsApi', () => {
           linkText: 'One',
         },
       ]);
+    });
+
+    it('should request absolute URL if query requires it', async () => {
+      mockDrupal.get(path).reply(
+        200,
+        jsonApiResponse([
+          testItem({
+            id: '1',
+            title: 'One',
+            processed: 'Desc 1',
+          }),
+        ]),
+      );
+      const response = await cmsApi.get(new TestUrlQuery());
+
+      expect(response).toStrictEqual([
+        {
+          description: 'Desc 1',
+          href: '/content/1',
+          id: '1',
+          linkText: 'One',
+        },
+      ]);
+    });
+  });
+
+  describe('lookup content', () => {
+    const lookupPath = `/router/prison/berwyn/translate-path?path=content/1234`;
+
+    it('should propagate errors', () => {
+      mockDrupal.get(lookupPath).reply(500, 'unexpected error');
+
+      return expect(cmsApi.lookupContent('berwyn', 1234)).rejects.toEqual(
+        Error('Request failed with status code 500'),
+      );
+    });
+
+    it('propagates 404 as error', () => {
+      mockDrupal.get(lookupPath).reply(404, 'unexpected error');
+
+      return expect(cmsApi.lookupContent('berwyn', 1234)).rejects.toEqual(
+        Error('Request failed with status code 404'),
+      );
+    });
+
+    it('should format and return single value', async () => {
+      mockDrupal.get(lookupPath).reply(200, {
+        resolved: 'https://cms.org/content/1234',
+        isHomePath: false,
+        entity: {
+          canonical: 'https://cms.org/content/1234',
+          type: 'node',
+          bundle: 'page',
+          id: '1234',
+          uuid: 'abd97f5c-072b-4e1f-a446-85fd021d7fa7',
+        },
+        label: 'All Novus Cambria courses',
+        jsonapi: {
+          individual:
+            'https://cms.org/jsonapi/node/page/abd97f5c-072b-4e1f-a446-85fd021d7fa7',
+          resourceName: 'node--page',
+          pathPrefix: 'jsonapi',
+          basePath: '/jsonapi',
+          entryPoint: 'https://cms.org/jsonapi',
+        },
+      });
+      const response = await cmsApi.lookupContent('berwyn', 1234);
+
+      expect(response).toStrictEqual({
+        location:
+          'https://cms.org/jsonapi/node/page/abd97f5c-072b-4e1f-a446-85fd021d7fa7',
+        type: 'node--page',
+      });
     });
   });
 });
