@@ -61,7 +61,6 @@ describe('Audio page query', () => {
             drupal_internal__target_id: 923,
           },
         },
-
         fieldMojThumbnailImage: {
           type: 'file--file',
           uri: {
