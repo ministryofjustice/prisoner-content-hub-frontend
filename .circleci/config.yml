@@ -10,7 +10,7 @@ feature_branch: &feature_branch
 version: 2.1
 
 orbs:
-  hmpps: ministryofjustice/hmpps@3.10
+  hmpps: ministryofjustice/hmpps@3.11
   slack: circleci/slack@4.4
 
 parameters:
@@ -387,7 +387,7 @@ workflows:
   security:
     triggers:
       - schedule:
-          cron: "0 6 * * 1-5"
+          cron: "32 4 * * 1-5"
           filters:
             branches:
               only:
