@@ -33,7 +33,7 @@ describe('cms Service', () => {
     const createBasicPage = () => ({
       id: 5923,
       title: 'Novus',
-      contentType: 'node--page',
+      contentType: 'page',
       description: 'Education content for prisoners',
       standFirst: 'Education',
       categories: [1234],
@@ -42,7 +42,7 @@ describe('cms Service', () => {
 
     const createAudioPage = () => ({
       categories: [648],
-      contentType: 'node--moj_radio_item',
+      contentType: 'radio',
       description: 'Education content for prisoners',
       episodeId: 1036,
       id: 6236,
@@ -67,7 +67,7 @@ describe('cms Service', () => {
 
     const createVideoPage = () => ({
       categories: [648],
-      contentType: 'node--moj_video_item',
+      contentType: 'video',
       description: 'Education content for prisoners',
       episodeId: 1036,
       id: 6236,
@@ -75,7 +75,7 @@ describe('cms Service', () => {
         alt: 'faith',
         url: 'https://cms.org/jdajsgjdfj.jpg',
       },
-      media: 'https://cms.org/jdajsgjdfj.mp3',
+      media: 'https://cms.org/jdajsgjdfj.mp4',
       seasonId: 1,
       secondaryTags: [
         {
@@ -100,7 +100,7 @@ describe('cms Service', () => {
 
       expect(result).toStrictEqual({
         categories: [1234],
-        contentType: 'node--page',
+        contentType: 'page',
         description: 'Education content for prisoners',
         id: 5923,
         secondaryTags: [2345],
@@ -120,7 +120,7 @@ describe('cms Service', () => {
 
       expect(result).toStrictEqual({
         categories: [648],
-        contentType: 'node--moj_radio_item',
+        contentType: 'radio',
         description: 'Education content for prisoners',
         episodeId: 1036,
         id: 6236,
@@ -183,7 +183,7 @@ describe('cms Service', () => {
 
       expect(result).toStrictEqual({
         categories: [648],
-        contentType: 'node--moj_video_item',
+        contentType: 'video',
         description: 'Education content for prisoners',
         episodeId: 1036,
         id: 6236,
@@ -191,7 +191,7 @@ describe('cms Service', () => {
           alt: 'faith',
           url: 'https://cms.org/jdajsgjdfj.jpg',
         },
-        media: 'https://cms.org/jdajsgjdfj.mp3',
+        media: 'https://cms.org/jdajsgjdfj.mp4',
         nextEpisodes: [
           {
             id: 1,

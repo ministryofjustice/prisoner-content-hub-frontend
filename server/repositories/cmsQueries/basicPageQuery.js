@@ -32,7 +32,7 @@ class BasicPageQuery {
     return {
       id: item.drupalInternal_Nid,
       title: item.title,
-      contentType: item.type.replace(/^node--/, ''),
+      contentType: 'page',
       description: item.fieldMojDescription.processed,
       standFirst: item.fieldMojStandFirst,
       categories: this.#flattenDrupalInternalTargetId(

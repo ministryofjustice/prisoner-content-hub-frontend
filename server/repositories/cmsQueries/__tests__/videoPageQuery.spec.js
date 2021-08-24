@@ -13,7 +13,7 @@ describe('Video page query', () => {
   describe('transform', () => {
     it('should create correct video page structure', async () => {
       const videoPage = {
-        type: 'node--moj_video_item',
+        type: 'node--node--moj_video_item',
         id: '43eb4a97-e6ef-440c-a044-88e9bb982620',
         drupalInternal_Nid: 6236,
         title: 'Buddhist reflection: 29 July',
