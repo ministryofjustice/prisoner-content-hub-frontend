@@ -3,22 +3,22 @@ const express = require('express');
 
 const { createHealthRouter } = require('../health');
 
+jest.mock(
+  '../../../build-info.json',
+  () => ({
+    buildNumber: 'foo-number',
+    gitDate: 'foo-date',
+    gitRef: 'foo-ref',
+  }),
+  { virtual: true },
+);
+
 describe('GET healthchecks', () => {
-  let config;
   let app;
-  const BUILD_NUMBER = 'foo-number';
-  const GIT_REF = 'foo-ref';
-  const GIT_DATE = 'foo-date';
+  const buildNumber = 'foo-number';
   beforeEach(() => {
-    config = {
-      buildInfo: {
-        buildNumber: BUILD_NUMBER,
-        gitRef: GIT_REF,
-        gitDate: GIT_DATE,
-      },
-    };
     app = express();
-    app.use('/health', createHealthRouter(config));
+    app.use('/health', createHealthRouter());
   });
   it('returns the health status of the application on /health', () =>
     request(app)
@@ -28,13 +28,13 @@ describe('GET healthchecks', () => {
       .then(res => {
         expect(res.body).toStrictEqual({
           build: {
-            buildNumber: BUILD_NUMBER,
-            gitDate: GIT_DATE,
-            gitRef: GIT_REF,
+            buildNumber,
+            gitDate: 'foo-date',
+            gitRef: 'foo-ref',
           },
           healthy: true,
           uptime: expect.any(Number),
-          version: BUILD_NUMBER,
+          version: buildNumber,
         });
       }));
   it('returns the readiness status of the application', () =>

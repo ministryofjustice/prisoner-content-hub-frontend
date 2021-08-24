@@ -12,7 +12,12 @@ WORKDIR /app
 
 COPY . .
 
-RUN CYPRESS_INSTALL_BINARY=0 npm ci --no-audit --production && npm run build
+RUN CYPRESS_INSTALL_BINARY=0 npm ci --no-audit --production && \
+    npm run build && \
+    export BUILD_NUMBER=${BUILD_NUMBER:-1_0_0} && \
+    export GIT_REF=${GIT_REF:-dummy} && \
+    export GIT_DATE="${GIT_DATE:-dummy}" && \
+    npm run record-build-info
 
 # Second stage
 FROM node:14.17-buster-slim
