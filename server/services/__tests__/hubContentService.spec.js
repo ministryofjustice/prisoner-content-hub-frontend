@@ -1,5 +1,5 @@
 const { createHubContentService } = require('../hubContent');
-const { lastCall, lastCallLastArg } = require('../../../test/test-helpers');
+const { lastCallLastArg } = require('../../../test/test-helpers');
 const { CmsService } = require('../cms');
 
 jest.mock('../cms');
@@ -67,83 +67,6 @@ describe('#hubContentService', () => {
       expect(result.tags.length).toEqual(0);
       expect(result.secondaryTagNames.length).toEqual(0);
       expect(result.categoryNames.length).toEqual(0);
-    });
-
-    it(`returns video show content`, async () => {
-      const contentRepository = {
-        contentFor: jest.fn().mockReturnValue({
-          id: 1,
-          title: 'foo',
-          href: 'www.foo.com',
-          contentType: 'video',
-          seriesId: 'seriesId',
-          episodeId: 'episodeId',
-          secondaryTags: [12],
-          categories: [13],
-          description: { raw: '' },
-        }),
-        suggestedContentFor: jest
-          .fn()
-          .mockReturnValue([
-            { title: 'foo', href: 'www.foo.com', type: 'foo' },
-          ]),
-        termFor: jest
-          .fn()
-          .mockReturnValue({ name: 'foo series name', id: 'foo' }),
-        nextEpisodesFor: jest.fn().mockReturnValue([
-          { id: 1, title: 'foo episode' },
-          { id: 2, title: 'bar episode' },
-        ]),
-      };
-
-      const service = createHubContentService({
-        contentRepository,
-        cmsService,
-      });
-      const result = await service.contentFor(1);
-
-      expect(result).toStrictEqual({
-        id: 1,
-        title: 'foo',
-        href: 'www.foo.com',
-        contentType: 'video',
-        seriesId: 'seriesId',
-        seriesName: 'foo series name',
-        suggestedContent: [
-          {
-            href: 'www.foo.com',
-            title: 'foo',
-            type: 'foo',
-          },
-        ],
-        description: {
-          raw: '',
-        },
-        episodeId: 'episodeId',
-        secondaryTags: [12],
-        categories: [13],
-        season: [{ id: 2, title: 'bar episode' }], // hides the current episode from season
-        tags: [{ name: 'foo series name', id: 'foo' }],
-        secondaryTagNames: 'foo series name',
-        categoryNames: 'foo series name',
-      });
-
-      expect(lastCall(contentRepository.termFor)[0]).toBe(
-        'seriesId',
-        'The termFor method was called incorrectly',
-      );
-
-      expect(lastCall(contentRepository.nextEpisodesFor)[0]).toHaveProperty(
-        'id',
-        'seriesId',
-        'The nextEpisodeFor method was called incorrectly',
-      );
-
-      expect(lastCall(contentRepository.nextEpisodesFor)[0]).toHaveProperty(
-        'episodeId',
-        'episodeId',
-        'The nextEpisodeFor method was called incorrectly',
-      );
     });
 
     it(`returns content provided by CMS service`, async () => {
@@ -219,7 +142,6 @@ describe('#hubContentService', () => {
     };
 
     const createContentRepository = () => ({
-      relatedContentFor: jest.fn().mockReturnValue([]),
       termFor: jest
         .fn()
         .mockReturnValue({ name: 'foo series name', id: 'foo' }),
@@ -227,9 +149,6 @@ describe('#hubContentService', () => {
         .fn()
         .mockReturnValueOnce(content)
         .mockReturnValueOnce('fooBar'),
-      suggestedContentFor: jest
-        .fn()
-        .mockReturnValue({ title: 'foo', href: 'www.foo.com', type: 'foo' }),
     });
 
     const createMenuRepository = () => ({

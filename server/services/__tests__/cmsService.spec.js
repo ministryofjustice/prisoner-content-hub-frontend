@@ -65,6 +65,30 @@ describe('cms Service', () => {
       title: 'Buddhist reflection: 29 July',
     });
 
+    const createVideoPage = () => ({
+      categories: [648],
+      contentType: 'node--moj_video_item',
+      description: 'Education content for prisoners',
+      episodeId: 1036,
+      id: 6236,
+      image: {
+        alt: 'faith',
+        url: 'https://cms.org/jdajsgjdfj.jpg',
+      },
+      media: 'https://cms.org/jdajsgjdfj.mp3',
+      seasonId: 1,
+      secondaryTags: [
+        {
+          id: 741,
+          name: 'Self-help',
+        },
+      ],
+      seriesId: 923,
+      seriesName: 'Buddhist',
+      seriesPath: '/tags/923',
+      title: 'Buddhist reflection: 29 July',
+    });
+
     it('returns basic pages', async () => {
       cmsApi.get.mockResolvedValue(createBasicPage());
       cmsApi.lookupContent.mockResolvedValue({
@@ -116,6 +140,69 @@ describe('cms Service', () => {
           },
         ],
         programmeCode: 'FAITH138',
+        seasonId: 1,
+        secondaryTags: [
+          {
+            id: 741,
+            name: 'Self-help',
+          },
+        ],
+        seriesId: 923,
+        seriesName: 'Buddhist',
+        seriesPath: '/tags/923',
+        suggestedContent: [
+          {
+            href: 'www.foo.com',
+            title: 'foo',
+            type: 'foo',
+          },
+        ],
+        title: 'Buddhist reflection: 29 July',
+      });
+
+      expect(contentRepository.nextEpisodesFor).toHaveBeenCalledWith({
+        episodeId: 1036,
+        establishmentId: 793,
+        id: 923,
+        perPage: 3,
+      });
+      expect(contentRepository.suggestedContentFor).toHaveBeenCalledWith({
+        establishmentId: 793,
+        id: 6236,
+      });
+    });
+
+    it(`returns video content provided by CMS service`, async () => {
+      cmsApi.get.mockResolvedValue(createVideoPage());
+      cmsApi.lookupContent.mockResolvedValue({
+        type: 'node--moj_video_item',
+        location: 'https://cms.org/content/1234',
+      });
+
+      const result = await cmsService.getContent('berwyn', 793, 1234);
+
+      expect(result).toStrictEqual({
+        categories: [648],
+        contentType: 'node--moj_video_item',
+        description: 'Education content for prisoners',
+        episodeId: 1036,
+        id: 6236,
+        image: {
+          alt: 'faith',
+          url: 'https://cms.org/jdajsgjdfj.jpg',
+        },
+        media: 'https://cms.org/jdajsgjdfj.mp3',
+        nextEpisodes: [
+          {
+            id: 1,
+            title: 'foo episode',
+          },
+          {
+            id: 2,
+            title: 'bar episode',
+          },
+        ],
+
         seasonId: 1,
         secondaryTags: [
           {
