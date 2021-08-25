@@ -71,27 +71,12 @@ describe('GET /content/:id', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('#title').text()).toBe(
-            'Foo title',
-            'Page title did not match',
-          );
-          expect($('#body').text()).toBe('Foo body', 'Page body did not match');
-          expect($('#series').text()).toBe(
-            'Foo series',
-            'Page title did not match',
-          );
-          expect($('#hub-audio source').attr('src')).toBe(
-            'foo.mp3',
-            'Page media did not match',
-          );
-          expect($('#thumbnail').attr('src')).toBe(
-            'foo.png',
-            'Page thumbnail src did not match',
-          );
-          expect($('#thumbnail').attr('alt')).toBe(
-            'foo Bar',
-            'Page thumbnail alt did not match',
-          );
+          expect($('#title').text()).toBe('Foo title');
+          expect($('#body').text()).toBe('Foo body');
+          expect($('#series').text()).toBe('Foo series');
+          expect($('#hub-audio source').attr('src')).toBe('foo.mp3');
+          expect($('#thumbnail').attr('src')).toBe('foo.png');
+          expect($('#thumbnail').attr('alt')).toBe('foo Bar');
         }));
 
     it('returns the correct tags for a radio page', () =>
@@ -111,22 +96,14 @@ describe('GET /content/:id', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('#next-episodes a').length).toBe(
-            1,
-            "The number of next episodes shows don't match",
-          );
-          expect($('#next-episodes a').text()).toContain(
-            'Foo episode',
-            "The episode title doesn't match",
-          );
+          expect($('#next-episodes a').length).toBe(1);
+          expect($('#next-episodes a').text()).toContain('Foo episode');
           expect($('#episode-thumbnail').attr('style')).toContain(
             'foo.image.png',
-            "The episode thumbnail doesn't match",
           );
 
           expect($('#next-episodes a').attr('href')).toContain(
-            `/content/${radioShowResponse.season[0].id}`,
-            'did not render url',
+            `/content/${radioShowResponse.nextEpisodes[0].id}`,
           );
         }));
 
@@ -140,7 +117,6 @@ describe('GET /content/:id', () => {
           expect($('#suggested-content a').length).toBe(1);
           expect($('#suggested-content h3').text()).toContain(
             'Suggested content',
-            "The suggested content title doesn't match",
           );
         }));
   });

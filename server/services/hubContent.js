@@ -12,7 +12,11 @@ function createHubContentService({
       return {};
     }
 
-    const result = await cmsService.getContent(establishmentName, id);
+    const result = await cmsService.getContent(
+      establishmentName,
+      establishmentId,
+      id,
+    );
     if (result) {
       return result;
     }
@@ -52,30 +56,15 @@ function createHubContentService({
     }
 
     const contentType = prop('contentType', content);
-    const suggestedContent =
-      contentType === 'radio' || contentType === 'video'
-        ? await contentRepository.suggestedContentFor({
-            id,
-            establishmentId,
-          })
-        : [];
 
     switch (contentType) {
-      case 'radio':
       case 'video': {
-        return media(establishmentId, {
-          ...content,
-          suggestedContent,
-        });
+        return media(establishmentId, content);
       }
       case 'landing-page':
-        return landingPage(establishmentId, {
-          ...content,
-        });
+        return landingPage(establishmentId, content);
       default:
-        return {
-          ...content,
-        };
+        return content;
     }
   }
 
@@ -85,6 +74,10 @@ function createHubContentService({
 
   async function media(establishmentId, data) {
     const id = prop('id', data);
+    const suggestedContent = await contentRepository.suggestedContentFor({
+      id,
+      establishmentId,
+    });
     const seriesId = prop('seriesId', data);
     const episodeId = prop('episodeId', data);
     const filterOutCurrentEpisode = filter(item =>
@@ -103,6 +96,7 @@ function createHubContentService({
 
     return {
       ...data,
+      suggestedContent,
       seriesName: prop('name', series),
       season: seasons ? filterOutCurrentEpisode(seasons) : seasons,
     };
