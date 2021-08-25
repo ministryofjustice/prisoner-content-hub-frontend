@@ -137,37 +137,4 @@ describe('GET /tags', () => {
       });
     });
   });
-
-  describe('/related-content/:id', () => {
-    it('returns tags', () => {
-      const data = [
-        {
-          id: 'foo',
-          type: 'radio',
-          title: 'foo related content',
-          summary: 'Foo body',
-          image: {
-            url: 'foo.png',
-          },
-        },
-      ];
-      const hubTagsService = {
-        relatedContentFor: jest.fn().mockReturnValue(data),
-      };
-      const router = createTagRouter({ hubTagsService });
-      const app = setupBasicApp();
-
-      app.use('/', router);
-
-      return request(app)
-        .get('/related-content/1')
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
-        .then(res => {
-          const result = JSON.parse(res.text);
-
-          expect(result).toStrictEqual(data);
-        });
-    });
-  });
 });
