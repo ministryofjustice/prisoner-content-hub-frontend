@@ -26,13 +26,7 @@ describe.skip('GET /approved-visitors', () => {
 
   beforeEach(() => {
     const router = createApprovedVisitorsRouter({ offenderService });
-    app = setupBasicApp({
-      buildInfo: {
-        buildNumber: 'foo-number',
-        gitRef: 'foo-ref',
-        gitDate: 'foo-date',
-      },
-    });
+    app = setupBasicApp();
     app.use(setMockUser);
     app.use('/approved-visitors', router);
     userSupplier.mockReturnValue(testUser);

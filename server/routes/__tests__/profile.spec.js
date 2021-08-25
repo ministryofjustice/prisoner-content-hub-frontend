@@ -31,13 +31,7 @@ describe('GET /profile', () => {
 
   beforeEach(() => {
     const router = createProfileRouter({ offenderService });
-    app = setupBasicApp({
-      buildInfo: {
-        buildNumber: 'foo-number',
-        gitRef: 'foo-ref',
-        gitDate: 'foo-date',
-      },
-    });
+    app = setupBasicApp();
     app.use(setMockUser);
     app.use('/profile', router);
     userSupplier.mockReturnValue(testUser);
