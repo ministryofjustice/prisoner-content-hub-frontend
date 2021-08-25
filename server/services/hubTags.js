@@ -33,35 +33,8 @@ const createHubTagsService = repository => {
     }
   }
 
-  function relatedSeriesFor({ id, establishmentId, perPage, offset }) {
-    return repository.seasonFor({
-      id,
-      establishmentId,
-      perPage,
-      offset,
-    });
-  }
-
-  function relatedContentFor({
-    id,
-    establishmentId,
-    perPage,
-    offset,
-    sortOrder,
-  }) {
-    return repository.relatedContentFor({
-      id,
-      establishmentId,
-      perPage,
-      offset,
-      sortOrder,
-    });
-  }
-
   return {
     termFor,
-    relatedContentFor,
-    relatedSeriesFor,
   };
 };
 

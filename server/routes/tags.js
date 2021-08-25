@@ -40,32 +40,6 @@ const createTagRouter = ({ hubTagsService }) => {
     }
   });
 
-  router.get('/related-content/:id', async (req, res, next) => {
-    const { id } = req.params;
-
-    if (!id) {
-      return next();
-    }
-
-    try {
-      const establishmentId = path(['session', 'establishmentId'], req);
-      const contentType = path(['query', 'contentType'], req);
-
-      const method =
-        contentType === 'series' ? 'relatedSeriesFor' : 'relatedContentFor';
-
-      const data = await hubTagsService[method]({
-        id,
-        establishmentId,
-        ...req.query,
-      });
-
-      return res.json(data);
-    } catch (exp) {
-      return res.json(null);
-    }
-  });
-
   return router;
 };
 
