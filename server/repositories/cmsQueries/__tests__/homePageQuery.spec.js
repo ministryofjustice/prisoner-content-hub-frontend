@@ -1,4 +1,4 @@
-const { HomepageQuery } = require('../homepageQuery');
+const { HomepageQuery } = require('../homePageQuery');
 
 describe('Homepage query', () => {
   const query = new HomepageQuery('berwyn', 'prisoner', 1);

@@ -1,5 +1,5 @@
 const { TopicsQuery } = require('../repositories/cmsQueries/topicsQuery');
-const { HomepageQuery } = require('../repositories/cmsQueries/homepageQuery');
+const { HomepageQuery } = require('../repositories/cmsQueries/homePageQuery');
 const { BasicPageQuery } = require('../repositories/cmsQueries/basicPageQuery');
 const { AudioPageQuery } = require('../repositories/cmsQueries/audioPageQuery');
 const { VideoPageQuery } = require('../repositories/cmsQueries/videoPageQuery');

@@ -4,7 +4,7 @@ const {
 } = require('../../repositories/cmsQueries/basicPageQuery');
 const {
   HomepageQuery,
-} = require('../../repositories/cmsQueries/homepageQuery');
+} = require('../../repositories/cmsQueries/homePageQuery');
 const { TopicsQuery } = require('../../repositories/cmsQueries/topicsQuery');
 const { CmsService } = require('../cms');
 
