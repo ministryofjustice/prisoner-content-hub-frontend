@@ -3,6 +3,7 @@ const { HomepageQuery } = require('../repositories/cmsQueries/homePageQuery');
 const { BasicPageQuery } = require('../repositories/cmsQueries/basicPageQuery');
 const { AudioPageQuery } = require('../repositories/cmsQueries/audioPageQuery');
 const { VideoPageQuery } = require('../repositories/cmsQueries/videoPageQuery');
+const { PdfPageQuery } = require('../repositories/cmsQueries/pdfPageQuery');
 
 class CmsService {
   #cmsApi;
@@ -22,6 +23,8 @@ class CmsService {
     switch (type) {
       case 'node--page':
         return this.#cmsApi.get(new BasicPageQuery(location));
+      case 'node--moj_pdf_item':
+        return this.#cmsApi.get(new PdfPageQuery(location));
       case 'node--moj_radio_item':
         return this.getAudio(establishmentId, location);
       case 'node--moj_video_item':
