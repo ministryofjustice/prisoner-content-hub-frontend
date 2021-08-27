@@ -146,55 +146,31 @@ describe('GET /content/:id', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('#title').text()).toBe(
-            'Baz title',
-            'Page title did not match',
-          );
-          expect($('#body').text()).toBe('Baz body', 'Page body did not match');
-          expect($('#series').text()).toBe(
-            'Baz series',
-            'Page title did not match',
-          );
-          expect($('#hub-video source').attr('src')).toBe(
-            'baz.mp4',
-            'Page media did not match',
-          );
-          expect($('#thumbnail').attr('src')).toBe(
-            'baz.png',
-            'Page thumbnail src did not match',
-          );
-          expect($('#thumbnail').attr('alt')).toBe(
-            'baz Bar',
-            'Page thumbnail alt did not match',
-          );
+          expect($('#title').text()).toBe('Baz title');
+          expect($('#body').text()).toBe('Baz body');
+          expect($('#series').text()).toBe('Baz series');
+          expect($('#hub-video source').attr('src')).toBe('baz.mp4');
+          expect($('#thumbnail').attr('src')).toBe('baz.png');
+          expect($('#thumbnail').attr('alt')).toBe('baz Bar');
 
           // tags
           expect($('#tags-list li').length).toBe(2);
 
           // episodes
-          expect($('#next-episodes a').length).toBe(
-            1,
-            "The number of next episodes shows don't match",
-          );
-          expect($('#next-episodes a').text()).toContain(
-            'Baz episode',
-            "The episode title doesn't match",
-          );
+          expect($('#next-episodes a').length).toBe(1);
+          expect($('#next-episodes a').text()).toContain('Baz episode');
           expect($('#episode-thumbnail').attr('style')).toContain(
             'baz.image.png',
-            "The episode thumbnail doesn't match",
           );
 
           expect($('#next-episodes a').attr('href')).toContain(
-            `/content/${videoShowResponse.season[0].id}`,
-            'did not render url',
+            `/content/${videoShowResponse.nextEpisodes[0].id}`,
           );
 
           // suggestions
           expect($('#suggested-content a').length).toBe(1);
           expect($('#suggested-content h3').text()).toContain(
             'Suggested content',
-            "The suggested content title doesn't match",
           );
         }));
 
@@ -205,27 +181,12 @@ describe('GET /content/:id', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('#title').text()).toBe(
-            'Baz title',
-            'Page title did not match',
-          );
-          expect($('#body').text()).toBe('Baz body', 'Page body did not match');
-          expect($('#series').text()).toBe(
-            'Baz series',
-            'Page title did not match',
-          );
-          expect($('#hub-video source').attr('src')).toBe(
-            'baz.mp4',
-            'Page media did not match',
-          );
-          expect($('#thumbnail').attr('src')).toBe(
-            'baz.png',
-            'Page thumbnail src did not match',
-          );
-          expect($('#thumbnail').attr('alt')).toBe(
-            'baz Bar',
-            'Page thumbnail alt did not match',
-          );
+          expect($('#title').text()).toBe('Baz title');
+          expect($('#body').text()).toBe('Baz body');
+          expect($('#series').text()).toBe('Baz series');
+          expect($('#hub-video source').attr('src')).toBe('baz.mp4');
+          expect($('#thumbnail').attr('src')).toBe('baz.png');
+          expect($('#thumbnail').attr('alt')).toBe('baz Bar');
         }));
 
     it('returns the correct tags for a video page', () =>
@@ -245,22 +206,14 @@ describe('GET /content/:id', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('#next-episodes a').length).toBe(
-            1,
-            "The number of next episodes shows don't match",
-          );
-          expect($('#next-episodes a').text()).toContain(
-            'Baz episode',
-            "The episode title doesn't match",
-          );
+          expect($('#next-episodes a').length).toBe(1);
+          expect($('#next-episodes a').text()).toContain('Baz episode');
           expect($('#episode-thumbnail').attr('style')).toContain(
             'baz.image.png',
-            "The episode thumbnail doesn't match",
           );
 
           expect($('#next-episodes a').attr('href')).toContain(
-            `/content/${videoShowResponse.season[0].id}`,
-            'did not render url',
+            `/content/${videoShowResponse.nextEpisodes[0].id}`,
           );
         }));
 
@@ -274,7 +227,6 @@ describe('GET /content/:id', () => {
           expect($('#suggested-content a').length).toBe(1);
           expect($('#suggested-content h3').text()).toContain(
             'Suggested content',
-            "The suggested content title doesn't match",
           );
         }));
   });

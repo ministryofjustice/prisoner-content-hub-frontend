@@ -1,4 +1,4 @@
-const { prop, filter, not, equals, map } = require('ramda');
+const { prop, map } = require('ramda');
 
 // Eventually will remove this file and call cms service directly
 function createHubContentService({
@@ -58,9 +58,6 @@ function createHubContentService({
     const contentType = prop('contentType', content);
 
     switch (contentType) {
-      case 'video': {
-        return media(establishmentId, content);
-      }
       case 'landing-page':
         return landingPage(establishmentId, content);
       default:
@@ -70,36 +67,6 @@ function createHubContentService({
 
   async function streamFor(url) {
     return contentRepository.streamFor(url);
-  }
-
-  async function media(establishmentId, data) {
-    const id = prop('id', data);
-    const suggestedContent = await contentRepository.suggestedContentFor({
-      id,
-      establishmentId,
-    });
-    const seriesId = prop('seriesId', data);
-    const episodeId = prop('episodeId', data);
-    const filterOutCurrentEpisode = filter(item =>
-      not(equals(prop('id', item), id)),
-    );
-
-    const [series, seasons] = await Promise.all([
-      contentRepository.termFor(seriesId, establishmentId),
-      contentRepository.nextEpisodesFor({
-        id: seriesId,
-        establishmentId,
-        perPage: 3,
-        episodeId,
-      }),
-    ]);
-
-    return {
-      ...data,
-      suggestedContent,
-      seriesName: prop('name', series),
-      season: seasons ? filterOutCurrentEpisode(seasons) : seasons,
-    };
   }
 
   async function landingPage(establishmentId, data) {

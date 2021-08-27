@@ -45,7 +45,6 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
               ...data,
               categories: getCategoriesFrom(data).join(','),
               secondaryTagIds: data.secondaryTags?.map(tag => tag.id).join(','),
-              secondaryTags: data.secondaryTags,
             },
           });
         case 'video':
@@ -55,7 +54,7 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
             data: {
               ...data,
               categories: getCategoriesFrom(data).join(','),
-              secondaryTags: getSecondaryTagsFrom(data).join(','),
+              secondaryTagIds: data.secondaryTags?.map(tag => tag.id).join(','),
             },
           });
         case 'page':

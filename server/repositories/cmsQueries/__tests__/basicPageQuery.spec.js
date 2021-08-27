@@ -29,7 +29,7 @@ describe('Basic page query', () => {
       expect(query.transform(basicPage)).toStrictEqual({
         id: 5923,
         title: 'Novus',
-        contentType: 'node--page',
+        contentType: 'page',
         description: 'Education content for prisoners',
         standFirst: 'Education',
         categories: [1234],

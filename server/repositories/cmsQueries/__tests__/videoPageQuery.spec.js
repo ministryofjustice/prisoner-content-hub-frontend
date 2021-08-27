@@ -1,31 +1,30 @@
-const { AudioPageQuery } = require('../AudioPageQuery');
+const { VideoPageQuery } = require('../videoPageQuery');
 
-describe('Audio page query', () => {
-  const query = new AudioPageQuery('https://cms/content/1234');
+describe('Video page query', () => {
+  const query = new VideoPageQuery('https://cms/content/1234');
   describe('url', () => {
     it('should create correct path', async () => {
       expect(query.url()).toStrictEqual(
-        'https://cms/content/1234?include=field_moj_thumbnail_image%2Cfield_moj_series%2Cfield_moj_audio%2Cfield_moj_secondary_tags&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_audio%2Cfield_moj_description%2Cfield_moj_secondary_tags%2Cfield_moj_series%2Cfield_moj_season%2Cfield_moj_episode%2Cfield_moj_top_level_categories%2Cfield_moj_thumbnail_image%2Cfield_moj_programme_code&fields%5Bfile--file%5D=uri&fields%5Btaxonomy_term--series%5D=drupal_internal__tid%2Cname%2Cpath&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname%2Cpath',
+        'https://cms/content/1234?include=field_moj_thumbnail_image%2Cfield_moj_series%2Cfield_video%2Cfield_moj_secondary_tags&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_video%2Cfield_moj_description%2Cfield_moj_secondary_tags%2Cfield_moj_series%2Cfield_moj_season%2Cfield_moj_episode%2Cfield_moj_top_level_categories%2Cfield_moj_thumbnail_image&fields%5Bfile--file%5D=uri&fields%5Btaxonomy_term--series%5D=drupal_internal__tid%2Cname%2Cpath&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname%2Cpath',
       );
     });
   });
 
   describe('transform', () => {
-    it('should create correct audio page structure', async () => {
-      const audioPage = {
-        type: 'node--moj_radio_item',
+    it('should create correct video page structure', async () => {
+      const videoPage = {
+        type: 'node--node--moj_video_item',
         id: '43eb4a97-e6ef-440c-a044-88e9bb982620',
         drupalInternal_Nid: 6236,
         title: 'Buddhist reflection: 29 July',
         fieldMojDescription: { processed: 'Education content for prisoners' },
         fieldMojEpisode: 36,
-        fieldMojProgrammeCode: 'FAITH138',
         fieldMojSeason: 1,
 
-        fieldMojAudio: {
+        fieldVideo: {
           type: 'file--file',
           uri: {
-            url: 'https://cms.org/jdajsgjdfj.mp3',
+            url: 'https://cms.org/jdajsgjdfj.mp4',
           },
 
           resourceIdObjMeta: {
@@ -84,9 +83,9 @@ describe('Audio page query', () => {
         ],
       };
 
-      expect(query.transform(audioPage)).toStrictEqual({
+      expect(query.transform(videoPage)).toStrictEqual({
         categories: [648],
-        contentType: 'radio',
+        contentType: 'video',
         description: 'Education content for prisoners',
         episodeId: 1036,
         id: 6236,
@@ -94,8 +93,7 @@ describe('Audio page query', () => {
           alt: 'faith',
           url: 'https://cms.org/jdajsgjdfj.jpg',
         },
-        media: 'https://cms.org/jdajsgjdfj.mp3',
-        programmeCode: 'FAITH138',
+        media: 'https://cms.org/jdajsgjdfj.mp4',
         seasonId: 1,
         secondaryTags: [
           {
