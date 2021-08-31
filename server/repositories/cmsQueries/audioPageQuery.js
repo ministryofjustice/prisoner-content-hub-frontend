@@ -20,7 +20,7 @@ class AudioPageQuery {
         'field_moj_programme_code',
       ])
 
-      .addFields('file--file', ['uri'])
+      .addFields('file--file', ['uri', 'image_style_uri'])
       .addFields('taxonomy_term--series', [
         'drupal_internal__tid',
         'name',
@@ -58,6 +58,11 @@ class AudioPageQuery {
     }));
 
   transform(item) {
+    const url =
+      item.fieldMojThumbnailImage?.imageStyleUri
+        ?.map(image => image?.tile_large)
+        .find(image => Boolean(image)) || item.fieldMojThumbnailImage?.uri?.url;
+
     return {
       id: item.drupalInternal_Nid,
       title: item.title,
@@ -78,7 +83,7 @@ class AudioPageQuery {
       ),
       secondaryTags: this.#buildSecondaryTags(item.fieldMojSecondaryTags),
       image: {
-        url: item.fieldMojThumbnailImage?.uri?.url,
+        url,
         alt: item.fieldMojThumbnailImage?.resourceIdObjMeta?.alt,
       },
     };
