@@ -9,7 +9,6 @@ class PdfPageQuery {
       .addFields('node--moj_pdf_item', [
         'drupal_internal__nid',
         'title',
-        'field_moj_description',
         'field_moj_pdf',
       ])
 
@@ -27,7 +26,6 @@ class PdfPageQuery {
       id: item.drupalInternal_Nid,
       title: item.title,
       contentType: 'pdf',
-      description: item.fieldMojDescription.processed,
       url: item.fieldMojPdf?.uri?.url,
     };
   }

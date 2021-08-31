@@ -1,11 +1,11 @@
 const { PdfPageQuery } = require('../pdfPageQuery');
 
-describe('Basic page query', () => {
+describe('PDF page query', () => {
   const query = new PdfPageQuery('https://cms/content/1234');
   describe('url', () => {
     it('should create correct path', async () => {
       expect(query.url()).toStrictEqual(
-        'https://cms/content/1234?include=field_moj_pdf&fields%5Bnode--moj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_pdf',
+        'https://cms/content/1234?include=field_moj_pdf&fields%5Bnode--moj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_pdf',
       );
     });
   });
@@ -16,7 +16,6 @@ describe('Basic page query', () => {
         drupalInternal_Nid: 5923,
         title: 'JD Williams',
         type: 'node--node--pdf',
-        fieldMojDescription: { processed: 'JD Williams Catalogue' },
         fieldMojPdf: {
           uri: { url: 'https://cms.org/2021-03/JD%20WILLIAMS%20PDF.pdf' },
         },
@@ -26,7 +25,6 @@ describe('Basic page query', () => {
         id: 5923,
         title: 'JD Williams',
         contentType: 'pdf',
-        description: 'JD Williams Catalogue',
         url: 'https://cms.org/2021-03/JD%20WILLIAMS%20PDF.pdf',
       });
     });
