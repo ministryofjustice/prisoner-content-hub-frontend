@@ -45,23 +45,21 @@ describe('Video page query', () => {
             },
           },
         ],
-        fieldMojSeries: [
-          {
-            type: 'taxonomy_term--series',
-            id: '224be00f-0d74-4948-b937-7b50e0b40be4',
-            drupalInternal_Tid: 923,
-            name: 'Buddhist',
-            path: {
-              alias: '/tags/923',
-              pid: 8418,
-              langcode: 'en',
-            },
-
-            resourceIdObjMeta: {
-              drupal_internal__target_id: 923,
-            },
+        fieldMojSeries: {
+          type: 'taxonomy_term--series',
+          id: '224be00f-0d74-4948-b937-7b50e0b40be4',
+          drupalInternal_Tid: 923,
+          name: 'Buddhist',
+          path: {
+            alias: '/tags/923',
+            pid: 8418,
+            langcode: 'en',
           },
-        ],
+
+          resourceIdObjMeta: {
+            drupal_internal__target_id: 923,
+          },
+        },
         fieldMojThumbnailImage: {
           type: 'file--file',
           uri: {
