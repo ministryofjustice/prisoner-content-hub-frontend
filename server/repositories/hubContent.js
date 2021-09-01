@@ -99,7 +99,7 @@ const hubContentRepository = httpClient => {
     };
 
     if (!id || !episodeId) {
-      logger.error(`HubContentRepository (nextEpisodesFor) - No ID passed`);
+      logger.info(`HubContentRepository (nextEpisodesFor) - No ID passed`);
       return [];
     }
 
@@ -151,7 +151,7 @@ const hubContentRepository = httpClient => {
     };
 
     if (!id) {
-      logger.error(`HubContentRepository (suggestedContentFor) - No ID passed`);
+      logger.info(`HubContentRepository (suggestedContentFor) - No ID passed`);
       return [];
     }
 
