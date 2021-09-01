@@ -67,9 +67,9 @@ class VideoPageQuery {
           ? item.fieldMojSeason * 1000 + item.fieldMojEpisode
           : item.fieldMojEpisode,
       seasonId: item.fieldMojSeason,
-      seriesId: item.fieldMojSeries[0]?.drupalInternal_Tid,
-      seriesPath: item.fieldMojSeries[0]?.path?.alias,
-      seriesName: item.fieldMojSeries[0]?.name,
+      seriesId: item.fieldMojSeries?.drupalInternal_Tid,
+      seriesPath: item.fieldMojSeries?.path?.alias,
+      seriesName: item.fieldMojSeries?.name,
       media: item.fieldVideo?.uri?.url,
       categories: this.#flattenDrupalInternalTargetId(
         item.fieldMojTopLevelCategories,
