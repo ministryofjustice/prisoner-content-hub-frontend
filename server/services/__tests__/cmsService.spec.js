@@ -40,6 +40,13 @@ describe('cms Service', () => {
       secondaryTags: [2345],
     });
 
+    const createPdfPage = () => ({
+      id: 5923,
+      title: 'JD Williams',
+      contentType: 'pdf',
+      url: 'https://cms.org/2021-03/JD%20WILLIAMS%20PDF.pdf',
+    });
+
     const createAudioPage = () => ({
       categories: [648],
       contentType: 'radio',
@@ -106,6 +113,23 @@ describe('cms Service', () => {
         secondaryTags: [2345],
         standFirst: 'Education',
         title: 'Novus',
+      });
+    });
+
+    it(`returns PDF content provided by CMS service`, async () => {
+      cmsApi.get.mockResolvedValue(createPdfPage());
+      cmsApi.lookupContent.mockResolvedValue({
+        type: 'node--moj_pdf_item',
+        location: 'https://cms.org/content/1234',
+      });
+
+      const result = await cmsService.getContent('berwyn', 793, 1234);
+
+      expect(result).toStrictEqual({
+        id: 5923,
+        title: 'JD Williams',
+        contentType: 'pdf',
+        url: 'https://cms.org/2021-03/JD%20WILLIAMS%20PDF.pdf',
       });
     });
 
