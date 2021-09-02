@@ -13,21 +13,9 @@ const Sentry = require('@sentry/node');
 const Tracing = require('@sentry/tracing');
 const nunjucksSetup = require('./utils/nunjucksSetup');
 
-const { createHomepageRouter } = require('./routes/homepage');
-const { createTopicsRouter } = require('./routes/topics');
-const { createTimetableRouter } = require('./routes/timetable');
 const { createHealthRouter } = require('./routes/health');
-const { createContentRouter } = require('./routes/content');
-const { createMoneyRouter } = require('./routes/money');
-const { createApprovedVisitorsRouter } = require('./routes/approvedVisitors');
-const { createProfileRouter } = require('./routes/profile');
-const { createTagRouter } = require('./routes/tags');
-const { createGamesRouter } = require('./routes/games');
-const { createAnalyticsRouter } = require('./routes/analytics');
-const { createFeedbackRouter } = require('./routes/feedback');
-const { createSearchRouter } = require('./routes/search');
 const { createAuthRouter } = require('./routes/auth');
-const { createNprRouter } = require('./routes/npr');
+
 const { featureToggleMiddleware } = require('./middleware/featureToggle');
 const {
   configureEstablishment,
@@ -37,22 +25,19 @@ const { User } = require('./auth/user');
 const defaultConfig = require('./config');
 const defaultEstablishmentData = require('./content/establishmentData.json');
 const defaultAuthMiddleware = require('./auth/middleware');
+const routes = require('./routes');
 
-const createApp = ({
-  logger,
-  requestLogger,
-  cmsService,
-  hubContentService,
-  hubTagsService,
-  offenderService,
-  prisonerInformationService,
-  searchService,
-  analyticsService,
-  feedbackService,
-  config = defaultConfig,
-  establishmentData = defaultEstablishmentData,
-  authMiddleware = defaultAuthMiddleware,
-}) => {
+const createApp = services => {
+  const {
+    logger,
+    requestLogger,
+    offenderService,
+    analyticsService,
+    config = defaultConfig,
+    establishmentData = defaultEstablishmentData,
+    authMiddleware = defaultAuthMiddleware,
+  } = services;
+
   const app = express();
 
   app.locals.config = config;
@@ -102,6 +87,7 @@ const createApp = ({
   app.use(
     helmet({
       contentSecurityPolicy: false,
+      referrerPolicy: { policy: ['no-referrer', 'same-origin'] },
     }),
   );
 
@@ -266,62 +252,7 @@ const createApp = ({
     next();
   });
 
-  app.use(
-    '/',
-    createHomepageRouter({
-      logger,
-      cmsService,
-      offenderService,
-      config,
-      establishmentData,
-    }),
-  );
-
-  app.use('/topics', createTopicsRouter({ cmsService }));
-
-  app.use('/timetable', createTimetableRouter({ offenderService }));
-
-  app.use(
-    '/money',
-    createMoneyRouter({
-      prisonerInformationService,
-    }),
-  );
-
-  app.use(
-    '/approved-visitors',
-    createApprovedVisitorsRouter({
-      offenderService,
-    }),
-  );
-
-  app.use(
-    '/profile',
-    createProfileRouter({
-      offenderService,
-    }),
-  );
-
-  app.use(
-    '/content',
-    createContentRouter({
-      hubContentService,
-      analyticsService,
-    }),
-  );
-
-  app.use('/npr', createNprRouter());
-  app.use('/tags', createTagRouter({ hubTagsService }));
-  app.use('/games', createGamesRouter());
-  app.use('/analytics', createAnalyticsRouter({ analyticsService }));
-  app.use('/feedback', createFeedbackRouter({ feedbackService }));
-  app.use('/search', createSearchRouter({ searchService, analyticsService }));
-
-  app.use('*', (req, res) => {
-    res.status(404);
-    res.render('pages/404');
-  });
-
+  app.use(routes(services, establishmentData));
   // the sentry error handler has to be placed between our controllers and our error handler
   // https://docs.sentry.io/platforms/node/guides/express/
   app.use(Sentry.Handlers.errorHandler());
@@ -330,7 +261,7 @@ const createApp = ({
 
   // eslint-disable-next-line no-unused-vars
   function renderErrors(error, req, res, next) {
-    logger.error(`Unhandled error - ${error.message}`);
+    logger.error(`Unhandled error - ${req.originalUrl} - ${error.message}`);
     logger.debug(error.stack);
     res.status(error.status || 500);
 

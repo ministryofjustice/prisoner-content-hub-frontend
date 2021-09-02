@@ -1,5 +1,4 @@
 const express = require('express');
-const chance = require('chance')();
 const nunjucksSetup = require('../server/utils/nunjucksSetup');
 
 function setupBasicApp(config = {}) {
@@ -21,20 +20,6 @@ const logger = {
   requestLogger: () => (req, res, next) => next(),
 };
 
-function createFeaturedItem() {
-  return {
-    id: chance.integer({ min: 1, max: 100 }),
-    title: chance.profession({ rank: true }),
-    contentType: chance.pickone(['radio', 'video', 'pdf', 'article']),
-    summary: chance.paragraph({ sentences: 1 }),
-    image: {
-      alt: chance.word(),
-      url: chance.avatar({ fileExtension: 'jpg' }),
-    },
-    contentUrl: `/content/${chance.integer()}`,
-  };
-}
-
 function consoleLogError(err, req, res) {
   console.error(err.stack); // eslint-disable-line no-console
   res.status(500).send('Something broke!');
@@ -55,7 +40,6 @@ const lastCallLastArg = mockFn => {
 module.exports = {
   setupBasicApp,
   logger,
-  createFeaturedItem,
   consoleLogError,
   createClient,
   lastCall,
