@@ -15,17 +15,22 @@ class CmsApi {
     this.jsonApiClient = jsonApiClient;
   }
 
-  async lookupContent(establishmentName, contentId) {
+  #lookup = async (establishmentName, lookupType, id) => {
     const {
-      jsonapi: { resourceName, individual },
+      jsonapi: { resourceName: type, individual: location },
+      entity: { uuid },
     } = await this.jsonApiClient.getRelative(
-      `/router/prison/${establishmentName}/translate-path?path=content/${contentId}`,
+      `/router/prison/${establishmentName}/translate-path?path=${lookupType}/${id}`,
     );
+    return { type, location, uuid };
+  };
 
-    return {
-      type: resourceName,
-      location: individual,
-    };
+  async lookupContent(establishmentName, contentId) {
+    return this.#lookup(establishmentName, 'content', contentId);
+  }
+
+  async lookupTag(establishmentName, tagId) {
+    return this.#lookup(establishmentName, 'tags', tagId);
   }
 
   async get(query) {
@@ -34,10 +39,9 @@ class CmsApi {
       : this.jsonApiClient.getUrl(query.url());
     const response = await request;
     const deserializedResponse = dataFormatter.deserialize(response);
-    if (Array.isArray(deserializedResponse)) {
-      return deserializedResponse.map(item => query.transform(item));
-    }
-    return query.transform(deserializedResponse);
+    return query.transformEach
+      ? deserializedResponse.map(item => query.transformEach(item))
+      : query.transform(deserializedResponse);
   }
 }
 

@@ -19,7 +19,7 @@ describe('Topics query', () => {
         type: 'taxonomy_term--tags',
       };
 
-      expect(query.transform(tagItem)).toStrictEqual({
+      expect(query.transformEach(tagItem)).toStrictEqual({
         id: 1234,
         linkText: 'prisoner',
         description: 'Living in prison',
@@ -36,7 +36,7 @@ describe('Topics query', () => {
         },
       };
 
-      expect(query.transform(categoryItem)).toStrictEqual({
+      expect(query.transformEach(categoryItem)).toStrictEqual({
         description: '3',
         href: '/content/1',
         id: '1',
