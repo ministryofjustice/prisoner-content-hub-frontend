@@ -18,7 +18,7 @@ describe('search query', () => {
         fieldMojDescription: { summary: 'Lived experiences in prison' },
       };
 
-      expect(query.transform(item)).toStrictEqual({
+      expect(query.transformEach(item)).toStrictEqual({
         summary: 'Lived experiences in prison',
         title: 'Prisoners in Prison',
         url: '/content/1234',

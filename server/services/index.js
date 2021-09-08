@@ -64,7 +64,10 @@ module.exports = {
       categoryFeaturedContentRepository(hubClient),
     cmsService,
   }),
-  hubTagsService: createHubTagsService(contentRepository(hubClient)),
+  hubTagsService: createHubTagsService(
+    contentRepository(hubClient),
+    cmsService,
+  ),
   offenderService: createPrisonApiOffenderService(
     offenderRepository(prisonApiClient),
   ),

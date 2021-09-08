@@ -7,7 +7,7 @@ const { CmsApi } = require('../cmsApi');
 
 const host = 'http://localhost:3333';
 const path = `/jsonapi/test`;
-class TestQuery {
+class TestPathTransformQuery {
   path() {
     return path;
   }
@@ -25,12 +25,12 @@ class TestQuery {
   }
 }
 
-class TestUrlQuery {
+class TestUrlTransformEachQuery {
   url() {
     return `${host}${path}`;
   }
 
-  transform(item) {
+  transformEach(item) {
     const { name, description, fieldLegacyLandingPage } = item;
     const id =
       fieldLegacyLandingPage?.resourceIdObjMeta?.drupal_internal__target_id;
@@ -92,7 +92,7 @@ describe('CmsApi', () => {
     it('should handle returning no items', async () => {
       mockDrupal.get(path).reply(200, jsonApiResponse([]));
 
-      const response = await cmsApi.get(new TestQuery());
+      const response = await cmsApi.get(new TestUrlTransformEachQuery());
 
       expect(response).toStrictEqual([]);
     });
@@ -100,17 +100,17 @@ describe('CmsApi', () => {
     it('should propagate errors', () => {
       mockDrupal.get(path).reply(500, 'unexpected error');
 
-      return expect(cmsApi.get(new TestQuery())).rejects.toEqual(
-        Error('Request failed with status code 500'),
-      );
+      return expect(
+        cmsApi.get(new TestUrlTransformEachQuery()),
+      ).rejects.toEqual(Error('Request failed with status code 500'));
     });
 
     it('propogates 404 as error', () => {
       mockDrupal.get(path).reply(404, 'unexpected error');
 
-      return expect(cmsApi.get(new TestQuery())).rejects.toEqual(
-        Error('Request failed with status code 404'),
-      );
+      return expect(
+        cmsApi.get(new TestUrlTransformEachQuery()),
+      ).rejects.toEqual(Error('Request failed with status code 404'));
     });
 
     it('should format and return single value', async () => {
@@ -124,7 +124,7 @@ describe('CmsApi', () => {
           }),
         ),
       );
-      const response = await cmsApi.get(new TestQuery());
+      const response = await cmsApi.get(new TestPathTransformQuery());
 
       expect(response).toStrictEqual({
         description: 'Desc 1',
@@ -145,7 +145,7 @@ describe('CmsApi', () => {
           }),
         ]),
       );
-      const response = await cmsApi.get(new TestQuery());
+      const response = await cmsApi.get(new TestUrlTransformEachQuery());
 
       expect(response).toStrictEqual([
         {
@@ -168,7 +168,7 @@ describe('CmsApi', () => {
           }),
         ]),
       );
-      const response = await cmsApi.get(new TestUrlQuery());
+      const response = await cmsApi.get(new TestUrlTransformEachQuery());
 
       expect(response).toStrictEqual([
         {
@@ -202,24 +202,12 @@ describe('CmsApi', () => {
 
     it('should format and return single value', async () => {
       mockDrupal.get(lookupPath).reply(200, {
-        resolved: 'https://cms.org/content/1234',
-        isHomePath: false,
-        entity: {
-          canonical: 'https://cms.org/content/1234',
-          type: 'node',
-          bundle: 'page',
-          id: '1234',
-          uuid: 'abd97f5c-072b-4e1f-a446-85fd021d7fa7',
-        },
-        label: 'All Novus Cambria courses',
         jsonapi: {
           individual:
             'https://cms.org/jsonapi/node/page/abd97f5c-072b-4e1f-a446-85fd021d7fa7',
           resourceName: 'node--page',
-          pathPrefix: 'jsonapi',
-          basePath: '/jsonapi',
-          entryPoint: 'https://cms.org/jsonapi',
         },
+        entity: { uuid: 101 },
       });
       const response = await cmsApi.lookupContent('berwyn', 1234);
 
@@ -227,6 +215,47 @@ describe('CmsApi', () => {
         location:
           'https://cms.org/jsonapi/node/page/abd97f5c-072b-4e1f-a446-85fd021d7fa7',
         type: 'node--page',
+        uuid: 101,
+      });
+    });
+  });
+
+  describe('lookup tag', () => {
+    const lookupPath = `/router/prison/berwyn/translate-path?path=tags/1234`;
+
+    it('should propagate errors', () => {
+      mockDrupal.get(lookupPath).reply(500, 'unexpected error');
+
+      return expect(cmsApi.lookupTag('berwyn', 1234)).rejects.toEqual(
+        Error('Request failed with status code 500'),
+      );
+    });
+
+    it('propagates 404 as error', () => {
+      mockDrupal.get(lookupPath).reply(404, 'unexpected error');
+
+      return expect(cmsApi.lookupTag('berwyn', 1234)).rejects.toEqual(
+        Error('Request failed with status code 404'),
+      );
+    });
+
+    it('should format and return single value', async () => {
+      const individual =
+        'https://cms.org//jsonapi/prison/cookhamwood/taxonomy_term/series/1562712e-ecdc-4d99-82ae-86c04349a6a0';
+      const resourceName = 'taxonomy_term--series';
+      mockDrupal.get(lookupPath).reply(200, {
+        jsonapi: {
+          individual,
+          resourceName,
+        },
+        entity: { uuid: 101 },
+      });
+      const response = await cmsApi.lookupTag('berwyn', 1234);
+
+      expect(response).toStrictEqual({
+        location: individual,
+        type: resourceName,
+        uuid: 101,
       });
     });
   });

@@ -32,7 +32,7 @@ class TopicsQuery {
     }`;
   }
 
-  transform(item) {
+  transformEach(item) {
     const isTag = item.type === 'taxonomy_term--tags';
     return isTag ? this.#asTag(item) : this.#asCategory(item);
   }

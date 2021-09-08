@@ -44,9 +44,14 @@
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-one-half govuk-!-padding-top-2">
             <h1 id="title" class="govuk-heading-xl">{{ data.name }}</h1>
-            {% if data.description %}
+
+            {% if data.description.summary %}
+              <p id="summary" class="govuk-body-l">{{ data.description.summary}}</p>
+            {% endif %}
+
+            {% if data.description.sanitized %}
               <div id="description" class="gov-uk-dynamic-content">
-                {{data.description | safe }}
+                {{data.description.sanitized | safe }}
               </div>
             {% endif %}
           </div>
@@ -85,7 +90,7 @@
       series: data.name,
       feedbackId: feedbackId,
       categories: data.categories,
-      secondaryTags: data.secondaryTags
+      secondaryTags: ''
     })}}
   </div>
 

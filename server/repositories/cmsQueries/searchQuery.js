@@ -14,7 +14,7 @@ class SearchQuery {
     return `/jsonapi/prison/${this.establishmentName}/index/content_for_search?${this.query}`;
   }
 
-  transform(item) {
+  transformEach(item) {
     return {
       title: item.title,
       summary: item.fieldMojDescription?.summary,

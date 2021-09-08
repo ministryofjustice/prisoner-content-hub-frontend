@@ -6,6 +6,12 @@ const {
   HomepageQuery,
 } = require('../../repositories/cmsQueries/homePageQuery');
 const { TopicsQuery } = require('../../repositories/cmsQueries/topicsQuery');
+const {
+  SecondaryTagPageQuery,
+} = require('../../repositories/cmsQueries/secondaryTagPageQuery');
+const {
+  SecondaryTagHeaderPageQuery,
+} = require('../../repositories/cmsQueries/secondaryTagHeaderPageQuery');
 const { CmsService } = require('../cms');
 
 jest.mock('../../repositories/cmsApi');
@@ -16,7 +22,6 @@ describe('cms Service', () => {
   let contentRepository;
 
   beforeEach(() => {
-    jest.resetAllMocks();
     contentRepository = {
       suggestedContentFor: jest
         .fn()
@@ -27,6 +32,9 @@ describe('cms Service', () => {
       ]),
     };
     cmsService = new CmsService(cmsApi, contentRepository);
+  });
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   describe('getContent', () => {
@@ -413,6 +421,67 @@ describe('cms Service', () => {
       await cmsService.getHomepage('berwyn');
 
       expect(cmsApi.get).toHaveBeenCalledWith(new HomepageQuery('berwyn'));
+    });
+  });
+  describe('getTag', () => {
+    const ESTABLISHMENT_NAME = 'Wayland';
+    const TAG_ID = 9;
+    describe('with a secondary tag', () => {
+      const uuid = 42;
+      const location = 'https://cms.org/tag/1234';
+      beforeEach(() => {
+        cmsApi.lookupTag.mockResolvedValue({
+          type: 'taxonomy_term--tags',
+          location,
+          uuid,
+        });
+      });
+      describe('which contains related content', () => {
+        let result;
+        const populatedSecondaryTag = { name: 'le name' };
+        beforeEach(async () => {
+          cmsApi.get.mockResolvedValue(populatedSecondaryTag);
+          result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
+        });
+        it('looks up the tag', () => {
+          expect(cmsApi.lookupTag).toHaveBeenCalledWith(
+            ESTABLISHMENT_NAME,
+            TAG_ID,
+          );
+        });
+        it('returns the tag', async () => {
+          expect(cmsApi.get).toHaveBeenCalledWith(
+            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid),
+          );
+          expect(result).toBe(populatedSecondaryTag);
+        });
+      });
+      describe('which has no related content', () => {
+        let result;
+        const populatedSecondaryTag = {};
+        beforeEach(async () => {
+          cmsApi.get.mockResolvedValueOnce({});
+          cmsApi.get.mockResolvedValue(populatedSecondaryTag);
+          result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
+        });
+        it('looks up the tag', () => {
+          expect(cmsApi.lookupTag).toHaveBeenCalledWith(
+            ESTABLISHMENT_NAME,
+            TAG_ID,
+          );
+        });
+        it('returns the tag', async () => {
+          expect(cmsApi.get).toHaveBeenNthCalledWith(
+            1,
+            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid),
+          );
+          expect(cmsApi.get).toHaveBeenNthCalledWith(
+            2,
+            new SecondaryTagHeaderPageQuery(location),
+          );
+          expect(result).toBe(populatedSecondaryTag);
+        });
+      });
     });
   });
 });

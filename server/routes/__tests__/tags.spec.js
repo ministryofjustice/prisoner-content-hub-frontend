@@ -40,9 +40,7 @@ describe('GET /tags', () => {
     describe('on success', () => {
       const data = {
         name: 'foo bar',
-        description: {
-          sanitized: 'foo description',
-        },
+        description: 'foo description',
         image: {
           alt: 'Foo Image',
           url: 'foo.url.com/image.png',
@@ -64,6 +62,14 @@ describe('GET /tags', () => {
         },
       };
 
+      const sessionMiddleware = (req, res, next) => {
+        req.session = {
+          establishmentId: 123,
+          establishmentName: 'berwyn',
+        };
+        next();
+      };
+
       describe('tags page header', () => {
         it('correctly renders a page header with an image', () => {
           const hubTagsService = {
@@ -72,6 +78,7 @@ describe('GET /tags', () => {
           const router = createTagRouter({ hubTagsService });
           const app = setupBasicApp();
 
+          app.use(sessionMiddleware);
           app.use('/tags', router);
 
           return request(app)
@@ -86,9 +93,7 @@ describe('GET /tags', () => {
                 'did not have correct header title',
               );
 
-              expect($('#description').text()).toContain(
-                data.description.sanitized,
-              );
+              expect($('#description').text()).toContain(data.description);
 
               expect($('[data-page-featured-image]').attr('style')).toContain(
                 data.image.url,
@@ -106,6 +111,7 @@ describe('GET /tags', () => {
           const router = createTagRouter({ hubTagsService });
           const app = setupBasicApp();
 
+          app.use(sessionMiddleware);
           app.use('/tags', router);
 
           return request(app)

@@ -47,7 +47,7 @@ class HomepageQuery {
     return `/jsonapi/prison/${this.establishmentName}/node/featured_articles?${this.query}`;
   }
 
-  transform(item) {
+  transformEach(item) {
     const [upperFeatured, lowerFeatured] = item.fieldMojFeaturedTileLarge.map(
       this.#asTile('tile_large'),
     );

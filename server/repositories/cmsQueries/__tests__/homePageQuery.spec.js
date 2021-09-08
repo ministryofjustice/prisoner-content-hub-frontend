@@ -10,7 +10,7 @@ describe('Homepage query', () => {
     });
   });
 
-  describe('transform', () => {
+  describe('transformEach', () => {
     it('should return correct small tile structure', async () => {
       const contentItem = {
         fieldMojFeaturedTileLarge: [],
@@ -29,7 +29,7 @@ describe('Homepage query', () => {
         ],
       };
 
-      expect(query.transform(contentItem)).toStrictEqual({
+      expect(query.transformEach(contentItem)).toStrictEqual({
         upperFeatured: undefined,
         lowerFeatured: undefined,
         smallTiles: [
@@ -70,7 +70,7 @@ describe('Homepage query', () => {
         ],
       };
 
-      expect(query.transform(contentItem)).toStrictEqual({
+      expect(query.transformEach(contentItem)).toStrictEqual({
         upperFeatured: undefined,
         lowerFeatured: undefined,
         smallTiles: [
@@ -111,7 +111,7 @@ describe('Homepage query', () => {
         fieldMojFeaturedTileSmall: [],
       };
 
-      expect(query.transform(contentItem)).toStrictEqual({
+      expect(query.transformEach(contentItem)).toStrictEqual({
         upperFeatured: {
           id: '10001',
           contentUrl: '/content/10001',
@@ -157,7 +157,7 @@ describe('Homepage query', () => {
         fieldMojFeaturedTileSmall: [],
       };
 
-      expect(query.transform(contentItem)).toStrictEqual({
+      expect(query.transformEach(contentItem)).toStrictEqual({
         upperFeatured: {
           id: '10002',
           contentUrl: '/content/10002',

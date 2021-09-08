@@ -1,6 +1,12 @@
 const { TopicsQuery } = require('../repositories/cmsQueries/topicsQuery');
 const { HomepageQuery } = require('../repositories/cmsQueries/homePageQuery');
 const { BasicPageQuery } = require('../repositories/cmsQueries/basicPageQuery');
+const {
+  SecondaryTagPageQuery,
+} = require('../repositories/cmsQueries/secondaryTagPageQuery');
+const {
+  SecondaryTagHeaderPageQuery,
+} = require('../repositories/cmsQueries/secondaryTagHeaderPageQuery');
 const { AudioPageQuery } = require('../repositories/cmsQueries/audioPageQuery');
 const { VideoPageQuery } = require('../repositories/cmsQueries/videoPageQuery');
 const { PdfPageQuery } = require('../repositories/cmsQueries/pdfPageQuery');
@@ -13,6 +19,30 @@ class CmsService {
   constructor(cmsApi, contentRepository) {
     this.#cmsApi = cmsApi;
     this.#contentRepository = contentRepository;
+  }
+
+  async getSecondaryTag(establishmentName, uuid, location) {
+    const result = await this.#cmsApi.get(
+      new SecondaryTagPageQuery(establishmentName, uuid),
+    );
+    if (result?.name) return result;
+    const tagResult = await this.#cmsApi.get(
+      new SecondaryTagHeaderPageQuery(location),
+    );
+    return tagResult;
+  }
+
+  async getTag(establishmentName, tagId) {
+    const lookupData = await this.#cmsApi.lookupTag(establishmentName, tagId);
+    const { type, uuid, location } = lookupData;
+    switch (type) {
+      case 'taxonomy_term--tags':
+        return this.getSecondaryTag(establishmentName, uuid, location);
+      case 'taxonomy_term--series':
+        return null; // TODO
+      default:
+        return null;
+    }
   }
 
   async getContent(establishmentName, establishmentId, contentId) {

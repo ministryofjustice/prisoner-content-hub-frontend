@@ -10,7 +10,6 @@ const createTagRouter = ({ hubTagsService }) => {
       if (!id) {
         return next();
       }
-
       const userName = req.user && req.user.getFullName();
       const establishmentId = path(['session', 'establishmentId'], req);
       const config = {
@@ -22,16 +21,22 @@ const createTagRouter = ({ hubTagsService }) => {
         returnUrl: req.originalUrl,
       };
 
-      const data = await hubTagsService.termFor(id, establishmentId);
+      const data = await hubTagsService.termFor(
+        id,
+        establishmentId,
+        req.session.establishmentName,
+      );
 
       data.secondaryTags = data.id;
 
-      return res.render('pages/tags', {
+      const pageType = data.contentType === 'series' ? 'tagsSeries' : 'tags';
+
+      return res.render(`pages/${pageType}`, {
         title: data.name,
         tagId: id,
         data: {
           ...data,
-          secondaryTags: data.contentType === 'series' ? '' : data.id,
+          secondaryTags: data.id,
         },
         config,
       });
