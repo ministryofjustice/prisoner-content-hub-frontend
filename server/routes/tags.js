@@ -29,7 +29,7 @@ const createTagRouter = ({ hubTagsService }) => {
 
       data.secondaryTags = data.id;
 
-      const pageType = data.contentType === 'series' ? 'tagsSeries' : 'tags';
+      const pageType = data.contentType === 'tags' ? 'tags' : 'tagsSeries';
 
       return res.render(`pages/${pageType}`, {
         title: data.name,
