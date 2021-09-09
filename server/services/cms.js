@@ -10,6 +10,9 @@ const {
 const { AudioPageQuery } = require('../repositories/cmsQueries/audioPageQuery');
 const { VideoPageQuery } = require('../repositories/cmsQueries/videoPageQuery');
 const { PdfPageQuery } = require('../repositories/cmsQueries/pdfPageQuery');
+const {
+  NextEpisodeQuery,
+} = require('../repositories/cmsQueries/nextEpisodeQuery');
 
 class CmsService {
   #cmsApi;
@@ -56,9 +59,9 @@ class CmsService {
       case 'node--moj_pdf_item':
         return this.#cmsApi.get(new PdfPageQuery(location));
       case 'node--moj_radio_item':
-        return this.getAudio(establishmentId, location);
+        return this.getAudio(establishmentName, establishmentId, location);
       case 'node--moj_video_item':
-        return this.getVideo(establishmentId, location);
+        return this.getVideo(establishmentName, establishmentId, location);
       /// ...other types go here
       default:
         // log unsupported type
@@ -66,67 +69,66 @@ class CmsService {
     }
   }
 
-  async getAudio(establishmentId, location) {
+  async getAudio(establishmentName, establishmentId, location) {
     const data = await this.#cmsApi.get(new AudioPageQuery(location));
-    const { id, seriesId, episodeId } = data;
+    const { id, seriesId, seriesSortValue } = data;
     const suggestedContent = await this.#contentRepository.suggestedContentFor({
       id,
       establishmentId,
     });
-
-    const filterOutCurrentEpisode = episodes =>
-      episodes.filter(item => item.id !== id);
-
-    const nextEpisodes = await this.#contentRepository.nextEpisodesFor({
-      id: seriesId,
-      establishmentId,
-      perPage: 3,
-      episodeId,
-    });
+    const nextEpisodes = await this.getNextEpisode(
+      establishmentName,
+      seriesId,
+      seriesSortValue,
+    );
 
     return {
       ...data,
       suggestedContent,
-      nextEpisodes: nextEpisodes
-        ? filterOutCurrentEpisode(nextEpisodes)
-        : nextEpisodes,
+      nextEpisodes,
     };
   }
 
-  async getVideo(establishmentId, location) {
+  async getVideo(establishmentName, establishmentId, location) {
     const data = await this.#cmsApi.get(new VideoPageQuery(location));
-    const { id, seriesId, episodeId } = data;
+    const { id, seriesId, seriesSortValue } = data;
     const suggestedContent = await this.#contentRepository.suggestedContentFor({
       id,
       establishmentId,
     });
-
-    const filterOutCurrentEpisode = episodes =>
-      episodes.filter(item => item.id !== id);
-
-    const nextEpisodes = await this.#contentRepository.nextEpisodesFor({
-      id: seriesId,
-      establishmentId,
-      perPage: 3,
-      episodeId,
-    });
+    const nextEpisodes = await this.getNextEpisode(
+      establishmentName,
+      seriesId,
+      seriesSortValue,
+    );
 
     return {
       ...data,
       suggestedContent,
-      nextEpisodes: nextEpisodes
-        ? filterOutCurrentEpisode(nextEpisodes)
-        : nextEpisodes,
+      nextEpisodes,
     };
   }
 
-  async getTopics(prisonId) {
-    return this.#cmsApi.get(new TopicsQuery(prisonId));
+  async getTopics(establishmentName) {
+    return this.#cmsApi.get(new TopicsQuery(establishmentName));
   }
 
-  async getHomepage(prisonId) {
-    const homepages = await this.#cmsApi.get(new HomepageQuery(prisonId));
+  async getHomepage(establishmentName) {
+    const homepages = await this.#cmsApi.get(
+      new HomepageQuery(establishmentName),
+    );
     return homepages[0];
+  }
+
+  async getNextEpisode(establishmentName, seriesId, seriesSortValue) {
+    const nextEpisodes = await this.#cmsApi.get(
+      new NextEpisodeQuery(
+        establishmentName,
+        seriesId,
+        seriesSortValue || undefined,
+      ),
+    );
+    return nextEpisodes;
   }
 }
 

@@ -5,7 +5,7 @@ describe('Audio page query', () => {
   describe('url', () => {
     it('should create correct path', async () => {
       expect(query.url()).toStrictEqual(
-        'https://cms/content/1234?include=field_moj_thumbnail_image%2Cfield_moj_series%2Cfield_moj_audio%2Cfield_moj_secondary_tags&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_audio%2Cfield_moj_description%2Cfield_moj_secondary_tags%2Cfield_moj_series%2Cfield_moj_season%2Cfield_moj_episode%2Cfield_moj_top_level_categories%2Cfield_moj_thumbnail_image%2Cfield_moj_programme_code&fields%5Bfile--file%5D=uri%2Cimage_style_uri&fields%5Btaxonomy_term--series%5D=drupal_internal__tid%2Cname%2Cpath&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname%2Cpath',
+        'https://cms/content/1234?include=field_moj_thumbnail_image%2Cfield_moj_series%2Cfield_moj_audio%2Cfield_moj_secondary_tags&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_audio%2Cfield_moj_description%2Cfield_moj_secondary_tags%2Cfield_moj_series%2Cfield_moj_season%2Cfield_moj_episode%2Cfield_moj_top_level_categories%2Cfield_moj_thumbnail_image%2Cfield_moj_programme_code%2Cseries_sort_value&fields%5Bfile--file%5D=uri%2Cimage_style_uri&fields%5Btaxonomy_term--series%5D=drupal_internal__tid%2Cname%2Cpath&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname%2Cpath',
       );
     });
   });
@@ -21,6 +21,7 @@ describe('Audio page query', () => {
         fieldMojEpisode: 36,
         fieldMojProgrammeCode: 'FAITH138',
         fieldMojSeason: 1,
+        seriesSortValue: 1001,
 
         fieldMojAudio: {
           type: 'file--file',
@@ -96,6 +97,7 @@ describe('Audio page query', () => {
         media: 'https://cms.org/jdajsgjdfj.mp3',
         programmeCode: 'FAITH138',
         seasonId: 1,
+        seriesSortValue: 1001,
         secondaryTags: [
           {
             id: 741,
@@ -119,6 +121,7 @@ describe('Audio page query', () => {
         fieldMojEpisode: 36,
         fieldMojProgrammeCode: 'FAITH138',
         fieldMojSeason: 1,
+        seriesSortValue: 1001,
 
         fieldMojAudio: {
           type: 'file--file',
@@ -202,6 +205,7 @@ describe('Audio page query', () => {
         media: 'https://cms.org/jdajsgjdfj.mp3',
         programmeCode: 'FAITH138',
         seasonId: 1,
+        seriesSortValue: 1001,
         secondaryTags: [
           {
             id: 741,

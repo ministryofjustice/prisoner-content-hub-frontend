@@ -17,6 +17,7 @@ class VideoPageQuery {
         'field_moj_episode',
         'field_moj_top_level_categories',
         'field_moj_thumbnail_image',
+        'series_sort_value',
       ])
 
       .addFields('file--file', ['uri', 'image_style_uri'])
@@ -75,6 +76,7 @@ class VideoPageQuery {
       seriesId: item.fieldMojSeries?.drupalInternal_Tid,
       seriesPath: item.fieldMojSeries?.path?.alias,
       seriesName: item.fieldMojSeries?.name,
+      seriesSortValue: item.seriesSortValue,
       media: item.fieldVideo?.uri?.url,
       categories: this.#flattenDrupalInternalTargetId(
         item.fieldMojTopLevelCategories,

@@ -68,6 +68,7 @@ describe('cms Service', () => {
       media: 'https://cms.org/jdajsgjdfj.mp3',
       programmeCode: 'FAITH138',
       seasonId: 1,
+      seriesSortValue: 1001,
       secondaryTags: [
         {
           id: 741,
@@ -92,6 +93,7 @@ describe('cms Service', () => {
       },
       media: 'https://cms.org/jdajsgjdfj.mp4',
       seasonId: 1,
+      seriesSortValue: 1001,
       secondaryTags: [
         {
           id: 741,
@@ -103,6 +105,17 @@ describe('cms Service', () => {
       seriesPath: '/tags/923',
       title: 'Buddhist reflection: 29 July',
     });
+
+    const createNextEpisode = () => [
+      {
+        id: 1,
+        title: 'foo episode',
+      },
+      {
+        id: 2,
+        title: 'bar episode',
+      },
+    ];
 
     it('returns basic pages', async () => {
       cmsApi.get.mockResolvedValue(createBasicPage());
@@ -142,7 +155,9 @@ describe('cms Service', () => {
     });
 
     it(`returns audio content provided by CMS service`, async () => {
-      cmsApi.get.mockResolvedValue(createAudioPage());
+      cmsApi.get
+        .mockResolvedValueOnce(createAudioPage())
+        .mockResolvedValueOnce(createNextEpisode());
       cmsApi.lookupContent.mockResolvedValue({
         type: 'node--moj_radio_item',
         location: 'https://cms.org/content/1234',
@@ -173,6 +188,7 @@ describe('cms Service', () => {
         ],
         programmeCode: 'FAITH138',
         seasonId: 1,
+        seriesSortValue: 1001,
         secondaryTags: [
           {
             id: 741,
@@ -191,21 +207,12 @@ describe('cms Service', () => {
         ],
         title: 'Buddhist reflection: 29 July',
       });
-
-      expect(contentRepository.nextEpisodesFor).toHaveBeenCalledWith({
-        episodeId: 1036,
-        establishmentId: 793,
-        id: 923,
-        perPage: 3,
-      });
-      expect(contentRepository.suggestedContentFor).toHaveBeenCalledWith({
-        establishmentId: 793,
-        id: 6236,
-      });
     });
 
     it(`returns video content provided by CMS service`, async () => {
-      cmsApi.get.mockResolvedValue(createVideoPage());
+      cmsApi.get
+        .mockResolvedValueOnce(createVideoPage())
+        .mockResolvedValueOnce(createNextEpisode());
       cmsApi.lookupContent.mockResolvedValue({
         type: 'node--moj_video_item',
         location: 'https://cms.org/content/1234',
@@ -236,6 +243,7 @@ describe('cms Service', () => {
         ],
 
         seasonId: 1,
+        seriesSortValue: 1001,
         secondaryTags: [
           {
             id: 741,
@@ -253,17 +261,6 @@ describe('cms Service', () => {
           },
         ],
         title: 'Buddhist reflection: 29 July',
-      });
-
-      expect(contentRepository.nextEpisodesFor).toHaveBeenCalledWith({
-        episodeId: 1036,
-        establishmentId: 793,
-        id: 923,
-        perPage: 3,
-      });
-      expect(contentRepository.suggestedContentFor).toHaveBeenCalledWith({
-        establishmentId: 793,
-        id: 6236,
       });
     });
 
