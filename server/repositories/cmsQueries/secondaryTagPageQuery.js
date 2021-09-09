@@ -1,19 +1,25 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
+const { typeFrom } = require('../../utils/adapters');
 
 class SecondaryTagPageQuery {
+  static #TILE_FIELDS = [
+    'drupal_internal__nid',
+    'title',
+    'field_moj_description',
+    'field_moj_thumbnail_image',
+    'field_moj_secondary_tags',
+  ];
+
   constructor(establishmentName, uuid) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
     this.query = new Query()
       .addFilter('field_moj_secondary_tags.id', uuid)
-      .addFields('node--moj_video_item', [
-        'drupal_internal__nid',
-        'title',
-        'field_moj_description',
-        'field_moj_thumbnail_image',
-        'field_moj_secondary_tags',
-      ])
+      .addFields('node--page', SecondaryTagPageQuery.#TILE_FIELDS)
+      .addFields('node--moj_video_item', SecondaryTagPageQuery.#TILE_FIELDS)
+      .addFields('node--moj_radio_item', SecondaryTagPageQuery.#TILE_FIELDS)
+      .addFields('moj_pdf_item', SecondaryTagPageQuery.#TILE_FIELDS)
       .addFields('file--file', ['image_style_uri'])
       .addFields('taxonomy_term--tags', [
         'name',
@@ -53,6 +59,7 @@ class SecondaryTagPageQuery {
     return {
       id,
       title: item?.title,
+      contentType: typeFrom(item?.type),
       summary: item?.fieldMojDescription?.summary,
       contentUrl: `/content/${id}`,
       image: {
