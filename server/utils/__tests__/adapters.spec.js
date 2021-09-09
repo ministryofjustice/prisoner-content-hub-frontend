@@ -118,7 +118,9 @@ describe('Adapters', () => {
     it('should return the correct type for an video item', () => {
       expect(typeFrom('moj_video_item')).toBe('video');
     });
-
+    it('should strip "node--" from the type string', () => {
+      expect(typeFrom('node--moj_video_item')).toBe('video');
+    });
     it('should return the correct type for an pdf item', () => {
       expect(typeFrom('moj_pdf_item')).toBe('pdf');
     });

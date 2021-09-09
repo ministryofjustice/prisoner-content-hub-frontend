@@ -207,7 +207,7 @@ function pdfResponseFrom(data) {
 }
 
 function typeFrom(type) {
-  return HUB_CONTENT_TYPES[type];
+  return HUB_CONTENT_TYPES[type.match(/[^node\--].*/g)[0]];
 }
 
 function seasonResponseFrom(data = []) {

@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
+const { typeFrom } = require('../../utils/adapters');
 
 class SecondaryTagPageQuery {
   constructor(establishmentName, uuid) {
@@ -53,6 +54,7 @@ class SecondaryTagPageQuery {
     return {
       id,
       title: item?.title,
+      contentType: typeFrom(item?.type),
       summary: item?.fieldMojDescription?.summary,
       contentUrl: `/content/${id}`,
       image: {

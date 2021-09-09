@@ -27,6 +27,7 @@ describe('Secondary Tag page query', () => {
       const createContent = (id, fieldMojSecondaryTags) => ({
         drupalInternal_Nid: id,
         title: `title${id}`,
+        type: 'node--moj_video_item',
         fieldMojDescription: { summary: `summary${id}` },
         fieldMojThumbnailImage: {
           imageStyleUri: [{}, { tile_small: `tile_small${id}` }],
@@ -47,6 +48,7 @@ describe('Secondary Tag page query', () => {
       const createTransformedContent = id => ({
         id,
         title: `title${id}`,
+        contentType: 'video',
         summary: `summary${id}`,
         contentUrl: `/content/${id}`,
         image: {
