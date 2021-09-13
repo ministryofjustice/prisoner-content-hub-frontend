@@ -21,6 +21,12 @@ const {
 const {
   NextEpisodeQuery,
 } = require('../../repositories/cmsQueries/nextEpisodeQuery');
+const { 
+  SeriesPageQuery,
+} = require('../../repositories/cmsQueries/seriesPageQuery');
+const {
+  SeriesHeaderPageQuery,
+} = require('../../repositories/cmsQueries/seriesHeaderPageQuery');
 const { CmsService } = require('../cms');
 
 jest.mock('../../repositories/cmsApi');
@@ -488,8 +494,9 @@ describe('cms Service', () => {
   });
   describe('getTag', () => {
     const TAG_ID = 9;
+    const uuid = 42;
+
     describe('with a secondary tag', () => {
-      const uuid = 42;
       const location = 'https://cms.org/tag/1234';
       beforeEach(() => {
         cmsApi.lookupTag.mockResolvedValue({
@@ -512,6 +519,7 @@ describe('cms Service', () => {
           );
         });
         it('returns the tag', async () => {
+          expect(cmsApi.get).toHaveBeenCalledTimes(1);
           expect(cmsApi.get).toHaveBeenCalledWith(
             new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid),
           );
@@ -542,6 +550,64 @@ describe('cms Service', () => {
             new SecondaryTagHeaderPageQuery(location),
           );
           expect(result).toBe(populatedSecondaryTag);
+        });
+      });
+    });
+
+    describe('with a series', () => {
+      const location = 'https://cms.org/tag/1234';
+      beforeEach(() => {
+        cmsApi.lookupTag.mockResolvedValue({
+          type: 'taxonomy_term--series',
+          location,
+          uuid,
+        });
+      });
+      describe('which contains related content', () => {
+        let result;
+        const populatedSeries = { name: 'le name' };
+        beforeEach(async () => {
+          cmsApi.get.mockResolvedValue(populatedSeries);
+          result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
+        });
+        it('looks up the series', () => {
+          expect(cmsApi.lookupTag).toHaveBeenCalledWith(
+            ESTABLISHMENT_NAME,
+            TAG_ID,
+          );
+        });
+        it('returns the series', async () => {
+          expect(cmsApi.get).toHaveBeenCalledTimes(1);
+          expect(cmsApi.get).toHaveBeenCalledWith(
+            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid),
+          );
+          expect(result).toBe(populatedSeries);
+        });
+      });
+      describe('which has no related content', () => {
+        let result;
+        const populatedSeries = {};
+        beforeEach(async () => {
+          cmsApi.get.mockResolvedValueOnce({});
+          cmsApi.get.mockResolvedValue(populatedSeries);
+          result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
+        });
+        it('looks up the series', () => {
+          expect(cmsApi.lookupTag).toHaveBeenCalledWith(
+            ESTABLISHMENT_NAME,
+            TAG_ID,
+          );
+        });
+        it('returns the series', async () => {
+          expect(cmsApi.get).toHaveBeenNthCalledWith(
+            1,
+            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid),
+          );
+          expect(cmsApi.get).toHaveBeenNthCalledWith(
+            2,
+            new SeriesHeaderPageQuery(location),
+          );
+          expect(result).toBe(populatedSeries);
         });
       });
     });
