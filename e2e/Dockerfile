@@ -5,7 +5,7 @@ COPY package.json .
 COPY package-lock.json .
 COPY reporter-config.json .
 COPY cypress.json .
-COPY cypress/* cypress/
+ADD cypress cypress
 
 
 
