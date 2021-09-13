@@ -38,8 +38,6 @@ services:
     environment:
       - CYPRESS_baseUrl=http://cookhamwood.prisoner-content-hub.local:3000
       - WIREMOCK_BASE_URL=http://wiremock:8080
-    volumes:
-      - ./cypress:/app/cypress
 
 networks:
   prisoner-content-hub-e2e:
