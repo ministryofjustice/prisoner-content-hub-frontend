@@ -16,9 +16,6 @@ const createHomepageRouter = ({
     try {
       const establishmentId = req.session?.establishmentId;
 
-      const personalInformation =
-        req.session?.establishmentPersonalisationEnabled;
-
       const homePageLinks = getEstablishmentHomepageLinks(
         establishmentId,
         establishmentData,
@@ -42,7 +39,6 @@ const createHomepageRouter = ({
         header: true,
         postscript: true,
         detailsType: 'large',
-        personalInformation,
         establishmentId,
         returnUrl: req.originalUrl,
       };

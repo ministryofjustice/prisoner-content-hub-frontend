@@ -18,7 +18,6 @@ describe('configureEstablishment', () => {
 
     expect(res.locals.establishmentDisplayName).toBe('HMP Wayland');
     expect(req.session.establishmentName).toBe('wayland');
-    expect(req.session.establishmentPersonalisationEnabled).toBe(true);
 
     expect(next).toHaveBeenCalled();
   });

@@ -1,17 +1,8 @@
 const { v4: uuid } = require('uuid');
-const {
-  getEstablishmentId,
-  getEstablishmentPersonalisation,
-  getEstablishmentDisplayName,
-} = require('../utils');
+const { getEstablishmentId, getEstablishmentDisplayName } = require('../utils');
 
 const configureEstablishment = () => (req, res, next) => {
-  if (
-    req.session &&
-    (!req.session.id ||
-      !req.session.establishmentId ||
-      req.session.establishmentPersonalisationEnabled === undefined)
-  ) {
+  if (req.session && (!req.session.id || !req.session.establishmentId)) {
     const replaceUrl = /-prisoner-content-hub.*$/g;
 
     const establishmentName = (req.headers?.host || 'wayland')
@@ -24,12 +15,11 @@ const configureEstablishment = () => (req, res, next) => {
     if (typeof establishmentId !== 'undefined') {
       req.session.establishmentId = establishmentId;
       req.session.establishmentName = establishmentName;
-      req.session.establishmentPersonalisationEnabled =
-        getEstablishmentPersonalisation(establishmentId);
     }
   }
 
   res.locals.feedbackId = uuid();
+  res.locals.establishmentName = req.session.establishmentName;
   res.locals.establishmentDisplayName = `${getEstablishmentDisplayName(
     req.session.establishmentId,
   )}`;

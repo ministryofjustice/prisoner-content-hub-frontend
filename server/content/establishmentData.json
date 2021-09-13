@@ -4,6 +4,7 @@
     "displayName": "HMP Berwyn",
     "homePageLinksTitle": "Popular topics",
     "homePageLinks": {
+      "Your profile": "/profile",
       "Coronavirus": "/tags/894",
       "Visits": "/content/4203",
       "Games": "/content/3621",
@@ -13,8 +14,7 @@
       "Facilities list & catalogues": "/content/3990",
       "Healthy mind & body": "/content/3657",
       "Chaplaincy": "/tags/901"
-    },
-    "personalInformation": false
+    }
   },
 
   "959": {
@@ -31,8 +31,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "What goes on in Cookham": "/content/5925"
-    },
-    "personalInformation": true
+    }
   },
 
   "1074": {
@@ -49,8 +48,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "1083": {
@@ -67,8 +65,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "1084": {
@@ -85,8 +82,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "1075": {
@@ -103,8 +99,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "1076": {
@@ -121,8 +116,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "1077": {
@@ -139,8 +133,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "1078": {
@@ -157,8 +150,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "1079": {
@@ -175,8 +167,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "1080": {
@@ -193,8 +184,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "1081": {
@@ -211,8 +201,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "1082": {
@@ -229,8 +218,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "793": {
@@ -247,8 +235,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "1085": {
@@ -265,8 +252,7 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   },
 
   "1086": {
@@ -284,7 +270,6 @@
       "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/content/4539"
-    },
-    "personalInformation": true
+    }
   }
 }
