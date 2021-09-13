@@ -1,0 +1,27 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "Cypress tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run-cypress": "cypress open",
+    "run-server": "export $(cat test-local.env) && node ../server.js",
+    "run-wiremock": "docker-compose up wiremock | sed 's/^[^|]*[^ ]* //'",
+    "start-ui": "concurrently --names \"CYPRESS,SERVER,WIREMOCK \" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run run-cypress\" \"npm run run-server\" \"npm run run-wiremock\"",
+    "start-ci": "docker-compose up --build --abort-on-container-exit --exit-code-from cypress"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^6.2.1",
+    "cypress": "8.3.1",
+    "cypress-cucumber-preprocessor": "^4.2.0",
+    "cypress-multi-reporters": "^1.5.0",
+    "date-fns": "^2.23.0",
+    "jsonwebtoken": "^8.5.1",
+    "mocha-junit-reporter": "^2.0.0",
+    "superagent": "^6.1.0"
+  },
+  "dependencies": {}
+}

@@ -8,6 +8,8 @@ assets/stylesheets
 lib/govuk_template.html
 govuk_modules
 node_modules/*
+e2e/node_modules/*
+e2e/cypress/artifacts/
 .tmuxp.*
 .idea
 npm-debug.log

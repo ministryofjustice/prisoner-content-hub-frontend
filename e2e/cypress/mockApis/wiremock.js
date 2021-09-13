@@ -1,6 +1,9 @@
 const superagent = require('superagent');
 
-const url = 'http://localhost:9091/__admin';
+const host = process.env.WIREMOCK_BASE_URL || 'http://localhost:9091';
+const url = `${host}/__admin`;
+
+console.log(`wiremock url: ${url}`);
 
 const stubFor = mapping => superagent.post(`${url}/mappings`).send(mapping);
 

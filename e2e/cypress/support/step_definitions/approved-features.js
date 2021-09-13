@@ -1,5 +1,4 @@
 import { Before, Then, When, And } from 'cypress-cucumber-preprocessor/steps';
-import { expectCt } from 'helmet';
 
 import { horizontalTableToObject, verticalTableToObject } from './utils';
 
