@@ -18,6 +18,7 @@ class AudioPageQuery {
         'field_moj_top_level_categories',
         'field_moj_thumbnail_image',
         'field_moj_programme_code',
+        'series_sort_value',
       ])
 
       .addFields('file--file', ['uri', 'image_style_uri'])
@@ -77,6 +78,7 @@ class AudioPageQuery {
       seriesId: item.fieldMojSeries?.drupalInternal_Tid,
       seriesPath: item.fieldMojSeries?.path?.alias,
       seriesName: item.fieldMojSeries?.name,
+      seriesSortValue: item.seriesSortValue,
       media: item.fieldMojAudio?.uri?.url,
       categories: this.#flattenDrupalInternalTargetId(
         item.fieldMojTopLevelCategories,
