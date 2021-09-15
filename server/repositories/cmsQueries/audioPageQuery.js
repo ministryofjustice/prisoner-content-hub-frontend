@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
+const { getLargeTile } = require('../../utils/jsonApi');
 
 class AudioPageQuery {
   constructor(location) {
@@ -59,11 +60,6 @@ class AudioPageQuery {
     }));
 
   transform(item) {
-    const url =
-      item.fieldMojThumbnailImage?.imageStyleUri
-        ?.map(image => image?.tile_large)
-        .find(image => Boolean(image)) || item.fieldMojThumbnailImage?.uri?.url;
-
     return {
       id: item.drupalInternal_Nid,
       title: item.title,
@@ -84,10 +80,7 @@ class AudioPageQuery {
         item.fieldMojTopLevelCategories,
       ),
       secondaryTags: this.#buildSecondaryTags(item.fieldMojSecondaryTags),
-      image: {
-        url,
-        alt: item.fieldMojThumbnailImage?.resourceIdObjMeta?.alt,
-      },
+      image: getLargeTile(item.fieldMojThumbnailImage),
     };
   }
 }

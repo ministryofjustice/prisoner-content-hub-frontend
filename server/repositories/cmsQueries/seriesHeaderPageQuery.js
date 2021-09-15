@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
+const { getLargeTile } = require('../../utils/jsonApi');
 
 class SeriesHeaderPageQuery {
   constructor(location) {
@@ -25,10 +26,7 @@ class SeriesHeaderPageQuery {
       contentType: 'series',
       name: item?.name,
       description: item?.description?.processed,
-      image: {
-        url: item?.fieldFeaturedImage?.imageStyleUri[0]?.tile_large,
-        alt: item?.fieldFeaturedImage?.resourceIdObjMeta?.alt,
-      },
+      image: getLargeTile(item?.fieldFeaturedImage),
     };
   }
 }

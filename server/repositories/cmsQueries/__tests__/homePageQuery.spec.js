@@ -22,7 +22,9 @@ describe('Homepage query', () => {
             title: 'Lower Abs workout',
             fieldMojDescription: { summary: 'Intense lower core workout' },
             fieldMojThumbnailImage: {
-              uri: { url: 'https://cloud-platform-c3b3.eu-west-2' },
+              imageStyleUri: [
+                { tile_small: 'https://cloud-platform-c3b3.eu-west-2' },
+              ],
               resourceIdObjMeta: { alt: 'Picture of core workout' },
             },
           },
@@ -60,7 +62,6 @@ describe('Homepage query', () => {
             title: 'Lower Abs workout',
             fieldMojDescription: { summary: 'Intense lower core workout' },
             fieldMojThumbnailImage: {
-              uri: { url: 'https://cloud-platform-c3b3.eu-west-2' },
               resourceIdObjMeta: { alt: 'Picture of core workout' },
               imageStyleUri: [
                 { tile_large: 'large-image', tile_small: 'small-image' },
@@ -100,7 +101,6 @@ describe('Homepage query', () => {
             title: 'Lower Abs workout',
             fieldMojDescription: { summary: 'Intense lower core workout' },
             fieldMojThumbnailImage: {
-              uri: { url: 'https://cloud-platform-c3b3.eu-west-2' },
               resourceIdObjMeta: { alt: 'Picture of core workout' },
               imageStyleUri: [
                 { tile_large: 'large-image', tile_small: 'small-image' },
@@ -139,8 +139,10 @@ describe('Homepage query', () => {
             title: 'Yoga',
             fieldMojDescription: { summary: 'Yoga workout' },
             fieldMojThumbnailImage: {
-              uri: { url: 'https://cloud-platform-c3b3.eu-west-2' },
               resourceIdObjMeta: { alt: 'Picture of Yoga workout' },
+              imageStyleUri: [
+                { tile_large: 'large-image', tile_small: 'small-image' },
+              ],
             },
           },
           {
@@ -149,8 +151,10 @@ describe('Homepage query', () => {
             title: 'Lower Abs workout',
             fieldMojDescription: { summary: 'Intense lower core workout' },
             fieldMojThumbnailImage: {
-              uri: { url: 'https://cloud-platform-c3b3.eu-west-2' },
               resourceIdObjMeta: { alt: 'Picture of core workout' },
+              imageStyleUri: [
+                { tile_large: 'large-image', tile_small: 'small-image' },
+              ],
             },
           },
         ],
@@ -166,7 +170,7 @@ describe('Homepage query', () => {
           title: 'Yoga',
           summary: 'Yoga workout',
           image: {
-            url: 'https://cloud-platform-c3b3.eu-west-2',
+            url: 'large-image',
             alt: 'Picture of Yoga workout',
           },
         },
@@ -178,7 +182,7 @@ describe('Homepage query', () => {
           title: 'Lower Abs workout',
           summary: 'Intense lower core workout',
           image: {
-            url: 'https://cloud-platform-c3b3.eu-west-2',
+            url: 'large-image',
             alt: 'Picture of core workout',
           },
         },

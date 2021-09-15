@@ -64,8 +64,9 @@ describe('Secondary Tag page query', () => {
       const CONTENT3 = createContent('C', SECONDARYTAGS);
       const response = [CONTENT1, CONTENT2, CONTENT3];
 
-      expect(query.transform(response)).toStrictEqual(
-        Object.assign(createTransformedSecondaryTag(UUID), {
+      expect(query.transform(response)).toStrictEqual({
+        ...createTransformedSecondaryTag(UUID),
+        ...{
           relatedContent: {
             contentType: 'default',
             data: [
@@ -74,8 +75,8 @@ describe('Secondary Tag page query', () => {
               createTransformedContent('C'),
             ],
           },
-        }),
-      );
+        },
+      });
     });
   });
 });

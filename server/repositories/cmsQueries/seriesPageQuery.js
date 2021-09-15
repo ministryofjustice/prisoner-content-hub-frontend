@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { typeFrom } = require('../../utils/adapters');
+const { getLargeTile, getSmallTile } = require('../../utils/jsonApi');
 
 class SeriesPageQuery {
   static #TILE_FIELDS = [
@@ -44,10 +45,7 @@ class SeriesPageQuery {
     contentType: 'series',
     name: item?.name,
     description: item?.description?.processed,
-    image: {
-      url: item?.fieldFeaturedImage?.imageStyleUri[0]?.tile_large,
-      alt: item?.fieldFeaturedImage?.resourceIdObjMeta?.alt,
-    },
+    image: getLargeTile(item?.fieldFeaturedImage),
   });
 
   #getContent = item => {
@@ -58,23 +56,20 @@ class SeriesPageQuery {
       title: item?.title,
       summary: item?.fieldMojDescription?.summary,
       contentUrl: `/content/${id}`,
-      image: {
-        url: item?.fieldMojThumbnailImage?.imageStyleUri[1].tile_small,
-        alt: item?.fieldMojThumbnailImage?.resourceIdObjMeta?.alt,
-      },
+      image: getSmallTile(item?.fieldMojThumbnailImage),
     };
   };
 
   transform(deserializedResponse) {
-    return Object.assign(
-      this.#getSeries(deserializedResponse[0].fieldMojSeries),
-      {
+    return {
+      ...this.#getSeries(deserializedResponse[0].fieldMojSeries),
+      ...{
         relatedContent: {
           contentType: 'default',
           data: deserializedResponse.map(item => this.#getContent(item)),
         },
       },
-    );
+    };
   }
 }
 

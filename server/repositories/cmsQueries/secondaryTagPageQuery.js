@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { typeFrom } = require('../../utils/adapters');
+const { getLargeTile, getSmallTile } = require('../../utils/jsonApi');
 
 class SecondaryTagPageQuery {
   static #TILE_FIELDS = [
@@ -47,10 +48,7 @@ class SecondaryTagPageQuery {
       contentType: 'tags',
       name: item?.name,
       description: item?.description?.processed,
-      image: {
-        url: item?.fieldFeaturedImage?.imageStyleUri[0]?.tile_large,
-        alt: item?.fieldFeaturedImage?.resourceIdObjMeta?.alt,
-      },
+      image: getLargeTile(item?.fieldFeaturedImage),
     };
   };
 
@@ -62,23 +60,20 @@ class SecondaryTagPageQuery {
       contentType: typeFrom(item?.type),
       summary: item?.fieldMojDescription?.summary,
       contentUrl: `/content/${id}`,
-      image: {
-        url: item?.fieldMojThumbnailImage?.imageStyleUri[1].tile_small,
-        alt: item?.fieldMojThumbnailImage?.resourceIdObjMeta?.alt,
-      },
+      image: getSmallTile(item?.fieldMojThumbnailImage),
     };
   };
 
   transform(deserializedResponse) {
-    return Object.assign(
-      this.#getTag(deserializedResponse[0].fieldMojSecondaryTags),
-      {
+    return {
+      ...this.#getTag(deserializedResponse[0].fieldMojSecondaryTags),
+      ...{
         relatedContent: {
           contentType: 'default',
           data: deserializedResponse.map(item => this.#getContent(item)),
         },
       },
-    );
+    };
   }
 }
 

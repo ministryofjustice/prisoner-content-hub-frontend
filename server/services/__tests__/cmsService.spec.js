@@ -21,7 +21,7 @@ const {
 const {
   NextEpisodeQuery,
 } = require('../../repositories/cmsQueries/nextEpisodeQuery');
-const { 
+const {
   SeriesPageQuery,
 } = require('../../repositories/cmsQueries/seriesPageQuery');
 const {
