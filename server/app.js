@@ -55,25 +55,24 @@ const createApp = services => {
   // Server Configuration
   app.set('port', process.env.PORT || 3000);
 
-  // Set up Sentry before (almost) everything else, so we can
-  // capture any exceptions during startup
+  // Set up Sentry before (almost) everything else, so we can capture any exceptions during startup
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     integrations: [
       // enable HTTP calls tracing
       new Sentry.Integrations.Http({ tracing: true }),
       // enable Express.js middleware tracing
-      new Tracing.Integrations.Express({
-        // to trace all requests to the default router
-        app,
-        // alternatively, you can specify the routes you want to trace:
-        // router: someRouter,
-      }),
+      new Tracing.Integrations.Express({ app }),
     ],
 
-    // We recommend adjusting this value in production, or using tracesSampler
-    // for finer control
-    tracesSampleRate: 1.0,
+    tracesSampler: samplingContext => {
+      const transactionName = samplingContext?.transactionContext?.name;
+      return transactionName &&
+        transactionName.includes('ping') &&
+        transactionName.includes('/public/')
+        ? 0
+        : 0.25;
+    },
   });
   app.use(Sentry.Handlers.requestHandler());
 
