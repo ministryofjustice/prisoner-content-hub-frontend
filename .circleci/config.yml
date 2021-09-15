@@ -167,29 +167,17 @@ jobs:
           at: ~/app
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: Run the node app.
-          command: npm run start:e2e
-          background: true
-      - run:
-          name: Get wiremock
-          command: curl -o wiremock.jar https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/2.27.2/wiremock-standalone-2.27.2.jar
-      - run:
-          name: Run wiremock
-          command: java -jar wiremock.jar --port 9091
-          background: true
-      - run:
-          name: Wait for node app to start
-          command: sleep 5
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: e2e tests
           command: npm run test:e2e:ci
       - store_test_results:
-          path: test-results
+          path: e2e/test-results
       - store_artifacts:
-          path: cypress/artifacts/videos
+          path: e2e/cypress/artifacts/videos
       - store_artifacts:
-          path: cypress/artifacts/screenshots
+          path: e2e/cypress/artifacts/screenshots
 
   build_preview:
     executor:

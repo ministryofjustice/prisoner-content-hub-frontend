@@ -1,0 +1,43 @@
+version: '3'
+services:
+  web:
+    build: ..
+    container_name: web
+    networks:
+      prisoner-content-hub-e2e:
+        aliases:
+          - wayland.prisoner-content-hub.local
+          - berwyn.prisoner-content-hub.local
+          - cookhamwood.prisoner-content-hub.local
+    depends_on:
+      - wiremock
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file: 
+      - "./test-ci.env"
+
+  wiremock:
+    image: rodolpheche/wiremock
+    container_name: wiremock
+    networks:
+      - prisoner-content-hub-e2e
+    restart: always
+    ports:
+      - "9091:8080"
+
+  cypress:
+    build: .
+    container_name: cypress
+    networks:
+      - prisoner-content-hub-e2e
+    depends_on:
+      - web
+      - wiremock
+    command: npx cypress run
+    environment:
+      - CYPRESS_baseUrl=http://cookhamwood.prisoner-content-hub.local:3000
+      - WIREMOCK_BASE_URL=http://wiremock:8080
+
+networks:
+  prisoner-content-hub-e2e:
