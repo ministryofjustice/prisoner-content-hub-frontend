@@ -68,8 +68,8 @@ const createApp = services => {
     tracesSampler: samplingContext => {
       const transactionName = samplingContext?.transactionContext?.name;
       return transactionName &&
-        transactionName.includes('ping') &&
-        transactionName.includes('/public/')
+        (transactionName.includes('ping') ||
+          transactionName.includes('/public/'))
         ? 0
         : 0.25;
     },
