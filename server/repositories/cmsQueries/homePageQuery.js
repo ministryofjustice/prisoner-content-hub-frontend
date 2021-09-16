@@ -30,7 +30,6 @@ class HomepageQuery {
       .addFields('file--file', [
         'drupal_internal__fid',
         'id',
-        'uri',
         'image_style_uri',
       ])
 

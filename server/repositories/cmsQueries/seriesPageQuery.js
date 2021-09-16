@@ -61,6 +61,7 @@ class SeriesPageQuery {
   };
 
   transform(deserializedResponse) {
+    if (deserializedResponse.length === 0) return null;
     return {
       ...this.#getSeries(deserializedResponse[0].fieldMojSeries),
       ...{

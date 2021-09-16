@@ -65,6 +65,7 @@ class SecondaryTagPageQuery {
   };
 
   transform(deserializedResponse) {
+    if (deserializedResponse.length === 0) return null;
     return {
       ...this.#getTag(deserializedResponse[0].fieldMojSecondaryTags),
       ...{
