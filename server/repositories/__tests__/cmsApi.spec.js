@@ -3,6 +3,7 @@
 const nock = require('nock');
 const { jsonApiResponse } = require('../../../test/resources/jsonApi');
 const { JsonApiClient } = require('../../clients/jsonApiClient');
+const { NotFound } = require('../apiError');
 const { CmsApi } = require('../cmsApi');
 
 const host = 'http://localhost:3333';
@@ -105,12 +106,12 @@ describe('CmsApi', () => {
       ).rejects.toEqual(Error('Request failed with status code 500'));
     });
 
-    it('propogates 404 as error', () => {
+    it('propogates 404 as NotFound', () => {
       mockDrupal.get(path).reply(404, 'unexpected error');
 
       return expect(
         cmsApi.get(new TestUrlTransformEachQuery()),
-      ).rejects.toEqual(Error('Request failed with status code 404'));
+      ).rejects.toEqual(new NotFound('/jsonapi/test'));
     });
 
     it('should format and return single value', async () => {
@@ -196,7 +197,15 @@ describe('CmsApi', () => {
       mockDrupal.get(lookupPath).reply(404, 'unexpected error');
 
       return expect(cmsApi.lookupContent('berwyn', 1234)).rejects.toEqual(
-        Error('Request failed with status code 404'),
+        Error(lookupPath),
+      );
+    });
+
+    it('propagates 403 as NotFound', () => {
+      mockDrupal.get(lookupPath).reply(403, 'unexpected error');
+
+      return expect(cmsApi.lookupContent('berwyn', 1234)).rejects.toEqual(
+        new NotFound(lookupPath),
       );
     });
 
@@ -231,11 +240,19 @@ describe('CmsApi', () => {
       );
     });
 
-    it('propagates 404 as error', () => {
+    it('propagates 404 as NotFound', () => {
       mockDrupal.get(lookupPath).reply(404, 'unexpected error');
 
       return expect(cmsApi.lookupTag('berwyn', 1234)).rejects.toEqual(
-        Error('Request failed with status code 404'),
+        new NotFound(lookupPath),
+      );
+    });
+
+    it('propagates 403 as NotFound', () => {
+      mockDrupal.get(lookupPath).reply(403, 'unexpected error');
+
+      return expect(cmsApi.lookupTag('berwyn', 1234)).rejects.toEqual(
+        new NotFound(lookupPath),
       );
     });
 

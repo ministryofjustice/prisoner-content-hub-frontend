@@ -26,6 +26,7 @@ const defaultConfig = require('./config');
 const defaultEstablishmentData = require('./content/establishmentData.json');
 const defaultAuthMiddleware = require('./auth/middleware');
 const routes = require('./routes');
+const { NotFound } = require('./repositories/apiError');
 
 const createApp = services => {
   const {
@@ -260,17 +261,19 @@ const createApp = services => {
 
   // eslint-disable-next-line no-unused-vars
   function renderErrors(error, req, res, next) {
-    logger.error(`Unhandled error - ${req.originalUrl} - ${error.message}`);
-    logger.debug(error.stack);
-    res.status(error.status || 500);
-
-    const locals = {};
-
-    if (config.features.showStackTraces) {
-      locals.error = error;
+    if (error instanceof NotFound) {
+      logger.warn(`Failed to find: ${error.message}`);
+      logger.debug(error.stack);
+      res.status(404);
+      return res.render('pages/404');
     }
 
-    res.render('pages/error', locals);
+    logger.error(`Unhandled error - ${req.originalUrl} - ${error.message}`);
+    logger.debug(error.stack);
+    res.status(500);
+
+    const locals = config.features.showStackTraces ? { error } : {};
+    return res.render('pages/error', locals);
   }
 
   return app;

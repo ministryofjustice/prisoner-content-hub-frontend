@@ -18,7 +18,7 @@ const hubContentRepository = httpClient => {
     const endpoint = `${config.api.hubContent}/${id}`;
 
     if (!id) {
-      logger.error(`HubContentRepository (contentFor) - No ID passed`);
+      logger.info(`HubContentRepository (contentFor) - No ID passed`);
       return null;
     }
     const query = {
@@ -39,7 +39,7 @@ const hubContentRepository = httpClient => {
     const endpoint = `${config.api.hubTerm}/${id}`;
 
     if (!id) {
-      logger.error(`HubContentRepository (termFor) - No ID passed`);
+      logger.info(`HubContentRepository (termFor) - No ID passed`);
       return null;
     }
 
@@ -71,7 +71,7 @@ const hubContentRepository = httpClient => {
     };
 
     if (!id) {
-      logger.error(`HubContentRepository (seasonFor) - No ID passed`);
+      logger.info(`HubContentRepository (seasonFor) - No ID passed`);
       return [];
     }
 
@@ -127,7 +127,7 @@ const hubContentRepository = httpClient => {
     };
 
     if (!id) {
-      logger.error(`HubContentRepository (relatedContentFor) - No ID passed`);
+      logger.info(`HubContentRepository (relatedContentFor) - No ID passed`);
       return [];
     }
 
