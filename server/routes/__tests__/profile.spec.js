@@ -22,10 +22,13 @@ describe('GET /profile', () => {
   });
 
   const userSupplier = jest.fn();
+  const establishmentSupplier = jest.fn();
+
   let app;
 
   const setMockUser = (req, res, next) => {
     req.user = userSupplier();
+    res.locals = establishmentSupplier();
     next();
   };
 
@@ -35,6 +38,7 @@ describe('GET /profile', () => {
     app.use(setMockUser);
     app.use('/profile', router);
     userSupplier.mockReturnValue(testUser);
+    establishmentSupplier.mockReturnValue({ establishmentName: 'wayland' });
   });
 
   it('prompts the user to sign in when they are signed out', () => {
@@ -267,6 +271,32 @@ describe('GET /profile', () => {
   });
 
   describe('Retrieve visits information', () => {
+    it('visits are hidden for berwyn', () => {
+      establishmentSupplier.mockReturnValue({ establishmentName: 'berwyn' });
+      return request(app)
+        .get('/profile')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="visits-container"]').length).toBe(0);
+        });
+    });
+
+    it('visits are present for other establishments', () => {
+      establishmentSupplier.mockReturnValue({
+        establishmentName: 'anything else',
+      });
+      return request(app)
+        .get('/profile')
+        .expect(200)
+        .expect('Content-Type', /text\/html/)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="visits-container"]').length).toBe(1);
+        });
+    });
+
     it('notifies the user when retrieving visits fails', () => {
       offenderService.getVisitsFor.mockResolvedValue({
         error: true,

@@ -34,11 +34,6 @@ const getEstablishmentHomepageLinksTitle = (
   establishmentData = defaultEstablishmentData,
 ) => establishmentData?.[id]?.homePageLinksTitle;
 
-const getEstablishmentPersonalisation = (
-  id,
-  establishmentData = defaultEstablishmentData,
-) => establishmentData?.[id]?.personalInformation;
-
 const capitalize = (str = '') =>
   str === '' ? '' : str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
@@ -71,7 +66,6 @@ module.exports = {
   getEstablishmentSearchName,
   getEstablishmentHomepageLinks,
   getEstablishmentHomepageLinksTitle,
-  getEstablishmentPersonalisation,
   isEmptyResponse,
   capitalize,
   capitalizeAll,
