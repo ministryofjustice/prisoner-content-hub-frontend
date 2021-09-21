@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
+const { getLargeTile, getSmallTile } = require('../../utils/jsonApi');
 
 class HomepageQuery {
   static #TILE_FIELDS = [
@@ -29,7 +30,6 @@ class HomepageQuery {
       .addFields('file--file', [
         'drupal_internal__fid',
         'id',
-        'uri',
         'image_style_uri',
       ])
 
@@ -49,10 +49,10 @@ class HomepageQuery {
 
   transformEach(item) {
     const [upperFeatured, lowerFeatured] = item.fieldMojFeaturedTileLarge.map(
-      this.#asTile('tile_large'),
+      this.#asTile(getLargeTile),
     );
     const smallTiles = item.fieldMojFeaturedTileSmall.map(
-      this.#asTile('tile_small'),
+      this.#asTile(getSmallTile),
     );
 
     return {
@@ -62,25 +62,15 @@ class HomepageQuery {
     };
   }
 
-  #asTile = type => item => {
-    const url =
-      item.fieldMojThumbnailImage?.imageStyleUri
-        ?.map(image => image[type])
-        .find(image => Boolean(image)) || item.fieldMojThumbnailImage?.uri?.url;
-
-    return {
-      id: item.drupalInternal_Nid,
-      contentUrl: `/content/${item.drupalInternal_Nid}`,
-      contentType: item.type.replace(/^node--/, ''),
-      isSeries: Boolean(item.fieldMojSeries),
-      title: item.title,
-      summary: item.fieldMojDescription?.summary,
-      image: {
-        url,
-        alt: item.fieldMojThumbnailImage?.resourceIdObjMeta?.alt,
-      },
-    };
-  };
+  #asTile = getImage => item => ({
+    id: item.drupalInternal_Nid,
+    contentUrl: `/content/${item.drupalInternal_Nid}`,
+    contentType: item.type.replace(/^node--/, ''),
+    isSeries: Boolean(item.fieldMojSeries),
+    title: item.title,
+    summary: item.fieldMojDescription?.summary,
+    image: getImage(item.fieldMojThumbnailImage),
+  });
 }
 
 module.exports = { HomepageQuery };

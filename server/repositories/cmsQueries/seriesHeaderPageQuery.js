@@ -2,11 +2,11 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { getLargeTile } = require('../../utils/jsonApi');
 
-class SecondaryTagHeaderPageQuery {
+class SeriesHeaderPageQuery {
   constructor(location) {
     this.location = location;
     this.query = new Query()
-      .addFields('taxonomy_term--tags', [
+      .addFields('taxonomy_term--series', [
         'name',
         'description',
         'drupal_internal__tid',
@@ -23,7 +23,7 @@ class SecondaryTagHeaderPageQuery {
   transform(item) {
     return {
       id: item?.drupalInternal_Tid,
-      contentType: 'tags',
+      contentType: 'series',
       name: item?.name,
       description: item?.description?.processed,
       image: getLargeTile(item?.fieldFeaturedImage),
@@ -31,4 +31,4 @@ class SecondaryTagHeaderPageQuery {
   }
 }
 
-module.exports = { SecondaryTagHeaderPageQuery };
+module.exports = { SeriesHeaderPageQuery };

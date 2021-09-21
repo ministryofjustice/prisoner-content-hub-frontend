@@ -3,26 +3,26 @@ const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { typeFrom } = require('../../utils/adapters');
 const { getLargeTile, getSmallTile } = require('../../utils/jsonApi');
 
-class SecondaryTagPageQuery {
+class SeriesPageQuery {
   static #TILE_FIELDS = [
     'drupal_internal__nid',
     'title',
     'field_moj_description',
     'field_moj_thumbnail_image',
-    'field_moj_secondary_tags',
+    'field_moj_series',
   ];
 
   constructor(establishmentName, uuid) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
     this.query = new Query()
-      .addFilter('field_moj_secondary_tags.id', uuid)
-      .addFields('node--page', SecondaryTagPageQuery.#TILE_FIELDS)
-      .addFields('node--moj_video_item', SecondaryTagPageQuery.#TILE_FIELDS)
-      .addFields('node--moj_radio_item', SecondaryTagPageQuery.#TILE_FIELDS)
-      .addFields('moj_pdf_item', SecondaryTagPageQuery.#TILE_FIELDS)
+      .addFilter('field_moj_series.id', uuid)
+      .addFields('node--page', SeriesPageQuery.#TILE_FIELDS)
+      .addFields('node--moj_video_item', SeriesPageQuery.#TILE_FIELDS)
+      .addFields('node--moj_radio_item', SeriesPageQuery.#TILE_FIELDS)
+      .addFields('moj_pdf_item', SeriesPageQuery.#TILE_FIELDS)
       .addFields('file--file', ['image_style_uri'])
-      .addFields('taxonomy_term--tags', [
+      .addFields('taxonomy_term--series', [
         'name',
         'description',
         'drupal_internal__tid',
@@ -30,9 +30,9 @@ class SecondaryTagPageQuery {
       ])
       .addInclude([
         'field_moj_thumbnail_image',
-        'field_moj_secondary_tags.field_featured_image',
+        'field_moj_series.field_featured_image',
       ])
-      .addSort('created', 'DESC')
+      .addSort('series_sort_value', 'ASC')
       .getQueryString();
   }
 
@@ -40,24 +40,20 @@ class SecondaryTagPageQuery {
     return `/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
   }
 
-  #getTag = fieldMojSecondaryTags => {
-    const item = fieldMojSecondaryTags.find(({ id }) => id === this.uuid);
-
-    return {
-      id: item?.drupalInternal_Tid,
-      contentType: 'tags',
-      name: item?.name,
-      description: item?.description?.processed,
-      image: getLargeTile(item?.fieldFeaturedImage),
-    };
-  };
+  #getSeries = item => ({
+    id: item?.drupalInternal_Tid,
+    contentType: 'series',
+    name: item?.name,
+    description: item?.description?.processed,
+    image: getLargeTile(item?.fieldFeaturedImage),
+  });
 
   #getContent = item => {
     const id = item?.drupalInternal_Nid;
     return {
       id,
-      title: item?.title,
       contentType: typeFrom(item?.type),
+      title: item?.title,
       summary: item?.fieldMojDescription?.summary,
       contentUrl: `/content/${id}`,
       image: getSmallTile(item?.fieldMojThumbnailImage),
@@ -67,7 +63,7 @@ class SecondaryTagPageQuery {
   transform(deserializedResponse) {
     if (deserializedResponse.length === 0) return null;
     return {
-      ...this.#getTag(deserializedResponse[0].fieldMojSecondaryTags),
+      ...this.#getSeries(deserializedResponse[0].fieldMojSeries),
       ...{
         relatedContent: {
           contentType: 'default',
@@ -78,4 +74,4 @@ class SecondaryTagPageQuery {
   }
 }
 
-module.exports = { SecondaryTagPageQuery };
+module.exports = { SeriesPageQuery };

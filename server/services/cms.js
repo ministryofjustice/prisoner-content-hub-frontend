@@ -7,6 +7,12 @@ const {
 const {
   SecondaryTagHeaderPageQuery,
 } = require('../repositories/cmsQueries/secondaryTagHeaderPageQuery');
+const {
+  SeriesPageQuery,
+} = require('../repositories/cmsQueries/seriesPageQuery');
+const {
+  SeriesHeaderPageQuery,
+} = require('../repositories/cmsQueries/seriesHeaderPageQuery');
 const { AudioPageQuery } = require('../repositories/cmsQueries/audioPageQuery');
 const { VideoPageQuery } = require('../repositories/cmsQueries/videoPageQuery');
 const { PdfPageQuery } = require('../repositories/cmsQueries/pdfPageQuery');
@@ -35,14 +41,25 @@ class CmsService {
     return tagResult;
   }
 
-  async getTag(establishmentName, tagId) {
-    const lookupData = await this.#cmsApi.lookupTag(establishmentName, tagId);
+  async getSeries(establishmentName, uuid, location) {
+    const result = await this.#cmsApi.get(
+      new SeriesPageQuery(establishmentName, uuid),
+    );
+    if (result?.name) return result;
+    const tagResult = await this.#cmsApi.get(
+      new SeriesHeaderPageQuery(location),
+    );
+    return tagResult;
+  }
+
+  async getTag(establishmentName, id) {
+    const lookupData = await this.#cmsApi.lookupTag(establishmentName, id);
     const { type, uuid, location } = lookupData;
     switch (type) {
       case 'taxonomy_term--tags':
         return this.getSecondaryTag(establishmentName, uuid, location);
       case 'taxonomy_term--series':
-        return null; // TODO
+        return this.getSeries(establishmentName, uuid, location);
       default:
         return null;
     }
