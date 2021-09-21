@@ -56,9 +56,9 @@
         </ul>
       </div>
     </div>
-    {% if config.personalInformation %}
-      {{personalScheduleToday({ data: currentEvents, authReturnUrl: returnUrl }, config.userName)}}
-    {% endif %}
+      {% if establishmentName != 'berwyn' %}
+        {{personalScheduleToday({ data: currentEvents, authReturnUrl: returnUrl }, config.userName)}}
+      {% endif %}
   </div>
 {% endblock %}
 
