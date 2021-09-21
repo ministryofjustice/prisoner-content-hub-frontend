@@ -13,6 +13,9 @@ describe('Secondary Tag page query', () => {
   });
 
   describe('transform', () => {
+    it('should return null if the Array is empty', async () => {
+      expect(query.transform([])).toBeNull();
+    });
     it('should list the content', async () => {
       const createSecondaryTag = id => ({
         id,

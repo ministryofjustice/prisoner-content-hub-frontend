@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { Jsona, SwitchCaseJsonMapper } = require('jsona');
+const { NotFound } = require('./apiError');
 
 const dataFormatter = new Jsona({
   jsonPropertiesMapper: new SwitchCaseJsonMapper({
@@ -15,15 +16,17 @@ class CmsApi {
     this.jsonApiClient = jsonApiClient;
   }
 
-  #lookup = async (establishmentName, lookupType, id) => {
-    const {
-      jsonapi: { resourceName: type, individual: location },
-      entity: { uuid },
-    } = await this.jsonApiClient.getRelative(
-      `/router/prison/${establishmentName}/translate-path?path=${lookupType}/${id}`,
-    );
-    return { type, location, uuid };
-  };
+  #lookup = async (establishmentName, lookupType, id) =>
+    // Router will return 403 when content exists but not assigned to this prison
+    this.#throwNotFoundWhenStatusIs([403, 404], async () => {
+      const {
+        jsonapi: { resourceName: type, individual: location },
+        entity: { uuid },
+      } = await this.jsonApiClient.getRelative(
+        `/router/prison/${establishmentName}/translate-path?path=${lookupType}/${id}`,
+      );
+      return { type, location, uuid };
+    });
 
   async lookupContent(establishmentName, contentId) {
     return this.#lookup(establishmentName, 'content', contentId);
@@ -34,15 +37,28 @@ class CmsApi {
   }
 
   async get(query) {
-    const request = query.path
-      ? this.jsonApiClient.getRelative(query.path())
-      : this.jsonApiClient.getUrl(query.url());
-    const response = await request;
-    const deserializedResponse = dataFormatter.deserialize(response);
-    return query.transformEach
-      ? deserializedResponse.map(item => query.transformEach(item))
-      : query.transform(deserializedResponse);
+    return this.#throwNotFoundWhenStatusIs([404], async () => {
+      const request = query.path
+        ? this.jsonApiClient.getRelative(query.path())
+        : this.jsonApiClient.getUrl(query.url());
+      const response = await request;
+      const deserializedResponse = dataFormatter.deserialize(response);
+      return query.transformEach
+        ? deserializedResponse.map(item => query.transformEach(item))
+        : query.transform(deserializedResponse);
+    });
   }
+
+  #throwNotFoundWhenStatusIs = async (statusCodes, call) => {
+    try {
+      return await call();
+    } catch (err) {
+      if (statusCodes.includes(err.response.status)) {
+        throw new NotFound(err.request.path);
+      }
+      throw err;
+    }
+  };
 }
 
 module.exports = { CmsApi };

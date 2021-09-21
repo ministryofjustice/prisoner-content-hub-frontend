@@ -26,6 +26,7 @@ const defaultConfig = require('./config');
 const defaultEstablishmentData = require('./content/establishmentData.json');
 const defaultAuthMiddleware = require('./auth/middleware');
 const routes = require('./routes');
+const { NotFound } = require('./repositories/apiError');
 
 const createApp = services => {
   const {
@@ -55,25 +56,24 @@ const createApp = services => {
   // Server Configuration
   app.set('port', process.env.PORT || 3000);
 
-  // Set up Sentry before (almost) everything else, so we can
-  // capture any exceptions during startup
+  // Set up Sentry before (almost) everything else, so we can capture any exceptions during startup
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     integrations: [
       // enable HTTP calls tracing
       new Sentry.Integrations.Http({ tracing: true }),
       // enable Express.js middleware tracing
-      new Tracing.Integrations.Express({
-        // to trace all requests to the default router
-        app,
-        // alternatively, you can specify the routes you want to trace:
-        // router: someRouter,
-      }),
+      new Tracing.Integrations.Express({ app }),
     ],
 
-    // We recommend adjusting this value in production, or using tracesSampler
-    // for finer control
-    tracesSampleRate: 1.0,
+    tracesSampler: samplingContext => {
+      const transactionName = samplingContext?.transactionContext?.name;
+      return transactionName &&
+        (transactionName.includes('/health') ||
+          transactionName.includes('/public/'))
+        ? 0
+        : 0.25;
+    },
   });
   app.use(Sentry.Handlers.requestHandler());
 
@@ -261,17 +261,19 @@ const createApp = services => {
 
   // eslint-disable-next-line no-unused-vars
   function renderErrors(error, req, res, next) {
-    logger.error(`Unhandled error - ${req.originalUrl} - ${error.message}`);
-    logger.debug(error.stack);
-    res.status(error.status || 500);
-
-    const locals = {};
-
-    if (config.features.showStackTraces) {
-      locals.error = error;
+    if (error instanceof NotFound) {
+      logger.warn(`Failed to find: ${error.message}`);
+      logger.debug(error.stack);
+      res.status(404);
+      return res.render('pages/404');
     }
 
-    res.render('pages/error', locals);
+    logger.error(`Unhandled error - ${req.originalUrl} - ${error.message}`);
+    logger.debug(error.stack);
+    res.status(500);
+
+    const locals = config.features.showStackTraces ? { error } : {};
+    return res.render('pages/error', locals);
   }
 
   return app;
