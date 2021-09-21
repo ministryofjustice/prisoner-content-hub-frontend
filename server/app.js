@@ -70,7 +70,8 @@ const createApp = services => {
       const transactionName = samplingContext?.transactionContext?.name;
       return transactionName &&
         (transactionName.includes('/health') ||
-          transactionName.includes('/public/'))
+          transactionName.includes('/public/') ||
+          transactionName.includes('/assets/'))
         ? 0
         : 0.25;
     },
@@ -255,7 +256,13 @@ const createApp = services => {
   app.use(routes(services, establishmentData));
   // the sentry error handler has to be placed between our controllers and our error handler
   // https://docs.sentry.io/platforms/node/guides/express/
-  app.use(Sentry.Handlers.errorHandler());
+  app.use(
+    Sentry.Handlers.errorHandler({
+      shouldHandleError(error) {
+        return !(error instanceof NotFound);
+      },
+    }),
+  );
 
   app.use(renderErrors);
 
