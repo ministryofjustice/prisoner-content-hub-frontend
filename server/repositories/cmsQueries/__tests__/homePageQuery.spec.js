@@ -22,50 +22,8 @@ describe('Homepage query', () => {
             title: 'Lower Abs workout',
             fieldMojDescription: { summary: 'Intense lower core workout' },
             fieldMojThumbnailImage: {
-              imageStyleUri: [
-                { tile_small: 'https://cloud-platform-c3b3.eu-west-2' },
-              ],
+              imageStyleUri: [{ tile_small: 'small-image' }],
               resourceIdObjMeta: { alt: 'Picture of core workout' },
-            },
-          },
-        ],
-      };
-
-      expect(query.transformEach(contentItem)).toStrictEqual({
-        upperFeatured: undefined,
-        lowerFeatured: undefined,
-        smallTiles: [
-          {
-            id: '10001',
-            contentUrl: '/content/10001',
-            contentType: 'moj_video_item',
-            isSeries: true,
-            title: 'Lower Abs workout',
-            summary: 'Intense lower core workout',
-            image: {
-              url: 'https://cloud-platform-c3b3.eu-west-2',
-              alt: 'Picture of core workout',
-            },
-          },
-        ],
-      });
-    });
-
-    it('should show small tile image when provided', async () => {
-      const contentItem = {
-        fieldMojFeaturedTileLarge: [],
-        fieldMojFeaturedTileSmall: [
-          {
-            drupalInternal_Nid: '10001',
-            type: 'moj_video_item',
-            fieldMojSeries: {},
-            title: 'Lower Abs workout',
-            fieldMojDescription: { summary: 'Intense lower core workout' },
-            fieldMojThumbnailImage: {
-              resourceIdObjMeta: { alt: 'Picture of core workout' },
-              imageStyleUri: [
-                { tile_large: 'large-image', tile_small: 'small-image' },
-              ],
             },
           },
         ],
@@ -88,44 +46,6 @@ describe('Homepage query', () => {
             },
           },
         ],
-      });
-    });
-
-    it('should show large tile image when provided', async () => {
-      const contentItem = {
-        fieldMojFeaturedTileLarge: [
-          {
-            drupalInternal_Nid: '10001',
-            type: 'moj_video_item',
-            fieldMojSeries: {},
-            title: 'Lower Abs workout',
-            fieldMojDescription: { summary: 'Intense lower core workout' },
-            fieldMojThumbnailImage: {
-              resourceIdObjMeta: { alt: 'Picture of core workout' },
-              imageStyleUri: [
-                { tile_large: 'large-image', tile_small: 'small-image' },
-              ],
-            },
-          },
-        ],
-        fieldMojFeaturedTileSmall: [],
-      };
-
-      expect(query.transformEach(contentItem)).toStrictEqual({
-        upperFeatured: {
-          id: '10001',
-          contentUrl: '/content/10001',
-          contentType: 'moj_video_item',
-          isSeries: true,
-          title: 'Lower Abs workout',
-          summary: 'Intense lower core workout',
-          image: {
-            url: 'large-image',
-            alt: 'Picture of core workout',
-          },
-        },
-        lowerFeatured: undefined,
-        smallTiles: [],
       });
     });
 
