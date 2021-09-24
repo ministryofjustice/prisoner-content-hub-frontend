@@ -271,18 +271,6 @@ describe('GET /profile', () => {
   });
 
   describe('Retrieve visits information', () => {
-    it('visits are hidden for berwyn', () => {
-      establishmentSupplier.mockReturnValue({ establishmentName: 'berwyn' });
-      return request(app)
-        .get('/profile')
-        .expect(200)
-        .expect('Content-Type', /text\/html/)
-        .then(response => {
-          const $ = cheerio.load(response.text);
-          expect($('[data-test="visits-container"]').length).toBe(0);
-        });
-    });
-
     it('visits are present for other establishments', () => {
       establishmentSupplier.mockReturnValue({
         establishmentName: 'anything else',
