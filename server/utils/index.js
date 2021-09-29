@@ -60,10 +60,6 @@ const fillContentItems = (contentItems = [], number = 4) =>
     ? contentItems.concat(new Array(number - (contentItems.length % number)))
     : contentItems;
 
-const removeDuplicates = (list, key = 'id') => [
-  ...new Map(list.map(item => [item[key], item])).values(),
-];
-
 module.exports = {
   getEstablishmentId,
   getEstablishmentDisplayName,
@@ -75,5 +71,4 @@ module.exports = {
   capitalizeAll,
   capitalizePersonName,
   fillContentItems,
-  removeDuplicates,
 };
