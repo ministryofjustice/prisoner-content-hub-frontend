@@ -11,7 +11,13 @@ class SuggestionQuery {
     'path',
   ];
 
-  constructor(establishmentName, uuid, limit = 4) {
+  constructor(
+    establishmentName,
+    categoryUUID,
+    secondaryTagUUID,
+    seriesUUID,
+    limit = 4,
+  ) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
     this.query = new Query()
@@ -22,7 +28,20 @@ class SuggestionQuery {
       .addFields('file--file', ['image_style_uri'])
       .addInclude(['field_moj_thumbnail_image'])
       .addPageLimit(limit)
-      .getQueryString();
+      .addSort('id', 'DESC');
+    if (secondaryTagUUID.length > 0)
+      query.addFilter(
+        'field_moj_secondary_tags.id',
+        secondaryTagUUID,
+        'NOT IN',
+      );
+    if (seriesUUID)
+      query.addFilter(
+        'field_moj_series.meta.drupal_internal__tid',
+        seriesUUID,
+        '<>',
+      );
+    this.query = query.getQueryString();
   }
 
   path() {
