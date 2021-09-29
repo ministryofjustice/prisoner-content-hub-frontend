@@ -25,7 +25,6 @@ const { PdfPageQuery } = require('../repositories/cmsQueries/pdfPageQuery');
 const {
   NextEpisodeQuery,
 } = require('../repositories/cmsQueries/nextEpisodeQuery');
-const { removeDuplicates } = require('../utils/index');
 
 class CmsService {
   #cmsApi;
@@ -72,12 +71,14 @@ class CmsService {
     }
   }
 
-  async getSuggestions(establishmentName, secondaryTags, categories) {
+  async getSuggestions(establishmentName, secondaryTags, categories, seriesId) {
     const limit = 4;
+    const secondaryTagUUID = secondaryTags.map(({ uuid }) => uuid);
     const secondaryTagSuggestions = await this.#cmsApi.get(
       new SuggestionSecondaryTagQuery(
         establishmentName,
-        secondaryTags.map(({ uuid }) => uuid),
+        secondaryTagUUID,
+        seriesId,
         limit,
       ),
     );
@@ -87,14 +88,13 @@ class CmsService {
             new SuggestionCategoryQuery(
               establishmentName,
               categories.map(({ uuid }) => uuid),
+              secondaryTagUUID,
+              seriesId,
               limit,
             ),
           )
         : [];
-    return removeDuplicates([
-      ...secondaryTagSuggestions,
-      ...categorySuggestions,
-    ]).slice(0, limit);
+    return [...secondaryTagSuggestions, ...categorySuggestions].slice(0, limit);
   }
 
   async getContent(establishmentName, establishmentId, contentId) {
@@ -115,7 +115,8 @@ class CmsService {
       /// ...other types go here
       default:
         // log unsupported type
-        throw new Error('Unknown content type');
+        // throw new Error('Unknown content type');
+        return null;
     }
   }
 
@@ -124,7 +125,12 @@ class CmsService {
     const { seriesId, seriesSortValue, secondaryTags, categories } = data;
     const [nextEpisodes, suggestedContent] = await Promise.all([
       this.getNextEpisode(establishmentName, seriesId, seriesSortValue),
-      this.getSuggestions(establishmentName, secondaryTags, categories),
+      this.getSuggestions(
+        establishmentName,
+        secondaryTags,
+        categories,
+        seriesId,
+      ),
     ]);
     return {
       ...data,

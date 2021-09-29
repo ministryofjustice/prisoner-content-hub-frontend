@@ -10,10 +10,10 @@ class SuggestionSecondaryTagQuery {
     'field_moj_thumbnail_image',
   ];
 
-  constructor(establishmentName, uuids, limit = 4) {
+  constructor(establishmentName, secondaryTagUUID, seriesUUID = 0, limit = 4) {
     this.establishmentName = establishmentName;
-    this.query = new Query()
-      .addFilter('field_moj_secondary_tags.id', uuids, 'IN')
+    const query = new Query()
+      .addFilter('field_moj_secondary_tags.id', secondaryTagUUID, 'IN')
       .addFields('node--page', SuggestionSecondaryTagQuery.#TILE_FIELDS)
       .addFields(
         'node--moj_video_item',
@@ -26,7 +26,14 @@ class SuggestionSecondaryTagQuery {
       .addFields('moj_pdf_item', SuggestionSecondaryTagQuery.#TILE_FIELDS)
       .addInclude(['field_moj_thumbnail_image'])
       .addPageLimit(limit)
-      .getQueryString();
+      .addSort('id', 'DESC');
+    if (seriesUUID)
+      query.addFilter(
+        'field_moj_series.meta.drupal_internal__tid',
+        seriesUUID,
+        '<>',
+      );
+    this.query = query.getQueryString();
   }
 
   path() {
