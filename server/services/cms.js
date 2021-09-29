@@ -25,7 +25,6 @@ const { PdfPageQuery } = require('../repositories/cmsQueries/pdfPageQuery');
 const {
   NextEpisodeQuery,
 } = require('../repositories/cmsQueries/nextEpisodeQuery');
-const { removeDuplicates } = require('../utils/index');
 
 class CmsService {
   #cmsApi;
