@@ -10,17 +10,36 @@ class SuggestionCategoryQuery {
     'field_moj_thumbnail_image',
   ];
 
-  constructor(establishmentName, uuid, limit = 4) {
+  constructor(
+    establishmentName,
+    categoryUUID,
+    secondaryTagUUID,
+    seriesUUID,
+    limit = 4,
+  ) {
     this.establishmentName = establishmentName;
-    this.query = new Query()
-      .addFilter('field_moj_top_level_categories.id', uuid, 'IN')
+    const query = new Query()
+      .addFilter('field_moj_top_level_categories.id', categoryUUID, 'IN')
       .addFields('node--page', SuggestionCategoryQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', SuggestionCategoryQuery.#TILE_FIELDS)
       .addFields('node--moj_radio_item', SuggestionCategoryQuery.#TILE_FIELDS)
       .addFields('moj_pdf_item', SuggestionCategoryQuery.#TILE_FIELDS)
       .addInclude(['field_moj_thumbnail_image'])
       .addPageLimit(limit)
-      .getQueryString();
+      .addSort('id', 'DESC');
+    if (secondaryTagUUID.length > 0)
+      query.addFilter(
+        'field_moj_secondary_tags.id',
+        secondaryTagUUID,
+        'NOT IN',
+      );
+    if (seriesUUID)
+      query.addFilter(
+        'field_moj_series.meta.drupal_internal__tid',
+        seriesUUID,
+        '<>',
+      );
+    this.query = query.getQueryString();
   }
 
   path() {
