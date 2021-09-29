@@ -63,7 +63,24 @@ class CmsService {
         return this.getSecondaryTag(establishmentName, uuid, location);
       case 'taxonomy_term--series':
         return this.getSeries(establishmentName, uuid, location);
+      case 'taxonomy_term--moj_categories':
+        console.log(`777777777777777`);
+        console.log(type);
+        console.log(
+          JSON.stringify(
+            await this.#cmsApi.get(
+              new CategoryPageQuery(establishmentName, uuid),
+            ),
+            null,
+            2,
+          ),
+        );
+        console.log(`888888888888888`);
+        return null;
       default:
+        console.log(`999999999999999`);
+        console.log(type);
+        console.log(`000000000000000`);
         return null;
     }
   }
@@ -93,8 +110,16 @@ class CmsService {
         return this.getMedia(establishmentName, new AudioPageQuery(location));
       case 'node--moj_video_item':
         return this.getMedia(establishmentName, new VideoPageQuery(location));
+      case 'node--landing_page':
+        console.log(`333333333333333`);
+        console.log(type);
+        console.log(`444444444444444`);
+        return null;
       /// ...other types go here
       default:
+        console.log(`555555555555555`);
+        console.log(type);
+        console.log(`666666666666666`);
         // log unsupported type
         // throw new Error('Unknown content type');
         return null;
