@@ -221,7 +221,26 @@ describe('cms Service', () => {
       it('should retrieve suggested content', () => {
         expect(cmsApi.get).toHaveBeenNthCalledWith(
           3,
+<<<<<<< HEAD
           new SuggestionQuery(ESTABLISHMENT_NAME, UUID, 4),
+=======
+          new SuggestionSecondaryTagQuery(
+            ESTABLISHMENT_NAME,
+            [147],
+            SERIES_ID,
+            4,
+          ),
+        );
+        expect(cmsApi.get).toHaveBeenNthCalledWith(
+          4,
+          new SuggestionCategoryQuery(
+            ESTABLISHMENT_NAME,
+            [846],
+            [147],
+            SERIES_ID,
+            4,
+          ),
+>>>>>>> d103980... handle-duplicates-in-query
         );
       });
       it('returns audio content provided by CMS service', async () => {
@@ -315,7 +334,26 @@ describe('cms Service', () => {
       it('should retrieve suggested content', () => {
         expect(cmsApi.get).toHaveBeenNthCalledWith(
           3,
+<<<<<<< HEAD
           new SuggestionQuery(ESTABLISHMENT_NAME, UUID, 4),
+=======
+          new SuggestionSecondaryTagQuery(
+            ESTABLISHMENT_NAME,
+            [147],
+            SERIES_ID,
+            4,
+          ),
+        );
+        expect(cmsApi.get).toHaveBeenNthCalledWith(
+          4,
+          new SuggestionCategoryQuery(
+            ESTABLISHMENT_NAME,
+            [846],
+            [147],
+            SERIES_ID,
+            4,
+          ),
+>>>>>>> d103980... handle-duplicates-in-query
         );
       });
       it('returns video content provided by CMS service', async () => {
