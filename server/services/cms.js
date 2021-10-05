@@ -13,6 +13,12 @@ const {
 const {
   SeriesHeaderPageQuery,
 } = require('../repositories/cmsQueries/seriesHeaderPageQuery');
+const {
+  SuggestionSecondaryTagQuery,
+} = require('../repositories/cmsQueries/suggestionSecondaryTagQuery');
+const {
+  SuggestionCategoryQuery,
+} = require('../repositories/cmsQueries/suggestionCategoryQuery');
 const { AudioPageQuery } = require('../repositories/cmsQueries/audioPageQuery');
 const { VideoPageQuery } = require('../repositories/cmsQueries/videoPageQuery');
 const { PdfPageQuery } = require('../repositories/cmsQueries/pdfPageQuery');
@@ -65,64 +71,71 @@ class CmsService {
     }
   }
 
+  async getSuggestions(establishmentName, secondaryTags, categories, seriesId) {
+    const limit = 4;
+    const secondaryTagUUID = secondaryTags.map(({ uuid }) => uuid);
+    const secondaryTagSuggestions = await this.#cmsApi.get(
+      new SuggestionSecondaryTagQuery(
+        establishmentName,
+        secondaryTagUUID,
+        seriesId,
+        limit,
+      ),
+    );
+    const categorySuggestions =
+      secondaryTagSuggestions.length < limit && categories
+        ? await this.#cmsApi.get(
+            new SuggestionCategoryQuery(
+              establishmentName,
+              categories.map(({ uuid }) => uuid),
+              secondaryTagUUID,
+              seriesId,
+              limit,
+            ),
+          )
+        : [];
+    return [...secondaryTagSuggestions, ...categorySuggestions].slice(0, limit);
+  }
+
   async getContent(establishmentName, establishmentId, contentId) {
     const { type, location } = await this.#cmsApi.lookupContent(
       establishmentName,
       contentId,
     );
+
     switch (type) {
       case 'node--page':
         return this.#cmsApi.get(new BasicPageQuery(location));
       case 'node--moj_pdf_item':
         return this.#cmsApi.get(new PdfPageQuery(location));
       case 'node--moj_radio_item':
-        return this.getAudio(establishmentName, establishmentId, location);
+        return this.getMedia(establishmentName, new AudioPageQuery(location));
       case 'node--moj_video_item':
-        return this.getVideo(establishmentName, establishmentId, location);
+        return this.getMedia(establishmentName, new VideoPageQuery(location));
       /// ...other types go here
       default:
         // log unsupported type
+        // throw new Error('Unknown content type');
         return null;
     }
   }
 
-  async getAudio(establishmentName, establishmentId, location) {
-    const data = await this.#cmsApi.get(new AudioPageQuery(location));
-    const { id, seriesId, seriesSortValue } = data;
-    const suggestedContent = await this.#contentRepository.suggestedContentFor({
-      id,
-      establishmentId,
-    });
-    const nextEpisodes = await this.getNextEpisode(
-      establishmentName,
-      seriesId,
-      seriesSortValue,
-    );
-
+  async getMedia(establishmentName, query) {
+    const data = await this.#cmsApi.get(query);
+    const { seriesId, seriesSortValue, secondaryTags, categories } = data;
+    const [nextEpisodes, suggestedContent] = await Promise.all([
+      this.getNextEpisode(establishmentName, seriesId, seriesSortValue),
+      this.getSuggestions(
+        establishmentName,
+        secondaryTags,
+        categories,
+        seriesId,
+      ),
+    ]);
     return {
       ...data,
-      suggestedContent,
       nextEpisodes,
-    };
-  }
-
-  async getVideo(establishmentName, establishmentId, location) {
-    const data = await this.#cmsApi.get(new VideoPageQuery(location));
-    const { id, seriesId, seriesSortValue } = data;
-    const suggestedContent = await this.#contentRepository.suggestedContentFor({
-      id,
-      establishmentId,
-    });
-    const nextEpisodes = await this.getNextEpisode(
-      establishmentName,
-      seriesId,
-      seriesSortValue,
-    );
-
-    return {
-      ...data,
       suggestedContent,
-      nextEpisodes,
     };
   }
 
@@ -138,14 +151,13 @@ class CmsService {
   }
 
   async getNextEpisode(establishmentName, seriesId, seriesSortValue) {
-    const nextEpisodes = await this.#cmsApi.get(
+    return this.#cmsApi.get(
       new NextEpisodeQuery(
         establishmentName,
         seriesId,
         seriesSortValue || undefined,
       ),
     );
-    return nextEpisodes;
   }
 }
 
