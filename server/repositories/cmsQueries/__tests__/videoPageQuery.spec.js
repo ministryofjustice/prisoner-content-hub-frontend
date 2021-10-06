@@ -84,7 +84,7 @@ describe('Video page query', () => {
       };
 
       expect(query.transform(videoPage)).toStrictEqual({
-        categories: [{ id: 648, uuid: '8d9eaf09-a53e-42d9-a7be-2a2f04a0f315' }],
+        categories: [648],
         contentType: 'video',
         description: 'Education content for prisoners',
         episodeId: 1036,
@@ -100,7 +100,6 @@ describe('Video page query', () => {
           {
             id: 741,
             name: 'Self-help',
-            uuid: '8ada6f1f-e282-48b2-a9d1-4193f7354203',
           },
         ],
         seriesId: 923,

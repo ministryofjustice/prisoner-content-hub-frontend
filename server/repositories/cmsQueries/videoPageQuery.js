@@ -1,10 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const {
-  getLargeImage,
-  getCategoryIds,
-  buildSecondaryTags,
-} = require('../../utils/jsonApi');
+const { getLargeTile } = require('../../utils/jsonApi');
 
 class VideoPageQuery {
   constructor(location) {
@@ -51,6 +47,17 @@ class VideoPageQuery {
     return `${this.location}?${this.query}`;
   }
 
+  #flattenDrupalInternalTargetId = arr =>
+    arr.flatMap(
+      ({ resourceIdObjMeta: { drupal_internal__target_id: id } }) => id,
+    );
+
+  #buildSecondaryTags = arr =>
+    arr.map(({ drupalInternal_Tid: id, name }) => ({
+      id,
+      name,
+    }));
+
   transform(item) {
     return {
       id: item.drupalInternal_Nid,
@@ -67,9 +74,11 @@ class VideoPageQuery {
       seriesName: item.fieldMojSeries?.name,
       seriesSortValue: item.seriesSortValue,
       media: item.fieldVideo?.uri?.url,
-      categories: getCategoryIds(item.fieldMojTopLevelCategories),
-      secondaryTags: buildSecondaryTags(item.fieldMojSecondaryTags),
-      image: getLargeImage(item.fieldMojThumbnailImage),
+      categories: this.#flattenDrupalInternalTargetId(
+        item.fieldMojTopLevelCategories,
+      ),
+      secondaryTags: this.#buildSecondaryTags(item.fieldMojSecondaryTags),
+      image: getLargeTile(item.fieldMojThumbnailImage),
     };
   }
 }

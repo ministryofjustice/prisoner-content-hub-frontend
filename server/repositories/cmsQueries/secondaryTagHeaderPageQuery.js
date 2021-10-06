@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getLargeImage } = require('../../utils/jsonApi');
+const { getLargeTile } = require('../../utils/jsonApi');
 
 class SecondaryTagHeaderPageQuery {
   constructor(location) {
@@ -26,7 +26,7 @@ class SecondaryTagHeaderPageQuery {
       contentType: 'tags',
       name: item?.name,
       description: item?.description?.processed,
-      image: getLargeImage(item?.fieldFeaturedImage),
+      image: getLargeTile(item?.fieldFeaturedImage),
     };
   }
 }

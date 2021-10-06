@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getLargeImage, getSmallImage } = require('../../utils/jsonApi');
+const { getLargeTile, getSmallTile } = require('../../utils/jsonApi');
 
 class HomepageQuery {
   static #TILE_FIELDS = [
@@ -49,10 +49,10 @@ class HomepageQuery {
 
   transformEach(item) {
     const [upperFeatured, lowerFeatured] = item.fieldMojFeaturedTileLarge.map(
-      this.#asTile(getLargeImage),
+      this.#asTile(getLargeTile),
     );
     const smallTiles = item.fieldMojFeaturedTileSmall.map(
-      this.#asTile(getSmallImage),
+      this.#asTile(getSmallTile),
     );
 
     return {
