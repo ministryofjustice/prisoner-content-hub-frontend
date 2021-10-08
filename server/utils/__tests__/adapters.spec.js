@@ -1,7 +1,6 @@
 const {
   contentResponseFrom,
   featuredContentResponseFrom,
-  featuredContentTileResponseFrom,
   mediaResponseFrom,
   seasonResponseFrom,
   termResponseFrom,
@@ -23,7 +22,6 @@ const landingPageResponse = require('../../../test/resources/landingPage.json');
 const relatedContentResponse = require('../../../test/resources/relatedContent.json');
 const pdfContentResponse = require('../../../test/resources/pdfContentResponse.json');
 const searchResponse = require('../../../test/resources/rawSearchResponse.json');
-const featuredItems = require('../../../test/resources/featuredItems.json');
 
 describe('Adapters', () => {
   describe('.mediaResponseFrom', () => {
@@ -89,18 +87,6 @@ describe('Adapters', () => {
     it('returns formated data for featured series', () => {
       const result = featuredContentResponseFrom(featuredSeriesResponse);
       expect(result).toStrictEqual(featuredSeries());
-    });
-  });
-
-  describe('.featuredContentTileResponseFrom', () => {
-    featuredItems.forEach(({ scenario, input, output }) => {
-      it(scenario, () => {
-        const result = featuredContentTileResponseFrom(input);
-        expect(result.upperFeatured).toStrictEqual(output);
-        expect(result.lowerFeatured).toStrictEqual(output);
-        expect(result.smallTiles.length).toBe(input.small_tiles.length);
-        expect(result.smallTiles[0]).toStrictEqual(output);
-      });
     });
   });
 
