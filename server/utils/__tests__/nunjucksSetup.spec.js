@@ -24,6 +24,30 @@ describe('skip', () => {
   });
 });
 
+describe('getArrayParamString', () => {
+  let getArrayParamString;
+  beforeEach(() => {
+    const env = nunjucksSetup(express());
+    getArrayParamString = env.getFilter('getArrayParamString');
+  });
+  it('should combine the requested params', () => {
+    const NAME1 = 'name1';
+    const NAME2 = 'name2';
+    const NAME3 = 'name3';
+    const pageData = [
+      { name: NAME1, id: 1 },
+      { name: NAME2, id: 2 },
+      { name: NAME3, id: 3 },
+    ];
+    expect(getArrayParamString(pageData, 'name')).toEqual(
+      `${NAME1},${NAME2},${NAME3}`,
+    );
+  });
+  it('should return an empty string for falsy data', () => {
+    expect(getArrayParamString({ test: 'test' }, 'name')).toEqual('');
+  });
+});
+
 describe('toPagination', () => {
   let toPagination;
 

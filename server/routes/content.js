@@ -1,4 +1,4 @@
-const { prop, path, propOr } = require('ramda');
+const { prop, path } = require('ramda');
 const express = require('express');
 
 const createContentRouter = ({ hubContentService, analyticsService }) => {
@@ -33,8 +33,8 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
       );
       const contentType = prop('contentType', data);
       const sessionId = path(['session', 'id'], req);
-      const getCategoriesFrom = propOr([], 'categories');
-      const getSecondaryTagsFrom = propOr([], 'secondaryTags');
+      const categories = data?.categories || [];
+      const secondaryTags = data?.secondaryTags || [];
 
       switch (contentType) {
         case 'radio':
@@ -43,8 +43,8 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
             config,
             data: {
               ...data,
-              categories: getCategoriesFrom(data).join(','),
-              secondaryTagIds: data.secondaryTags?.map(tag => tag.id).join(','),
+              categories,
+              secondaryTags,
             },
           });
         case 'video':
@@ -53,8 +53,8 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
             config,
             data: {
               ...data,
-              categories: getCategoriesFrom(data).join(','),
-              secondaryTagIds: data.secondaryTags?.map(tag => tag.id).join(','),
+              categories,
+              secondaryTags,
             },
           });
         case 'page':
@@ -65,8 +65,8 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
             config,
             data: {
               ...data,
-              categories: getCategoriesFrom(data).join(','),
-              secondaryTags: getSecondaryTagsFrom(data).join(','),
+              categories,
+              secondaryTags,
             },
           });
         case 'landing-page':
@@ -77,7 +77,8 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
             config,
             data: {
               ...data,
-              categories: propOr('', 'categoryId', data),
+              categories: data?.categoryId || '',
+              secondaryTags,
             },
           });
         case 'pdf': {

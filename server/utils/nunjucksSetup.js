@@ -15,6 +15,9 @@ module.exports = expressApp => {
   });
 
   nunjucksEnv.addFilter('skip', (array, count) => array.slice(count));
+  nunjucksEnv.addFilter('getArrayParamString', (array, param) =>
+    Array.isArray(array) ? array.map(item => item[param]).join(',') : '',
+  );
 
   nunjucksEnv.addFilter(
     'toPagination',
