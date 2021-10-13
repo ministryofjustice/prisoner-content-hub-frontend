@@ -86,7 +86,7 @@
       series: data.seriesName,
       feedbackId: feedbackId,
       categories: data.categories,
-      secondaryTags: data.secondaryTags | getArrayParamString('id')
+      secondaryTags: data.secondaryTags | join(',', 'id')
     }) }}
 
     <div class="govuk-hub-media-player__description">

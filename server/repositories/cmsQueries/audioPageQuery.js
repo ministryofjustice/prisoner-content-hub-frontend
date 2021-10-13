@@ -33,12 +33,16 @@ class AudioPageQuery {
         'name',
         'path',
       ])
-
+      .addFields('taxonomy_term--moj_categories', [
+        'drupal_internal__tid',
+        'name',
+      ])
       .addInclude([
         'field_moj_thumbnail_image',
         'field_moj_series',
         'field_moj_audio',
         'field_moj_secondary_tags',
+        'field_moj_top_level_categories',
       ])
 
       .getQueryString();
@@ -49,8 +53,11 @@ class AudioPageQuery {
   }
 
   #flattenDrupalInternalTargetId = arr =>
-    arr.flatMap(
-      ({ resourceIdObjMeta: { drupal_internal__target_id: id } }) => id,
+    arr.map(
+      ({ resourceIdObjMeta: { drupal_internal__target_id: id }, name }) => ({
+        id,
+        name,
+      }),
     );
 
   #buildSecondaryTags = arr =>

@@ -32,13 +32,10 @@ class VideoPageQuery {
         'name',
         'path',
       ])
-
       .addFields('taxonomy_term--moj_categories', [
         'drupal_internal__tid',
         'name',
-        'path',
       ])
-
       .addInclude([
         'field_moj_thumbnail_image',
         'field_moj_series',
