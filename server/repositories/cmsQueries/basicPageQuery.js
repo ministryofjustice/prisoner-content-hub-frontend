@@ -15,6 +15,15 @@ class BasicPageQuery {
         'field_moj_series',
         'field_moj_top_level_categories',
       ])
+      .addFields('taxonomy_term--tags', ['drupal_internal__tid', 'name'])
+      .addFields('taxonomy_term--moj_categories', [
+        'drupal_internal__tid',
+        'name',
+      ])
+      .addInclude([
+        'field_moj_secondary_tags',
+        'field_moj_top_level_categories',
+      ])
 
       .getQueryString();
   }
@@ -24,9 +33,18 @@ class BasicPageQuery {
   }
 
   #flattenDrupalInternalTargetId = arr =>
-    arr.flatMap(
-      ({ resourceIdObjMeta: { drupal_internal__target_id: id } }) => id,
+    arr.map(
+      ({ resourceIdObjMeta: { drupal_internal__target_id: id }, name }) => ({
+        id,
+        name,
+      }),
     );
+
+  #buildSecondaryTags = arr =>
+    arr.map(({ drupalInternal_Tid: id, name }) => ({
+      id,
+      name,
+    }));
 
   transform(item) {
     return {
@@ -38,9 +56,7 @@ class BasicPageQuery {
       categories: this.#flattenDrupalInternalTargetId(
         item.fieldMojTopLevelCategories,
       ),
-      secondaryTags: this.#flattenDrupalInternalTargetId(
-        item.fieldMojSecondaryTags,
-      ),
+      secondaryTags: this.#buildSecondaryTags(item.fieldMojSecondaryTags),
     };
   }
 }
