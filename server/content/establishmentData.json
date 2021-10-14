@@ -125,13 +125,13 @@
     "homePageLinks": {
       "Your profile": "/profile",
       "NPR": "/content/3662",
-      "Chaplaincy": "/tags/901",
       "Inspiration": "/content/3659",
       "Exercise": "/content/10905",
       "Games": "/content/3621",
-      "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
-      "Facilities list & catalogues": "/content/4539"
+      "Healthy mind & body": "/content/3657",
+      "Facilities list & catalogues": "/content/4539",
+      "New Hall life": "/content/11697"
     }
   },
 
@@ -176,13 +176,13 @@
     "homePageLinks": {
       "Your profile": "/profile",
       "NPR": "/content/3662",
-      "Chaplaincy": "/tags/901",
       "Inspiration": "/content/3659",
       "Exercise": "/content/10905",
       "Games": "/content/3621",
-      "Healthy mind & body": "/content/3657",
       "PSIs & PSOs": "/tags/796",
-      "Facilities list & catalogues": "/content/4539"
+      "Healthy mind & body": "/content/3657",
+      "Facilities list & catalogues": "/content/4539",
+      "Styal life": "/content/11699"
     }
   },
 
