@@ -66,7 +66,6 @@ class HomepageQuery {
     id: item.drupalInternal_Nid,
     contentUrl: `/content/${item.drupalInternal_Nid}`,
     contentType: item.type.replace(/^node--/, ''),
-    isSeries: Boolean(item.fieldMojSeries),
     title: item.title,
     summary: item.fieldMojDescription?.summary,
     image: getImage(item.fieldMojThumbnailImage),

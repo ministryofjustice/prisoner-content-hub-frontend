@@ -21,7 +21,6 @@ describe('GET /', () => {
       contentType: 'foo',
       summary: 'foo summary',
       contentUrl: `/content/foo`,
-      isSeries: false,
       image: {
         alt: 'Foo image alt text',
         url: 'image.url.com',

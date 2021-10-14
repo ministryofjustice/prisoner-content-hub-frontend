@@ -374,7 +374,6 @@ describe('cms Service', () => {
               title: 'bar episode',
             },
           ],
-
           seasonId: 1,
           seriesSortValue: SERIES_SORT_VALUE,
           secondaryTags: [
@@ -476,7 +475,6 @@ describe('cms Service', () => {
         id: '10002',
         contentUrl: '/content/10002',
         contentType: 'moj_video_item',
-        isSeries: true,
         title: 'Yoga',
         summary: 'Yoga workout',
         image: {
@@ -488,7 +486,6 @@ describe('cms Service', () => {
         id: '10003',
         contentUrl: '/content/10003',
         contentType: 'moj_video_item',
-        isSeries: false,
         title: 'Lower Abs workout',
         summary: 'Intense lower core workout',
         image: {
@@ -501,7 +498,6 @@ describe('cms Service', () => {
           id: '10001',
           contentUrl: '/content/10001',
           contentType: 'moj_video_item',
-          isSeries: true,
           title: 'Lower Abs workout',
           summary: 'Intense lower core workout',
           image: {
@@ -522,7 +518,6 @@ describe('cms Service', () => {
           id: '10002',
           contentUrl: '/content/10002',
           contentType: 'moj_video_item',
-          isSeries: true,
           title: 'Yoga',
           summary: 'Yoga workout',
           image: {
@@ -534,7 +529,6 @@ describe('cms Service', () => {
           id: '10003',
           contentUrl: '/content/10003',
           contentType: 'moj_video_item',
-          isSeries: false,
           title: 'Lower Abs workout',
           summary: 'Intense lower core workout',
           image: {
@@ -547,7 +541,6 @@ describe('cms Service', () => {
             id: '10001',
             contentUrl: '/content/10001',
             contentType: 'moj_video_item',
-            isSeries: true,
             title: 'Lower Abs workout',
             summary: 'Intense lower core workout',
             image: {
