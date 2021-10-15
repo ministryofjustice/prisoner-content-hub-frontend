@@ -5,7 +5,7 @@ describe('Basic page query', () => {
   describe('url', () => {
     it('should create correct path', async () => {
       expect(query.url()).toStrictEqual(
-        'https://cms/content/1234?fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_stand_first%2Cfield_moj_secondary_tags%2Cfield_moj_series%2Cfield_moj_top_level_categories',
+        'https://cms/content/1234?include=field_moj_secondary_tags%2Cfield_moj_top_level_categories&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_stand_first%2Cfield_moj_secondary_tags%2Cfield_moj_series%2Cfield_moj_top_level_categories&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname&fields%5Btaxonomy_term--moj_categories%5D=drupal_internal__tid%2Cname',
       );
     });
   });
@@ -19,11 +19,12 @@ describe('Basic page query', () => {
         fieldMojDescription: { processed: 'Education content for prisoners' },
         fieldMojStandFirst: 'Education',
         fieldMojTopLevelCategories: [
-          { resourceIdObjMeta: { drupal_internal__target_id: 1234 } },
+          {
+            resourceIdObjMeta: { drupal_internal__target_id: 1234 },
+            name: 'steve',
+          },
         ],
-        fieldMojSecondaryTags: [
-          { resourceIdObjMeta: { drupal_internal__target_id: 2345 } },
-        ],
+        fieldMojSecondaryTags: [{ drupalInternal_Tid: 2345, name: 'carol' }],
       };
 
       expect(query.transform(basicPage)).toStrictEqual({
@@ -32,8 +33,8 @@ describe('Basic page query', () => {
         contentType: 'page',
         description: 'Education content for prisoners',
         standFirst: 'Education',
-        categories: [1234],
-        secondaryTags: [2345],
+        categories: [{ id: 1234, name: 'steve' }],
+        secondaryTags: [{ id: 2345, name: 'carol' }],
       });
     });
   });
