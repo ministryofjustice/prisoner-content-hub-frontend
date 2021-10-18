@@ -25,7 +25,11 @@ const getSmallTile = item => {
 
 const getCategoryIds = arr =>
   arr.map(
-    ({ resourceIdObjMeta: { drupal_internal__target_id: id }, id: uuid, name }) => ({
+    ({
+      resourceIdObjMeta: { drupal_internal__target_id: id },
+      id: uuid,
+      name,
+    }) => ({
       id,
       uuid,
       name,

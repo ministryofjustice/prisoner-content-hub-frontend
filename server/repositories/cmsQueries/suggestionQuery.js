@@ -14,7 +14,6 @@ class SuggestionQuery {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
     this.query = new Query()
-      // .addFilter('field_moj_top_level_categories.id', categoryUUID, 'IN')
       .addFields('node--page', SuggestionQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', SuggestionQuery.#TILE_FIELDS)
       .addFields('node--moj_radio_item', SuggestionQuery.#TILE_FIELDS)
