@@ -58,6 +58,7 @@ class VideoPageQuery {
   transform(item) {
     return {
       id: item.drupalInternal_Nid,
+      uuid: item.id,
       title: item.title,
       contentType: 'video',
       description: item.fieldMojDescription?.processed,

@@ -19,11 +19,8 @@ const {
   SecondaryTagHeaderPageQuery,
 } = require('../../repositories/cmsQueries/secondaryTagHeaderPageQuery');
 const {
-  SuggestionSecondaryTagQuery,
-} = require('../../repositories/cmsQueries/suggestionSecondaryTagQuery');
-const {
-  SuggestionCategoryQuery,
-} = require('../../repositories/cmsQueries/suggestionCategoryQuery');
+  SuggestionQuery,
+} = require('../../repositories/cmsQueries/suggestionQuery');
 const {
   NextEpisodeQuery,
 } = require('../../repositories/cmsQueries/nextEpisodeQuery');
@@ -43,6 +40,7 @@ describe('cms Service', () => {
   const ESTABLISHMENT_NAME = 'wayland';
   const SERIES_SORT_VALUE = 1001;
   const SERIES_ID = 923;
+  const UUID = '846';
 
   beforeEach(() => {
     cmsService = new CmsService(cmsApi, {});
@@ -75,6 +73,7 @@ describe('cms Service', () => {
       description: 'Education content for prisoners',
       episodeId: 1036,
       id: 6236,
+      uuid: UUID,
       image: {
         alt: 'faith',
         url: 'https://cms.org/jdajsgjdfj.jpg',
@@ -102,6 +101,7 @@ describe('cms Service', () => {
       description: 'Education content for prisoners',
       episodeId: 1036,
       id: 6236,
+      uuid: UUID,
       image: {
         alt: 'faith',
         url: 'https://cms.org/jdajsgjdfj.jpg',
@@ -133,7 +133,7 @@ describe('cms Service', () => {
       },
     ];
 
-    const createSuggestionSecondaryTag = () => [
+    const createSuggestion = () => [
       {
         id: 1,
         title: 'foo episode',
@@ -142,9 +142,6 @@ describe('cms Service', () => {
         id: 2,
         title: 'bar episode',
       },
-    ];
-
-    const createSuggestionCategory = () => [
       {
         id: 3,
         title: 'foo audio',
@@ -198,8 +195,7 @@ describe('cms Service', () => {
         cmsApi.get
           .mockResolvedValueOnce(createAudioPage())
           .mockResolvedValueOnce(createNextEpisode())
-          .mockResolvedValueOnce(createSuggestionSecondaryTag())
-          .mockResolvedValueOnce(createSuggestionCategory());
+          .mockResolvedValueOnce(createSuggestion());
         cmsApi.lookupContent.mockResolvedValue({
           type: 'node--moj_radio_item',
           location: 'https://cms.org/content/1234',
@@ -225,22 +221,7 @@ describe('cms Service', () => {
       it('should retrieve suggested content', () => {
         expect(cmsApi.get).toHaveBeenNthCalledWith(
           3,
-          new SuggestionSecondaryTagQuery(
-            ESTABLISHMENT_NAME,
-            [147],
-            SERIES_ID,
-            4,
-          ),
-        );
-        expect(cmsApi.get).toHaveBeenNthCalledWith(
-          4,
-          new SuggestionCategoryQuery(
-            ESTABLISHMENT_NAME,
-            [846],
-            [147],
-            SERIES_ID,
-            4,
-          ),
+          new SuggestionQuery(ESTABLISHMENT_NAME, UUID, 4),
         );
       });
       it('returns audio content provided by CMS service', async () => {
@@ -250,6 +231,7 @@ describe('cms Service', () => {
           description: 'Education content for prisoners',
           episodeId: 1036,
           id: 6236,
+          uuid: UUID,
           image: {
             alt: 'faith',
             url: 'https://cms.org/jdajsgjdfj.jpg',
@@ -307,8 +289,7 @@ describe('cms Service', () => {
         cmsApi.get
           .mockResolvedValueOnce(createVideoPage())
           .mockResolvedValueOnce(createNextEpisode())
-          .mockResolvedValueOnce(createSuggestionSecondaryTag())
-          .mockResolvedValueOnce(createSuggestionCategory());
+          .mockResolvedValueOnce(createSuggestion());
         cmsApi.lookupContent.mockResolvedValue({
           type: 'node--moj_video_item',
           location: 'https://cms.org/content/1234',
@@ -334,22 +315,7 @@ describe('cms Service', () => {
       it('should retrieve suggested content', () => {
         expect(cmsApi.get).toHaveBeenNthCalledWith(
           3,
-          new SuggestionSecondaryTagQuery(
-            ESTABLISHMENT_NAME,
-            [147],
-            SERIES_ID,
-            4,
-          ),
-        );
-        expect(cmsApi.get).toHaveBeenNthCalledWith(
-          4,
-          new SuggestionCategoryQuery(
-            ESTABLISHMENT_NAME,
-            [846],
-            [147],
-            SERIES_ID,
-            4,
-          ),
+          new SuggestionQuery(ESTABLISHMENT_NAME, UUID, 4),
         );
       });
       it('returns video content provided by CMS service', async () => {
@@ -359,6 +325,7 @@ describe('cms Service', () => {
           description: 'Education content for prisoners',
           episodeId: 1036,
           id: 6236,
+          uuid: UUID,
           image: {
             alt: 'faith',
             url: 'https://cms.org/jdajsgjdfj.jpg',

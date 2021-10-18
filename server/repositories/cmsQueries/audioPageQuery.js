@@ -59,6 +59,7 @@ class AudioPageQuery {
   transform(item) {
     return {
       id: item.drupalInternal_Nid,
+      uuid: item.id,
       title: item.title,
       contentType: 'radio',
       description: item.fieldMojDescription?.processed,

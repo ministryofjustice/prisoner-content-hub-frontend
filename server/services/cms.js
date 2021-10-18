@@ -14,11 +14,8 @@ const {
   SeriesHeaderPageQuery,
 } = require('../repositories/cmsQueries/seriesHeaderPageQuery');
 const {
-  SuggestionSecondaryTagQuery,
-} = require('../repositories/cmsQueries/suggestionSecondaryTagQuery');
-const {
-  SuggestionCategoryQuery,
-} = require('../repositories/cmsQueries/suggestionCategoryQuery');
+  SuggestionQuery,
+} = require('../repositories/cmsQueries/suggestionQuery');
 const { AudioPageQuery } = require('../repositories/cmsQueries/audioPageQuery');
 const { VideoPageQuery } = require('../repositories/cmsQueries/videoPageQuery');
 const { PdfPageQuery } = require('../repositories/cmsQueries/pdfPageQuery');
@@ -71,30 +68,14 @@ class CmsService {
     }
   }
 
-  async getSuggestions(establishmentName, secondaryTags, categories, seriesId) {
+  async getSuggestions(establishmentName, uuid) {
     const limit = 4;
-    const secondaryTagUUID = secondaryTags.map(({ uuid }) => uuid);
-    const secondaryTagSuggestions = await this.#cmsApi.get(
-      new SuggestionSecondaryTagQuery(
-        establishmentName,
-        secondaryTagUUID,
-        seriesId,
-        limit,
-      ),
-    );
-    const categorySuggestions =
-      secondaryTagSuggestions.length < limit && categories
-        ? await this.#cmsApi.get(
-            new SuggestionCategoryQuery(
-              establishmentName,
-              categories.map(({ uuid }) => uuid),
-              secondaryTagUUID,
-              seriesId,
-              limit,
-            ),
-          )
-        : [];
-    return [...secondaryTagSuggestions, ...categorySuggestions].slice(0, limit);
+    const suggestions =
+      (await this.#cmsApi.get(
+        new SuggestionQuery(establishmentName, uuid, limit),
+      )) || [];
+
+    return suggestions;
   }
 
   async getContent(establishmentName, establishmentId, contentId) {
@@ -122,15 +103,10 @@ class CmsService {
 
   async getMedia(establishmentName, query) {
     const data = await this.#cmsApi.get(query);
-    const { seriesId, seriesSortValue, secondaryTags, categories } = data;
+    const { seriesId, seriesSortValue, uuid } = data;
     const [nextEpisodes, suggestedContent] = await Promise.all([
       this.getNextEpisode(establishmentName, seriesId, seriesSortValue),
-      this.getSuggestions(
-        establishmentName,
-        secondaryTags,
-        categories,
-        seriesId,
-      ),
+      this.getSuggestions(establishmentName, uuid),
     ]);
     return {
       ...data,
