@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { typeFrom } = require('../../utils/adapters');
-const { getLargeTile, getSmallTile } = require('../../utils/jsonApi');
+const { getLargeImage, getSmallTile } = require('../../utils/jsonApi');
 
 class SecondaryTagPageQuery {
   static #TILE_FIELDS = [
@@ -48,19 +47,7 @@ class SecondaryTagPageQuery {
       contentType: 'tags',
       name: item?.name,
       description: item?.description?.processed,
-      image: getLargeTile(item?.fieldFeaturedImage),
-    };
-  };
-
-  #getContent = item => {
-    const id = item?.drupalInternal_Nid;
-    return {
-      id,
-      title: item?.title,
-      contentType: typeFrom(item?.type),
-      summary: item?.fieldMojDescription?.summary,
-      contentUrl: `/content/${id}`,
-      image: getSmallTile(item?.fieldMojThumbnailImage),
+      image: getLargeImage(item?.fieldFeaturedImage),
     };
   };
 
@@ -71,7 +58,7 @@ class SecondaryTagPageQuery {
       ...{
         relatedContent: {
           contentType: 'default',
-          data: deserializedResponse.map(item => this.#getContent(item)),
+          data: deserializedResponse.map(item => getSmallTile(item)),
         },
       },
     };

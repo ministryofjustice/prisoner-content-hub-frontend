@@ -53,7 +53,7 @@ class CmsApi {
     try {
       return await call();
     } catch (err) {
-      if (err.response && statusCodes.includes(err.response.status)) {
+      if (statusCodes.includes(err?.response?.status)) {
         throw new NotFound(err.request.path);
       }
       throw err;

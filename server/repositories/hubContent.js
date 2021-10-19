@@ -84,32 +84,6 @@ const hubContentRepository = httpClient => {
     return fillContentItems(seasonResponseFrom(response));
   }
 
-  async function nextEpisodesFor({
-    id,
-    establishmentId,
-    perPage = 3,
-    episodeId,
-  } = {}) {
-    const endpoint = `${config.api.series}/${id}/next`;
-    const query = {
-      _number: perPage,
-      _episode_id: episodeId,
-      _prison: establishmentId,
-      _sort_order: 'ASC',
-    };
-
-    if (!id || !episodeId) {
-      logger.info(`HubContentRepository (nextEpisodesFor) - No ID passed`);
-      return [];
-    }
-
-    const response = await httpClient.get(endpoint, { query });
-
-    if (!Array.isArray(response)) return [];
-
-    return seasonResponseFrom(response);
-  }
-
   async function relatedContentFor({
     id,
     establishmentId,
@@ -128,30 +102,6 @@ const hubContentRepository = httpClient => {
 
     if (!id) {
       logger.info(`HubContentRepository (relatedContentFor) - No ID passed`);
-      return [];
-    }
-
-    const response = await httpClient.get(endpoint, { query });
-
-    if (!Array.isArray(response)) return [];
-
-    return fillContentItems(contentResponseFrom(response));
-  }
-
-  async function suggestedContentFor({
-    id,
-    establishmentId,
-    perPage = 4,
-  } = {}) {
-    const endpoint = `${config.api.hubContent}/suggestions`;
-    const query = {
-      _category: id,
-      _number: perPage,
-      _prison: establishmentId,
-    };
-
-    if (!id) {
-      logger.info(`HubContentRepository (suggestedContentFor) - No ID passed`);
       return [];
     }
 
@@ -190,9 +140,7 @@ const hubContentRepository = httpClient => {
     contentFor,
     termFor,
     seasonFor,
-    nextEpisodesFor,
     relatedContentFor,
-    suggestedContentFor,
     streamFor,
   };
 };

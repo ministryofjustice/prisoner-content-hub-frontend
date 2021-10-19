@@ -1,6 +1,10 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getLargeTile } = require('../../utils/jsonApi');
+const {
+  getLargeImage,
+  getCategoryIds,
+  buildSecondaryTags,
+} = require('../../utils/jsonApi');
 
 class AudioPageQuery {
   constructor(location) {
@@ -52,23 +56,10 @@ class AudioPageQuery {
     return `${this.location}?${this.query}`;
   }
 
-  #flattenDrupalInternalTargetId = arr =>
-    arr.map(
-      ({ resourceIdObjMeta: { drupal_internal__target_id: id }, name }) => ({
-        id,
-        name,
-      }),
-    );
-
-  #buildSecondaryTags = arr =>
-    arr.map(({ drupalInternal_Tid: id, name }) => ({
-      id,
-      name,
-    }));
-
   transform(item) {
     return {
       id: item.drupalInternal_Nid,
+      uuid: item.id,
       title: item.title,
       contentType: 'radio',
       description: item.fieldMojDescription?.processed,
@@ -83,11 +74,9 @@ class AudioPageQuery {
       seriesName: item.fieldMojSeries?.name,
       seriesSortValue: item.seriesSortValue,
       media: item.fieldMojAudio?.uri?.url,
-      categories: this.#flattenDrupalInternalTargetId(
-        item.fieldMojTopLevelCategories,
-      ),
-      secondaryTags: this.#buildSecondaryTags(item.fieldMojSecondaryTags),
-      image: getLargeTile(item.fieldMojThumbnailImage),
+      categories: getCategoryIds(item.fieldMojTopLevelCategories),
+      secondaryTags: buildSecondaryTags(item.fieldMojSecondaryTags),
+      image: getLargeImage(item.fieldMojThumbnailImage),
     };
   }
 }

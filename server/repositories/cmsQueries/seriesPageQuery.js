@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { typeFrom } = require('../../utils/adapters');
-const { getLargeTile, getSmallTile } = require('../../utils/jsonApi');
+const { getLargeImage, getSmallTile } = require('../../utils/jsonApi');
 
 class SeriesPageQuery {
   static #TILE_FIELDS = [
@@ -45,20 +44,8 @@ class SeriesPageQuery {
     contentType: 'series',
     name: item?.name,
     description: item?.description?.processed,
-    image: getLargeTile(item?.fieldFeaturedImage),
+    image: getLargeImage(item?.fieldFeaturedImage),
   });
-
-  #getContent = item => {
-    const id = item?.drupalInternal_Nid;
-    return {
-      id,
-      contentType: typeFrom(item?.type),
-      title: item?.title,
-      summary: item?.fieldMojDescription?.summary,
-      contentUrl: `/content/${id}`,
-      image: getSmallTile(item?.fieldMojThumbnailImage),
-    };
-  };
 
   transform(deserializedResponse) {
     if (deserializedResponse.length === 0) return null;
@@ -67,7 +54,7 @@ class SeriesPageQuery {
       ...{
         relatedContent: {
           contentType: 'default',
-          data: deserializedResponse.map(item => this.#getContent(item)),
+          data: deserializedResponse.map(item => getSmallTile(item)),
         },
       },
     };

@@ -87,11 +87,18 @@ describe('Audio page query', () => {
       };
 
       expect(query.transform(audioPage)).toStrictEqual({
-        categories: [{ id: 648, name: 'steve' }],
+        categories: [
+          {
+            id: 648,
+            uuid: '8d9eaf09-a53e-42d9-a7be-2a2f04a0f315',
+            name: 'steve',
+          },
+        ],
         contentType: 'radio',
         description: 'Education content for prisoners',
         episodeId: 1036,
         id: 6236,
+        uuid: '43eb4a97-e6ef-440c-a044-88e9bb982620',
         image: {
           alt: 'faith',
           url: 'https://cms.org/jdajsgjdfj.jpg',
@@ -104,6 +111,7 @@ describe('Audio page query', () => {
           {
             id: 741,
             name: 'Self-help',
+            uuid: '8ada6f1f-e282-48b2-a9d1-4193f7354203',
           },
         ],
         seriesId: 923,
