@@ -319,7 +319,8 @@ describe('cms Service', () => {
         expect(cmsApi.get).toHaveBeenNthCalledWith(
           3,
           new SuggestionQuery(ESTABLISHMENT_NAME, UUID, 4),
-      );
+        );
+      });
       it('returns video content provided by CMS service', async () => {
         expect(result).toStrictEqual({
           categories: [{ id: 648, uuid: 846 }],
@@ -710,6 +711,5 @@ describe('cms Service', () => {
         });
       });
     });
-  });
   });
 });
