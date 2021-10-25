@@ -4,13 +4,24 @@ const { getSmallTile } = require('../../utils/jsonApi');
 const { typeFrom } = require('../../utils/adapters');
 
 class CategoryPageQuery {
+  static #TILE_FIELDS = [
+    'drupal_internal__nid',
+    'title',
+    'field_moj_description',
+    'field_moj_thumbnail_image',
+    'field_moj_secondary_tags',
+  ];
+
   constructor(establishmentName, uuid) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
     this.query = new Query()
+      .addFields('node--page', CategoryPageQuery.#TILE_FIELDS)
+      .addFields('node--moj_video_item', CategoryPageQuery.#TILE_FIELDS)
+      .addFields('node--moj_radio_item', CategoryPageQuery.#TILE_FIELDS)
+      .addFields('moj_pdf_item', CategoryPageQuery.#TILE_FIELDS)
       .addInclude([
         'field_featured_tiles',
-        'field_featured_tiles.field_featured_image',
         'field_featured_tiles.field_moj_thumbnail_image',
       ])
 
@@ -22,7 +33,6 @@ class CategoryPageQuery {
   }
 
   getTile(item) {
-    console.log(`getting Tile... ${item?.type}`);
     switch (typeFrom(item?.type)) {
       case 'radio':
       case 'pdf':
@@ -33,19 +43,11 @@ class CategoryPageQuery {
       case 'series':
       case 'tags':
       default:
-        console.log('HUZZAH!');
-        console.log(item?.type);
-        console.log(item);
-        console.log('HOO-HAR!!');
-        break;
+        return null;
     }
-    return null;
   }
 
   transform(data) {
-    console.log('111111111111111');
-    console.log(data);
-    console.log('222222222222222');
     const id =
       data?.fieldLegacyLandingPage?.resourceIdObjMeta
         ?.drupal_internal__target_id;
@@ -59,7 +61,9 @@ class CategoryPageQuery {
         postscript: true,
         returnUrl: `/content/${id}`,
       },
-      categoryFeaturedContent: data?.fieldFeaturedTiles.map(this.getTile),
+      categoryFeaturedContent: data?.fieldFeaturedTiles
+        .map(item => this.getTile(item))
+        .filter(item => item),
     };
   }
 }

@@ -13,14 +13,16 @@ const getSmallImage = data => getImage(data, 'tile_small');
 
 const getSmallTile = item => {
   const id = item?.drupalInternal_Nid;
-  return {
-    id,
-    contentType: typeFrom(item?.type),
-    title: item?.title,
-    summary: item?.fieldMojDescription?.summary,
-    contentUrl: `/content/${id}`,
-    image: getSmallImage(item?.fieldMojThumbnailImage),
-  };
+  return !id
+    ? null
+    : {
+        id,
+        contentType: typeFrom(item?.type),
+        title: item?.title,
+        summary: item?.fieldMojDescription?.summary,
+        contentUrl: `/content/${id}`,
+        image: getSmallImage(item?.fieldMojThumbnailImage),
+      };
 };
 
 const getCategoryIds = arr =>

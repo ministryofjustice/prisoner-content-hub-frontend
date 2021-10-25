@@ -14,6 +14,9 @@ const {
   SeriesHeaderPageQuery,
 } = require('../repositories/cmsQueries/seriesHeaderPageQuery');
 const {
+  CategoryPageQuery,
+} = require('../repositories/cmsQueries/categoryPageQuery');
+const {
   SuggestionQuery,
 } = require('../repositories/cmsQueries/suggestionQuery');
 const { AudioPageQuery } = require('../repositories/cmsQueries/audioPageQuery');
@@ -55,6 +58,13 @@ class CmsService {
     return tagResult;
   }
 
+  async getCategory(establishmentName, uuid) {
+    const result = await this.#cmsApi.get(
+      new CategoryPageQuery(establishmentName, uuid),
+    );
+    return result;
+  }
+
   async getTag(establishmentName, id) {
     const lookupData = await this.#cmsApi.lookupTag(establishmentName, id);
     const { type, uuid, location } = lookupData;
@@ -64,23 +74,8 @@ class CmsService {
       case 'taxonomy_term--series':
         return this.getSeries(establishmentName, uuid, location);
       case 'taxonomy_term--moj_categories':
-        console.log(`777777777777777`);
-        console.log(type);
-        console.log(
-          JSON.stringify(
-            await this.#cmsApi.get(
-              new CategoryPageQuery(establishmentName, uuid),
-            ),
-            null,
-            2,
-          ),
-        );
-        console.log(`888888888888888`);
-        return null;
+        return this.getCategory(establishmentName, uuid);
       default:
-        console.log(`999999999999999`);
-        console.log(type);
-        console.log(`000000000000000`);
         return null;
     }
   }
@@ -111,15 +106,9 @@ class CmsService {
       case 'node--moj_video_item':
         return this.getMedia(establishmentName, new VideoPageQuery(location));
       case 'node--landing_page':
-        console.log(`333333333333333`);
-        console.log(type);
-        console.log(`444444444444444`);
         return null;
       /// ...other types go here
       default:
-        console.log(`555555555555555`);
-        console.log(type);
-        console.log(`666666666666666`);
         // log unsupported type
         // throw new Error('Unknown content type');
         return null;

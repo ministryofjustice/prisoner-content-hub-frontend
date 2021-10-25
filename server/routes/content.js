@@ -71,22 +71,7 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
           });
         case 'landing-page':
           config.postscript = true;
-          console.log('!!!!!!!!!!!!!!!!!!!');
-          console.log(
-            JSON.stringify(
-              {
-                title: data.title,
-                config,
-                data: {
-                  ...data,
-                  categories: propOr('', 'categoryId', data),
-                },
-              },
-              null,
-              2,
-            ),
-          );
-          console.log('!!!!!!!!!!!!!!!!!!!');
+
           return res.render('pages/category', {
             title: data.title,
             config,

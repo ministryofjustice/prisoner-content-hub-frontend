@@ -28,6 +28,9 @@ const {
   SeriesPageQuery,
 } = require('../../repositories/cmsQueries/seriesPageQuery');
 const {
+  CategoryPageQuery,
+} = require('../../repositories/cmsQueries/categoryPageQuery');
+const {
   SeriesHeaderPageQuery,
 } = require('../../repositories/cmsQueries/seriesHeaderPageQuery');
 const { CmsService } = require('../cms');
@@ -316,7 +319,8 @@ describe('cms Service', () => {
         expect(cmsApi.get).toHaveBeenNthCalledWith(
           3,
           new SuggestionQuery(ESTABLISHMENT_NAME, UUID, 4),
-      );
+        );
+      });
       it('returns video content provided by CMS service', async () => {
         expect(result).toStrictEqual({
           categories: [{ id: 648, uuid: 846 }],
@@ -647,6 +651,58 @@ describe('cms Service', () => {
         });
       });
     });
-  });
+
+    describe('with a category', () => {
+      const location = 'https://cms.org/tag/1234';
+      beforeEach(() => {
+        cmsApi.lookupTag.mockResolvedValue({
+          type: 'taxonomy_term--moj_categories',
+          location,
+          uuid,
+        });
+      });
+      describe('which contains related content', () => {
+        let result;
+        const populatedCategory = { name: 'le name' };
+        beforeEach(async () => {
+          cmsApi.get.mockResolvedValue(populatedCategory);
+          result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
+        });
+        it('looks up the category', () => {
+          expect(cmsApi.lookupTag).toHaveBeenCalledWith(
+            ESTABLISHMENT_NAME,
+            TAG_ID,
+          );
+        });
+        it('returns the category', async () => {
+          expect(cmsApi.get).toHaveBeenCalledTimes(1);
+          expect(cmsApi.get).toHaveBeenCalledWith(
+            new CategoryPageQuery(ESTABLISHMENT_NAME, uuid),
+          );
+          expect(result).toBe(populatedCategory);
+        });
+      });
+      describe('which has no related content', () => {
+        let result;
+        const populatedCategory = {};
+        beforeEach(async () => {
+          cmsApi.get.mockResolvedValueOnce({});
+          result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
+        });
+        it('looks up the category', () => {
+          expect(cmsApi.lookupTag).toHaveBeenCalledWith(
+            ESTABLISHMENT_NAME,
+            TAG_ID,
+          );
+        });
+        it('returns the category', async () => {
+          expect(cmsApi.get).toHaveBeenNthCalledWith(
+            1,
+            new CategoryPageQuery(ESTABLISHMENT_NAME, uuid),
+          );
+          expect(result).toStrictEqual(populatedCategory);
+        });
+      });
+    });
   });
 });
