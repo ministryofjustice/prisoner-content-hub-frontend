@@ -17,6 +17,9 @@ const {
   CategoryPageQuery,
 } = require('../repositories/cmsQueries/categoryPageQuery');
 const {
+  InThisSectionQuery,
+} = require('../repositories/cmsQueries/inThisSectionQuery');
+const {
   SuggestionQuery,
 } = require('../repositories/cmsQueries/suggestionQuery');
 const { AudioPageQuery } = require('../repositories/cmsQueries/audioPageQuery');
@@ -59,10 +62,14 @@ class CmsService {
   }
 
   async getCategory(establishmentName, uuid) {
-    const result = await this.#cmsApi.get(
-      new CategoryPageQuery(establishmentName, uuid),
-    );
-    return result;
+    const [categoryData, categoryMenu] = await Promise.all([
+      this.#cmsApi.get(new CategoryPageQuery(establishmentName, uuid)),
+      this.#cmsApi.get(new InThisSectionQuery(establishmentName, uuid)),
+    ]);
+    return {
+      ...categoryData,
+      categoryMenu,
+    };
   }
 
   async getTag(establishmentName, id) {

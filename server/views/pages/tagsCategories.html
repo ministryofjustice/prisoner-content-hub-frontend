@@ -9,7 +9,7 @@
 {% extends "../components/template.njk" %}
 
 {% block pageTitle %}
-  {{ title }}
+  {{ data.title }}
 {% endblock %}
 
 {% block head %}
@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
+  {{ pageNavigation({ title: data.title }) }}
 {% endblock %}
 
 {% block topBar %}

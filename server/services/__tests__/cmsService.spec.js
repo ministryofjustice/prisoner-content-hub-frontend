@@ -664,8 +664,12 @@ describe('cms Service', () => {
       describe('which contains related content', () => {
         let result;
         const populatedCategory = { name: 'le name' };
+        const populatedInThisSection = [
+          { name: 'Ralf', drupalInternal_Tid: '1' },
+        ];
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValue(populatedCategory);
+          cmsApi.get.mockResolvedValueOnce(populatedCategory);
+          cmsApi.get.mockResolvedValueOnce(populatedInThisSection);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
         });
         it('looks up the category', () => {
@@ -675,18 +679,21 @@ describe('cms Service', () => {
           );
         });
         it('returns the category', async () => {
-          expect(cmsApi.get).toHaveBeenCalledTimes(1);
+          expect(cmsApi.get).toHaveBeenCalledTimes(2);
           expect(cmsApi.get).toHaveBeenCalledWith(
             new CategoryPageQuery(ESTABLISHMENT_NAME, uuid),
           );
-          expect(result).toBe(populatedCategory);
+          expect(result).toStrictEqual({
+            ...populatedCategory,
+            categoryMenu: populatedInThisSection,
+          });
         });
       });
       describe('which has no related content', () => {
         let result;
-        const populatedCategory = {};
         beforeEach(async () => {
           cmsApi.get.mockResolvedValueOnce({});
+          cmsApi.get.mockResolvedValueOnce([]);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
         });
         it('looks up the category', () => {
@@ -700,7 +707,7 @@ describe('cms Service', () => {
             1,
             new CategoryPageQuery(ESTABLISHMENT_NAME, uuid),
           );
-          expect(result).toStrictEqual(populatedCategory);
+          expect(result).toStrictEqual({ categoryMenu: [] });
         });
       });
     });

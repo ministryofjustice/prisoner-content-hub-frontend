@@ -62,8 +62,8 @@ class CategoryPageQuery {
         returnUrl: `/content/${id}`,
       },
       categoryFeaturedContent: data?.fieldFeaturedTiles
-        .map(item => this.getTile(item))
-        .filter(item => item),
+        .filter(item => item.drupalInternal_Nid)
+        .map(item => this.getTile(item)),
     };
   }
 }
