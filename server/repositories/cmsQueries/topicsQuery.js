@@ -2,17 +2,11 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 
 class TopicsQuery {
+  static #TOPIC_FIELDS = ['drupal_internal__tid', 'name', 'description'];
+
   static #QUERYSTRING = new Query()
-    .addFields('taxonomy_term--tags', [
-      'drupal_internal__tid',
-      'name',
-      'description',
-    ])
-    .addFields('taxonomy_term--moj_categories', [
-      'name',
-      'description',
-      'field_legacy_landing_page',
-    ])
+    .addFields('taxonomy_term--tags', TopicsQuery.#TOPIC_FIELDS)
+    .addFields('taxonomy_term--moj_categories', TopicsQuery.#TOPIC_FIELDS)
     .addFilter(
       'vid.meta.drupal_internal__target_id',
       ['moj_categories', 'tags'],
@@ -32,28 +26,14 @@ class TopicsQuery {
     }`;
   }
 
-  transformEach(item) {
-    const isTag = item.type === 'taxonomy_term--tags';
-    return isTag ? this.#asTag(item) : this.#asCategory(item);
-  }
-
-  #asTag = ({ drupalInternal_Tid: id, name, description }) => ({
-    id,
-    linkText: name,
-    description: description?.processed,
-    href: `/tags/${id}`,
-  });
-
-  #asCategory = ({ name, description, fieldLegacyLandingPage }) => {
-    const id =
-      fieldLegacyLandingPage?.resourceIdObjMeta?.drupal_internal__target_id;
+  transformEach({ drupalInternal_Tid: id, name, description }) {
     return {
       id,
       linkText: name,
       description: description?.processed,
-      href: `/content/${id}`,
+      href: `/tags/${id}`,
     };
-  };
+  }
 }
 
 module.exports = { TopicsQuery };
