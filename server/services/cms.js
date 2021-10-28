@@ -43,7 +43,7 @@ class CmsService {
     const result = await this.#cmsApi.get(
       new SecondaryTagPageQuery(establishmentName, uuid),
     );
-    if (result?.name) return result;
+    if (result?.title) return result;
     const tagResult = await this.#cmsApi.get(
       new SecondaryTagHeaderPageQuery(location),
     );
@@ -54,7 +54,7 @@ class CmsService {
     const result = await this.#cmsApi.get(
       new SeriesPageQuery(establishmentName, uuid),
     );
-    if (result?.name) return result;
+    if (result?.title) return result;
     const tagResult = await this.#cmsApi.get(
       new SeriesHeaderPageQuery(location),
     );

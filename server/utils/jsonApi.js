@@ -9,19 +9,36 @@ const getImage = (data, type) => {
 };
 
 const getLargeImage = data => getImage(data, 'tile_large');
-const getSmallImage = data => getImage(data, 'tile_small');
 
-const getSmallTile = item => {
-  const id = item?.drupalInternal_Nid;
-  return {
-    id,
-    contentType: typeFrom(item?.type),
-    title: item?.title,
-    summary: item?.fieldMojDescription?.summary,
-    contentUrl: `/content/${id}`,
-    image: getSmallImage(item?.fieldMojThumbnailImage),
-  };
-};
+const getTile = (item, imageSize = 'tile_small') => ({
+  id: item?.drupalInternal_Nid,
+  contentType: typeFrom(item?.type),
+  title: item?.title,
+  summary: item?.fieldMojDescription?.summary,
+  contentUrl: item?.path?.alias,
+  image: getImage(item?.fieldMojThumbnailImage, imageSize),
+});
+
+const getSeriesTile = (item, imageSize = 'tile_small') => ({
+  id: item?.drupalInternal_Tid,
+  contentType: typeFrom(item?.type),
+  title: item?.name,
+  summary: item?.description?.processed,
+  contentUrl: item?.path?.alias,
+  image: getImage(item?.fieldFeaturedImage, imageSize),
+});
+
+const isTag = ({ type }) =>
+  [
+    'taxonomy_term--series',
+    'taxonomy_term--moj_categories',
+    'taxonomy_term--tags',
+  ].includes(type);
+
+const getSmallTile = item =>
+  isTag(item) ? getSeriesTile(item) : getTile(item);
+const getLargeTile = item =>
+  isTag(item) ? getSeriesTile(item, 'tile_large') : getTile(item, 'tile_large');
 
 const getCategoryIds = arr =>
   arr.map(
@@ -44,10 +61,9 @@ const buildSecondaryTags = arr =>
   }));
 
 module.exports = {
-  getLargeImage,
-  getSmallImage,
-  getImage,
   getSmallTile,
+  getLargeTile,
+  getLargeImage,
   getCategoryIds,
   buildSecondaryTags,
 };

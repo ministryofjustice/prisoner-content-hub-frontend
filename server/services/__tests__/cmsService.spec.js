@@ -547,7 +547,7 @@ describe('cms Service', () => {
       });
       describe('which contains related content', () => {
         let result;
-        const populatedSecondaryTag = { name: 'le name' };
+        const populatedSecondaryTag = { title: 'le name' };
         beforeEach(async () => {
           cmsApi.get.mockResolvedValue(populatedSecondaryTag);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
@@ -605,7 +605,7 @@ describe('cms Service', () => {
       });
       describe('which contains related content', () => {
         let result;
-        const populatedSeries = { name: 'le name' };
+        const populatedSeries = { title: 'le name' };
         beforeEach(async () => {
           cmsApi.get.mockResolvedValue(populatedSeries);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);

@@ -7,7 +7,7 @@ describe('Secondary Tag page query', () => {
   describe('path', () => {
     it('should create correct path', async () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/${ESTABLISHMENTNAME}/node?filter%5Bfield_moj_secondary_tags.id%5D=${UUID}&include=field_moj_thumbnail_image%2Cfield_moj_secondary_tags.field_featured_image&sort=-created&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_secondary_tags&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_secondary_tags&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_secondary_tags&fields%5Bmoj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_secondary_tags&fields%5Bfile--file%5D=image_style_uri&fields%5Btaxonomy_term--tags%5D=name%2Cdescription%2Cdrupal_internal__tid%2Cfield_featured_image`,
+        `/jsonapi/prison/${ESTABLISHMENTNAME}/node?filter%5Bfield_moj_secondary_tags.id%5D=${UUID}&include=field_moj_thumbnail_image%2Cfield_moj_secondary_tags.field_featured_image&sort=-created&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_secondary_tags%2Cpath&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_secondary_tags%2Cpath&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_secondary_tags%2Cpath&fields%5Bmoj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_secondary_tags%2Cpath&fields%5Bfile--file%5D=image_style_uri&fields%5Btaxonomy_term--tags%5D=name%2Cdescription%2Cdrupal_internal__tid%2Cfield_featured_image%2Cpath`,
       );
     });
   });
@@ -19,6 +19,7 @@ describe('Secondary Tag page query', () => {
     it('should list the content', async () => {
       const createSecondaryTag = id => ({
         id,
+        type: 'taxonomy_term--tags',
         drupalInternal_Tid: `100${id}`,
         name: `name${id}`,
         description: { processed: `description${id}` },
@@ -26,6 +27,7 @@ describe('Secondary Tag page query', () => {
           imageStyleUri: [{ tile_large: `tile_large${id}` }],
           resourceIdObjMeta: { alt: `alt${id}` },
         },
+        path: { alias: `/tags/${id}` },
       });
       const createContent = (id, fieldMojSecondaryTags) => ({
         drupalInternal_Nid: id,
@@ -37,16 +39,18 @@ describe('Secondary Tag page query', () => {
           resourceIdObjMeta: { alt: `alt${id}` },
         },
         fieldMojSecondaryTags,
+        path: { alias: `/content/${id}` },
       });
       const createTransformedSecondaryTag = id => ({
         id: `100${id}`,
         contentType: 'tags',
-        name: `name${id}`,
-        description: `description${id}`,
+        title: `name${id}`,
+        summary: `description${id}`,
         image: {
           url: `tile_large${id}`,
           alt: `alt${id}`,
         },
+        contentUrl: `/tags/${id}`,
       });
       const createTransformedContent = id => ({
         id,

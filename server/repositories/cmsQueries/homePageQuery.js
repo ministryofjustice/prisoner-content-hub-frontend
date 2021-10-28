@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getLargeImage, getSmallImage } = require('../../utils/jsonApi');
+const { getLargeTile, getSmallTile } = require('../../utils/jsonApi');
 
 class HomepageQuery {
   static #TILE_FIELDS = [
@@ -10,6 +10,7 @@ class HomepageQuery {
     'title',
     'field_moj_description',
     'field_moj_series',
+    'path',
   ];
 
   constructor(establishmentName) {
@@ -48,28 +49,15 @@ class HomepageQuery {
   }
 
   transformEach(item) {
-    const [upperFeatured, lowerFeatured] = item.fieldMojFeaturedTileLarge.map(
-      this.#asTile(getLargeImage),
-    );
-    const smallTiles = item.fieldMojFeaturedTileSmall.map(
-      this.#asTile(getSmallImage),
-    );
+    const [upperFeatured, lowerFeatured] =
+      item.fieldMojFeaturedTileLarge.map(getLargeTile);
 
     return {
       upperFeatured,
       lowerFeatured,
-      smallTiles,
+      smallTiles: item.fieldMojFeaturedTileSmall.map(getSmallTile),
     };
   }
-
-  #asTile = getImage => item => ({
-    id: item.drupalInternal_Nid,
-    contentUrl: `/content/${item.drupalInternal_Nid}`,
-    contentType: item.type.replace(/^node--/, ''),
-    title: item.title,
-    summary: item.fieldMojDescription?.summary,
-    image: getImage(item.fieldMojThumbnailImage),
-  });
 }
 
 module.exports = { HomepageQuery };

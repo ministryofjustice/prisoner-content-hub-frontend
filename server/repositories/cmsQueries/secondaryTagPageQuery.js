@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getLargeImage, getSmallTile } = require('../../utils/jsonApi');
+const { getSmallTile, getLargeTile } = require('../../utils/jsonApi');
 
 class SecondaryTagPageQuery {
   static #TILE_FIELDS = [
@@ -9,6 +9,7 @@ class SecondaryTagPageQuery {
     'field_moj_description',
     'field_moj_thumbnail_image',
     'field_moj_secondary_tags',
+    'path',
   ];
 
   constructor(establishmentName, uuid) {
@@ -26,6 +27,7 @@ class SecondaryTagPageQuery {
         'description',
         'drupal_internal__tid',
         'field_featured_image',
+        'path',
       ])
       .addInclude([
         'field_moj_thumbnail_image',
@@ -41,14 +43,7 @@ class SecondaryTagPageQuery {
 
   #getTag = fieldMojSecondaryTags => {
     const item = fieldMojSecondaryTags.find(({ id }) => id === this.uuid);
-
-    return {
-      id: item?.drupalInternal_Tid,
-      contentType: 'tags',
-      name: item?.name,
-      description: item?.description?.processed,
-      image: getLargeImage(item?.fieldFeaturedImage),
-    };
+    return getLargeTile(item);
   };
 
   transform(deserializedResponse) {

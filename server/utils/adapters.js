@@ -179,7 +179,8 @@ function pdfResponseFrom(data) {
 }
 
 function typeFrom(type) {
-  return HUB_CONTENT_TYPES[type.match(/[^node\--].*/g)[0]];
+  const matches = type.match(/(?<=--)(.*)/g);
+  return HUB_CONTENT_TYPES[matches ? matches[0] : type];
 }
 
 function seasonResponseFrom(data = []) {

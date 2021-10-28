@@ -43,10 +43,10 @@
       <div class="govuk-main-wrapper">
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-one-half govuk-!-padding-top-2">
-            <h1 id="title" class="govuk-heading-xl">{{ data.name }}</h1>
-            {% if data.description %}
+            <h1 id="title" class="govuk-heading-xl">{{ data.title }}</h1>
+            {% if data.summary %}
               <div id="description" class="govuk-body-l">
-                {{data.description | safe }}
+                {{data.summary | safe }}
               </div>
             {% endif %}
           </div>
@@ -80,9 +80,9 @@
     {{ hubFeedbackWidget({
       contentId: data.id,
       title: data.title,
-      name: data.name,
+      name: data.title,
       contentType: data.contentType,
-      series: data.name,
+      series: data.title,
       feedbackId: feedbackId,
       categories: data.categories,
       secondaryTags: data.secondaryTags

@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getLargeImage } = require('../../utils/jsonApi');
+const { getLargeTile } = require('../../utils/jsonApi');
 
 class SecondaryTagHeaderPageQuery {
   constructor(location) {
@@ -11,6 +11,7 @@ class SecondaryTagHeaderPageQuery {
         'description',
         'drupal_internal__tid',
         'field_featured_image',
+        'path',
       ])
       .addInclude(['field_featured_image'])
       .getQueryString();
@@ -21,13 +22,7 @@ class SecondaryTagHeaderPageQuery {
   }
 
   transform(item) {
-    return {
-      id: item?.drupalInternal_Tid,
-      contentType: 'tags',
-      name: item?.name,
-      description: item?.description?.processed,
-      image: getLargeImage(item?.fieldFeaturedImage),
-    };
+    return getLargeTile(item);
   }
 }
 
