@@ -54,6 +54,7 @@ class CategoryPageQuery {
       },
       categoryFeaturedContent: data?.fieldFeaturedTiles
         .filter(({ title = null, name = null }) => title || name)
+        .slice(0, 13)
         .map(this.getTile),
     };
   }
