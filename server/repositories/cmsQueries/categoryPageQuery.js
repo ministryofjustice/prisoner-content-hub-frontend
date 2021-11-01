@@ -28,7 +28,6 @@ class CategoryPageQuery {
         'field_featured_tiles.field_moj_thumbnail_image',
         'field_featured_tiles.field_featured_image',
       ])
-
       .getQueryString();
   }
 
@@ -37,7 +36,9 @@ class CategoryPageQuery {
   }
 
   getTile(item, index) {
-    return index === 0 ? getLargeTile(item) : getSmallTile(item);
+    return index === 0
+      ? { ...getLargeTile(item), summary: '' }
+      : getSmallTile(item);
   }
 
   transform(data) {

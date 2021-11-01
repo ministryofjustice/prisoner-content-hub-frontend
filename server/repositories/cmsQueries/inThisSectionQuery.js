@@ -8,6 +8,7 @@ class InThisSectionQuery {
       .addFilter('field_category.id', uuid)
       .addFields('taxonomy_term--series', ['drupal_internal__tid', 'name'])
       .addSort('name', 'ASC')
+      .addPageLimit(100)
       .getQueryString();
   }
 
