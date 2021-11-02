@@ -1,16 +1,23 @@
-{% from "../components/related-content/macro.njk" import hubRelatedContent %}
-{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../components/user-details/macro.njk" import userDetails %}
+{% from "../components/content-tile-large/macro.njk" import contentTileLarge %}
+{% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
+{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 
 {% extends "../components/template.njk" %}
 
 {% block pageTitle %}
-  {{ title }}
+  {{ data.title }}
+{% endblock %}
+
+{% block head %}
+  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
+  {{ pageNavigation({ title: data.title }) }}
 {% endblock %}
 
 {% block topBar %}
@@ -24,74 +31,89 @@
 
 {% block userDetails %}
   {{ userDetails({
-    detailsType: config.detailsType,
+    detailsType: 'small',
     userName: config.userName
   }) }}
 {% endblock %}
 
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block main %}
-  <div id="category-{{tagId}}" class="govuk-hub-landing-page-header govuk-hub-landing-page-header--with-stripe">
-    <div class="govuk-width-container">
-      <div class="govuk-main-wrapper">
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-one-half govuk-!-padding-top-2">
-            <h1 id="title" class="govuk-heading-xl">{{ data.name }}</h1>
-
-            {% if data.description.summary %}
-              <p id="summary" class="govuk-body-l">{{ data.description.summary}}</p>
-            {% endif %}
-
-            {% if data.description.sanitized %}
-              <div id="description" class="gov-uk-dynamic-content">
-                {{data.description.sanitized | safe }}
-              </div>
-            {% endif %}
-          </div>
-          {% if data.image.url %}
-            <div class="govuk-grid-column-one-half">
-              <div data-page-featured-image class="govuk-hub-tag-page-header__content-image" style="background-image: url({{data.image.url}});"></div>
-            </div>
-          {% endif %}
-        </div>
+{% block header %}
+  <div class="govuk-width-container govuk-body govuk-clearfix hub-header">
+    <div>
+      <h1 class="govuk-heading-l" id="title">{{ data.title }}</h1>
+    </div>
+    <div class="help-container-tablet">
+      <h2 class="govuk-heading-m">In this section</h2>
+      <ul class="govuk-body">
+        {% for link in data.categoryMenu %}
+          <li>
+            <a href="{{link.href}}" class="govuk-link">{{link.linkText}}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="help-container">
+      <div class="help-block">
+        <h2 class="govuk-heading-m">In this section</h2>
+        <ul class="govuk-body">
+          {% for link in data.categoryMenu %}
+            <li>
+              <a href="{{link.href}}" class="govuk-link">{{link.linkText}}</a>
+            </li>
+          {% endfor %}
+        </ul>
+        <h2 class="govuk-heading-m">Give us feedback</h2>
+        {{ hubFeedbackWidget({
+          contentId: data.id,
+          title: data.title,
+          contentType: data.contentType,
+          establishment: establishmentDisplayName,
+          sidebar: true,
+          feedbackId: feedbackId,
+          categories: data.categories,
+          secondaryTags: data.secondaryTags
+        })}}
       </div>
     </div>
   </div>
-
 {% endblock %}
 
 {% block content %}
-  {{ hubRelatedContent({
-    id: tagId,
-    data: data.relatedContent,
-    lazyLoadContent: true
-  }) }}
-
-  <div class="govuk-form-group govuk-!-margin-bottom-2">
-    {% if data.contentType =='series'%}
-      <p class="govuk-hub-article-feedback govuk-hub-feedback-text">Tell us what you think about this series:</p>
-    {% endif %}
-
-    {% if data.contentType =='tags'%}
-      <p class="govuk-hub-article-feedback govuk-hub-feedback-text">Tell us what you think about this topic:</p>
-    {% endif %}
+  <div class="govuk-body categories-container">
+    <h2>Featured</h2>
+    <div class="category-content">
+      {{ contentTileLarge({content: data.categoryFeaturedContent[0], imageAlign: 'right'}) }}
+      {%- for tiles in data.categoryFeaturedContent | skip(1) | batch(3) %}
+      <div class="category-content__three-items">
+        {%- for tile in tiles %}
+          {{ contentTileSmall(tile) }}
+        {%- endfor %}
+      </div>
+      {%- endfor %}
+    </div>
+  <div class="feedback-tablet">
+    <h2 class="govuk-heading-m">Give us feedback</h2>
     {{ hubFeedbackWidget({
-      contentId: data.id,
-      title: data.title,
-      name: data.name,
-      contentType: data.contentType,
-      series: data.name,
-      feedbackId: feedbackId,
-      categories: data.categories,
-      secondaryTags: ''
-    })}}
+        id: 'feedback-widget-category-tablet',
+        contentId: data.id,
+        title: data.title,
+        contentType: data.contentType,
+        sidebar: true,
+        feedbackId: feedbackId,
+        categories: data.categories,
+        secondaryTags: data.secondaryTags
+      })}}
   </div>
+</div>
+{% endblock %}
 
+{% block homeNavigation %}{% endblock %}
+{% block search %}{% endblock %}
+
+{% block bodyEnd %}
+<script src="/public/all.js"></script>
+<script>
+  window
+    .GOVUKFrontend
+    .initAll();
+</script>
 {% endblock %}
