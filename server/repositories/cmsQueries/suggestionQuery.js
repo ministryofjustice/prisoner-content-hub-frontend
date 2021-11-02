@@ -8,6 +8,7 @@ class SuggestionQuery {
     'title',
     'field_moj_description',
     'field_moj_thumbnail_image',
+    'path',
   ];
 
   constructor(establishmentName, uuid, limit = 4) {

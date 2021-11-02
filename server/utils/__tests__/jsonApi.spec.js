@@ -1,6 +1,6 @@
 const {
   getLargeImage,
-  getSmallImage,
+  getLargeTile,
   getSmallTile,
   getCategoryIds,
   buildSecondaryTags,
@@ -57,59 +57,91 @@ describe('getLargeImage', () => {
   });
 });
 
-describe('getSmallImage', () => {
-  describe('with complete data', () => {
-    let result;
-    beforeEach(() => {
-      result = getSmallImage(imgData);
+describe('getting tile data', () => {
+  describe('with content tile data', () => {
+    const tileData = {
+      drupalInternal_Nid: 42,
+      type: 'moj_video_item',
+      title: 'title',
+      fieldMojDescription: { summary: 'summary' },
+      fieldMojThumbnailImage: {
+        imageStyleUri: [
+          {
+            tile_small: 'tile_small',
+            tile_large: 'tile_large',
+          },
+        ],
+        resourceIdObjMeta: { alt: 'alt' },
+      },
+      path: { alias: '/content/42' },
+    };
+    describe('getSmallTile', () => {
+      it('should return the small tile data', () => {
+        expect(getSmallTile(tileData)).toEqual({
+          id: 42,
+          contentType: 'video',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/content/42',
+          image: { url: 'tile_small', alt: 'alt' },
+        });
+      });
     });
-    it('should return the small image url', () => {
-      expect(result.url).toEqual(SMALL_TILE);
-    });
-    it('should return the alt text', () => {
-      expect(result.alt).toEqual(ALT_TEXT);
-    });
-  });
-  describe('with no data', () => {
-    it('should return null', () => {
-      expect(getSmallImage(null)).toBeNull();
-    });
-  });
-  describe('with partial data', () => {
-    it('should return only the image if provided', () => {
-      expect(
-        getSmallImage({ imageStyleUri: [{ tile_small: SMALL_TILE }] }),
-      ).toEqual({ url: SMALL_TILE, alt: '' });
-    });
-    it('should return only the alt if provided', () => {
-      expect(getSmallImage({ resourceIdObjMeta: { alt: ALT_TEXT } })).toEqual({
-        url: '',
-        alt: ALT_TEXT,
+    describe('getLargeTile', () => {
+      const result = getLargeTile(tileData);
+      it('should return the large tile data', () => {
+        expect(result).toEqual({
+          id: 42,
+          contentType: 'video',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/content/42',
+          image: { url: 'tile_large', alt: 'alt' },
+        });
       });
     });
   });
-});
-
-describe('getSmallTile', () => {
-  const smallTileData = {
-    drupalInternal_Nid: 42,
-    type: 'moj_video_item',
-    title: 'title',
-    fieldMojDescription: { summary: 'summary' },
-    fieldMojThumbnailImage: {
-      imageStyleUri: [{ tile_small: 'tile_small' }],
-      resourceIdObjMeta: { alt: 'alt' },
-    },
-  };
-  const result = getSmallTile(smallTileData);
-  it('should return the small tile data', () => {
-    expect(result).toEqual({
-      id: 42,
-      contentType: 'video',
-      title: 'title',
-      summary: 'summary',
-      contentUrl: '/content/42',
-      image: { url: 'tile_small', alt: 'alt' },
+  describe('with tag tile data', () => {
+    const tileData = {
+      drupalInternal_Tid: 42,
+      type: 'taxonomy_term--series',
+      name: 'title',
+      description: { processed: 'summary' },
+      fieldFeaturedImage: {
+        imageStyleUri: [
+          {
+            tile_small: 'tile_small',
+            tile_large: 'tile_large',
+          },
+        ],
+        resourceIdObjMeta: { alt: 'alt' },
+      },
+      path: { alias: '/tags/42' },
+    };
+    describe('getSmallTile', () => {
+      it('should return the small tile data', () => {
+        expect(getSmallTile(tileData)).toEqual({
+          id: 42,
+          contentType: 'series',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/tags/42',
+          image: { url: 'tile_small', alt: 'alt' },
+        });
+      });
+    });
+    describe('getLargeTile', () => {
+      const result = getLargeTile(tileData);
+      it('should return the large tile data', () => {
+        expect(result).toEqual({
+          id: 42,
+          contentType: 'series',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/tags/42',
+          image: { url: 'tile_large', alt: 'alt' },
+        });
+      });
     });
   });
 });

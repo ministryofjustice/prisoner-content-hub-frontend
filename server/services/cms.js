@@ -14,6 +14,12 @@ const {
   SeriesHeaderPageQuery,
 } = require('../repositories/cmsQueries/seriesHeaderPageQuery');
 const {
+  CategoryPageQuery,
+} = require('../repositories/cmsQueries/categoryPageQuery');
+const {
+  InThisSectionQuery,
+} = require('../repositories/cmsQueries/inThisSectionQuery');
+const {
   SuggestionQuery,
 } = require('../repositories/cmsQueries/suggestionQuery');
 const { AudioPageQuery } = require('../repositories/cmsQueries/audioPageQuery');
@@ -37,7 +43,7 @@ class CmsService {
     const result = await this.#cmsApi.get(
       new SecondaryTagPageQuery(establishmentName, uuid),
     );
-    if (result?.name) return result;
+    if (result?.title) return result;
     const tagResult = await this.#cmsApi.get(
       new SecondaryTagHeaderPageQuery(location),
     );
@@ -48,11 +54,22 @@ class CmsService {
     const result = await this.#cmsApi.get(
       new SeriesPageQuery(establishmentName, uuid),
     );
-    if (result?.name) return result;
+    if (result?.title) return result;
     const tagResult = await this.#cmsApi.get(
       new SeriesHeaderPageQuery(location),
     );
     return tagResult;
+  }
+
+  async getCategory(establishmentName, uuid) {
+    const [categoryData, categoryMenu] = await Promise.all([
+      this.#cmsApi.get(new CategoryPageQuery(establishmentName, uuid)),
+      this.#cmsApi.get(new InThisSectionQuery(establishmentName, uuid)),
+    ]);
+    return {
+      ...categoryData,
+      categoryMenu,
+    };
   }
 
   async getTag(establishmentName, id) {
@@ -63,6 +80,8 @@ class CmsService {
         return this.getSecondaryTag(establishmentName, uuid, location);
       case 'taxonomy_term--series':
         return this.getSeries(establishmentName, uuid, location);
+      case 'taxonomy_term--moj_categories':
+        return this.getCategory(establishmentName, uuid);
       default:
         return null;
     }
@@ -93,6 +112,8 @@ class CmsService {
         return this.getMedia(establishmentName, new AudioPageQuery(location));
       case 'node--moj_video_item':
         return this.getMedia(establishmentName, new VideoPageQuery(location));
+      case 'node--landing_page':
+        return null;
       /// ...other types go here
       default:
         // log unsupported type
