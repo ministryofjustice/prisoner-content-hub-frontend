@@ -5,7 +5,7 @@ describe('Topics query', () => {
   describe('path', () => {
     it('should create correct path', async () => {
       expect(query.path()).toStrictEqual(
-        '/jsonapi/prison/berwyn/taxonomy_term?filter%5Bvid.meta.drupal_internal__target_id%5D%5Bcondition%5D%5Bpath%5D=vid.meta.drupal_internal__target_id&filter%5Bvid.meta.drupal_internal__target_id%5D%5Bcondition%5D%5Bvalue%5D%5B0%5D=moj_categories&filter%5Bvid.meta.drupal_internal__target_id%5D%5Bcondition%5D%5Bvalue%5D%5B1%5D=tags&filter%5Bvid.meta.drupal_internal__target_id%5D%5Bcondition%5D%5Boperator%5D=IN&page%5Blimit%5D=100&sort=name&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname%2Cdescription&fields%5Btaxonomy_term--moj_categories%5D=name%2Cdescription%2Cfield_legacy_landing_page',
+        '/jsonapi/prison/berwyn/taxonomy_term?filter%5Bvid.meta.drupal_internal__target_id%5D%5Bcondition%5D%5Bpath%5D=vid.meta.drupal_internal__target_id&filter%5Bvid.meta.drupal_internal__target_id%5D%5Bcondition%5D%5Bvalue%5D%5B0%5D=moj_categories&filter%5Bvid.meta.drupal_internal__target_id%5D%5Bcondition%5D%5Bvalue%5D%5B1%5D=tags&filter%5Bvid.meta.drupal_internal__target_id%5D%5Bcondition%5D%5Boperator%5D=IN&page%5Blimit%5D=100&sort=name&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname%2Cdescription&fields%5Btaxonomy_term--moj_categories%5D=drupal_internal__tid%2Cname%2Cdescription',
       );
     });
   });
@@ -31,14 +31,12 @@ describe('Topics query', () => {
         name: '2',
         description: { processed: '3' },
         type: '4',
-        fieldLegacyLandingPage: {
-          resourceIdObjMeta: { drupal_internal__target_id: '1' },
-        },
+        drupalInternal_Tid: '1',
       };
 
       expect(query.transformEach(categoryItem)).toStrictEqual({
         description: '3',
-        href: '/content/1',
+        href: '/tags/1',
         id: '1',
         linkText: '2',
       });
