@@ -265,7 +265,7 @@ describe('GET /profile', () => {
           const $ = cheerio.load(response.text);
 
           expect($('[data-test="incentivesLink"] a').attr('href')).toBe(
-            '/content/4204',
+            '/tags/874',
           );
         }));
   });
@@ -414,7 +414,7 @@ describe('GET /profile', () => {
           const $ = cheerio.load(response.text);
 
           expect($('[data-test="visitsLink"] a').attr('href')).toBe(
-            '/content/4203',
+            '/tags/873',
           );
         }));
   });
