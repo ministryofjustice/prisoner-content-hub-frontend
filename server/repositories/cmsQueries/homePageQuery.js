@@ -49,8 +49,9 @@ class HomepageQuery {
   }
 
   transformEach(item) {
-    const [upperFeatured, lowerFeatured] =
-      item.fieldMojFeaturedTileLarge.map(getLargeTile);
+    const [upperFeatured, lowerFeatured] = item.fieldMojFeaturedTileLarge.map(
+      featured => (featured?.path?.alias ? getLargeTile(featured) : null),
+    );
 
     return {
       upperFeatured,
