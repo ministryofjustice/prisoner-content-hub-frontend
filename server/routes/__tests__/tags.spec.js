@@ -40,8 +40,8 @@ describe('GET /tags', () => {
     describe('on success', () => {
       const data = {
         contentType: 'tags',
-        name: 'foo bar',
-        description: 'foo description',
+        title: 'foo bar',
+        summary: 'foo description',
         image: {
           alt: 'Foo Image',
           url: 'foo.url.com/image.png',
@@ -90,11 +90,11 @@ describe('GET /tags', () => {
               const $ = cheerio.load(response.text);
 
               expect($('#title').text()).toContain(
-                data.name,
+                data.title,
                 'did not have correct header title',
               );
 
-              expect($('#description').text()).toContain(data.description);
+              expect($('#description').text()).toContain(data.summary);
 
               expect($('[data-page-featured-image]').attr('style')).toContain(
                 data.image.url,

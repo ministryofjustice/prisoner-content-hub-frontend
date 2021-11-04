@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getLargeImage, getSmallTile } = require('../../utils/jsonApi');
+const { getLargeTile, getSmallTile } = require('../../utils/jsonApi');
 
 class SeriesPageQuery {
   static #TILE_FIELDS = [
@@ -9,6 +9,7 @@ class SeriesPageQuery {
     'field_moj_description',
     'field_moj_thumbnail_image',
     'field_moj_series',
+    'path',
   ];
 
   constructor(establishmentName, uuid) {
@@ -26,6 +27,7 @@ class SeriesPageQuery {
         'description',
         'drupal_internal__tid',
         'field_featured_image',
+        'path',
       ])
       .addInclude([
         'field_moj_thumbnail_image',
@@ -39,22 +41,14 @@ class SeriesPageQuery {
     return `/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
   }
 
-  #getSeries = item => ({
-    id: item?.drupalInternal_Tid,
-    contentType: 'series',
-    name: item?.name,
-    description: item?.description?.processed,
-    image: getLargeImage(item?.fieldFeaturedImage),
-  });
-
   transform(deserializedResponse) {
     if (deserializedResponse.length === 0) return null;
     return {
-      ...this.#getSeries(deserializedResponse[0].fieldMojSeries),
+      ...getLargeTile(deserializedResponse[0].fieldMojSeries),
       ...{
         relatedContent: {
           contentType: 'default',
-          data: deserializedResponse.map(item => getSmallTile(item)),
+          data: deserializedResponse.map(getSmallTile),
         },
       },
     };
