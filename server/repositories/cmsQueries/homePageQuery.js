@@ -6,7 +6,6 @@ class HomepageQuery {
   static #TILE_FIELDS = [
     'drupal_internal__nid',
     'field_moj_thumbnail_image',
-    'field_image',
     'title',
     'field_moj_description',
     'field_moj_series',
@@ -27,7 +26,6 @@ class HomepageQuery {
       .addFields('node--moj_video_item', HomepageQuery.#TILE_FIELDS)
       .addFields('node--moj_radio_item', HomepageQuery.#TILE_FIELDS)
       .addFields('node--moj_pdf_item', HomepageQuery.#TILE_FIELDS)
-      .addFields('node--landing_page', HomepageQuery.#TILE_FIELDS)
       .addFields('file--file', [
         'drupal_internal__fid',
         'id',
@@ -36,9 +34,7 @@ class HomepageQuery {
 
       .addInclude([
         'field_moj_featured_tile_large.field_moj_thumbnail_image',
-        'field_moj_featured_tile_large.field_image',
         'field_moj_featured_tile_small.field_moj_thumbnail_image',
-        'field_moj_featured_tile_small.field_image',
       ])
       .addPageLimit(1)
       .getQueryString();
