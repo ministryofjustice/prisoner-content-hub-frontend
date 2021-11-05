@@ -2,6 +2,8 @@
 const _passport = require('passport');
 const { path } = require('ramda');
 const { User } = require('./user');
+const { isAdult } = require('../utils/date');
+const { getEstablishment } = require('../utils');
 
 const getSafeReturnUrl = ({ returnUrl = '/' } = {}) =>
   // type-check to mitigate "type confusion through parameter tampering", where an attacker
@@ -57,6 +59,14 @@ const createMockSignIn = ({ offenderService }) =>
       const { bookingId } = await offenderService.getOffenderDetailsFor(user);
       user.setBookingId(bookingId);
 
+      if (
+        !req.session?.establishmentName ||
+        req.session.establishmentName === 'localhost:3000'
+      ) {
+        req.session.establishmentId = 1083;
+        req.session.establishmentName = 'felthama';
+      }
+
       req.session.passport = {
         user: user.serialize(),
       };
@@ -98,8 +108,28 @@ const createSignInCallbackMiddleware = ({
       );
 
       if (isPrisonerId(user.prisonerId)) {
-        const { bookingId } = await offenderService.getOffenderDetailsFor(user);
+        const { bookingId, dateOfBirth, agencyId } =
+          await offenderService.getOffenderDetailsFor(user);
         user.setBookingId(bookingId);
+        if (
+          !req.session?.establishmentName ||
+          req.session.establishmentName === 'localhost:3000'
+        ) {
+          const { establishmentId, establishmentName } = getEstablishment(
+            agencyId,
+            isAdult(dateOfBirth),
+          );
+          req.session.establishmentId = establishmentId;
+          req.session.establishmentName = establishmentName;
+        }
+        // console.log('******establishmentId******');
+        // console.log(agencyId);
+        // console.log('******establishmentId******');
+        // console.log(dateOfBirth);
+        // console.log('******establishmentId******');
+        // console.log(req.session.establishmentId);
+        // console.log('******establishmentName*****');
+        // console.log(req.session.establishmentName);
       }
       req.session.passport.user = user.serialize();
 

@@ -14,6 +14,22 @@ const getEstablishmentId = (
     10,
   );
 
+const getEstablishment = (
+  agencyId,
+  isAdult,
+  establishmentData = defaultEstablishmentData,
+) => {
+  const establishmentId = Object.keys(establishmentData).find(
+    id =>
+      establishmentData?.[id]?.agencyId === agencyId &&
+      establishmentData?.[id]?.isAdult === isAdult,
+  );
+  return {
+    establishmentId,
+    establishmentName: establishmentData[establishmentId]?.name,
+  };
+};
+
 const getEstablishmentSearchName = (
   id,
   establishmentData = defaultEstablishmentData,
@@ -62,6 +78,7 @@ const fillContentItems = (contentItems = [], number = 4) =>
 
 module.exports = {
   getEstablishmentId,
+  getEstablishment,
   getEstablishmentDisplayName,
   getEstablishmentSearchName,
   getEstablishmentHomepageLinks,
