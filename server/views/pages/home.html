@@ -66,13 +66,17 @@
 
 {% block content %}
   <div class="govuk-body home-content">
-    {{ contentTileLarge({content: homepage.upperFeatured, imageAlign: 'right'}) }}
+    {% if homepage.upperFeatured %}
+      {{ contentTileLarge({content: homepage.upperFeatured, imageAlign: 'right'}) }}
+    {% endif %}
     <div class="home-content__four-items">
       {% for tile in homepage.smallTiles %}
         {{ contentTileSmall(tile) }}
       {% endfor %}
     </div>
-    {{ contentTileLarge({content: homepage.lowerFeatured, imageAlign: 'left'}) }}
+    {% if homepage.lowerFeatured %}
+      {{ contentTileLarge({content: homepage.lowerFeatured, imageAlign: 'left'}) }}
+    {% endif %}
   </div>
 {% endblock %}
 
