@@ -22,7 +22,7 @@ const createTimetableRouter = ({ offenderService }) => {
       const endDate = format(addDays(today, 6), 'yyyy-MM-dd');
       const { user } = req;
 
-      if (user) {
+      if (user?.isSignedIn()) {
         events = await Promise.all([
           offenderService.getEventsFor(user, startDate, endDate),
         ]);
@@ -59,7 +59,7 @@ const createTimetableRouter = ({ offenderService }) => {
       const endDate = format(yesterday, 'yyyy-MM-dd');
       const { user } = req;
 
-      if (user) {
+      if (user?.isSignedIn()) {
         events = await Promise.all([
           offenderService.getEventsFor(user, startDate, endDate),
         ]);
@@ -96,7 +96,7 @@ const createTimetableRouter = ({ offenderService }) => {
       const endDate = format(addDays(nextWeekStart, 6), 'yyyy-MM-dd');
       const { user } = req;
 
-      if (req.user) {
+      if (user?.isSignedIn()) {
         events = await Promise.all([
           offenderService.getEventsFor(user, startDate, endDate),
         ]);

@@ -17,7 +17,7 @@ const createAuthRouter = ({ signIn, signInCallback, signOut }) => {
 
   router.get('/error', (req, res) => {
     config.detailsType = 'small';
-    res.locals.userName = req.user && req.user.getFullName();
+    res.locals.userName = req.user?.getFullName();
     return res.render('pages/authError', {
       title: 'Authentication Error',
       config,

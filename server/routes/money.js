@@ -48,7 +48,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
 
       const { user } = req;
 
-      if (user) {
+      if (user?.isSignedIn()) {
         const damageObligations =
           await prisonerInformationService.getDamageObligationsFor(user);
 
@@ -83,7 +83,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
 
         const { user } = req;
 
-        if (user) {
+        if (user?.isSignedIn()) {
           const accountCode = 'spends';
 
           const { selectedDate } = req.query;
@@ -146,7 +146,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
 
       const { user } = req;
 
-      if (user) {
+      if (user?.isSignedIn()) {
         const accountCode = 'savings';
 
         const { selectedDate } = req.query;
@@ -208,7 +208,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
 
       const { user } = req;
 
-      if (user) {
+      if (user?.isSignedIn()) {
         const { selectedDate } = req.query;
         const { dateSelection, fromDate, toDate } =
           processSelectedDate(selectedDate);
