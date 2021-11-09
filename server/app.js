@@ -241,6 +241,12 @@ const createApp = services => {
     );
   }
 
+  app.use((req, res, next) => {
+    res.locals.userName = req.user?.getFullName();
+    res.locals.isSignedIn = Boolean(req.user?.getFullName());
+    next();
+  });
+
   // Routing
   if (!process.env.HOTJAR_ID) {
     logger.warn('HOTJAR_ID not set');

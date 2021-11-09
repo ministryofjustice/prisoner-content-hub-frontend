@@ -10,14 +10,12 @@ const createTagRouter = ({ hubTagsService }) => {
       if (!id) {
         return next();
       }
-      const userName = req.user && req.user.getFullName();
       const establishmentId = path(['session', 'establishmentId'], req);
       const config = {
         content: true,
         header: false,
         postscript: false,
         detailsType: 'small',
-        userName,
         returnUrl: req.originalUrl,
       };
 

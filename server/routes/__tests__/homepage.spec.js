@@ -88,6 +88,8 @@ describe('GET /', () => {
             establishmentPersonalisationToggle(),
         };
         req.user = userSupplier();
+        res.locals.userName = req.user?.getFullName();
+        res.locals.isSignedIn = Boolean(req.user?.getFullName());
         next();
       });
       app.use(router);

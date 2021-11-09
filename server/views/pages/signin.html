@@ -37,7 +37,7 @@
   {{ topBar({
     establishmentDisplayName: establishmentDisplayName,
     showBar: false,
-    userName: config.userName,
+    userName: userName,
     returnUrl: config.returnUrl
   }) }}
 {% endblock %}
@@ -45,7 +45,7 @@
 {% block userDetails %}
   {{ userDetails({
     detailsType: config.detailsType,
-    userName: config.userName,
+    userName: userName,
     hideBar: config.hideBar
   }) }}
 {% endblock %}
@@ -61,7 +61,7 @@
 
 {% block main %}
   <div class="govuk-width-container signin">
-    {% if config.userName %}
+    {% if isSignedIn %}
       <p class="govuk-body signin-width">You are already logged in</p>
     {% else %}
       {% if form.errorList | length %}

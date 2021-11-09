@@ -11,7 +11,6 @@ const createGamesRouter = () => {
 
   router.get('/chess', (req, res) => {
     config.detailsType = 'small';
-    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/chess', {
       title: 'Chess',
@@ -21,7 +20,6 @@ const createGamesRouter = () => {
 
   router.get('/sudoku', (req, res) => {
     config.detailsType = 'small';
-    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/sudoku', {
       title: 'Sudoku',
@@ -31,7 +29,6 @@ const createGamesRouter = () => {
 
   router.get('/neontroids', (req, res) => {
     config.detailsType = 'small';
-    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/neontroids', {
       title: 'Neontroids',
@@ -41,7 +38,6 @@ const createGamesRouter = () => {
 
   router.get('/mimstris', (req, res) => {
     config.detailsType = 'small';
-    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/mimstris', {
       title: 'Mimstris',
@@ -51,7 +47,6 @@ const createGamesRouter = () => {
 
   router.get('/invadersfromspace', (req, res) => {
     config.detailsType = 'small';
-    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/invadersfromspace', {
       title: 'Invaders from Space',
@@ -61,7 +56,6 @@ const createGamesRouter = () => {
 
   router.get('/crossword', (req, res) => {
     config.detailsType = 'small';
-    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/crossword', {
       title: 'Crossword',
@@ -71,7 +65,6 @@ const createGamesRouter = () => {
 
   router.get('/christmas-crossword', (req, res) => {
     config.detailsType = 'small';
-    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/christmas-crossword', {
       title: 'Christmas Crossword',
@@ -81,7 +74,6 @@ const createGamesRouter = () => {
 
   router.get('/solitaire', (req, res) => {
     config.detailsType = 'small';
-    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/solitaire', {
       title: 'Solitaire',
@@ -91,7 +83,6 @@ const createGamesRouter = () => {
 
   router.get('/smashout', (req, res) => {
     config.detailsType = 'small';
-    config.userName = req.user && req.user.getFullName();
 
     return res.render('pages/games/smashout', {
       title: 'Smashout',

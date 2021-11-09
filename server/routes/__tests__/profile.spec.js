@@ -29,6 +29,8 @@ describe('GET /profile', () => {
   const setMockUser = (req, res, next) => {
     req.user = userSupplier();
     res.locals = establishmentSupplier();
+    res.locals.userName = req.user?.getFullName();
+    res.locals.isSignedIn = Boolean(req.user?.getFullName());
     next();
   };
 

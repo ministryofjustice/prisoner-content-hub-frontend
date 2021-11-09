@@ -160,6 +160,8 @@ describe('Prisoner Money', () => {
     app = setupBasicApp();
     app.use((req, res, next) => {
       req.user = currentUser();
+      res.locals.userName = req.user?.getFullName();
+      res.locals.isSignedIn = Boolean(req.user?.getFullName());
       next();
     });
     app.use('/money', moneyRouter);

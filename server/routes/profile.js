@@ -18,8 +18,6 @@ const createProfileRouter = ({ offenderService }) => {
       offenderService.getBalancesFor(user),
     ]);
 
-    const signedInUser = user.getFullName();
-
     const {
       morning,
       afternoon,
@@ -49,7 +47,6 @@ const createProfileRouter = ({ offenderService }) => {
     const { spends, privateAccount, savings, error: moneyError } = moneySummary;
 
     return {
-      signedInUser,
       eventsSummary: {
         error: timetableError,
         morning,

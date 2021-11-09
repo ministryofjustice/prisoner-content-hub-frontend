@@ -26,7 +26,6 @@ const createTimetableRouter = ({ offenderService }) => {
         events = await Promise.all([
           offenderService.getEventsFor(user, startDate, endDate),
         ]);
-        config.userName = user.getFullName();
       } else {
         events = [offenderService.getEmptyTimetable(startDate, endDate)];
       }
@@ -64,7 +63,6 @@ const createTimetableRouter = ({ offenderService }) => {
         events = await Promise.all([
           offenderService.getEventsFor(user, startDate, endDate),
         ]);
-        config.userName = user.getFullName();
       } else {
         events = [offenderService.getEmptyTimetable(startDate, endDate)];
       }
@@ -102,7 +100,6 @@ const createTimetableRouter = ({ offenderService }) => {
         events = await Promise.all([
           offenderService.getEventsFor(user, startDate, endDate),
         ]);
-        config.userName = user.getFullName();
       } else {
         events = [offenderService.getEmptyTimetable(startDate, endDate)];
       }

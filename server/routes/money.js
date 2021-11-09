@@ -58,7 +58,6 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
           selected: 'damage-obligations',
           accountTypes,
         };
-        templateData.config.userName = user.getFullName();
       }
 
       return res.render('pages/damage-obligations', templateData);
@@ -123,8 +122,6 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
             selectedDate,
             dateSelection,
           };
-
-          templateData.config.userName = user.getFullName();
         }
 
         return res.render('pages/transactions', templateData);
@@ -188,8 +185,6 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
           selectedDate,
           dateSelection,
         };
-
-        templateData.config.userName = user.getFullName();
       }
 
       return res.render('pages/transactions', templateData);
@@ -253,8 +248,6 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
           selectedDate,
           dateSelection,
         };
-
-        templateData.config.userName = user.getFullName();
       }
 
       return res.render('pages/transactions-private', templateData);

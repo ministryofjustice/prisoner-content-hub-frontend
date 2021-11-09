@@ -21,7 +21,7 @@
   {{ topBar({
     establishmentDisplayName: establishmentDisplayName,
     showBar: false,
-    userName: config.userName,
+    userName: userName,
     returnUrl: config.returnUrl
   }) }}
 {% endblock %}
@@ -29,7 +29,7 @@
 {% block userDetails %}
   {{ userDetails({
     detailsType: config.detailsType,
-    userName: config.userName
+    userName: userName
   }) }}
 {% endblock %}
 
