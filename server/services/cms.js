@@ -32,11 +32,8 @@ const {
 class CmsService {
   #cmsApi;
 
-  #contentRepository;
-
-  constructor(cmsApi, contentRepository) {
+  constructor(cmsApi) {
     this.#cmsApi = cmsApi;
-    this.#contentRepository = contentRepository;
   }
 
   async getSecondaryTag(establishmentName, uuid, location) {

@@ -46,7 +46,7 @@ describe('cms Service', () => {
   const UUID = '846';
 
   beforeEach(() => {
-    cmsService = new CmsService(cmsApi, {});
+    cmsService = new CmsService(cmsApi);
   });
   afterEach(() => {
     jest.resetAllMocks();
