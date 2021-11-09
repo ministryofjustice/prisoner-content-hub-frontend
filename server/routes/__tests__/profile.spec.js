@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const { createProfileRouter } = require('../profile');
 const { setupBasicApp } = require('../../../test/test-helpers');
 const { User } = require('../../auth/user');
+const setCurrentUser = require('../../middleware/setCurrentUser');
 
 describe('GET /profile', () => {
   const offenderService = {
@@ -29,8 +30,6 @@ describe('GET /profile', () => {
   const setMockUser = (req, res, next) => {
     req.user = userSupplier();
     res.locals = establishmentSupplier();
-    res.locals.userName = req.user?.getFullName();
-    res.locals.isSignedIn = Boolean(req.user?.getFullName());
     next();
   };
 
@@ -38,6 +37,7 @@ describe('GET /profile', () => {
     const router = createProfileRouter({ offenderService });
     app = setupBasicApp();
     app.use(setMockUser);
+    app.use(setCurrentUser);
     app.use('/profile', router);
     userSupplier.mockReturnValue(testUser);
     establishmentSupplier.mockReturnValue({ establishmentName: 'wayland' });

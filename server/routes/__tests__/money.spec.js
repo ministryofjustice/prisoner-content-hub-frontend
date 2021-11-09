@@ -17,6 +17,7 @@ const {
   setupBasicApp,
   consoleLogError,
 } = require('../../../test/test-helpers');
+const setCurrentUser = require('../../middleware/setCurrentUser');
 
 const api = {
   transactionHistory: /\/transaction-history/i,
@@ -160,10 +161,9 @@ describe('Prisoner Money', () => {
     app = setupBasicApp();
     app.use((req, res, next) => {
       req.user = currentUser();
-      res.locals.userName = req.user?.getFullName();
-      res.locals.isSignedIn = Boolean(req.user?.getFullName());
       next();
     });
+    app.use(setCurrentUser);
     app.use('/money', moneyRouter);
     app.use(consoleLogError);
   });

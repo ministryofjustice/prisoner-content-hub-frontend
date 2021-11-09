@@ -7,6 +7,7 @@ const {
   setupBasicApp,
   consoleLogError,
 } = require('../../../test/test-helpers');
+const setCurrentUser = require('../../middleware/setCurrentUser');
 
 describe('GET /', () => {
   let featuredItem;
@@ -88,10 +89,9 @@ describe('GET /', () => {
             establishmentPersonalisationToggle(),
         };
         req.user = userSupplier();
-        res.locals.userName = req.user?.getFullName();
-        res.locals.isSignedIn = Boolean(req.user?.getFullName());
         next();
       });
+      app.use(setCurrentUser);
       app.use(router);
       app.use(consoleLogError);
       userSupplier.mockReturnValue(testUser);

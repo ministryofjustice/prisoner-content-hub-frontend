@@ -27,6 +27,7 @@ const defaultEstablishmentData = require('./content/establishmentData.json');
 const defaultAuthMiddleware = require('./auth/middleware');
 const routes = require('./routes');
 const { NotFound } = require('./repositories/apiError');
+const setCurrentUser = require('./middleware/setCurrentUser');
 
 const createApp = services => {
   const {
@@ -241,11 +242,7 @@ const createApp = services => {
     );
   }
 
-  app.use((req, res, next) => {
-    res.locals.userName = req.user?.getFullName();
-    res.locals.isSignedIn = Boolean(req.user?.getFullName());
-    next();
-  });
+  app.use(setCurrentUser);
 
   // Routing
   if (!process.env.HOTJAR_ID) {
