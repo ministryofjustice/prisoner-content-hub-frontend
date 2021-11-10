@@ -1,28 +1,20 @@
-const utils = require('../utils');
 const { SearchQuery } = require('../repositories/cmsQueries/searchQuery');
 
-const createSearchService = ({
-  cmsApi,
-  getEstablishmentSearchName = utils.getEstablishmentSearchName,
-}) => {
-  function find({ query, establishmentId }) {
-    const prison = getEstablishmentSearchName(establishmentId);
-
+const createSearchService = ({ cmsApi }) => {
+  function find(query, establishmentName) {
     if (query === '') {
       return [];
     }
 
-    return cmsApi.get(new SearchQuery(prison, query, 15));
+    return cmsApi.get(new SearchQuery(establishmentName, query, 15));
   }
 
-  function typeAhead({ query, establishmentId }) {
-    const prison = getEstablishmentSearchName(establishmentId);
-
+  function typeAhead(query, establishmentName) {
     if (query === '') {
       return [];
     }
 
-    return cmsApi.get(new SearchQuery(prison, query, 5));
+    return cmsApi.get(new SearchQuery(establishmentName, query, 5));
   }
 
   return {

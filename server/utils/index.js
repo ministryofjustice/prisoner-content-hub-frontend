@@ -38,11 +38,6 @@ const updateSessionEstablishment = (req, agencyId) => {
   }
 };
 
-const getEstablishmentSearchName = (
-  id,
-  establishmentData = defaultEstablishmentData,
-) => establishmentData?.[id]?.name;
-
 const getEstablishmentDisplayName = (
   id,
   establishmentData = defaultEstablishmentData,
@@ -89,7 +84,6 @@ module.exports = {
   getEstablishment,
   updateSessionEstablishment,
   getEstablishmentDisplayName,
-  getEstablishmentSearchName,
   getEstablishmentHomepageLinks,
   getEstablishmentHomepageLinksTitle,
   isEmptyResponse,
