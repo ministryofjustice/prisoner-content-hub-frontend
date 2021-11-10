@@ -48,11 +48,12 @@ class HomepageQuery {
     const [upperFeatured, lowerFeatured] = item.fieldMojFeaturedTileLarge.map(
       featured => (featured?.path?.alias ? getLargeTile(featured) : null),
     );
-
     return {
       upperFeatured,
       lowerFeatured,
-      smallTiles: item.fieldMojFeaturedTileSmall.map(getSmallTile),
+      smallTiles: item.fieldMojFeaturedTileSmall
+        .filter(({ title = null, name = null }) => title || name)
+        .map(getSmallTile),
     };
   }
 }
