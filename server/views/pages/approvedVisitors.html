@@ -22,7 +22,7 @@
   {{ topBar({
     establishmentDisplayName: establishmentDisplayName,
     showBar: false,
-    userName: signedInUser,
+    userName: userName,
     returnUrl: returnUrl
   }) }}
 {% endblock %}
@@ -30,7 +30,7 @@
 {% block userDetails %}
   {{ userDetails({
     detailsType: detailsType,
-    userName: signedInUser
+    userName: userName
   }) }}
 {% endblock %}
 
@@ -45,7 +45,7 @@
 
 {% block main %}
   <div class="govuk-body">
-    {% if not signedInUser %}
+    {% if not isSignedIn %}
       <div class= "govuk-width-container">
         <h2 class="govuk-heading-m">You are signed out</h2>
         <p class="govuk-!-font-size-24" data-test="signin-prompt">

@@ -11,13 +11,10 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
       return next();
     }
 
-    const userName = req.user && req.user.getFullName();
-
     const config = {
       content: true,
       header: false,
       postscript: false,
-      userName,
       returnUrl: req.originalUrl,
     };
 

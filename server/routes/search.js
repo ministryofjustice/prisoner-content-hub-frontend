@@ -9,7 +9,6 @@ const createSearchRouter = ({ searchService, analyticsService }) => {
 
     let results = [];
     const query = path(['query', 'query'], req);
-    const userName = req.user && req.user.getFullName();
     const sessionId = path(['session', 'id'], req);
     const userAgent = path(['headers', 'user-agent'], req);
     const config = {
@@ -17,7 +16,6 @@ const createSearchRouter = ({ searchService, analyticsService }) => {
       header: false,
       postscript: false,
       detailsType: 'small',
-      userName,
       returnUrl: req.originalUrl,
     };
 

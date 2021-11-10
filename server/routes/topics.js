@@ -5,7 +5,6 @@ const createTopicsRouter = ({ cmsService }) => {
 
   router.get('/', async (req, res, next) => {
     try {
-      const userName = req.user?.getFullName();
       const { establishmentName } = req.session;
 
       if (!establishmentName) {
@@ -22,7 +21,6 @@ const createTopicsRouter = ({ cmsService }) => {
           header: false,
           postscript: true,
           detailsType: 'small',
-          userName,
           returnUrl: req.originalUrl,
         },
       });

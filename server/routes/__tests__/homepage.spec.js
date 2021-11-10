@@ -7,6 +7,7 @@ const {
   setupBasicApp,
   consoleLogError,
 } = require('../../../test/test-helpers');
+const setCurrentUser = require('../../middleware/setCurrentUser');
 
 describe('GET /', () => {
   let featuredItem;
@@ -90,6 +91,7 @@ describe('GET /', () => {
         req.user = userSupplier();
         next();
       });
+      app.use(setCurrentUser);
       app.use(router);
       app.use(consoleLogError);
       userSupplier.mockReturnValue(testUser);

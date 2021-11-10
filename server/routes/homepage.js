@@ -44,13 +44,9 @@ const createHomepageRouter = ({
       };
 
       let currentEvents = {};
-      const { user } = req;
 
-      if (user) {
-        const userName = user.getFullName();
-        pageConfig.userName = userName;
-        pageConfig.welcomeMessage = `Hi, ${userName}`;
-        currentEvents = await offenderService.getCurrentEvents(user);
+      if (res.locals.isSignedIn) {
+        currentEvents = await offenderService.getCurrentEvents(req.user);
       }
       res.render('pages/home', {
         config: pageConfig,

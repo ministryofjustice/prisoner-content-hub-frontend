@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 const jwt = require('jsonwebtoken');
 const { capitalize } = require('../utils');
 
@@ -15,6 +16,10 @@ class User {
 
   getFullName() {
     return [this.firstName, this.lastName].join(' ').trim();
+  }
+
+  isSignedIn() {
+    return true;
   }
 
   serialize() {

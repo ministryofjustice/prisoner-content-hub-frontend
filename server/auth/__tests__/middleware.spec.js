@@ -222,6 +222,7 @@ describe('AuthMiddleware', () => {
         prisonerId: TEST_INVALID_PRISONER_ID,
         setBookingId: jest.fn(),
         serialize: jest.fn(),
+        isSignedIn: () => true,
       };
       const req = { logOut: jest.fn(), user: mockUser };
       const res = { redirect: jest.fn() };
