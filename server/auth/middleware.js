@@ -2,6 +2,7 @@
 const _passport = require('passport');
 const { path } = require('ramda');
 const { User } = require('./user');
+const { updateSessionEstablishment } = require('../utils');
 
 const getSafeReturnUrl = ({ returnUrl = '/' } = {}) =>
   // type-check to mitigate "type confusion through parameter tampering", where an attacker
@@ -54,8 +55,11 @@ const createMockSignIn = ({ offenderService }) =>
         lastName: 'User',
       });
 
-      const { bookingId } = await offenderService.getOffenderDetailsFor(user);
+      const { bookingId, agencyId } =
+        await offenderService.getOffenderDetailsFor(user);
       user.setBookingId(bookingId);
+
+      updateSessionEstablishment(req, agencyId);
 
       req.session.passport = {
         user: user.serialize(),
@@ -88,7 +92,6 @@ const createSignInCallbackMiddleware = ({
     const userAgent = path(['body', 'userAgent'], req);
     try {
       const user = await authenticate(req, res, next);
-
       if (!user) {
         return res.redirect('/auth/error');
       }
@@ -98,8 +101,11 @@ const createSignInCallbackMiddleware = ({
       );
 
       if (isPrisonerId(user.prisonerId)) {
-        const { bookingId } = await offenderService.getOffenderDetailsFor(user);
+        const { bookingId, agencyId } =
+          await offenderService.getOffenderDetailsFor(user);
         user.setBookingId(bookingId);
+
+        updateSessionEstablishment(req, agencyId);
       }
       req.session.passport.user = user.serialize();
 

@@ -10,12 +10,14 @@ class Offender {
     this.offenderNo = options.offenderNo;
     this.firstName = options.firstName;
     this.lastName = options.lastName;
+    this.agencyId = options.agencyId;
   }
 
   format() {
     return {
       bookingId: this.bookingId,
       offenderNo: this.offenderNo,
+      agencyId: this.agencyId,
       name: fullNameOrDefault(DEFAULT, this.firstName, this.lastName),
     };
   }

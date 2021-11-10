@@ -14,6 +14,30 @@ const getEstablishmentId = (
     10,
   );
 
+const getEstablishment = (
+  agencyId,
+  establishmentData = defaultEstablishmentData,
+) => {
+  const establishmentId = Object.keys(establishmentData).find(
+    id => establishmentData?.[id]?.agencyId === agencyId,
+  );
+  return {
+    establishmentId,
+    establishmentName: establishmentData[establishmentId]?.name,
+  };
+};
+
+const updateSessionEstablishment = (req, agencyId) => {
+  if (
+    !req.session?.establishmentName ||
+    req.session.establishmentName === 'localhost:3000'
+  ) {
+    const { establishmentId, establishmentName } = getEstablishment(agencyId);
+    req.session.establishmentId = establishmentId;
+    req.session.establishmentName = establishmentName;
+  }
+};
+
 const getEstablishmentSearchName = (
   id,
   establishmentData = defaultEstablishmentData,
@@ -62,6 +86,8 @@ const fillContentItems = (contentItems = [], number = 4) =>
 
 module.exports = {
   getEstablishmentId,
+  getEstablishment,
+  updateSessionEstablishment,
   getEstablishmentDisplayName,
   getEstablishmentSearchName,
   getEstablishmentHomepageLinks,
