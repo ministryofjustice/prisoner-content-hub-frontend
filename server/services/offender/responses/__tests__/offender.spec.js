@@ -23,7 +23,6 @@ describe('Offender', () => {
     const response = {
       agencyId: 'FMI',
       bookingId: 1013376,
-      dateOfBirth: '1947-04-01',
       offenderNo: 'G0653GG',
       firstName: 'DONALD',
     };
@@ -34,7 +33,6 @@ describe('Offender', () => {
       {
         agencyId: 'FMI',
         bookingId: 1013376,
-        dateOfBirth: '1947-04-01',
         offenderNo: 'G0653GG',
         name: 'Donald',
       },
@@ -46,7 +44,6 @@ describe('Offender', () => {
     const response = {
       agencyId: 'FMI',
       bookingId: 1013376,
-      dateOfBirth: '1970-04-01',
       offenderNo: 'G0653GG',
       firstName: 'DONALD',
       middleName: 'FAUNTLEROY',
@@ -58,7 +55,6 @@ describe('Offender', () => {
     expect(formatted).toStrictEqual({
       agencyId: 'FMI',
       bookingId: 1013376,
-      dateOfBirth: '1970-04-01',
       offenderNo: 'G0653GG',
       name: 'Donald Duck',
     });

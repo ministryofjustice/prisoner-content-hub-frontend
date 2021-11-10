@@ -11,7 +11,6 @@ class Offender {
     this.firstName = options.firstName;
     this.lastName = options.lastName;
     this.agencyId = options.agencyId;
-    this.dateOfBirth = options.dateOfBirth;
   }
 
   format() {
@@ -19,7 +18,6 @@ class Offender {
       bookingId: this.bookingId,
       offenderNo: this.offenderNo,
       agencyId: this.agencyId,
-      dateOfBirth: this.dateOfBirth,
       name: fullNameOrDefault(DEFAULT, this.firstName, this.lastName),
     };
   }

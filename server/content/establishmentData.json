@@ -14,8 +14,7 @@
       "Healthy mind & body": "/tags/648",
       "Chaplaincy": "/tags/901"
     },
-    "agencyId": "BWI",
-    "isAdult": true
+    "agencyId": "BWI"
   },
   "959": {
     "name": "cookhamwood",
@@ -32,8 +31,7 @@
       "PSIs & PSOs": "/tags/796",
       "What goes on in Cookham": "/tags/973"
     },
-    "agencyId": "CKI",
-    "isAdult": true
+    "agencyId": "CKI"
   },
   "1074": {
     "name": "erlestoke",
@@ -50,8 +48,7 @@
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/tags/787"
     },
-    "agencyId": "EEI",
-    "isAdult": true
+    "agencyId": "EEI"
   },
   "1083": {
     "name": "felthama",
@@ -68,8 +65,7 @@
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/tags/787"
     },
-    "agencyId": "FMI",
-    "isAdult": false
+    "agencyId": "FYI"
   },
   "1084": {
     "name": "felthamb",
@@ -86,8 +82,7 @@
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/tags/787"
     },
-    "agencyId": "FMI",
-    "isAdult": true
+    "agencyId": "FMI"
   },
   "1075": {
     "name": "garth",
@@ -104,8 +99,7 @@
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/tags/787"
     },
-    "agencyId": "GHI",
-    "isAdult": true
+    "agencyId": "GHI"
   },
   "1076": {
     "name": "lindholme",
@@ -122,8 +116,7 @@
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/tags/787"
     },
-    "agencyId": "LHI",
-    "isAdult": true
+    "agencyId": "LHI"
   },
   "1077": {
     "name": "newhall",
@@ -140,8 +133,7 @@
       "Facilities list & catalogues": "/tags/787",
       "New Hall life": "/tags/1165"
     },
-    "agencyId": "NHI",
-    "isAdult": true
+    "agencyId": "NHI"
   },
   "1078": {
     "name": "ranby",
@@ -158,8 +150,7 @@
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/tags/787"
     },
-    "agencyId": "RNI",
-    "isAdult": true
+    "agencyId": "RNI"
   },
   "1079": {
     "name": "stokeheath",
@@ -176,8 +167,7 @@
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/tags/787"
     },
-    "agencyId": "SHI",
-    "isAdult": true
+    "agencyId": "SHI"
   },
   "1080": {
     "name": "styal",
@@ -194,8 +184,7 @@
       "Facilities list & catalogues": "/tags/787",
       "Styal life": "/tags/1166"
     },
-    "agencyId": "STI",
-    "isAdult": true
+    "agencyId": "STI"
   },
   "1081": {
     "name": "swaleside",
@@ -212,8 +201,7 @@
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/tags/787"
     },
-    "agencyId": "SLI",
-    "isAdult": true
+    "agencyId": "SLI"
   },
   "1082": {
     "name": "themount",
@@ -230,8 +218,7 @@
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/tags/787"
     },
-    "agencyId": "MTI",
-    "isAdult": true
+    "agencyId": "MTI"
   },
   "793": {
     "name": "wayland",
@@ -248,8 +235,7 @@
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/tags/787"
     },
-    "agencyId": "WLI",
-    "isAdult": true
+    "agencyId": "WLI"
   },
   "1085": {
     "name": "werrington",
@@ -266,8 +252,7 @@
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/tags/787"
     },
-    "agencyId": "WNI",
-    "isAdult": true
+    "agencyId": "WNI"
   },
   "1086": {
     "name": "wetherby",
@@ -285,7 +270,6 @@
       "PSIs & PSOs": "/tags/796",
       "Facilities list & catalogues": "/tags/787"
     },
-    "agencyId": "WYI",
-    "isAdult": true
+    "agencyId": "WYI"
   }
 }

@@ -152,13 +152,11 @@ describe('AuthMiddleware', () => {
         };
         const offender = {
           bookingId: TEST_BOOKING_ID,
-          dateOfBirth: '2000-05-19',
           agencyId: 'FMI',
         };
         let authenticate;
         let signInCallback;
         beforeEach(async () => {
-          jest.useFakeTimers();
           authenticate = jest.fn().mockResolvedValue(user);
           offenderService.getOffenderDetailsFor.mockResolvedValue(offender);
           user.serialize.mockReturnValue('serialized_user');
@@ -169,37 +167,24 @@ describe('AuthMiddleware', () => {
             analyticsService,
             logger: MOCK_LOGGER,
           });
+          await signInCallback(req, res, next);
         });
         afterEach(() => {
-          jest.useRealTimers();
           jest.resetAllMocks();
         });
-        describe('for a young offender', () => {
-          beforeEach(async () => {
-            jest.setSystemTime(new Date('2018-05-20').getTime());
-            await signInCallback(req, res, next);
-          });
-          it('should fetch offender details', () => {
-            expect(user.setBookingId).toHaveBeenCalledWith(TEST_BOOKING_ID);
-            expect(user.serialize).toHaveBeenCalled();
-            expect(req.session.passport.user).toBe(
-              'serialized_user',
-              'It should have saved the updated user in the session',
-            );
-            expect(res.redirect).toHaveBeenCalledWith(req.session.returnUrl);
-          });
-          it('should set the establishment name and ID in the session for a young offenders establishment', () => {
-            expect(req.session.establishmentName).toBe('felthama');
-            expect(req.session.establishmentId).toBe('1083');
-          });
+
+        it('should fetch offender details', () => {
+          expect(user.setBookingId).toHaveBeenCalledWith(TEST_BOOKING_ID);
+          expect(user.serialize).toHaveBeenCalled();
+          expect(req.session.passport.user).toBe(
+            'serialized_user',
+            'It should have saved the updated user in the session',
+          );
+          expect(res.redirect).toHaveBeenCalledWith(req.session.returnUrl);
         });
-        describe('for an adult offender', () => {
-          it('should set the establishment name and ID in the session for an adult establishment', async () => {
-            jest.setSystemTime(new Date('2018-05-19').getTime());
-            await signInCallback(req, res, next);
-            expect(req.session.establishmentName).toBe('felthamb');
-            expect(req.session.establishmentId).toBe('1084');
-          });
+        it('should set the establishment name and ID in the session', () => {
+          expect(req.session.establishmentName).toBe('felthamb');
+          expect(req.session.establishmentId).toBe('1084');
         });
       });
 
