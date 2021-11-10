@@ -60,7 +60,7 @@ describe('GET /', () => {
     beforeEach(() => {
       const establishmentData = {
         1: {
-          homePageLinksTitle: 'Popular topics',
+          name: 'berwyn',
           homePageLinks: {
             Coronavirus: '/tags/894',
             Visits: '/content/4203',
@@ -84,7 +84,6 @@ describe('GET /', () => {
       app.use((req, res, next) => {
         req.session = {
           establishmentName: 'berwyn',
-          establishmentId: 1,
           establishmentPersonalisationEnabled:
             establishmentPersonalisationToggle(),
         };
@@ -177,9 +176,6 @@ describe('GET /', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('div.popular-topics').first().find('h3').text()).toBe(
-            'Popular topics',
-          );
           expect($('div.popular-topics').first().find('ul li').length).toBe(
             9,
             'Correct number of menu items',

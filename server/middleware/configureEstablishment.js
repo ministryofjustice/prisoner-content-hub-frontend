@@ -12,7 +12,7 @@ const configureEstablishment = () => (req, res, next) => {
     const establishmentId = getEstablishmentId(establishmentName);
 
     req.session.id = uuid();
-    if (typeof establishmentId !== 'undefined') {
+    if (!Number.isNaN(establishmentId)) {
       req.session.establishmentId = establishmentId;
       req.session.establishmentName = establishmentName;
     }
