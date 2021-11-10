@@ -56,15 +56,20 @@ const createMockSignIn = ({ offenderService }) =>
         lastName: 'User',
       });
 
-      const { bookingId } = await offenderService.getOffenderDetailsFor(user);
+      const { bookingId, dateOfBirth, agencyId } =
+        await offenderService.getOffenderDetailsFor(user);
       user.setBookingId(bookingId);
 
       if (
         !req.session?.establishmentName ||
         req.session.establishmentName === 'localhost:3000'
       ) {
-        req.session.establishmentId = 1083;
-        req.session.establishmentName = 'felthama';
+        const { establishmentId, establishmentName } = getEstablishment(
+          agencyId,
+          isAdult(dateOfBirth),
+        );
+        req.session.establishmentId = establishmentId;
+        req.session.establishmentName = establishmentName;
       }
 
       req.session.passport = {
@@ -98,7 +103,6 @@ const createSignInCallbackMiddleware = ({
     const userAgent = path(['body', 'userAgent'], req);
     try {
       const user = await authenticate(req, res, next);
-
       if (!user) {
         return res.redirect('/auth/error');
       }
@@ -122,14 +126,6 @@ const createSignInCallbackMiddleware = ({
           req.session.establishmentId = establishmentId;
           req.session.establishmentName = establishmentName;
         }
-        // console.log('******establishmentId******');
-        // console.log(agencyId);
-        // console.log('******establishmentId******');
-        // console.log(dateOfBirth);
-        // console.log('******establishmentId******');
-        // console.log(req.session.establishmentId);
-        // console.log('******establishmentName*****');
-        // console.log(req.session.establishmentName);
       }
       req.session.passport.user = user.serialize();
 

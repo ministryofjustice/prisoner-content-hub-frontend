@@ -87,14 +87,15 @@ describe('AuthMiddleware', () => {
       const offenderService = { getOffenderDetailsFor: jest.fn() };
       const analyticsService = { sendEvent: jest.fn() };
 
-      const req = {
-        session: { passport: { user: 'serialized_user' } },
-        logIn: jest.fn(),
-      };
+      let req;
       const res = { redirect: jest.fn() };
       const next = jest.fn();
 
       beforeEach(() => {
+        req = {
+          session: { passport: { user: 'serialized_user' } },
+          logIn: jest.fn(),
+        };
         req.logIn.mockClear();
         res.redirect.mockClear();
         offenderService.getOffenderDetailsFor.mockClear();
@@ -143,37 +144,63 @@ describe('AuthMiddleware', () => {
         expect(res.redirect).toHaveBeenCalledWith('/auth/error');
       });
 
-      it('should fetch offender details if passport.authenticate() returns a user with a valid prisoner ID', async () => {
+      describe('when passport.authenticate() returns a user with a valid prisoner ID', () => {
         const user = {
           prisonerId: TEST_PRISONER_ID,
           setBookingId: jest.fn(),
           serialize: jest.fn(),
         };
-
-        const authenticate = jest.fn().mockResolvedValue(user);
-        user.serialize.mockReturnValue('serialized_user');
-
-        offenderService.getOffenderDetailsFor.mockResolvedValue({
+        const offender = {
           bookingId: TEST_BOOKING_ID,
+          dateOfBirth: '2000-05-19',
+          agencyId: 'FMI',
+        };
+        let authenticate;
+        let signInCallback;
+        beforeEach(async () => {
+          jest.useFakeTimers();
+          authenticate = jest.fn().mockResolvedValue(user);
+          offenderService.getOffenderDetailsFor.mockResolvedValue(offender);
+          user.serialize.mockReturnValue('serialized_user');
+          req.session.returnUrl = '/foo/bar/baz';
+          signInCallback = createSignInCallbackMiddleware({
+            offenderService,
+            authenticate,
+            analyticsService,
+            logger: MOCK_LOGGER,
+          });
         });
-
-        req.session.returnUrl = '/foo/bar/baz';
-
-        const signInCallback = createSignInCallbackMiddleware({
-          offenderService,
-          authenticate,
-          analyticsService,
-          logger: MOCK_LOGGER,
+        afterEach(() => {
+          jest.useRealTimers();
+          jest.resetAllMocks();
         });
-
-        await signInCallback(req, res, next);
-        expect(user.setBookingId).toHaveBeenCalledWith(TEST_BOOKING_ID);
-        expect(user.serialize).toHaveBeenCalled();
-        expect(req.session.passport.user).toBe(
-          'serialized_user',
-          'It should have saved the updated user in the session',
-        );
-        expect(res.redirect).toHaveBeenCalledWith(req.session.returnUrl);
+        describe('for a young offender', () => {
+          beforeEach(async () => {
+            jest.setSystemTime(new Date('2018-05-20').getTime());
+            await signInCallback(req, res, next);
+          });
+          it('should fetch offender details', () => {
+            expect(user.setBookingId).toHaveBeenCalledWith(TEST_BOOKING_ID);
+            expect(user.serialize).toHaveBeenCalled();
+            expect(req.session.passport.user).toBe(
+              'serialized_user',
+              'It should have saved the updated user in the session',
+            );
+            expect(res.redirect).toHaveBeenCalledWith(req.session.returnUrl);
+          });
+          it('should set the establishment name and ID in the session for a young offenders establishment', () => {
+            expect(req.session.establishmentName).toBe('felthama');
+            expect(req.session.establishmentId).toBe('1083');
+          });
+        });
+        describe('for an adult offender', () => {
+          it('should set the establishment name and ID in the session for an adult establishment', async () => {
+            jest.setSystemTime(new Date('2018-05-19').getTime());
+            await signInCallback(req, res, next);
+            expect(req.session.establishmentName).toBe('felthamb');
+            expect(req.session.establishmentId).toBe('1084');
+          });
+        });
       });
 
       it('should not fetch offender details if passport.authenticate() returns a user without a valid prisoner ID', async () => {

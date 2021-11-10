@@ -2,6 +2,7 @@ const {
   formatDateOrDefault,
   formatTimeBetweenOrDefault,
   getDateSelection,
+  isAdult,
 } = require('../date');
 
 describe('DateUtils', () => {
@@ -136,5 +137,22 @@ describe('getDateSelectionFrom', () => {
       { text: 'October 2020', value: '2020-10-01' },
       { text: 'September 2020', value: '2020-09-01' },
     ]);
+  });
+});
+
+describe('isAdult', () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2018-01-02').getTime());
+  });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+  it('returns true with birth dates over 18', () => {
+    expect(isAdult('2000-01-02')).toEqual(true);
+    expect(isAdult('1992-12-25')).toEqual(true);
+  });
+  it('returns true with birth dates under 18', () => {
+    expect(isAdult('2000-01-01')).toEqual(false);
+    expect(isAdult('2003-01-01')).toEqual(false);
   });
 });

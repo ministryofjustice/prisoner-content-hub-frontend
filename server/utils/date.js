@@ -60,7 +60,7 @@ const isAdult = dateOfBirth => {
   const bd = new Date(dateOfBirth);
   const now = new Date();
   const age = now.getUTCFullYear() - bd.getUTCFullYear();
-  return (bd.setUTCFullYear(now.getUTCFullYear()) > now ? age - 1 : age) >= 18;
+  return (bd.setUTCFullYear(now.getUTCFullYear()) < now ? age - 1 : age) >= 18;
 };
 
 module.exports = {
