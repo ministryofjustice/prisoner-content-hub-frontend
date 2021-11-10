@@ -137,7 +137,7 @@ const createSignInCallbackMiddleware = ({
 
 const createSignOutMiddleware = ({ logger, analyticsService }) =>
   function signOut(req, res) {
-    if (req.user) {
+    if (req.user?.isSignedIn()) {
       logger.info(`SignOutMiddleware (signOut) - User: ${req.user.prisonerId}`);
       req.logOut();
       analyticsService.sendEvent({

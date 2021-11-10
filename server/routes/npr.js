@@ -5,7 +5,6 @@ const createNprRouter = () => {
   const router = express.Router();
 
   router.get('/', async (req, res) => {
-    const userName = req.user && req.user.getFullName();
     const nprStream = path(['app', 'locals', 'config', 'npr', 'stream'], req);
 
     const config = {
@@ -13,7 +12,6 @@ const createNprRouter = () => {
       header: false,
       postscript: false,
       detailsType: 'small',
-      userName,
       returnUrl: req.originalUrl,
     };
 

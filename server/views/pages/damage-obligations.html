@@ -26,7 +26,7 @@
   {{ topBar({
     establishmentDisplayName: establishmentDisplayName,
     showBar: false,
-    userName: config.userName,
+    userName: userName,
     returnUrl: config.returnUrl
   }) }}
 {% endblock %}
@@ -34,7 +34,7 @@
 {% block userDetails %}
   {{ userDetails({
     detailsType: config.detailsType,
-    userName: config.userName
+    userName: userName
   }) }}
 {% endblock %}
 
@@ -50,7 +50,7 @@
 {% block main %}
   <div class="govuk-width-container govuk-body">
 
-    {{ personalDamageObligations(prisonerInformation, config.returnUrl, config.userName) }}
+    {{ personalDamageObligations(prisonerInformation, config.returnUrl, userName) }}
 
     <div class="govuk-hub-article-feedback">
       <p class="govuk-body">Tell us what you think:</p>

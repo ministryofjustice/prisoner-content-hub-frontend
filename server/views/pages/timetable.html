@@ -24,7 +24,7 @@
   {{ topBar({
     establishmentDisplayName: establishmentDisplayName,
     showBar: false,
-    userName: config.userName,
+    userName: userName,
     returnUrl: config.returnUrl
   }) }}
 {% endblock %}
@@ -32,14 +32,14 @@
 {% block userDetails %}
   {{ userDetails({
     detailsType: config.detailsType,
-    userName: config.userName
+    userName: userName
   }) }}
 {% endblock %}
 
 {% block header %}
   <div class="govuk-width-container govuk-body timetable-header">
     <h1>{{ title }}</h1>
-    {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }, config.userName)}}
+    {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }, userName)}}
   </div>
 {% endblock %}
 
@@ -47,9 +47,9 @@
 {% block search %}{% endblock %}
 
 {% block timetable %}
-  {{personalScheduleOneDay({ data: events | first, authReturnUrl:  config.returnUrl }, config.userName)}}
+  {{personalScheduleOneDay({ data: events | first, authReturnUrl:  config.returnUrl }, userName)}}
   <div class="govuk-width-container govuk-body timetable-header timetable-footer">
-    {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }, config.userName) }}
+    {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }, userName) }}
   </div>
   <div class="govuk-width-container govuk-body">
     <div class="govuk-hub-article-feedback">
