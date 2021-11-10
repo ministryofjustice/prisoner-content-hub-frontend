@@ -46,11 +46,9 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
         },
       };
 
-      const { user } = req;
-
-      if (user?.isSignedIn()) {
+      if (res.locals.isSignedIn) {
         const damageObligations =
-          await prisonerInformationService.getDamageObligationsFor(user);
+          await prisonerInformationService.getDamageObligationsFor(req.user);
 
         templateData.prisonerInformation = {
           damageObligations:
@@ -81,9 +79,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
           },
         };
 
-        const { user } = req;
-
-        if (user?.isSignedIn()) {
+        if (res.locals.isSignedIn) {
           const accountCode = 'spends';
 
           const { selectedDate } = req.query;
@@ -92,7 +88,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
 
           const transactionsData =
             await prisonerInformationService.getTransactionsFor(
-              user,
+              req.user,
               accountCode,
               fromDate,
               toDate,
@@ -144,9 +140,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
         },
       };
 
-      const { user } = req;
-
-      if (user?.isSignedIn()) {
+      if (res.locals.isSignedIn) {
         const accountCode = 'savings';
 
         const { selectedDate } = req.query;
@@ -155,7 +149,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
 
         const transactionsData =
           await prisonerInformationService.getTransactionsFor(
-            user,
+            req.user,
             accountCode,
             fromDate,
             toDate,
@@ -206,16 +200,14 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
         },
       };
 
-      const { user } = req;
-
-      if (user?.isSignedIn()) {
+      if (res.locals.isSignedIn) {
         const { selectedDate } = req.query;
         const { dateSelection, fromDate, toDate } =
           processSelectedDate(selectedDate);
 
         const transactionsData =
           await prisonerInformationService.getPrivateTransactionsFor(
-            user,
+            req.user,
             fromDate,
             toDate,
           );

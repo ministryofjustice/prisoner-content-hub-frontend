@@ -20,11 +20,10 @@ const createTimetableRouter = ({ offenderService }) => {
       const today = new Date();
       const startDate = format(today, 'yyyy-MM-dd');
       const endDate = format(addDays(today, 6), 'yyyy-MM-dd');
-      const { user } = req;
 
-      if (user?.isSignedIn()) {
+      if (res.locals.isSignedIn) {
         events = await Promise.all([
-          offenderService.getEventsFor(user, startDate, endDate),
+          offenderService.getEventsFor(req.user, startDate, endDate),
         ]);
       } else {
         events = [offenderService.getEmptyTimetable(startDate, endDate)];
@@ -57,11 +56,10 @@ const createTimetableRouter = ({ offenderService }) => {
       const yesterday = subDays(today, 1);
       const startDate = format(subDays(today, 7), 'yyyy-MM-dd');
       const endDate = format(yesterday, 'yyyy-MM-dd');
-      const { user } = req;
 
-      if (user?.isSignedIn()) {
+      if (res.locals.isSignedIn) {
         events = await Promise.all([
-          offenderService.getEventsFor(user, startDate, endDate),
+          offenderService.getEventsFor(req.user, startDate, endDate),
         ]);
       } else {
         events = [offenderService.getEmptyTimetable(startDate, endDate)];
@@ -94,11 +92,10 @@ const createTimetableRouter = ({ offenderService }) => {
       const nextWeekStart = addDays(today, 7);
       const startDate = format(nextWeekStart, 'yyyy-MM-dd');
       const endDate = format(addDays(nextWeekStart, 6), 'yyyy-MM-dd');
-      const { user } = req;
 
-      if (user?.isSignedIn()) {
+      if (res.locals.isSignedIn) {
         events = await Promise.all([
-          offenderService.getEventsFor(user, startDate, endDate),
+          offenderService.getEventsFor(req.user, startDate, endDate),
         ]);
       } else {
         events = [offenderService.getEmptyTimetable(startDate, endDate)];

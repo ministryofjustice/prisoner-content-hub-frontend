@@ -27,7 +27,7 @@
   <div class="govuk-width-container">
     {{ userDetails({
       detailsType: config.detailsType,
-      userName: config.welcomeMessage
+      userName: ('Hi, ' + userName) if userName
     }) }}
   </div>
 {% endblock %}
