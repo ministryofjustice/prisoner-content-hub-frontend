@@ -5,14 +5,14 @@ const configureEstablishment = () => (req, res, next) => {
   if (req.session && (!req.session.id || !req.session.establishmentId)) {
     const replaceUrl = /-prisoner-content-hub.*$/g;
 
-    const establishmentName = (req.headers?.host || 'wayland')
+    const establishmentName = req.headers?.host
       .split('.')[0]
       .replace(replaceUrl, '');
 
     const establishmentId = getEstablishmentId(establishmentName);
 
     req.session.id = uuid();
-    if (typeof establishmentId !== 'undefined') {
+    if (!Number.isNaN(establishmentId)) {
       req.session.establishmentId = establishmentId;
       req.session.establishmentName = establishmentName;
     }
