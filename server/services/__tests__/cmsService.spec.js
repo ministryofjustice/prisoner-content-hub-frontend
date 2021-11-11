@@ -182,7 +182,7 @@ describe('cms Service', () => {
         location: 'https://cms.org/content/1234',
       });
 
-      const result = await cmsService.getContent(ESTABLISHMENT_NAME, 793, 1234);
+      const result = await cmsService.getContent(ESTABLISHMENT_NAME, 1234);
 
       expect(result).toStrictEqual({
         id: 5923,
@@ -203,7 +203,7 @@ describe('cms Service', () => {
           type: 'node--moj_radio_item',
           location: 'https://cms.org/content/1234',
         });
-        result = await cmsService.getContent(ESTABLISHMENT_NAME, 793, 1234);
+        result = await cmsService.getContent(ESTABLISHMENT_NAME, 1234);
       });
       it('should make audio query', () => {
         expect(cmsApi.get).toHaveBeenNthCalledWith(
@@ -297,7 +297,7 @@ describe('cms Service', () => {
           type: 'node--moj_video_item',
           location: 'https://cms.org/content/1234',
         });
-        result = await cmsService.getContent(ESTABLISHMENT_NAME, 793, 1234);
+        result = await cmsService.getContent(ESTABLISHMENT_NAME, 1234);
       });
       it('should make video query', () => {
         expect(cmsApi.get).toHaveBeenNthCalledWith(

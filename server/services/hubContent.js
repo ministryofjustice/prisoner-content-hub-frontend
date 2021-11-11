@@ -12,11 +12,7 @@ function createHubContentService({
       return {};
     }
 
-    const result = await cmsService.getContent(
-      establishmentName,
-      establishmentId,
-      id,
-    );
+    const result = await cmsService.getContent(establishmentName, id);
     if (result) {
       return result;
     }
