@@ -8,7 +8,6 @@ const sassMiddleware = require('node-sass-middleware');
 const session = require('cookie-session');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
-const { path: ramdaPath, pathOr } = require('ramda');
 const Sentry = require('@sentry/node');
 const Tracing = require('@sentry/tracing');
 const nunjucksSetup = require('./utils/nunjucksSetup');
@@ -181,7 +180,7 @@ const createApp = services => {
 
   if (config.features.useMockAuth) {
     app.use('*', (req, res, next) => {
-      const serializedUser = ramdaPath(['session', 'passport', 'user'], req);
+      const serializedUser = req.session?.passport?.user;
       if (serializedUser) {
         req.user = User.deserialize(serializedUser);
       }
@@ -209,11 +208,9 @@ const createApp = services => {
           {
             clientID: config.auth.clientId,
             clientSecret: config.auth.clientSecret,
-            callbackURL: `${req.protocol}://${pathOr(
-              'localhost',
-              ['headers', 'host'],
-              req,
-            )}${config.auth.callbackPath}`,
+            callbackURL: `${req.protocol}://${
+              req.headers?.host || 'localhost'
+            }${config.auth.callbackPath}`,
           },
           (accessToken, refreshToken, params, profile, done) =>
             done(null, User.from(params.id_token)),
