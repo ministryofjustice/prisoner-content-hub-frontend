@@ -27,6 +27,14 @@ const getEstablishment = (
   };
 };
 
+const getEstablishmentByName = (
+  name,
+  establishmentData = defaultEstablishmentData,
+) =>
+  Object.values(establishmentData).find(
+    establishment => establishment.name === name,
+  );
+
 const updateSessionEstablishment = (req, agencyId) => {
   if (!req.session?.establishmentName) {
     const { establishmentId, establishmentName } = getEstablishment(agencyId);
@@ -45,15 +53,11 @@ const getEstablishmentDisplayName = (
   establishmentData = defaultEstablishmentData,
 ) => establishmentData?.[id]?.displayName;
 
-const getEstablishmentHomepageLinks = (
-  id,
+const getHomepageLinks = (
+  establishmentName,
   establishmentData = defaultEstablishmentData,
-) => establishmentData?.[id]?.homePageLinks;
-
-const getEstablishmentHomepageLinksTitle = (
-  id,
-  establishmentData = defaultEstablishmentData,
-) => establishmentData?.[id]?.homePageLinksTitle;
+) =>
+  getEstablishmentByName(establishmentName, establishmentData)?.homePageLinks;
 
 const capitalize = (str = '') =>
   str === '' ? '' : str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -87,8 +91,7 @@ module.exports = {
   updateSessionEstablishment,
   getEstablishmentDisplayName,
   getEstablishmentSearchName,
-  getEstablishmentHomepageLinks,
-  getEstablishmentHomepageLinksTitle,
+  getHomepageLinks,
   isEmptyResponse,
   capitalize,
   capitalizeAll,

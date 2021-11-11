@@ -1,9 +1,6 @@
 const express = require('express');
 
-const {
-  getEstablishmentHomepageLinks,
-  getEstablishmentHomepageLinksTitle,
-} = require('../utils');
+const { getHomepageLinks } = require('../utils');
 
 const createHomepageRouter = ({
   cmsService,
@@ -14,45 +11,28 @@ const createHomepageRouter = ({
 
   router.get('/', async (req, res, next) => {
     try {
-      const establishmentId = req.session?.establishmentId;
-
-      const homePageLinks = getEstablishmentHomepageLinks(
-        establishmentId,
-        establishmentData,
-      );
-
-      const homePageLinksTitle = getEstablishmentHomepageLinksTitle(
-        establishmentId,
-        establishmentData,
-      );
-
       const { establishmentName } = req.session;
 
-      if (!establishmentId) {
+      if (!establishmentName) {
         throw new Error('Could not determine establishment!');
       }
 
       const homepage = await cmsService.getHomepage(establishmentName);
 
-      const pageConfig = {
-        content: true,
-        header: true,
-        postscript: true,
-        detailsType: 'large',
-        establishmentId,
-        returnUrl: req.originalUrl,
-      };
+      const currentEvents = res.locals.isSignedIn
+        ? await offenderService.getCurrentEvents(req.user)
+        : {};
 
-      let currentEvents = {};
-
-      if (res.locals.isSignedIn) {
-        currentEvents = await offenderService.getCurrentEvents(req.user);
-      }
       res.render('pages/home', {
-        config: pageConfig,
+        config: {
+          content: true,
+          header: true,
+          postscript: true,
+          detailsType: 'large',
+          returnUrl: req.originalUrl,
+        },
         title: 'Home',
-        homePageLinks,
-        homePageLinksTitle,
+        links: getHomepageLinks(establishmentName, establishmentData),
         homepage,
         currentEvents,
       });
