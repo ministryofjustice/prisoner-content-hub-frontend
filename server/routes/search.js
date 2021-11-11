@@ -5,22 +5,13 @@ const createSearchRouter = ({ searchService, analyticsService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
-    const establishmentId = path(['session', 'establishmentId'], req);
-
     let results = [];
     const query = path(['query', 'query'], req);
     const sessionId = path(['session', 'id'], req);
     const userAgent = path(['headers', 'user-agent'], req);
-    const config = {
-      content: false,
-      header: false,
-      postscript: false,
-      detailsType: 'small',
-      returnUrl: req.originalUrl,
-    };
 
     try {
-      results = await searchService.find({ query, establishmentId });
+      results = await searchService.find(query, req.session?.establishmentName);
       analyticsService.sendEvent({
         category: 'Search',
         action: query,
@@ -32,7 +23,13 @@ const createSearchRouter = ({ searchService, analyticsService }) => {
 
       return res.render('pages/search', {
         title: 'Search',
-        config,
+        config: {
+          content: false,
+          header: false,
+          postscript: false,
+          detailsType: 'small',
+          returnUrl: req.originalUrl,
+        },
         data: results,
         query,
       });
@@ -42,14 +39,11 @@ const createSearchRouter = ({ searchService, analyticsService }) => {
   });
 
   router.get('/suggest', async (req, res) => {
-    const establishmentId = path(['session', 'establishmentId'], req);
-    const query = path(['query', 'query'], req);
-
     try {
-      const results = await searchService.typeAhead({
-        query,
-        establishmentId,
-      });
+      const results = await searchService.typeAhead(
+        req.query?.query,
+        req.session?.establishmentName,
+      );
 
       return res.json(results);
     } catch (error) {

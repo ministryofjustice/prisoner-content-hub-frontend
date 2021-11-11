@@ -6,7 +6,7 @@ const { setupBasicApp } = require('../../../test/test-helpers');
 
 const searchResponse = require('../../../test/resources/searchResponse.json');
 
-describe('GET /search', () => {
+describe('Search Spec', () => {
   describe('GET /search', () => {
     describe('Results page', () => {
       it('should return the correct number of search results', () => {
@@ -128,75 +128,78 @@ describe('GET /search', () => {
       });
     });
   });
-});
 
-describe('GET /suggest', () => {
-  describe('Results page', () => {
-    it('should return the correct number of search results', () => {
-      const searchService = {
-        typeAhead: jest.fn().mockReturnValue(searchResponse),
-      };
-      const analyticsService = {
-        sendPageTrack: jest.fn(),
-        sendEvent: jest.fn(),
-      };
+  describe('GET /suggest', () => {
+    describe('Results page', () => {
+      it('should return the correct number of search results', () => {
+        const searchService = {
+          typeAhead: jest.fn().mockReturnValue(searchResponse),
+        };
+        const analyticsService = {
+          sendPageTrack: jest.fn(),
+          sendEvent: jest.fn(),
+        };
 
-      const router = createSearchRouter({
-        searchService,
-        analyticsService,
-      });
-      const app = setupBasicApp();
-
-      app.use('/search', router);
-
-      const query = 'bob';
-
-      return request(app)
-        .get(`/search/suggest?query=${query}`)
-        .expect(200)
-        .then(response => {
-          expect(Array.isArray(response.body)).toBe(
-            true,
-            'The endpoint should return an array of results',
-          );
-
-          expect(response.body.length).toBe(
-            searchResponse.length,
-            'All results should be returned in the response',
-          );
+        const router = createSearchRouter({
+          searchService,
+          analyticsService,
         });
-    });
+        const app = setupBasicApp();
 
-    it('should return empty when the search fails', () => {
-      const searchService = {
-        find: jest.fn().mockRejectedValue('BOOM!'),
-      };
-      const analyticsService = {
-        sendPageTrack: jest.fn(),
-        sendEvent: jest.fn(),
-      };
+        app.use('/search', router);
 
-      const router = createSearchRouter({
-        searchService,
-        analyticsService,
+        const query = 'bob';
+
+        return request(app)
+          .get(`/search/suggest?query=${query}`)
+          .expect(200)
+          .then(response => {
+            expect(Array.isArray(response.body)).toBe(
+              true,
+              'The endpoint should return an array of results',
+            );
+
+            expect(response.body.length).toBe(
+              searchResponse.length,
+              'All results should be returned in the response',
+            );
+          });
       });
-      const app = setupBasicApp();
 
-      app.use('/search', router);
+      it('should return empty when the search fails', () => {
+        const searchService = {
+          find: jest.fn().mockRejectedValue('BOOM!'),
+        };
+        const analyticsService = {
+          sendPageTrack: jest.fn(),
+          sendEvent: jest.fn(),
+        };
 
-      const query = 'bob';
-
-      return request(app)
-        .get(`/search/suggest?query=${query}`)
-        .expect(500)
-        .then(response => {
-          expect(Array.isArray(response.body)).toBe(
-            true,
-            'The response should be an array',
-          );
-
-          expect(response.body.length).toBe(0, 'The response should be empty');
+        const router = createSearchRouter({
+          searchService,
+          analyticsService,
         });
+        const app = setupBasicApp();
+
+        app.use('/search', router);
+
+        const query = 'bob';
+
+        return request(app)
+          .get(`/search/suggest?query=${query}`)
+          .expect(500)
+          .then(response => {
+            expect(Array.isArray(response.body)).toBe(
+              true,
+              'The response should be an array',
+            );
+
+            expect(response.body.length).toBe(
+              0,
+              'The response should be empty',
+            );
+          });
+      });
     });
   });
 });
