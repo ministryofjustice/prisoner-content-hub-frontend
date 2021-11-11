@@ -209,7 +209,7 @@ const createApp = services => {
           {
             clientID: config.auth.clientId,
             clientSecret: config.auth.clientSecret,
-            callbackURL: `https://${pathOr(
+            callbackURL: `${req.protocol}://${pathOr(
               'localhost',
               ['headers', 'host'],
               req,
