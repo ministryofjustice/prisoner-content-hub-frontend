@@ -36,10 +36,7 @@ const getEstablishmentByName = (
   );
 
 const updateSessionEstablishment = (req, agencyId) => {
-  if (
-    !req.session?.establishmentName ||
-    req.session.establishmentName === 'localhost:3000'
-  ) {
+  if (!req.session?.establishmentName) {
     const { establishmentId, establishmentName } = getEstablishment(agencyId);
     req.session.establishmentId = establishmentId;
     req.session.establishmentName = establishmentName;

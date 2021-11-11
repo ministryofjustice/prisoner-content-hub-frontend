@@ -9,19 +9,6 @@ describe('configureEstablishment', () => {
     next.mockClear();
   });
 
-  it('should use the default prison if no session data', () => {
-    const req = {
-      session: {},
-    };
-
-    configureEstablishment()(req, res, next);
-
-    expect(res.locals.establishmentDisplayName).toBe('HMP Wayland');
-    expect(req.session.establishmentName).toBe('wayland');
-
-    expect(next).toHaveBeenCalled();
-  });
-
   it('should use session data if already set', () => {
     const req = {
       session: {

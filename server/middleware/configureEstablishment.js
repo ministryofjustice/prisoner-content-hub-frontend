@@ -5,7 +5,7 @@ const configureEstablishment = () => (req, res, next) => {
   if (req.session && (!req.session.id || !req.session.establishmentId)) {
     const replaceUrl = /-prisoner-content-hub.*$/g;
 
-    const establishmentName = (req.headers?.host || 'wayland')
+    const establishmentName = req.headers?.host
       .split('.')[0]
       .replace(replaceUrl, '');
 

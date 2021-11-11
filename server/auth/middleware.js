@@ -39,12 +39,16 @@ function isPrisonerId(id) {
 }
 
 /*
-   id        initials  visits  visitors ApprovedVisitors
-  G2168GG   OC        1       1           2
-  G9374GG   YX        1       4           5
-  G1727GV   DB        1       3           32
-  G2320VD   YA        In reception        0
-  G2732GG   ON        0       N/A         4
+  id        CL   initials  visits  visitors ApprovedVisitors
+  G2168GG   WLI  OC        1       1           2
+  G9374GG   WLI  YX        1       4           5
+  G1727GV   WLI  DB        1       3           32
+  G2320VD   WLI  YA        In reception        0
+  G2732GG   WLI  ON        0       N/A         4
+
+  G4309UE   CKI  AU        0       N/A         ?
+
+  G5899UC   FMI  AA        0       N/A         ?
 */
 const createMockSignIn = ({ offenderService }) =>
   async function mockSignIn(req, res, next) {
