@@ -206,7 +206,6 @@ const createApp = services => {
     });
     app.use(passport.initialize());
     app.use(passport.session());
-
     app.use(
       '/auth',
       createAuthRouter({
@@ -223,6 +222,13 @@ const createApp = services => {
         }),
       }),
     );
+
+    app.use((req, res, next) => {
+      if (!req.session?.establishmentName && !req.user) {
+        res.redirect(`/auth/sign-in?returnUrl=${req.originalUrl}`);
+      }
+      next();
+    });
   }
 
   app.use(setCurrentUser);

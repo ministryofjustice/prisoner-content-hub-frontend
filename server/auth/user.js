@@ -2,11 +2,14 @@ const jwt = require('jsonwebtoken');
 const { capitalize } = require('../utils');
 
 class User {
+  #signedIn;
+
   constructor(profile = {}) {
     this.prisonerId = profile.prisonerId.toUpperCase();
     this.firstName = profile.firstName;
     this.lastName = profile.lastName;
     this.bookingId = profile.bookingId;
+    this.#signedIn = false;
   }
 
   setBookingId(bookingId) {
@@ -17,8 +20,12 @@ class User {
     return [this.firstName, this.lastName].join(' ').trim();
   }
 
+  setIsSignedIn(signedIn) {
+    this.#signedIn = Boolean(signedIn);
+  }
+
   isSignedIn() {
-    return true;
+    return this.#signedIn;
   }
 
   serialize() {
