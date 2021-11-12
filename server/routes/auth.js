@@ -1,18 +1,9 @@
 const express = require('express');
-const { getSafeReturnUrl } = require('../auth/middleware');
 
 const createAuthRouter = ({ signIn, signInCallback, signOut }) => {
   const router = express.Router();
 
-  router.get('/sign-in',
-    (req, res, next) => {
-      if(req.user){
-        req.user.setIsSignedIn(true);
-        res.redirect(getSafeReturnUrl(req.query))
-      }
-      next();
-    },
-    signIn);
+  router.get('/sign-in', signIn);
 
   router.get('/provider/callback', signInCallback);
 

@@ -9,7 +9,6 @@ class User {
     this.firstName = profile.firstName;
     this.lastName = profile.lastName;
     this.bookingId = profile.bookingId;
-    this.#signedIn = false;
   }
 
   setBookingId(bookingId) {
@@ -18,14 +17,6 @@ class User {
 
   getFullName() {
     return [this.firstName, this.lastName].join(' ').trim();
-  }
-
-  setIsSignedIn(signedIn) {
-    this.#signedIn = Boolean(signedIn);
-  }
-
-  isSignedIn() {
-    return this.#signedIn;
   }
 
   serialize() {

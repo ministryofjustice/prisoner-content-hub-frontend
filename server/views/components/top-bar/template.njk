@@ -5,11 +5,11 @@
       <a href="/" style="">Content Hub <span>{{ params.establishmentDisplayName }}</span></a>
     </h1>
     <div class="timeLogout">
-      <div class="top-bar-time{% if params.userName %} loggedIn{% endif %}">
+      <div class="top-bar-time{% if params.isSignedIn %} loggedIn{% endif %}">
         <span data-target-id="todays-date">&nbsp;</span>
         <span data-target-id="todays-time"></span>
       </div>
-      {% if params.userName %}
+      {% if params.isSignedIn %}
         <a href="/auth/sign-out?returnUrl={{ params.returnUrl }}">Sign out</a>
       {% endif %}
     </div>
