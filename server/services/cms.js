@@ -94,7 +94,7 @@ class CmsService {
     return suggestions;
   }
 
-  async getContent(establishmentName, establishmentId, contentId) {
+  async getContent(establishmentName, contentId) {
     const { type, location } = await this.#cmsApi.lookupContent(
       establishmentName,
       contentId,

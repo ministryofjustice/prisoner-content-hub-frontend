@@ -24,7 +24,6 @@ describe('GET /topics', () => {
       jest.clearAllMocks();
 
       sessionProvider.mockReturnValue({
-        establishmentId: 123,
         establishmentName: 'berwyn',
       });
 

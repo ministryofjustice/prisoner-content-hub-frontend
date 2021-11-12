@@ -96,7 +96,7 @@ describe('#hubContentService', () => {
         title: 'Novus',
       });
 
-      expect(cmsService.getContent).toHaveBeenCalledWith('berwyn', 794, 1);
+      expect(cmsService.getContent).toHaveBeenCalledWith('berwyn', 1);
     });
   });
 

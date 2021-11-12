@@ -53,12 +53,12 @@
     "homePageLinks": {
       "Your profile": "/profile",
       "NPR": "/tags/785",
-      "Chaplaincy": "/tags/901",
+      "PSIs & PSOs": "/tags/796",
       "Inspiration": "/tags/649",
       "Exercise": "/tags/1112",
       "Games": "/tags/647",
       "Healthy mind & body": "/tags/648",
-      "PSIs & PSOs": "/tags/796",
+      "Feltham life": "/tags/1197",
       "Facilities list & catalogues": "/tags/787"
     },
     "agencyId": "FYI"
@@ -69,12 +69,12 @@
     "homePageLinks": {
       "Your profile": "/profile",
       "NPR": "/tags/785",
-      "Chaplaincy": "/tags/901",
+      "PSIs & PSOs": "/tags/796",
       "Inspiration": "/tags/649",
       "Exercise": "/tags/1112",
       "Games": "/tags/647",
       "Healthy mind & body": "/tags/648",
-      "PSIs & PSOs": "/tags/796",
+      "Feltham life": "/tags/1198",
       "Facilities list & catalogues": "/tags/787"
     },
     "agencyId": "FMI"
@@ -229,12 +229,12 @@
     "homePageLinks": {
       "Your profile": "/profile",
       "NPR": "/tags/785",
-      "Chaplaincy": "/tags/901",
+      "PSIs & PSOs": "/tags/796",
       "Inspiration": "/tags/649",
       "Exercise": "/tags/1112",
       "Games": "/tags/647",
       "Healthy mind & body": "/tags/648",
-      "PSIs & PSOs": "/tags/796",
+      "Werrington life": "/tags/1199",
       "Facilities list & catalogues": "/tags/787"
     },
     "agencyId": "WNI"
@@ -246,12 +246,12 @@
     "homePageLinks": {
       "Your profile": "/profile",
       "NPR": "/tags/785",
-      "Chaplaincy": "/tags/901",
+      "PSIs & PSOs": "/tags/796",
       "Inspiration": "/tags/649",
       "Exercise": "/tags/1112",
       "Games": "/tags/647",
       "Healthy mind & body": "/tags/648",
-      "PSIs & PSOs": "/tags/796",
+      "Wetherby life": "/tags/1200",
       "Facilities list & catalogues": "/tags/787"
     },
     "agencyId": "WYI"
