@@ -30,18 +30,18 @@ describe('GET /content/:id', () => {
   });
 
   it('passes caught exceptions to next', async () => {
-    const hubContentService = {
-      contentFor: jest.fn().mockRejectedValue('💥'),
+    const cmsService = {
+      getContent: jest.fn().mockRejectedValue('💥'),
     };
-    const app = setupApp({ hubContentService });
+    const app = setupApp({ cmsService });
 
     await request(app).get('/content/1').expect(500);
   });
   it('returns a 404 when incorrect data is returned', async () => {
-    const hubContentService = {
-      contentFor: () => ({ type: 'invalid' }),
+    const cmsService = {
+      getContent: () => ({ type: 'invalid' }),
     };
-    const app = setupApp({ hubContentService });
+    const app = setupApp({ cmsService });
 
     await request(app).get('/content/1').expect(404);
   });
@@ -50,8 +50,8 @@ describe('GET /content/:id', () => {
     let app;
 
     beforeEach(() => {
-      const hubContentService = {
-        contentFor: jest.fn().mockReturnValue(radioShowResponse),
+      const cmsService = {
+        getContent: jest.fn().mockReturnValue(radioShowResponse),
       };
       const analyticsService = {
         sendPageTrack: jest.fn(),
@@ -59,7 +59,7 @@ describe('GET /content/:id', () => {
       };
 
       app = setupApp({
-        hubContentService,
+        cmsService,
         analyticsService,
       });
     });
@@ -125,8 +125,8 @@ describe('GET /content/:id', () => {
     let app;
 
     beforeEach(() => {
-      const hubContentService = {
-        contentFor: jest.fn().mockReturnValue(videoShowResponse),
+      const cmsService = {
+        getContent: jest.fn().mockReturnValue(videoShowResponse),
       };
       const analyticsService = {
         sendPageTrack: jest.fn(),
@@ -134,7 +134,7 @@ describe('GET /content/:id', () => {
       };
 
       app = setupApp({
-        hubContentService,
+        cmsService,
         analyticsService,
       });
     });
@@ -235,15 +235,15 @@ describe('GET /content/:id', () => {
     let app;
 
     beforeEach(() => {
-      const hubContentService = {
-        contentFor: jest.fn().mockReturnValue(basicPageResponse),
+      const cmsService = {
+        getContent: jest.fn().mockReturnValue(basicPageResponse),
       };
       const analyticsService = {
         sendPageTrack: jest.fn(),
         sendEvent: jest.fn(),
       };
       app = setupApp({
-        hubContentService,
+        cmsService,
         analyticsService,
       });
     });
@@ -264,8 +264,8 @@ describe('GET /content/:id', () => {
   });
 
   describe('Pdf pages', () => {
-    const hubContentService = {
-      contentFor: jest.fn().mockReturnValue({
+    const cmsService = {
+      getContent: jest.fn().mockReturnValue({
         id: 1,
         title: 'foo pdf file',
         contentType: 'pdf',
@@ -279,7 +279,7 @@ describe('GET /content/:id', () => {
 
     it('returns a PDF', () => {
       const app = setupApp({
-        hubContentService,
+        cmsService,
         analyticsService,
       });
 
@@ -287,95 +287,6 @@ describe('GET /content/:id', () => {
         .get('/content/1')
         .expect(303)
         .expect('Location', 'www.foo.bar/file.pdf');
-    });
-  });
-
-  describe('Landing page', () => {
-    const serviceResponse = {
-      id: 1,
-      title: 'Foo Landing page',
-      contentType: 'landing-page',
-      description: {
-        sanitized: '<p>Foo landing page body</p>',
-        summary: 'Some summary',
-      },
-      featuredContent: {
-        id: 'foo-id',
-        title: 'foo-feature-title',
-        description: { summary: 'foo-feature-summary' },
-        contentType: 'landing-page',
-        graphic: {
-          url: '',
-        },
-      },
-      categoryFeaturedContent: {
-        contentType: 'foo',
-        data: [
-          {
-            id: 'baz-id',
-            title: 'baz-feature-title',
-            description: { summary: 'baz-feature-summary' },
-            contentType: 'radio-show',
-            graphic: {
-              url: '',
-            },
-            contentUrl: '/content/baz-id',
-          },
-          {
-            id: 'bar-id',
-            title: 'bar-feature-title',
-            description: { summary: 'bar-feature-summary' },
-            contentType: 'radio-show',
-            graphic: {
-              url: '',
-            },
-            contentUrl: '/content/bar-id',
-          },
-        ],
-      },
-      categoryMenu: [
-        { linkText: 'Foo', href: '/content/1', id: '1' },
-        { linkText: 'Bar', href: '/content/2', id: '2' },
-      ],
-    };
-
-    it('returns the correct content for a landing page', () => {
-      const hubContentService = {
-        contentFor: jest.fn().mockReturnValue(serviceResponse),
-      };
-      const analyticsService = {
-        sendPageTrack: jest.fn(),
-        sendEvent: jest.fn(),
-      };
-      const app = setupApp({
-        hubContentService,
-        analyticsService,
-      });
-
-      return request(app)
-        .get('/content/1')
-        .expect(200)
-        .then(response => {
-          const $ = cheerio.load(response.text);
-
-          expect($('#title').text()).toContain(
-            'Foo Landing page',
-            'Page title did not match',
-          );
-          expect($('.category-content a').length).toBe(
-            2,
-            'it did not render the correct number of related items',
-          );
-          expect($('.help-block a').length).toBe(
-            2,
-            'show have rendered a category menu',
-          );
-
-          expect($('[data-featured-id="baz-id"]').attr('href')).toContain(
-            `/content/baz-id`,
-            'did not render url',
-          );
-        });
     });
   });
 });

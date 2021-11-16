@@ -1,7 +1,7 @@
 const { prop, path } = require('ramda');
 const express = require('express');
 
-const createContentRouter = ({ hubContentService, analyticsService }) => {
+const createContentRouter = ({ cmsService, analyticsService }) => {
   const router = express.Router();
 
   router.get('/:id', async (req, res, next) => {
@@ -23,11 +23,12 @@ const createContentRouter = ({ hubContentService, analyticsService }) => {
     const { establishmentName } = req.session;
 
     try {
-      const data = await hubContentService.contentFor(
-        id,
-        establishmentId,
+      const data = await cmsService.getContent(
         establishmentName,
+        establishmentId,
+        id,
       );
+
       const contentType = prop('contentType', data);
       const sessionId = path(['session', 'id'], req);
       const categories = data?.categories || [];

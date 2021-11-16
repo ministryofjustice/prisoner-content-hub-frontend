@@ -52,22 +52,6 @@ function imageOrDefaultFor(image, contentType) {
       };
 }
 
-function featuredContentResponseFrom(response) {
-  const type = R.prop('content_type', response);
-  const id = R.prop('id', response);
-  const contentUrl =
-    type === 'series' || type === 'tags' ? `/tags/${id}` : `/content/${id}`;
-
-  return {
-    id,
-    title: response.title,
-    contentType: HUB_CONTENT_TYPES[type],
-    summary: response.summary,
-    image: imageOrDefaultFor(response.image, type),
-    contentUrl,
-  };
-}
-
 function contentResponseFrom(data = []) {
   return data.map(item => ({
     id: item.id,
@@ -110,27 +94,6 @@ function mediaResponseFrom(data) {
   };
 }
 
-function flatPageContentFrom(data) {
-  return {
-    id: data.id,
-    title: data.title,
-    contentType: typeFrom(data.content_type),
-    description: {
-      raw: R.path(['description', 'value'], data),
-      sanitized: R.path(['description', 'processed'], data),
-      summary: R.path(['description', 'summary'], data),
-    },
-    standFirst: data.stand_first,
-    image: imageOrDefaultFor(data.image),
-    contentUrl: `/content/${data.id}`,
-    categories: R.map(R.prop('target_id'), R.propOr([], 'categories', data)),
-    secondaryTags: R.map(
-      R.prop('target_id'),
-      R.propOr([], 'secondary_tags', data),
-    ),
-  };
-}
-
 function termResponseFrom(data) {
   return {
     id: data.id,
@@ -149,32 +112,6 @@ function termResponseFrom(data) {
       url: R.path(['audio', 'url'], data),
       programmeCode: data.programme_code,
     },
-  };
-}
-
-function landingResponseFrom(data) {
-  return {
-    id: data.id,
-    title: data.title,
-    contentType: typeFrom(data.content_type),
-    featuredContentId: data.featured_content_id,
-    description: {
-      raw: R.path(['description', 'value'], data),
-      sanitized: R.path(['description', 'processed'], data),
-      summary: R.path(['description', 'summary'], data),
-    },
-    image: imageFor(data.image),
-    categoryId: data.category_id,
-  };
-}
-
-function pdfResponseFrom(data) {
-  return {
-    id: data.id,
-    title: data.title,
-    contentType: typeFrom(data.content_type),
-    url: R.path(['media', 'url'], data),
-    contentUrl: `/content/${data.id}`,
   };
 }
 
@@ -200,13 +137,9 @@ function searchResultFrom({ _id, _source }) {
 
 module.exports = {
   contentResponseFrom,
-  featuredContentResponseFrom,
   mediaResponseFrom,
   seasonResponseFrom,
   termResponseFrom,
-  flatPageContentFrom,
-  landingResponseFrom,
-  pdfResponseFrom,
   typeFrom,
   searchResultFrom,
 };

@@ -1,12 +1,8 @@
 const {
   contentResponseFrom,
-  featuredContentResponseFrom,
   mediaResponseFrom,
   seasonResponseFrom,
   termResponseFrom,
-  flatPageContentFrom,
-  landingResponseFrom,
-  pdfResponseFrom,
   typeFrom,
   searchResultFrom,
 } = require('../adapters');
@@ -14,13 +10,8 @@ const {
 const radioShowResponse = require('../../../test/resources/radioShow.json');
 const videoShowResponse = require('../../../test/resources/videoShow.json');
 const termsResponse = require('../../../test/resources/terms.json');
-const featuredItemResponse = require('../../../test/resources/featuredItem.json');
-const featuredSeriesResponse = require('../../../test/resources/featuredSeries.json');
-const flatPageContentResponse = require('../../../test/resources/flatPageContent.json');
 const seasonResponse = require('../../../test/resources/season.json');
-const landingPageResponse = require('../../../test/resources/landingPage.json');
 const relatedContentResponse = require('../../../test/resources/relatedContent.json');
-const pdfContentResponse = require('../../../test/resources/pdfContentResponse.json');
 const searchResponse = require('../../../test/resources/rawSearchResponse.json');
 
 describe('Adapters', () => {
@@ -33,27 +24,6 @@ describe('Adapters', () => {
     it('returns formated data for a video item', () => {
       const result = mediaResponseFrom(videoShowResponse);
       expect(result).toStrictEqual(videoContent());
-    });
-  });
-
-  describe('.flatContentResponseFrom', () => {
-    it('return formated data for flat content', () => {
-      const result = flatPageContentFrom(flatPageContentResponse);
-      expect(result).toStrictEqual(flatPageContent());
-    });
-  });
-
-  describe('.pdfResponseFrom', () => {
-    it('returns formated data for a pdf item', () => {
-      const result = pdfResponseFrom(pdfContentResponse);
-      expect(result).toStrictEqual(pdfContent());
-    });
-  });
-
-  describe('.landingResponseFrom', () => {
-    it('returns formated data for a landing page', () => {
-      const result = landingResponseFrom(landingPageResponse);
-      expect(result).toStrictEqual(landingPageContent());
     });
   });
 
@@ -75,18 +45,6 @@ describe('Adapters', () => {
     it('returns formated data for a term', () => {
       const result = termResponseFrom(termsResponse);
       expect(result).toStrictEqual(termContent());
-    });
-  });
-
-  describe('.featuredContentResponseFrom', () => {
-    it('returns formated data for featured item', () => {
-      const result = featuredContentResponseFrom(featuredItemResponse);
-      expect(result).toStrictEqual(featuredItem());
-    });
-
-    it('returns formated data for featured series', () => {
-      const result = featuredContentResponseFrom(featuredSeriesResponse);
-      expect(result).toStrictEqual(featuredSeries());
     });
   });
 
@@ -181,27 +139,6 @@ function videoContent() {
   };
 }
 
-function flatPageContent() {
-  return {
-    id: 3456,
-    title: 'foo title',
-    contentType: 'page',
-    description: {
-      raw: '<h2>foo text</h2>',
-      sanitized: '<h2>foo text</h2>',
-      summary: 'foo text',
-    },
-    image: {
-      alt: 'foo alt',
-      url: 'http://foo.bar/image/foo.png',
-    },
-    standFirst: 'foo stand first',
-    contentUrl: '/content/3456',
-    secondaryTags: [],
-    categories: [644],
-  };
-}
-
 function seasonContent() {
   return [
     {
@@ -253,25 +190,6 @@ function seasonContent() {
   ];
 }
 
-function landingPageContent() {
-  return {
-    id: '3456',
-    categoryId: '678',
-    title: 'Music',
-    contentType: 'landing-page',
-    featuredContentId: '3456',
-    description: {
-      raw: '<p>Landing page item</p>\r\n',
-      sanitized: '<p>Landing page item</p>',
-      summary: 'Landing page item summary',
-    },
-    image: {
-      url: 'http://foo.bar/image/foo.jpg',
-      alt: 'foo image',
-    },
-  };
-}
-
 function relatedContent() {
   return [
     {
@@ -301,44 +219,6 @@ function relatedContent() {
       categories: [],
     },
   ];
-}
-
-function pdfContent() {
-  return {
-    id: '3456',
-    title: 'Food and catering',
-    contentType: 'pdf',
-    url: 'http://foo.bar/content/foo.pdf',
-    contentUrl: '/content/3456',
-  };
-}
-
-function featuredItem() {
-  return {
-    id: '3456',
-    title: 'Featured Video 1',
-    summary: 'Featured video summary',
-    image: {
-      alt: 'Featured Video 1',
-      url: 'http://foo.bar/images/foo.jpg',
-    },
-    contentType: 'video',
-    contentUrl: '/content/3456',
-  };
-}
-
-function featuredSeries() {
-  return {
-    id: '678',
-    title: 'Featured Item 1',
-    summary: 'Featured item summary',
-    image: {
-      alt: 'Featured Item 1',
-      url: 'http://foo.bar/images/foo.jpg',
-    },
-    contentType: 'series',
-    contentUrl: '/tags/678',
-  };
 }
 
 function termContent() {
