@@ -1,5 +1,3 @@
-const R = require('ramda');
-
 const HUB_CONTENT_TYPES = {
   moj_radio_item: 'radio',
   moj_pdf_item: 'pdf',
@@ -10,136 +8,11 @@ const HUB_CONTENT_TYPES = {
   tags: 'tags',
 };
 
-const defaultThumbs = type => {
-  const thumbs = {
-    moj_radio_item: '/public/images/default_audio.png',
-    moj_pdf_item: '/public/images/default_document.png',
-    moj_video_item: '/public/images/default_video.png',
-    page: '/public/images/default_document.png',
-  };
-
-  return thumbs[type] || thumbs.page;
-};
-
-const defaultAlt = type => {
-  const alt = {
-    moj_radio_item: 'Audio file',
-    moj_pdf_item: 'Document file',
-    moj_video_item: 'Video file',
-    page: 'Document file',
-  };
-  return alt[type] || alt.page;
-};
-
-function imageFor(image) {
-  return image
-    ? {
-        url: image.url,
-        alt: image.alt,
-      }
-    : null;
-}
-
-function imageOrDefaultFor(image, contentType) {
-  return image
-    ? {
-        url: image.url,
-        alt: image.alt,
-      }
-    : {
-        url: defaultThumbs(contentType),
-        alt: defaultAlt(contentType),
-      };
-}
-
-function contentResponseFrom(data = []) {
-  return data.map(item => ({
-    id: item.id,
-    title: item.title,
-    contentType: HUB_CONTENT_TYPES[item.content_type],
-    summary: item.summary,
-    image: imageFor(item.image),
-    contentUrl: `/content/${item.id}`,
-    categories: R.map(R.prop('target_id'), R.propOr([], 'categories', item)),
-    secondaryTags: R.map(
-      R.prop('target_id'),
-      R.propOr([], 'secondary_tags', item),
-    ),
-  }));
-}
-
-function mediaResponseFrom(data) {
-  return {
-    id: data.id,
-    episodeId: data.episode_id,
-    programmeCode: data.programme_code,
-    title: data.title,
-    contentType: typeFrom(data.content_type),
-    description: {
-      raw: R.path(['description', 'value'], data),
-      sanitized: R.path(['description', 'processed'], data),
-      summary: R.path(['description', 'summary'], data),
-    },
-    media: R.path(['media', 'url'], data),
-    image: imageOrDefaultFor(data.image),
-    episode: data.episode,
-    season: data.season,
-    seriesId: data.series_id,
-    contentUrl: `/content/${data.id}`,
-    categories: R.map(R.prop('target_id'), R.propOr([], 'categories', data)),
-    secondaryTags: R.map(
-      R.prop('target_id'),
-      R.propOr([], 'secondary_tags', data),
-    ),
-  };
-}
-
-function termResponseFrom(data) {
-  return {
-    id: data.id,
-    contentType: data.content_type,
-    name: data.title,
-    description: {
-      raw: R.path(['description', 'value'], data),
-      sanitized: R.path(['description', 'sanitized'], data),
-      summary: data.summary,
-    },
-    image: imageFor(data.image),
-    video: {
-      url: R.path(['video', 'url'], data),
-    },
-    audio: {
-      url: R.path(['audio', 'url'], data),
-      programmeCode: data.programme_code,
-    },
-  };
-}
-
 function typeFrom(type) {
   const matches = type.match(/(?<=--)(.*)/g);
   return HUB_CONTENT_TYPES[matches ? matches[0] : type];
 }
 
-function seasonResponseFrom(data = []) {
-  return R.map(mediaResponseFrom, data);
-}
-
-function searchResultFrom({ _id, _source }) {
-  const idFrom = text => text.match(/\d+/)[0];
-  const titleFrom = R.view(R.lensPath(['title', 0]));
-  const summaryFrom = R.view(R.lensPath(['summary', 0]));
-  return {
-    title: titleFrom(_source),
-    summary: summaryFrom(_source),
-    url: `/content/${idFrom(_id)}`,
-  };
-}
-
 module.exports = {
-  contentResponseFrom,
-  mediaResponseFrom,
-  seasonResponseFrom,
-  termResponseFrom,
   typeFrom,
-  searchResultFrom,
 };
