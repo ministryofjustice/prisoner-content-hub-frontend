@@ -18,16 +18,11 @@ const createContentRouter = ({ cmsService, analyticsService }) => {
       returnUrl: req.originalUrl,
     };
 
-    const establishmentId = path(['session', 'establishmentId'], req);
     const userAgent = path(['headers', 'user-agent'], req);
     const { establishmentName } = req.session;
 
     try {
-      const data = await cmsService.getContent(
-        establishmentName,
-        establishmentId,
-        id,
-      );
+      const data = await cmsService.getContent(establishmentName, id);
 
       const contentType = prop('contentType', data);
       const sessionId = path(['session', 'id'], req);
