@@ -18,7 +18,6 @@ module.exports = (
   {
     logger,
     cmsService,
-    hubTagsService,
     offenderService,
     prisonerInformationService,
     searchService,
@@ -75,7 +74,7 @@ module.exports = (
   );
 
   router.use('/npr', createNprRouter());
-  router.use('/tags', createTagRouter({ hubTagsService }));
+  router.use('/tags', createTagRouter({ cmsService }));
   router.use('/games', createGamesRouter());
   router.use('/analytics', createAnalyticsRouter({ analyticsService }));
   router.use('/feedback', createFeedbackRouter({ feedbackService }));

@@ -3,7 +3,6 @@ const { path } = require('ramda');
 const { logger, requestLogger } = require('../utils/logger');
 const config = require('../config');
 
-const { HubClient } = require('../clients/hub');
 const { StandardClient } = require('../clients/standard');
 const { PrisonApiClient } = require('../clients/prisonApiClient');
 const { JsonApiClient } = require('../clients/jsonApiClient');
@@ -14,7 +13,6 @@ const {
 } = require('../utils/caching');
 
 // Repositories
-const { contentRepository } = require('../repositories/hubContent');
 const { offenderRepository } = require('../repositories/offender');
 const { analyticsRepository } = require('../repositories/analytics');
 const { feedbackRepository } = require('../repositories/feedback');
@@ -23,7 +21,6 @@ const PrisonApiRepository = require('../repositories/prisonApi');
 
 // Services
 const { CmsService } = require('./cms');
-const { createHubTagsService } = require('./hubTags');
 const { createPrisonApiOffenderService } = require('./offender');
 const { createSearchService } = require('./search');
 const { createAnalyticsService } = require('./analytics');
@@ -37,7 +34,6 @@ const cachingStrategy = path(['features', 'useRedisCache'], config)
     )
   : new InMemoryCachingStrategy();
 
-const hubClient = new HubClient();
 const jsonApiClient = new JsonApiClient(config.api.hubEndpoint);
 const standardClient = new StandardClient();
 const prisonApiClient = new PrisonApiClient({
@@ -52,10 +48,6 @@ module.exports = {
   logger,
   requestLogger,
   cmsService,
-  hubTagsService: createHubTagsService(
-    contentRepository(hubClient),
-    cmsService,
-  ),
   offenderService: createPrisonApiOffenderService(
     offenderRepository(prisonApiClient),
   ),

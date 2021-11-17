@@ -1,7 +1,6 @@
 const express = require('express');
-const { path } = require('ramda');
 
-const createTagRouter = ({ hubTagsService }) => {
+const createTagRouter = ({ cmsService }) => {
   const router = express.Router();
 
   router.get('/:id', async (req, res, next) => {
@@ -10,7 +9,6 @@ const createTagRouter = ({ hubTagsService }) => {
       if (!id) {
         return next();
       }
-      const establishmentId = path(['session', 'establishmentId'], req);
       const config = {
         content: true,
         header: false,
@@ -19,11 +17,7 @@ const createTagRouter = ({ hubTagsService }) => {
         returnUrl: req.originalUrl,
       };
 
-      const data = await hubTagsService.termFor(
-        id,
-        establishmentId,
-        req.session.establishmentName,
-      );
+      const data = await cmsService.getTag(req.session.establishmentName, id);
 
       data.secondaryTags = data.id;
 
