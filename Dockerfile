@@ -12,12 +12,14 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm ci --no-audit --production && \
+RUN npm ci --no-audit --ignore-scripts && \
     npm run build && \
     export BUILD_NUMBER=${BUILD_NUMBER:-1_0_0} && \
     export GIT_REF=${GIT_REF:-dummy} && \
     export GIT_DATE="${GIT_DATE:-dummy}" && \
-    npm run record-build-info
+    npm run record-build-info && \
+    npm prune --production
+
 
 # Second stage
 FROM node:16.13-bullseye-slim
