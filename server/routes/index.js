@@ -18,7 +18,6 @@ module.exports = (
   {
     logger,
     cmsService,
-    hubContentService,
     hubTagsService,
     offenderService,
     prisonerInformationService,
@@ -70,7 +69,7 @@ module.exports = (
   router.use(
     '/content',
     createContentRouter({
-      hubContentService,
+      cmsService,
       analyticsService,
     }),
   );

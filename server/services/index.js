@@ -14,10 +14,6 @@ const {
 } = require('../utils/caching');
 
 // Repositories
-const {
-  categoryFeaturedContentRepository,
-} = require('../repositories/categoryFeaturedContent');
-const { hubMenuRepository } = require('../repositories/hubMenu');
 const { contentRepository } = require('../repositories/hubContent');
 const { offenderRepository } = require('../repositories/offender');
 const { analyticsRepository } = require('../repositories/analytics');
@@ -27,7 +23,6 @@ const PrisonApiRepository = require('../repositories/prisonApi');
 
 // Services
 const { CmsService } = require('./cms');
-const { createHubContentService } = require('./hubContent');
 const { createHubTagsService } = require('./hubTags');
 const { createPrisonApiOffenderService } = require('./offender');
 const { createSearchService } = require('./search');
@@ -57,13 +52,6 @@ module.exports = {
   logger,
   requestLogger,
   cmsService,
-  hubContentService: createHubContentService({
-    contentRepository: contentRepository(hubClient),
-    menuRepository: hubMenuRepository(hubClient),
-    categoryFeaturedContentRepository:
-      categoryFeaturedContentRepository(hubClient),
-    cmsService,
-  }),
   hubTagsService: createHubTagsService(
     contentRepository(hubClient),
     cmsService,
@@ -77,9 +65,7 @@ module.exports = {
       apiUrl: config.prisonApi.baseUrl,
     }),
   }),
-  searchService: createSearchService({
-    cmsApi,
-  }),
+  searchService: createSearchService({ cmsApi }),
   analyticsService: createAnalyticsService({
     analyticsRepository: analyticsRepository(standardClient),
   }),
