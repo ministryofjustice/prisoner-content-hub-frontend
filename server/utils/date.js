@@ -8,7 +8,7 @@ const {
   formatISO,
 } = require('date-fns');
 
-const formatDateOrDefault = (placeHolder = '', dateFormat, date) => {
+const formatDateOrDefault = (placeHolder, dateFormat, date) => {
   if (!isValid(new Date(date))) {
     return placeHolder;
   }
@@ -24,7 +24,7 @@ const formatTimeBetweenOrDefault = (placeHolder, start, finish) => {
     : formatDistance(parseISO(start), new Date());
 };
 
-const getDateSelection = (date = new Date(), selectedDate, amount = 12) => {
+const getDateSelection = (date, selectedDate, amount = 12) => {
   const startDate = startOfMonth(date);
   const dateRange = [];
 

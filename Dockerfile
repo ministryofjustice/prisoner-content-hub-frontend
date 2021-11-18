@@ -1,5 +1,5 @@
 # First stage
-FROM node:14.17-buster as builder
+FROM node:16.13-bullseye-slim as builder
 
 ARG BUILD_NUMBER
 ARG GIT_REF
@@ -20,7 +20,7 @@ RUN npm ci --no-audit --production && \
     npm run record-build-info
 
 # Second stage
-FROM node:14.17-buster-slim
+FROM node:16.13-bullseye-slim
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 
 RUN apt-get update && \

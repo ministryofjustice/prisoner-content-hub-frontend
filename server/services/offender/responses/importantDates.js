@@ -1,15 +1,8 @@
-const { parseISO, format, isValid } = require('date-fns');
 const {
   placeholders: { DEFAULT },
   dateFormats: { PRETTY_DATE },
 } = require('../../../utils/enums');
-
-const formatDateOrDefault = (defaultValue = '', dateFormat, date) => {
-  if (!isValid(new Date(date))) {
-    return defaultValue;
-  }
-  return format(parseISO(date), dateFormat);
-};
+const { formatDateOrDefault } = require('../../../utils/date');
 
 class ImportantDates {
   constructor(options = {}) {
