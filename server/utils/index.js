@@ -1,7 +1,4 @@
-const { isNil, isEmpty } = require('ramda');
 const defaultEstablishmentData = require('../content/establishmentData.json');
-
-const isEmptyResponse = val => isEmpty(val) || isNil(val);
 
 const getEstablishmentId = (
   establishmentName,
@@ -75,20 +72,13 @@ function capitalizePersonName(input, separator = ' ') {
     .join(separator);
 }
 
-const fillContentItems = (contentItems = [], number = 4) =>
-  contentItems.length % number
-    ? contentItems.concat(new Array(number - (contentItems.length % number)))
-    : contentItems;
-
 module.exports = {
   getEstablishmentId,
   getEstablishment,
   updateSessionEstablishment,
   getEstablishmentDisplayName,
   getHomepageLinks,
-  isEmptyResponse,
   capitalize,
   capitalizeAll,
   capitalizePersonName,
-  fillContentItems,
 };

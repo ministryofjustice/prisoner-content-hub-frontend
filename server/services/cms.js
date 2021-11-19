@@ -80,7 +80,7 @@ class CmsService {
       case 'taxonomy_term--moj_categories':
         return this.getCategory(establishmentName, uuid);
       default:
-        return null;
+        throw new Error(`Unknown tag type: ${type} with content id: ${id}`);
     }
   }
 
@@ -94,10 +94,10 @@ class CmsService {
     return suggestions;
   }
 
-  async getContent(establishmentName, contentId) {
+  async getContent(establishmentName, id) {
     const { type, location } = await this.#cmsApi.lookupContent(
       establishmentName,
-      contentId,
+      id,
     );
 
     switch (type) {
@@ -110,9 +110,7 @@ class CmsService {
       case 'node--moj_video_item':
         return this.getMedia(establishmentName, new VideoPageQuery(location));
       default:
-        throw new Error(
-          `Unknown content type: ${type} with content id: ${contentId}`,
-        );
+        throw new Error(`Unknown content type: ${type} with content id: ${id}`);
     }
   }
 
