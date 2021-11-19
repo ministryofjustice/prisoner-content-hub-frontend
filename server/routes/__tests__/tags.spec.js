@@ -14,10 +14,10 @@ describe('GET /tags', () => {
       });
 
       it('passes caught exceptions to next', async () => {
-        const hubTagsService = {
-          termFor: jest.fn().mockRejectedValue('💥'),
+        const cmsService = {
+          getTag: jest.fn().mockRejectedValue('💥'),
         };
-        const router = createTagRouter({ hubTagsService });
+        const router = createTagRouter({ cmsService });
         const app = setupBasicApp();
 
         app.use('/tags', router);
@@ -25,10 +25,10 @@ describe('GET /tags', () => {
         await request(app).get('/tags/1').expect(500);
       });
       it('returns a 500 when incorrect data is returned', async () => {
-        const hubTagsService = {
-          termFor: jest.fn().mockRejectedValue('error'),
+        const cmsService = {
+          getTag: jest.fn().mockRejectedValue('error'),
         };
-        const router = createTagRouter({ hubTagsService });
+        const router = createTagRouter({ cmsService });
         const app = setupBasicApp();
 
         app.use('/tags', router);
@@ -73,10 +73,10 @@ describe('GET /tags', () => {
 
       describe('tags page header', () => {
         it('correctly renders a page header with an image', () => {
-          const hubTagsService = {
-            termFor: jest.fn().mockReturnValue(data),
+          const cmsService = {
+            getTag: jest.fn().mockReturnValue(data),
           };
-          const router = createTagRouter({ hubTagsService });
+          const router = createTagRouter({ cmsService });
           const app = setupBasicApp();
 
           app.use(sessionMiddleware);
@@ -106,10 +106,10 @@ describe('GET /tags', () => {
 
       describe('landing page related content', () => {
         it('correctly renders a tags page related content', () => {
-          const hubTagsService = {
-            termFor: jest.fn().mockReturnValue(data),
+          const cmsService = {
+            getTag: jest.fn().mockReturnValue(data),
           };
-          const router = createTagRouter({ hubTagsService });
+          const router = createTagRouter({ cmsService });
           const app = setupBasicApp();
 
           app.use(sessionMiddleware);
