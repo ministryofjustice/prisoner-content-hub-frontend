@@ -379,13 +379,13 @@ describe('cms Service', () => {
       });
     });
 
-    it.skip('handles unknown content', async () => {
+    it('handles unknown content', async () => {
       cmsApi.lookupContent.mockResolvedValue({
         type: 'node--unknown',
         location: 'https://cms.org/content/1234',
       });
-      await expect(cmsService.getContent(1234)).rejects.toThrow(
-        'Unknown content type',
+      await expect(cmsService.getContent('wayland', 1234)).rejects.toThrow(
+        'Unknown content type: node--unknown with content id: 1234',
       );
     });
 

@@ -3,47 +3,6 @@ const termResponse = require('../../../test/resources/terms.json');
 const { lastCall } = require('../../../test/test-helpers');
 
 describe('contentRepository', () => {
-  describe('#contentFor', () => {
-    it('returns null if no id is passed', async () => {
-      const client = generateClient({ response: 'data' });
-      const repository = contentRepository(client);
-      const result = await repository.contentFor();
-
-      expect(client.get).not.toHaveBeenCalled();
-      expect(result).toBeNull();
-    });
-
-    it('returns content for a given id', async () => {
-      const client = generateClient({ content_type: 'moj_video_item' });
-      const repository = contentRepository(client);
-
-      const result = await repository.contentFor('id');
-
-      expect(client.get).toHaveBeenCalledTimes(1);
-      expect(lastCall(client.get)[0]).toContain('id');
-
-      const expectedKeys = [
-        'id',
-        'title',
-        'description',
-        'contentType',
-        'media',
-        'episode',
-        'season',
-        'seriesId',
-        'image',
-        'categories',
-        'secondaryTags',
-        'contentUrl',
-      ];
-      const keys = Object.keys(result);
-
-      expectedKeys.forEach(key => {
-        expect(keys).toContain(key);
-      });
-    });
-  });
-
   describe('#termFor', () => {
     it('returns null if no id is passed', async () => {
       const client = generateClient({ response: 'data' });

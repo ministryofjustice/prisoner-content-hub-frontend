@@ -109,13 +109,10 @@ class CmsService {
         return this.getMedia(establishmentName, new AudioPageQuery(location));
       case 'node--moj_video_item':
         return this.getMedia(establishmentName, new VideoPageQuery(location));
-      case 'node--landing_page':
-        return null;
-      /// ...other types go here
       default:
-        // log unsupported type
-        // throw new Error('Unknown content type');
-        return null;
+        throw new Error(
+          `Unknown content type: ${type} with content id: ${contentId}`,
+        );
     }
   }
 
