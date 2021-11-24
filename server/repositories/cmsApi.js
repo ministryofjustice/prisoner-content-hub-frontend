@@ -18,12 +18,13 @@ class CmsApi {
   #lookup = async (establishmentName, lookupType, id) =>
     // Router will return 403 when content exists but not assigned to this prison
     this.#throwNotFoundWhenStatusIs([403, 404], async () => {
+      const data = await this.jsonApiClient.getRelative(
+        `/router/prison/${establishmentName}/translate-path?path=${lookupType}/${id}`,
+      );
       const {
         jsonapi: { resourceName: type, individual: location },
         entity: { uuid },
-      } = await this.jsonApiClient.getRelative(
-        `/router/prison/${establishmentName}/translate-path?path=${lookupType}/${id}`,
-      );
+      } = data;
       return { type, location, uuid };
     });
 
@@ -33,6 +34,10 @@ class CmsApi {
 
   async lookupTag(establishmentName, tagId) {
     return this.#lookup(establishmentName, 'tags', tagId);
+  }
+
+  async lookupExternalLink(establishmentName, tagId) {
+    return this.#lookup(establishmentName, 'external-link', tagId);
   }
 
   async get(query) {

@@ -2,6 +2,9 @@ const { TopicsQuery } = require('../repositories/cmsQueries/topicsQuery');
 const { HomepageQuery } = require('../repositories/cmsQueries/homePageQuery');
 const { BasicPageQuery } = require('../repositories/cmsQueries/basicPageQuery');
 const {
+  ExternalLinkPageQuery,
+} = require('../repositories/cmsQueries/externalLinkPageQuery');
+const {
   SecondaryTagPageQuery,
 } = require('../repositories/cmsQueries/secondaryTagPageQuery');
 const {
@@ -67,6 +70,14 @@ class CmsService {
       ...categoryData,
       categoryMenu,
     };
+  }
+
+  async getExternalLink(establishmentName, id) {
+    const { location } = await this.#cmsApi.lookupExternalLink(
+      establishmentName,
+      id,
+    );
+    return this.#cmsApi.get(new ExternalLinkPageQuery(location));
   }
 
   async getTag(establishmentName, id) {
