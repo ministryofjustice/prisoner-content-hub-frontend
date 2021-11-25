@@ -164,6 +164,7 @@ const createApp = services => {
   app.use(getEstablishmentFromUrl);
 
   if (config.features.useMockAuth) {
+    logger.debug(`********** USING MOCK **********`);
     app.use('*', (req, res, next) => {
       const serializedUser = req.session?.passport?.user;
       if (serializedUser) {
@@ -224,9 +225,14 @@ const createApp = services => {
   }
 
   app.use((req, res, next) => {
+    logger.debug(
+      `*********** establishment: ${req.session?.establishmentName} user: ${req.user?.prisonerId}`,
+    );
     if (!req.session?.establishmentName) {
-      if (!req.user)
+      if (!req.user) {
+        logger.debug(`********** REDIRECTING`);
         return res.redirect(`/auth/sign-in?returnUrl=${req.originalUrl}`);
+      }
       req.session.isSignedIn = true;
     }
     return next();
