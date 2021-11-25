@@ -88,7 +88,7 @@ describe('Sentry', () => {
   it('does not call the Sentry error handling middleware when a request succeeds', async () => {
     await request(app())
       .get('/games/chess')
-      .set('host', 'wayland.prisoner-content-hub')
+      .set('host', 'wayland.content-hub')
       .expect(200);
     expect(Sentry.errorHandlingMiddleware).not.toHaveBeenCalled();
   });
@@ -108,7 +108,7 @@ describe('Sentry', () => {
   it('calls the Sentry request handling middleware when an request is made', async () => {
     await request(app())
       .get('/games/chess')
-      .set('host', 'wayland.prisoner-content-hub')
+      .set('host', 'wayland.content-hub')
       .expect(200);
     expect(Sentry.requestHandlingMiddleware).toHaveBeenCalled();
   });
@@ -131,7 +131,7 @@ describe('App', () => {
     config.auth.callbackPath = '/testPath';
     await request(app())
       .get('/unknown-url')
-      .set('host', 'wayland.prisoner-content-hub')
+      .set('host', 'wayland.content-hub')
       .then(res => {
         expect(res.text).toContain(
           'The page you are looking for could not be found',
