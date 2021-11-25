@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 const jwt = require('jsonwebtoken');
 const { capitalize } = require('../utils');
 
