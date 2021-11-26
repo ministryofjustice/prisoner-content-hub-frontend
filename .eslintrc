@@ -6,7 +6,9 @@
   },
   "extends": ["airbnb-base", "eslint-config-prettier"],
   "rules": {
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "max-classes-per-file": "off",
+    "class-methods-use-this": "off"
   },
   "overrides": [
     {

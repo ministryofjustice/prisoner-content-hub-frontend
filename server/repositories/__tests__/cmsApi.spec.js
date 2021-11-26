@@ -1,5 +1,3 @@
-/* eslint-disable max-classes-per-file */
-/* eslint-disable class-methods-use-this */
 const nock = require('nock');
 const { jsonApiResponse } = require('../../../test/resources/jsonApi');
 const { JsonApiClient } = require('../../clients/jsonApiClient');
