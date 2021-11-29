@@ -1,14 +1,16 @@
 {% if params.id %}
-  <a data-featured-tile-id="{{params.id}}" data-featured-id="{{params.id}}" data-featured-title="{{ params.title }}" href="{{params.contentUrl}}" {% if params.contentType === 'pdf' or  params.contentType === 'moj_pdf_item' %}target="_blank"{% endif %}>
+  <a data-featured-tile-id="{{params.id}}" data-featured-id="{{params.id}}" data-featured-title="{{ params.title }}" href="{{params.contentUrl}}" {% if params.externalContent %}target="_blank"{% endif %}>
     <div>
       <img src="{{params.image.url}}" alt="{{params.image.alt}}" class="tile-image">
       <h3 class="govuk-heading-m" style="">{{params.title}}</h3>
     </div>
     <div>
-      {% if params.contentType === "moj_video_item" or params.contentType === "video" %}
+      {% if params.contentType === "video" %}
         <p class="content-link--video">Watch</p>
-      {% elif params.contentType === "moj_radio_item" or params.contentType === "radio" %}
+      {% elif params.contentType === "radio" %}
         <p class="content-link--audio">Listen</p>
+      {% elif params.contentType === "external_link" %}
+        <p class="content-link--external">{{ params.displayUrl }}</p>
       {% else %}
         <p class="content-link--article">Read</p>
       {% endif %}

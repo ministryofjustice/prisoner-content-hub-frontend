@@ -21,6 +21,7 @@ describe('Series with no defined related content page query', () => {
           imageStyleUri: [{ tile_large: `tile_large1` }],
           resourceIdObjMeta: { alt: `alt1` },
         },
+        displayUrl: undefined,
         path: { alias: '/tags/123' },
       };
 
@@ -29,6 +30,8 @@ describe('Series with no defined related content page query', () => {
         contentType: 'series',
         title: `name1`,
         summary: `description1`,
+        displayUrl: undefined,
+        externalContent: false,
         image: {
           url: `tile_large1`,
           alt: `alt1`,

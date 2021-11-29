@@ -40,6 +40,8 @@ describe('Secondary Tag page query', () => {
         },
         fieldMojSecondaryTags,
         path: { alias: `/content/${id}` },
+        displayUrl: undefined,
+        externalContent: false,
       });
       const createTransformedSecondaryTag = id => ({
         id: `100${id}`,
@@ -50,6 +52,8 @@ describe('Secondary Tag page query', () => {
           url: `tile_large${id}`,
           alt: `alt${id}`,
         },
+        displayUrl: undefined,
+        externalContent: false,
         contentUrl: `/tags/${id}`,
       });
       const createTransformedContent = id => ({
@@ -62,6 +66,8 @@ describe('Secondary Tag page query', () => {
           url: `tile_small${id}`,
           alt: `alt${id}`,
         },
+        displayUrl: undefined,
+        externalContent: false,
       });
       const SECONDARYTAG1 = createSecondaryTag(1);
       const SECONDARYTAG2 = createSecondaryTag(UUID);

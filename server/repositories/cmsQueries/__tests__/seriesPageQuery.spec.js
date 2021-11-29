@@ -37,6 +37,8 @@ describe('Series page query', () => {
         type: 'node--moj_video_item',
         fieldMojSeries,
         path: { alias: `/content/${id}` },
+        displayUrl: undefined,
+        externalContent: false,
       });
       const createTransformedContent = id => ({
         id,
@@ -47,6 +49,8 @@ describe('Series page query', () => {
           url: `tile_small${id}`,
           alt: `alt${id}`,
         },
+        displayUrl: undefined,
+        externalContent: false,
         contentType: 'video',
       });
       const response = [
@@ -64,6 +68,8 @@ describe('Series page query', () => {
           url: `tile_large${UUID}`,
           alt: `alt${UUID}`,
         },
+        displayUrl: undefined,
+        externalContent: false,
         contentUrl: `/tags/${UUID}`,
         relatedContent: {
           contentType: 'default',
