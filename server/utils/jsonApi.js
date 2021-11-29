@@ -8,23 +8,33 @@ const getImage = (data, type) => {
 
 const getLargeImage = data => getImage(data, 'tile_large');
 
-const getTile = (item, imageSize = 'tile_small') => ({
-  id: item?.drupalInternal_Nid,
-  contentType: typeFrom(item?.type),
-  title: item?.title,
-  summary: item?.fieldMojDescription?.summary,
-  contentUrl: item?.path?.alias,
-  image: getImage(item?.fieldMojThumbnailImage, imageSize),
-});
+const getTile = (item, imageSize = 'tile_small') => {
+  const { contentType, externalContent } = typeFrom(item?.type);
+  return {
+    id: item?.drupalInternal_Nid,
+    contentType,
+    externalContent,
+    title: item?.title,
+    summary: item?.fieldMojDescription?.summary,
+    contentUrl: item?.path?.alias,
+    displayUrl: item?.fieldDisplayUrl,
+    image: getImage(item?.fieldMojThumbnailImage, imageSize),
+  };
+};
 
-const getSeriesTile = (item, imageSize = 'tile_small') => ({
-  id: item?.drupalInternal_Tid,
-  contentType: typeFrom(item?.type),
-  title: item?.name,
-  summary: item?.description?.processed,
-  contentUrl: item?.path?.alias,
-  image: getImage(item?.fieldFeaturedImage, imageSize),
-});
+const getSeriesTile = (item, imageSize = 'tile_small') => {
+  const { contentType, externalContent } = typeFrom(item?.type);
+  return {
+    id: item?.drupalInternal_Tid,
+    contentType,
+    externalContent,
+    title: item?.name,
+    summary: item?.description?.processed,
+    contentUrl: item?.path?.alias,
+    displayUrl: item?.fieldDisplayUrl,
+    image: getImage(item?.fieldFeaturedImage, imageSize),
+  };
+};
 
 const isTag = ({ type }) =>
   [
@@ -59,12 +69,34 @@ const buildSecondaryTags = arr =>
   }));
 
 const HUB_CONTENT_TYPES = {
-  moj_radio_item: 'radio',
-  moj_pdf_item: 'pdf',
-  moj_video_item: 'video',
-  page: 'page',
-  series: 'series',
-  tags: 'tags',
+  moj_radio_item: {
+    contentType: 'radio',
+    externalContent: false,
+  },
+  moj_video_item: {
+    contentType: 'video',
+    externalContent: false,
+  },
+  moj_pdf_item: {
+    contentType: 'pdf',
+    externalContent: true,
+  },
+  external_link: {
+    contentType: 'external_link',
+    externalContent: true,
+  },
+  page: {
+    contentType: 'page',
+    externalContent: false,
+  },
+  series: {
+    contentType: 'series',
+    externalContent: false,
+  },
+  tags: {
+    contentType: 'tags',
+    externalContent: false,
+  },
 };
 
 const typeFrom = type => {

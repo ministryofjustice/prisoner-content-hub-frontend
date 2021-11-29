@@ -155,6 +155,9 @@
   & p {
     color: govuk-colour('black');
   }
+  ::after {
+    filter: brightness(0);
+  }
 }
 
 .category-content > a:hover,
@@ -167,6 +170,9 @@
     & h3,
     & p {
       color: govuk-colour('black');
+    }
+    ::after {
+      filter: brightness(0);
     }
   }
 }
@@ -271,6 +277,22 @@
     line-height: govuk-spacing(5);
     padding: govuk-spacing(1);
     text-align: center;
+  }
+}
+
+.content-link--external {
+  color: govuk-colour('mid-grey');
+  font-weight: 800;
+
+  &::after {
+    display: inline-block;
+    margin-left: govuk-spacing(2);
+    width: govuk-spacing(5);
+    height: govuk-spacing(5);
+    line-height: govuk-spacing(5);
+    padding: govuk-spacing(1);
+    text-align: center;
+    content: url('/public/images/icons/icon_external_website.svg');
   }
 }
 

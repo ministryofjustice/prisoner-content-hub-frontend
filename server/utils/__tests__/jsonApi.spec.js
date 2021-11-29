@@ -64,6 +64,7 @@ describe('getting tile data', () => {
       drupalInternal_Nid: 42,
       type: 'moj_video_item',
       title: 'title',
+      fieldDisplayUrl: 'link',
       fieldMojDescription: { summary: 'summary' },
       fieldMojThumbnailImage: {
         imageStyleUri: [
@@ -84,6 +85,34 @@ describe('getting tile data', () => {
           title: 'title',
           summary: 'summary',
           contentUrl: '/content/42',
+          displayUrl: 'link',
+          externalContent: false,
+          image: { url: 'tile_small', alt: 'alt' },
+        });
+      });
+
+      it('PDF website content type opens in a new tab', () => {
+        expect(getSmallTile({ ...tileData, type: 'moj_pdf_item' })).toEqual({
+          id: 42,
+          contentType: 'pdf',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/content/42',
+          displayUrl: 'link',
+          externalContent: true,
+          image: { url: 'tile_small', alt: 'alt' },
+        });
+      });
+
+      it(' External website content type opens in a new tab', () => {
+        expect(getSmallTile({ ...tileData, type: 'external_link' })).toEqual({
+          id: 42,
+          contentType: 'external_link',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/content/42',
+          displayUrl: 'link',
+          externalContent: true,
           image: { url: 'tile_small', alt: 'alt' },
         });
       });
@@ -97,6 +126,34 @@ describe('getting tile data', () => {
           title: 'title',
           summary: 'summary',
           contentUrl: '/content/42',
+          displayUrl: 'link',
+          externalContent: false,
+          image: { url: 'tile_large', alt: 'alt' },
+        });
+      });
+
+      it('PDF website content type opens in a new tab', () => {
+        expect(getLargeTile({ ...tileData, type: 'moj_pdf_item' })).toEqual({
+          id: 42,
+          contentType: 'pdf',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/content/42',
+          displayUrl: 'link',
+          externalContent: true,
+          image: { url: 'tile_large', alt: 'alt' },
+        });
+      });
+
+      it(' External website content type opens in a new tab', () => {
+        expect(getLargeTile({ ...tileData, type: 'external_link' })).toEqual({
+          id: 42,
+          contentType: 'external_link',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/content/42',
+          displayUrl: 'link',
+          externalContent: true,
           image: { url: 'tile_large', alt: 'alt' },
         });
       });
@@ -127,6 +184,7 @@ describe('getting tile data', () => {
           title: 'title',
           summary: 'summary',
           contentUrl: '/tags/42',
+          externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
         });
       });
@@ -140,6 +198,7 @@ describe('getting tile data', () => {
           title: 'title',
           summary: 'summary',
           contentUrl: '/tags/42',
+          externalContent: false,
           image: { url: 'tile_large', alt: 'alt' },
         });
       });
@@ -193,27 +252,48 @@ describe('buildSecondaryTags', () => {
 
 describe('.typeFrom', () => {
   it('should return the correct type for an audio item', () => {
-    expect(typeFrom('moj_radio_item')).toBe('radio');
+    expect(typeFrom('moj_radio_item')).toStrictEqual({
+      contentType: 'radio',
+      externalContent: false,
+    });
   });
   it('should return the correct type for an video item', () => {
-    expect(typeFrom('moj_video_item')).toBe('video');
+    expect(typeFrom('moj_video_item')).toStrictEqual({
+      contentType: 'video',
+      externalContent: false,
+    });
   });
   it('should strip "node--" from the type string', () => {
-    expect(typeFrom('node--moj_video_item')).toBe('video');
+    expect(typeFrom('node--moj_video_item')).toStrictEqual({
+      contentType: 'video',
+      externalContent: false,
+    });
   });
   it('should return the correct type for an pdf item', () => {
-    expect(typeFrom('moj_pdf_item')).toBe('pdf');
+    expect(typeFrom('moj_pdf_item')).toStrictEqual({
+      contentType: 'pdf',
+      externalContent: true,
+    });
   });
 
   it('should return the correct type for a page', () => {
-    expect(typeFrom('page')).toBe('page');
+    expect(typeFrom('page')).toStrictEqual({
+      contentType: 'page',
+      externalContent: false,
+    });
   });
 
   it('should return the correct type for a series', () => {
-    expect(typeFrom('series')).toBe('series');
+    expect(typeFrom('series')).toStrictEqual({
+      contentType: 'series',
+      externalContent: false,
+    });
   });
 
   it('should return the correct type for a secondary tag', () => {
-    expect(typeFrom('tags')).toBe('tags');
+    expect(typeFrom('tags')).toStrictEqual({
+      contentType: 'tags',
+      externalContent: false,
+    });
   });
 });

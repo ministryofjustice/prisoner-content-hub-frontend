@@ -44,6 +44,8 @@ describe('Homepage query', () => {
               url: 'small-image',
               alt: 'Picture of core workout',
             },
+            displayUrl: undefined,
+            externalContent: false,
           },
         ],
       });
@@ -54,7 +56,7 @@ describe('Homepage query', () => {
         fieldMojFeaturedTileLarge: [
           {
             drupalInternal_Nid: '10002',
-            type: 'moj_video_item',
+            type: 'external_link',
             fieldMojSeries: {},
             title: 'Yoga',
             fieldMojDescription: { summary: 'Yoga workout' },
@@ -64,6 +66,7 @@ describe('Homepage query', () => {
                 { tile_large: 'large-image', tile_small: 'small-image' },
               ],
             },
+            displayUrl: 'www.yoga.com',
             path: { alias: '/tags/10002' },
           },
           {
@@ -87,13 +90,15 @@ describe('Homepage query', () => {
         upperFeatured: {
           id: '10002',
           contentUrl: '/tags/10002',
-          contentType: 'video',
+          contentType: 'external_link',
           title: 'Yoga',
           summary: 'Yoga workout',
           image: {
             url: 'large-image',
             alt: 'Picture of Yoga workout',
           },
+          displayUrl: undefined,
+          externalContent: true,
         },
         lowerFeatured: {
           id: '10003',
@@ -105,6 +110,8 @@ describe('Homepage query', () => {
             url: 'large-image',
             alt: 'Picture of core workout',
           },
+          displayUrl: undefined,
+          externalContent: false,
         },
         smallTiles: [],
       });
