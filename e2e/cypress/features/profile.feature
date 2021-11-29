@@ -5,11 +5,11 @@ Feature: Profile
   So that I see my profile information
 
   Scenario: I want to see the profile page
-    Given that I go to the "profile" page
+    Given that with an "wayland" content hub url, I go to the "profile" page
     Then I am displayed the "Sign in" link
 
   Scenario: I want to see the try again buttons when the services are unavailable
-    Given that I go to the "profile" page
+    Given that with an "wayland" content hub url, I go to the "profile" page
     Then I am displayed the "Sign in" link
     And I log into the hub
     Then I am displayed the "try again" link in "timetable-container"
@@ -18,7 +18,7 @@ Feature: Profile
     Then I am displayed the "Try again" link in "visits-container"
 
   Scenario: I want to view a summary of my timetable today
-    Given that I go to the "profile" page
+    Given that with an "wayland" content hub url, I go to the "profile" page
     When I have the following up coming events
       | type     | start | end   | name       | location   |
       | activity | 08:10 | 11:25 | activity-1 | location-1 |
@@ -46,7 +46,7 @@ Feature: Profile
       | content | No activities scheduled |
 
   Scenario: I want to view my incentives
-    Given that I go to the "profile" page
+    Given that with an "wayland" content hub url, I go to the "profile" page
     When I have the following incentives
       | level | date       |
       | Basic | 2017-03-08 |
@@ -64,7 +64,7 @@ Feature: Profile
       | title | Read more about incentive levels |
 
   Scenario: I want to view a summary of my money
-    Given that I go to the "profile" page
+    Given that with an "wayland" content hub url, I go to the "profile" page
     When I have the following money summary
       | spends   | 123.45 |
       | cash     | 5      |
@@ -113,7 +113,7 @@ Feature: Profile
     Then the "moneySavings" sensitive card is closed
 
   Scenario: I want to view visit information on the profile page
-    Given that I go to the "profile" page
+    Given that with an "wayland" content hub url, I go to the "profile" page
     When I have the following visits
       | startTime           | endTime             | visitType | visitors                 |
       | 2021-12-12T09:00:00 | 2021-12-12T09:59:00 | SCON      | Bob Visitor, Pam Visitor |

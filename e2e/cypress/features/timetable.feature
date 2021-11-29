@@ -5,11 +5,11 @@ Feature: Timetable
   So that I know my schedule
 
   Scenario: Accessing the timetable page when I am signed out
-    Given that I go to the "timetable" page
+    Given that with an "cookhamwood" content hub url, I go to the "timetable" page
     Then I am displayed the "Sign in" link
 
   Scenario: I want to see my time table
-    Given that I go to the "timetable" page
+    Given that with an "cookhamwood" content hub url, I go to the "timetable" page
     
     When I have the following up coming events
     | type         | when      | start  | end    | name        | location   |
@@ -28,5 +28,4 @@ Feature: Timetable
       | type      | 8:30am to 12:00pm | 12:00pm to 5:00pm     | 5:00pm to 7:30pm |
       | Today     | activity-1        | activity-2,activity-3 | activity-4       |
       | Tomorrow  | appoint-1         | appoint-2,appoint-3   | appoint-4        |
- 
 
