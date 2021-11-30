@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 
 class NextEpisodeQuery {

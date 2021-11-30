@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 const { Jsona, SwitchCaseJsonMapper } = require('jsona');
 const { NotFound } = require('./apiError');
 

@@ -5,8 +5,7 @@
   "scripts": {
     "postinstall": "husky install",
     "start": "node server.js",
-    "dev": "npm-run-all --parallel dev:*",
-    "dev:start": "DEBUG=gov-starter-server* nodemon server.js",
+    "dev": "nodemon server.js",
     "build": "npm run css-build",
     "css-build": "./bin/build-css",
     "clean": "rm -rf public/* .port.tmp *.log build/* uploads/* test-results.xml",
@@ -26,7 +25,7 @@
     "url": "https://github.com/ministryofjustice/prisoner-content-hub-frontend/"
   },
   "engines": {
-    "node": ">= 14",
+    "node": ">= 16",
     "npm": ">= 7"
   },
   "jest": {
@@ -37,8 +36,8 @@
   },
   "dependencies": {
     "@ministryofjustice/frontend": "^1.0.0",
-    "@sentry/node": "^6.14.1",
-    "@sentry/tracing": "^6.14.1",
+    "@sentry/node": "^6.15.0",
+    "@sentry/tracing": "^6.15.0",
     "axios": "0.24.0",
     "compression": "^1.7.4",
     "cookie-session": "^2.0.0-rc.1",
@@ -56,33 +55,33 @@
     "moment": "^2.29.1",
     "morgan": "^1.10.0",
     "nocache": "^3.0.1",
-    "node-sass-middleware": "0.11.0",
     "nunjucks": "^3.2.3",
     "passport": "^0.5.0",
     "passport-azure-ad-oauth2": "0.0.4",
     "ramda": "^0.27.1",
     "redis": "^3.1.2",
     "uuid": "^8.3.2",
-    "video.js": "^7.15.4",
+    "video.js": "^7.17.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.16.3",
     "@sinonjs/fake-timers": "^8.1.0",
-    "@babel/eslint-parser": "^7.16.0",
     "cheerio": "^1.0.0-rc.10",
     "eslint": "^8.2.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-cypress": "^2.12.1",
-    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-import": "^2.25.3",
     "husky": "^7.0.4",
     "jest": "^27.3.1",
-    "jsdom": "^18.0.1",
-    "lint-staged": "^11.2.6",
-    "nock": "^13.2.0",
-    "nodemon": "^2.0.14",
+    "jsdom": "^18.1.0",
+    "lint-staged": "^12.0.2",
+    "nock": "^13.2.1",
+    "nodemon": "^2.0.15",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.4.1",
+    "sass": "^1.43.4",
     "start-server-and-test": "^1.14.0",
     "supertest": "^6.1.6"
   }

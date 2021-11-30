@@ -2,7 +2,7 @@ const querystring = require('querystring');
 const config = require('../config');
 
 function validateOffenderNumberFor(offenderNo) {
-  const pattern = new RegExp(/[A-Z][0-9]{4}[A-Z]{2}/i);
+  const pattern = /[A-Z][0-9]{4}[A-Z]{2}/i;
   return pattern.test(offenderNo);
 }
 
