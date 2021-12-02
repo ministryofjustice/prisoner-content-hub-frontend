@@ -55,9 +55,8 @@ function isPrisonerId(id) {
 
   G5899UC   FMI  AA        0       N/A         ?
 */
-const createMockSignIn = ({ offenderService, logger }) =>
+const createMockSignIn = ({ offenderService }) =>
   async function mockSignIn(req, res, next) {
-    logger?.debug(`>>>>>>>>>> mocking sign in`);
     try {
       const user = new User({
         prisonerId: 'G2168GG',
@@ -79,11 +78,6 @@ const createMockSignIn = ({ offenderService, logger }) =>
       req.session.passport = {
         user: user.serialize(),
       };
-      logger?.debug(`>>>>>>>>>> user: ${user.prisonerId}`);
-      logger?.debug(`>>>>>>>>>> signed in: ${req.session?.isSignedIn}`);
-      logger?.debug(
-        `>>>>>>>>>> establishmentName: ${req.session?.establishmentName}`,
-      );
 
       res.redirect(getSafeReturnUrl(req.query));
     } catch (e) {
@@ -161,7 +155,6 @@ const createSignOutMiddleware = ({ logger, analyticsService }) =>
     if (req.session?.isSignedIn) {
       logger.info(`SignOutMiddleware (signOut) - User: ${req.user.prisonerId}`);
       req.session.isSignedIn = false;
-      // req.logOut();
       analyticsService.sendEvent({
         category: 'Signin',
         action: 'signout',

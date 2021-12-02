@@ -27,6 +27,7 @@
   <div class="govuk-width-container">
     {{ userDetails({
       detailsType: config.detailsType,
+      isSignedIn: isSignedIn,
       userName: ('Hi, ' + userName) if userName and isSignedIn else ''
     }) }}
   </div>

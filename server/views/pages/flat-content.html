@@ -27,6 +27,7 @@
 {% block userDetails %}
   {{ userDetails({
     detailsType: 'small',
+    isSignedIn: isSignedIn,
     userName: userName
   }) }}
 {% endblock %}

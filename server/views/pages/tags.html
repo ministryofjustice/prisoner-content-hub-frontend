@@ -25,6 +25,7 @@
 {% block userDetails %}
   {{ userDetails({
     detailsType: config.detailsType,
+    isSignedIn: isSignedIn,
     userName: userName
   }) }}
 {% endblock %}
