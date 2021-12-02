@@ -84,6 +84,7 @@ describe('GET /', () => {
       app.use((req, res, next) => {
         req.session = {
           establishmentName: 'berwyn',
+          isSignedIn: true,
           establishmentPersonalisationEnabled:
             establishmentPersonalisationToggle(),
         };

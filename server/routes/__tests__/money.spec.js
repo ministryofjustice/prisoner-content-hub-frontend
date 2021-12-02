@@ -153,14 +153,17 @@ describe('Prisoner Money', () => {
   };
 
   const currentUser = jest.fn();
+  const sessionSupplier = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
     currentUser.mockReturnValue(testUser);
+    sessionSupplier.mockReturnValue({ isSignedIn: true });
 
     app = setupBasicApp();
     app.use((req, res, next) => {
       req.user = currentUser();
+      req.session = sessionSupplier();
       next();
     });
     app.use(setCurrentUser);
@@ -179,6 +182,7 @@ describe('Prisoner Money', () => {
 
     it('prompts the user to sign in when they are signed out', async () => {
       currentUser.mockReturnValue(undefined);
+      sessionSupplier.mockReturnValue({});
 
       await request(app)
         .get('/money/transactions/spends')
@@ -413,6 +417,7 @@ describe('Prisoner Money', () => {
 
     it('prompts the user to sign in when they are signed out', async () => {
       currentUser.mockReturnValue(undefined);
+      sessionSupplier.mockReturnValue({});
       await request(app)
         .get('/money/transactions/private')
         .expect(200)
@@ -746,6 +751,7 @@ describe('Prisoner Money', () => {
     });
 
     it('prompts the user to sign in when they are signed out', async () => {
+      sessionSupplier.mockReturnValue({});
       currentUser.mockReturnValue(undefined);
       await request(app)
         .get('/money/transactions/savings')
@@ -965,6 +971,7 @@ describe('Prisoner Money', () => {
 
   describe('GET /money/damage-obligations', () => {
     it('prompts the user to sign in when they are signed out', async () => {
+      sessionSupplier.mockReturnValue({});
       currentUser.mockReturnValue(undefined);
       await request(app)
         .get('/money/damage-obligations')

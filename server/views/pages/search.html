@@ -22,7 +22,7 @@
   {{ topBar({
     establishmentDisplayName: establishmentDisplayName,
     showBar: false,
-    userName: userName,
+    isSignedIn: isSignedIn,
     returnUrl: config.returnUrl
   }) }}
 {% endblock %}
@@ -30,6 +30,7 @@
 {% block userDetails %}
   {{ userDetails({
     detailsType: config.detailsType,
+    isSignedIn: isSignedIn,
     userName: userName
   }) }}
 {% endblock %}
