@@ -9,7 +9,7 @@
 {% extends "../components/template.njk" %}
 
 {% block pageTitle %}
-  {{ data.title }}
+  {{ title }}
 {% endblock %}
 
 {% block head %}
@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block pageNavigation %}
-  {{ pageNavigation({ title: data.title }) }}
+  {{ pageNavigation({ title: title }) }}
 {% endblock %}
 
 {% block topBar %}
@@ -40,7 +40,7 @@
 {% block header %}
   <div class="govuk-width-container govuk-body govuk-clearfix hub-header">
     <div>
-      <h1 class="govuk-heading-l" id="title">{{ data.title }}</h1>
+      <h1 class="govuk-heading-l" id="title">{{ title }}</h1>
     </div>
     <div class="help-container-tablet">
       <h2 class="govuk-heading-m">In this section</h2>
@@ -65,13 +65,12 @@
         <h2 class="govuk-heading-m">Give us feedback</h2>
         {{ hubFeedbackWidget({
           contentId: data.id,
-          title: data.title,
+          title: title,
           contentType: data.contentType,
           establishment: establishmentDisplayName,
           sidebar: true,
           feedbackId: feedbackId,
-          categories: data.categories,
-          secondaryTags: data.secondaryTags
+          categories: titles
         })}}
       </div>
     </div>
@@ -96,12 +95,11 @@
     {{ hubFeedbackWidget({
         id: 'feedback-widget-category-tablet',
         contentId: data.id,
-        title: data.title,
+        title: title,
         contentType: data.contentType,
         sidebar: true,
         feedbackId: feedbackId,
-        categories: data.categories,
-        secondaryTags: data.secondaryTags
+        categories: title
       })}}
   </div>
 </div>
