@@ -18,7 +18,7 @@
   {{ topBar({
     establishmentDisplayName: establishmentDisplayName,
     showBar: true,
-    userName: userName,
+    isSignedIn: isSignedIn,
     returnUrl: config.returnUrl
   }) }}
 {% endblock %}
@@ -27,7 +27,8 @@
   <div class="govuk-width-container">
     {{ userDetails({
       detailsType: config.detailsType,
-      userName: ('Hi, ' + userName) if userName
+      isSignedIn: isSignedIn,
+      userName: ('Hi, ' + userName) if userName and isSignedIn else ''
     }) }}
   </div>
 {% endblock %}
@@ -57,7 +58,7 @@
       </div>
     </div>
       {% if establishmentName != 'berwyn' %}
-        {{personalScheduleToday({ data: currentEvents, authReturnUrl: returnUrl }, userName)}}
+        {{personalScheduleToday({ data: currentEvents, authReturnUrl: returnUrl }, userName if isSignedIn else '')}}
       {% endif %}
   </div>
 {% endblock %}

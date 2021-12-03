@@ -7,15 +7,15 @@ application:
     feedbackServiceName: aws-es-proxy-service
     feedbackEndpoint: /prod-feedback/_doc
     analyticsSiteId: UA-152065860-4
-    mockAuthEnabled: true
+    mockAuthEnabled: false
 
 ingress:
   annotations:
     kubernetes.io/ingress.class: nginx
-    external-dns.alpha.kubernetes.io/set-identifier: prisoner-content-hub-frontend-{{ .qualifier }}-prisoner-content-hub-development-blue
+    external-dns.alpha.kubernetes.io/set-identifier: prisoner-content-hub-frontend-{{ .qualifier }}-prisoner-content-hub-development-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
   # These are legacy, prison specific hostnames we want to deprecate  
   hosts:
-    - pattern: "{{ .prison }}-prisoner-content-hub-development-{{ .qualifier }}.apps.live-1.cloud-platform.service.justice.gov.uk"
+    - pattern: "{{ .prison }}-prisoner-content-hub-development-{{ .qualifier }}.apps.live.cloud-platform.service.justice.gov.uk"
   host: 
-      pattern: "prisoner-content-hub-development-{{ .qualifier }}.apps.live-1.cloud-platform.service.justice.gov.uk"
+      pattern: "prisoner-content-hub-development-{{ .qualifier }}.apps.live.cloud-platform.service.justice.gov.uk"

@@ -7,9 +7,19 @@ Given('that I go to the Prisoner Content Hub for {string}', location => {
   cy.visit(
     `http://${location
       .toLowerCase()
-      .replace(' ', '')}.prisoner-content-hub.local:3000/`,
+      .replace(' ', '')}.content-hub.localhost:3000/`,
   );
 });
+
+Given(
+  'that with an {string} content hub url, I go to the {string} page',
+  (establishment, page) => {
+    const establishmentString = establishment
+      ? `${establishment.toLowerCase().replace(' ', '')}.`
+      : '';
+    cy.visit(`http://${establishmentString}content-hub.localhost:3000/${page}`);
+  },
+);
 
 Given('that I am viewing some content', () => {
   cy.visit('/');

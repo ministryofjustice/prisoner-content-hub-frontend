@@ -1,6 +1,6 @@
 <div class="govuk-width-container{% if params.detailsType !== 'large' %} user-details{% endif %}">
   <div>
-    {% if params.userName %}
+    {% if params.isSignedIn and params.userName %}
       <h2 class="govuk-body user-details-{{ params.detailsType }}" data-test="user-name" data-hj-suppress>{{ params.userName }}</h2>
     {% endif %}
   </div>

@@ -1,25 +1,18 @@
 const { v4: uuid } = require('uuid');
 const { getEstablishmentId, getEstablishmentDisplayName } = require('../utils');
 
-const configureEstablishment = () => (req, res, next) => {
-  if (req.session && (!req.session.id || !req.session.establishmentId)) {
-    const replaceUrl = /-prisoner-content-hub.*$/g;
-
-    const establishmentName = req.headers?.host
-      .split('.')[0]
-      .replace(replaceUrl, '');
-
+const configureEstablishment = (req, res, next) => {
+  const establishmentName = req.session?.establishmentName;
+  if (!req.session?.establishmentId) {
     const establishmentId = getEstablishmentId(establishmentName);
-
     req.session.id = uuid();
     if (!Number.isNaN(establishmentId)) {
       req.session.establishmentId = establishmentId;
-      req.session.establishmentName = establishmentName;
     }
   }
 
   res.locals.feedbackId = uuid();
-  res.locals.establishmentName = req.session.establishmentName;
+  res.locals.establishmentName = establishmentName;
   res.locals.establishmentDisplayName = `${getEstablishmentDisplayName(
     req.session.establishmentId,
   )}`;
@@ -27,6 +20,4 @@ const configureEstablishment = () => (req, res, next) => {
   next();
 };
 
-module.exports = {
-  configureEstablishment,
-};
+module.exports = configureEstablishment;

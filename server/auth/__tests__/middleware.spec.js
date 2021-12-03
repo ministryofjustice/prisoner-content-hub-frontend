@@ -236,7 +236,11 @@ describe('AuthMiddleware', () => {
         serialize: jest.fn(),
         isSignedIn: () => true,
       };
-      const req = { logOut: jest.fn(), user: mockUser };
+      const req = {
+        logOut: jest.fn(),
+        user: mockUser,
+        session: { isSignedIn: true },
+      };
       const res = { redirect: jest.fn() };
       const analyticsService = { sendEvent: jest.fn() };
 
@@ -246,7 +250,7 @@ describe('AuthMiddleware', () => {
         req.query = {};
       });
 
-      it('should call logOut and redirect if passed a returnUrl', () => {
+      it('should set isSignedIn and redirect if passed a returnUrl', () => {
         req.query = { returnUrl: TEST_RETURN_URL };
 
         const signOut = createSignOutMiddleware({
@@ -256,7 +260,7 @@ describe('AuthMiddleware', () => {
 
         signOut(req, res);
 
-        expect(req.logOut).toHaveBeenCalled();
+        expect(req.session.isSignedIn).toBe(false);
         expect(res.redirect).toHaveBeenCalledWith(TEST_RETURN_URL);
       });
 
@@ -270,11 +274,10 @@ describe('AuthMiddleware', () => {
 
         signOut({ ...req, user: undefined }, res);
 
-        expect(req.logOut).not.toHaveBeenCalled();
         expect(res.redirect).toHaveBeenCalledWith(TEST_RETURN_URL);
       });
 
-      it('should call logOut and redirect to the homepage if passed a returnUrl that is not relative', () => {
+      it('should set isSignedIn and redirect to the homepage if passed a returnUrl that is not relative', () => {
         req.query = { returnUrl: 'https://foo.bar' };
 
         const signOut = createSignOutMiddleware({
@@ -284,11 +287,11 @@ describe('AuthMiddleware', () => {
 
         signOut(req, res);
 
-        expect(req.logOut).toHaveBeenCalled();
+        expect(req.session.isSignedIn).toBe(false);
         expect(res.redirect).toHaveBeenCalledWith('/');
       });
 
-      it('should call logOut and redirect to the home page if not passed a returnUrl', () => {
+      it('should set isSignedIn and redirect to the home page if not passed a returnUrl', () => {
         const signOut = createSignOutMiddleware({
           analyticsService,
           logger: MOCK_LOGGER,
@@ -296,7 +299,7 @@ describe('AuthMiddleware', () => {
 
         signOut(req, res);
 
-        expect(req.logOut).toHaveBeenCalled();
+        expect(req.session.isSignedIn).toBe(false);
         expect(res.redirect).toHaveBeenCalledWith('/');
       });
     });

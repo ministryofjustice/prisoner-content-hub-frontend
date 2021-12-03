@@ -15,8 +15,13 @@ const getSafeReturnUrl = ({ returnUrl = '/' } = {}) =>
 
 const createSignInMiddleware = (passport = _passport) =>
   function signIn(req, res, next) {
-    req.session.returnUrl = getSafeReturnUrl(req.query);
-    passport.authenticate('azure_ad_oauth2')(req, res, next);
+    const returnUrl = getSafeReturnUrl(req.query);
+    if (req.user) {
+      req.session.isSignedIn = true;
+      return res.redirect(returnUrl);
+    }
+    req.session.returnUrl = returnUrl;
+    return passport.authenticate('azure_ad_oauth2')(req, res, next);
   };
 
 /* eslint no-underscore-dangle: ["error", { "allow": ["_passport", "_authenticate"] }] */
@@ -34,7 +39,7 @@ const _authenticate = (req, res, next) =>
   });
 
 function isPrisonerId(id) {
-  const pattern = new RegExp(/^[A-Z][0-9]{4}[A-Z]{2}$/i);
+  const pattern = /^[A-Z][0-9]{4}[A-Z]{2}$/i;
   return pattern.test(id);
 }
 
@@ -63,7 +68,12 @@ const createMockSignIn = ({ offenderService }) =>
         await offenderService.getOffenderDetailsFor(user);
       user.setBookingId(bookingId);
 
-      updateSessionEstablishment(req, agencyId);
+      if (!req.session?.establishmentName) {
+        updateSessionEstablishment(req, agencyId);
+        req.session.isSignedIn = false;
+      } else {
+        req.session.isSignedIn = true;
+      }
 
       req.session.passport = {
         user: user.serialize(),
@@ -77,11 +87,8 @@ const createMockSignIn = ({ offenderService }) =>
 
 const createMockSignOut = () =>
   function mockSignOut(req, res) {
-    const user = path(['session', 'passport', 'user'], req);
+    req.session.isSignedIn = false;
 
-    if (user) {
-      delete req.session.passport.user;
-    }
     res.redirect(getSafeReturnUrl(req.query));
   };
 
@@ -108,8 +115,12 @@ const createSignInCallbackMiddleware = ({
         const { bookingId, agencyId } =
           await offenderService.getOffenderDetailsFor(user);
         user.setBookingId(bookingId);
-
-        updateSessionEstablishment(req, agencyId);
+        if (!req.session?.establishmentName) {
+          updateSessionEstablishment(req, agencyId);
+          req.session.isSignedIn = false;
+        } else {
+          req.session.isSignedIn = true;
+        }
       }
       req.session.passport.user = user.serialize();
 
@@ -141,9 +152,9 @@ const createSignInCallbackMiddleware = ({
 
 const createSignOutMiddleware = ({ logger, analyticsService }) =>
   function signOut(req, res) {
-    if (req.user?.isSignedIn()) {
+    if (req.session?.isSignedIn) {
       logger.info(`SignOutMiddleware (signOut) - User: ${req.user.prisonerId}`);
-      req.logOut();
+      req.session.isSignedIn = false;
       analyticsService.sendEvent({
         category: 'Signin',
         action: 'signout',
