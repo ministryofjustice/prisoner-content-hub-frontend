@@ -274,4 +274,52 @@ describe('CmsApi', () => {
       });
     });
   });
+
+  describe('lookup external link', () => {
+    const lookupPath = `/router/prison/berwyn/translate-path?path=external-link/1234`;
+
+    it('should propagate errors', () => {
+      mockDrupal.get(lookupPath).reply(500, 'unexpected error');
+
+      return expect(cmsApi.lookupExternalLink('berwyn', 1234)).rejects.toEqual(
+        Error('Request failed with status code 500'),
+      );
+    });
+
+    it('propagates 404 as NotFound', () => {
+      mockDrupal.get(lookupPath).reply(404, 'unexpected error');
+
+      return expect(cmsApi.lookupExternalLink('berwyn', 1234)).rejects.toEqual(
+        new NotFound(lookupPath),
+      );
+    });
+
+    it('propagates 403 as NotFound', () => {
+      mockDrupal.get(lookupPath).reply(403, 'unexpected error');
+
+      return expect(cmsApi.lookupExternalLink('berwyn', 1234)).rejects.toEqual(
+        new NotFound(lookupPath),
+      );
+    });
+
+    it('should format and return single value', async () => {
+      const individual =
+        'https://cms.org//jsonapi/prison/cookhamwood/taxonomy_term/series/1562712e-ecdc-4d99-82ae-86c04349a6a0';
+      const resourceName = 'taxonomy_term--series';
+      mockDrupal.get(lookupPath).reply(200, {
+        jsonapi: {
+          individual,
+          resourceName,
+        },
+        entity: { uuid: 101 },
+      });
+      const response = await cmsApi.lookupExternalLink('berwyn', 1234);
+
+      expect(response).toStrictEqual({
+        location: individual,
+        type: resourceName,
+        uuid: 101,
+      });
+    });
+  });
 });

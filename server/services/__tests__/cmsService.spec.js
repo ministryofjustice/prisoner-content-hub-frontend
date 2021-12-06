@@ -4,6 +4,9 @@ const {
 } = require('../../repositories/cmsQueries/homePageQuery');
 const { TopicsQuery } = require('../../repositories/cmsQueries/topicsQuery');
 const {
+  ExternalLinkPageQuery,
+} = require('../../repositories/cmsQueries/externalLinkPageQuery');
+const {
   BasicPageQuery,
 } = require('../../repositories/cmsQueries/basicPageQuery');
 const {
@@ -710,6 +713,28 @@ describe('cms Service', () => {
           expect(result).toStrictEqual({ categoryMenu: [] });
         });
       });
+    });
+  });
+
+  describe('getExternalLink', () => {
+    const EXTERNAL_LINK = 'bob';
+    const LOCATION = 'https://cms.org/content/1234';
+    beforeEach(() => {
+      cmsApi.lookupExternalLink.mockResolvedValue({
+        location: LOCATION,
+      });
+      cmsApi.get.mockResolvedValue(EXTERNAL_LINK);
+    });
+    it('returns external link', async () => {
+      const result = await cmsService.getExternalLink(ESTABLISHMENT_NAME);
+      expect(result).toStrictEqual(EXTERNAL_LINK);
+    });
+
+    it('Source to have been called correctly', async () => {
+      await cmsService.getExternalLink(ESTABLISHMENT_NAME);
+      expect(cmsApi.get).toHaveBeenCalledWith(
+        new ExternalLinkPageQuery(LOCATION),
+      );
     });
   });
 });
