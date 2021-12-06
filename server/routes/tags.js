@@ -19,19 +19,14 @@ const createTagRouter = ({ cmsService }) => {
 
       const data = await cmsService.getTag(req.session.establishmentName, id);
 
-      data.secondaryTags = data.id;
-
       const pageType = ['tags', 'series'].includes(data.contentType)
         ? 'tags'
         : 'tagsCategories';
 
       return res.render(`pages/${pageType}`, {
-        title: data.name,
+        title: data.title,
         tagId: id,
-        data: {
-          ...data,
-          secondaryTags: data.id,
-        },
+        data,
         config,
       });
     } catch (e) {
