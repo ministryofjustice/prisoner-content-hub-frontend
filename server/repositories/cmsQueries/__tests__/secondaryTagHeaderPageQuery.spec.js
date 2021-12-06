@@ -23,6 +23,7 @@ describe('Secondary tag with no defined related content page query', () => {
           imageStyleUri: [{ tile_large: `tile_large1` }],
           resourceIdObjMeta: { alt: `alt1` },
         },
+        displayUrl: undefined,
         path: { alias: 'tags/1' },
       };
 
@@ -35,6 +36,8 @@ describe('Secondary tag with no defined related content page query', () => {
           url: `tile_large1`,
           alt: `alt1`,
         },
+        displayUrl: undefined,
+        externalContent: false,
         contentUrl: 'tags/1',
       });
     });
