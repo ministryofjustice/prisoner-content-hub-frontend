@@ -1,0 +1,104 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+
+<!DOCTYPE html>
+<html lang="{{ htmlLang | default('en') }}" class="{{ htmlClasses }}">
+  <head>
+    <meta charset="utf-8"/>
+    <title>
+      External Link
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="{{ themeColor | default('#0b0c0c') }}"/>
+    <meta name="robots" content="noindex, nofollow, noimageindex">
+    {# Hardcoded value of $govuk-black #}
+    <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/public/images/favicon.ico" type="image/x-icon"/>
+    <link href="/public/stylesheets/application.css" rel="stylesheet"/>
+
+    {# The default og:image is added below head so that scrapers see any custom metatags first, and this is just a fallback #}
+    <meta property="og:image" content="{{ assetPath | default('/assets') }}/images/govuk-opengraph-image.png">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152065860-4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'UA-152065860-4');
+    </script>
+    {% if hotJarId %}
+      {# Load HotJar #}
+      <script>
+        (function (h, o, t, j, a, r) {
+          h.hj = h.hj || function () {
+            (h.hj.q = h.hj.q || []).push(arguments)
+          };
+          h._hjSettings = {
+            hjid: '{{hotJarId}}',
+            hjsv: 6
+          };
+          a = o.getElementsByTagName('head')[0];
+          r = o.createElement('script');
+          r.async = 1;
+          r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+          a.appendChild(r);
+        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+      </script>
+    {% endif %}
+  </head>
+  <body class="govuk-body">
+    <div class="govuk-width-container govuk-!-padding-top-9">
+      <main class="govuk-main-wrapper">
+        <script>
+          document.body.className = (
+            (document.body.className)
+            ? document.body.className + ' js-enabled'
+            : 'js-enabled');
+        </script>
+
+        <script src="/public/jquery.min.js"></script>
+
+        <div class="govuk-!-padding-top-9 govuk-!-padding-bottom-9 external-link-content">
+          <img class="hub-logo" src="/public/images/icons/content-hub-invert.png" alt="logo">
+          <h1 class="govuk-heading-xl govuk-!-margin-0 govuk-!-padding-left-4">Content Hub</h1>
+        </div>
+        <section class="govuk-!-text-align-centre">
+          <h2 class="govuk-heading-l">You're leaving the Hub</h2>
+          <p >You are being taken to {{ title }}.</p>
+          <p >Access to the internet is <strong>blocked</strong> on the in cell laptops.</p>
+          <p >Links to other sites from {{ title }} have been disabled.</p>
+          {{ govukButton({
+            text: "Continue",
+            href: url
+          }) }}
+          <div class="external-link-content">
+            {{ govukCheckboxes({
+              idPrefix: "doNotShowMessage",
+              name: "doNotShowMessage",
+              items: [
+                {
+                  value: "doNotShowMessage",
+                  text: "Don't show me this message again"
+                }
+              ]
+            }) }}
+          </div>
+        </section>
+        
+
+        <script>
+          sendPageTrack({
+            hostname: document.location.hostname,
+            page: document.location.pathname + document.location.search,
+            title: "External Link",
+            userAgent: navigator.userAgent,
+            screen: window.screen.width + 'x' + window.screen.height,
+            viewport: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'x' + Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+          });
+        </script>
+      </main>
+    </div>
+  </body>
+</html>
