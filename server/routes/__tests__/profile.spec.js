@@ -24,11 +24,13 @@ describe('GET /profile', () => {
 
   const userSupplier = jest.fn();
   const establishmentSupplier = jest.fn();
+  const sessionSupplier = jest.fn();
 
   let app;
 
   const setMockUser = (req, res, next) => {
     req.user = userSupplier();
+    req.session = sessionSupplier();
     res.locals = establishmentSupplier();
     next();
   };
@@ -40,11 +42,17 @@ describe('GET /profile', () => {
     app.use(setCurrentUser);
     app.use('/profile', router);
     userSupplier.mockReturnValue(testUser);
-    establishmentSupplier.mockReturnValue({ establishmentName: 'wayland' });
+    sessionSupplier.mockReturnValue({ isSignedIn: true });
+    establishmentSupplier.mockReturnValue({
+      establishmentName: 'wayland',
+      isSignedIn: true,
+      userName: 'bob',
+    });
   });
 
   it('prompts the user to sign in when they are signed out', () => {
     userSupplier.mockReturnValue(undefined);
+    sessionSupplier.mockReturnValue({ isSignedIn: false });
     return request(app)
       .get('/profile')
       .expect(200)

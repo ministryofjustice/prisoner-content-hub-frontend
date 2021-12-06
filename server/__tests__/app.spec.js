@@ -1,10 +1,12 @@
 const Sentry = require('@sentry/node');
+const passport = require('passport');
 const request = require('supertest');
 
 const { createApp } = require('../app');
 const config = require('../config');
 const establishmentData = require('../content/establishmentData.json');
 const { logger } = require('../../test/test-helpers');
+const { User } = require('../auth/user');
 
 jest.mock('@sentry/node', () => {
   const errorHandlingMiddleware = jest.fn();
@@ -47,6 +49,20 @@ jest.mock('@sentry/node', () => {
     expressHandlingMiddleware,
   };
 });
+jest.mock('passport', () => ({
+  use: jest.fn(() => true),
+  serializeUser: jest.fn(() => true),
+  deserializeUser: jest.fn(() => true),
+  initialize: jest.fn(() => (req, res, next) => {
+    next();
+  }),
+  session: jest.fn(() => (req, res, next) => {
+    next();
+  }),
+}));
+jest.mock('passport-azure-ad-oauth2', () =>
+  jest.fn().mockImplementation(() => ({})),
+);
 
 describe('Sentry', () => {
   it('initializes Sentry', () => {
@@ -70,8 +86,10 @@ describe('Sentry', () => {
   });
 
   it('does not call the Sentry error handling middleware when a request succeeds', async () => {
-    await request(app()).get('/games/chess').expect(200);
-
+    await request(app())
+      .get('/games/chess')
+      .set('host', 'wayland.content-hub')
+      .expect(200);
     expect(Sentry.errorHandlingMiddleware).not.toHaveBeenCalled();
   });
 
@@ -88,18 +106,32 @@ describe('Sentry', () => {
   });
 
   it('calls the Sentry request handling middleware when an request is made', async () => {
-    await request(app()).get('/games/chess').expect(200);
-
+    await request(app())
+      .get('/games/chess')
+      .set('host', 'wayland.content-hub')
+      .expect(200);
     expect(Sentry.requestHandlingMiddleware).toHaveBeenCalled();
   });
 });
 
 describe('App', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it('when there is no establishment name, it attempts to log the user in', async () => {
+    await request(app())
+      .get('/unknown-url')
+      .expect('Location', '/auth/sign-in?returnUrl=/unknown-url')
+      .expect(302)
+      .then(({ text }) => {
+        expect(text).toContain('Found. Redirecting to ');
+      });
+  });
   it('renders a 404 page correctly on invalid url', async () => {
     config.auth.callbackPath = '/testPath';
     await request(app())
       .get('/unknown-url')
-      .expect(404)
+      .set('host', 'wayland.content-hub')
       .then(res => {
         expect(res.text).toContain(
           'The page you are looking for could not be found',
@@ -109,21 +141,21 @@ describe('App', () => {
 
   it('hides the error on error pages', async () => {
     config.auth.callbackPath = '/testPath';
+    passport.session.mockReturnValueOnce((req, res, next) => {
+      req.user = new User({
+        prisonerId: 'G2168GG',
+        firstName: 'Test',
+        lastName: 'User',
+      });
+      next();
+    });
 
-    await request(
-      app({
-        offenderService: {
-          getOffenderDetailsFor: jest.fn().mockResolvedValue({}),
-        },
-      }),
-    )
+    await request(app())
       .get('/')
       .expect(500)
-      .then(response => {
-        expect(response.text).toContain('Something went wrong');
-        expect(response.text).not.toContain(
-          'Could not determine establishment',
-        );
+      .then(res => {
+        expect(res.text).toContain('Something went wrong');
+        expect(res.text).not.toContain('Could not determine establishment');
       });
   });
 
@@ -132,16 +164,16 @@ describe('App', () => {
 
     config.auth.callbackPath = '/testPath';
     config.features.showStackTraces = true;
+    passport.session.mockReturnValueOnce((req, res, next) => {
+      req.user = new User({
+        prisonerId: 'G2168GG',
+        firstName: 'Test',
+        lastName: 'User',
+      });
+      next();
+    });
 
-    await request(
-      app({
-        offenderService: {
-          getCurrentEvents: jest.fn().mockResolvedValue([]),
-          getEventsFor: jest.fn().mockResolvedValue([]),
-          getOffenderDetailsFor: jest.fn().mockResolvedValue({}),
-        },
-      }),
-    )
+    await request(app())
       .get('/')
       .expect(500)
       .then(res => {
@@ -155,6 +187,7 @@ describe('App', () => {
     config.auth.callbackPath = '/testPath';
     await request(app())
       .get('/')
+      .set('host', 'wayland.prisoner-content-hub')
       .then(res => {
         expect(res.headers).toHaveProperty('x-dns-prefetch-control');
         expect(res.headers).toHaveProperty('x-frame-options');
@@ -175,6 +208,13 @@ describe('App', () => {
     const createSignInMiddleware = jest.fn(() => signIn);
     const createSignOutMiddleware = jest.fn(() => signOut);
     const createSignInCallbackMiddleware = jest.fn(() => signInCallback);
+    const authMiddleware = {
+      createMockSignIn,
+      createMockSignOut,
+      createSignInMiddleware,
+      createSignOutMiddleware,
+      createSignInCallbackMiddleware,
+    };
 
     // We Stringify/Parse the config to deep-clone and restore before each test
     // This avoids polluting the configuration
@@ -195,13 +235,7 @@ describe('App', () => {
       const application = app({
         config: testConfig,
         establishmentData: testEstablishmentData,
-        authMiddleware: {
-          createMockSignIn,
-          createMockSignOut,
-          createSignInMiddleware,
-          createSignOutMiddleware,
-          createSignInCallbackMiddleware,
-        },
+        authMiddleware,
       });
 
       expect(createMockSignIn).toHaveBeenCalled();
@@ -226,13 +260,7 @@ describe('App', () => {
       const application = app({
         config: testConfig,
         establishmentData: testEstablishmentData,
-        authMiddleware: {
-          createMockSignIn,
-          createMockSignOut,
-          createSignInMiddleware,
-          createSignOutMiddleware,
-          createSignInCallbackMiddleware,
-        },
+        authMiddleware,
       });
 
       expect(createSignInMiddleware).toHaveBeenCalled();
@@ -266,13 +294,7 @@ describe('App', () => {
       const application = app({
         config: testConfig,
         establishmentData: testEstablishmentData,
-        authMiddleware: {
-          createMockSignIn,
-          createMockSignOut,
-          createSignInMiddleware,
-          createSignOutMiddleware,
-          createSignInCallbackMiddleware,
-        },
+        authMiddleware,
       });
 
       expect(createSignInMiddleware).toHaveBeenCalled();
@@ -304,7 +326,7 @@ describe('App', () => {
   });
 });
 
-function app(opts) {
+function app(opts = {}) {
   const services = {
     cmsService: {
       getHomepage: jest.fn().mockResolvedValue([]),
@@ -315,7 +337,7 @@ function app(opts) {
     hubContentService: { contentFor: jest.fn().mockResolvedValue({}) },
     searchService: { find: jest.fn() },
     logger,
-    requestLogger: () => (req, res, next) => next(),
+    requestLogger: () => (_req, _res, next) => next(),
     ...opts,
   };
   return createApp(services);

@@ -145,7 +145,7 @@ describe('getting tile data', () => {
         });
       });
 
-      it(' External website content type opens in a new tab', () => {
+      it('External website content type opens in a new tab', () => {
         expect(getLargeTile({ ...tileData, type: 'external_link' })).toEqual({
           id: 42,
           contentType: 'external_link',

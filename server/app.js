@@ -15,9 +15,8 @@ const { createHealthRouter } = require('./routes/health');
 const { createAuthRouter } = require('./routes/auth');
 
 const { featureToggleMiddleware } = require('./middleware/featureToggle');
-const {
-  configureEstablishment,
-} = require('./middleware/configureEstablishment');
+const getEstablishmentFromUrl = require('./middleware/getEstablishmentFromUrl');
+const configureEstablishment = require('./middleware/configureEstablishment');
 
 const { User } = require('./auth/user');
 const defaultConfig = require('./config');
@@ -158,11 +157,11 @@ const createApp = services => {
   // feature toggles
   app.use(featureToggleMiddleware(config.features));
 
-  // establishment toggle
-  app.use(configureEstablishment());
-
   // Health end point
   app.use('/health', createHealthRouter(config));
+
+  // establishment toggle
+  app.use(getEstablishmentFromUrl);
 
   if (config.features.useMockAuth) {
     app.use('*', (req, res, next) => {
@@ -206,7 +205,6 @@ const createApp = services => {
     });
     app.use(passport.initialize());
     app.use(passport.session());
-
     app.use(
       '/auth',
       createAuthRouter({
@@ -224,6 +222,19 @@ const createApp = services => {
       }),
     );
   }
+
+  app.use((req, res, next) => {
+    if (!req.session?.establishmentName) {
+      if (!req.user) {
+        return res.redirect(`/auth/sign-in?returnUrl=${req.originalUrl}`);
+      }
+      req.session.isSignedIn = true;
+    }
+    return next();
+  });
+
+  // establishment toggle
+  app.use(configureEstablishment);
 
   app.use(setCurrentUser);
 

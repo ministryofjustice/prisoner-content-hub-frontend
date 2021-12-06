@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const { capitalize } = require('../utils');
 
 class User {
+  #signedIn;
+
   constructor(profile = {}) {
     this.prisonerId = profile.prisonerId.toUpperCase();
     this.firstName = profile.firstName;
@@ -15,10 +17,6 @@ class User {
 
   getFullName() {
     return [this.firstName, this.lastName].join(' ').trim();
-  }
-
-  isSignedIn() {
-    return true;
   }
 
   serialize() {
