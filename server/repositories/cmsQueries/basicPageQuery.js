@@ -13,6 +13,7 @@ class BasicPageQuery {
         'field_moj_secondary_tags',
         'field_moj_series',
         'field_moj_top_level_categories',
+        'field_exclude_feedback',
       ])
       .addFields('taxonomy_term--tags', ['drupal_internal__tid', 'name'])
       .addFields('taxonomy_term--moj_categories', [
@@ -56,6 +57,7 @@ class BasicPageQuery {
         item.fieldMojTopLevelCategories,
       ),
       secondaryTags: this.#buildSecondaryTags(item.fieldMojSecondaryTags),
+      excludeFeedback: item.fieldExcludeFeedback,
     };
   }
 }

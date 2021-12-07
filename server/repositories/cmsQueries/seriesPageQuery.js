@@ -27,6 +27,7 @@ class SeriesPageQuery {
         'drupal_internal__tid',
         'field_featured_image',
         'path',
+        'field_exclude_feedback',
       ])
       .addInclude([
         'field_moj_thumbnail_image',
@@ -43,6 +44,8 @@ class SeriesPageQuery {
   transform(deserializedResponse) {
     if (deserializedResponse.length === 0) return null;
     return {
+      excludeFeedback:
+        deserializedResponse[0].fieldMojSeries.fieldExcludeFeedback,
       ...getLargeTile(deserializedResponse[0].fieldMojSeries),
       ...{
         relatedContent: {

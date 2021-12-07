@@ -77,15 +77,17 @@
       >
         <source src="{{ data.media }}" type="video/mp4"/>
       </video>
-      {{ hubFeedbackWidget({
-        contentId: data.id,
-        title: data.title,
-        contentType: data.contentType,
-        series: data.seriesName,
-        feedbackId: feedbackId,
-        categories: data.categories,
-        secondaryTags: data.secondaryTags | join(',', 'id')
-      })}}
+        {% if not data.excludeFeedback %}
+          {{ hubFeedbackWidget({
+            contentId: data.id,
+            title: data.title,
+            contentType: data.contentType,
+            series: data.seriesName,
+            feedbackId: feedbackId,
+            categories: data.categories,
+            secondaryTags: data.secondaryTags | join(',', 'id')
+          })}}
+        {% endif %}
     </div>
 
     <div class="govuk-hub-media-player__description">

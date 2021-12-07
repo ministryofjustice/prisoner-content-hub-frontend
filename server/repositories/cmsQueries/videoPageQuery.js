@@ -22,6 +22,7 @@ class VideoPageQuery {
         'field_moj_top_level_categories',
         'field_moj_thumbnail_image',
         'series_sort_value',
+        'field_exclude_feedback',
       ])
 
       .addFields('file--file', ['uri', 'image_style_uri'])
@@ -74,6 +75,7 @@ class VideoPageQuery {
       categories: getCategoryIds(item.fieldMojTopLevelCategories),
       secondaryTags: buildSecondaryTags(item.fieldMojSecondaryTags),
       image: getLargeImage(item.fieldMojThumbnailImage),
+      excludeFeedback: item.fieldExcludeFeedback,
     };
   }
 }

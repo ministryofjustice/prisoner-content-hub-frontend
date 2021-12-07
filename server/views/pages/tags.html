@@ -69,25 +69,25 @@
     data: data.relatedContent,
     lazyLoadContent: true
   }) }}
+  {% if not data.excludeFeedback %}
+    <div class="govuk-form-group govuk-!-margin-bottom-2">
+      {% if data.contentType =='series'%}
+        <p class="govuk-hub-article-feedback govuk-hub-feedback-text">Tell us what you think about this series:</p>
+      {% endif %}
 
-  <div class="govuk-form-group govuk-!-margin-bottom-2">
-    {% if data.contentType =='series'%}
-      <p class="govuk-hub-article-feedback govuk-hub-feedback-text">Tell us what you think about this series:</p>
-    {% endif %}
-
-    {% if data.contentType =='tags'%}
-      <p class="govuk-hub-article-feedback govuk-hub-feedback-text">Tell us what you think about this topic:</p>
-    {% endif %}
-    {{ hubFeedbackWidget({
-      contentId: data.id,
-      title: title,
-      name: title,
-      contentType: data.contentType,
-      series: title,
-      feedbackId: feedbackId,
-      series: title if data.contentType == 'series',
-      secondaryTags: title if data.contentType == 'tags'
-    })}}
-  </div>
-
+      {% if data.contentType =='tags'%}
+        <p class="govuk-hub-article-feedback govuk-hub-feedback-text">Tell us what you think about this topic:</p>
+      {% endif %}
+      {{ hubFeedbackWidget({
+        contentId: data.id,
+        title: title,
+        name: title,
+        contentType: data.contentType,
+        series: title,
+        feedbackId: feedbackId,
+        series: title if data.contentType == 'series',
+        secondaryTags: title if data.contentType == 'tags'
+      })}}
+    </div>
+  {% endif %}
 {% endblock %}
