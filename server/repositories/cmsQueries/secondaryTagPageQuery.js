@@ -43,14 +43,15 @@ class SecondaryTagPageQuery {
 
   #getTag = fieldMojSecondaryTags => {
     const item = fieldMojSecondaryTags.find(({ id }) => id === this.uuid);
-    return getLargeTile(item);
+    return {
+      ...getLargeTile(item),
+      excludeFeedback: item.fieldExcludeFeedback,
+    };
   };
 
   transform(deserializedResponse) {
     if (deserializedResponse.length === 0) return null;
     return {
-      excludeFeedback:
-        deserializedResponse[0].fieldMojSecondaryTags[0].fieldExcludeFeedback,
       ...this.#getTag(deserializedResponse[0].fieldMojSecondaryTags),
       ...{
         relatedContent: {
