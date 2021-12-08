@@ -27,6 +27,7 @@ class SecondaryTagPageQuery {
         'drupal_internal__tid',
         'field_featured_image',
         'path',
+        'field_exclude_feedback',
       ])
       .addInclude([
         'field_moj_thumbnail_image',
@@ -42,7 +43,10 @@ class SecondaryTagPageQuery {
 
   #getTag = fieldMojSecondaryTags => {
     const item = fieldMojSecondaryTags.find(({ id }) => id === this.uuid);
-    return getLargeTile(item);
+    return {
+      ...getLargeTile(item),
+      excludeFeedback: item.fieldExcludeFeedback,
+    };
   };
 
   transform(deserializedResponse) {

@@ -48,18 +48,19 @@
           </div>
         </div>
       </div>
-
-      <div class="govuk-hub-article-feedback">
-        <p class="govuk-body">Tell us what you think:</p>
-        {{ hubFeedbackWidget({
-          title: data.title,
-          contentId: data.id,
-          contentType: data.contentType,
-          feedbackId: feedbackId,
-          categories: data.categories,
-          secondaryTags: data.secondaryTags
-        })}}
-      </div>
+      {% if not data.excludeFeedback %}
+            <div class="govuk-hub-article-feedback">
+              <p class="govuk-body">Tell us what you think:</p>
+              {{ hubFeedbackWidget({
+                title: data.title,
+                contentId: data.id,
+                contentType: data.contentType,
+                feedbackId: feedbackId,
+                categories: data.categories,
+                secondaryTags: data.secondaryTags
+              })}}
+            </div>
+      {% endif %}
     </main>
   </div>
 {% endblock %}

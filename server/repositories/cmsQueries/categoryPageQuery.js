@@ -11,6 +11,7 @@ class CategoryPageQuery {
     'field_featured_image',
     'field_moj_secondary_tags',
     'path',
+    'field_exclude_feedback',
   ];
 
   constructor(establishmentName, uuid) {
@@ -45,6 +46,7 @@ class CategoryPageQuery {
       title: data?.name,
       contentType: 'category',
       description: data?.description?.processed,
+      excludeFeedback: data.fieldExcludeFeedback,
       config: {
         content: true,
         header: false,
