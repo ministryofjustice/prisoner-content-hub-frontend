@@ -71,11 +71,15 @@
                 "progressControl",
                 "durationDisplay",
                 "fullscreenToggle"
+                "SubtitlesButton"
             ]
           }
         }'
       >
         <source src="{{ data.media }}" type="video/mp4"/>
+        {% if data.subtitles %}
+          <track src="{{data.subtitles}}" srclang="en" label="English">
+        {% endif %}
       </video>
         {% if not data.excludeFeedback %}
           {{ hubFeedbackWidget({

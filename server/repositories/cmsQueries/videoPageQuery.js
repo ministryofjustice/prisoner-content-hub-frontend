@@ -42,6 +42,7 @@ class VideoPageQuery {
       ])
       .addInclude([
         'field_moj_thumbnail_image',
+        'field_moj_subtitles',
         'field_moj_series',
         'field_video',
         'field_moj_secondary_tags',
@@ -76,6 +77,7 @@ class VideoPageQuery {
       secondaryTags: buildSecondaryTags(item.fieldMojSecondaryTags),
       image: getLargeImage(item.fieldMojThumbnailImage),
       excludeFeedback: item.fieldExcludeFeedback,
+      subtitles: item.fieldMojSubtitles?.uri?.value,
     };
   }
 }
