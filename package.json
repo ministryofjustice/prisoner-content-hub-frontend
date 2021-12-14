@@ -41,6 +41,7 @@
     "axios": "0.24.0",
     "compression": "^1.7.4",
     "cookie-session": "^2.0.0-rc.1",
+    "cookies": "^0.8.0",
     "date-fns": "^2.25.0",
     "dotenv": "^10.0.0",
     "drupal-jsonapi-params": "^1.2.2",

@@ -1,4 +1,5 @@
 const express = require('express');
+const Cookies = require('cookies');
 
 const createExternalLinkRouter = ({ cmsService }) => {
   const router = express.Router();
@@ -21,6 +22,9 @@ const createExternalLinkRouter = ({ cmsService }) => {
         req.session.establishmentName,
         id,
       );
+      const cookies = new Cookies(req, res);
+      if (cookies.get(`externalLink_${url}`) === 'true')
+        return res.redirect(url);
 
       return res.render(`pages/externalLink`, {
         title,
