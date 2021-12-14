@@ -64,11 +64,10 @@
           <img class="hub-logo" src="/public/images/icons/content-hub-invert.png" alt="logo">
           <h1 class="govuk-heading-xl govuk-!-margin-0 govuk-!-padding-left-4">Content Hub</h1>
         </div>
-        <section class="govuk-!-text-align-centre">
+        <section class="govuk-!-text-align-centre" data-test="external-link-content">
           <h2 class="govuk-heading-l">You're leaving the Hub</h2>
-          <p >You are being taken to {{ title }}.</p>
-          <p >Access to the internet is <strong>blocked</strong> on the in cell laptops.</p>
-          <p >Links to other sites from {{ title }} have been disabled.</p>
+          <p>You are being taken to {{ title }}. You are <strong>allowed</strong> to visit this website.</p>
+          <p>Internet access is restricted in prisons so links to other websites are blocked.</p>
           {{ govukButton({
             text: "Continue",
             href: url
@@ -87,7 +86,8 @@
           </div>
         </section>
         
-
+        <script src="/public/jquery.min.js"></script>
+        <script src="/public/javascript/all.js"></script>
         <script>
           sendPageTrack({
             hostname: document.location.hostname,
@@ -97,6 +97,11 @@
             screen: window.screen.width + 'x' + window.screen.height,
             viewport: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'x' + Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
           });
+
+          $('#doNotShowMessage').change(
+            function(){
+                document.cookie = `externalLink_{{ url }}=${$(this).is(':checked') ? 'true; Max-Age=315600000000' : 'false; Max-Age=0'}; SameSite=Lax; Secure; path=/;`;
+            });
         </script>
       </main>
     </div>
