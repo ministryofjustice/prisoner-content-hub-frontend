@@ -7,14 +7,13 @@ class SecondaryTagPageQuery {
     'title',
     'field_moj_description',
     'field_moj_thumbnail_image',
-    'field_moj_secondary_tags',
     'path',
   ];
 
   constructor(establishmentName, uuid) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
-    this.query = new Query()
+    const queryWithoutOffset = new Query()
       .addFilter('field_moj_secondary_tags.id', uuid)
       .addFields('node--page', SecondaryTagPageQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', SecondaryTagPageQuery.#TILE_FIELDS)
@@ -34,7 +33,9 @@ class SecondaryTagPageQuery {
         'field_moj_secondary_tags.field_featured_image',
       ])
       .addSort('created', 'DESC')
+      .addPageLimit(10)
       .getQueryString();
+    this.query = `${queryWithoutOffset}`;
   }
 
   path() {

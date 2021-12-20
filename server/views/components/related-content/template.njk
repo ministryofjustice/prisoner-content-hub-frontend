@@ -21,12 +21,12 @@
           id: 'showMore'+loop.index,
           classes: 'showMoreTiles'
         }) }}
-
       </div>
     </div>
 </div>
 <script>
-  $( window ).on( "load", function(){
-    $('.showMoreTiles').click(alert('BOOM!'))
-  });
+const showMore = document.querySelector('.showMoreTiles');
+showMore.addEventListener('click', event => {
+ alert('boom!');
+});
 </script>
