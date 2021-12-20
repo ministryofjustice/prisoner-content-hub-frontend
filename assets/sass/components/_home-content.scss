@@ -224,6 +224,21 @@
   }
 }
 
+.content-link-series {
+  position: relative;
+
+  &::before {
+    @include govuk-font(19, 'bold');
+    position: absolute;
+    content: 'SERIES';
+    color: govuk-colour('white');
+    padding: govuk-spacing(1);
+    background-color: govuk-colour('purple');
+    bottom: 0;
+    right: 0;
+  }
+}
+
 .content-link--video::before {
   content: '\25ba';
   background-color: govuk-colour('pink');
