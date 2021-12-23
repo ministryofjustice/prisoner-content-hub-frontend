@@ -24,17 +24,6 @@ describe('GET /tags', () => {
 
         await request(app).get('/tags/1').expect(500);
       });
-      it('returns a 500 when incorrect data is returned', async () => {
-        const cmsService = {
-          getTag: jest.fn().mockRejectedValue('error'),
-        };
-        const router = createTagRouter({ cmsService });
-        const app = setupBasicApp();
-
-        app.use('/tags', router);
-
-        await request(app).get('/tags/1').expect(500);
-      });
     });
 
     describe('on success', () => {
@@ -139,6 +128,103 @@ describe('GET /tags', () => {
                 `/content/${data.relatedContent.data[0].id}`,
                 'did not render url',
               );
+            });
+        });
+      });
+    });
+  });
+
+  describe('/:id.json', () => {
+    describe('on error', () => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+      });
+
+      it('passes caught exceptions to next', async () => {
+        const cmsService = {
+          getPage: jest.fn().mockRejectedValue('💥'),
+        };
+        const router = createTagRouter({ cmsService });
+        const app = setupBasicApp();
+
+        app.use('/tags', router);
+
+        await request(app).get('/tags/1.json').expect(500);
+      });
+    });
+
+    describe('on success', () => {
+      const data = {
+        contentType: 'tags',
+        title: 'foo bar',
+        summary: 'foo description',
+        image: {
+          alt: 'Foo Image',
+          url: 'foo.url.com/image.png',
+        },
+        relatedContent: {
+          contentType: 'foo',
+          data: [
+            {
+              id: 'foo',
+              type: 'radio',
+              title: 'foo related content',
+              summary: 'Foo body',
+              image: {
+                url: 'foo.png',
+              },
+              contentUrl: '/content/foo',
+            },
+          ],
+        },
+      };
+
+      const sessionMiddleware = (req, res, next) => {
+        req.session = {
+          establishmentId: 123,
+          establishmentName: 'berwyn',
+        };
+        next();
+      };
+
+      describe('tags page JSON endpoint', () => {
+        it('correctly returns the JSON response', () => {
+          const cmsService = {
+            getPage: jest.fn().mockReturnValue(data),
+          };
+          const router = createTagRouter({ cmsService });
+          const app = setupBasicApp();
+
+          app.use(sessionMiddleware);
+          app.use('/tags', router);
+
+          return request(app)
+            .get('/tags/1.json')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+            .then(response => {
+              expect(response.body).toEqual(data);
+              expect(cmsService.getPage).toHaveBeenCalledWith('berwyn', 1, 1);
+            });
+        });
+
+        it('can specify page by query parameter', () => {
+          const cmsService = {
+            getPage: jest.fn().mockReturnValue(data),
+          };
+          const router = createTagRouter({ cmsService });
+          const app = setupBasicApp();
+
+          app.use(sessionMiddleware);
+          app.use('/tags', router);
+
+          return request(app)
+            .get('/tags/1.json?page=2')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+            .then(response => {
+              expect(response.body).toEqual(data);
+              expect(cmsService.getPage).toHaveBeenCalledWith('berwyn', 1, 2);
             });
         });
       });

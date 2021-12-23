@@ -1,3 +1,6 @@
+const getPagination = (page, size = 40) =>
+  `page[offset]=${Math.max(page - 1, 0) * size}&page[limit]=${size}`;
+
 const getImage = (data, type) => {
   if (!data) return null;
   return {
@@ -105,6 +108,7 @@ const typeFrom = type => {
 };
 
 module.exports = {
+  getPagination,
   getSmallTile,
   getLargeTile,
   getLargeImage,

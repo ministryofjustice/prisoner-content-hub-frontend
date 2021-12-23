@@ -1,5 +1,9 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getSmallTile, getLargeTile } = require('../../utils/jsonApi');
+const {
+  getSmallTile,
+  getLargeTile,
+  getPagination,
+} = require('../../utils/jsonApi');
 
 class SecondaryTagPageQuery {
   static #TILE_FIELDS = [
@@ -8,9 +12,10 @@ class SecondaryTagPageQuery {
     'field_moj_description',
     'field_moj_thumbnail_image',
     'path',
+    'field_moj_secondary_tags',
   ];
 
-  constructor(establishmentName, uuid) {
+  constructor(establishmentName, uuid, page) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
     const queryWithoutOffset = new Query()
@@ -33,9 +38,8 @@ class SecondaryTagPageQuery {
         'field_moj_secondary_tags.field_featured_image',
       ])
       .addSort('created', 'DESC')
-      .addPageLimit(10)
       .getQueryString();
-    this.query = `${queryWithoutOffset}`;
+    this.query = `${queryWithoutOffset}&${getPagination(page)}`;
   }
 
   path() {

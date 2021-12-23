@@ -564,7 +564,7 @@ describe('cms Service', () => {
         it('returns the tag', async () => {
           expect(cmsApi.get).toHaveBeenCalledTimes(1);
           expect(cmsApi.get).toHaveBeenCalledWith(
-            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid),
+            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid, 1),
           );
           expect(result).toBe(populatedSecondaryTag);
         });
@@ -586,7 +586,7 @@ describe('cms Service', () => {
         it('returns the tag', async () => {
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             1,
-            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid),
+            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid, 1),
           );
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             2,
@@ -715,7 +715,126 @@ describe('cms Service', () => {
       });
     });
   });
+  describe('getPage', () => {
+    const TAG_ID = 9;
+    const uuid = 42;
 
+    describe('with a secondary tag', () => {
+      const location = 'https://cms.org/tag/1234';
+      beforeEach(() => {
+        cmsApi.lookupTag.mockResolvedValue({
+          type: 'taxonomy_term--tags',
+          location,
+          uuid,
+        });
+      });
+      describe('which contains related content', () => {
+        let result;
+        const populatedSecondaryTag = { title: 'le name' };
+        beforeEach(async () => {
+          cmsApi.get.mockResolvedValue(populatedSecondaryTag);
+          result = await cmsService.getPage(ESTABLISHMENT_NAME, TAG_ID, 2);
+        });
+        it('looks up the tag', () => {
+          expect(cmsApi.lookupTag).toHaveBeenCalledWith(
+            ESTABLISHMENT_NAME,
+            TAG_ID,
+          );
+        });
+        it('returns the tag', async () => {
+          expect(cmsApi.get).toHaveBeenCalledTimes(1);
+          expect(cmsApi.get).toHaveBeenCalledWith(
+            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid, 2),
+          );
+          expect(result).toBe(populatedSecondaryTag);
+        });
+      });
+      describe('which has no related content', () => {
+        let result;
+        const populatedSecondaryTag = {};
+        beforeEach(async () => {
+          cmsApi.get.mockResolvedValueOnce({});
+          cmsApi.get.mockResolvedValue(populatedSecondaryTag);
+          result = await cmsService.getPage(ESTABLISHMENT_NAME, TAG_ID, 2);
+        });
+        it('looks up the tag', () => {
+          expect(cmsApi.lookupTag).toHaveBeenCalledWith(
+            ESTABLISHMENT_NAME,
+            TAG_ID,
+          );
+        });
+        it('returns the tag', async () => {
+          expect(cmsApi.get).toHaveBeenNthCalledWith(
+            1,
+            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid, 2),
+          );
+          expect(cmsApi.get).toHaveBeenNthCalledWith(
+            2,
+            new SecondaryTagHeaderPageQuery(location),
+          );
+          expect(result).toBe(populatedSecondaryTag);
+        });
+      });
+    });
+
+    describe('with a series', () => {
+      const location = 'https://cms.org/tag/1234';
+      beforeEach(() => {
+        cmsApi.lookupTag.mockResolvedValue({
+          type: 'taxonomy_term--series',
+          location,
+          uuid,
+        });
+      });
+      describe('which contains related content', () => {
+        let result;
+        const populatedSeries = { title: 'le name' };
+        beforeEach(async () => {
+          cmsApi.get.mockResolvedValue(populatedSeries);
+          result = await cmsService.getPage(ESTABLISHMENT_NAME, TAG_ID, 2);
+        });
+        it('looks up the series', () => {
+          expect(cmsApi.lookupTag).toHaveBeenCalledWith(
+            ESTABLISHMENT_NAME,
+            TAG_ID,
+          );
+        });
+        it('returns the series', async () => {
+          expect(cmsApi.get).toHaveBeenCalledTimes(1);
+          expect(cmsApi.get).toHaveBeenCalledWith(
+            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid),
+          );
+          expect(result).toBe(populatedSeries);
+        });
+      });
+      describe('which has no related content', () => {
+        let result;
+        const populatedSeries = {};
+        beforeEach(async () => {
+          cmsApi.get.mockResolvedValueOnce({});
+          cmsApi.get.mockResolvedValue(populatedSeries);
+          result = await cmsService.getPage(ESTABLISHMENT_NAME, TAG_ID, 2);
+        });
+        it('looks up the series', () => {
+          expect(cmsApi.lookupTag).toHaveBeenCalledWith(
+            ESTABLISHMENT_NAME,
+            TAG_ID,
+          );
+        });
+        it('returns the series', async () => {
+          expect(cmsApi.get).toHaveBeenNthCalledWith(
+            1,
+            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid),
+          );
+          expect(cmsApi.get).toHaveBeenNthCalledWith(
+            2,
+            new SeriesHeaderPageQuery(location),
+          );
+          expect(result).toBe(populatedSeries);
+        });
+      });
+    });
+  });
   describe('getExternalLink', () => {
     const EXTERNAL_LINK = 'bob';
     const LOCATION = 'https://cms.org/content/1234';
