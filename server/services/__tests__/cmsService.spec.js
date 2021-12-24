@@ -622,7 +622,7 @@ describe('cms Service', () => {
         it('returns the series', async () => {
           expect(cmsApi.get).toHaveBeenCalledTimes(1);
           expect(cmsApi.get).toHaveBeenCalledWith(
-            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid),
+            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 1),
           );
           expect(result).toBe(populatedSeries);
         });
@@ -644,7 +644,7 @@ describe('cms Service', () => {
         it('returns the series', async () => {
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             1,
-            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid),
+            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 1),
           );
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             2,
@@ -802,7 +802,7 @@ describe('cms Service', () => {
         it('returns the series', async () => {
           expect(cmsApi.get).toHaveBeenCalledTimes(1);
           expect(cmsApi.get).toHaveBeenCalledWith(
-            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid),
+            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
           expect(result).toBe(populatedSeries);
         });
@@ -824,7 +824,7 @@ describe('cms Service', () => {
         it('returns the series', async () => {
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             1,
-            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid),
+            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             2,

@@ -50,9 +50,9 @@ class CmsService {
     return tagResult;
   }
 
-  async getSeries(establishmentName, uuid, location) {
+  async getSeries(establishmentName, uuid, location, page = 1) {
     const result = await this.#cmsApi.get(
-      new SeriesPageQuery(establishmentName, uuid),
+      new SeriesPageQuery(establishmentName, uuid, page),
     );
     if (result?.title) return result;
     const tagResult = await this.#cmsApi.get(

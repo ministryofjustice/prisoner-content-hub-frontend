@@ -11,8 +11,8 @@ class SecondaryTagPageQuery {
     'title',
     'field_moj_description',
     'field_moj_thumbnail_image',
-    'path',
     'field_moj_secondary_tags',
+    'path',
   ];
 
   constructor(establishmentName, uuid, page) {
@@ -54,13 +54,14 @@ class SecondaryTagPageQuery {
     };
   };
 
-  transform(deserializedResponse) {
+  transform(deserializedResponse, links) {
     if (deserializedResponse.length === 0) return null;
     return {
       ...this.#getTag(deserializedResponse[0].fieldMojSecondaryTags),
       ...{
         relatedContent: {
           contentType: 'default',
+          isLastPage: !links.next,
           data: deserializedResponse.map(item => getSmallTile(item)),
         },
       },

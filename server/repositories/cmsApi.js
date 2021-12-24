@@ -49,7 +49,7 @@ class CmsApi {
       const deserializedResponse = dataFormatter.deserialize(response);
       return query.transformEach
         ? deserializedResponse.map(item => query.transformEach(item))
-        : query.transform(deserializedResponse);
+        : query.transform(deserializedResponse, response.links);
     });
   }
 
