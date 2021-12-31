@@ -46,3 +46,17 @@
   background-image: url('/public/images/icons/chevron-right.svg');
   background-position: 8px 50%;
 }
+
+.show-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 51px;
+}
+
+.showMoreTiles,
+.showMoreTiles:hover,
+.showMoreTiles:disabled {
+  color: govuk-colour('black') !important;
+  background-color: govuk-colour('light-grey') !important;
+}
