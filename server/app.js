@@ -116,6 +116,7 @@ const createApp = services => {
     '../assets/stylesheets',
     '../node_modules/govuk-frontend/govuk/',
     '../node_modules/jquery/dist',
+    '../node_modules/nunjucks/browser',
     '../node_modules/@ministryofjustice/frontend/moj/',
     '../node_modules/video.js/dist',
   ].forEach(dir => {

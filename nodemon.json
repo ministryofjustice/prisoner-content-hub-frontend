@@ -3,6 +3,7 @@
   "ignore": [
     ".git",
     "node_modules/**/node_modules",
+    "assets/generated",
     "assets/stylesheets",
     "**/__tests__/**",
     ".circleci/*",

@@ -4,6 +4,7 @@ assets/javascript/games
 package.json
 package-lock.json
 assets/stylesheets
+assets/generated
 assets/javascript/all.js
 assets/javascript/search.js
 assets/javascript/feedback-tracking.js
