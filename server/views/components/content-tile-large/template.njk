@@ -14,6 +14,8 @@
       <p class="content-link--audio">Listen</p>
     {% elif params.contentType === "external_link" %}
       <p class="content-link--external">{{ params.displayUrl }}</p>
+    {% elif params.contentType === "series" %}
+      <p class="content-link--series">Series</p>
     {% else %}
       <p class="content-link--article">Read</p>
     {% endif %}
