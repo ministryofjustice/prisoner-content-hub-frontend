@@ -1,6 +1,6 @@
 {% from "../content-tile-small/macro.njk" import contentTileSmall %}
 
-<div data-content-type="{{params.data.contentType}}" data-content-id="{{params.id}}" class="home-content__four-items">
+<div data-content-type="{{params.data.contentType}}" data-content-id="{{params.id}}" class="tags-content__four-items">
   {% for item in params.data.data %}
     {{ contentTileSmall({
       id: item.id,

@@ -123,7 +123,8 @@
   }
 }
 
-.home-content__four-items {
+.home-content__four-items,
+.tags-content__four-items {
   justify-content: flex-start;
   display: flex;
   flex-wrap: wrap;
@@ -179,6 +180,9 @@
   & > div {
     background-color: transparent;
   }
+}
+.tags-content__four-items > a {
+  margin-right: 0.3%;
 }
 
 .content-link--article,
