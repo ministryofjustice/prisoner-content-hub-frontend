@@ -339,14 +339,14 @@ describe('Prisoner Money', () => {
       const spy = jest.spyOn(prisonerInformationService, 'getTransactionsFor');
 
       await request(app)
-        .get('/money/transactions/spends?selectedDate=2021-01-01')
+        .get('/money/transactions/spends?selectedDate=2021-12-01')
         .expect(200)
         .then(() => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
             'spends',
-            new Date('2021-01-01T00:00:00.000'),
-            new Date('2021-01-31T23:59:59.999'),
+            new Date('2021-12-01T00:00:00.000'),
+            new Date('2021-12-31T23:59:59.999'),
           );
         });
     });
@@ -676,13 +676,13 @@ describe('Prisoner Money', () => {
       );
 
       await request(app)
-        .get('/money/transactions/private?selectedDate=2021-01-01')
+        .get('/money/transactions/private?selectedDate=2021-12-01')
         .expect(200)
         .then(() => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
-            new Date('2021-01-01T00:00:00.000'),
-            new Date('2021-01-31T23:59:59.999'),
+            new Date('2021-12-01T00:00:00.000'),
+            new Date('2021-12-31T23:59:59.999'),
           );
         });
     });
@@ -903,14 +903,14 @@ describe('Prisoner Money', () => {
       const spy = jest.spyOn(prisonerInformationService, 'getTransactionsFor');
 
       await request(app)
-        .get('/money/transactions/savings?selectedDate=2021-01-01')
+        .get('/money/transactions/savings?selectedDate=2021-12-01')
         .expect(200)
         .then(() => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
             'savings',
-            new Date('2021-01-01T00:00:00.000'),
-            new Date('2021-01-31T23:59:59.999'),
+            new Date('2021-12-01T00:00:00.000'),
+            new Date('2021-12-31T23:59:59.999'),
           );
         });
     });
