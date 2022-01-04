@@ -18,6 +18,12 @@ var SCORE_BAR_HEIGHT = 40;
 var levels = [
   {
     ballRadius: 10,
+    rows: 1,
+    initialVelocity: 5,
+    initialBrickHealth: 1,
+  },
+  {
+    ballRadius: 10,
     rows: 2,
     initialVelocity: 5,
     initialBrickHealth: 1
@@ -88,7 +94,28 @@ var levels = [
     rows: 6,
     initialVelocity: 7,
     initialBrickHealth: 7,
-  }
+  },
+  {
+    start: function() {this.lives + 1;},
+    ballRadius: 10,
+    rows: 7,
+    initialVelocity: 7,
+    initialBrickHealth: 8,
+  },
+    {
+    start: function() {this.lives += 1;},
+    ballRadius: 10,
+    rows: 7,
+    initialVelocity: 8,
+    initialBrickHealth: 8,
+  },
+    {
+    start: function() {this.lives += 1;},
+    ballRadius: 10,
+    rows: 8,
+    initialVelocity: 8,
+    initialBrickHealth: 8,
+  },
 ];
 
 function Vector2d(x, y) {
@@ -335,6 +362,7 @@ Brick.colours = [
   '#1ac3ed',
   '#801aed',
   '#c31aed',
+  '#000000',
 ];
 
 Brick.prototype.setPosition = function (v) {
@@ -439,8 +467,11 @@ function Game(options) {
 
 Game.prototype.loadLevel = function () {
   var level = this.levels[this.level];
+  if (!level) {
+    return
+  }
   var levelStart = level.start || function() {};
-    levelStart.call(this);
+  levelStart.call(this);
   this.paddle = new Paddle({
     height: level.paddleHeight,
     width: level.paddleWidth,
@@ -518,6 +549,8 @@ Game.prototype.drawWinScreen = function () {
   this.ctx.fillText('YOU WIN   :)', 315, 290);
   this.ctx.fillText('More levels coming soon', 240, 330);
   this.ctx.fillText('Press ENTER to start a new game', 180, 370);
+  this.inputHandler.addHandler('enter', this.reset.bind(this));
+  this.inputHandler.removeHandler('space');
 }
 
 Game.prototype.drawLoseScreen = function () {
@@ -527,15 +560,16 @@ Game.prototype.drawLoseScreen = function () {
   this.ctx.fillStyle = 'white';
   this.ctx.font = '30px GDS Transport';
   this.ctx.fillText('Game over', 310, 250);
-  this.ctx.fillText('You scored ' + this.score + ' points', 260, 290);
+  this.ctx.fillText('You scored ' + this.score + ' points', 240, 290);
   this.ctx.fillText('Press ENTER to restart the game', 180, 330);
+  this.inputHandler.addHandler('enter', this.reset.bind(this));
+  this.inputHandler.removeHandler('space');
 }
 
 Game.prototype.update = function () {
   if (this.grid.bricks.length === 0 && this.level < this.levels.length) {
-    var nextLevel = this.level + 1;
-    this.loadLevel(nextLevel);
-    this.level = nextLevel;
+    this.level = this.level + 1;
+    this.loadLevel();
   }
 
   this.inputHandler.listen();
@@ -552,12 +586,10 @@ Game.prototype.setLives = function (lives) {
 
 Game.prototype.draw = function () {
   if (this.level === this.levels.length) {
-    this.inputHandler.addHandler('enter', this.reset.bind(this));
     return this.drawWinScreen();
   }
 
   if (this.lives === 0) {
-    this.inputHandler.addHandler('enter', this.reset.bind(this));
     return this.drawLoseScreen();
   }
 
@@ -581,3 +613,4 @@ window.onload = function () {
   };
   window.requestAnimationFrame(gameLoop);
 };
+
