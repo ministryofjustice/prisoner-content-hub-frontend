@@ -5,7 +5,7 @@ describe('Homepage query', () => {
   describe('path', () => {
     it('should create correct path', async () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/berwyn/node/featured_articles?include=field_moj_featured_tile_large.field_moj_thumbnail_image%2Cfield_moj_featured_tile_small.field_moj_thumbnail_image&page%5Blimit%5D=1&fields%5Bnode--featured_articles%5D=title%2Cdrupal_internal__nid%2Cfield_moj_featured_tile_large%2Cfield_moj_featured_tile_small&fields%5Bnode--page%5D=drupal_internal__nid%2Cfield_moj_thumbnail_image%2Ctitle%2Cfield_moj_description%2Cfield_moj_series%2Cpath&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Cfield_moj_thumbnail_image%2Ctitle%2Cfield_moj_description%2Cfield_moj_series%2Cpath&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Cfield_moj_thumbnail_image%2Ctitle%2Cfield_moj_description%2Cfield_moj_series%2Cpath&fields%5Bnode--moj_pdf_item%5D=drupal_internal__nid%2Cfield_moj_thumbnail_image%2Ctitle%2Cfield_moj_description%2Cfield_moj_series%2Cpath&fields%5Bfile--file%5D=drupal_internal__fid%2Cid%2Cimage_style_uri`,
+        '/jsonapi/prison/berwyn/node/featured_articles?include=field_featured_tile_large.field_moj_thumbnail_image%2Cfield_featured_tile_small.field_moj_thumbnail_image%2Cfield_featured_tile_large.field_featured_image%2Cfield_featured_tile_small.field_featured_image&page%5Blimit%5D=1&fields%5Bnode--featured_articles%5D=title%2Cdrupal_internal__nid%2Cfield_featured_tile_large%2Cfield_featured_tile_small&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath&fields%5Bnode--moj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath&fields%5Btaxonomy_term--series%5D=drupal_internal__tid%2Cname%2Cdescription%2Cpath%2Cfield_featured_image&fields%5Bfile--file%5D=drupal_internal__fid%2Cid%2Cimage_style_uri',
       );
     });
   });
@@ -13,8 +13,8 @@ describe('Homepage query', () => {
   describe('transformEach', () => {
     it('should return correct small tile structure', async () => {
       const contentItem = {
-        fieldMojFeaturedTileLarge: [],
-        fieldMojFeaturedTileSmall: [
+        fieldFeaturedTileLarge: [],
+        fieldFeaturedTileSmall: [
           {
             drupalInternal_Nid: '10001',
             type: 'moj_video_item',
@@ -53,7 +53,7 @@ describe('Homepage query', () => {
 
     it('should return correct upper/lower featured tile structures', async () => {
       const contentItem = {
-        fieldMojFeaturedTileLarge: [
+        fieldFeaturedTileLarge: [
           {
             drupalInternal_Nid: '10002',
             type: 'external_link',
@@ -70,12 +70,12 @@ describe('Homepage query', () => {
             path: { alias: '/tags/10002' },
           },
           {
-            drupalInternal_Nid: '10003',
-            type: 'moj_video_item',
-            title: 'Lower Abs workout',
-            fieldMojDescription: { summary: 'Intense lower core workout' },
-            fieldMojThumbnailImage: {
-              resourceIdObjMeta: { alt: 'Picture of core workout' },
+            drupalInternal_Tid: '10003',
+            type: 'taxonomy_term--series',
+            name: 'Bob and Beyond',
+            description: { processed: 'Music' },
+            fieldFeaturedImage: {
+              resourceIdObjMeta: { alt: 'Bob and Beyond' },
               imageStyleUri: [
                 { tile_large: 'large-image', tile_small: 'small-image' },
               ],
@@ -83,7 +83,7 @@ describe('Homepage query', () => {
             path: { alias: '/tags/10003' },
           },
         ],
-        fieldMojFeaturedTileSmall: [],
+        fieldFeaturedTileSmall: [],
       };
 
       expect(query.transformEach(contentItem)).toStrictEqual({
@@ -103,12 +103,12 @@ describe('Homepage query', () => {
         lowerFeatured: {
           id: '10003',
           contentUrl: '/tags/10003',
-          contentType: 'video',
-          title: 'Lower Abs workout',
-          summary: 'Intense lower core workout',
+          contentType: 'series',
+          title: 'Bob and Beyond',
+          summary: 'Music',
           image: {
             url: 'large-image',
-            alt: 'Picture of core workout',
+            alt: 'Bob and Beyond',
           },
           displayUrl: undefined,
           externalContent: false,
