@@ -1,26 +1,19 @@
-const { getEnv, isProduction } = require('../utils/index');
+const { getEnv, getRequiredEnv, isProduction } = require('../utils/index');
 
-const hubEndpoint = getEnv('HUB_API_ENDPOINT', { requireInProduction: true });
-const hmppsAuthBaseUrl = getEnv('HMPPS_AUTH_BASE_URL', 'https://api.nomis', {
-  requireInProduction: true,
-});
-const elasticsearchEndpoint = getEnv(
+const hubEndpoint = getRequiredEnv('HUB_API_ENDPOINT', 'http://localhost:9090');
+const hmppsAuthBaseUrl = getRequiredEnv(
+  'HMPPS_AUTH_BASE_URL',
+  'https://api.nomis',
+);
+const elasticsearchEndpoint = getRequiredEnv(
   'ELASTICSEARCH_ENDPOINT',
   'http://localhost:9200',
-  {
-    requireInProduction: true,
-  },
 );
-const elasticsearchIndexName = getEnv(
+const elasticsearchIndexName = getRequiredEnv(
   'ELASTICSEARCH_INDEX_NAME',
   'content_index',
-  {
-    requireInProduction: true,
-  },
 );
-const drupalDatabaseName = getEnv('DRUPAL_DATABASE_NAME', 'hubdb', {
-  requireInProduction: true,
-});
+const drupalDatabaseName = getRequiredEnv('DRUPAL_DATABASE_NAME', 'hubdb');
 
 module.exports = {
   isProduction,
@@ -30,11 +23,10 @@ module.exports = {
     gitDate: getEnv('GIT_DATE', '2020-06-21 12:12:12'),
   },
   cookieSecret: getEnv('COOKIE_SECRET', 'keyboard cat'),
+  singleHostName: getRequiredEnv('SINGLE_HOST_NAME', 'localhost'),
   auth: {
-    clientId: getEnv('AZURE_AD_CLIENT_ID', { requireInProduction: true }),
-    clientSecret: getEnv('AZURE_AD_CLIENT_SECRET', {
-      requireInProduction: true,
-    }),
+    clientId: getRequiredEnv('AZURE_AD_CLIENT_ID', 'client-1'),
+    clientSecret: getRequiredEnv('AZURE_AD_CLIENT_SECRET', 'secret-1'),
     callbackPath: '/auth/provider/callback',
   },
   api: {
@@ -47,7 +39,7 @@ module.exports = {
     tags: `${hubEndpoint}/v1/api/vocabulary/tags`,
   },
   caching: {
-    secret: getEnv('CACHE_SECRET', { requireInProduction: true }),
+    secret: getRequiredEnv('CACHE_SECRET', 'secret-2'),
     redis: {
       host: getEnv('REDIS_HOST', '127.0.0.1'),
       port: getEnv('REDIS_PORT', 6379),
@@ -61,9 +53,7 @@ module.exports = {
       clientSecret: getEnv('HMPPS_AUTH_CLIENT_SECRET', 'UNSET'),
       authUrl: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
     },
-    baseUrl: getEnv('PRISON_API_BASE_URL', 'https://api.nomis', {
-      requireInProduction: true,
-    }),
+    baseUrl: getRequiredEnv('PRISON_API_BASE_URL', 'https://api.nomis'),
   },
   elasticsearch: {
     search: `${elasticsearchEndpoint}/elasticsearch_index_${drupalDatabaseName}_${elasticsearchIndexName}/_search`,
@@ -82,10 +72,9 @@ module.exports = {
     siteId: getEnv('ANALYTICS_SITE_ID', 'UA-152065860-4'),
   },
   feedback: {
-    endpoint: getEnv(
+    endpoint: getRequiredEnv(
       'FEEDBACK_URL',
       'http://localhost:9200/local-feedback/_doc',
-      { requireInProduction: true },
     ),
   },
   npr: {
