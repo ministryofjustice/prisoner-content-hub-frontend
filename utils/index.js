@@ -28,6 +28,9 @@ const getEnv = (name, fallback, options = {}) => {
   throw new Error(`Missing env var ${name}`);
 };
 
+const getRequiredEnv = (name, fallback) =>
+  getEnv(name, fallback, { requireInProduction: true });
+
 const getEnvironmentVariableOrThrow = name => {
   if (process.env[name]) {
     return process.env[name];
@@ -39,5 +42,6 @@ module.exports = {
   isProduction: production,
   recordBuildInfoTo,
   getEnv,
+  getRequiredEnv,
   getEnvironmentVariableOrThrow,
 };

@@ -1,5 +1,6 @@
 const { path } = require('ramda');
 const express = require('express');
+const config = require('../config');
 
 const createAnalyticsRouter = ({ analyticsService }) => {
   const router = express.Router();
@@ -20,10 +21,11 @@ const createAnalyticsRouter = ({ analyticsService }) => {
   });
 
   router.post('/page', (req, res) => {
-    const sessionId = path(['session', 'id'], req);
+    const sessionId = req.session.id;
+    const hostname = `${req.session.establishmentName}.${config.singleHostName}`;
 
     analyticsService.sendPageTrack({
-      hostname: path(['body', 'hostname'], req),
+      hostname,
       page: path(['body', 'page'], req),
       title: path(['body', 'title'], req),
       sessionId,

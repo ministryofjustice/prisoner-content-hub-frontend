@@ -254,7 +254,6 @@ describe('Prisoner Money', () => {
           expect(tabs).not.toContain('Damage obligations');
         });
     });
-
     it('shows the damage obligations tab if there are some to display', async () => {
       await request(app)
         .get('/money/transactions/spends')

@@ -4,6 +4,8 @@ const nunjucksSetup = require('../server/utils/nunjucksSetup');
 function setupBasicApp(config = {}) {
   const app = express();
   app.set('view engine', 'html');
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
   nunjucksSetup(app);
 
