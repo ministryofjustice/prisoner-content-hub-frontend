@@ -1,4 +1,4 @@
-const showMore = $('.showMoreTiles');
+const showMore = $('.show-more-tiles');
 const smallTiles = $('#small-tiles');
 function updateButton(isLastPage) {
   if (isLastPage) {
