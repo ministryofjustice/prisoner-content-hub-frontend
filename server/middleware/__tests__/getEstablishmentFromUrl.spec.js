@@ -30,6 +30,15 @@ describe('getEstablishmentFromUrl', () => {
   describe('for localhost urls', () => {
     getTests('development', 'cookhamwood.localhost:3000', 'localhost:3000');
   });
+
+  describe('for local urls', () => {
+    getTests(
+      'local',
+      'cookhamwood.prisoner-content-hub.local:3000',
+      'localhost:3000',
+    );
+  });
+
   describe('for development urls', () => {
     getTests(
       'development',
