@@ -7,10 +7,12 @@ function updateButton(isLastPage) {
 }
 
 function enableShowMore() {
+  showMore.html('Show more');
   showMore.attr('disabled', false);
 }
 
 function disableShowMore() {
+  showMore.html('Loading');
   showMore.attr('disabled', true);
 }
 
