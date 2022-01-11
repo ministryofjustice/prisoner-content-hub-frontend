@@ -17,7 +17,7 @@ function disableShowMore() {
 }
 
 let page = 1;
-showMore.on('click', () => {
+showMore.on('click', function () {
   page++;
   const nextPage = `${location.pathname}.json?page=${page}`;
   disableShowMore();
