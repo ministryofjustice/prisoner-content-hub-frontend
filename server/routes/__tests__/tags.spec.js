@@ -7,21 +7,32 @@ const { createTagRouter } = require('../tags');
 const { setupBasicApp } = require('../../../test/test-helpers');
 
 describe('GET /tags', () => {
+  let app;
+
+  const cmsService = {
+    getTag: jest.fn(),
+    getPage: jest.fn(),
+  };
+
+  const sessionMiddleware = (req, res, next) => {
+    req.session = {
+      establishmentId: 123,
+      establishmentName: 'berwyn',
+    };
+    next();
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    app = setupBasicApp();
+    app.use(sessionMiddleware);
+    app.use('/tags', createTagRouter({ cmsService }));
+  });
+
   describe('/:id', () => {
     describe('on error', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
-      });
-
       it('passes caught exceptions to next', async () => {
-        const cmsService = {
-          getTag: jest.fn().mockRejectedValue('💥'),
-        };
-        const router = createTagRouter({ cmsService });
-        const app = setupBasicApp();
-
-        app.use('/tags', router);
-
+        cmsService.getTag.mockRejectedValue('💥');
         await request(app).get('/tags/1').expect(500);
       });
     });
@@ -52,24 +63,9 @@ describe('GET /tags', () => {
         },
       };
 
-      const sessionMiddleware = (req, res, next) => {
-        req.session = {
-          establishmentId: 123,
-          establishmentName: 'berwyn',
-        };
-        next();
-      };
-
       describe('tags page header', () => {
         it('correctly renders a page header with an image', () => {
-          const cmsService = {
-            getTag: jest.fn().mockReturnValue(data),
-          };
-          const router = createTagRouter({ cmsService });
-          const app = setupBasicApp();
-
-          app.use(sessionMiddleware);
-          app.use('/tags', router);
+          cmsService.getTag.mockReturnValue(data);
 
           return request(app)
             .get('/tags/1')
@@ -78,10 +74,7 @@ describe('GET /tags', () => {
             .then(response => {
               const $ = cheerio.load(response.text);
 
-              expect($('#title').text()).toContain(
-                data.title,
-                'did not have correct header title',
-              );
+              expect($('#title').text()).toContain(data.title);
 
               expect($('#description').text()).toContain(data.summary);
 
@@ -95,14 +88,7 @@ describe('GET /tags', () => {
 
       describe('landing page related content', () => {
         it('correctly renders a tags page related content', () => {
-          const cmsService = {
-            getTag: jest.fn().mockReturnValue(data),
-          };
-          const router = createTagRouter({ cmsService });
-          const app = setupBasicApp();
-
-          app.use(sessionMiddleware);
-          app.use('/tags', router);
+          cmsService.getTag.mockReturnValue(data);
 
           return request(app)
             .get('/tags/1')
@@ -136,18 +122,8 @@ describe('GET /tags', () => {
 
   describe('/:id.json', () => {
     describe('on error', () => {
-      beforeEach(() => {
-        jest.clearAllMocks();
-      });
-
       it('passes caught exceptions to next', async () => {
-        const cmsService = {
-          getPage: jest.fn().mockRejectedValue('💥'),
-        };
-        const router = createTagRouter({ cmsService });
-        const app = setupBasicApp();
-
-        app.use('/tags', router);
+        cmsService.getPage.mockRejectedValue('💥');
 
         await request(app).get('/tags/1.json').expect(500);
       });
@@ -179,24 +155,9 @@ describe('GET /tags', () => {
         },
       };
 
-      const sessionMiddleware = (req, res, next) => {
-        req.session = {
-          establishmentId: 123,
-          establishmentName: 'berwyn',
-        };
-        next();
-      };
-
       describe('tags page JSON endpoint', () => {
         it('correctly returns the JSON response', () => {
-          const cmsService = {
-            getPage: jest.fn().mockReturnValue(data),
-          };
-          const router = createTagRouter({ cmsService });
-          const app = setupBasicApp();
-
-          app.use(sessionMiddleware);
-          app.use('/tags', router);
+          cmsService.getPage.mockReturnValue(data);
 
           return request(app)
             .get('/tags/1.json')
@@ -209,14 +170,7 @@ describe('GET /tags', () => {
         });
 
         it('can specify page by query parameter', () => {
-          const cmsService = {
-            getPage: jest.fn().mockReturnValue(data),
-          };
-          const router = createTagRouter({ cmsService });
-          const app = setupBasicApp();
-
-          app.use(sessionMiddleware);
-          app.use('/tags', router);
+          cmsService.getPage.mockReturnValue(data);
 
           return request(app)
             .get('/tags/1.json?page=2')
