@@ -81,6 +81,7 @@
     </audio>
       {% if not data.excludeFeedback %}
         {{ hubFeedbackWidget({
+          heading: '',
           contentId: data.id,
           title: data.title,
           contentType: data.contentType,

@@ -6,40 +6,53 @@
       data-item-tags="{{params.secondaryTags}}"
       data-item-categories="{{params.categories}}"
       data-item-feedback-id="{{params.feedbackId}}"
+      class="{{ 'govuk-!-padding-top-2 govuk-hub-comment__sidebar' if params.sidebar else 'govuk-!-padding-top-5 govuk-hub-comment' }}"
   >
-  <div class="govuk-hub-feedback">
-    <button data-feedback-sentiment
-      class="govuk-link govuk-hub-thumbs govuk-hub-thumbs--up"
-      value="LIKE"
-      type="button"
-    ></button>
+  {% set headingClass %}
+    {{ 'govuk-heading-m' if params.sidebar else 'govuk-body' }}
+  {% endset %}
+  <div class="govuk-hub-feedback-ui">
+    {% if params.heading != '' %}
+      <h3 class="{{ headingClass }} govuk-hub-feedback-heading">{{ params.heading|default('Give us feedback') }}</h3>
+    {% endif %}
+    <div class="govuk-hub-feedback">
+      <button data-feedback-sentiment
+        class="govuk-link govuk-hub-thumbs govuk-hub-thumbs--up"
+        value="LIKE"
+        type="button"
+      ></button>
 
-    <button data-feedback-sentiment
-      class="govuk-link govuk-hub-thumbs govuk-hub-thumbs--down"
-      value="DISLIKE"
-      type="button"
-    ></button>
-  </div>
-  <div class="govuk-hub-feedback-text">
-    <strong data-item-feedback-text></strong>
-  </div>
-  <form
-    data-feedback-form
-    class="govuk-hub-comment-form govuk-u-hidden {% if params.sidebar %} govuk-hub-comment-form__sidebar {% endif %} "
-  >
-    <div class="govuk-form-group govuk-!-margin-bottom-2">
-      <label id="more-detail" class="govuk-hint">
-        <strong>Is there anything else you want to tell us about it?</strong>
-      </label>
-      <p class="govuk-body govuk-hub-text">Feedback is treated anonymously, unless it breaks prison rules or raises safety concerns.</p>
-      <textarea data-feedback-comment class="govuk-textarea govuk-!-margin-bottom-0 govuk-!-padding-2" id="more-detail" name="value" rows="4" placeholder="Optional" maxlength="240" required></textarea>
+      <button data-feedback-sentiment
+        class="govuk-link govuk-hub-thumbs govuk-hub-thumbs--down"
+        value="DISLIKE"
+        type="button"
+      ></button>
     </div>
-    <div class="govuk-hub-comment-form__footer">
-      <div class="govuk-hub-comment-counter">
-        <span data-feedback-comment-counter >240</span> characters left</div>
-      <button type="submit" class="govuk-button">Send</button>
-    </div>
-  </form>
+    <div data-item-feedback-text class="govuk-body govuk-!-font-weight-bold"></div>
+    <form
+      data-feedback-form
+      class="govuk-hub-comment-form govuk-u-hidden"
+    >
+      <div class="govuk-form-group govuk-!-margin-bottom-2">
+        <label id="more-detail" class="govuk-hint govuk-!-font-weight-bold">
+          Is there anything else you want to tell us about it?
+        </label>
+        <p class="govuk-body">Feedback is treated anonymously, unless it breaks prison rules or raises safety concerns.</p>
+        <textarea data-feedback-comment class="govuk-textarea govuk-!-margin-bottom-0 govuk-!-padding-2" id="more-detail" name="value" rows="4" placeholder="Optional" maxlength="240" required></textarea>
+      </div>
+      <div class="govuk-hub-comment-form__footer">
+        <div class="govuk-hub-comment-counter">
+          <span data-feedback-comment-counter >240</span> characters left</div>
+        <button type="submit" class="govuk-button">Send</button>
+      </div>
+    </form>
+  </div>
+  <div class="govuk-hub-feedback-confirmation govuk-u-hidden">
+    <h3 class="{{ headingClass }} govuk-!-font-weight-bold">Thanks for your feedback</h3>
+    <p class="govuk-body">
+      You can read more about what we do with it <a href="/content/12236" class="{{ 'govuk-link' if params.sidebar }}">here</a>.
+    </p>
+  </div>
 </div>
 <script defer src="/public/javascript/feedback-tracking.js"></script>
 <script>

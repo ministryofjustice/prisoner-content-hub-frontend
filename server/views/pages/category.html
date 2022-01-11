@@ -62,8 +62,8 @@
             </li>
           {% endfor %}
         </ul>
-        <h2 class="govuk-heading-m">Give us feedback</h2>
         {{ hubFeedbackWidget({
+          heading: '',
           contentId: data.id,
           title: data.title,
           contentType: data.contentType,
@@ -92,7 +92,6 @@
       {%- endfor %}
     </div>
   <div class="feedback-tablet">
-    <h2 class="govuk-heading-m">Give us feedback</h2>
     {{ hubFeedbackWidget({
         id: 'feedback-widget-category-tablet',
         contentId: data.id,
