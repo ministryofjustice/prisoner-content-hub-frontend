@@ -22,7 +22,10 @@ const createContentRouter = ({ cmsService, analyticsService }) => {
     const { establishmentName } = req.session;
 
     try {
-      const data = await cmsService.getContent(establishmentName, id);
+      const data = await cmsService.getContent(
+        establishmentName,
+        parseInt(id, 10),
+      );
 
       const contentType = prop('contentType', data);
       const sessionId = path(['session', 'id'], req);

@@ -1,4 +1,5 @@
 const {
+  getPagination,
   getLargeImage,
   getLargeTile,
   getSmallTile,
@@ -294,6 +295,83 @@ describe('.typeFrom', () => {
     expect(typeFrom('tags')).toStrictEqual({
       contentType: 'tags',
       externalContent: false,
+    });
+  });
+});
+
+describe('with content tile data', () => {
+  const tileData = {
+    drupalInternal_Nid: 42,
+    type: 'moj_video_item',
+    title: 'title',
+    fieldDisplayUrl: 'link',
+    fieldMojDescription: { summary: 'summary' },
+    fieldMojThumbnailImage: {
+      imageStyleUri: [
+        {
+          tile_small: 'tile_small',
+          tile_large: 'tile_large',
+        },
+      ],
+      resourceIdObjMeta: { alt: 'alt' },
+    },
+    path: { alias: '/content/42' },
+  };
+  describe('getSmallTile', () => {
+    it('should return the small tile data', () => {
+      expect(getSmallTile(tileData)).toEqual({
+        id: 42,
+        contentType: 'video',
+        title: 'title',
+        summary: 'summary',
+        contentUrl: '/content/42',
+        displayUrl: 'link',
+        externalContent: false,
+        image: { url: 'tile_small', alt: 'alt' },
+      });
+    });
+
+    it('PDF website content type opens in a new tab', () => {
+      expect(getSmallTile({ ...tileData, type: 'moj_pdf_item' })).toEqual({
+        id: 42,
+        contentType: 'pdf',
+        title: 'title',
+        summary: 'summary',
+        contentUrl: '/content/42',
+        displayUrl: 'link',
+        externalContent: true,
+        image: { url: 'tile_small', alt: 'alt' },
+      });
+    });
+
+    it(' External website content type opens in a new tab', () => {
+      expect(getSmallTile({ ...tileData, type: 'external_link' })).toEqual({
+        id: 42,
+        contentType: 'external_link',
+        title: 'title',
+        summary: 'summary',
+        contentUrl: '/content/42',
+        displayUrl: 'link',
+        externalContent: true,
+        image: { url: 'tile_small', alt: 'alt' },
+      });
+    });
+  });
+  describe('getPagination', () => {
+    it('should return the correct pagination for page zero', () => {
+      expect(getPagination(0)).toEqual('page[offset]=0&page[limit]=40');
+    });
+
+    it('should return the correct pagination for page one', () => {
+      expect(getPagination(1)).toEqual('page[offset]=0&page[limit]=40');
+    });
+
+    it('should return the correct pagination for page two', () => {
+      expect(getPagination(2)).toEqual('page[offset]=40&page[limit]=40');
+    });
+
+    it('should return the correct pagination for page three', () => {
+      expect(getPagination(3)).toEqual('page[offset]=80&page[limit]=40');
     });
   });
 });

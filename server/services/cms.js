@@ -39,9 +39,9 @@ class CmsService {
     this.#cmsApi = cmsApi;
   }
 
-  async getSecondaryTag(establishmentName, uuid, location) {
+  async getSecondaryTag(establishmentName, uuid, location, page = 1) {
     const result = await this.#cmsApi.get(
-      new SecondaryTagPageQuery(establishmentName, uuid),
+      new SecondaryTagPageQuery(establishmentName, uuid, page),
     );
     if (result?.title) return result;
     const tagResult = await this.#cmsApi.get(
@@ -50,9 +50,9 @@ class CmsService {
     return tagResult;
   }
 
-  async getSeries(establishmentName, uuid, location) {
+  async getSeries(establishmentName, uuid, location, page = 1) {
     const result = await this.#cmsApi.get(
-      new SeriesPageQuery(establishmentName, uuid),
+      new SeriesPageQuery(establishmentName, uuid, page),
     );
     if (result?.title) return result;
     const tagResult = await this.#cmsApi.get(
@@ -90,6 +90,19 @@ class CmsService {
         return this.getSeries(establishmentName, uuid, location);
       case 'taxonomy_term--moj_categories':
         return this.getCategory(establishmentName, uuid);
+      default:
+        throw new Error(`Unknown tag type: ${type} with content id: ${id}`);
+    }
+  }
+
+  async getPage(establishmentName, id, page) {
+    const lookupData = await this.#cmsApi.lookupTag(establishmentName, id);
+    const { type, uuid, location } = lookupData;
+    switch (type) {
+      case 'taxonomy_term--tags':
+        return this.getSecondaryTag(establishmentName, uuid, location, page);
+      case 'taxonomy_term--series':
+        return this.getSeries(establishmentName, uuid, location, page);
       default:
         throw new Error(`Unknown tag type: ${type} with content id: ${id}`);
     }

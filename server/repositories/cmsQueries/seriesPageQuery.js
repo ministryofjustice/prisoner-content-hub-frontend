@@ -1,5 +1,9 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getLargeTile, getSmallTile } = require('../../utils/jsonApi');
+const {
+  getLargeTile,
+  getSmallTile,
+  getPagination,
+} = require('../../utils/jsonApi');
 
 class SeriesPageQuery {
   static #TILE_FIELDS = [
@@ -11,10 +15,10 @@ class SeriesPageQuery {
     'path',
   ];
 
-  constructor(establishmentName, uuid) {
+  constructor(establishmentName, uuid, page) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
-    this.query = new Query()
+    const queryWithoutOffset = new Query()
       .addFilter('field_moj_series.id', uuid)
       .addFields('node--page', SeriesPageQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', SeriesPageQuery.#TILE_FIELDS)
@@ -35,13 +39,14 @@ class SeriesPageQuery {
       ])
       .addSort('series_sort_value', 'ASC')
       .getQueryString();
+    this.query = `${queryWithoutOffset}&${getPagination(page)}`;
   }
 
   path() {
     return `/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
   }
 
-  transform(deserializedResponse) {
+  transform(deserializedResponse, links) {
     if (deserializedResponse.length === 0) return null;
     return {
       excludeFeedback:
@@ -50,6 +55,7 @@ class SeriesPageQuery {
       ...{
         relatedContent: {
           contentType: 'default',
+          isLastPage: !links.next,
           data: deserializedResponse.map(getSmallTile),
         },
       },

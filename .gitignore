@@ -5,6 +5,7 @@
 .port.tmp
 public
 assets/stylesheets
+assets/generated
 lib/govuk_template.html
 govuk_modules
 node_modules/*

@@ -6,7 +6,7 @@
     "postinstall": "husky install",
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "build": "npm run css-build",
+    "build": "npm run css-build && npm run precompile-templates",
     "css-build": "./bin/build-css",
     "clean": "rm -rf public/* .port.tmp *.log build/* uploads/* test-results.xml",
     "lint": "eslint . --cache --max-warnings 0",
@@ -18,7 +18,8 @@
     "prettier": "prettier \"**/*.+(js|jsx|json|css|scss|md)\"",
     "verify": "npm run lint && npm run prettier -- --list-different && npm run test",
     "format": "npm run prettier -- --write",
-    "security_audit": "npx audit-ci --config audit-ci.json"
+    "security_audit": "npx audit-ci --config audit-ci.json",
+    "precompile-templates": "mkdir -p assets/generated && nunjucks-precompile -n content-tile-small server/views/components/content-tile-small/template.njk > assets/generated/templates.js"
   },
   "repository": {
     "type": "git",

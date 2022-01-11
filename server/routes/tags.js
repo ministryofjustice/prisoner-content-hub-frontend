@@ -3,6 +3,21 @@ const express = require('express');
 const createTagRouter = ({ cmsService }) => {
   const router = express.Router();
 
+  router.get('/:id.json', async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { page } = req.query;
+      const data = await cmsService.getPage(
+        req.session.establishmentName,
+        parseInt(id, 10),
+        parseInt(page || '1', 10),
+      );
+      return res.json(data);
+    } catch (e) {
+      return next(e);
+    }
+  });
+
   router.get('/:id', async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -17,7 +32,10 @@ const createTagRouter = ({ cmsService }) => {
         returnUrl: req.originalUrl,
       };
 
-      const data = await cmsService.getTag(req.session.establishmentName, id);
+      const data = await cmsService.getTag(
+        req.session.establishmentName,
+        parseInt(id, 10),
+      );
 
       const pageType = ['tags', 'series'].includes(data.contentType)
         ? 'tags'

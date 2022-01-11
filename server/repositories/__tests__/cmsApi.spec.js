@@ -11,13 +11,14 @@ class TestPathTransformQuery {
     return path;
   }
 
-  transform(item) {
+  transform(item, links) {
     const { name, description, fieldLegacyLandingPage } = item;
     const id =
       fieldLegacyLandingPage?.resourceIdObjMeta?.drupal_internal__target_id;
     return {
       id,
       linkText: name,
+      self: links?.self,
       description: description?.processed,
       href: `/content/${id}`,
     };
@@ -129,6 +130,9 @@ describe('CmsApi', () => {
         description: 'Desc 1',
         href: '/content/1',
         id: '1',
+        self: {
+          href: 'http://cms.prg/jsonapi/node/not-used',
+        },
         linkText: 'One',
       });
     });

@@ -1,5 +1,9 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getSmallTile, getLargeTile } = require('../../utils/jsonApi');
+const {
+  getSmallTile,
+  getLargeTile,
+  getPagination,
+} = require('../../utils/jsonApi');
 
 class SecondaryTagPageQuery {
   static #TILE_FIELDS = [
@@ -11,10 +15,10 @@ class SecondaryTagPageQuery {
     'path',
   ];
 
-  constructor(establishmentName, uuid) {
+  constructor(establishmentName, uuid, page) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
-    this.query = new Query()
+    const queryWithoutOffset = new Query()
       .addFilter('field_moj_secondary_tags.id', uuid)
       .addFields('node--page', SecondaryTagPageQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', SecondaryTagPageQuery.#TILE_FIELDS)
@@ -35,6 +39,7 @@ class SecondaryTagPageQuery {
       ])
       .addSort('created', 'DESC')
       .getQueryString();
+    this.query = `${queryWithoutOffset}&${getPagination(page)}`;
   }
 
   path() {
@@ -49,13 +54,14 @@ class SecondaryTagPageQuery {
     };
   };
 
-  transform(deserializedResponse) {
+  transform(deserializedResponse, links) {
     if (deserializedResponse.length === 0) return null;
     return {
       ...this.#getTag(deserializedResponse[0].fieldMojSecondaryTags),
       ...{
         relatedContent: {
           contentType: 'default',
+          isLastPage: !links.next,
           data: deserializedResponse.map(item => getSmallTile(item)),
         },
       },
