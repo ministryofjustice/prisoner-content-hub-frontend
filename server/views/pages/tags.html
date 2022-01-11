@@ -72,16 +72,13 @@
 
 
   {% if not data.excludeFeedback %}
-    <div class="govuk-form-group govuk-!-margin-bottom-2">
-      {% if data.contentType =='series'%}
-        <p class="govuk-hub-article-feedback govuk-hub-feedback-text">Tell us what you think about this series:</p>
-      {% endif %}
-
-      {% if data.contentType =='tags'%}
-        <p class="govuk-hub-article-feedback govuk-hub-feedback-text">Tell us what you think about this topic:</p>
-      {% endif %}
+    <div class="govuk-form-group govuk-hub-article-feedback">
+      {% set tagHeading %}
+        Tell us what you think about this {{'series' if data.contentType == 'series' else 'topic'}}:
+      {% endset %}
       {{ hubFeedbackWidget({
         contentId: data.id,
+        heading: tagHeading,
         title: title,
         name: title,
         contentType: data.contentType,

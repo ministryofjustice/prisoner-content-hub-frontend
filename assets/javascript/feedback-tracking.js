@@ -52,7 +52,9 @@
     }
 
     function hideFeedbackForm() {
-      $('[data-feedback-form]').addClass('govuk-u-hidden');
+      $('.govuk-hub-feedback-ui').addClass('govuk-u-hidden');
+      $('.govuk-hub-feedback-confirmation').removeClass('govuk-u-hidden');
+
     }
 
     function updateCharacterCount(characterCount) {
@@ -66,21 +68,18 @@
         .attr('disabled', false);
     }
 
-    function disableFormSubmit() {
+    function disableButtons() {
       $('[data-feedback-form]')
         .find('button')
+        .attr('disabled', true);
+        $('[data-feedback-sentiment]')
         .attr('disabled', true);
     }
 
     function updateFeedbackSentimentText(feedback) {
       var type = widget.data('item-type');
       var typeText = typesDisplay[type] ? typesDisplay[type] : '';
-
-      if (feedback === 'LIKE') {
-        $('[data-item-feedback-text]').text('I like this ' + typeText);
-      } else {
-        $('[data-item-feedback-text]').text('I do not like this ' + typeText);
-      }
+      $('[data-item-feedback-text]').text(`I ${feedback === 'LIKE'?'':' do not' } like this ${typeText}`);
     }
 
     function updateSentimentIcons(sentiment) {
@@ -115,11 +114,10 @@
         .find('[data-feedback-comment]')
         .val();
       sendFeedback(window._feedback);
-      disableFormSubmit();
+      disableButtons();
 
       setTimeout(function () {
         hideFeedbackForm();
-        enableFormSubmit();
         $('[data-feedback-comment]').val('');
       }, 1500);
     });
