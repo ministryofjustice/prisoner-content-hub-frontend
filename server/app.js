@@ -270,7 +270,7 @@ const createApp = services => {
       logger.warn(`Failed to find: ${error.message}`);
       logger.debug(error.stack);
       res.status(404);
-      return res.render('pages/404');
+      return res.render('pages/404', { title: 'Page not found' });
     }
 
     logger.error(`Unhandled error - ${req.originalUrl} - ${error.message}`);
@@ -278,7 +278,7 @@ const createApp = services => {
     res.status(500);
 
     const locals = config.features.showStackTraces ? { error } : {};
-    return res.render('pages/error', locals);
+    return res.render('pages/error', { ...locals, title: 'Error' });
   }
 
   return app;
