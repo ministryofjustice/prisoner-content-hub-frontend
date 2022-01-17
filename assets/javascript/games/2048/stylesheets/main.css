@@ -6710,7 +6710,7 @@ hr {
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(243, 242, 241, 0.5);
+  background: rgba(243, 242, 241, 0.85);
   z-index: 100;
   text-align: center;
   -webkit-animation: fade-in 800ms ease 1200ms;
@@ -6732,7 +6732,7 @@ hr {
 }
 .game-container .game-message.game-won {
   background: rgba(237, 194, 46, 0.5);
-  color: #f9f6f2;
+  color: #0b0c0c;
 }
 .game-container .game-message.game-won a.keep-playing-button {
   display: inline-block;
@@ -6901,23 +6901,23 @@ hr {
   box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0), inset 0 0 0 1px rgba(255, 255, 255, 0);
 }
 .tile-2048.tile-2048-8 .tile-2048-inner {
-  color: #f9f6f2;
+  color: #0b0c0c;
   background: #f5b783;
 }
 .tile-2048.tile-2048-16 .tile-2048-inner {
-  color: #f9f6f2;
+  color: #0b0c0c;
   background: #f79a6c;
 }
 .tile-2048.tile-2048-32 .tile-2048-inner {
-  color: #f9f6f2;
+  color: #0b0c0c;
   background: #f98065;
 }
 .tile-2048.tile-2048-64 .tile-2048-inner {
-  color: #f9f6f2;
+  color: #0b0c0c;
   background: #f86241;
 }
 .tile-2048.tile-2048-128 .tile-2048-inner {
-  color: #f9f6f2;
+  color: #0b0c0c;
   background: #efd57c;
   box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.2380952381), inset 0 0 0 1px rgba(255, 255, 255, 0.1428571429);
   font-size: 45px;
@@ -6928,7 +6928,7 @@ hr {
   }
 }
 .tile-2048.tile-2048-256 .tile-2048-inner {
-  color: #f9f6f2;
+  color: #0b0c0c;
   background: #efd069;
   box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.3174603175), inset 0 0 0 1px rgba(255, 255, 255, 0.1904761905);
   font-size: 45px;
@@ -6939,7 +6939,7 @@ hr {
   }
 }
 .tile-2048.tile-2048-512 .tile-2048-inner {
-  color: #f9f6f2;
+  color: #0b0c0c;
   background: #eecc55;
   box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.3968253968), inset 0 0 0 1px rgba(255, 255, 255, 0.2380952381);
   font-size: 45px;
@@ -6950,7 +6950,7 @@ hr {
   }
 }
 .tile-2048.tile-2048-1024 .tile-2048-inner {
-  color: #f9f6f2;
+  color: #0b0c0c;
   background: #eec742;
   box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.4761904762), inset 0 0 0 1px rgba(255, 255, 255, 0.2857142857);
   font-size: 35px;
@@ -6961,7 +6961,7 @@ hr {
   }
 }
 .tile-2048.tile-2048-2048 .tile-2048-inner {
-  color: #f9f6f2;
+  color: #0b0c0c;
   background: #edc22e;
   box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.5555555556), inset 0 0 0 1px rgba(255, 255, 255, 0.3333333333);
   font-size: 35px;
@@ -6972,7 +6972,7 @@ hr {
   }
 }
 .tile-2048.tile-2048-super .tile-2048-inner {
-  color: #f9f6f2;
+  color: #0b0c0c;
   background: #3c3a33;
   font-size: 30px;
 }
@@ -7149,7 +7149,7 @@ hr {
     right: 0;
     bottom: 0;
     left: 0;
-    background: rgba(243, 242, 241, 0.5);
+    background: rgba(243, 242, 241, 0.85);
     z-index: 100;
     text-align: center;
     -webkit-animation: fade-in 800ms ease 1200ms;
@@ -7171,7 +7171,7 @@ hr {
   }
   .game-container .game-message.game-won {
     background: rgba(237, 194, 46, 0.5);
-    color: #f9f6f2;
+    color: #0b0c0c;
   }
   .game-container .game-message.game-won a.keep-playing-button {
     display: inline-block;

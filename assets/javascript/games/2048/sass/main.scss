@@ -9,7 +9,7 @@ $tile-2048-size: ($field-width - $grid-2048-spacing * ($grid-2048-row-cells + 1)
 $mobile-threshold: $field-width + 20px;
 
 $text-color: #776E65;
-$bright-text-color: #f9f6f2;
+$bright-text-color: $govuk-text-colour;
 
 $tile-2048-color: govuk-colour("light-grey");
 $tile-2048-gold-color: #edc22e;
@@ -145,7 +145,7 @@ hr {
       right: 0;
       bottom: 0;
       left: 0;
-      background: rgba($tile-2048-color, .5);
+      background: rgba($tile-2048-color, .85);
       z-index: 100;
 
       text-align: center;
