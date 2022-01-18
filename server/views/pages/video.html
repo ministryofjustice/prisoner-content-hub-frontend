@@ -78,16 +78,18 @@
         <source src="{{ data.media }}" type="video/mp4"/>
       </video>
         {% if not data.excludeFeedback %}
-          {{ hubFeedbackWidget({
-            contentId: data.id,
-            title: data.title,
-            heading: '',
-            contentType: data.contentType,
-            series: data.seriesName,
-            feedbackId: feedbackId,
-            categories: data.categories,
-            secondaryTags: data.secondaryTags | join(',', 'id')
-          })}}
+          <div class="govuk-hub-on-black-feedback">
+            {{ hubFeedbackWidget({
+              contentId: data.id,
+              title: data.title,
+              heading: '',
+              contentType: data.contentType,
+              series: data.seriesName,
+              feedbackId: feedbackId,
+              categories: data.categories,
+              secondaryTags: data.secondaryTags | join(',', 'id')
+            })}}
+          </div>
         {% endif %}
     </div>
 

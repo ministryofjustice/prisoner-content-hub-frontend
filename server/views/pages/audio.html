@@ -80,16 +80,18 @@
       <source src="{{ data.media }}" type="audio/mp3"/>
     </audio>
       {% if not data.excludeFeedback %}
-        {{ hubFeedbackWidget({
-          heading: '',
-          contentId: data.id,
-          title: data.title,
-          contentType: data.contentType,
-          series: data.seriesName,
-          feedbackId: feedbackId,
-          categories: data.categories,
-          secondaryTags: data.secondaryTags | join(',', 'id')
-        }) }}
+        <div class="govuk-hub-on-black-feedback">
+          {{ hubFeedbackWidget({
+            heading: '',
+            contentId: data.id,
+            title: data.title,
+            contentType: data.contentType,
+            series: data.seriesName,
+            feedbackId: feedbackId,
+            categories: data.categories,
+            secondaryTags: data.secondaryTags | join(',', 'id')
+          }) }}
+        </div>
       {% endif %}
     <div class="govuk-hub-media-player__description">
       <div id="body" class="govuk-body">{{ data.description | safe }}</div>
