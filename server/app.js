@@ -86,6 +86,7 @@ const createApp = services => {
   app.use(
     helmet({
       contentSecurityPolicy: false,
+      crossOriginEmbedderPolicy: false,
       referrerPolicy: { policy: ['no-referrer', 'same-origin'] },
     }),
   );
