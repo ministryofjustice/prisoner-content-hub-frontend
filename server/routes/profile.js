@@ -52,14 +52,12 @@ const createProfileRouter = ({ offenderService }) => {
         morning,
         afternoon,
         evening,
-        link: '/timetable',
       },
 
       incentivesSummary: {
         error: incentivesError,
         incentivesLevel,
         reviewDate,
-        link: '/tags/874',
       },
       visitsSummary: {
         error: visitsError || visitsRemainingError,
@@ -69,8 +67,6 @@ const createProfileRouter = ({ offenderService }) => {
         visitors,
         startTime,
         endTime,
-        link: '/tags/873',
-        visitorsLink: '/approved-visitors',
         visitsRemaining,
       },
       moneySummary: {
@@ -78,8 +74,6 @@ const createProfileRouter = ({ offenderService }) => {
         spends,
         privateAccount,
         savings,
-        contentLink: '/tags/872',
-        transactionsLink: '/money/transactions',
       },
     };
   };

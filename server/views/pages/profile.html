@@ -94,7 +94,7 @@
                 {%- endcall %}
               </li>
               <li class="govuk-grid-column-one-quarter card-group__item">
-                {{imageCard({ id: 'timetableLink', src: "/public/images/image_timetable.jpg", alt: "timetable picture", link: eventsSummary.link, description: "View your full timetable" }) }}
+                {{imageCard({ id: 'timetableLink', src: "/public/images/image_timetable.jpg", alt: "timetable picture", link: knownPages.profile.timetable, description: "View your full timetable" }) }}
               </li>
           </ul>
         {% endif %}
@@ -119,7 +119,7 @@
               {%- endcall %}
             </li>
             <li class="govuk-grid-column-one-quarter card-group__item">
-            {{imageCard({ id: 'incentivesLink', src: "/public/images/image_incentive_level.jpg", alt: "incentives picture", link: incentivesSummary.link, description: "Read more about incentive levels" }) }}
+            {{imageCard({ id: 'incentivesLink', src: "/public/images/image_incentive_level.jpg", alt: "incentives picture", link: knownPages.profile.incentivesInfo, description: "Read more about incentive levels" }) }}
             </li>
         </ul>
       {% endif %}
@@ -159,10 +159,10 @@
               {%- endcall %}
             </li>
             <li class="govuk-grid-column-one-quarter card-group__item">
-            {{imageCard({ id: 'moneyLink', src: "/public/images/image_transactions.jpg", alt: "money picture", link: moneySummary.transactionsLink, description: "View your transactions" }) }}
+            {{imageCard({ id: 'moneyLink', src: "/public/images/image_transactions.jpg", alt: "money picture", link: knownPages.profile.transactions, description: "View your transactions" }) }}
             </li>
         </ul>
-        <a href= '{{moneySummary.contentLink}}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">
+        <a href= '{{ knownPages.profile.moneyAndDebtInfo }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">
           <span>Read more about money and debt</span>
         </a>
       {% endif %}
@@ -217,10 +217,10 @@
               </li>
             {%- endif %}
             {# <li class="govuk-grid-column-one-quarter card-group__item">
-              {{imageCard({ id: 'approvedVisitors', src: "/public/images/image_visitors.jpg", alt: "visitor picture", link: visitsSummary.visitorsLink, description: "View your full list of approved visitors" }) }}
+              {{imageCard({ id: 'approvedVisitors', src: "/public/images/image_visitors.jpg", alt: "visitor picture", link: knownPages.profile.visitors, description: "View your full list of approved visitors" }) }}
             </li> #}
             <li class="govuk-grid-column-one-quarter card-group__item">
-              {{imageCard({ id: 'visitsLink', src: "/public/images/image_visits.jpg", alt: "visits picture", link: visitsSummary.link, description: "Read more about visits" }) }}
+              {{imageCard({ id: 'visitsLink', src: "/public/images/image_visits.jpg", alt: "visits picture", link: knownPages.profile.visitorInfo, description: "Read more about visits" }) }}
             </li>
         </ul>
       {% endif %}
