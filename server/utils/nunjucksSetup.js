@@ -2,6 +2,8 @@ const nunjucks = require('nunjucks');
 const path = require('path');
 const { URLSearchParams } = require('url');
 
+const knownPages = require('../content/knownPages.json');
+
 module.exports = expressApp => {
   const appViews = [
     path.join(__dirname, '../../node_modules/govuk-frontend/'),
@@ -14,6 +16,7 @@ module.exports = expressApp => {
     autoescape: true,
   });
 
+  nunjucksEnv.addGlobal('knownPages', knownPages);
   nunjucksEnv.addFilter('skip', (array, count) => array.slice(count));
 
   nunjucksEnv.addFilter(
