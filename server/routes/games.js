@@ -9,6 +9,15 @@ const createGamesRouter = () => {
     postscript: false,
   };
 
+  router.get('/2048', (req, res) => {
+    config.detailsType = 'small';
+
+    return res.render('pages/games/2048', {
+      title: '2048',
+      config,
+    });
+  });
+
   router.get('/chess', (req, res) => {
     config.detailsType = 'small';
 

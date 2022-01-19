@@ -1,0 +1,424 @@
+@import '../../../../../node_modules/govuk-frontend/govuk/all.scss';
+@import "helpers";
+
+$field-width: 500px;
+$grid-2048-spacing: 15px;
+$grid-2048-row-cells: 4;
+$tile-2048-size: ($field-width - $grid-2048-spacing * ($grid-2048-row-cells + 1)) / $grid-2048-row-cells;
+
+$mobile-threshold: $field-width + 20px;
+
+$text-color: #776E65;
+$bright-text-color: $govuk-text-colour;
+
+$tile-2048-color: govuk-colour("light-grey");
+$tile-2048-gold-color: #edc22e;
+$tile-2048-gold-glow-color: lighten($tile-2048-gold-color, 15%);
+
+$game-container-margin-top: 40px;
+$game-container-background: #bbada0;
+
+$transition-speed: 100ms;
+
+@keyframes move-up {
+  0% {
+    top: 25px;
+    opacity: 1;
+  }
+
+  100% {
+    top: -50px;
+    opacity: 0;
+  }
+}
+
+.score-container, .best-container {
+
+  @extend .govuk-heading-l;
+  $height: 25px;
+
+  position: relative;
+  display: inline-block;
+  background: $govuk-brand-colour;
+  padding: govuk-spacing(5) govuk-spacing(5) govuk-spacing(1) govuk-spacing(5);
+  color: white;
+  text-align: center;
+
+  &:after {
+    @extend .govuk-heading-s;
+    position: absolute;
+    width: 100%;
+    top: govuk-spacing(1);
+    left: 0;
+    text-transform: uppercase;
+    text-align: center;
+    color: white;
+  }
+
+  .score-addition {
+    position: absolute;
+    right: 30px;
+    color: red;
+    font-size: $height;
+    line-height: $height;
+    font-weight: bold;
+    color: rgba($text-color, .9);
+    z-index: 100;
+    @include animation(move-up 600ms ease-in);
+    @include animation-fill-mode(both);
+  }
+}
+
+.score-container:after {
+  content: "Score";
+}
+
+.best-container:after {
+  content: "Best";
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  line-height: 1.65;
+}
+
+strong {
+  &.important {
+    text-transform: uppercase;
+  }
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid lighten($text-color, 40%);
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.container {
+  width: $field-width;
+  margin: 0 auto;
+}
+
+@include keyframes(fade-in) {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+// Game field mixin used to render CSS at different width
+@mixin game-field {
+  .game-container {
+    position: relative;
+    padding: $grid-2048-spacing;
+
+    cursor: default;
+    -webkit-touch-callout: none;
+    -ms-touch-callout: none;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+
+    -ms-touch-action: none;
+    touch-action: none;
+
+    background: $govuk-brand-colour;
+    width: $field-width;
+    height: $field-width;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    .game-message {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba($tile-2048-color, .85);
+      z-index: 100;
+
+      text-align: center;
+
+      p {
+        @extend .govuk-body;
+        font-size: 60px;
+        font-weight: bold;
+      }
+
+      .lower {
+        display: block;
+      }
+
+      .keep-playing-button {
+        display: none;
+      }
+
+      @include animation(fade-in 800ms ease $transition-speed * 12);
+      @include animation-fill-mode(both);
+
+      &.game-won {
+        background: rgba($tile-2048-gold-color, .5);
+        color: $bright-text-color;
+
+	a.keep-playing-button {
+	  display: inline-block;
+	}
+      }
+
+      &.game-won, &.game-over {
+        display: flex;
+      }
+    }
+  }
+
+  .grid-2048-container {
+    position: absolute;
+    z-index: 1;
+  }
+
+  .grid-2048-row {
+    margin-bottom: $grid-2048-spacing;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+  }
+
+  .grid-2048-cell {
+    width: $tile-2048-size;
+    height: $tile-2048-size;
+    margin-right: $grid-2048-spacing;
+    float: left;
+
+    background: rgba($tile-2048-color, .35);
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .tile-2048-container {
+    position: absolute;
+    z-index: 2;
+  }
+
+  .tile-2048 {
+    &, .tile-2048-inner {
+      width: ceil($tile-2048-size);
+      height: ceil($tile-2048-size);
+      line-height: ceil($tile-2048-size);
+    }
+
+    // Build position classes
+    @for $x from 1 through $grid-2048-row-cells {
+      @for $y from 1 through $grid-2048-row-cells {
+        &.tile-2048-position-#{$x}-#{$y} {
+          $xPos: floor(($tile-2048-size + $grid-2048-spacing) * ($x - 1));
+          $yPos: floor(($tile-2048-size + $grid-2048-spacing) * ($y - 1));
+          @include transform(translate($xPos, $yPos));
+        }
+      }
+    }
+  }
+}
+
+// End of game-field mixin
+@include game-field;
+
+.tile-2048 {
+  position: absolute; // Makes transforms relative to the top-left corner
+
+  .tile-2048-inner {
+    @extend .govuk-heading-l;
+
+    background: $tile-2048-color;
+    text-align: center;
+    font-weight: bold;
+    z-index: 10;
+
+    font-size: 55px;
+  }
+
+  // Movement transition
+  @include transition($transition-speed ease-in-out);
+  -webkit-transition-property: -webkit-transform;
+  -moz-transition-property: -moz-transform;
+  transition-property: transform;
+
+  $base: 2;
+  $exponent: 1;
+  $limit: 11;
+
+  // Colors for all 11 states, false = no special color
+  $special-colors: false false, // 2
+                   false false, // 4
+                   #f78e48 true, // 8
+                   #fc5e2e true, // 16
+                   #ff3333 true, // 32
+                   #ff0000 true, // 64
+                   false true, // 128
+                   false true, // 256
+                   false true, // 512
+                   false true, // 1024
+                   false true; // 2048
+
+  // Build tile colors
+  @while $exponent <= $limit {
+    $power: pow($base, $exponent);
+
+    &.tile-2048-#{$power} .tile-2048-inner {
+      // Calculate base background color
+      $gold-percent: ($exponent - 1) / ($limit - 1) * 100;
+      $mixed-background: mix($tile-2048-gold-color, $tile-2048-color, $gold-percent);
+
+      $nth-color: nth($special-colors, $exponent);
+
+      $special-background: nth($nth-color, 1);
+      $bright-color: nth($nth-color, 2);
+
+      @if $special-background {
+        $mixed-background: mix($special-background, $mixed-background, 55%);
+      }
+
+      @if $bright-color {
+        color: $bright-text-color;
+      }
+
+      // Set background
+      background: $mixed-background;
+
+      // Add glow
+      $glow-opacity: max($exponent - 4, 0) / ($limit - 4);
+
+      @if not $special-background {
+        box-shadow: 0 0 30px 10px rgba($tile-2048-gold-glow-color, $glow-opacity / 1.8),
+                    inset 0 0 0 1px rgba(white, $glow-opacity / 3);
+      }
+
+      // Adjust font size for bigger numbers
+      @if $power >= 100 and $power < 1000 {
+        font-size: 45px;
+
+        // Media queries placed here to avoid carrying over the rest of the logic
+        @include smaller($mobile-threshold) {
+          font-size: 25px;
+        }
+      } @else if $power >= 1000 {
+        font-size: 35px;
+
+        @include smaller($mobile-threshold) {
+          font-size: 15px;
+        }
+      }
+    }
+
+    $exponent: $exponent + 1;
+  }
+
+  // Super tiles (above 2048)
+  &.tile-2048-super .tile-2048-inner {
+    color: $bright-text-color;
+    background: mix(#333, $tile-2048-gold-color, 95%);
+
+    font-size: 30px;
+
+    @include smaller($mobile-threshold) {
+      font-size: 10px;
+    }
+  }
+}
+
+@include keyframes(appear) {
+  0% {
+    opacity: 0;
+    @include transform(scale(0));
+  }
+
+  100% {
+    opacity: 1;
+    @include transform(scale(1));
+  }
+}
+
+.tile-2048-new .tile-2048-inner {
+  @include animation(appear 200ms ease $transition-speed);
+  @include animation-fill-mode(backwards);
+}
+
+@include keyframes(pop) {
+  0% {
+    @include transform(scale(0));
+  }
+
+  50% {
+    @include transform(scale(1.2));
+  }
+
+  100% {
+    @include transform(scale(1));
+  }
+}
+
+.tile-2048-merged .tile-2048-inner {
+  z-index: 20;
+  @include animation(pop 200ms ease $transition-speed);
+  @include animation-fill-mode(backwards);
+}
+
+@include smaller($mobile-threshold) {
+  // Redefine variables for smaller screens
+  $field-width: 280px;
+  $grid-2048-spacing: 10px;
+  $grid-2048-row-cells: 4;
+  $tile-2048-size: ($field-width - $grid-2048-spacing * ($grid-2048-row-cells + 1)) / $grid-2048-row-cells;
+  $game-container-margin-top: 17px;
+
+  .container {
+    width: $field-width;
+    margin: 0 auto;
+  }
+
+  .score-container, .best-container {
+    margin-top: 0;
+    padding: 15px 10px;
+    min-width: 40px;
+  }
+
+  // Render the game field at the right width
+  @include game-field;
+
+  // Rest of the font-size adjustments in the tile class
+  .tile .tile-2048-inner {
+    font-size: 35px;
+  }
+
+  .game-message {
+    p {
+      font-size: 30px !important;
+      height: 30px !important;
+      line-height: 30px !important;
+      margin-top: 90px !important;
+    }
+
+    .lower {
+      margin-top: 30px !important;
+    }
+  }
+}
