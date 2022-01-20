@@ -51,7 +51,7 @@ class BasicPageQuery {
       id: item.drupalInternal_Nid,
       title: item.title,
       contentType: 'page',
-      description: item.fieldMojDescription.processed,
+      description: item.fieldMojDescription?.processed,
       standFirst: item.fieldMojStandFirst,
       categories: this.#flattenDrupalInternalTargetId(
         item.fieldMojTopLevelCategories,

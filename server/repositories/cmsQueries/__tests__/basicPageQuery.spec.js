@@ -39,5 +39,33 @@ describe('Basic page query', () => {
         secondaryTags: [{ id: 2345, name: 'carol' }],
       });
     });
+
+    it('handles missing moj description', async () => {
+      const basicPage = {
+        drupalInternal_Nid: 5923,
+        title: 'Novus',
+        type: 'node--node--page',
+        fieldExcludeFeedback: true,
+        fieldMojStandFirst: 'Education',
+        fieldMojTopLevelCategories: [
+          {
+            resourceIdObjMeta: { drupal_internal__target_id: 1234 },
+            name: 'steve',
+          },
+        ],
+        fieldMojSecondaryTags: [{ drupalInternal_Tid: 2345, name: 'carol' }],
+      };
+
+      expect(query.transform(basicPage)).toStrictEqual({
+        id: 5923,
+        title: 'Novus',
+        contentType: 'page',
+        description: undefined,
+        excludeFeedback: true,
+        standFirst: 'Education',
+        categories: [{ id: 1234, name: 'steve' }],
+        secondaryTags: [{ id: 2345, name: 'carol' }],
+      });
+    });
   });
 });
