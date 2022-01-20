@@ -16,28 +16,23 @@ When('I have the following money summary', args => {
   cy.task('stubBalancesFor', balances[0]);
 });
 
-When('I have the following visits', args => {
+When('I have the following visit', args => {
   const rows = horizontalTableToObject(args);
-  const visits = {
-    content: rows.map(
-      ({ startTime, endTime, visitType, visitors: visitorList }) => {
-        const visitors = visitorList.split(',').map(name => {
-          const [firstName, lastName] = name.trim().split(' ');
-          return { firstName, lastName };
-        });
-        return {
-          visitors,
-          visitDetails: {
-            startTime,
-            endTime,
-            visitType,
-          },
-        };
-      },
-    ),
+  const { startTime, endTime, visitType, visitors: visitorList } = rows[0];
+
+  const visitors = visitorList.split(',').map(name => {
+    const [firstName, lastName] = name.trim().split(' ');
+    return { firstName, lastName };
+  });
+
+  const visit = {
+    visitors,
+    startTime,
+    endTime,
+    visitType,
   };
 
-  cy.task('stubVisits', visits);
+  cy.task('stubVisit', visit);
 });
 
 And('I have the the following remaining visits', args => {

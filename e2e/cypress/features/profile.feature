@@ -114,7 +114,7 @@ Feature: Profile
 
   Scenario: I want to view visit information on the profile page
     Given that with an "wayland" content hub url, I go to the "profile" page
-    When I have the following visits
+    When I have the following visit
       | startTime           | endTime             | visitType | visitors                 |
       | 2021-12-12T09:00:00 | 2021-12-12T09:59:00 | SCON      | Bob Visitor, Pam Visitor |
     And I have the the following remaining visits

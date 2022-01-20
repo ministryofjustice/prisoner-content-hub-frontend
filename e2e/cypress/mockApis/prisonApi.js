@@ -35,8 +35,8 @@ const stubBalancesFor = incentives =>
 const stubVisitors = visitors =>
   stub(`/prisonapi/api/bookings/.*?/contacts`, visitors);
 
-const stubVisits = visits =>
-  stub(`/prisonapi/api/bookings/.*?/visits-with-visitors\\?.*?`, visits);
+const stubVisit = visit =>
+  stub(`/prisonapi/api/bookings/.*?/visits/next`, visit);
 
 const stubVisitsRemaining = visitsRemaining =>
   stub(
@@ -50,6 +50,6 @@ module.exports = {
   stubIncentives,
   stubBalancesFor,
   stubVisitors,
-  stubVisits,
+  stubVisit,
   stubVisitsRemaining,
 };
