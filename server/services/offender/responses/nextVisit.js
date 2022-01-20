@@ -11,13 +11,12 @@ const { formatDateOrDefault } = require('../../../utils/date');
 const { fullNameOrDefault } = require('../../../utils/string');
 const visitTypeDisplayText = require('../../../content/visitType.json');
 
-module.exports = (response = []) => {
-  if (!response?.length) {
+module.exports = response => {
+  if (!response) {
     return { hasNextVisit: false };
   }
 
-  const { visitDetails, visitors } = response[0];
-  const { startTime, endTime, visitType } = visitDetails;
+  const { startTime, endTime, visitType, visitors } = response;
 
   return {
     hasNextVisit: startTime != null,
@@ -28,7 +27,7 @@ module.exports = (response = []) => {
       PRETTY_DAY_AND_MONTH,
       startTime,
     ),
-    visitors: visitors.map(({ firstName, lastName }) =>
+    visitors: (visitors || []).map(({ firstName, lastName }) =>
       fullNameOrDefault(DEFAULT, firstName, lastName),
     ),
     visitType: visitTypeDisplayText?.[visitType] || DEFAULT,

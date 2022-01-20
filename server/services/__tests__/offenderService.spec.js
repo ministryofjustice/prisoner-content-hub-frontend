@@ -121,20 +121,14 @@ describe('Offender Service', () => {
   });
 
   describe('getVisitsFor', () => {
-    const TEST_DATE = '1993-02-02';
     const mockNextVisit = jest.fn();
     beforeAll(() => {
-      jest.useFakeTimers('modern');
-      jest.setSystemTime(new Date(TEST_DATE));
       mockNextVisit.mockReturnValue(FORMATTED_RESPONSE);
     });
 
-    afterAll(() => {
-      jest.useRealTimers();
-    });
     it('returns formatted Visits data', async () => {
       const repository = {
-        getNextVisitFor: jest.fn().mockResolvedValue({ content: RAW_RESPONSE }),
+        getNextVisitFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
       const service = createPrisonApiOffenderService(repository, {
@@ -143,10 +137,7 @@ describe('Offender Service', () => {
 
       const data = await service.getVisitsFor(TEST_USER);
 
-      expect(repository.getNextVisitFor).toHaveBeenCalledWith(
-        TEST_BOOKING_ID,
-        TEST_DATE,
-      );
+      expect(repository.getNextVisitFor).toHaveBeenCalledWith(TEST_BOOKING_ID);
       expect(mockNextVisit).toHaveBeenCalledWith(RAW_RESPONSE);
       expect(data).toBe(FORMATTED_RESPONSE);
     });
