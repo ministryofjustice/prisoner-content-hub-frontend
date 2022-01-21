@@ -36,7 +36,7 @@ const stubVisitors = visitors =>
   stub(`/prisonapi/api/bookings/.*?/contacts`, visitors);
 
 const stubVisit = visit =>
-  stub(`/prisonapi/api/bookings/.*?/visits/next`, visit);
+  stub(`/prisonapi/api/bookings/.*?/visits/next\\?withVisitors=true`, visit);
 
 const stubVisitsRemaining = visitsRemaining =>
   stub(
