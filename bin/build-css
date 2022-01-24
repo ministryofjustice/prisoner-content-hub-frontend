@@ -3,6 +3,7 @@
 ./node_modules/.bin/sass \
     --no-source-map \
     --quiet-deps \
+    --load-path=. \
     --load-path=node_modules/govuk-frontend \
     --load-path=node_modules/@ministryofjustice/frontend \
         ./assets/sass/style.scss:./assets/stylesheets/application.css \
