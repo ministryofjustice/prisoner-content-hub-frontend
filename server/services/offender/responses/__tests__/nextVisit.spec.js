@@ -15,16 +15,12 @@ describe('NextVisit', () => {
   });
 
   it('should handle visit details', () => {
-    const response = [
-      {
-        visitDetails: {
-          startTime: '2019-12-07T11:30:30',
-          endTime: '2019-12-07T13:00:30',
-          visitType: VISIT_TYPE,
-        },
-        visitors: [],
-      },
-    ];
+    const response = {
+      startTime: '2019-12-07T11:30:30',
+      endTime: '2019-12-07T13:00:30',
+      visitType: VISIT_TYPE,
+      visitors: [],
+    };
 
     const nextVisitData = nextVisit(response);
 
@@ -41,16 +37,12 @@ describe('NextVisit', () => {
   });
 
   it('should format data when passed', () => {
-    const response = [
-      {
-        visitDetails: {
-          startTime: '2019-12-07T11:30:30',
-          endTime: '2019-12-07T12:30:30',
-          visitType: VISIT_TYPE,
-        },
-        visitors: [{ firstName: 'Donald', lastName: 'Mouse' }],
-      },
-    ];
+    const response = {
+      startTime: '2019-12-07T11:30:30',
+      endTime: '2019-12-07T12:30:30',
+      visitType: VISIT_TYPE,
+      visitors: [{ firstName: 'Donald', lastName: 'Mouse' }],
+    };
 
     const nextVisitData = nextVisit(response);
 

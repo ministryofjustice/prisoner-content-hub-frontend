@@ -101,11 +101,8 @@ const createOffenderService = (
   async function getVisitsFor({ prisonerId, bookingId }) {
     try {
       logger.info(`OffenderService (getVisitsFor) - User: ${prisonerId}`);
-
-      const today = new Date();
-      const startDate = format(today, 'yyyy-MM-dd');
-      const response = await repository.getNextVisitFor(bookingId, startDate);
-      return nextVisit(response?.content);
+      const response = await repository.getNextVisitFor(bookingId);
+      return nextVisit(response);
     } catch (e) {
       logger.error(
         `OffenderService (getVisitsFor) - Failed: ${e.message} - User: ${prisonerId}`,
@@ -120,9 +117,8 @@ const createOffenderService = (
   async function getVisitsRemaining({ prisonerId }) {
     try {
       logger.info(`OffenderService (getVisitsRemaining) - User: ${prisonerId}`);
-      const { remainingPvo = 0, remainingVo = 0 } =
-        await repository.getVisitBalances(prisonerId);
-      return { visitsRemaining: remainingPvo + remainingVo };
+      const aaa = await repository.getVisitBalances(prisonerId);
+      return { visitsRemaining: aaa.remainingPvo + aaa.remainingVo };
     } catch (e) {
       if (e?.response?.status === 404) return { visitsRemaining: 0 };
       logger.error(

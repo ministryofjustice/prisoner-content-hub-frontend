@@ -57,11 +57,8 @@ Cypress is used for E2E testing
 
 #### Prerequisites
 
-1.) Wiremock needs to run:  
+Wiremock needs to run:
 `docker-compose -f docker-compose-wiremock.yml up`
-
-2.) The application needs to run in test mode:
-`npm run start:e2e`
 
 #### Running tests
 
@@ -70,6 +67,3 @@ Can either run the tests headlessly:
 
 Or with the cypress user interface:
 `npm run test:e2e:ui`
-
-You can combine starting the application and running the tests by using:
-`npm run test:e2e:run`

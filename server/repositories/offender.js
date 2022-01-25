@@ -1,4 +1,3 @@
-const querystring = require('querystring');
 const config = require('../config');
 
 function validateOffenderNumberFor(offenderNo) {
@@ -32,15 +31,9 @@ function offenderRepository(httpClient) {
     );
   }
 
-  function getNextVisitFor(bookingId, today) {
-    const query = querystring.encode({
-      fromDate: today,
-      size: 1,
-      page: 0,
-      visitStatus: 'SCH',
-    });
+  function getNextVisitFor(bookingId) {
     return httpClient.get(
-      `${baseUrl}/bookings/${bookingId}/visits-with-visitors?${query}`,
+      `${baseUrl}/bookings/${bookingId}/visits/next?withVisitors=true`,
     );
   }
 

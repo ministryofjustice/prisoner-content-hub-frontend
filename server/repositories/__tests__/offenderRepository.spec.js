@@ -96,9 +96,7 @@ describe('offenderRepository', () => {
       const repository = offenderRepository(client);
       const result = await repository.getNextVisitFor('FOO_ID');
 
-      expect(lastCall(client.get)[0]).toContain(
-        'bookings/FOO_ID/visits-with-visitors?fromDate=&size=1&page=0&visitStatus=SCH',
-      );
+      expect(lastCall(client.get)[0]).toContain('bookings/FOO_ID/visits/next');
       expect(result).toBe('SOME_RESULT');
     });
   });
