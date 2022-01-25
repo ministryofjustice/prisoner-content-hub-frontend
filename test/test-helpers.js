@@ -1,5 +1,17 @@
 const express = require('express');
 const nunjucksSetup = require('../server/utils/nunjucksSetup');
+const routes = require('../server/routes');
+const setCurrentUser = require('../server/middleware/setCurrentUser');
+const { User } = require('../server/auth/user');
+
+const testData = {
+  user: new User({
+    prisonerId: 'A1234BC',
+    firstName: 'Test',
+    surname: 'User',
+    bookingId: 1234567,
+  }),
+};
 
 function setupBasicApp(config = {}) {
   const app = express();
@@ -34,16 +46,46 @@ const createClient = () => ({
 
 const lastCall = mockFn => mockFn.mock.calls[mockFn.mock.calls.length - 1];
 
-const lastCallLastArg = mockFn => {
-  const lastCallResult = lastCall(mockFn);
-  return lastCallResult[lastCallResult.length - 1];
+const userSupplier = jest.fn();
+const sessionSupplier = jest.fn();
+
+const setupFullApp = (services = {}, { config } = {}) => {
+  sessionSupplier.mockReturnValue({
+    isSignedIn: true,
+    id: 1234,
+    establishmentName: 'berwyn',
+  });
+
+  const app = express();
+  app.set('view engine', 'html');
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.locals.config = config;
+
+  nunjucksSetup(app);
+
+  app.use((req, res, next) => {
+    req.user = userSupplier();
+    req.session = sessionSupplier() || {};
+    next();
+  });
+  app.use(setCurrentUser);
+  app.use(routes(services));
+  app.use(consoleLogError);
+
+  return app;
 };
 
 module.exports = {
   setupBasicApp,
+  testApp: {
+    setupApp: setupFullApp,
+    userSupplier,
+    sessionSupplier,
+  },
   logger,
   consoleLogError,
   createClient,
   lastCall,
-  lastCallLastArg,
+  testData,
 };

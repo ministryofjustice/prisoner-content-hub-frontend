@@ -1,10 +1,10 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
 
-const { createProfileRouter } = require('../profile');
-const { setupBasicApp } = require('../../../test/test-helpers');
-const { User } = require('../../auth/user');
-const setCurrentUser = require('../../middleware/setCurrentUser');
+const {
+  testApp: { setupApp, userSupplier, sessionSupplier },
+  testData: { user },
+} = require('../../../test/test-helpers');
 
 describe('GET /profile', () => {
   const offenderService = {
@@ -15,43 +15,14 @@ describe('GET /profile', () => {
     getBalancesFor: jest.fn().mockResolvedValue({}),
   };
 
-  const testUser = new User({
-    prisonerId: 'A1234BC',
-    firstName: 'Test',
-    surname: 'User',
-    bookingId: 1234567,
-  });
-
-  const userSupplier = jest.fn();
-  const establishmentSupplier = jest.fn();
-  const sessionSupplier = jest.fn();
-
   let app;
 
-  const setMockUser = (req, res, next) => {
-    req.user = userSupplier();
-    req.session = sessionSupplier();
-    res.locals = establishmentSupplier();
-    next();
-  };
-
   beforeEach(() => {
-    const router = createProfileRouter({ offenderService });
-    app = setupBasicApp();
-    app.use(setMockUser);
-    app.use(setCurrentUser);
-    app.use('/profile', router);
-    userSupplier.mockReturnValue(testUser);
-    sessionSupplier.mockReturnValue({ isSignedIn: true });
-    establishmentSupplier.mockReturnValue({
-      establishmentName: 'wayland',
-      isSignedIn: true,
-      userName: 'bob',
-    });
+    app = setupApp({ offenderService });
+    userSupplier.mockReturnValue(user);
   });
 
   it('prompts the user to sign in when they are signed out', () => {
-    userSupplier.mockReturnValue(undefined);
     sessionSupplier.mockReturnValue({ isSignedIn: false });
     return request(app)
       .get('/profile')
@@ -281,20 +252,6 @@ describe('GET /profile', () => {
   });
 
   describe('Retrieve visits information', () => {
-    it('visits are present for other establishments', () => {
-      establishmentSupplier.mockReturnValue({
-        establishmentName: 'anything else',
-      });
-      return request(app)
-        .get('/profile')
-        .expect(200)
-        .expect('Content-Type', /text\/html/)
-        .then(response => {
-          const $ = cheerio.load(response.text);
-          expect($('[data-test="visits-container"]').length).toBe(1);
-        });
-    });
-
     it('notifies the user when retrieving visits fails', () => {
       offenderService.getVisitsFor.mockResolvedValue({
         error: true,
@@ -415,6 +372,7 @@ describe('GET /profile', () => {
             '/approved-visitors',
           );
         }));
+
     it('displays the visit link', () =>
       request(app)
         .get('/profile')
