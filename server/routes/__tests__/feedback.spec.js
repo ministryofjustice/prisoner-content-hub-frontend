@@ -1,9 +1,22 @@
 const request = require('supertest');
-const { createFeedbackRouter } = require('../feedback');
 const {
-  setupBasicApp,
-  consoleLogError,
+  testApp: { setupApp, userSupplier },
+  testData: { user },
 } = require('../../../test/test-helpers');
+const { logger } = require('../../utils/logger');
+
+jest.mock('../../utils/logger');
+
+const feedback = {
+  title: 'Sports',
+  url: 'http://bbc.com/sports',
+  contentType: 'audio',
+  series: 'Football highlight',
+  categories: 'Ball sports',
+  secondaryTags: 'Fitness',
+  sentiment: 'Like',
+  comment: 'Cracking stuff!',
+};
 
 describe('POST /feedback', () => {
   const feedbackService = { sendFeedback: jest.fn() };
@@ -12,20 +25,10 @@ describe('POST /feedback', () => {
 
     beforeEach(() => {
       jest.resetAllMocks();
-      app = setupBasicApp();
-      app.use((req, res, next) => {
-        req.session = {
-          id: 1234,
-          establishmentId: 123,
-          establishmentName: 'berwyn',
-        };
-        next();
-      });
-      app.use('/feedback', createFeedbackRouter({ feedbackService }));
-      app.use(consoleLogError);
+      app = setupApp({ feedbackService });
     });
 
-    it('returns no response', () =>
+    it('handles no feedback', () =>
       request(app)
         .post('/feedback/1234-5678')
         .send({})
@@ -34,39 +37,65 @@ describe('POST /feedback', () => {
           expect(response.text).toBe('');
         }));
 
-    it('sends feedback', () => {
-      const body = {
-        title: 'Sports',
-        url: 'http://bbc.com/sports',
-        contentType: 'audio',
-        series: 'Football highlight',
-        categories: 'Ball sports',
-        secondaryTags: 'Fitness',
-        sentiment: 'Like',
-        comment: 'Cracking stuff!',
-      };
-
-      return request(app)
+    it('returns no response', () =>
+      request(app)
         .post('/feedback/1234-5678')
-        .send(body)
+        .send(feedback)
+        .expect(200)
+        .then(response => {
+          expect(response.text).toBe('');
+        }));
+
+    it('sends feedback', () =>
+      request(app)
+        .post('/feedback/1234-5678')
+        .send(feedback)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
         .expect(200)
         .then(() => {
           expect(feedbackService.sendFeedback).toHaveBeenCalledWith({
-            title: body.title,
-            url: body.url,
+            title: feedback.title,
+            url: feedback.url,
             sessionId: 1234,
             establishment: 'BERWYN',
             feedbackId: '1234-5678',
-            categories: body.categories,
-            comment: body.comment,
-            contentType: body.contentType,
+            categories: feedback.categories,
+            comment: feedback.comment,
+            contentType: feedback.contentType,
             date: expect.anything(),
-            secondaryTags: body.secondaryTags,
-            sentiment: body.sentiment,
-            series: body.series,
+            secondaryTags: feedback.secondaryTags,
+            sentiment: feedback.sentiment,
+            series: feedback.series,
           });
+        }));
+
+    it('logs anon user', () =>
+      request(app)
+        .post('/feedback/1234-5678')
+        .send(feedback)
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json')
+        .expect(200)
+        .then(() => {
+          expect(logger.info).toHaveBeenCalledWith(
+            "Prisoner 'anon' leaving feedback: 1234-5678",
+          );
+        }));
+
+    it('logs real user', () => {
+      userSupplier.mockReturnValue(user);
+
+      return request(app)
+        .post('/feedback/1234-5678')
+        .send(feedback)
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json')
+        .expect(200)
+        .then(() => {
+          expect(logger.info).toHaveBeenCalledWith(
+            "Prisoner 'A1234BC' leaving feedback: 1234-5678",
+          );
         });
     });
   });
