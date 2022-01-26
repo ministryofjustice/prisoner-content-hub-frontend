@@ -1,0 +1,217 @@
+{% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../components/page-navigation/macro.njk" import pageNavigation %}
+{% from "../../components/user-details/macro.njk" import userDetails %}
+{% extends "../../components/template.njk" %}
+
+
+{% block pageTitle %}
+  {{ title }}
+{% endblock %}
+
+{% block head %}
+	<link rel="stylesheet" href="/public/javascript/games/anagramica/public/stylesheets/style.css" rel="stylesheet" type="text/css"/>
+  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block pageNavigation %}
+  {{ pageNavigation({ title: title }) }}
+{% endblock %}
+
+{% block topBar %}
+  {{ topBar({
+    establishmentDisplayName: establishmentDisplayName,
+    showBar: false,
+    isSignedIn: isSignedIn,
+    returnUrl: config.returnUrl
+  }) }}
+{% endblock %}
+
+{% block userDetails %}
+  {{ userDetails({
+    detailsType: config.detailsType,
+    isSignedIn: isSignedIn,
+    userName: userName
+  }) }}
+{% endblock %}
+
+{% block header %}{% endblock %}
+{% block homeNavigation %}{% endblock %}
+{% block search %}{% endblock %}
+{% block main %}
+  <div class="govuk-width-container">
+    <div class="govuk-main-wrapper">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 id="title" class="govuk-heading-xl govuk-!-margin-bottom-4 govuk-!-margin-top-3">{{title}}</h1>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-quarters">
+          <div id="game">
+            <div class="letters">
+              <div class="letter">&nbsp;</div>
+              <div class="letter">&nbsp;</div>
+              <div class="letter">&nbsp;</div>
+              <div class="letter">&nbsp;</div>
+              <div class="letter">&nbsp;</div>
+              <div class="letter">&nbsp;</div>
+              <div class="letter">&nbsp;</div>
+              <div class="letter">&nbsp;</div>
+              <div class="letter">&nbsp;</div>
+              <div class="letter">&nbsp;</div>
+            </div>
+            <div id="choose" class="govuk-!-margin-top-6 initiallyHidden">
+              {{ govukButton({
+                text: "Consonant",
+                classes: "govuk-button--secondary consonant"
+              }) }}
+              {{ govukButton({
+                text: "Vowel",
+                classes: "govuk-button--secondary vowel"
+              }) }}
+            </div>
+            <div class="scratch center initiallyHidden">
+              <div class="timer">
+                <div class="elapsed"></div>
+              </div>
+              <ul class="answers">
+                <li class="answer">
+                  <input class="govuk-input govuk-!-width-one-quarter" id="one-quarter" name="one-quarter" type="text" size="10" maxlength="10">
+                </li>
+              </ul>
+            </div>
+            <div id="words" class="govuk-!-margin-top-6 govuk-!-margin-bottom-6"></div>
+            {{ govukButton({
+              classes: "newGame",
+              text: "Start a new game!",
+              isStartButton: true
+            }) }}
+            <div id="options">
+              <div id="gametype">
+                {{ govukRadios({
+                  classes: "govuk-radios--small govuk-radios--inline",
+                  idPrefix: "anagramicaGameType",
+                  name: "anagramicaGameType",
+                  fieldset: {
+                    legend: {
+                      text: "Game type",
+                      isPageHeading: true,
+                      classes: "govuk-fieldset__legend--m"
+                    }
+                  },
+                  items: [
+                    {
+                      value: "0",
+                      text: "manual"
+                    },
+                    {
+                      value: "1",
+                      checked: true,
+                      text: "automatic"
+                    }
+                  ]
+                }) }}
+              </div>
+              <div id="timelimit">
+                {{ govukRadios({
+                  classes: "govuk-radios--small govuk-radios--inline",
+                  idPrefix: "anagramicaTimeLimit",
+                  name: "anagramicaTimeLimit",
+                  fieldset: {
+                    legend: {
+                      text: "Time limit",
+                      isPageHeading: true,
+                      classes: "govuk-fieldset__legend--m"
+                    }
+                  },
+                  items: [
+                    {
+                      value: "15",
+                      text: "15s"
+                    },
+                    {
+                      value: "30",
+                      text: "30s"
+                    },
+                    {
+                      value: "45",
+                      checked: true,
+                      text: "45s"
+                    },
+                    {
+                      value: "60",
+                      text: "60s"
+                    },
+                    {
+                      value: "90",
+                      text: "90s"
+                    }
+                  ]
+                }) }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="govuk-grid-column-one-quarter">
+          <div class="scores-container">
+            <div class="score-container">0</div>
+            <div class="best-container">0</div>
+          </div>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <div id="instructions" class="govuk-body govuk-!-padding-top-6">
+            <h2 class="govuk-heading-m">Anagramica: The game of letters.</h2>
+            <h3 class="govuk-heading-s">Instructions</h3>
+            <p>  
+              Find as many words as you can within the time limit!				
+            </p>
+            <p>
+              Choose ten letters, consonants or vowels.
+            </p>
+            <p>
+              Enter a word using only the letters on the board.
+              <br>
+              Press Enter or Tab when you finish a word.
+              <br>
+              Enter as many words as you can.
+            </p>
+            <h3 class="govuk-heading-s">Scoring</h3>
+            <p>
+              For correct words, you get 1 or more points per letter: 
+              <br>				
+              n,r,s,t,a,e,i,o = 1 | b,c,d,g,l,m,p,m,u = 2 | f,k,v,w,y = 3 | j,z = 4 | q,x = 5
+              <br>
+              For incorrect words, you lose the inverse.
+              <br>
+              For correct words as long as possible, you get double points!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="govuk-hub-article-feedback govuk-!-margin-bottom-9">
+      {{ hubFeedbackWidget({
+        title: title,
+        heading: 'Tell us what you think:',
+        contentType: "game",
+        feedbackId: feedbackId
+      })}}
+    </div>
+  </div>
+
+{% endblock %}
+{% block bodyEnd %}
+  <script type="text/javascript" src="/public/javascript/games/anagramica/public/javascripts/anagramica.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){		
+			anagramica.game.init();
+			anagramica.ui.init();
+			anagramica.ui.messageLetters("ANAGRAMICA",anagramica.ui.ready);
+		});
+	</script>
+{% endblock %}
