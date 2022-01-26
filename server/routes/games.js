@@ -1,4 +1,5 @@
 const express = require('express');
+const { createAnagramicaRouter } = require('./createAnagramicaRouter');
 
 const createGamesRouter = () => {
   const router = express.Router();
@@ -17,6 +18,8 @@ const createGamesRouter = () => {
       config,
     });
   });
+
+  router.use('/anagramica', createAnagramicaRouter(config));
 
   router.get('/chess', (req, res) => {
     config.detailsType = 'small';
