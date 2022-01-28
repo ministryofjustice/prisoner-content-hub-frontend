@@ -18,6 +18,15 @@ const createGamesRouter = () => {
     });
   });
 
+  router.get('/fadingsnake', (req, res) => {
+    config.detailsType = 'small';
+
+    return res.render('pages/games/fadingsnake', {
+      title: 'Fading Snake',
+      config,
+    });
+  });
+
   router.get('/chess', (req, res) => {
     config.detailsType = 'small';
 

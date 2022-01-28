@@ -1,0 +1,76 @@
+{% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../components/page-navigation/macro.njk" import pageNavigation %}
+{% from "../../components/user-details/macro.njk" import userDetails %}
+{% extends "../../components/template.njk" %}
+
+{% block pageTitle %}
+  {{ title }}
+{% endblock %}
+
+{% block head %}
+  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
+  <link href="/public/javascript/games/fadingsnake/main.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block pageNavigation %}
+  {{ pageNavigation({ title: title }) }}
+{% endblock %}
+
+{% block topBar %}
+  {{ topBar({
+    establishmentDisplayName: establishmentDisplayName,
+    showBar: false
+  }) }}
+{% endblock %}
+
+{% block userDetails %}{% endblock %}
+
+{% block header %}{% endblock %}
+{% block homeNavigation %}{% endblock %}
+{% block search %}{% endblock %}
+
+{% block main %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 id="title" class="govuk-heading-xl govuk-!-margin-bottom-6 govuk-!-margin-top-6">{{title}}</h1>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-half govuk-body">
+          <div class="container">
+              <div class="govuk-body contrast govuk-!-margin-top-2">100%</div>
+              <div class="govuk-body score">0</div>
+              <div class="govuk-body grid"></div>
+              <div class="govuk-body gameMsg">Press an arrow key or space to start!
+                <p class="govuk-body">Ready for hard mode? Press H</p>
+              </div>
+          </div>
+        </div>
+        <div class="govuk-grid-column-one-half govuk-body">
+          <h2>How to play:</h2>
+          <p>
+            Arrow Keys	= Left, Right, Up, Down
+            <br>E Key   = Easy Mode
+            <br>H Key   = Hard Mode
+            <br>Space / Arrow key = Start Game
+          </p>
+        </div>
+      </div>
+      <div class="govuk-hub-article-feedback">
+        {{ hubFeedbackWidget({
+          heading: 'Tell us what you think:',
+          title: title,
+          contentType: "game",
+          feedbackId: feedbackId
+        })}}
+      </div>
+    </main>
+  </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  <script src="/public/javascript/games/fadingsnake/main.js"></script>
+{% endblock %}
