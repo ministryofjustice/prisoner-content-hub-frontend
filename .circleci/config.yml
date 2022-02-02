@@ -269,11 +269,7 @@ jobs:
         type: string
     steps:
       - checkout
-      - hmpps/k8s_setup:
-          ca-cert: KUBE_CLUSTER_CERT
-          cluster-name: KUBE_CLUSTER_NAME
-          kube-namespace: KUBE_NAMESPACE
-          kube-token: KUBE_TOKEN
+      - hmpps/k8s_setup
       - hmpps/install_helm
       - release_to_namespace:
           environment: "<< parameters.environment >>"
@@ -287,11 +283,7 @@ jobs:
       tag: << pipeline.parameters.node-version >>
     steps:
       - checkout
-      - hmpps/k8s_setup:
-          ca-cert: KUBE_CLUSTER_CERT
-          cluster-name: KUBE_CLUSTER_NAME
-          kube-namespace: KUBE_NAMESPACE
-          kube-token: KUBE_TOKEN
+      - hmpps/k8s_setup
       - hmpps/install_helm
       - run:
           name: Clean up dev deployments
