@@ -15,7 +15,7 @@ ingress:
   hosts:
     - pattern: "{{ .prison }}.content-hub.prisoner.service.justice.gov.uk"
       cert_secret: prisoner-content-hub-frontend-certificate
-    - pattern: "{{ .prison }}-prisoner-content-hub-production.apps.live-1.cloud-platform.service.justice.gov.uk"
+    - pattern: "{{ .prison }}-prisoner-content-hub-production.apps.live.cloud-platform.service.justice.gov.uk"
   host: 
       pattern: "content-hub.prisoner.service.justice.gov.uk"
       cert_secret: prisoner-content-hub-frontend-certificate
