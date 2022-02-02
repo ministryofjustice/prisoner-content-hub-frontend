@@ -27,6 +27,15 @@ const createGamesRouter = () => {
     });
   });
 
+  router.get('/sn4ke', (req, res) => {
+    config.detailsType = 'small';
+
+    return res.render('pages/games/sn4ke', {
+      title: 'Sn4ke',
+      config,
+    });
+  });
+
   router.get('/chess', (req, res) => {
     config.detailsType = 'small';
 

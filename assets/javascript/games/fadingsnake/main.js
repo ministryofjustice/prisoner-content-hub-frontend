@@ -36,7 +36,7 @@ window.addEventListener("DOMContentLoaded", function (event) {
   let fadeSpeed = 5000; // milliseconds it takes the grid to disappear (initially)
   let fadeExponential = 1.024; // after each score it will gradually take more time for the grid to fade
   const contrastIncrease = 0.5; // contrast you gain after each score
-  const color = "black"; // Primary color
+  const color = "white"; // Primary color
 
   // Setup: Build up the grid
   // The grid consists of (width x height) tiles
@@ -85,7 +85,7 @@ window.addEventListener("DOMContentLoaded", function (event) {
 
     // Reset header
     contrastElement.innerText = `${Math.floor(contrast * 100)}%`;
-    scoreElement.innerText = hardMode ? `Hard ${score}` : `Score ${score}`;
+    scoreElement.innerText = hardMode ? `Hard ${score}` : `${score}`;
 
     // Reset tiles
     for (const tile of tiles) setTile(tile);
@@ -230,7 +230,7 @@ window.addEventListener("DOMContentLoaded", function (event) {
         if (headPosition == applePosition) {
           // Increase score
           score++;
-          scoreElement.innerText = hardMode ? `Hard ${score}` : `Score ${score}`;
+          scoreElement.innerText = hardMode ? `Hard ${score}` : `${score}`;
 
           // Generate another apple
           addNewApple();
@@ -293,7 +293,7 @@ window.addEventListener("DOMContentLoaded", function (event) {
     // Clear tile, yet keep it in the array if the snake grows.
     // Whenever the snake steps into a new tile, it will leave the last one.
     // Yet the last tile stays in the array if the snake just grows.
-    // As a sideeffect in case the snake just eats an apple,
+    // As a side effect in case the snake just eats an apple,
     // the tail transitioning will happen on a this "hidden" tile
     // (so the tail appears as stationary).
     const previousTail = tiles[snakePositions[0]];
