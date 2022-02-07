@@ -37,7 +37,7 @@ class SeriesPageQuery {
         'field_moj_thumbnail_image',
         'field_moj_series.field_featured_image',
       ])
-      .addSort('series_sort_value', 'ASC')
+      .addSort('series_sort_value,created', 'ASC')
       .getQueryString();
     this.query = `${queryWithoutOffset}&${getPagination(page)}`;
   }

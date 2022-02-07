@@ -13,6 +13,7 @@ class VideoPageQuery {
       .addFields('node--moj_video_item', [
         'drupal_internal__nid',
         'title',
+        'created',
         'field_video',
         'field_moj_description',
         'field_moj_secondary_tags',
@@ -59,6 +60,7 @@ class VideoPageQuery {
     return {
       id: item.drupalInternal_Nid,
       uuid: item.id,
+      created: item.created,
       title: item.title,
       contentType: 'video',
       description: item.fieldMojDescription?.processed,

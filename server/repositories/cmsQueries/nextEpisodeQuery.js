@@ -11,7 +11,7 @@ class NextEpisodeQuery {
     'field_moj_thumbnail_image',
   ];
 
-  constructor(establishmentName, seriesId, seriesSortValue) {
+  constructor(establishmentName, seriesId, seriesSortValue, createdDate) {
     this.establishmentName = establishmentName;
     this.query = new Query()
 
@@ -23,9 +23,12 @@ class NextEpisodeQuery {
       .addFields('file--file', ['uri', 'image_style_uri'])
 
       .addFilter('field_moj_series.meta.drupal_internal__tid', seriesId)
-      .addFilter('series_sort_value', seriesSortValue, '>')
 
-      .addSort('series_sort_value')
+      .addGroup('next_items', 'OR')
+      .addFilter('series_sort_value', seriesSortValue, '>', 'next_items')
+      .addFilter('created', createdDate, '>', 'next_items')
+
+      .addSort('series_sort_value,created')
 
       .addInclude(['field_moj_thumbnail_image'])
 
