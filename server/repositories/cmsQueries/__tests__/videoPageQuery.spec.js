@@ -5,7 +5,7 @@ describe('Video page query', () => {
   describe('url', () => {
     it('should create correct path', async () => {
       expect(query.url()).toStrictEqual(
-        'https://cms/content/1234?include=field_moj_thumbnail_image%2Cfield_moj_series%2Cfield_video%2Cfield_moj_secondary_tags%2Cfield_moj_top_level_categories&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_video%2Cfield_moj_description%2Cfield_moj_secondary_tags%2Cfield_moj_series%2Cfield_moj_season%2Cfield_moj_episode%2Cfield_moj_top_level_categories%2Cfield_moj_thumbnail_image%2Cseries_sort_value%2Cfield_exclude_feedback&fields%5Bfile--file%5D=uri%2Cimage_style_uri&fields%5Btaxonomy_term--series%5D=drupal_internal__tid%2Cname%2Cpath&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname%2Cpath&fields%5Btaxonomy_term--moj_categories%5D=drupal_internal__tid%2Cname',
+        'https://cms/content/1234?include=field_moj_thumbnail_image%2Cfield_moj_series%2Cfield_video%2Cfield_moj_secondary_tags%2Cfield_moj_top_level_categories&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Ccreated%2Cfield_video%2Cfield_moj_description%2Cfield_moj_secondary_tags%2Cfield_moj_series%2Cfield_moj_season%2Cfield_moj_episode%2Cfield_moj_top_level_categories%2Cfield_moj_thumbnail_image%2Cseries_sort_value%2Cfield_exclude_feedback&fields%5Bfile--file%5D=uri%2Cimage_style_uri&fields%5Btaxonomy_term--series%5D=drupal_internal__tid%2Cname%2Cpath&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname%2Cpath&fields%5Btaxonomy_term--moj_categories%5D=drupal_internal__tid%2Cname',
       );
     });
   });
@@ -15,6 +15,7 @@ describe('Video page query', () => {
       const videoPage = {
         type: 'node--node--moj_video_item',
         id: '43eb4a97-e6ef-440c-a044-88e9bb982620',
+        created: '2020-01-03T01:02:30',
         drupalInternal_Nid: 6236,
         title: 'Buddhist reflection: 29 July',
         fieldMojDescription: { processed: 'Education content for prisoners' },
@@ -98,6 +99,7 @@ describe('Video page query', () => {
         episodeId: 1036,
         excludeFeedback: undefined,
         id: 6236,
+        created: '2020-01-03T01:02:30',
         uuid: '43eb4a97-e6ef-440c-a044-88e9bb982620',
         image: {
           alt: 'faith',

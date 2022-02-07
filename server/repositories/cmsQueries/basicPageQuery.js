@@ -8,6 +8,7 @@ class BasicPageQuery {
       .addFields('node--page', [
         'drupal_internal__nid',
         'title',
+        'created',
         'field_moj_description',
         'field_moj_stand_first',
         'field_moj_secondary_tags',
@@ -50,6 +51,7 @@ class BasicPageQuery {
     return {
       id: item.drupalInternal_Nid,
       title: item.title,
+      created: item.created,
       contentType: 'page',
       description: item.fieldMojDescription?.processed,
       standFirst: item.fieldMojStandFirst,
