@@ -1,0 +1,98 @@
+{% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
+{% from "../../components/page-navigation/macro.njk" import pageNavigation %}
+{% from "../../components/user-details/macro.njk" import userDetails %}
+{% extends "../../components/template.njk" %}
+
+{% block pageTitle %}
+  {{ title }}
+{% endblock %}
+
+{% block head %}
+  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
+  <link href="/public/javascript/games/sn4ke/main.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block pageNavigation %}
+  {{ pageNavigation({ title: title }) }}
+{% endblock %}
+
+{% block topBar %}
+  {{ topBar({
+    establishmentDisplayName: establishmentDisplayName,
+    showBar: false
+  }) }}
+{% endblock %}
+
+{% block userDetails %}{% endblock %}
+
+{% block header %}{% endblock %}
+{% block homeNavigation %}{% endblock %}
+{% block search %}{% endblock %}
+
+{% block main %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 id="title" class="govuk-heading-xl govuk-!-margin-bottom-6 govuk-!-margin-top-6">{{title}}</h1>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-half govuk-body">
+          <div class="container">
+            <div class="score">
+              score: <span class="score_val">0</span>
+            </div>
+            <div class="canvas-wrapper">
+              <canvas width="600" height="600"></canvas>
+            </div>
+            <div class="controls">
+              <button class="btn-start govuk-button govuk-body">Start</button>
+              <button class="btn-pause govuk-button govuk-body">Pause</button>
+              <div class="range range-difficulty">
+                <label for="difficulty">Speed</label>
+                <div class="range_inputWrapper">
+                  <span class="range_inputSlider"></span>
+                  <div class="range_inputValue"></div>
+                  <input class="input_bar" type="range" name="difficulty"
+                    value="8" min="1" max="10" step="1" >
+                </div>
+              </div>
+
+              <div class="range range-columns">
+                <label for="columns">Cells</label>
+                <div class="range_inputWrapper">
+                  <span class="range_inputSlider"></span>
+                  <div class="range_inputValue"></div>
+                  <input class="input_bar" type="range" name="columns"
+                      value="20" min="10" max="100" step="10">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="govuk-grid-column-one-half govuk-body">
+          <h2>How to play:</h2>
+          <p>
+            Arrow Keys	= Left, Right, Up, Down
+            <br>Space / Arrow key = Start Game
+          </p>
+        </div>
+      </div>
+      <div class="govuk-hub-article-feedback">
+        {{ hubFeedbackWidget({
+          heading: 'Tell us what you think:',
+          title: title,
+          contentType: "game",
+          feedbackId: feedbackId
+        })}}
+      </div>
+    </main>
+  </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  <script src="/public/javascript/games/sn4ke/main.js"></script>
+{% endblock %}
+
+
