@@ -140,9 +140,14 @@ class CmsService {
 
   async getMedia(establishmentName, query) {
     const data = await this.#cmsApi.get(query);
-    const { seriesId, seriesSortValue, uuid } = data;
+    const { seriesId, seriesSortValue, uuid, createdDate } = data;
     const [nextEpisodes, suggestedContent] = await Promise.all([
-      this.getNextEpisode(establishmentName, seriesId, seriesSortValue),
+      this.getNextEpisode(
+        establishmentName,
+        seriesId,
+        seriesSortValue,
+        createdDate,
+      ),
       this.getSuggestions(establishmentName, uuid),
     ]);
     return {
@@ -163,12 +168,18 @@ class CmsService {
     return homepages[0];
   }
 
-  async getNextEpisode(establishmentName, seriesId, seriesSortValue) {
+  async getNextEpisode(
+    establishmentName,
+    seriesId,
+    seriesSortValue,
+    createdDate,
+  ) {
     return this.#cmsApi.get(
       new NextEpisodeQuery(
         establishmentName,
         seriesId,
         seriesSortValue || undefined,
+        createdDate,
       ),
     );
   }

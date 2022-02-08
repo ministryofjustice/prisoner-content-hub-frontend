@@ -13,6 +13,7 @@ class AudioPageQuery {
       .addFields('node--moj_radio_item', [
         'drupal_internal__nid',
         'title',
+        'created',
         'field_moj_audio',
         'field_moj_description',
         'field_moj_secondary_tags',
@@ -60,6 +61,7 @@ class AudioPageQuery {
     return {
       id: item.drupalInternal_Nid,
       uuid: item.id,
+      created: item.created,
       title: item.title,
       contentType: 'radio',
       description: item.fieldMojDescription?.processed,
