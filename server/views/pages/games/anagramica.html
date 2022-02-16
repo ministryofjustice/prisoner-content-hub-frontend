@@ -85,9 +85,15 @@
             <div id="words" class="govuk-!-margin-top-6 govuk-!-margin-bottom-6"></div>
             {{ govukButton({
               classes: "newGame",
-              text: "Start a new game!",
-              isStartButton: true
+              text: "Start"
             }) }}
+            <div id="quitGame" class="initiallyHidden govuk-!-margin-top-6 govuk-!-margin-bottom-6">
+            {{ govukButton({
+              classes: "quitGame govuk-button--secondary",
+              text: " Quit",
+              href: "anagramica"
+            }) }}
+            </div>
             <div id="options">
               <div id="gametype">
                 {{ govukRadios({
@@ -165,30 +171,29 @@
         <div class="govuk-grid-column-full">
           <div id="instructions" class="govuk-body govuk-!-padding-top-6">
             <h2 class="govuk-heading-m">Anagramica: The game of letters.</h2>
-            <h3 class="govuk-heading-s">Instructions</h3>
-            <p>  
-              Find as many words as you can within the time limit!				
-            </p>
-            <p>
-              Choose ten letters, consonants or vowels.
-            </p>
-            <p>
-              Enter a word using only the letters on the board.
-              <br>
-              Press Enter or Tab when you finish a word.
-              <br>
-              Enter as many words as you can.
-            </p>
+              <p>Make as many words as you can.</p>
+            <h3 class="govuk-heading-s">Setup</h3>
+              <p>Set your time limit.</p>
+              <p>Choose Automatic or Manual.
+                <ul class="govuk-list govuk-list--bullet">
+                  <li>Automatic generates 10 random letters</li>
+                  <li>Manual lets you choose your own random consonants or vowels</li>
+                </ul>
+              </p>
+            <h3 class="govuk-heading-s">Game play</h3>
+              <p>When the timer begins, type as many words as you can into the box using only the letters on the board.</p>
             <h3 class="govuk-heading-s">Scoring</h3>
-            <p>
-              For correct words, you get 1 or more points per letter: 
-              <br>				
-              n,r,s,t,a,e,i,o = 1 | b,c,d,g,l,m,p,m,u = 2 | f,k,v,w,y = 3 | j,z = 4 | q,x = 5
-              <br>
-              For incorrect words, you lose the inverse.
-              <br>
-              For correct words as long as possible, you get double points!
-            </p>
+              <p>You only score points for correct words.</p>
+                <ol class="govuk-list govuk-list--number">
+                  <li>n,r,s,t,a,e,i,o</li>
+                  <li>b,c,d,g,l,m,p,m,u</li>
+                  <li>f,k,v,w,y</li>
+                  <li>j,z</li>
+                  <li>q,x</li>
+                </ol>
+              <p>Minus points for incorrect guesses.</p>
+              <p>Double points if you find the longest possible words.</p>
+              <p>Wrong guesses show as red. Correct guesses show as grey and turn blue at the end of your turn.</p>
           </div>
         </div>
       </div>
@@ -208,7 +213,7 @@
 {% block bodyEnd %}
   <script type="text/javascript" src="/public/javascript/games/anagramica/anagramica.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function(){		
+		$(document).ready(function(){
 			anagramica.game.init();
 			anagramica.ui.init();
 			anagramica.ui.messageLetters("ANAGRAMICA",anagramica.ui.ready);
