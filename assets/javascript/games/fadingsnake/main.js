@@ -21,6 +21,7 @@ window.addEventListener("DOMContentLoaded", function (event) {
   let lastTimestamp; // The previous timestamp of the animation
   let stepsTaken; // How many steps did the snake take
   let score;
+  let high = localStorage.getItem(`gameFadingsnakeHighScoreEasy`) || 0;
   let contrast;
 
   let inputs; // A list of directions the snake still has to take in order
@@ -62,7 +63,8 @@ window.addEventListener("DOMContentLoaded", function (event) {
   const containerElement = document.querySelector(".container");
   const noteElement = document.querySelector(".gameMsg");
   const contrastElement = document.querySelector(".contrast");
-  const scoreElement = document.querySelector(".score");
+  const scoreElement = document.querySelector(".score-container");
+  const highScoreElement = document.querySelector(".best-container")
 
   // Initialize layout
   resetGame();
@@ -85,7 +87,8 @@ window.addEventListener("DOMContentLoaded", function (event) {
 
     // Reset header
     contrastElement.innerText = `${Math.floor(contrast * 100)}%`;
-    scoreElement.innerText = hardMode ? `Hard ${score}` : `${score}`;
+    scoreElement.innerText = hardMode ? `${score}` : `${score}`;
+    highScoreElement.innerText = high;
 
     // Reset tiles
     for (const tile of tiles) setTile(tile);
@@ -139,6 +142,9 @@ window.addEventListener("DOMContentLoaded", function (event) {
 
     // Set Hard mode
     if (event.key == "H" || event.key == "h") {
+      $('#hard-mode').show();
+      high = localStorage.getItem('gameFadingsnakeHighScoreHard') || 0;
+      highScoreElement.innerText = high;
       hardMode = true;
       fadeSpeed = 4000;
       fadeExponential = 1.025;
@@ -150,6 +156,9 @@ window.addEventListener("DOMContentLoaded", function (event) {
 
     // Set Easy mode
     if (event.key == "E" || event.key == "e") {
+      $('#hard-mode').hide();
+      high = localStorage.getItem('gameFadingsnakeHighScoreEasy') || 0;
+      highScoreElement.innerText = high;
       hardMode = false;
       fadeSpeed = 5000;
       fadeExponential = 1.024;
@@ -230,7 +239,7 @@ window.addEventListener("DOMContentLoaded", function (event) {
         if (headPosition == applePosition) {
           // Increase score
           score++;
-          scoreElement.innerText = hardMode ? `Hard ${score}` : `${score}`;
+          scoreElement.innerText = hardMode ? `${score}` : `${score}`;
 
           // Generate another apple
           addNewApple();
@@ -267,14 +276,15 @@ window.addEventListener("DOMContentLoaded", function (event) {
 
       window.requestAnimationFrame(main);
     } catch (error) {
-      // Write a note about restarting game and setting difficulty
-      const pressSpaceToStart = "Press space to reset the game.";
-      const changeMode = hardMode
-        ? "Back to easy mode? Press the E key."
-        : "Ready for hard mode? Press the H key.";
-      noteElement.innerHTML = `${error.message}. ${pressSpaceToStart} <div>${changeMode}</div> `;
+      noteElement.innerHTML = `${error.message} `;
       noteElement.style.opacity = 1;
       containerElement.style.opacity = 1;
+      if (score > high) {
+        high = score;
+        highScoreElement.innerText = high;
+      const scoreKey = `gameFadingsnakeHighScore${hardMode == true ? 'Hard' : 'Easy'}`
+        localStorage.setItem(scoreKey, high);
+      }
     }
 
     lastTimestamp = timestamp;

@@ -39,7 +39,6 @@ const createGamesRouter = () => {
 
   router.use('/anagramica', createAnagramicaRouter(config));
 
-
   router.get('/chess', (req, res) => {
     config.detailsType = 'small';
 

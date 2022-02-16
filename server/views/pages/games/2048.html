@@ -99,16 +99,20 @@
           <script src="/public/javascript/games/2048/game_manager.js"></script>
           <script src="/public/javascript/games/2048/application.js"></script>
         </div>
-        <div class="govuk-grid-column-one-third">
+        <div class="govuk-grid-column-one-third govuk-body">
           <div class="scores-container">
             <div class="score-container">0</div>
             <div class="best-container">0</div>
           </div>
-          <h2 class="govuk-heading-m">Join the numbers and get to the <strong>2048 tile!</strong></h2>
-          <p class="govuk-body">
-            Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
-          </p>
-          <button class="govuk-button restart-button" data-module="govuk-button">Start a new game</button>
+          <button class="govuk-button restart-button" data-module="govuk-button">Start</button>
+            <p class="govuk-body">Make 2048 on one of your tiles.</p>
+          <h2 class="govuk-heading-m">Gameplay</h2>
+            <p>Use your arrow keys to move the tiles.<p/>
+            <p>When you press an arrow key it moves all the tiles on the board in one direction. Eg, press down and all the tiles are pulled to the bottom of the board.</p>
+            <p>When two tiles with the same number touch, they double and merge into one. Eg, when a 2 hits a 2, this creates one 4 tile.</p>
+          <h2 class="govuk-heading-m">Winning and losing</h2>
+            <p>If you can score 2048 on a tile you win.</p>
+            <p>If you cant move your tiles any more before you make 2048, its game over.</p>
         </div>
       </div>
     </div>

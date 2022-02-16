@@ -51,7 +51,7 @@
   margin: govuk-spacing(1);
 }
 
-.remaining { 
+.remaining {
 	color:govuk-colour("dark-grey");
   background-color: govuk-colour("mid-grey");
 }
@@ -60,15 +60,15 @@
   border-top: 1px solid $govuk-border-colour;
 }
 
-.timer 	{ 
+.timer 	{
 	width:400px; height:30px; border:1px solid #333; padding:0px; float:left; margin-right:20px;
 	border: govuk-spacing(1) solid $govuk-border-colour;
 	background-color:$govuk-border-colour;
 }
-.elapsed { 
-  width:0%; 
-  height:30px; 
-  margin:0px; 
+.elapsed {
+  width:0%;
+  height:30px;
+  margin:0px;
   background: $govuk-brand-colour;
 }
 .answers { list-style-type:none; }
