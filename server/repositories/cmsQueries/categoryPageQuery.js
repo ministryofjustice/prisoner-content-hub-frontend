@@ -1,5 +1,5 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getSmallTile, getLargeTile } = require('../../utils/jsonApi');
+const { getSmallTile } = require('../../utils/jsonApi');
 
 class CategoryPageQuery {
   static #TILE_FIELDS = [
@@ -35,12 +35,6 @@ class CategoryPageQuery {
     return `/jsonapi/prison/${this.establishmentName}/taxonomy_term/moj_categories/${this.uuid}?${this.query}`;
   }
 
-  getTile(item, index) {
-    return index === 0
-      ? { ...getLargeTile(item), summary: '' }
-      : getSmallTile(item);
-  }
-
   transform(data) {
     return {
       title: data?.name,
@@ -55,8 +49,8 @@ class CategoryPageQuery {
       },
       categoryFeaturedContent: data?.fieldFeaturedTiles
         .filter(({ title = null, name = null }) => title || name)
-        .slice(0, 10)
-        .map(this.getTile),
+        .slice(0, 12)
+        .map(getSmallTile),
     };
   }
 }
