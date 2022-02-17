@@ -58,6 +58,7 @@ commands:
               --set cacheSecret="${CACHE_SECRET}" \
               --set prisonerAuthAD.clientId=${AZURE_AD_CLIENT_ID} \
               --set prisonerAuthAD.clientSecret=${AZURE_AD_CLIENT_SECRET} \
+              --set appInsightsSecret=${APPINSIGHTS_INSTRUMENTATIONKEY} \
               --set hotJarId=${HOTJAR_ID} \
               --set image.tag=${VERSION_TO_DEPLOY} \
               --set ingress.qualifier="<< parameters.qualifier >>"
