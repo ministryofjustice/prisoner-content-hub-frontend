@@ -29,7 +29,6 @@ const setCurrentUser = require('./middleware/setCurrentUser');
 const createApp = services => {
   const {
     logger,
-    requestLogger,
     offenderService,
     analyticsService,
     config = defaultConfig,
@@ -153,8 +152,6 @@ const createApp = services => {
 
   // Don't cache dynamic resources
   app.use(noCache());
-
-  app.use(requestLogger());
 
   // feature toggles
   app.use(featureToggleMiddleware(config.features));

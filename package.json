@@ -37,10 +37,13 @@
   },
   "dependencies": {
     "@ministryofjustice/frontend": "^1.2.0",
+    "applicationinsights": "^2.2.1",
     "@sentry/node": "^6.16.1",
     "@sentry/tracing": "^6.16.1",
     "axios": "0.25.0",
     "body-parser": "^1.19.1",
+    "bunyan": "^1.8.15",
+    "bunyan-format": "^0.2.1",
     "compression": "^1.7.4",
     "cookie-session": "^2.0.0",
     "cookies": "^0.8.0",
@@ -56,16 +59,13 @@
     "jsonwebtoken": "^8.5.1",
     "mkdirp": "^1.0.4",
     "moment": "^2.29.1",
-    "morgan": "^1.10.0",
     "nocache": "^3.0.1",
     "nunjucks": "^3.2.3",
     "passport": "^0.5.2",
     "passport-azure-ad-oauth2": "0.0.4",
     "ramda": "^0.28.0",
-    "redis": "^4.0.2",
     "uuid": "^8.3.2",
-    "video.js": "^7.17.0",
-    "winston": "^3.4.0"
+    "video.js": "^7.17.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.5",
