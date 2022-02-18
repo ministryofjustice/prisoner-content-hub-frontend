@@ -78,7 +78,8 @@
               </div>
               <ul class="answers">
                 <li class="answer">
-                  <input class="govuk-input govuk-!-width-one-quarter" id="one-quarter" name="one-quarter" type="text" size="10" maxlength="10">
+                  <input class="govuk-input govuk-!-width-one-quarter" id="one-quarter" name="one-quarter"
+                    onkeydown="return /[a-z]/i.test(event.key)" type="text" size="10" maxlength="10">
                 </li>
               </ul>
             </div>

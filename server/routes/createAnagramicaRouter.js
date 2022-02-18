@@ -22,11 +22,16 @@ const createAnagramicaRouter = config => {
     )
     .post((req, res) => {
       const { letters, words = [] } = req.body;
+      if (letters.length !== 10 && !/^[a-z]/.test(letters))
+        res.send({ error: 'Invalid letter selection' });
       const best = finder.best(toAlpha(letters));
-      const scores = words.reduce((total, rawWord) => {
-        const word = toAlpha(rawWord);
-        return Object.assign(total, { [word]: finder.find(word) });
-      }, {});
+      const scores =
+        Array.isArray(words) && words.length > 0
+          ? words.reduce((total, rawWord) => {
+              const word = toAlpha(rawWord);
+              return Object.assign(total, { [word]: finder.find(word) });
+            }, {})
+          : [];
       res.send({
         best,
         scores,
