@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const { logger } = require('../utils/logger');
 const finder = require('../../assets/javascript/games/anagramica/lib/finder');
 const {
   toAlpha,
@@ -22,17 +23,18 @@ const createAnagramicaRouter = config => {
     )
     .post((req, res) => {
       const { letters, words = [] } = req.body;
-      if (letters.length !== 10 && !/^[a-z]/.test(letters))
-        res.send({ error: 'Invalid letter selection' });
+      if (!/^[a-z]{10}$/.test(letters)) {
+        logger.warn('Anagramica game post called with invalid letters');
+        return res.send({ error: 'Invalid letter selection' });
+      }
       const best = finder.best(toAlpha(letters));
-      const scores =
-        Array.isArray(words) && words.length > 0
-          ? words.reduce((total, rawWord) => {
-              const word = toAlpha(rawWord);
-              return Object.assign(total, { [word]: finder.find(word) });
-            }, {})
-          : [];
-      res.send({
+      const scores = Array.isArray(words)
+        ? words.reduce((total, rawWord) => {
+            const word = toAlpha(rawWord);
+            return Object.assign(total, { [word]: finder.find(word) });
+          }, {})
+        : {};
+      return res.send({
         best,
         scores,
         letters,

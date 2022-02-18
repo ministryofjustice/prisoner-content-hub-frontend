@@ -39,13 +39,12 @@ if (!anagramica.core) {
 		};
 
     var postResults = function(letters, words=[]){
-      console.log(`letters: ${letters}`)
-      if(letters.length === 10 && /^[a-z]/.test(letters))
-      $.post(
-        '/games/anagramica',
-        { letters, words },
-        anagramica.game.displayResults
-      )
+      if(/^[a-z]{10}$/.test(letters))
+        $.post(
+          '/games/anagramica',
+          { letters, words },
+          anagramica.game.displayResults
+        )
     }
 
 		return {
