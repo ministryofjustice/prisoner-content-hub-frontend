@@ -10,12 +10,14 @@ class JsonApiClient {
       adapter: httpAdapter,
     });
     this.client.interceptors.request.use(request => {
-      logger.info(`JsonApiClient [${request.method}] request - ${request.url}`);
+      logger.debug(
+        `JsonApiClient [${request.method}] request - ${request.url}`,
+      );
       return request;
     });
 
     this.client.interceptors.response.use(res => {
-      logger.info(
+      logger.debug(
         `JsonApiClient [${res.config?.method}], status: ${res.status} response - ${res.config?.url}`,
       );
       return res;

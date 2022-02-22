@@ -1,7 +1,7 @@
 const { path, pathOr } = require('ramda');
 const { baseClient } = require('./baseClient');
 const { logger } = require('../utils/logger');
-const { InMemoryCachingStrategy } = require('../utils/caching');
+const { InMemoryCachingStrategy } = require('../utils/caching/memory');
 
 const PRISON_API_TOKEN_KEY = 'prisonApi:bearerToken';
 const CACHE_EXPIRY_OFFSET = 60; // Seconds
@@ -73,7 +73,7 @@ class PrisonApiClient {
   }
 
   async get(url) {
-    logger.info(`PrisonApiClient (GET) - ${url}`);
+    logger.debug(`PrisonApiClient (GET) - ${url}`);
 
     let token = await this.cache.get(PRISON_API_TOKEN_KEY);
 
