@@ -7,7 +7,7 @@ const { setup, DistributedTracingModes, Contracts } = appInsights;
 const defaultName = () => applicationVersion?.packageData?.name;
 const version = () => applicationVersion.buildNumber;
 
-const prefixesToIgnore = ['GET /public/', 'GET /assets/'];
+const prefixesToIgnore = ['GET /public/', 'GET /assets/', 'GET /health'];
 
 function ignoreStaticAssetsProcessor(envelope) {
   if (envelope.data.baseType === Contracts.TelemetryTypeString.Request) {
