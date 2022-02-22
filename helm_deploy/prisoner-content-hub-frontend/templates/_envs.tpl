@@ -70,6 +70,12 @@ env:
     - name: SENTRY_RELEASE
       value: {{ .Values.application.sentry_release }}
 
+    - name: APPINSIGHTS_INSTRUMENTATIONKEY
+      valueFrom:
+        secretKeyRef:
+          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+          key: appInsightsSecret
+
     - name: ENABLE_MOCK_AUTH
       value: {{ .Values.application.config.mockAuthEnabled | quote }}
 

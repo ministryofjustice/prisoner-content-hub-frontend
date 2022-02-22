@@ -17,6 +17,7 @@ const drupalDatabaseName = getRequiredEnv('DRUPAL_DATABASE_NAME', 'hubdb');
 
 module.exports = {
   isProduction,
+  logLevel: getEnv('LOG_LEVEL', 'info'),
   buildInfo: {
     buildNumber: getEnv('BUILD_NUMBER', '9999999'),
     gitRef: getEnv('GIT_REF', 'abcd1234'),
@@ -40,12 +41,6 @@ module.exports = {
   },
   caching: {
     secret: getRequiredEnv('CACHE_SECRET', 'secret-2'),
-    redis: {
-      host: getEnv('REDIS_HOST', '127.0.0.1'),
-      port: getEnv('REDIS_PORT', 6379),
-      // password: getEnv('REDIS_PASSWORD', { requireInProduction: true }),
-      tls: getEnv('REDIS_USE_TLS', 'false') === 'true' ? {} : false,
-    },
   },
   prisonApi: {
     auth: {
@@ -59,7 +54,6 @@ module.exports = {
     search: `${elasticsearchEndpoint}/elasticsearch_index_${drupalDatabaseName}_${elasticsearchIndexName}/_search`,
   },
   features: {
-    useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'false') === 'true',
     useMockAuth: getEnv('ENABLE_MOCK_AUTH', 'false') === 'true',
     showStackTraces:
       getEnv('ENABLE_STACK_TRACES_ON_ERROR_PAGES', 'false') === 'true',

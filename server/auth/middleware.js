@@ -54,14 +54,12 @@ function isPrisonerId(id) {
   G4309UE   CKI  AU        0       N/A         ?
 
   G5899UC   FMI  AA        0       N/A         ?
-
-  A8085DY   MDI  ??        1       1           ?
 */
 const createMockSignIn = ({ offenderService }) =>
   async function mockSignIn(req, res, next) {
     try {
       const user = new User({
-        prisonerId: 'A8085DY',
+        prisonerId: 'G5899UC',
         firstName: 'Test',
         lastName: 'User',
       });

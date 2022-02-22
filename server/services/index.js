@@ -1,16 +1,11 @@
-const redis = require('redis');
-const { path } = require('ramda');
-const { logger, requestLogger } = require('../utils/logger');
+const { logger } = require('../utils/logger');
 const config = require('../config');
 
 const { StandardClient } = require('../clients/standard');
 const { PrisonApiClient } = require('../clients/prisonApiClient');
 const { JsonApiClient } = require('../clients/jsonApiClient');
 
-const {
-  RedisCachingStrategy,
-  InMemoryCachingStrategy,
-} = require('../utils/caching');
+const { InMemoryCachingStrategy } = require('../utils/caching/memory');
 
 // Repositories
 const { offenderRepository } = require('../repositories/offender');
@@ -27,18 +22,11 @@ const { createAnalyticsService } = require('./analytics');
 const { createFeedbackService } = require('./feedback');
 const PrisonerInformationService = require('./prisonerInformation');
 
-const cachingStrategy = path(['features', 'useRedisCache'], config)
-  ? new RedisCachingStrategy(
-      config.caching.secret,
-      redis.createClient(config.caching.redis),
-    )
-  : new InMemoryCachingStrategy();
-
 const jsonApiClient = new JsonApiClient(config.api.hubEndpoint);
 const standardClient = new StandardClient();
 const prisonApiClient = new PrisonApiClient({
   prisonApi: config.prisonApi,
-  cachingStrategy,
+  cachingStrategy: new InMemoryCachingStrategy(),
 });
 
 const cmsApi = new CmsApi(jsonApiClient);
@@ -46,7 +34,6 @@ const cmsService = new CmsService(cmsApi);
 
 module.exports = {
   logger,
-  requestLogger,
   cmsService,
   offenderService: createPrisonApiOffenderService(
     offenderRepository(prisonApiClient),

@@ -13,7 +13,7 @@ class StandardClient {
     return this.client
       .get(endpoint, { params: query, ...rest })
       .then(res => {
-        logger.info(`StandardClient (GET) ${endpoint}?${qs.stringify(query)}`);
+        logger.debug(`StandardClient (GET) ${endpoint}?${qs.stringify(query)}`);
         return res.data;
       })
       .catch(e => {
@@ -28,7 +28,7 @@ class StandardClient {
     return this.client
       .post(endpoint, data)
       .then(res => {
-        logger.info(`StandardClient (POST) ${endpoint}`);
+        logger.debug(`StandardClient (POST) ${endpoint}`);
         return res.data;
       })
       .catch(e => {
@@ -56,7 +56,7 @@ class StandardClient {
         headers,
       })
       .then(res => {
-        logger.info(
+        logger.debug(
           `StandardClient (POST URLENCODED) - ${endpoint}?${querystring}`,
         );
         return res.data;
