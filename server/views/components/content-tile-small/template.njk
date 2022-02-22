@@ -1,7 +1,11 @@
 {% if params.id %}
   <a data-featured-tile-id="{{params.id}}" data-featured-id="{{params.id}}" data-featured-title="{{ params.title }}" href="{{params.contentUrl}}" {% if params.externalContent %}target="_blank"{% endif %}>
     <div>
-      <img src="{{params.image.url}}" alt="{{params.image.alt}}" class="tile-image">
+      {% if params.image.url %}
+        <img src="{{params.image.url}}" alt="{{params.image.alt}}" class="tile-image">
+      {% else %}
+        <img src="/public/images/default_small_tile_hub_logo.png" alt="logo" class="tile-image">
+      {% endif %}
       <h3 class="govuk-heading-m" style="">{{params.title}}</h3>
     </div>
     <div>
