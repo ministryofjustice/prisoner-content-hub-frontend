@@ -93,18 +93,6 @@ describe('Sentry', () => {
     expect(Sentry.errorHandlingMiddleware).not.toHaveBeenCalled();
   });
 
-  it('calls the Sentry error handling middleware when an error is thrown', async () => {
-    await request(
-      app({
-        requestLogger: () => (req, res, next) => next('💥'),
-      }),
-    )
-      .get('/games/chess')
-      .expect(500);
-
-    expect(Sentry.errorHandlingMiddleware).toHaveBeenCalled();
-  });
-
   it('calls the Sentry request handling middleware when an request is made', async () => {
     await request(app())
       .get('/games/chess')
