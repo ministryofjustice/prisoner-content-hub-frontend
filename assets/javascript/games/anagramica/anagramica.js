@@ -262,7 +262,11 @@ if (!anagramica.game) {
       anagramica.ui.showScores(data?.scores, data?.best[0]?.length);
 
     }
+    var getBoardLetters = function() {
+      return boardletters;
+    }
 		return {
+      getBoardLetters:getBoardLetters,
 			getConsonant:getConsonant,
 			getVowel:getVowel,
 			validWord:validWord,
@@ -339,10 +343,9 @@ if (!anagramica.ui) {
 
 		//Gets the next random letter and sends it to the board
 		var nextGameLetter = function() {
-
-				var target = $(".letter:not(.ready):first"); //get the first blank letter
-
-				if(target.length) {
+        var letterIndex = anagramica.game.getBoardLetters().length+1;
+				var target = $(`.letter:nth-child(${letterIndex})`); //get the first blank letter
+        if(target) {
 					//if the board is not filled up...
 
 					var letter = '';
@@ -355,7 +358,7 @@ if (!anagramica.ui) {
 					setLetter(target,letter);
 
 				}
-				if(!target.length || $(".letter:not(.ready)").length === 1) {
+				if(letterIndex >= 10) {
 					freezeBoard();
 					anagramica.core.notify("chosen");
 				}
@@ -415,10 +418,11 @@ if (!anagramica.ui) {
 		var remainingLetters = function(letters) {
 			if(letters.length>10) return false;
 			var i=0,j=0,l=letters.length;
-			$(".letter:not(.ready)").each(function(){
-				var target = $(this);
+      var offset = 11-letters.length;
+			letters.forEach(function(letter, index){
+				var target = $(`.letter:nth-child(${offset+index})`);
 				setTimeout(function(){
-					setLetter(target,letters[i++]||'',true);
+					setLetter(target, letter || '',true);
 				},j++*100);
 			});
 		};
