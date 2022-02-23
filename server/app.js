@@ -1,6 +1,6 @@
 const express = require('express');
-const addRequestId = require('express-request-id')();
 const compression = require('compression');
+const uuid = require('uuid');
 const helmet = require('helmet');
 const noCache = require('nocache');
 const path = require('path');
@@ -90,7 +90,16 @@ const createApp = services => {
     }),
   );
 
-  app.use(addRequestId);
+  app.use((req, res, next) => {
+    const headerName = 'X-Request-Id';
+    const oldValue = req.get(headerName);
+    const id = oldValue === undefined ? uuid.v4() : oldValue;
+
+    res.set(headerName, id);
+    req.id = id;
+
+    next();
+  });
 
   // Resource Delivery Configuration
   app.use(compression());
