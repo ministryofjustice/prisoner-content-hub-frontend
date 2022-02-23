@@ -1,35 +1,34 @@
-const showMore = $('.show-more-tiles');
-const smallTiles = $('#small-tiles');
-function updateButton(isLastPage) {
-  if (isLastPage) {
-    showMore.remove();
-  }
-}
+const setUpShowMore = (showMoreButton, showMoreTiles, pageType = '') => {
+  const updateButton = isLastPage => {
+    if (isLastPage) {
+      showMoreButton.remove();
+    }
+  };
+  const enableShowMore = () => {
+    showMoreButton.html('Show more');
+    showMoreButton.attr('disabled', false);
+  };
+  const disableShowMore = () => {
+    showMoreButton.html('Loading');
+    showMoreButton.attr('disabled', true);
+  };
 
-function enableShowMore() {
-  showMore.html('Show more');
-  showMore.attr('disabled', false);
-}
+  let page = 1;
+  showMoreButton.on('click', () => {
+    page++;
+    const nextPage = `${location.pathname}.json?page=${page}&pageType=${pageType}`;
+    disableShowMore();
 
-function disableShowMore() {
-  showMore.html('Loading');
-  showMore.attr('disabled', true);
-}
-
-let page = 1;
-showMore.on('click', function () {
-  page++;
-  const nextPage = `${location.pathname}.json?page=${page}`;
-  disableShowMore();
-
-  $.getJSON(nextPage, function (data) {
-    const res = data.relatedContent.data.map(item =>
-      nunjucks.render('content-tile-small', { params: item }),
-    );
-    smallTiles.append(res);
-    enableShowMore();
-    updateButton(data.relatedContent.isLastPage);
-  }).fail(function () {
-    enableShowMore();
+    $.getJSON(nextPage, response => {
+      const { data, isLastPage } = response;
+      const res = data.map(item =>
+        nunjucks.render('content-tile-small', { params: item }),
+      );
+      showMoreTiles.append(res);
+      enableShowMore();
+      updateButton(isLastPage);
+    }).fail(function () {
+      enableShowMore();
+    });
   });
-});
+};

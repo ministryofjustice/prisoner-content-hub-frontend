@@ -6,11 +6,12 @@ const createTagRouter = ({ cmsService }) => {
   router.get('/:id.json', async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { page } = req.query;
+      const { page, pageType } = req.query;
       const data = await cmsService.getPage(
         req.session.establishmentName,
         parseInt(id, 10),
         parseInt(page || '1', 10),
+        ['other', 'series', ''].includes(pageType) ? pageType : '',
       );
       return res.json(data);
     } catch (e) {

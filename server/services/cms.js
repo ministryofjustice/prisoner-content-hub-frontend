@@ -19,9 +19,10 @@ const {
 const {
   CategoryPageQuery,
 } = require('../repositories/cmsQueries/categoryPageQuery');
+const { AllSeriesQuery } = require('../repositories/cmsQueries/allSeriesQuery');
 const {
-  InThisSectionQuery,
-} = require('../repositories/cmsQueries/inThisSectionQuery');
+  CategoryOtherQuery,
+} = require('../repositories/cmsQueries/categoryOtherQuery');
 const {
   SuggestionQuery,
 } = require('../repositories/cmsQueries/suggestionQuery');
@@ -62,14 +63,33 @@ class CmsService {
   }
 
   async getCategory(establishmentName, uuid) {
-    const [categoryData, categoryMenu] = await Promise.all([
+    const [categoryData, categorySeries, categoryOther] = await Promise.all([
       this.#cmsApi.get(new CategoryPageQuery(establishmentName, uuid)),
-      this.#cmsApi.get(new InThisSectionQuery(establishmentName, uuid)),
+      this.#cmsApi.get(new AllSeriesQuery(establishmentName, uuid, 40)),
+      this.#cmsApi.get(new CategoryOtherQuery(establishmentName, uuid, 40)),
     ]);
     return {
       ...categoryData,
-      categoryMenu,
+      categorySeries,
+      categoryOther,
     };
+  }
+
+  async getCategoryPage(establishmentName, uuid, page, catType) {
+    switch (catType) {
+      case 'series':
+        return this.#cmsApi.get(
+          new AllSeriesQuery(establishmentName, uuid, 40, page),
+        );
+      case 'other':
+        return this.#cmsApi.get(
+          new CategoryOtherQuery(establishmentName, uuid, 40, page),
+        );
+      default:
+        throw new Error(
+          `Unknown type for category page: ${catType} with content uuid: ${uuid}`,
+        );
+    }
   }
 
   async getExternalLink(establishmentName, id) {
@@ -95,14 +115,23 @@ class CmsService {
     }
   }
 
-  async getPage(establishmentName, id, page) {
+  async getPage(establishmentName, id, page, catType) {
     const lookupData = await this.#cmsApi.lookupTag(establishmentName, id);
     const { type, uuid, location } = lookupData;
     switch (type) {
       case 'taxonomy_term--tags':
-        return this.getSecondaryTag(establishmentName, uuid, location, page);
+        return this.getSecondaryTag(
+          establishmentName,
+          uuid,
+          location,
+          page,
+        ).then(({ relatedContent }) => relatedContent);
       case 'taxonomy_term--series':
-        return this.getSeries(establishmentName, uuid, location, page);
+        return this.getSeries(establishmentName, uuid, location, page).then(
+          ({ relatedContent }) => relatedContent,
+        );
+      case 'taxonomy_term--moj_categories':
+        return this.getCategoryPage(establishmentName, uuid, page, catType);
       default:
         throw new Error(`Unknown tag type: ${type} with content id: ${id}`);
     }

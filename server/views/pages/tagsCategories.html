@@ -5,6 +5,9 @@
 {% from "../components/content-tile-large/macro.njk" import contentTileLarge %}
 {% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
+{% from "../components/related-content/macro.njk" import hubRelatedContent %}
+{% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
+
 
 {% extends "../components/template.njk" %}
 
@@ -42,75 +45,69 @@
     <div>
       <h1 class="govuk-heading-l" id="title">{{ title }}</h1>
     </div>
-    <div class="help-container-tablet">
-      <h2 class="govuk-heading-m">In this section</h2>
-      <ul class="govuk-body">
-        {% for link in data.categoryMenu %}
-          <li>
-            <a href="{{link.href}}" class="govuk-link">{{link.linkText}}</a>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-    <div class="help-container">
-      <div class="help-block">
-        <h2 class="govuk-heading-m">In this section</h2>
-        <ul class="govuk-body">
-          {% for link in data.categoryMenu %}
-            <li>
-              <a href="{{link.href}}" class="govuk-link">{{link.linkText}}</a>
-            </li>
-          {% endfor %}
-        </ul>
-        {{ hubFeedbackWidget({
-          contentId: data.id,
-          title: title,
-          contentType: data.contentType,
-          establishment: establishmentDisplayName,
-          sidebar: true,
-          feedbackId: feedbackId,
-          categories: titles
-        })}}
-      </div>
-    </div>
   </div>
 {% endblock %}
-
 {% block content %}
-  <div class="govuk-body categories-container">
-    <h2>Featured</h2>
-    <div class="category-content">
-      {{ contentTileLarge({content: data.categoryFeaturedContent[0], imageAlign: 'right'}) }}
-      {%- for tiles in data.categoryFeaturedContent | skip(1) | batch(3) %}
-      <div class="category-content__three-items">
-        {%- for tile in tiles %}
-          {{ contentTileSmall(tile) }}
-        {%- endfor %}
-      </div>
-      {%- endfor %}
-    </div>
-  <div class="feedback-tablet">
-    {{ hubFeedbackWidget({
-        id: 'feedback-widget-category-tablet',
-        contentId: data.id,
-        title: title,
-        contentType: data.contentType,
-        sidebar: true,
-        feedbackId: feedbackId,
-        categories: title
-      })}}
+  <div class="govuk-body">
+    <section class="govuk-!-margin-bottom-9">
+      <h2 class="govuk-heading-l govuk-hub-white-heading">Highlights</h2>
+      {{ hubRelatedContent({
+        data: { contentType:"default",isLastPage:true, data:data.categoryFeaturedContent },
+        lazyLoadContent: true
+      }) }}
+    </section>
+    {% if data.categorySeries.data.length > 0 %}
+      <hr>
+      <section id="seriesTiles"class="govuk-!-margin-bottom-9 govuk-!-margin-top-5">
+        <h2 class="govuk-heading-l  govuk-hub-white-heading">All series</h2>
+        {{ hubRelatedContent({
+          data: { contentType:data.categorySeries.contentType ,isLastPage:data.categorySeries.isLastPage, data:data.categorySeries.data },
+          lazyLoadContent: true
+        }) }}
+      </section>
+    {% endif %}
+    {% if data.categoryOther.data.length > 0 %}
+      <hr>
+      <section id="otherContentTiles" class="govuk-!-margin-bottom-9 govuk-!-margin-top-5">
+        <h2 class="govuk-heading-l  govuk-hub-white-heading">Other</h2>
+        {{ hubRelatedContent({
+          data: { contentType:data.categoryOther.contentType ,isLastPage:data.categoryOther.isLastPage, data:data.categoryOther.data },
+          lazyLoadContent: true
+        }) }}
+      </section>
+    {% endif %}
   </div>
-</div>
+
+  
+  {% if not data.excludeFeedback %}
+    <div class="govuk-form-group govuk-hub-article-feedback govuk-hub-on-black-feedback">
+      {% set tagHeading %}
+        Tell us what you think about this {{'series' if data.contentType == 'series' else 'topic'}}:
+      {% endset %}
+      {{ hubFeedbackWidget({
+        contentId: data.id,
+        heading: tagHeading,
+        title: title,
+        name: title,
+        contentType: data.contentType,
+        series: title,
+        feedbackId: feedbackId,
+        series: title if data.contentType == 'series',
+        secondaryTags: title if data.contentType == 'tags'
+      })}}
+    </div>
+  {% endif %}
 {% endblock %}
 
 {% block homeNavigation %}{% endblock %}
 {% block search %}{% endblock %}
 
 {% block bodyEnd %}
-<script src="/public/all.js"></script>
+<script src="/public/generated/templates.js"></script>
+<script src="/public/nunjucks-slim.js"></script>
+<script src="/public/javascript/showMore.js"></script>
 <script>
-  window
-    .GOVUKFrontend
-    .initAll();
+  setUpShowMore($('#seriesTiles .show-more-tiles'), $('#seriesTiles .small-tiles'), 'series')
+  setUpShowMore($('#otherContentTiles .show-more-tiles'), $('#otherContentTiles .small-tiles'), 'other')
 </script>
 {% endblock %}

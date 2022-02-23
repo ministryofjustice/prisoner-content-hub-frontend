@@ -131,28 +131,19 @@ describe('GET /tags', () => {
 
     describe('on success', () => {
       const data = {
-        contentType: 'tags',
-        title: 'foo bar',
-        summary: 'foo description',
-        image: {
-          alt: 'Foo Image',
-          url: 'foo.url.com/image.png',
-        },
-        relatedContent: {
-          contentType: 'foo',
-          data: [
-            {
-              id: 'foo',
-              type: 'radio',
-              title: 'foo related content',
-              summary: 'Foo body',
-              image: {
-                url: 'foo.png',
-              },
-              contentUrl: '/content/foo',
+        contentType: 'foo',
+        data: [
+          {
+            id: 'foo',
+            type: 'radio',
+            title: 'foo related content',
+            summary: 'Foo body',
+            image: {
+              url: 'foo.png',
             },
-          ],
-        },
+            contentUrl: '/content/foo',
+          },
+        ],
       };
 
       describe('tags page JSON endpoint', () => {
@@ -165,7 +156,12 @@ describe('GET /tags', () => {
             .expect('Content-Type', /application\/json/)
             .then(response => {
               expect(response.body).toEqual(data);
-              expect(cmsService.getPage).toHaveBeenCalledWith('berwyn', 1, 1);
+              expect(cmsService.getPage).toHaveBeenCalledWith(
+                'berwyn',
+                1,
+                1,
+                '',
+              );
             });
         });
 
@@ -178,7 +174,29 @@ describe('GET /tags', () => {
             .expect('Content-Type', /application\/json/)
             .then(response => {
               expect(response.body).toEqual(data);
-              expect(cmsService.getPage).toHaveBeenCalledWith('berwyn', 1, 2);
+              expect(cmsService.getPage).toHaveBeenCalledWith(
+                'berwyn',
+                1,
+                2,
+                '',
+              );
+            });
+        });
+        it('can specify data type by query parameter', () => {
+          cmsService.getPage.mockReturnValue(data);
+
+          return request(app)
+            .get('/tags/1.json?page=2&pageType=other')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+            .then(response => {
+              expect(response.body).toEqual(data);
+              expect(cmsService.getPage).toHaveBeenCalledWith(
+                'berwyn',
+                1,
+                2,
+                'other',
+              );
             });
         });
       });

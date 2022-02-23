@@ -2,7 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 <div data-content-type="{{params.data.contentType}}" data-content-id="{{params.id}}" >
-    <div id="small-tiles" class="tags-content__four-items {{ 'hidden' if loop.index > 1 }}">
+    <div class="small-tiles tags-content__four-items {{ 'hidden' if loop.index > 1 }}">
       {% for item in params.data.data %}
         {{ contentTileSmall ({
           id: item.id,
