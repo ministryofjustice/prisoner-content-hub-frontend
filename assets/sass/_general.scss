@@ -17,7 +17,6 @@
   text-underline-offset: 2px;
 }
 
-.govuk-hub-comment__sidebar .govuk-hint,
 .govuk-hub-comment .govuk-hint {
   color: govuk-colour('black');
 }
@@ -78,6 +77,10 @@
 }
 
 .govuk-hub-comment-form__footer::after,
+.govuk-hub-feedback-padding {
+  padding-top: govuk-spacing(5);
+}
+
 .govuk-hub-feedback::after {
   content: '';
   display: table;
