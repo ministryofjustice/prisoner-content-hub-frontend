@@ -19,6 +19,7 @@ class CategoryOtherQuery {
       .addFields('node--moj_video_item', CategoryOtherQuery.#TILE_FIELDS)
       .addFields('node--moj_radio_item', CategoryOtherQuery.#TILE_FIELDS)
       .addFields('moj_pdf_item', CategoryOtherQuery.#TILE_FIELDS)
+      .addInclude(['field_moj_thumbnail_image'])
       .getQueryString();
     this.query = `${queryWithoutOffset}&${getPagination(page, limit)}`;
   }

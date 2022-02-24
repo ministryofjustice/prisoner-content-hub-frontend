@@ -6,14 +6,11 @@
       data-item-tags="{{params.secondaryTags}}"
       data-item-categories="{{params.categories}}"
       data-item-feedback-id="{{params.feedbackId}}"
-      class="{{ 'govuk-!-padding-top-2 govuk-hub-comment__sidebar' if params.sidebar else 'govuk-!-padding-top-5 govuk-hub-comment' }}"
+      class="govuk-hub-feedback-padding govuk-hub-comment {{params.classes}}"
   >
-  {% set headingClass %}
-    {{ 'govuk-heading-m' if params.sidebar else 'govuk-body' }}
-  {% endset %}
   <div class="govuk-hub-feedback-ui">
     {% if params.heading != '' %}
-      <h3 class="{{ headingClass }} govuk-hub-feedback-heading">{{ params.heading|default('Give us feedback') }}</h3>
+      <h3 class="govuk-body govuk-hub-feedback-heading">{{ params.heading|default('Give us feedback') }}</h3>
     {% endif %}
     <div class="govuk-hub-feedback">
       <button data-feedback-sentiment
@@ -48,7 +45,7 @@
     </form>
   </div>
   <div class="govuk-hub-feedback-confirmation govuk-u-hidden">
-    <h3 class="{{ headingClass }} govuk-!-font-weight-bold">Thanks for your feedback</h3>
+    <h3 class="govuk-body govuk-!-font-weight-bold">Thanks for your feedback</h3>
     <p class="govuk-body">
       You can read more about what we do with it <a href="{{ knownPages.feedback }}" class="{{ 'govuk-link' if params.sidebar }}">here</a>.
     </p>
