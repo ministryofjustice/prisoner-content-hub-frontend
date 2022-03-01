@@ -34,11 +34,11 @@ const {
   CategoryPageQuery,
 } = require('../../repositories/cmsQueries/categoryPageQuery');
 const {
-  AllSeriesQuery,
-} = require('../../repositories/cmsQueries/allSeriesQuery');
+  CategoryCollectionsQuery,
+} = require('../../repositories/cmsQueries/categoryCollectionsQuery');
 const {
-  CategoryOtherQuery,
-} = require('../../repositories/cmsQueries/categoryOtherQuery');
+  CategoryContentQuery,
+} = require('../../repositories/cmsQueries/categoryContentQuery');
 const {
   SeriesHeaderPageQuery,
 } = require('../../repositories/cmsQueries/seriesHeaderPageQuery');
@@ -688,14 +688,14 @@ describe('cms Service', () => {
           );
         });
         it('returns the category', async () => {
-          expect(cmsApi.get).toHaveBeenCalledTimes(3);
+          expect(cmsApi.get).toHaveBeenCalledTimes(2);
           expect(cmsApi.get).toHaveBeenCalledWith(
             new CategoryPageQuery(ESTABLISHMENT_NAME, uuid),
           );
           expect(result).toStrictEqual({
             ...populatedCategory,
             categorySeries: populatedAllSeries,
-            categoryOther: populatedOther,
+            categoryContent: [],
           });
         });
       });
@@ -721,7 +721,7 @@ describe('cms Service', () => {
           expect(result).toStrictEqual({
             categoryFeaturedContent: [],
             categorySeries: [],
-            categoryOther: [],
+            categoryContent: [],
           });
         });
       });
@@ -877,7 +877,7 @@ describe('cms Service', () => {
         it('returns the series', async () => {
           expect(cmsApi.get).toHaveBeenCalledTimes(1);
           expect(cmsApi.get).toHaveBeenCalledWith(
-            new AllSeriesQuery(ESTABLISHMENT_NAME, uuid, 40, 2),
+            new CategoryCollectionsQuery(ESTABLISHMENT_NAME, uuid, 40, 2),
           );
           expect(result).toBe(populatedSeries);
         });
@@ -903,7 +903,7 @@ describe('cms Service', () => {
         it('returns the other content', async () => {
           expect(cmsApi.get).toHaveBeenCalledTimes(1);
           expect(cmsApi.get).toHaveBeenCalledWith(
-            new CategoryOtherQuery(ESTABLISHMENT_NAME, uuid, 40, 2),
+            new CategoryContentQuery(ESTABLISHMENT_NAME, uuid, 40, 2),
           );
           expect(result).toBe(populatedOtherCategory);
         });

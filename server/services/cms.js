@@ -17,10 +17,12 @@ const {
 const {
   CategoryPageQuery,
 } = require('../repositories/cmsQueries/categoryPageQuery');
-const { AllSeriesQuery } = require('../repositories/cmsQueries/allSeriesQuery');
 const {
-  CategoryOtherQuery,
-} = require('../repositories/cmsQueries/categoryOtherQuery');
+  CategoryCollectionsQuery,
+} = require('../repositories/cmsQueries/categoryCollectionsQuery');
+const {
+  CategoryContentQuery,
+} = require('../repositories/cmsQueries/categoryContentQuery');
 const {
   SuggestionQuery,
 } = require('../repositories/cmsQueries/suggestionQuery');
@@ -61,15 +63,25 @@ class CmsService {
   }
 
   async getCategory(establishmentName, uuid) {
-    const [categoryData, categorySeries, categoryOther] = await Promise.all([
-      this.#cmsApi.get(new CategoryPageQuery(establishmentName, uuid)),
-      this.#cmsApi.get(new AllSeriesQuery(establishmentName, uuid, 40)),
-      this.#cmsApi.get(new CategoryOtherQuery(establishmentName, uuid, 40)),
-    ]);
+    const [[categoryData, categoryContent = []], categorySeries] =
+      await Promise.all([
+        this.#cmsApi
+          .get(new CategoryPageQuery(establishmentName, uuid))
+          .then(async data => {
+            if (!(data?.breadcrumbs?.length >= 1)) return [data];
+            const rawCategoryContent = await this.#cmsApi.get(
+              new CategoryContentQuery(establishmentName, uuid, 40),
+            );
+            return [data, rawCategoryContent];
+          }),
+        this.#cmsApi.get(
+          new CategoryCollectionsQuery(establishmentName, uuid, 40),
+        ),
+      ]);
     return {
       ...categoryData,
       categorySeries,
-      categoryOther,
+      categoryContent,
     };
   }
 
@@ -77,11 +89,11 @@ class CmsService {
     switch (catType) {
       case 'series':
         return this.#cmsApi.get(
-          new AllSeriesQuery(establishmentName, uuid, 40, page),
+          new CategoryCollectionsQuery(establishmentName, uuid, 40, page),
         );
       case 'other':
         return this.#cmsApi.get(
-          new CategoryOtherQuery(establishmentName, uuid, 40, page),
+          new CategoryContentQuery(establishmentName, uuid, 40, page),
         );
       default:
         throw new Error(

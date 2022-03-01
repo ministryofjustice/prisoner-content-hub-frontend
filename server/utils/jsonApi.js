@@ -25,7 +25,7 @@ const getTile = (item, imageSize) => {
   };
 };
 
-const getSeriesTile = (item, imageSize) => {
+const getCollectionTile = (item, imageSize) => {
   const { contentType, externalContent } = typeFrom(item);
   return {
     id: item?.drupalInternal_Tid,
@@ -47,22 +47,29 @@ const isTag = ({ type }) =>
   ].includes(type);
 
 const getSmallTile = item =>
-  isTag(item) ? getSeriesTile(item, 'tile_small') : getTile(item, 'tile_small');
+  isTag(item)
+    ? getCollectionTile(item, 'tile_small')
+    : getTile(item, 'tile_small');
 const getLargeTile = item =>
-  isTag(item) ? getSeriesTile(item, 'tile_large') : getTile(item, 'tile_large');
+  isTag(item)
+    ? getCollectionTile(item, 'tile_large')
+    : getTile(item, 'tile_large');
 
-const getCategoryIds = arr =>
-  arr.map(
-    ({
-      resourceIdObjMeta: { drupal_internal__target_id: id },
-      id: uuid,
-      name,
-    }) => ({
-      id,
-      uuid,
-      name,
-    }),
-  );
+const getCategoryId = categories => {
+  if (!categories || (Array.isArray(categories) && categories.length === 0))
+    return '';
+  const category = Array.isArray(categories) ? categories[0] : categories;
+  const {
+    resourceIdObjMeta: { drupal_internal__target_id: id },
+    id: uuid,
+    name,
+  } = category;
+  return {
+    id,
+    uuid,
+    name,
+  };
+};
 
 const buildSecondaryTags = arr =>
   arr.map(({ drupalInternal_Tid: id, name, id: uuid }) => ({
@@ -102,6 +109,16 @@ const HUB_CONTENT_TYPES = {
     contentType: 'series',
     externalContent: false,
   }),
+  moj_categories: item =>
+    isBottomCategory(item?.childTermCount)
+      ? {
+          contentType: 'category_bottom',
+          externalContent: false,
+        }
+      : {
+          contentType: 'category',
+          externalContent: false,
+        },
   tags: () => ({
     contentType: 'tags',
     externalContent: false,
@@ -113,12 +130,18 @@ const typeFrom = item => {
   return HUB_CONTENT_TYPES[matches ? matches[0] : item?.type](item);
 };
 
+const isBottomCategory = ({
+  sub_categories_count: subCategoriesCount = 0,
+  sub_series_count: subSeriesCount = 0,
+} = {}) => subCategoriesCount === 0 && subSeriesCount === 0;
+
 module.exports = {
   getPagination,
   getSmallTile,
   getLargeTile,
   getLargeImage,
-  getCategoryIds,
+  getCategoryId,
   buildSecondaryTags,
   typeFrom,
+  isBottomCategory,
 };

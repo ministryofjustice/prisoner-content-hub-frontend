@@ -1,7 +1,7 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { getSmallTile, getPagination } = require('../../utils/jsonApi');
 
-class CategoryOtherQuery {
+class CategoryContentQuery {
   static #TILE_FIELDS = [
     'drupal_internal__nid',
     'title',
@@ -15,10 +15,10 @@ class CategoryOtherQuery {
     const queryWithoutOffset = new Query()
       .addFilter('field_moj_top_level_categories.id', uuid)
       .addFilter('field_not_in_series', 1)
-      .addFields('node--page', CategoryOtherQuery.#TILE_FIELDS)
-      .addFields('node--moj_video_item', CategoryOtherQuery.#TILE_FIELDS)
-      .addFields('node--moj_radio_item', CategoryOtherQuery.#TILE_FIELDS)
-      .addFields('moj_pdf_item', CategoryOtherQuery.#TILE_FIELDS)
+      .addFields('node--page', CategoryContentQuery.#TILE_FIELDS)
+      .addFields('node--moj_video_item', CategoryContentQuery.#TILE_FIELDS)
+      .addFields('node--moj_radio_item', CategoryContentQuery.#TILE_FIELDS)
+      .addFields('moj_pdf_item', CategoryContentQuery.#TILE_FIELDS)
       .addInclude(['field_moj_thumbnail_image'])
       .getQueryString();
     this.query = `${queryWithoutOffset}&${getPagination(page, limit)}`;
@@ -31,11 +31,10 @@ class CategoryOtherQuery {
   transform(deserializedResponse, links) {
     if (deserializedResponse.length === 0) return null;
     return {
-      contentType: 'default',
       isLastPage: !links.next,
       data: deserializedResponse.map(getSmallTile),
     };
   }
 }
 
-module.exports = { CategoryOtherQuery };
+module.exports = { CategoryContentQuery };

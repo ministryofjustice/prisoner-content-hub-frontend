@@ -190,7 +190,7 @@
 .content-link--article,
 .content-link--audio,
 .content-link--video,
-.content-link--series {
+.content-link--collection {
   @include govuk-font(19);
   text-decoration: underline;
   color: govuk-colour('white');
@@ -227,8 +227,8 @@
   }
 }
 
-.content-link--series::before {
-  content: url('/public/images/icons/series.svg');
+.content-link--collection::before {
+  content: url('/public/images/icons/collection.svg');
   background-color: govuk-colour('light-purple');
 }
 
