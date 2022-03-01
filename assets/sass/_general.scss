@@ -123,3 +123,11 @@
 .govuk-hub-white-heading {
   color: govuk-colour('white');
 }
+
+.govuk-breadcrumbs li {
+  @extend .govuk-body;
+}
+.govuk-breadcrumbs li a {
+  @extend .govuk-link;
+  @extend .govuk-link--no-visited-state;
+}

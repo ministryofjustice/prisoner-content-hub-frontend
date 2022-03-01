@@ -1,5 +1,6 @@
 {% from "govuk/components/skip-link/macro.njk" import govukSkipLink %}
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {% from "./search/macro.njk" import hubSearch %}
 {% from "./top-bar/macro.njk" import topBar %}
 {% from "./user-details/macro.njk" import userDetails %}
@@ -90,6 +91,13 @@
         </div>
       </div>
     {% endblock %}
+
+    {% if data.breadcrumbs %}
+      <div class="govuk-width-container govuk-body govuk-clearfix">
+        {{ govukBreadcrumbs({ items: data.breadcrumbs }) }}
+      </div>
+    {% endif %}
+
     {% block header %}{% endblock %}
 
     {% block main %}{% endblock %}

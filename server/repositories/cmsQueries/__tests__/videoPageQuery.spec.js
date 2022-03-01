@@ -74,26 +74,22 @@ describe('Video page query', () => {
             alt: 'faith',
           },
         },
-        fieldMojTopLevelCategories: [
-          {
-            type: 'taxonomy_term--moj_categories',
-            id: '8d9eaf09-a53e-42d9-a7be-2a2f04a0f315',
-            name: 'steve',
-            resourceIdObjMeta: {
-              drupal_internal__target_id: 648,
-            },
+        fieldMojTopLevelCategories: {
+          type: 'taxonomy_term--moj_categories',
+          id: '8d9eaf09-a53e-42d9-a7be-2a2f04a0f315',
+          name: 'steve',
+          resourceIdObjMeta: {
+            drupal_internal__target_id: 648,
           },
-        ],
+        },
       };
 
       expect(query.transform(videoPage)).toStrictEqual({
-        categories: [
-          {
-            id: 648,
-            uuid: '8d9eaf09-a53e-42d9-a7be-2a2f04a0f315',
-            name: 'steve',
-          },
-        ],
+        categories: {
+          id: 648,
+          uuid: '8d9eaf09-a53e-42d9-a7be-2a2f04a0f315',
+          name: 'steve',
+        },
         contentType: 'video',
         description: 'Education content for prisoners',
         episodeId: 1036,
