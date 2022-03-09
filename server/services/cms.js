@@ -1,9 +1,7 @@
 const { TopicsQuery } = require('../repositories/cmsQueries/topicsQuery');
 const { HomepageQuery } = require('../repositories/cmsQueries/homePageQuery');
 const { BasicPageQuery } = require('../repositories/cmsQueries/basicPageQuery');
-const {
-  ExternalLinkPageQuery,
-} = require('../repositories/cmsQueries/externalLinkPageQuery');
+const { LinkPageQuery } = require('../repositories/cmsQueries/linkPageQuery');
 const {
   SecondaryTagPageQuery,
 } = require('../repositories/cmsQueries/secondaryTagPageQuery');
@@ -92,12 +90,9 @@ class CmsService {
     }
   }
 
-  async getExternalLink(establishmentName, id) {
-    const { location } = await this.#cmsApi.lookupExternalLink(
-      establishmentName,
-      id,
-    );
-    return this.#cmsApi.get(new ExternalLinkPageQuery(location));
+  async getLink(establishmentName, id) {
+    const { location } = await this.#cmsApi.lookupLink(establishmentName, id);
+    return this.#cmsApi.get(new LinkPageQuery(location));
   }
 
   async getTag(establishmentName, id) {

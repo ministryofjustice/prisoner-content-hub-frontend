@@ -48,6 +48,7 @@ const lastCall = mockFn => mockFn.mock.calls[mockFn.mock.calls.length - 1];
 
 const userSupplier = jest.fn();
 const sessionSupplier = jest.fn();
+const cookieSupplier = jest.fn();
 
 const setupFullApp = (services = {}, { config } = {}) => {
   sessionSupplier.mockReturnValue({
@@ -67,6 +68,7 @@ const setupFullApp = (services = {}, { config } = {}) => {
   app.use((req, res, next) => {
     req.user = userSupplier();
     req.session = sessionSupplier() || {};
+    req.headers.cookie = cookieSupplier() || '';
     next();
   });
   app.use(setCurrentUser);
@@ -82,6 +84,7 @@ module.exports = {
     setupApp: setupFullApp,
     userSupplier,
     sessionSupplier,
+    cookieSupplier,
   },
   logger,
   consoleLogError,

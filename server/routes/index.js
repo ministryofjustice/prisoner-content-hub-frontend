@@ -8,7 +8,7 @@ const { createMoneyRouter } = require('./money');
 const { createApprovedVisitorsRouter } = require('./approvedVisitors');
 const { createProfileRouter } = require('./profile');
 const { createTagRouter } = require('./tags');
-const { createExternalLinkRouter } = require('./externalLink');
+const { createLinkRouter } = require('./link');
 const { createGamesRouter } = require('./games');
 const { createAnalyticsRouter } = require('./analytics');
 const { createFeedbackRouter } = require('./feedback');
@@ -76,7 +76,7 @@ module.exports = (
 
   router.use('/npr', createNprRouter());
   router.use('/tags', createTagRouter({ cmsService }));
-  router.use('/external-link', createExternalLinkRouter({ cmsService }));
+  router.use('/link', createLinkRouter({ cmsService }));
   router.use('/games', createGamesRouter());
   router.use('/analytics', createAnalyticsRouter({ analyticsService }));
   router.use('/feedback', createFeedbackRouter({ feedbackService }));
