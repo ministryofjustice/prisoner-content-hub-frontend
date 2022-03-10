@@ -17,7 +17,7 @@ class SuggestionQuery {
       .addFields('node--page', SuggestionQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', SuggestionQuery.#TILE_FIELDS)
       .addFields('node--moj_radio_item', SuggestionQuery.#TILE_FIELDS)
-      .addFields('moj_pdf_item', SuggestionQuery.#TILE_FIELDS)
+      .addFields('node--moj_pdf_item', SuggestionQuery.#TILE_FIELDS)
       .addFields('file--file', ['image_style_uri'])
       .addInclude(['field_moj_thumbnail_image'])
       .addPageLimit(limit)

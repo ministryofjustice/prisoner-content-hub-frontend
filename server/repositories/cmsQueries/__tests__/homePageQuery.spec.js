@@ -56,9 +56,10 @@ describe('Homepage query', () => {
         fieldFeaturedTileLarge: [
           {
             drupalInternal_Nid: '10002',
-            type: 'external_link',
+            type: 'link',
             fieldMojSeries: {},
             title: 'Yoga',
+            fieldShowInterstitialPage: true,
             fieldMojDescription: { summary: 'Yoga workout' },
             fieldMojThumbnailImage: {
               resourceIdObjMeta: { alt: 'Picture of Yoga workout' },

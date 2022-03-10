@@ -5,7 +5,7 @@ describe('Link page query', () => {
   describe('path', () => {
     it('should create correct path', async () => {
       expect(query.url()).toStrictEqual(
-        'berwyn?fields%5Bnode--external_link%5D=title%2Cdrupal_internal__nid%2Cfield_show_interstitial_page%2Cfield_url',
+        'berwyn?fields%5Bnode--link%5D=title%2Cdrupal_internal__nid%2Cfield_show_interstitial_page%2Cfield_url',
       );
     });
   });
@@ -15,8 +15,8 @@ describe('Link page query', () => {
       const link = {
         drupalInternal_Nid: 1234,
         title: 'BBC weather',
-        fieldUrl: { uri: 'http://some-url' },
-        fieldShowInterstitialPage: 'on',
+        fieldUrl: 'http://some-url',
+        fieldShowInterstitialPage: true,
       };
 
       expect(query.transform(link)).toStrictEqual({

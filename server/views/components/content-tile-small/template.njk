@@ -17,6 +17,8 @@
         <p class="content-link--external">{{ params.displayUrl }}</p>
       {% elif params.contentType === "series" %}
         <p class="content-link--series">Series</p>
+      {% elif params.contentType === "internal_link" %}
+      <p class="content-link--internal"></p>
       {% else %}
         <p class="content-link--article">Read</p>
       {% endif %}

@@ -105,8 +105,14 @@ describe('getting tile data', () => {
         });
       });
 
-      it(' External website content type opens in a new tab', () => {
-        expect(getSmallTile({ ...tileData, type: 'external_link' })).toEqual({
+      it('External website content type', () => {
+        expect(
+          getSmallTile({
+            ...tileData,
+            type: 'link',
+            fieldShowInterstitialPage: true,
+          }),
+        ).toEqual({
           id: 42,
           contentType: 'external_link',
           title: 'title',
@@ -114,6 +120,25 @@ describe('getting tile data', () => {
           contentUrl: '/content/42',
           displayUrl: 'link',
           externalContent: true,
+          image: { url: 'tile_small', alt: 'alt' },
+        });
+      });
+
+      it('Internal website content type', () => {
+        expect(
+          getSmallTile({
+            ...tileData,
+            type: 'link',
+            fieldShowInterstitialPage: false,
+          }),
+        ).toEqual({
+          id: 42,
+          contentType: 'internal_link',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/content/42',
+          displayUrl: 'link',
+          externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
         });
       });
@@ -146,8 +171,14 @@ describe('getting tile data', () => {
         });
       });
 
-      it('External website content type opens in a new tab', () => {
-        expect(getLargeTile({ ...tileData, type: 'external_link' })).toEqual({
+      it('External website content type', () => {
+        expect(
+          getLargeTile({
+            ...tileData,
+            type: 'link',
+            fieldShowInterstitialPage: true,
+          }),
+        ).toEqual({
           id: 42,
           contentType: 'external_link',
           title: 'title',
@@ -155,6 +186,25 @@ describe('getting tile data', () => {
           contentUrl: '/content/42',
           displayUrl: 'link',
           externalContent: true,
+          image: { url: 'tile_large', alt: 'alt' },
+        });
+      });
+
+      it('Internal website content type', () => {
+        expect(
+          getLargeTile({
+            ...tileData,
+            type: 'link',
+            fieldShowInterstitialPage: false,
+          }),
+        ).toEqual({
+          id: 42,
+          contentType: 'internal_link',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/content/42',
+          displayUrl: 'link',
+          externalContent: false,
           image: { url: 'tile_large', alt: 'alt' },
         });
       });
@@ -253,46 +303,46 @@ describe('buildSecondaryTags', () => {
 
 describe('.typeFrom', () => {
   it('should return the correct type for an audio item', () => {
-    expect(typeFrom('moj_radio_item')).toStrictEqual({
+    expect(typeFrom({ type: 'moj_radio_item' })).toStrictEqual({
       contentType: 'radio',
       externalContent: false,
     });
   });
   it('should return the correct type for an video item', () => {
-    expect(typeFrom('moj_video_item')).toStrictEqual({
+    expect(typeFrom({ type: 'moj_video_item' })).toStrictEqual({
       contentType: 'video',
       externalContent: false,
     });
   });
   it('should strip "node--" from the type string', () => {
-    expect(typeFrom('node--moj_video_item')).toStrictEqual({
+    expect(typeFrom({ type: 'node--moj_video_item' })).toStrictEqual({
       contentType: 'video',
       externalContent: false,
     });
   });
   it('should return the correct type for an pdf item', () => {
-    expect(typeFrom('moj_pdf_item')).toStrictEqual({
+    expect(typeFrom({ type: 'moj_pdf_item' })).toStrictEqual({
       contentType: 'pdf',
       externalContent: true,
     });
   });
 
   it('should return the correct type for a page', () => {
-    expect(typeFrom('page')).toStrictEqual({
+    expect(typeFrom({ type: 'page' })).toStrictEqual({
       contentType: 'page',
       externalContent: false,
     });
   });
 
   it('should return the correct type for a series', () => {
-    expect(typeFrom('series')).toStrictEqual({
+    expect(typeFrom({ type: 'series' })).toStrictEqual({
       contentType: 'series',
       externalContent: false,
     });
   });
 
   it('should return the correct type for a secondary tag', () => {
-    expect(typeFrom('tags')).toStrictEqual({
+    expect(typeFrom({ type: 'tags' })).toStrictEqual({
       contentType: 'tags',
       externalContent: false,
     });
@@ -344,8 +394,33 @@ describe('with content tile data', () => {
       });
     });
 
-    it(' External website content type opens in a new tab', () => {
-      expect(getSmallTile({ ...tileData, type: 'external_link' })).toEqual({
+    it('Internal website content type', () => {
+      expect(
+        getSmallTile({
+          ...tileData,
+          type: 'link',
+          fieldShowInterstitialPage: false,
+        }),
+      ).toEqual({
+        id: 42,
+        contentType: 'internal_link',
+        title: 'title',
+        summary: 'summary',
+        contentUrl: '/content/42',
+        displayUrl: 'link',
+        externalContent: false,
+        image: { url: 'tile_small', alt: 'alt' },
+      });
+    });
+
+    it('External website content type', () => {
+      expect(
+        getSmallTile({
+          ...tileData,
+          type: 'link',
+          fieldShowInterstitialPage: true,
+        }),
+      ).toEqual({
         id: 42,
         contentType: 'external_link',
         title: 'title',
@@ -357,6 +432,7 @@ describe('with content tile data', () => {
       });
     });
   });
+
   describe('getPagination', () => {
     it('should return the correct pagination for page zero', () => {
       expect(getPagination(0)).toEqual('page[offset]=0&page[limit]=40');
