@@ -1,7 +1,7 @@
 const express = require('express');
 const Cookies = require('cookies');
 
-const createExternalLinkRouter = ({ cmsService }) => {
+const createLinkRouter = ({ cmsService }) => {
   const router = express.Router();
 
   router.get('/:id', async (req, res, next) => {
@@ -18,12 +18,12 @@ const createExternalLinkRouter = ({ cmsService }) => {
         returnUrl: req.originalUrl,
       };
 
-      const { title, url } = await cmsService.getExternalLink(
+      const { title, url, intercept } = await cmsService.getLink(
         req.session.establishmentName,
         id,
       );
       const cookies = new Cookies(req, res);
-      if (cookies.get(`externalLink_${url}`) === 'true')
+      if (!intercept || cookies.get(`externalLink_${url}`) === 'true')
         return res.redirect(url);
 
       return res.render(`pages/externalLink`, {
@@ -41,5 +41,5 @@ const createExternalLinkRouter = ({ cmsService }) => {
 };
 
 module.exports = {
-  createExternalLinkRouter,
+  createLinkRouter,
 };

@@ -4,8 +4,8 @@ const {
 } = require('../../repositories/cmsQueries/homePageQuery');
 const { TopicsQuery } = require('../../repositories/cmsQueries/topicsQuery');
 const {
-  ExternalLinkPageQuery,
-} = require('../../repositories/cmsQueries/externalLinkPageQuery');
+  LinkPageQuery,
+} = require('../../repositories/cmsQueries/linkPageQuery');
 const {
   BasicPageQuery,
 } = require('../../repositories/cmsQueries/basicPageQuery');
@@ -910,25 +910,23 @@ describe('cms Service', () => {
       });
     });
   });
-  describe('getExternalLink', () => {
+  describe('getLink', () => {
     const EXTERNAL_LINK = 'bob';
     const LOCATION = 'https://cms.org/content/1234';
     beforeEach(() => {
-      cmsApi.lookupExternalLink.mockResolvedValue({
+      cmsApi.lookupLink.mockResolvedValue({
         location: LOCATION,
       });
       cmsApi.get.mockResolvedValue(EXTERNAL_LINK);
     });
     it('returns external link', async () => {
-      const result = await cmsService.getExternalLink(ESTABLISHMENT_NAME);
+      const result = await cmsService.getLink(ESTABLISHMENT_NAME);
       expect(result).toStrictEqual(EXTERNAL_LINK);
     });
 
     it('Source to have been called correctly', async () => {
-      await cmsService.getExternalLink(ESTABLISHMENT_NAME);
-      expect(cmsApi.get).toHaveBeenCalledWith(
-        new ExternalLinkPageQuery(LOCATION),
-      );
+      await cmsService.getLink(ESTABLISHMENT_NAME);
+      expect(cmsApi.get).toHaveBeenCalledWith(new LinkPageQuery(LOCATION));
     });
   });
 });

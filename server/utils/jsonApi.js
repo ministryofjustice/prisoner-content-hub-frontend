@@ -11,8 +11,8 @@ const getImage = (data, type) => {
 
 const getLargeImage = data => getImage(data, 'tile_large');
 
-const getTile = (item, imageSize = 'tile_small') => {
-  const { contentType, externalContent } = typeFrom(item?.type);
+const getTile = (item, imageSize) => {
+  const { contentType, externalContent } = typeFrom(item);
   return {
     id: item?.drupalInternal_Nid,
     contentType,
@@ -25,8 +25,8 @@ const getTile = (item, imageSize = 'tile_small') => {
   };
 };
 
-const getSeriesTile = (item, imageSize = 'tile_small') => {
-  const { contentType, externalContent } = typeFrom(item?.type);
+const getSeriesTile = (item, imageSize) => {
+  const { contentType, externalContent } = typeFrom(item);
   return {
     id: item?.drupalInternal_Tid,
     contentType,
@@ -47,7 +47,7 @@ const isTag = ({ type }) =>
   ].includes(type);
 
 const getSmallTile = item =>
-  isTag(item) ? getSeriesTile(item) : getTile(item);
+  isTag(item) ? getSeriesTile(item, 'tile_small') : getTile(item, 'tile_small');
 const getLargeTile = item =>
   isTag(item) ? getSeriesTile(item, 'tile_large') : getTile(item, 'tile_large');
 
@@ -72,39 +72,45 @@ const buildSecondaryTags = arr =>
   }));
 
 const HUB_CONTENT_TYPES = {
-  moj_radio_item: {
+  moj_radio_item: () => ({
     contentType: 'radio',
     externalContent: false,
-  },
-  moj_video_item: {
+  }),
+  moj_video_item: () => ({
     contentType: 'video',
     externalContent: false,
-  },
-  moj_pdf_item: {
+  }),
+  moj_pdf_item: () => ({
     contentType: 'pdf',
     externalContent: true,
-  },
-  external_link: {
-    contentType: 'external_link',
-    externalContent: true,
-  },
-  page: {
+  }),
+  link: item =>
+    item?.fieldShowInterstitialPage === true
+      ? {
+          contentType: 'external_link',
+          externalContent: true,
+        }
+      : {
+          contentType: 'internal_link',
+          externalContent: false,
+        },
+  page: () => ({
     contentType: 'page',
     externalContent: false,
-  },
-  series: {
+  }),
+  series: () => ({
     contentType: 'series',
     externalContent: false,
-  },
-  tags: {
+  }),
+  tags: () => ({
     contentType: 'tags',
     externalContent: false,
-  },
+  }),
 };
 
-const typeFrom = type => {
-  const matches = type.match(/(?<=--)(.*)/g);
-  return HUB_CONTENT_TYPES[matches ? matches[0] : type];
+const typeFrom = item => {
+  const matches = item?.type.match(/(?<=--)(.*)/g);
+  return HUB_CONTENT_TYPES[matches ? matches[0] : item?.type](item);
 };
 
 module.exports = {

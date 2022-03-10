@@ -36,8 +36,8 @@ class CmsApi {
     return this.#lookup(establishmentName, 'tags', tagId);
   }
 
-  async lookupExternalLink(establishmentName, tagId) {
-    return this.#lookup(establishmentName, 'external-link', tagId);
+  async lookupLink(establishmentName, tagId) {
+    return this.#lookup(establishmentName, 'link', tagId);
   }
 
   async get(query) {

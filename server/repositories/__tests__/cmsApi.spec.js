@@ -280,12 +280,12 @@ describe('CmsApi', () => {
   });
 
   describe('lookup external link', () => {
-    const lookupPath = `/router/prison/berwyn/translate-path?path=external-link/1234`;
+    const lookupPath = `/router/prison/berwyn/translate-path?path=link/1234`;
 
     it('should propagate errors', () => {
       mockDrupal.get(lookupPath).reply(500, 'unexpected error');
 
-      return expect(cmsApi.lookupExternalLink('berwyn', 1234)).rejects.toEqual(
+      return expect(cmsApi.lookupLink('berwyn', 1234)).rejects.toEqual(
         Error('Request failed with status code 500'),
       );
     });
@@ -293,7 +293,7 @@ describe('CmsApi', () => {
     it('propagates 404 as NotFound', () => {
       mockDrupal.get(lookupPath).reply(404, 'unexpected error');
 
-      return expect(cmsApi.lookupExternalLink('berwyn', 1234)).rejects.toEqual(
+      return expect(cmsApi.lookupLink('berwyn', 1234)).rejects.toEqual(
         new NotFound(lookupPath),
       );
     });
@@ -301,7 +301,7 @@ describe('CmsApi', () => {
     it('propagates 403 as NotFound', () => {
       mockDrupal.get(lookupPath).reply(403, 'unexpected error');
 
-      return expect(cmsApi.lookupExternalLink('berwyn', 1234)).rejects.toEqual(
+      return expect(cmsApi.lookupLink('berwyn', 1234)).rejects.toEqual(
         new NotFound(lookupPath),
       );
     });
@@ -317,7 +317,7 @@ describe('CmsApi', () => {
         },
         entity: { uuid: 101 },
       });
-      const response = await cmsApi.lookupExternalLink('berwyn', 1234);
+      const response = await cmsApi.lookupLink('berwyn', 1234);
 
       expect(response).toStrictEqual({
         location: individual,

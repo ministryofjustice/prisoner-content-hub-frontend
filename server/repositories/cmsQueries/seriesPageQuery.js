@@ -23,7 +23,7 @@ class SeriesPageQuery {
       .addFields('node--page', SeriesPageQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', SeriesPageQuery.#TILE_FIELDS)
       .addFields('node--moj_radio_item', SeriesPageQuery.#TILE_FIELDS)
-      .addFields('moj_pdf_item', SeriesPageQuery.#TILE_FIELDS)
+      .addFields('node--moj_pdf_item', SeriesPageQuery.#TILE_FIELDS)
       .addFields('file--file', ['image_style_uri'])
       .addFields('taxonomy_term--series', [
         'name',
