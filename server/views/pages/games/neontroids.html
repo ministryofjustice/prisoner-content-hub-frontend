@@ -1,4 +1,3 @@
-{% from "../../components/page-navigation/macro.njk" import pageNavigation %}
 {% extends "../../components/template.njk" %}
 
 {% block pageTitle %}
@@ -8,10 +7,6 @@
 {% block head %}
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
   <link href="/public/javascript/games/neontroids/neontroids.css" rel="stylesheet" type="text/css"/>
-{% endblock %}
-
-{% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
 {% endblock %}
 
 {% block topBar %}

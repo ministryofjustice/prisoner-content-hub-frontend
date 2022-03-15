@@ -3,6 +3,7 @@ const {
   getLargeImage,
   getCategoryId,
   buildSecondaryTags,
+  mapBreadcrumbs,
 } = require('../../utils/jsonApi');
 
 class AudioPageQuery {
@@ -25,6 +26,7 @@ class AudioPageQuery {
         'field_moj_programme_code',
         'series_sort_value',
         'field_exclude_feedback',
+        'breadcrumbs',
       ])
 
       .addFields('file--file', ['uri', 'image_style_uri'])
@@ -64,6 +66,7 @@ class AudioPageQuery {
       created: item.created,
       title: item.title,
       contentType: 'radio',
+      breadcrumbs: mapBreadcrumbs(item.breadcrumbs, item.title),
       description: item.fieldMojDescription?.processed,
       programmeCode: item.fieldMojProgrammeCode,
       episodeId:

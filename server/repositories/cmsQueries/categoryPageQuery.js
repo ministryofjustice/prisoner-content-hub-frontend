@@ -1,5 +1,5 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getSmallTile } = require('../../utils/jsonApi');
+const { getSmallTile, mapBreadcrumbs } = require('../../utils/jsonApi');
 
 class CategoryPageQuery {
   static #TILE_FIELDS = [
@@ -44,16 +44,12 @@ class CategoryPageQuery {
 
   transform(data) {
     const { name: categoryName = '', breadcrumbs = [] } = data;
-    breadcrumbs.push({ title: categoryName });
     return {
       title: categoryName,
       contentType: 'category',
       description: data?.description?.processed,
       excludeFeedback: data.fieldExcludeFeedback,
-      breadcrumbs: breadcrumbs.map(({ uri: href = '', title: text }) => ({
-        href,
-        text,
-      })),
+      breadcrumbs: mapBreadcrumbs(breadcrumbs, categoryName),
       config: {
         content: true,
         header: false,

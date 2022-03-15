@@ -1,5 +1,4 @@
 {% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "../../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../../components/user-details/macro.njk" import userDetails %}
 {% extends "../../components/template.njk" %}
 
@@ -10,10 +9,6 @@
 {% block head %}
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
   <link href="/public/javascript/games/sn4ke/main.css" rel="stylesheet" type="text/css"/>
-{% endblock %}
-
-{% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
 {% endblock %}
 
 {% block topBar %}

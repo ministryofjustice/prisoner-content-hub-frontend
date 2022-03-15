@@ -3,6 +3,7 @@ const {
   getSmallTile,
   getLargeTile,
   getPagination,
+  mapBreadcrumbs,
 } = require('../../utils/jsonApi');
 
 class SecondaryTagPageQuery {
@@ -32,6 +33,7 @@ class SecondaryTagPageQuery {
         'field_featured_image',
         'path',
         'field_exclude_feedback',
+        'breadcrumbs',
       ])
       .addInclude([
         'field_moj_thumbnail_image',
@@ -51,6 +53,7 @@ class SecondaryTagPageQuery {
     return {
       ...getLargeTile(item),
       excludeFeedback: item.fieldExcludeFeedback,
+      breadcrumbs: mapBreadcrumbs(item.breadcrumbs, item.name),
     };
   };
 

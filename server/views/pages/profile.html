@@ -2,7 +2,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
-{% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../components/user-details/macro.njk" import userDetails %}
 {% from "../components/card/macro.njk" import card, imageCard, cardSensitiveData %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
@@ -15,10 +14,6 @@
 
 {% block head %}
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
 {% endblock %}
 
 {% block topBar %}

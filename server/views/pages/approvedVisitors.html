@@ -1,5 +1,4 @@
 {% from "moj/components/pagination/macro.njk" import mojPagination %}
-{% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../components/user-details/macro.njk" import userDetails %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 
@@ -12,10 +11,6 @@
 
 {% block head %}
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
 {% endblock %}
 
 {% block topBar %}

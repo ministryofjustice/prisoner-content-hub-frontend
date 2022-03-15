@@ -1,6 +1,5 @@
 {% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "../../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../../components/user-details/macro.njk" import userDetails %}
 {% extends "../../components/template.njk" %}
 
@@ -16,10 +15,6 @@
     background-color: #f3f2f1;
   }
   </style>
-{% endblock %}
-
-{% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
 {% endblock %}
 
 {% block topBar %}

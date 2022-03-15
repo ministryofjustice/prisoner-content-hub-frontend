@@ -3,7 +3,6 @@
 {% extends "../components/template.njk" %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../components/user-details/macro.njk" import userDetails %}
 
 {% block pageTitle %}
@@ -12,10 +11,6 @@
 
 {% block head %}
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
 {% endblock %}
 
 {% block topBar %}

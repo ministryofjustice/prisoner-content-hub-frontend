@@ -5,7 +5,7 @@ describe('Basic page query', () => {
   describe('url', () => {
     it('should create correct path', async () => {
       expect(query.url()).toStrictEqual(
-        'https://cms/content/1234?include=field_moj_secondary_tags%2Cfield_moj_top_level_categories&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Ccreated%2Cfield_moj_description%2Cfield_moj_stand_first%2Cfield_moj_secondary_tags%2Cfield_moj_series%2Cfield_moj_top_level_categories%2Cfield_exclude_feedback&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname&fields%5Btaxonomy_term--moj_categories%5D=drupal_internal__tid%2Cname',
+        'https://cms/content/1234?include=field_moj_secondary_tags%2Cfield_moj_top_level_categories&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Ccreated%2Cfield_moj_description%2Cfield_moj_stand_first%2Cfield_moj_secondary_tags%2Cfield_moj_series%2Cfield_moj_top_level_categories%2Cfield_exclude_feedback%2Cbreadcrumbs&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname&fields%5Btaxonomy_term--moj_categories%5D=drupal_internal__tid%2Cname',
       );
     });
   });
@@ -16,6 +16,7 @@ describe('Basic page query', () => {
         drupalInternal_Nid: 5923,
         title: 'Novus',
         type: 'node--node--page',
+        breadcrumbs: [{ uri: 'parent1Url', title: 'parent1' }],
         created: '2020-01-03T01:02:30',
         fieldMojDescription: { processed: 'Education content for prisoners' },
         fieldExcludeFeedback: true,
@@ -35,6 +36,10 @@ describe('Basic page query', () => {
         title: 'Novus',
         created: '2020-01-03T01:02:30',
         contentType: 'page',
+        breadcrumbs: [
+          { href: 'parent1Url', text: 'parent1' },
+          { href: '', text: 'Novus' },
+        ],
         description: 'Education content for prisoners',
         excludeFeedback: true,
         standFirst: 'Education',
@@ -49,6 +54,7 @@ describe('Basic page query', () => {
         created: '2020-01-03T01:02:30',
         title: 'Novus',
         type: 'node--node--page',
+        breadcrumbs: [{ uri: 'parent1Url', title: 'parent1' }],
         fieldExcludeFeedback: true,
         fieldMojStandFirst: 'Education',
         fieldMojTopLevelCategories: {
@@ -66,6 +72,10 @@ describe('Basic page query', () => {
         created: '2020-01-03T01:02:30',
         title: 'Novus',
         contentType: 'page',
+        breadcrumbs: [
+          { href: 'parent1Url', text: 'parent1' },
+          { href: '', text: 'Novus' },
+        ],
         description: undefined,
         excludeFeedback: true,
         standFirst: 'Education',

@@ -22,6 +22,9 @@
     returnUrl: config.returnUrl
   }) }}
 {% endblock %}
+{% block pageNavigation %}
+  {# Do not display the page navigation on the home page #}
+{% endblock %}
 
 {% block userDetails %}
   <div class="govuk-width-container">

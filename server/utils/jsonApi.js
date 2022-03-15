@@ -71,7 +71,7 @@ const getCategoryId = categories => {
   };
 };
 
-const buildSecondaryTags = arr =>
+const buildSecondaryTags = (arr = []) =>
   arr.map(({ drupalInternal_Tid: id, name, id: uuid }) => ({
     id,
     uuid,
@@ -135,6 +135,16 @@ const isBottomCategory = ({
   sub_series_count: subSeriesCount = 0,
 } = {}) => subCategoriesCount === 0 && subSeriesCount === 0;
 
+const mapBreadcrumbs = (rawBreadcrumbs = [], self = '') => {
+  const breadcrumbs = self
+    ? [...rawBreadcrumbs, { title: self }]
+    : rawBreadcrumbs;
+  return breadcrumbs.map(({ uri: href = '', title: text }) => ({
+    href,
+    text,
+  }));
+};
+
 module.exports = {
   getPagination,
   getSmallTile,
@@ -144,4 +154,5 @@ module.exports = {
   buildSecondaryTags,
   typeFrom,
   isBottomCategory,
+  mapBreadcrumbs,
 };
