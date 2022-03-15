@@ -2,7 +2,9 @@
 
 <div class="page-navigation">
   <nav class="govuk-width-container">
-    <a href="/" class="govuk-link">Homepage</a>
+    {% if not params.hideHomePage %}
+      <a href="/" class="govuk-link">Homepage</a>
+    {% endif %}
     <a href="" class="govuk-link" id="go-back">Back</a>
     <a href="" class="govuk-link" id="go-forwards">Forward</a>
     <div>

@@ -1,7 +1,7 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const {
   getLargeImage,
-  getCategoryIds,
+  getCategoryId,
   buildSecondaryTags,
 } = require('../../utils/jsonApi');
 
@@ -74,7 +74,7 @@ class VideoPageQuery {
       seriesName: item.fieldMojSeries?.name,
       seriesSortValue: item.seriesSortValue,
       media: item.fieldVideo?.uri?.url,
-      categories: getCategoryIds(item.fieldMojTopLevelCategories),
+      categories: getCategoryId(item.fieldMojTopLevelCategories),
       secondaryTags: buildSecondaryTags(item.fieldMojSecondaryTags),
       image: getLargeImage(item.fieldMojThumbnailImage),
       excludeFeedback: item.fieldExcludeFeedback,

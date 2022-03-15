@@ -3,9 +3,10 @@ const {
   getLargeImage,
   getLargeTile,
   getSmallTile,
-  getCategoryIds,
+  getCategoryId,
   buildSecondaryTags,
   typeFrom,
+  isBottomCategory,
 } = require('../jsonApi');
 
 const LARGE_TILE = 'enormous.jpg';
@@ -210,8 +211,8 @@ describe('getting tile data', () => {
       });
     });
   });
-  describe('with tag tile data', () => {
-    const tileData = {
+  describe('with series tag tile data', () => {
+    const seriesTileData = {
       drupalInternal_Tid: 42,
       type: 'taxonomy_term--series',
       name: 'title',
@@ -229,7 +230,7 @@ describe('getting tile data', () => {
     };
     describe('getSmallTile', () => {
       it('should return the small tile data', () => {
-        expect(getSmallTile(tileData)).toEqual({
+        expect(getSmallTile(seriesTileData)).toEqual({
           id: 42,
           contentType: 'series',
           title: 'title',
@@ -241,7 +242,7 @@ describe('getting tile data', () => {
       });
     });
     describe('getLargeTile', () => {
-      const result = getLargeTile(tileData);
+      const result = getLargeTile(seriesTileData);
       it('should return the large tile data', () => {
         expect(result).toEqual({
           id: 42,
@@ -255,27 +256,74 @@ describe('getting tile data', () => {
       });
     });
   });
+  describe('with category tag tile data', () => {
+    const categoryTileData = {
+      drupalInternal_Tid: 42,
+      type: 'taxonomy_term--moj_categories',
+      name: 'title',
+      description: { processed: 'summary' },
+      fieldFeaturedImage: {
+        imageStyleUri: [
+          {
+            tile_small: 'tile_small',
+            tile_large: 'tile_large',
+          },
+        ],
+        resourceIdObjMeta: { alt: 'alt' },
+      },
+      path: { alias: '/tags/42' },
+      childTermCount: {
+        sub_categories_count: 1,
+        sub_series_count: 0,
+      },
+    };
+    describe('getSmallTile', () => {
+      it('should return the small tile for a category', () => {
+        expect(getSmallTile(categoryTileData)).toEqual({
+          id: 42,
+          contentType: 'category',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/tags/42',
+          externalContent: false,
+          image: { url: 'tile_small', alt: 'alt' },
+        });
+      });
+      it('should return the small tile data for a bottom category', () => {
+        const bottomCategoryTileData = {
+          ...categoryTileData,
+          childTermCount: {
+            sub_categories_count: 0,
+            sub_series_count: 0,
+          },
+        };
+        expect(getSmallTile(bottomCategoryTileData)).toEqual({
+          id: 42,
+          contentType: 'category_bottom',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/tags/42',
+          externalContent: false,
+          image: { url: 'tile_small', alt: 'alt' },
+        });
+      });
+    });
+  });
 });
 
-describe('getCategoryIds', () => {
+describe('getCategoryId', () => {
   const ID1 = '42';
   const UUID1 = '418';
-  const ID2 = '101';
-  const UUID2 = '404';
-  const categoryData = [
-    { resourceIdObjMeta: { drupal_internal__target_id: ID1 }, id: UUID1 },
-    { resourceIdObjMeta: { drupal_internal__target_id: ID2 }, id: UUID2 },
-    { resourceIdObjMeta: { drupal_internal__target_id: ID1 }, id: UUID2 },
-    { resourceIdObjMeta: { drupal_internal__target_id: ID2 }, id: UUID1 },
-  ];
-  const result = getCategoryIds(categoryData);
+  const categoryData = {
+    resourceIdObjMeta: { drupal_internal__target_id: ID1 },
+    id: UUID1,
+  };
+  const result = getCategoryId(categoryData);
   it('should return the category ids', () => {
-    expect(result).toEqual([
-      { id: ID1, uuid: UUID1 },
-      { id: ID2, uuid: UUID2 },
-      { id: ID1, uuid: UUID2 },
-      { id: ID2, uuid: UUID1 },
-    ]);
+    expect(result).toEqual({ id: ID1, uuid: UUID1 });
+  });
+  it('should cater for legacy receiving an array and return the category id from the first element', () => {
+    expect(getCategoryId([categoryData])).toEqual({ id: ID1, uuid: UUID1 });
   });
 });
 
@@ -301,7 +349,7 @@ describe('buildSecondaryTags', () => {
   });
 });
 
-describe('.typeFrom', () => {
+describe('typeFrom', () => {
   it('should return the correct type for an audio item', () => {
     expect(typeFrom({ type: 'moj_radio_item' })).toStrictEqual({
       contentType: 'radio',
@@ -346,6 +394,33 @@ describe('.typeFrom', () => {
       contentType: 'tags',
       externalContent: false,
     });
+  });
+});
+
+describe('isBottomCategory', () => {
+  it('should return true, if no sub categories', () => {
+    expect(
+      isBottomCategory({
+        sub_categories_count: 0,
+        sub_series_count: 0,
+      }),
+    ).toBeTruthy();
+  });
+  it('should not update the type, if is category with sub categories', () => {
+    expect(
+      isBottomCategory({
+        sub_categories_count: 1,
+        sub_series_count: 0,
+      }),
+    ).toBeFalsy();
+  });
+  it('should not update the type, if is category with series', () => {
+    expect(
+      isBottomCategory({
+        sub_categories_count: 0,
+        sub_series_count: 1,
+      }),
+    ).toBeFalsy();
   });
 });
 

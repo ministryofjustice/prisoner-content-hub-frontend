@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
+  {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs }) }}
 {% endblock %}
 
 {% block topBar %}
@@ -41,8 +41,8 @@
 {% endblock %}
 
 {% block header %}
-  <div class="govuk-width-container govuk-body govuk-clearfix hub-header">
-    <div>
+  <div class="govuk-width-container govuk-body govuk-clearfix">
+    <div class="hub-header">
       <h1 class="govuk-heading-l" id="title">{{ title }}</h1>
     </div>
   </div>
@@ -51,7 +51,7 @@
   <div class="govuk-body">
     {% if data.categoryFeaturedContent.length > 0 %}
       <section class="govuk-!-margin-bottom-9">
-        <h2 class="govuk-heading-l govuk-hub-white-heading">Highlights</h2>
+        <h2 class="govuk-heading-l govuk-hub-white-heading">Featured</h2>
         {{ hubRelatedContent({
           data: { contentType:"default",isLastPage:true, data:data.categoryFeaturedContent },
           lazyLoadContent: true
@@ -61,7 +61,7 @@
     {% endif %}
     {% if data.categorySeries.data.length > 0 %}
       <section id="seriesTiles"class="govuk-!-margin-bottom-9 govuk-!-margin-top-5">
-        <h2 class="govuk-heading-l  govuk-hub-white-heading">All series</h2>
+        <h2 class="govuk-heading-l  govuk-hub-white-heading">In this section</h2>
         {{ hubRelatedContent({
           data: { contentType:data.categorySeries.contentType ,isLastPage:data.categorySeries.isLastPage, data:data.categorySeries.data },
           lazyLoadContent: true
@@ -69,11 +69,11 @@
       </section>
       <hr>
     {% endif %}
-    {% if data.categoryOther.data.length > 0 %}
+    {% if data.categoryContent.data.length > 0 %}
       <section id="otherContentTiles" class="govuk-!-margin-bottom-9 govuk-!-margin-top-5">
         <h2 class="govuk-heading-l  govuk-hub-white-heading">Content</h2>
         {{ hubRelatedContent({
-          data: { contentType:data.categoryOther.contentType ,isLastPage:data.categoryOther.isLastPage, data:data.categoryOther.data },
+          data: { contentType:data.categoryContent.contentType ,isLastPage:data.categoryContent.isLastPage, data:data.categoryContent.data },
           lazyLoadContent: true
         }) }}
       </section>
