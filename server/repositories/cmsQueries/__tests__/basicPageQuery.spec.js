@@ -20,13 +20,14 @@ describe('Basic page query', () => {
         fieldMojDescription: { processed: 'Education content for prisoners' },
         fieldExcludeFeedback: true,
         fieldMojStandFirst: 'Education',
-        fieldMojTopLevelCategories: [
-          {
-            resourceIdObjMeta: { drupal_internal__target_id: 1234 },
-            name: 'steve',
-          },
+        fieldMojTopLevelCategories: {
+          resourceIdObjMeta: { drupal_internal__target_id: 1234 },
+          name: 'steve',
+          id: 101,
+        },
+        fieldMojSecondaryTags: [
+          { drupalInternal_Tid: 2345, name: 'carol', id: 101 },
         ],
-        fieldMojSecondaryTags: [{ drupalInternal_Tid: 2345, name: 'carol' }],
       };
 
       expect(query.transform(basicPage)).toStrictEqual({
@@ -37,8 +38,8 @@ describe('Basic page query', () => {
         description: 'Education content for prisoners',
         excludeFeedback: true,
         standFirst: 'Education',
-        categories: [{ id: 1234, name: 'steve' }],
-        secondaryTags: [{ id: 2345, name: 'carol' }],
+        categories: { id: 1234, name: 'steve', uuid: 101 },
+        secondaryTags: [{ id: 2345, name: 'carol', uuid: 101 }],
       });
     });
 
@@ -50,13 +51,14 @@ describe('Basic page query', () => {
         type: 'node--node--page',
         fieldExcludeFeedback: true,
         fieldMojStandFirst: 'Education',
-        fieldMojTopLevelCategories: [
-          {
-            resourceIdObjMeta: { drupal_internal__target_id: 1234 },
-            name: 'steve',
-          },
+        fieldMojTopLevelCategories: {
+          resourceIdObjMeta: { drupal_internal__target_id: 1234 },
+          name: 'steve',
+          id: 101,
+        },
+        fieldMojSecondaryTags: [
+          { drupalInternal_Tid: 2345, name: 'carol', id: 101 },
         ],
-        fieldMojSecondaryTags: [{ drupalInternal_Tid: 2345, name: 'carol' }],
       };
 
       expect(query.transform(basicPage)).toStrictEqual({
@@ -67,8 +69,8 @@ describe('Basic page query', () => {
         description: undefined,
         excludeFeedback: true,
         standFirst: 'Education',
-        categories: [{ id: 1234, name: 'steve' }],
-        secondaryTags: [{ id: 2345, name: 'carol' }],
+        categories: { id: 1234, name: 'steve', uuid: 101 },
+        secondaryTags: [{ id: 2345, name: 'carol', uuid: 101 }],
       });
     });
   });
