@@ -1,4 +1,5 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
+const { getCategoryId, buildSecondaryTags } = require('../../utils/jsonApi');
 
 class BasicPageQuery {
   constructor(location) {
@@ -33,20 +34,6 @@ class BasicPageQuery {
     return `${this.location}?${this.query}`;
   }
 
-  #flattenDrupalInternalTargetId = arr =>
-    arr.map(
-      ({ resourceIdObjMeta: { drupal_internal__target_id: id }, name }) => ({
-        id,
-        name,
-      }),
-    );
-
-  #buildSecondaryTags = arr =>
-    arr.map(({ drupalInternal_Tid: id, name }) => ({
-      id,
-      name,
-    }));
-
   transform(item) {
     return {
       id: item.drupalInternal_Nid,
@@ -55,10 +42,8 @@ class BasicPageQuery {
       contentType: 'page',
       description: item.fieldMojDescription?.processed,
       standFirst: item.fieldMojStandFirst,
-      categories: this.#flattenDrupalInternalTargetId(
-        item.fieldMojTopLevelCategories,
-      ),
-      secondaryTags: this.#buildSecondaryTags(item.fieldMojSecondaryTags),
+      categories: getCategoryId(item.fieldMojTopLevelCategories),
+      secondaryTags: buildSecondaryTags(item.fieldMojSecondaryTags),
       excludeFeedback: item.fieldExcludeFeedback,
     };
   }
