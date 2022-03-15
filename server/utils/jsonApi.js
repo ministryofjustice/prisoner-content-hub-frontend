@@ -56,7 +56,8 @@ const getLargeTile = item =>
     : getTile(item, 'tile_large');
 
 const getCategoryId = categories => {
-  if (!categories) return '';
+  if (!categories || (Array.isArray(categories) && categories.length === 0))
+    return '';
   const category = Array.isArray(categories) ? categories[0] : categories;
   const {
     resourceIdObjMeta: { drupal_internal__target_id: id },
