@@ -5,40 +5,63 @@ describe('Topics query', () => {
   describe('path', () => {
     it('should create correct path', async () => {
       expect(query.path()).toStrictEqual(
-        '/jsonapi/prison/berwyn/taxonomy_term?filter%5Bvid.meta.drupal_internal__target_id%5D%5Bcondition%5D%5Bpath%5D=vid.meta.drupal_internal__target_id&filter%5Bvid.meta.drupal_internal__target_id%5D%5Bcondition%5D%5Bvalue%5D%5B0%5D=moj_categories&filter%5Bvid.meta.drupal_internal__target_id%5D%5Bcondition%5D%5Bvalue%5D%5B1%5D=tags&filter%5Bvid.meta.drupal_internal__target_id%5D%5Bcondition%5D%5Boperator%5D=IN&page%5Blimit%5D=100&sort=name&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname%2Cdescription&fields%5Btaxonomy_term--moj_categories%5D=drupal_internal__tid%2Cname%2Cdescription',
+        '/jsonapi/prison/berwyn/taxonomy_term?filter%5Bvid.meta.drupal_internal__target_id%5D=tags&page%5Blimit%5D=100&sort=name&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname',
       );
     });
   });
 
   describe('transform', () => {
-    it('should create correct tag structure', async () => {
-      const tagItem = {
-        drupalInternal_Tid: 1234,
-        name: 'prisoner',
-        description: { processed: 'Living in prison' },
-        type: 'taxonomy_term--tags',
-      };
+    it('should create correct structure', async () => {
+      const items = [
+        {
+          drupalInternal_Tid: 1,
+          name: 'Castle',
+          type: 'taxonomy_term--tags',
+        },
+        {
+          drupalInternal_Tid: 2,
+          name: 'Apple',
+          type: 'taxonomy_term--tags',
+        },
+        {
+          drupalInternal_Tid: 3,
+          name: 'Beach',
+          type: 'taxonomy_term--tags',
+        },
+        {
+          drupalInternal_Tid: 4,
+          name: 'basket',
+          type: 'taxonomy_term--tags',
+        },
+      ];
 
-      expect(query.transformEach(tagItem)).toStrictEqual({
-        id: 1234,
-        linkText: 'prisoner',
-        description: 'Living in prison',
-        href: '/tags/1234',
-      });
-    });
-    it('should create correct category structure', async () => {
-      const categoryItem = {
-        name: '2',
-        description: { processed: '3' },
-        type: '4',
-        drupalInternal_Tid: '1',
-      };
-
-      expect(query.transformEach(categoryItem)).toStrictEqual({
-        description: '3',
-        href: '/tags/1',
-        id: '1',
-        linkText: '2',
+      expect(query.transform(items)).toStrictEqual({
+        A: [
+          {
+            href: '/tags/2',
+            id: 2,
+            linkText: 'Apple',
+          },
+        ],
+        B: [
+          {
+            href: '/tags/3',
+            id: 3,
+            linkText: 'Beach',
+          },
+          {
+            href: '/tags/4',
+            id: 4,
+            linkText: 'basket',
+          },
+        ],
+        C: [
+          {
+            href: '/tags/1',
+            id: 1,
+            linkText: 'Castle',
+          },
+        ],
       });
     });
   });

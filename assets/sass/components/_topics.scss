@@ -12,23 +12,17 @@
       -webkit-column-break-inside: avoid;
       page-break-inside: avoid;
       break-inside: avoid;
-      margin: 0 0 govuk-spacing(4);
+      margin: 0 0 govuk-spacing(6);
     }
 
     dt {
       margin: 0 0 govuk-spacing(1);
-      a {
-        display: inline-block;
-        @include govuk-font(24);
-        text-decoration: none;
-        font-weight: 700;
-      }
     }
 
     dd {
-      margin: 0;
-      font-family: 'GDS Transport', Arial, sans-serif;
-      @include govuk-font(19);
+      margin: 0 0 govuk-spacing(2);
+      @include govuk-font(24);
+      font-weight: 700;
       p {
         margin-block-start: 0;
       }

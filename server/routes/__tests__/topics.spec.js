@@ -34,10 +34,10 @@ describe('GET /topics', () => {
       app.use('/topics', router);
       app.use(consoleLogError);
 
-      cmsService.getTopics.mockReturnValue([
-        { linkText: 'foo', href: '/content/foo' },
-        { linkText: 'bar', href: '/content/bar' },
-      ]);
+      cmsService.getTopics.mockReturnValue({
+        A: [{ linkText: 'foo', href: '/content/foo' }],
+        B: [{ linkText: 'bar', href: '/content/bar' }],
+      });
     });
 
     it('exceptions call the error middleware', async () => {
@@ -61,17 +61,10 @@ describe('GET /topics', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
           const topics = $('.hub-topics dl dt');
-          expect(topics.length).toBe(
-            2,
-            'The full list of topics should be rendered to the page',
-          );
-          expect(topics.first().find('a').text()).toContain(
-            'foo',
-            'The correct topic label should be rendered',
-          );
+          expect(topics.length).toBe(2);
+          expect(topics.first().find('a').text()).toContain('foo');
           expect(topics.first().find('a').attr('href')).toContain(
             '/content/foo',
-            'The correct topic link should be rendered',
           );
         }));
 
