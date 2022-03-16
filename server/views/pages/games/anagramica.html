@@ -1,7 +1,6 @@
 {% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "../../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../../components/user-details/macro.njk" import userDetails %}
 {% extends "../../components/template.njk" %}
 
@@ -13,10 +12,6 @@
 {% block head %}
 	<link href="/public/javascript/games/anagramica/stylesheets/style.css" rel="stylesheet"/>
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
 {% endblock %}
 
 {% block topBar %}

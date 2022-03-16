@@ -1,7 +1,6 @@
 {% from "../components/next-episodes-content/macro.njk" import nextEpisodesContent %}
 {% from "../components/suggested-content/macro.njk" import hubSuggestedContent %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../components/user-details/macro.njk" import userDetails %}
 
 {% extends "../components/template.njk" %}
@@ -13,10 +12,6 @@
 {% block head %}
   <link href="/public/video-js.min.css" rel="stylesheet"/>
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
 {% endblock %}
 
 {% block topBar %}
@@ -88,7 +83,7 @@
             contentType: data.contentType,
             series: data.seriesName,
             feedbackId: feedbackId,
-            categories: data.categories,
+            categories: data.categories.id,
             secondaryTags: data.secondaryTags | join(',', 'id')
           }) }}
         </div>

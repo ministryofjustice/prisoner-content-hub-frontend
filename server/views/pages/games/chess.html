@@ -1,6 +1,5 @@
 {% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "../../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../../components/user-details/macro.njk" import userDetails %}
 {% extends "../../components/template.njk" %}
 
@@ -15,10 +14,6 @@
   <script src="/public/javascript/games/chess/jquery.min.js"></script>
   <script src="/public/javascript/games/chess/chess.min.js"></script>
   <script src="/public/javascript/games/chess/chessboard-1.0.0.min.js"></script>
-{% endblock %}
-
-{% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
 {% endblock %}
 
 {% block topBar %}

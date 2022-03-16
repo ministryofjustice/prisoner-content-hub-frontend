@@ -3,6 +3,7 @@ const {
   getLargeTile,
   getSmallTile,
   getPagination,
+  mapBreadcrumbs,
 } = require('../../utils/jsonApi');
 
 class SeriesPageQuery {
@@ -32,6 +33,7 @@ class SeriesPageQuery {
         'field_featured_image',
         'path',
         'field_exclude_feedback',
+        'breadcrumbs',
       ])
       .addInclude([
         'field_moj_thumbnail_image',
@@ -48,10 +50,11 @@ class SeriesPageQuery {
 
   transform(deserializedResponse, links) {
     if (deserializedResponse.length === 0) return null;
+    const series = deserializedResponse[0].fieldMojSeries;
     return {
-      excludeFeedback:
-        deserializedResponse[0].fieldMojSeries.fieldExcludeFeedback,
-      ...getLargeTile(deserializedResponse[0].fieldMojSeries),
+      excludeFeedback: series.fieldExcludeFeedback,
+      ...getLargeTile(series),
+      breadcrumbs: mapBreadcrumbs(series?.breadcrumbs, series.name),
       ...{
         relatedContent: {
           contentType: 'default',

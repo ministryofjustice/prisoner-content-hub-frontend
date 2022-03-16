@@ -1,6 +1,5 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
-{% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../components/user-details/macro.njk" import userDetails %}
 {% from "../components/content-tile-large/macro.njk" import contentTileLarge %}
 {% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
@@ -14,10 +13,6 @@
 
 {% block head %}
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
 {% endblock %}
 
 {% block topBar %}

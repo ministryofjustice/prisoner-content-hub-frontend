@@ -1,6 +1,7 @@
 {% from "govuk/components/skip-link/macro.njk" import govukSkipLink %}
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
 {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "./search/macro.njk" import hubSearch %}
 {% from "./top-bar/macro.njk" import topBar %}
 {% from "./user-details/macro.njk" import userDetails %}
@@ -75,7 +76,9 @@
         showBar: false
       }) }}
     {% endblock %}
-    {% block pageNavigation %}{% endblock %}
+    {% block pageNavigation %}
+      {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs  }) }}
+    {% endblock %}
 
     {% block notification %}{% endblock %}
 

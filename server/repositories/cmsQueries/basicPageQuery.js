@@ -1,5 +1,9 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getCategoryId, buildSecondaryTags } = require('../../utils/jsonApi');
+const {
+  mapBreadcrumbs,
+  getCategoryId,
+  buildSecondaryTags,
+} = require('../../utils/jsonApi');
 
 class BasicPageQuery {
   constructor(location) {
@@ -16,6 +20,7 @@ class BasicPageQuery {
         'field_moj_series',
         'field_moj_top_level_categories',
         'field_exclude_feedback',
+        'breadcrumbs',
       ])
       .addFields('taxonomy_term--tags', ['drupal_internal__tid', 'name'])
       .addFields('taxonomy_term--moj_categories', [
@@ -40,6 +45,7 @@ class BasicPageQuery {
       title: item.title,
       created: item.created,
       contentType: 'page',
+      breadcrumbs: mapBreadcrumbs(item.breadcrumbs, item.title),
       description: item.fieldMojDescription?.processed,
       standFirst: item.fieldMojStandFirst,
       categories: getCategoryId(item.fieldMojTopLevelCategories),

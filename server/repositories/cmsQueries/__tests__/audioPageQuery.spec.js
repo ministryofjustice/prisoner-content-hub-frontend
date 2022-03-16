@@ -5,7 +5,7 @@ describe('Audio page query', () => {
   describe('url', () => {
     it('should create correct path', async () => {
       expect(query.url()).toStrictEqual(
-        'https://cms/content/1234?include=field_moj_thumbnail_image%2Cfield_moj_series%2Cfield_moj_audio%2Cfield_moj_secondary_tags%2Cfield_moj_top_level_categories&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Ccreated%2Cfield_moj_audio%2Cfield_moj_description%2Cfield_moj_secondary_tags%2Cfield_moj_series%2Cfield_moj_season%2Cfield_moj_episode%2Cfield_moj_top_level_categories%2Cfield_moj_thumbnail_image%2Cfield_moj_programme_code%2Cseries_sort_value%2Cfield_exclude_feedback&fields%5Bfile--file%5D=uri%2Cimage_style_uri&fields%5Btaxonomy_term--series%5D=drupal_internal__tid%2Cname%2Cpath&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname%2Cpath&fields%5Btaxonomy_term--moj_categories%5D=drupal_internal__tid%2Cname',
+        'https://cms/content/1234?include=field_moj_thumbnail_image%2Cfield_moj_series%2Cfield_moj_audio%2Cfield_moj_secondary_tags%2Cfield_moj_top_level_categories&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Ccreated%2Cfield_moj_audio%2Cfield_moj_description%2Cfield_moj_secondary_tags%2Cfield_moj_series%2Cfield_moj_season%2Cfield_moj_episode%2Cfield_moj_top_level_categories%2Cfield_moj_thumbnail_image%2Cfield_moj_programme_code%2Cseries_sort_value%2Cfield_exclude_feedback%2Cbreadcrumbs&fields%5Bfile--file%5D=uri%2Cimage_style_uri&fields%5Btaxonomy_term--series%5D=drupal_internal__tid%2Cname%2Cpath&fields%5Btaxonomy_term--tags%5D=drupal_internal__tid%2Cname%2Cpath&fields%5Btaxonomy_term--moj_categories%5D=drupal_internal__tid%2Cname',
       );
     });
   });
@@ -24,6 +24,11 @@ describe('Audio page query', () => {
         fieldMojProgrammeCode: 'FAITH138',
         fieldMojSeason: 1,
         seriesSortValue: 1001,
+
+        breadcrumbs: [
+          { uri: 'parent1Url', title: 'parent1' },
+          { uri: 'parent2Url', title: 'parent2' },
+        ],
 
         fieldMojAudio: {
           type: 'file--file',
@@ -92,6 +97,11 @@ describe('Audio page query', () => {
           uuid: '8d9eaf09-a53e-42d9-a7be-2a2f04a0f315',
           name: 'steve',
         },
+        breadcrumbs: [
+          { href: 'parent1Url', text: 'parent1' },
+          { href: 'parent2Url', text: 'parent2' },
+          { href: '', text: 'Buddhist reflection: 29 July' },
+        ],
         contentType: 'radio',
         created: '2020-01-03T01:02:30',
         description: 'Education content for prisoners',

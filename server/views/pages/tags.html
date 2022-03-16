@@ -1,16 +1,11 @@
 {% from "../components/related-content/macro.njk" import hubRelatedContent %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "../components/user-details/macro.njk" import userDetails %}
 
 {% extends "../components/template.njk" %}
 
 {% block pageTitle %}
   {{ title }}
-{% endblock %}
-
-{% block pageNavigation %}
-  {{ pageNavigation({ title: title }) }}
 {% endblock %}
 
 {% block topBar %}

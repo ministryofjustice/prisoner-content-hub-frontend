@@ -3,6 +3,7 @@ const {
   getLargeImage,
   getCategoryId,
   buildSecondaryTags,
+  mapBreadcrumbs,
 } = require('../../utils/jsonApi');
 
 class VideoPageQuery {
@@ -24,6 +25,7 @@ class VideoPageQuery {
         'field_moj_thumbnail_image',
         'series_sort_value',
         'field_exclude_feedback',
+        'breadcrumbs',
       ])
 
       .addFields('file--file', ['uri', 'image_style_uri'])
@@ -63,6 +65,7 @@ class VideoPageQuery {
       created: item.created,
       title: item.title,
       contentType: 'video',
+      breadcrumbs: mapBreadcrumbs(item.breadcrumbs, item.title),
       description: item.fieldMojDescription?.processed,
       episodeId:
         item.fieldMojSeason !== undefined && item.fieldMojEpisode !== undefined
