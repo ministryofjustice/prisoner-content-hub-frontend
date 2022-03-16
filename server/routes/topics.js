@@ -14,7 +14,7 @@ const createTopicsRouter = ({ cmsService }) => {
       const topics = await cmsService.getTopics(establishmentName);
 
       res.render('pages/topics', {
-        title: 'Browse the Content Hub',
+        title: 'Browse all topics',
         allTopics: topics,
         config: {
           content: false,
