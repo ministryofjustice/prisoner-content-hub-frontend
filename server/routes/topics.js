@@ -16,9 +16,7 @@ const createTopicsRouter = ({ cmsService }) => {
 
       res.render('pages/topics', {
         title: 'Browse all topics',
-        allTopics: groupBy(topics, item =>
-          item.linkText.charAt(0).toUpperCase(),
-        ),
+        topics: groupBy(topics, item => item.linkText.charAt(0).toUpperCase()),
         config: {
           content: false,
           header: false,
