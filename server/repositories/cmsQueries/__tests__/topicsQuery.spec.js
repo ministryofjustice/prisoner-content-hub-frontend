@@ -12,56 +12,15 @@ describe('Topics query', () => {
 
   describe('transform', () => {
     it('should create correct structure', async () => {
-      const items = [
-        {
-          drupalInternal_Tid: 1,
-          name: 'Castle',
-          type: 'taxonomy_term--tags',
-        },
-        {
-          drupalInternal_Tid: 2,
-          name: 'Apple',
-          type: 'taxonomy_term--tags',
-        },
-        {
-          drupalInternal_Tid: 3,
-          name: 'Beach',
-          type: 'taxonomy_term--tags',
-        },
-        {
-          drupalInternal_Tid: 4,
-          name: 'basket',
-          type: 'taxonomy_term--tags',
-        },
-      ];
-
-      expect(query.transform(items)).toStrictEqual({
-        A: [
-          {
-            href: '/tags/2',
-            id: 2,
-            linkText: 'Apple',
-          },
-        ],
-        B: [
-          {
-            href: '/tags/3',
-            id: 3,
-            linkText: 'Beach',
-          },
-          {
-            href: '/tags/4',
-            id: 4,
-            linkText: 'basket',
-          },
-        ],
-        C: [
-          {
-            href: '/tags/1',
-            id: 1,
-            linkText: 'Castle',
-          },
-        ],
+      const item = {
+        drupalInternal_Tid: 2,
+        name: 'Apple',
+        type: 'taxonomy_term--tags',
+      };
+      expect(query.transformEach(item)).toStrictEqual({
+        href: '/tags/2',
+        id: 2,
+        linkText: 'Apple',
       });
     });
   });

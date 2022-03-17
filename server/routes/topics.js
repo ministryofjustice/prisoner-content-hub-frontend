@@ -1,4 +1,5 @@
 const express = require('express');
+const { groupBy } = require('../utils');
 
 const createTopicsRouter = ({ cmsService }) => {
   const router = express.Router();
@@ -15,7 +16,9 @@ const createTopicsRouter = ({ cmsService }) => {
 
       res.render('pages/topics', {
         title: 'Browse all topics',
-        allTopics: topics,
+        allTopics: groupBy(topics, item =>
+          item.linkText.charAt(0).toUpperCase(),
+        ),
         config: {
           content: false,
           header: false,

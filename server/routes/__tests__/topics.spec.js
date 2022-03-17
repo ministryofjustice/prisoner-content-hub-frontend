@@ -34,10 +34,10 @@ describe('GET /topics', () => {
       app.use('/topics', router);
       app.use(consoleLogError);
 
-      cmsService.getTopics.mockReturnValue({
-        A: [{ linkText: 'foo', href: '/content/foo' }],
-        B: [{ linkText: 'bar', href: '/content/bar' }],
-      });
+      cmsService.getTopics.mockReturnValue([
+        { linkText: 'foo', href: '/content/foo' },
+        { linkText: 'bar', href: '/content/bar' },
+      ]);
     });
 
     it('exceptions call the error middleware', async () => {

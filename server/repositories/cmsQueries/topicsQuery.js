@@ -1,5 +1,4 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { groupBy } = require('../../utils');
 
 class TopicsQuery {
   static #QUERYSTRING = new Query()
@@ -19,19 +18,12 @@ class TopicsQuery {
     }`;
   }
 
-  toItem({ drupalInternal_Tid: id, name }) {
+  transformEach({ drupalInternal_Tid: id, name }) {
     return {
       id,
       linkText: name,
       href: `/tags/${id}`,
     };
-  }
-
-  transform(items) {
-    const transformedItems = items.map(this.toItem);
-    return groupBy(transformedItems, item =>
-      item.linkText.charAt(0).toUpperCase(),
-    );
   }
 }
 
