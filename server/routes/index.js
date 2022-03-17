@@ -15,6 +15,7 @@ const { createFeedbackRouter } = require('./feedback');
 const { createSearchRouter } = require('./search');
 const { createNprRouter } = require('./npr');
 const createPrimaryNavigationMiddleware = require('../middleware/primaryNavigationMiddleware');
+const retrieveTopicList = require('../middleware/retrieveTopicList');
 
 module.exports = (
   {
@@ -45,7 +46,10 @@ module.exports = (
       '/games',
       '^/search/?$',
     ],
-    createPrimaryNavigationMiddleware(cmsService),
+    [
+      createPrimaryNavigationMiddleware(cmsService),
+      retrieveTopicList(cmsService),
+    ],
   );
 
   router.use(

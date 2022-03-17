@@ -8,6 +8,7 @@ const {
   consoleLogError,
 } = require('../../../test/test-helpers');
 const setCurrentUser = require('../../middleware/setCurrentUser');
+const retrieveTopicList = require('../../middleware/retrieveTopicList');
 
 describe('GET /', () => {
   let featuredItem;
@@ -42,6 +43,10 @@ describe('GET /', () => {
         lowerFeatured: featuredItemWithId('large'),
         smallTiles: new Array(4).fill(featuredItemWithId('small')),
       }),
+      getTopics: jest.fn().mockResolvedValue([
+        { linkText: 'foo', href: '/content/foo' },
+        { linkText: 'bar', href: '/content/bar' },
+      ]),
     };
   });
 
@@ -92,6 +97,10 @@ describe('GET /', () => {
         next();
       });
       app.use(setCurrentUser);
+      app.use(
+        ['^/$', '/content', '/npr', '/tags'],
+        retrieveTopicList(cmsService),
+      );
       app.use(router);
       app.use(consoleLogError);
       userSupplier.mockReturnValue(testUser);
@@ -301,5 +310,14 @@ describe('GET /', () => {
           expect($('[data-test="event-error"]').length).toBe(1);
         });
     });
+
+    it('returns topics footer', () =>
+      request(app)
+        .get('/')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('.govuk-footer__list-item').length).toBe(2);
+        }));
   });
 });
