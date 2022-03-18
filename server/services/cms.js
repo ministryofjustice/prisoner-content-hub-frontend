@@ -32,6 +32,9 @@ const { PdfPageQuery } = require('../repositories/cmsQueries/pdfPageQuery');
 const {
   NextEpisodeQuery,
 } = require('../repositories/cmsQueries/nextEpisodeQuery');
+const {
+  PrimaryNavigationQuery,
+} = require('../repositories/cmsQueries/PrimaryNavigationQuery');
 
 class CmsService {
   #cmsApi;
@@ -218,6 +221,10 @@ class CmsService {
         createdDate,
       ),
     );
+  }
+
+  async getPrimaryNavigation(establishmentName) {
+    return this.#cmsApi.get(new PrimaryNavigationQuery(establishmentName));
   }
 }
 

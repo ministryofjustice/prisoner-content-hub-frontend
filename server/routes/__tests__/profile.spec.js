@@ -14,11 +14,14 @@ describe('GET /profile', () => {
     getVisitsRemaining: jest.fn().mockResolvedValue({}),
     getBalancesFor: jest.fn().mockResolvedValue({}),
   };
+  const cmsService = {
+    getPrimaryNavigation: jest.fn().mockResolvedValue([]),
+  };
 
   let app;
 
   beforeEach(() => {
-    app = setupApp({ offenderService });
+    app = setupApp({ offenderService, cmsService });
     userSupplier.mockReturnValue(user);
   });
 

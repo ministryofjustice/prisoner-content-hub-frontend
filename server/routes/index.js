@@ -14,6 +14,7 @@ const { createAnalyticsRouter } = require('./analytics');
 const { createFeedbackRouter } = require('./feedback');
 const { createSearchRouter } = require('./search');
 const { createNprRouter } = require('./npr');
+const createPrimaryNavigationMiddleware = require('../middleware/primaryNavigationMiddleware');
 
 module.exports = (
   {
@@ -29,6 +30,23 @@ module.exports = (
   establishmentData,
 ) => {
   const router = express.Router();
+
+  router.use(
+    [
+      '^/$',
+      '/content',
+      '/npr',
+      '/tags',
+      '/topics',
+      '/timetable',
+      '/money',
+      '/approved-visitors',
+      '/profile',
+      '/games',
+      '^/search/?$',
+    ],
+    createPrimaryNavigationMiddleware(cmsService),
+  );
 
   router.use(
     '/',
