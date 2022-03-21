@@ -13,7 +13,6 @@ const createTimetableRouter = ({ offenderService }) => {
         detailsType: 'small',
         lastWeek: false,
         nextWeek: false,
-        returnUrl: req.originalUrl,
       };
 
       let events = [];
@@ -48,7 +47,6 @@ const createTimetableRouter = ({ offenderService }) => {
         detailsType: 'small',
         lastWeek: true,
         nextWeek: false,
-        returnUrl: req.originalUrl,
       };
 
       let events = [];
@@ -84,7 +82,6 @@ const createTimetableRouter = ({ offenderService }) => {
         detailsType: 'small',
         lastWeek: false,
         nextWeek: true,
-        returnUrl: req.originalUrl,
       };
 
       let events = [];

@@ -1,5 +1,4 @@
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "../components/user-details/macro.njk" import userDetails %}
 {% extends "../components/template.njk" %}
 
 {% block pageTitle %}
@@ -8,23 +7,6 @@
 
 {% block head %}
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block topBar %}
-  {{ topBar({
-    establishmentDisplayName: establishmentDisplayName,
-    showBar: false,
-    isSignedIn: isSignedIn,
-    returnUrl: config.returnUrl
-  }) }}
-{% endblock %}
-
-{% block userDetails %}
-  {{ userDetails({
-    detailsType: 'small',
-    isSignedIn: isSignedIn,
-    userName: userName
-  }) }}
 {% endblock %}
 
 {% block header %}{% endblock %}

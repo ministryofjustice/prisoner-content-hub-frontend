@@ -1,10 +1,8 @@
-<div class="govuk-width-container{% if params.detailsType !== 'large' %} user-details{% endif %}">
-  <div>
-    {% if params.isSignedIn and params.userName %}
-      <h2 class="govuk-body user-details-{{ params.detailsType }}" data-test="user-name" data-hj-suppress>{{ params.userName }}</h2>
-    {% endif %}
-  </div>
-  {% if params.detailsType !== 'large' and not params.hideBar %}
-    <hr class="govuk-section-break govuk-search-section-break--visible">
+<div class="govuk-hub-userDetails">
+  {% if params.isSignedIn and params.userName %}
+    <h3 data-test="user-name" data-hj-suppress>{{ params.userName }}</h3>
+    <a class="govuk-link govuk-!-margin-left-4" href="/auth/sign-out?returnUrl={{ params.returnUrl }}">Sign out</a>
+  {% elseif not params.hideSignInLink%}
+    <a href="/auth/sign-in?returnUrl={{ params.returnUrl }}" class="govuk-link govuk-!-margin-left-4">Sign in</a>
   {% endif %}
 </div>

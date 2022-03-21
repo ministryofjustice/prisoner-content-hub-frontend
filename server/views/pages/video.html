@@ -14,23 +14,6 @@
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
 {% endblock %}
 
-{% block topBar %}
-  {{ topBar({
-    establishmentDisplayName: establishmentDisplayName,
-    showBar: false,
-    isSignedIn: isSignedIn,
-    returnUrl: config.returnUrl
-  }) }}
-{% endblock %}
-
-{% block userDetails %}
-  {{ userDetails({
-    detailsType: 'large',
-    isSignedIn: isSignedIn,
-    userName: userName
-  }) }}
-{% endblock %}
-
 {% block header %}{% endblock %}
 {% block homeNavigation %}{% endblock %}
 {% block search %}{% endblock %}

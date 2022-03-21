@@ -1,5 +1,4 @@
 {% from "moj/components/pagination/macro.njk" import mojPagination %}
-{% from "../components/user-details/macro.njk" import userDetails %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 
 
@@ -11,23 +10,6 @@
 
 {% block head %}
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block topBar %}
-  {{ topBar({
-    establishmentDisplayName: establishmentDisplayName,
-    showBar: false,
-    isSignedIn: isSignedIn,
-    returnUrl: returnUrl
-  }) }}
-{% endblock %}
-
-{% block userDetails %}
-  {{ userDetails({
-    detailsType: detailsType,
-    isSignedIn: isSignedIn,
-    userName: userName
-  }) }}
 {% endblock %}
 
 {% block header %}

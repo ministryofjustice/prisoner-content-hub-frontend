@@ -28,7 +28,6 @@ const createSearchRouter = ({ searchService, analyticsService }) => {
           header: false,
           postscript: false,
           detailsType: 'small',
-          returnUrl: req.originalUrl,
         },
         data: results,
         query,

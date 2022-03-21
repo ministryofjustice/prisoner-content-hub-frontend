@@ -1,6 +1,5 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
-{% from "../components/user-details/macro.njk" import userDetails %}
 {% from "../components/content-tile-large/macro.njk" import contentTileLarge %}
 {% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
@@ -13,23 +12,6 @@
 
 {% block head %}
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block topBar %}
-  {{ topBar({
-    establishmentDisplayName: establishmentDisplayName,
-    showBar: false,
-    isSignedIn: isSignedIn,
-    returnUrl: config.returnUrl
-  }) }}
-{% endblock %}
-
-{% block userDetails %}
-  {{ userDetails({
-    detailsType: 'small',
-    isSignedIn: isSignedIn,
-    userName: userName
-  }) }}
 {% endblock %}
 
 {% block header %}

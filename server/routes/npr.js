@@ -12,7 +12,6 @@ const createNprRouter = () => {
       header: false,
       postscript: false,
       detailsType: 'small',
-      returnUrl: req.originalUrl,
     };
 
     return res.render('pages/npr', {

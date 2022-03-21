@@ -9,15 +9,6 @@
   <link href="/public/javascript/games/neontroids/neontroids.css" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
-{% block topBar %}
-  {{ topBar({
-    establishmentDisplayName: establishmentDisplayName,
-    showBar: false,
-    isSignedIn: isSignedIn,
-    returnUrl: config.returnUrl
-  }) }}
-{% endblock %}
-
 {% block userDetails %}{% endblock %}
 {% block header %}{% endblock %}
 {% block homeNavigation %}{% endblock %}

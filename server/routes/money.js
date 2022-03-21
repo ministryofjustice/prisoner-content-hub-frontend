@@ -42,7 +42,6 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
           header: false,
           postscript: true,
           detailsType: 'small',
-          returnUrl: req.originalUrl,
         },
       };
 
@@ -75,7 +74,6 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
             header: false,
             postscript: true,
             detailsType: 'small',
-            returnUrl: req.originalUrl,
           },
         };
 
@@ -136,7 +134,6 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
           header: false,
           postscript: true,
           detailsType: 'small',
-          returnUrl: req.originalUrl,
         },
       };
 
@@ -196,7 +193,6 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
           header: false,
           postscript: true,
           detailsType: 'small',
-          returnUrl: req.originalUrl,
         },
       };
 
