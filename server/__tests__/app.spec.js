@@ -319,6 +319,7 @@ function app(opts = {}) {
     cmsService: {
       getHomepage: jest.fn().mockResolvedValue([]),
       getPrimaryNavigation: jest.fn().mockResolvedValue([]),
+      getTopics: jest.fn().mockResolvedValue([]),
     },
     offenderService: {
       getOffenderDetailsFor: jest.fn().mockResolvedValue({}),

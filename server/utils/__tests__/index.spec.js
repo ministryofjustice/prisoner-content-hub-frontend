@@ -1,4 +1,9 @@
-const { capitalize, capitalizeAll, capitalizePersonName } = require('../index');
+const {
+  capitalize,
+  capitalizeAll,
+  capitalizePersonName,
+  groupBy,
+} = require('../index');
 
 describe('Utils', () => {
   describe('capitalize', () => {
@@ -118,6 +123,19 @@ describe('Utils', () => {
     ].forEach(test => {
       it(`should capitalize "${test.input}" to "${test.output}"`, () => {
         expect(capitalizePersonName(test.input)).toBe(test.output);
+      });
+    });
+  });
+
+  describe('groupBy', () => {
+    it('empty', () => {
+      expect(groupBy([], i => i)).toStrictEqual({});
+    });
+    it('some values', () => {
+      expect(groupBy(['a', 'bb', 'ccc', 'dd'], i => i.length)).toStrictEqual({
+        1: ['a'],
+        2: ['bb', 'dd'],
+        3: ['ccc'],
       });
     });
   });

@@ -14,19 +14,23 @@ describe('GET /profile', () => {
     getVisitsRemaining: jest.fn().mockResolvedValue({}),
     getBalancesFor: jest.fn().mockResolvedValue({}),
   };
-  const cmsService = {
-    getPrimaryNavigation: jest.fn().mockResolvedValue([]),
-  };
 
   let app;
 
   beforeEach(() => {
+    const cmsService = {
+      getPrimaryNavigation: jest.fn().mockResolvedValue([]),
+      getTopics: jest.fn().mockReturnValue([]),
+    };
     app = setupApp({ offenderService, cmsService });
     userSupplier.mockReturnValue(user);
   });
 
   it('prompts the user to sign in when they are signed out', () => {
-    sessionSupplier.mockReturnValue({ isSignedIn: false });
+    sessionSupplier.mockReturnValue({
+      establishmentName: 'berwyn',
+      isSignedIn: false,
+    });
     return request(app)
       .get('/profile')
       .expect(200)
@@ -249,7 +253,7 @@ describe('GET /profile', () => {
           const $ = cheerio.load(response.text);
 
           expect($('[data-test="incentivesLink"] a').attr('href')).toBe(
-            '/tags/874',
+            '/tags/1417',
           );
         }));
   });
@@ -385,7 +389,7 @@ describe('GET /profile', () => {
           const $ = cheerio.load(response.text);
 
           expect($('[data-test="visitsLink"] a').attr('href')).toBe(
-            '/tags/873',
+            '/tags/1133',
           );
         }));
   });

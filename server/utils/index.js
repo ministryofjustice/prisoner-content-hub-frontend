@@ -72,6 +72,15 @@ function capitalizePersonName(input, separator = ' ') {
     .join(separator);
 }
 
+function groupBy(items, keyAccessor) {
+  return items.reduce((acc, item) => {
+    const key = keyAccessor(item);
+    const bucket = acc[key] || [];
+    acc[key] = [...bucket, item];
+    return acc;
+  }, {});
+}
+
 module.exports = {
   getEstablishmentId,
   getEstablishment,
@@ -81,4 +90,5 @@ module.exports = {
   capitalize,
   capitalizeAll,
   capitalizePersonName,
+  groupBy,
 };

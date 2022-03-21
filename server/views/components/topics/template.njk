@@ -1,12 +1,14 @@
-<section class="hub-topics">
+<section class="hub-topics govuk-body">
   <dl>
-    {% for item in params.data %}
+  {% for letter, items in params.data %}
     <div>
-      <dt><a href="{{ item.href }}" title="{{ item.linkText }}" class="govuk-link govuk-link--no-visited-state">{{ item.linkText }}</a></dt>
-      {% if item.description %}
-        <dd>{{ item.description | safe }}</dd>
-      {% endif %}
+      <dd>{{letter}}</dd>
+      {% for item in items %}
+        <dt>
+          <a href="{{ item.href }}" title="{{ item.linkText }}" class="govuk-link govuk-link--no-visited-state">{{ item.linkText }}</a>
+        </dt>
+      {% endfor %}
     </div>
-    {% endfor %}
+  {% endfor %}
   </dl>
 </section>
