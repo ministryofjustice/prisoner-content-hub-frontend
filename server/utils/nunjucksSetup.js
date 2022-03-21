@@ -51,5 +51,20 @@ module.exports = expressApp => {
     },
   );
 
+  nunjucksEnv.addFilter(
+    'makeCurrentPrimaryCategoryActive',
+    (primaryNavigation, currentUrl, breadcrumbs = []) => {
+      const currentPrimaryCategory = primaryNavigation.find(navItem => {
+        const { href: navItemHref } = navItem;
+        return (
+          currentUrl === navItemHref ||
+          breadcrumbs.find(({ href }) => href === navItemHref)
+        );
+      });
+      if (currentPrimaryCategory) currentPrimaryCategory.active = true;
+      return primaryNavigation;
+    },
+  );
+
   return nunjucksEnv;
 };

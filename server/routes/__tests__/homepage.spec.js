@@ -171,18 +171,6 @@ describe('GET /', () => {
           expect($('#search-wrapper').length).toBe(1);
         }));
 
-    it('renders the home page links menu', () =>
-      request(app)
-        .get('/')
-        .then(response => {
-          const $ = cheerio.load(response.text);
-
-          expect($('div.popular-topics').first().find('ul li').length).toBe(
-            9,
-            'Correct number of menu items',
-          );
-        }));
-
     it('renders the home page events for today', () => {
       const currentEvents = {
         events: [

@@ -1,6 +1,7 @@
 {% from "govuk/components/skip-link/macro.njk" import govukSkipLink %}
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
 {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{%- from "moj/components/primary-navigation/macro.njk" import mojPrimaryNavigation -%}
 {% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "./search/macro.njk" import hubSearch %}
 {% from "./top-bar/macro.njk" import topBar %}
@@ -75,6 +76,14 @@
         establishmentDisplayName: establishmentDisplayName,
         showBar: false
       }) }}
+    {% endblock %}
+    {% block primaryNav %}
+      {% if primaryNavigation | length > 0 %}
+        {{ mojPrimaryNavigation({
+          label: 'Primary navigation',
+          items: primaryNavigation | makeCurrentPrimaryCategoryActive(originalUrl, data.breadcrumbs)
+        }) }}
+      {% endif %}
     {% endblock %}
     {% block pageNavigation %}
       {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs  }) }}

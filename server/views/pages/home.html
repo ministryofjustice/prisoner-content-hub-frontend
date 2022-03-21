@@ -49,16 +49,6 @@
           isStartButton: true
         }) }}
       </div>
-      <div class="popular-topics">
-        <h3 class="govuk-heading-s">Popular topics</h3>
-        <ul>
-          {% for itemtitle, link in links %}
-            <li>
-              <a href="{{link}}" class="govuk-link">{{itemtitle}}</a>
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
     </div>
       {% if establishmentName != 'berwyn' %}
         {{personalScheduleToday({ data: currentEvents, authReturnUrl: returnUrl }, userName if isSignedIn else '')}}
