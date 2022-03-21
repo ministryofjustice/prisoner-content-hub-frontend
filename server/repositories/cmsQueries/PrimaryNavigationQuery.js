@@ -9,7 +9,7 @@ class PrimaryNavigationQuery {
   }
 
   path() {
-    return `/jsonapi/menu_items/${this.establishmentName}?${this.query}`;
+    return `/jsonapi/prison/${this.establishmentName}/primary_navigation?${this.query}`;
   }
 
   transformEach({ title: text, url: href }) {
