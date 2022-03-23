@@ -44,11 +44,7 @@
 .govuk-hub-media-player__description {
   margin: govuk-spacing(6) 0;
 
-  p {
-    color: govuk-colour('white');
-  }
-
-  a {
+  * {
     color: govuk-colour('white');
   }
 }
