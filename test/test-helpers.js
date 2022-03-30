@@ -50,7 +50,10 @@ const userSupplier = jest.fn();
 const sessionSupplier = jest.fn();
 const cookieSupplier = jest.fn();
 
-const setupFullApp = (services = {}, { config } = {}) => {
+const setupFullApp = (
+  services = {},
+  { config, establishmentData = {} } = {},
+) => {
   sessionSupplier.mockReturnValue({
     isSignedIn: true,
     id: 1234,
@@ -72,7 +75,7 @@ const setupFullApp = (services = {}, { config } = {}) => {
     next();
   });
   app.use(setCurrentUser);
-  app.use(routes(services));
+  app.use(routes(services, establishmentData));
   app.use(consoleLogError);
 
   return app;
