@@ -14,6 +14,7 @@ const { createAnalyticsRouter } = require('./analytics');
 const { createFeedbackRouter } = require('./feedback');
 const { createSearchRouter } = require('./search');
 const { createNprRouter } = require('./npr');
+const { createHelpRouter } = require('./help');
 const createPrimaryNavigationMiddleware = require('../middleware/primaryNavigationMiddleware');
 const retrieveTopicList = require('../middleware/retrieveTopicList');
 
@@ -106,6 +107,8 @@ module.exports = (
     '/search',
     createSearchRouter({ searchService, analyticsService }),
   );
+
+  router.use('/help', createHelpRouter(establishmentData));
 
   router.use('*', (req, res) => {
     res.status(404);

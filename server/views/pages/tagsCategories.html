@@ -76,11 +76,11 @@
     {% endif %}
   </div>
 
-  
+
   {% if not data.excludeFeedback %}
     <div class="govuk-form-group govuk-hub-on-black-feedback">
       {% set tagHeading %}
-        Tell us what you think about this {{'series' if data.contentType == 'series' else 'topic'}}:
+        Tell us what you think about this page
       {% endset %}
       {{ hubFeedbackWidget({
         contentId: data.id,

@@ -3,6 +3,7 @@ const {
   capitalizeAll,
   capitalizePersonName,
   groupBy,
+  getEstablishmentIsYoi,
 } = require('../index');
 
 describe('Utils', () => {
@@ -137,6 +138,17 @@ describe('Utils', () => {
         2: ['bb', 'dd'],
         3: ['ccc'],
       });
+    });
+  });
+  describe('help route', () => {
+    const adultEstablishment = 792;
+    const youthEstablishment = 959;
+    it('adult establishment should be called', () => {
+      expect(getEstablishmentIsYoi(adultEstablishment)).toEqual(false);
+    });
+
+    it('youth establishment should should be called', () => {
+      expect(getEstablishmentIsYoi(youthEstablishment)).toEqual(true);
     });
   });
 });
