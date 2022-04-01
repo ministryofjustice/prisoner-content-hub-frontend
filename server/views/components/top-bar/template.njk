@@ -1,18 +1,14 @@
+{% from "../search/macro.njk" import hubSearch %}
+
 <header class="govuk-header top-bar-container" data-module="header">
   <div class="govuk-width-container top-bar">
     <h1 class="govuk-heading-m">
       <img class="hub-logo" src="/public/images/icons/content-hub.png" alt="logo">
       <a href="/" style="">Content Hub <span>{{ params.establishmentDisplayName }}</span></a>
     </h1>
-    <div class="timeLogout">
-      <div class="top-bar-time{% if params.isSignedIn %} loggedIn{% endif %}">
-        <span data-target-id="todays-date">&nbsp;</span>
-        <span data-target-id="todays-time"></span>
-      </div>
-      {% if params.isSignedIn %}
-        <a href="/auth/sign-out?returnUrl={{ params.returnUrl }}">Sign out</a>
-      {% endif %}
-    </div>
+    {% if params.showSearch %}
+      {{ hubSearch({ query: params.searchQuery, small: true }) }}
+    {% endif %}
   </div>
 </header>
-<hr class="govuk-section-break govuk-search-section-break--visible">
+<hr class="govuk-section-break govuk-top-bar-break--visible">

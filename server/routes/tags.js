@@ -30,7 +30,6 @@ const createTagRouter = ({ cmsService }) => {
         header: false,
         postscript: false,
         detailsType: 'small',
-        returnUrl: req.originalUrl,
       };
 
       const data = await cmsService.getTag(

@@ -10,29 +10,12 @@
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
 {% endblock %}
 
-{% block topBar %}
-  {{ topBar({
-    establishmentDisplayName: establishmentDisplayName,
-    showBar: false,
-    isSignedIn: isSignedIn,
-    returnUrl: config.returnUrl
-  }) }}
-{% endblock %}
-
-{% block userDetails %}
-  {{ userDetails({
-    detailsType: config.detailsType,
-    isSignedIn: isSignedIn,
-    userName: userName
-  }) }}
-{% endblock %}
-
 {% block header %}{% endblock %}
 {% block homeNavigation %}{% endblock %}
 {% block search %}{% endblock %}
 
 {% block main %}
-  <div class="govuk-width-container">
+  <div class="govuk-width-container govuk-!-padding-top-5">
     <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">

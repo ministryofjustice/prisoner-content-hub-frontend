@@ -22,7 +22,6 @@ const createTopicsRouter = ({ cmsService }) => {
           header: false,
           postscript: true,
           detailsType: 'small',
-          returnUrl: req.originalUrl,
         },
       });
     } catch (e) {

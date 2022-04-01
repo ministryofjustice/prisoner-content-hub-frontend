@@ -25,6 +25,7 @@ const defaultAuthMiddleware = require('./auth/middleware');
 const routes = require('./routes');
 const { NotFound } = require('./repositories/apiError');
 const setCurrentUser = require('./middleware/setCurrentUser');
+const setReturnUrl = require('./middleware/setReturnUrl');
 
 const createApp = services => {
   const {
@@ -244,7 +245,7 @@ const createApp = services => {
   // establishment toggle
   app.use(configureEstablishment);
 
-  app.use(setCurrentUser);
+  app.use([setCurrentUser, setReturnUrl]);
 
   // Routing
   if (!process.env.HOTJAR_ID) {

@@ -3,7 +3,6 @@
 {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {%- from "moj/components/primary-navigation/macro.njk" import mojPrimaryNavigation -%}
 {% from "../components/page-navigation/macro.njk" import pageNavigation %}
-{% from "./search/macro.njk" import hubSearch %}
 {% from "./top-bar/macro.njk" import topBar %}
 {% from "./user-details/macro.njk" import userDetails %}
 
@@ -74,7 +73,7 @@
     {% block topBar %}
       {{ topBar({
         establishmentDisplayName: establishmentDisplayName,
-        showBar: false
+        showSearch: true
       }) }}
     {% endblock %}
     {% block primaryNav %}
@@ -85,23 +84,25 @@
         }) }}
       {% endif %}
     {% endblock %}
-    {% block pageNavigation %}
-      {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs  }) }}
-    {% endblock %}
-
-    {% block notification %}{% endblock %}
-
-    {% block userDetails %}{% endblock %}
-    {% block homeNavigation %}{% endblock %}
-
-    {% block search %}
+    {% block notificationUserDetailsBar %}
       <div class="govuk-width-container">
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-full govuk-!-margin-top-2">
-            {{ hubSearch({ query: query }) }}
-          </div>
+        <div class="govuk-hub-navigationUserDetailsBar">
+          {% block pageNavigation %}
+            {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs  }) }}
+          {% endblock %}
+          {% block userDetails %}
+            {% if establishmentName != 'berwyn' %}
+              {{ userDetails({
+                hideSignInLink: hideSignInLink,
+                isSignedIn: isSignedIn,
+                userName: userName,
+                returnUrl: returnUrl
+              }) }}
+            {% endif %}
+          {% endblock %}
         </div>
       </div>
+      <hr class="govuk-width-container govuk-section-break govuk-section-break--s govuk-section-break--visible">
     {% endblock %}
 
     {% if data.breadcrumbs %}

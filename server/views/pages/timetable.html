@@ -15,23 +15,6 @@
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
 {% endblock %}
 
-{% block topBar %}
-  {{ topBar({
-    establishmentDisplayName: establishmentDisplayName,
-    showBar: false,
-    isSignedIn: isSignedIn,
-    returnUrl: config.returnUrl
-  }) }}
-{% endblock %}
-
-{% block userDetails %}
-  {{ userDetails({
-    detailsType: config.detailsType,
-    isSignedIn: isSignedIn,
-    userName: userName
-  }) }}
-{% endblock %}
-
 {% block header %}
   <div class="govuk-width-container govuk-body timetable-header">
     <h1>{{ title }}</h1>
@@ -43,7 +26,7 @@
 {% block search %}{% endblock %}
 
 {% block timetable %}
-  {{personalScheduleOneDay({ data: events | first, authReturnUrl:  config.returnUrl }, isSignedIn)}}
+  {{personalScheduleOneDay({ data: events | first, authReturnUrl:  returnUrl }, isSignedIn)}}
   <div class="govuk-width-container govuk-body timetable-header timetable-footer">
     {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }, isSignedIn) }}
   </div>

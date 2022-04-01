@@ -1,7 +1,6 @@
 {% from "../components/next-episodes-content/macro.njk" import nextEpisodesContent %}
 {% from "../components/suggested-content/macro.njk" import hubSuggestedContent %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "../components/user-details/macro.njk" import userDetails %}
 
 {% extends "../components/template.njk" %}
 
@@ -12,23 +11,6 @@
 {% block head %}
   <link href="/public/video-js.min.css" rel="stylesheet"/>
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block topBar %}
-  {{ topBar({
-    establishmentDisplayName: establishmentDisplayName,
-    showBar: false,
-    isSignedIn: isSignedIn,
-    returnUrl: config.returnUrl
-  }) }}
-{% endblock %}
-
-{% block userDetails %}
-  {{ userDetails({
-    detailsType: 'large',
-    isSignedIn: isSignedIn,
-    userName: userName
-  }) }}
 {% endblock %}
 
 {% block header %}{% endblock %}

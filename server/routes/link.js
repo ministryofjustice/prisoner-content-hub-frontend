@@ -15,7 +15,6 @@ const createLinkRouter = ({ cmsService }) => {
         header: false,
         postscript: false,
         detailsType: 'small',
-        returnUrl: req.originalUrl,
       };
 
       const { title, url, intercept } = await cmsService.getLink(

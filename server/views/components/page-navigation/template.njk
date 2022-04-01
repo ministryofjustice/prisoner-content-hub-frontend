@@ -1,14 +1,9 @@
-{% from "../search/macro.njk" import hubSearch %}
-
 <div class="page-navigation">
-  <nav class="govuk-width-container">
+  <nav>
     {% if not params.hideHomePage %}
-      <a href="/" class="govuk-link">Homepage</a>
+      <a href="/" class="govuk-link" id="go-home">Homepage</a>
     {% endif %}
     <a href="" class="govuk-link" id="go-back">Back</a>
     <a href="" class="govuk-link" id="go-forwards">Forward</a>
-    <div>
-      {{ hubSearch({ query: query, small: true }) }}
-    </div>
   </nav>
 </div>

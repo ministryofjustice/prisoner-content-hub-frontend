@@ -90,7 +90,6 @@ const createProfileRouter = ({ offenderService }) => {
         postscript: true,
         detailsType: 'small',
         category: 'profile',
-        returnUrl: req.originalUrl,
         ...personalisation,
       });
     } catch (e) {

@@ -15,7 +15,6 @@ const createContentRouter = ({ cmsService, analyticsService }) => {
       content: true,
       header: false,
       postscript: false,
-      returnUrl: req.originalUrl,
     };
 
     const userAgent = path(['headers', 'user-agent'], req);

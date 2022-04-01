@@ -17,23 +17,6 @@
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
 {% endblock %}
 
-{% block topBar %}
-  {{ topBar({
-    establishmentDisplayName: establishmentDisplayName,
-    showBar: false,
-    isSignedIn: isSignedIn,
-    returnUrl: config.returnUrl
-  }) }}
-{% endblock %}
-
-{% block userDetails %}
-  {{ userDetails({
-    detailsType: config.detailsType,
-    isSignedIn: isSignedIn,
-    userName: userName
-  }) }}
-{% endblock %}
-
 {% block header %}
   <div class="govuk-width-container govuk-body">
     <h1>{{ title }}</h1>
@@ -46,7 +29,7 @@
 {% block main %}
   <div class="govuk-width-container govuk-body">
 
-    {{ personalTransactions(prisonerInformation, config.returnUrl, isSignedIn) }}
+    {{ personalTransactions(prisonerInformation, returnUrl, isSignedIn) }}
 
     <div class="govuk-hub-article-feedback">
       {{ hubFeedbackWidget({

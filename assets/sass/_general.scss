@@ -128,8 +128,26 @@
 
 .govuk-breadcrumbs li {
   @extend .govuk-body;
+  @include govuk-font(16);
 }
 .govuk-breadcrumbs li a {
   @extend .govuk-link;
   @extend .govuk-link--no-visited-state;
+}
+
+.govuk-hub-navigationUserDetailsBar {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+}
+
+.govuk-hub-userDetails {
+  padding: govuk-spacing(2) 0;
+  h3 {
+    @include govuk-font(16, $weight: bold);
+    display: inline-block;
+    margin: 0;
+  }
 }

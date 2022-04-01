@@ -14,46 +14,21 @@
   <link href="/public/stylesheets/application.css" rel="stylesheet"/>
 {% endblock %}
 
-{% block topBar %}
-  {{ topBar({
-    establishmentDisplayName: establishmentDisplayName,
-    showBar: true,
-    isSignedIn: isSignedIn,
-    returnUrl: config.returnUrl
-  }) }}
-{% endblock %}
 {% block pageNavigation %}
-  {# Do not display the page navigation on the home page #}
-{% endblock %}
-
-{% block userDetails %}
-  <div class="govuk-width-container">
-    {{ userDetails({
-      detailsType: config.detailsType,
-      isSignedIn: isSignedIn,
-      userName: ('Hi, ' + userName) if userName and isSignedIn else ''
+    {{ govukButton({
+      text: "Browse all topics",
+      href: "/topics",
+      isStartButton: true,
+      classes: "govuk-!-margin-2"
     }) }}
-  </div>
 {% endblock %}
 
-{% block homeNavigation %}
-  <div class="govuk-width-container home-navigation govuk-!-margin-top-3">
-    <div class="home-navigation__actions">
-      <div>
-        <div class="govuk-clearfix home-navigation__search">
-          {{ hubSearch({ query: query }) }}
-        </div>
-        {{ govukButton({
-          text: "Browse all topics",
-          href: "/topics",
-          isStartButton: true
-        }) }}
-      </div>
+{% block header %}
+  {% if establishmentName != 'berwyn' %}
+    <div class="govuk-width-container home-navigation govuk-!-margin-top-3">
+      {{personalScheduleToday({ data: currentEvents, authReturnUrl: returnUrl }, userName if isSignedIn else '')}}
     </div>
-      {% if establishmentName != 'berwyn' %}
-        {{personalScheduleToday({ data: currentEvents, authReturnUrl: returnUrl }, userName if isSignedIn else '')}}
-      {% endif %}
-  </div>
+  {% endif %}
 {% endblock %}
 
 {% block search %}{% endblock %}
