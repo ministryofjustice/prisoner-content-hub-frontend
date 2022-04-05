@@ -20,6 +20,7 @@ class CategoryContentQuery {
       .addFields('node--moj_radio_item', CategoryContentQuery.#TILE_FIELDS)
       .addFields('moj_pdf_item', CategoryContentQuery.#TILE_FIELDS)
       .addInclude(['field_moj_thumbnail_image'])
+      .addSort('created', 'DESC')
       .getQueryString();
     this.query = `${queryWithoutOffset}&${getPagination(page, limit)}`;
   }
