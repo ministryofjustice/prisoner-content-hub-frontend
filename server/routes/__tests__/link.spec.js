@@ -59,7 +59,7 @@ describe('GET /link', () => {
             .then(response => {
               const $ = cheerio.load(response.text);
               expect($('[data-test="external-link-content"]').text()).toContain(
-                `You are being taken to foo bar. You are allowed to visit this website.`,
+                `You are being taken to foo.url.com. You are allowed to visit this website.`,
               );
             });
         });
