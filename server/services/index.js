@@ -3,6 +3,7 @@ const config = require('../config');
 
 const { StandardClient } = require('../clients/standard');
 const { PrisonApiClient } = require('../clients/prisonApiClient');
+const { IncentivesApiClient } = require('../clients/incentivesApiClient');
 const { JsonApiClient } = require('../clients/jsonApiClient');
 
 const { InMemoryCachingStrategy } = require('../utils/caching/memory');
@@ -16,7 +17,7 @@ const PrisonApiRepository = require('../repositories/prisonApi');
 
 // Services
 const { CmsService } = require('./cms');
-const { createPrisonApiOffenderService } = require('./offender');
+const { createPrisonAndIncentivesApiOffenderService } = require('./offender');
 const { createSearchService } = require('./search');
 const { createAnalyticsService } = require('./analytics');
 const { createFeedbackService } = require('./feedback');
@@ -28,6 +29,10 @@ const prisonApiClient = new PrisonApiClient({
   prisonApi: config.prisonApi,
   cachingStrategy: new InMemoryCachingStrategy(),
 });
+const incentivesApiClient = new IncentivesApiClient({
+  incentivesApi: config.incentivesApi,
+  cachingStrategy: new InMemoryCachingStrategy(),
+});
 
 const cmsApi = new CmsApi(jsonApiClient);
 const cmsService = new CmsService(cmsApi);
@@ -35,8 +40,8 @@ const cmsService = new CmsService(cmsApi);
 module.exports = {
   logger,
   cmsService,
-  offenderService: createPrisonApiOffenderService(
-    offenderRepository(prisonApiClient),
+  offenderService: createPrisonAndIncentivesApiOffenderService(
+    offenderRepository(prisonApiClient, incentivesApiClient),
   ),
   prisonerInformationService: new PrisonerInformationService({
     prisonApiRepository: new PrisonApiRepository({

@@ -1,5 +1,5 @@
 const { parseISO } = require('date-fns');
-const { createPrisonApiOffenderService } = require('../offender');
+const { createPrisonAndIncentivesApiOffenderService } = require('../offender');
 const { lastCall } = require('../../../test/test-helpers');
 
 const TEST_PRISONER_ID = 'A1234BC';
@@ -31,7 +31,7 @@ describe('Offender Service', () => {
         getOffenderDetailsFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         Offender: mockAdapter,
       });
 
@@ -51,7 +51,7 @@ describe('Offender Service', () => {
         getIncentivesSummaryFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         IncentivesSummary: mockAdapter,
       });
 
@@ -71,7 +71,7 @@ describe('Offender Service', () => {
         getBalancesFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         Balances: mockAdapter,
       });
 
@@ -89,7 +89,7 @@ describe('Offender Service', () => {
         getKeyWorkerFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         KeyWorker: mockAdapter,
       });
 
@@ -108,7 +108,7 @@ describe('Offender Service', () => {
       };
       const mockApprovedVisitors = jest.fn();
       mockApprovedVisitors.mockReturnValue(FORMATTED_RESPONSE);
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         approvedVisitors: mockApprovedVisitors,
       });
 
@@ -131,7 +131,7 @@ describe('Offender Service', () => {
         getNextVisitFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         nextVisit: mockNextVisit,
       });
 
@@ -151,7 +151,7 @@ describe('Offender Service', () => {
           .mockResolvedValue({ remainingPvo: 40, remainingVo: 2 }),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         nextVisit: mockAdapter,
       });
 
@@ -170,7 +170,7 @@ describe('Offender Service', () => {
         sentenceDetailsFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         ImportantDates: mockAdapter,
       });
 
@@ -205,7 +205,7 @@ describe('Offender Service', () => {
         getEventsFor: jest.fn().mockResolvedValue(['FOO', 'BAR']),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         Timetable: mockTimetableAdapter,
       });
 
@@ -233,7 +233,7 @@ describe('Offender Service', () => {
         getEventsFor: jest.fn().mockResolvedValue([]),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         Timetable: mockTimetableAdapter,
       });
 
@@ -249,7 +249,7 @@ describe('Offender Service', () => {
         getEventsFor: jest.fn().mockResolvedValue([]),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         Timetable: mockTimetableAdapter,
       });
 
@@ -269,7 +269,7 @@ describe('Offender Service', () => {
         getEventsFor: jest.fn().mockResolvedValue([]),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         Timetable: mockTimetableAdapter,
       });
 
@@ -289,7 +289,7 @@ describe('Offender Service', () => {
         getEventsFor: jest.fn().mockResolvedValue([]),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         Timetable: mockTimetableAdapter,
       });
 
@@ -309,7 +309,7 @@ describe('Offender Service', () => {
         getEventsFor: jest.fn().mockResolvedValue('FOO'),
       };
 
-      const service = createPrisonApiOffenderService(repository, {
+      const service = createPrisonAndIncentivesApiOffenderService(repository, {
         Timetable: mockTimetableAdapter,
       });
 
@@ -351,7 +351,7 @@ describe('Offender Service', () => {
         ]),
       };
 
-      const service = createPrisonApiOffenderService(repository);
+      const service = createPrisonAndIncentivesApiOffenderService(repository);
 
       const data = await service.getEventsForToday(
         TEST_USER,
@@ -391,7 +391,7 @@ describe('Offender Service', () => {
         getEventsFor: jest.fn().mockResolvedValue({ error: true }),
       };
 
-      const service = createPrisonApiOffenderService(repository);
+      const service = createPrisonAndIncentivesApiOffenderService(repository);
 
       const data = await service.getEventsForToday({}, parseISO('2019-03-07'));
 
@@ -405,7 +405,7 @@ describe('Offender Service', () => {
         getEventsFor: jest.fn().mockResolvedValue([]),
       };
 
-      const service = createPrisonApiOffenderService(repository);
+      const service = createPrisonAndIncentivesApiOffenderService(repository);
 
       const data = await service.getEventsForToday(
         TEST_USER,

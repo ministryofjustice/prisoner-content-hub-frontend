@@ -21,12 +21,18 @@ env:
         secretKeyRef:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
           key: hmppsAuthBaseUrl
-    
+
     - name: PRISON_API_BASE_URL
       valueFrom:
         secretKeyRef:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
           key: prisonApiBaseUrl
+
+    - name: INCENTIVES_API_BASE_URL
+      valueFrom:
+        secretKeyRef:
+          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+          key: incentivesApiBaseUrl
 
     - name: HUB_API_ENDPOINT
       valueFrom:
@@ -99,7 +105,7 @@ env:
         secretKeyRef:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
           key: azureAdClientSecret
-      
+
     - name: SINGLE_HOST_NAME
     {{- with .Values.ingress.host }}
       value: {{ tpl .pattern (dict "qualifier" $.Values.ingress.qualifier "Template" $.Template) }}

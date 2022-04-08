@@ -270,5 +270,5 @@ const createOffenderService = (
 };
 
 module.exports = {
-  createPrisonApiOffenderService: createOffenderService,
+  createPrisonAndIncentivesApiOffenderService: createOffenderService,
 };

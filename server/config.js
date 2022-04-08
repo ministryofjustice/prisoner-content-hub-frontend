@@ -50,6 +50,14 @@ module.exports = {
     },
     baseUrl: getRequiredEnv('PRISON_API_BASE_URL', 'https://api.nomis'),
   },
+  incentivesApi: {
+    auth: {
+      clientId: getEnv('HMPPS_AUTH_CLIENT_ID', 'UNSET'),
+      clientSecret: getEnv('HMPPS_AUTH_CLIENT_SECRET', 'UNSET'),
+      authUrl: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
+    },
+    baseUrl: getRequiredEnv('INCENTIVES_API_BASE_URL', 'https://api.nomis'),
+  },
   elasticsearch: {
     search: `${elasticsearchEndpoint}/elasticsearch_index_${drupalDatabaseName}_${elasticsearchIndexName}/_search`,
   },
