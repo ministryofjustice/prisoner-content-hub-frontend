@@ -17,7 +17,7 @@ const PrisonApiRepository = require('../repositories/prisonApi');
 
 // Services
 const { CmsService } = require('./cms');
-const { createPrisonAndIncentivesApiOffenderService } = require('./offender');
+const { createOffenderService } = require('./offender');
 const { createSearchService } = require('./search');
 const { createAnalyticsService } = require('./analytics');
 const { createFeedbackService } = require('./feedback');
@@ -40,7 +40,7 @@ const cmsService = new CmsService(cmsApi);
 module.exports = {
   logger,
   cmsService,
-  offenderService: createPrisonAndIncentivesApiOffenderService(
+  offenderService: createOffenderService(
     offenderRepository(prisonApiClient, incentivesApiClient),
   ),
   prisonerInformationService: new PrisonerInformationService({
