@@ -27,9 +27,9 @@ commands:
       releaseName:
         type: string
       qualifier:
-        type: string  
+        type: string
       releaseChannel:
-        type: string      
+        type: string
     steps:
       - attach_workspace:
           at: /tmp/build-info
@@ -55,6 +55,7 @@ commands:
               --set hmppsAuthClientSecret="${HMPPS_AUTH_CLIENT_SECRET}" \
               --set hmppsAuthBaseUrl="${HMPPS_AUTH_BASE_URL}" \
               --set prisonApiBaseUrl="${PRISON_API_BASE_URL}" \
+              --set incentivesApiBaseUrl="${INCENTIVES_API_BASE_URL}" \
               --set cacheSecret="${CACHE_SECRET}" \
               --set prisonerAuthAD.clientId=${AZURE_AD_CLIENT_ID} \
               --set prisonerAuthAD.clientSecret=${AZURE_AD_CLIENT_SECRET} \
@@ -68,10 +69,10 @@ commands:
                   BRANCH=$(curl -s "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls/${PULL_REQUEST}" | jq -r 'try .head.ref catch null')
                   CIRCLE_PR_BRANCH=$( echo "Deployed branch: *${BRANCH}*" | jq -Rs)
               fi
-              GIT_MSG=$(git --no-pager log -1 --pretty=format:"%h : %s" | jq -Rs) 
+              GIT_MSG=$(git --no-pager log -1 --pretty=format:"%h : %s" | jq -Rs)
 
               echo "export NOTES=$(helm -n ${KUBE_NAMESPACE} get notes ${RELEASE_NAME} | head -n 10 | jq -Rs)" >> $BASH_ENV
-              echo "export RELEASE_NAME=${RELEASE_NAME}" >> $BASH_ENV              
+              echo "export RELEASE_NAME=${RELEASE_NAME}" >> $BASH_ENV
               echo "export PR_NAME=${CIRCLE_PR_BRANCH}" >> $BASH_ENV
               echo "export GIT_MSG=${GIT_MSG}" >> $BASH_ENV
       - slack/notify:
@@ -265,7 +266,7 @@ jobs:
         type: string
       qualifier:
         type: string
-        default: ""    
+        default: ""
       releaseChannel:
         type: string
     steps:
@@ -331,7 +332,7 @@ workflows:
           <<: *main_branch
           context:
             - prisoner-content-hub-development
-      
+
       - build_production:
           <<: *main_branch
           requires:
@@ -340,7 +341,7 @@ workflows:
 
       - deploy_cloud_platform:
           <<: *main_branch
-          context: 
+          context:
             - hmpps-common-vars
             - prisoner-content-hub-staging
           name: deploy_to_staging
@@ -357,7 +358,7 @@ workflows:
 
       - deploy_cloud_platform:
           <<: *main_branch
-          context: 
+          context:
             - hmpps-common-vars
             - prisoner-content-hub-prod
           environment: "production"

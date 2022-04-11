@@ -26,9 +26,6 @@ const stubOffenderDetails = () =>
 const stubEvents = events =>
   stub(`/prisonapi/api/bookings/.*?/events\\?fromDate=.*?&toDate=.*?`, events);
 
-const stubIncentives = incentives =>
-  stub(`/prisonapi/api/bookings/.*?/iepSummary`, incentives);
-
 const stubBalancesFor = incentives =>
   stub(`/prisonapi/api/bookings/.*?/balances`, incentives);
 
@@ -47,7 +44,6 @@ const stubVisitsRemaining = visitsRemaining =>
 module.exports = {
   stubOffenderDetails,
   stubEvents,
-  stubIncentives,
   stubBalancesFor,
   stubVisitors,
   stubVisit,

@@ -51,13 +51,17 @@ describe('offenderRepository', () => {
 
   describe('getIncentivesSummaryFor', () => {
     it('calls the Incentives summary endpoint for a given ID', async () => {
-      const client = {
+      const prisonApiClient = {};
+      const incentivesApiClient = {
         get: jest.fn().mockResolvedValue('SOME_RESULT'),
       };
-      const repository = offenderRepository(client);
+      const repository = offenderRepository(
+        prisonApiClient,
+        incentivesApiClient,
+      );
       const result = await repository.getIncentivesSummaryFor('FOO_ID');
 
-      expect(lastCall(client.get)[0]).toContain('/FOO_ID/iepSummary');
+      expect(lastCall(incentivesApiClient.get)[0]).toContain('/FOO_ID');
       expect(result).toBe('SOME_RESULT');
     });
   });

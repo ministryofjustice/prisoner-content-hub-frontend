@@ -1,6 +1,7 @@
 const cucumber = require('cypress-cucumber-preprocessor').default;
 const auth = require('../mockApis/auth');
 const prisonApi = require('../mockApis/prisonApi');
+const incentivesApi = require('../mockApis/incentivesApi');
 const { resetStubs } = require('../mockApis/wiremock');
 
 // ***********************************************************
@@ -25,6 +26,7 @@ module.exports = (on, config) => {
   on('task', {
     ...auth,
     ...prisonApi,
+    ...incentivesApi,
     stubPrisonerSignIn: () =>
       Promise.all([
         auth.stubClientCredentialsToken(),

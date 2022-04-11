@@ -5,61 +5,72 @@ function validateOffenderNumberFor(offenderNo) {
   return pattern.test(offenderNo);
 }
 
-const baseUrl = `${config.prisonApi.baseUrl}/api`;
+const prisonApiBaseUrl = `${config.prisonApi.baseUrl}/api`;
+const incentivesApiBaseUrl = `${config.incentivesApi.baseUrl}`;
 
-function offenderRepository(httpClient) {
+function offenderRepository(prisonApiHttpClient, incentivesApiHttpClient) {
   function getOffenderDetailsFor(offenderNo) {
     if (validateOffenderNumberFor(offenderNo)) {
-      return httpClient.get(
-        `${baseUrl}/bookings/offenderNo/${offenderNo.toUpperCase()}`,
+      return prisonApiHttpClient.get(
+        `${prisonApiBaseUrl}/bookings/offenderNo/${offenderNo.toUpperCase()}`,
       );
     }
     throw new Error('Invalid offender number');
   }
 
   function getIncentivesSummaryFor(bookingId) {
-    return httpClient.get(`${baseUrl}/bookings/${bookingId}/iepSummary`);
+    return incentivesApiHttpClient.get(
+      `${incentivesApiBaseUrl}/iep/reviews/booking/${bookingId}`,
+    );
   }
 
   function getBalancesFor(bookingId) {
-    return httpClient.get(`${baseUrl}/bookings/${bookingId}/balances`);
+    return prisonApiHttpClient.get(
+      `${prisonApiBaseUrl}/bookings/${bookingId}/balances`,
+    );
   }
 
   function getKeyWorkerFor(offenderNo) {
-    return httpClient.get(
-      `${baseUrl}/bookings/offenderNo/${offenderNo}/key-worker`,
+    return prisonApiHttpClient.get(
+      `${prisonApiBaseUrl}/bookings/offenderNo/${offenderNo}/key-worker`,
     );
   }
 
   function getNextVisitFor(bookingId) {
-    return httpClient.get(
-      `${baseUrl}/bookings/${bookingId}/visits/next?withVisitors=true`,
+    return prisonApiHttpClient.get(
+      `${prisonApiBaseUrl}/bookings/${bookingId}/visits/next?withVisitors=true`,
     );
   }
 
   function getVisitorsFor(bookingId) {
-    return httpClient.get(`${baseUrl}/bookings/${bookingId}/contacts`);
+    return prisonApiHttpClient.get(
+      `${prisonApiBaseUrl}/bookings/${bookingId}/contacts`,
+    );
   }
 
   function getVisitBalances(offenderNo) {
-    return httpClient.get(
-      `${baseUrl}/bookings/offenderNo/${offenderNo}/visit/balances`,
+    return prisonApiHttpClient.get(
+      `${prisonApiBaseUrl}/bookings/offenderNo/${offenderNo}/visit/balances`,
     );
   }
 
   function sentenceDetailsFor(bookingId) {
-    return httpClient.get(`${baseUrl}/bookings/${bookingId}/sentenceDetail`);
+    return prisonApiHttpClient.get(
+      `${prisonApiBaseUrl}/bookings/${bookingId}/sentenceDetail`,
+    );
   }
 
   function getCurrentEvents(bookingId) {
-    return httpClient.get(`${baseUrl}/bookings/${bookingId}/events/today`);
+    return prisonApiHttpClient.get(
+      `${prisonApiBaseUrl}/bookings/${bookingId}/events/today`,
+    );
   }
 
   function getEventsFor(bookingId, startDate, endDate) {
-    const endpoint = `${baseUrl}/bookings/${bookingId}/events`;
+    const endpoint = `${prisonApiBaseUrl}/bookings/${bookingId}/events`;
     const query = [`fromDate=${startDate}`, `toDate=${endDate}`];
 
-    return httpClient.get(`${endpoint}?${query.join('&')}`);
+    return prisonApiHttpClient.get(`${endpoint}?${query.join('&')}`);
   }
 
   return {
