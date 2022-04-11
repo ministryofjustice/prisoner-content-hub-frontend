@@ -24,7 +24,6 @@ There are three tiers of yaml files containing configuration values. These are:
 2. `values.<environment>.yaml`, where `<environment>` is one of:
   - one of the non-development Cloud Platform namespaces `production` or `staging`, **or**
   - `development.<a unique name>` for shorter-lived development environments, e.g. `development.unicornsetup`, **or**
-  - `local`, for local development
 3. `values.establishment-<establishment name>.yaml` for individual prisons/YOIs, where `establishment-name` is meaningful, e.g. `cookhamwood`.
 
 ### Testing the release
