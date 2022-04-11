@@ -16,7 +16,7 @@ const stub = (urlPattern, jsonBody) =>
   });
 
 const stubIncentives = incentives =>
-  stub(`/incentivesapi/iep/reviews/booking/.*?/iepSummary`, incentives);
+  stub(`/incentivesapi/iep/reviews/booking/.*?`, incentives);
 
 module.exports = {
   stubIncentives,

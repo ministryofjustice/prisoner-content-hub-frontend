@@ -61,9 +61,7 @@ describe('offenderRepository', () => {
       );
       const result = await repository.getIncentivesSummaryFor('FOO_ID');
 
-      expect(lastCall(incentivesApiClient.get)[0]).toContain(
-        '/FOO_ID/iepSummary',
-      );
+      expect(lastCall(incentivesApiClient.get)[0]).toContain('/FOO_ID');
       expect(result).toBe('SOME_RESULT');
     });
   });
