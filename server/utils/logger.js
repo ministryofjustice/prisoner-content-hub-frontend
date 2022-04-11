@@ -6,8 +6,8 @@ const formatOut = bunyanFormat({ outputMode: 'short', color: true });
 
 const logger = bunyan.createLogger({
   name: 'Prisoner Content Hub Frontend',
+  level: config.logLevel,
   stream: formatOut,
 });
-logger.level = config.logLevel;
 
 module.exports = { logger };
