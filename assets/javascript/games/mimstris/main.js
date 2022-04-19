@@ -36180,10 +36180,17 @@ var undo = function undo() {
   return dispatch(history.undoLastPiece());
 };
 
+window.addEventListener('keydown', key)
+function key(k) {
+    if (k.key === "ArrowDown") {
+      k.preventDefault()
+    }
+  }
+
 // Key mappings
-var DOWN_KEYS = ['s'];
-var LEFT_KEYS = ['a'];
-var RIGHT_KEYS = ['d'];
+var DOWN_KEYS = ['s', 'down'];
+var LEFT_KEYS = ['a', 'left'];
+var RIGHT_KEYS = ['d', 'right'];
 var ROTATE_LEFT_KEYS = ['w'];
 var ROTATE_RIGHT_KEYS = ['e'];
 var START_KEYS = ['enter'];
