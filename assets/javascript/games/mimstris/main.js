@@ -1933,7 +1933,7 @@ exports.default = {
   guideColor: '#021c2d',
 
   // When true, blocks fall all the way down instantly when you press down.
-  instantDown: false,
+  instantDown: true,
   showGuideLines: true,
   outlinePieces: true,
   showBlockHighlight: true,
@@ -36182,7 +36182,7 @@ var undo = function undo() {
 
 window.addEventListener('keydown', key)
 function key(k) {
-    if (k.key === "ArrowDown") {
+    if (k.key === "ArrowDown" || k.key === " " || k.key === "ArrowUp") {
       k.preventDefault()
     }
   }
@@ -36191,8 +36191,8 @@ function key(k) {
 var DOWN_KEYS = ['s', 'down'];
 var LEFT_KEYS = ['a', 'left'];
 var RIGHT_KEYS = ['d', 'right'];
-var ROTATE_LEFT_KEYS = ['w'];
-var ROTATE_RIGHT_KEYS = ['e'];
+var ROTATE_LEFT_KEYS = ['w', 'space'];
+var ROTATE_RIGHT_KEYS = ['e', 'up'];
 var START_KEYS = ['enter'];
 var UNDO_KEYS = ['f'];
 
