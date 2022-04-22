@@ -4,10 +4,26 @@
 
 .govuk-hub-related-topics {
   background-color: govuk-colour('light-grey');
+
+  a {
+    color: govuk-colour('blue');
+
+    &:hover {
+      color: govuk-colour('dark-blue');
+    }
+
+    &:visited {
+      color: govuk-colour('purple');
+    }
+
+    &:active {
+      color: govuk-colour('black');
+    }
+  }
 }
 
 .govuk-hub-related-topics__heading {
-  color: $real-dark-grey;
+  color: govuk-colour('black');
 }
 
 /* ==========================================================================
@@ -21,6 +37,14 @@
 
     &:hover {
       color: govuk-colour('blue');
+    }
+
+    &:visited {
+      color: govuk-colour('light-grey');
+    }
+
+    &:active {
+      color: govuk-colour('light-grey');
     }
   }
 }
