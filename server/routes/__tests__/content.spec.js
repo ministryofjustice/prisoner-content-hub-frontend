@@ -86,7 +86,7 @@ describe('GET /content/:id', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('#tags-list > li').length).toBe(2);
+          expect($('#related-links > div > a').length).toBe(2);
         }));
 
     it('returns the correct episodes for a radio page', () =>
