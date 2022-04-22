@@ -1,49 +1,14 @@
-{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% extends "../components/template.njk" %}
+{% extends "../components/basicTemplate.njk" %}
 {% from "../components/related-topics/macro.njk" import hubRelatedTopics %}
 
-{% block pageTitle %}
-  {{ data.title }}
-{% endblock %}
-
-{% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block main %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper">
-      <div class="govuk-grid-row govuk-!-margin-bottom-2">
-        <div class="govuk-grid-column-two-thirds">
-          <h1 id="title" class="govuk-heading-xl govuk-!-margin-bottom-6 govuk-!-margin-top-3">{{data.title}}</h1>
-          <p id="stand-first" class="govuk-body-l">{{data.standFirst}}</p>
-          <div id="body" class="gov-uk-dynamic-content">
-            {{data.description | safe }}
-          </div>
-        </div>
+{% block content %}
+  <div class="govuk-grid-row govuk-!-margin-bottom-5">
+    <div class="govuk-grid-column-two-thirds">
+      <p id="stand-first" class="govuk-body-l">{{data.standFirst}}</p>
+      <div id="body" class="gov-uk-dynamic-content">
+        {{data.description | safe }}
       </div>
-
-      {{ hubRelatedTopics({ data: data.secondaryTags }) }}
-
-      {% if not data.excludeFeedback %}
-            <div class="govuk-hub-article-feedback">
-              {{ hubFeedbackWidget({
-                heading: 'Tell us what you think:',
-                title: data.title,
-                contentId: data.id,
-                contentType: data.contentType,
-                feedbackId: feedbackId,
-                categories: data.categories,
-                topics: data.topics
-              })}}
-            </div>
-      {% endif %}
-    </main>
+    </div>
   </div>
+  {{ hubRelatedTopics({ data: data.topics }) }}
 {% endblock %}
-
-{% block bodyEnd %}{% endblock %}

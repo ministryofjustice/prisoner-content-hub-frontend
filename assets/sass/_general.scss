@@ -9,9 +9,6 @@
 
 .black-background {
   background: govuk-colour('black');
-  margin-bottom: 0;
-  padding-top: govuk-spacing(5);
-  padding-bottom: govuk-spacing(8);
 }
 
 .govuk-hub-privacy {
@@ -22,23 +19,22 @@
   color: govuk-colour('black');
 }
 
-.govuk-hub-on-black-feedback .govuk-body,
-.govuk-hub-on-black-feedback .govuk-body a,
-.govuk-hub-on-black-feedback .govuk-heading-m,
-.govuk-hub-on-black-feedback .govuk-hint,
-.govuk-hub-on-black-feedback .govuk-hint a {
+.black-background .govuk-body,
+.black-background .govuk-body a,
+.black-background .govuk-heading-m,
+.black-background .govuk-hint,
+.black-background .govuk-hint a,
+.black-background .govuk-hub-comment-counter {
   color: govuk-colour('white');
 }
 
 .govuk-hub-comment-counter {
-  margin-right: govuk-spacing(4);
-  margin-top: govuk-spacing(2);
-  float: left;
+  //margin-top: govuk-spacing(2);
 }
 
 .govuk-hub-comment-form__footer .govuk-button {
   background-color: $govuk-link-colour;
-  float: right;
+  margin-bottom: 0 !important;
 }
 
 .govuk-hub-thumbs {
@@ -50,7 +46,7 @@
   border: 0;
 }
 
-.govuk-hub-on-black-feedback .govuk-hub-thumbs--up {
+.black-background .govuk-hub-thumbs--up {
   background-image: url('/public/images/icon-thumbs/thumbs-up-white.svg');
   background-color: transparent;
 }
@@ -59,7 +55,7 @@
   background-image: url('/public/images/icon-thumbs/thumbs-up-black.svg');
 }
 
-.govuk-hub-on-black-feedback .govuk-hub-thumbs--down {
+.black-background .govuk-hub-thumbs--down {
   background-image: url('/public/images/icon-thumbs/thumbs-down-white.svg');
   background-color: transparent;
   margin-top: 12px;
@@ -74,13 +70,10 @@
 }
 
 .govuk-hub-comment-form__footer {
-  text-align: right;
   @include govuk-font($size: 19);
-}
-
-.govuk-hub-comment-form__footer::after,
-.govuk-hub-feedback-padding {
-  padding-top: govuk-spacing(5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .govuk-hub-feedback::after {

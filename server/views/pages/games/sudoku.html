@@ -1,29 +1,16 @@
 {% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "../../components/user-details/macro.njk" import userDetails %}
-{% extends "../../components/template.njk" %}
-
-{% block pageTitle %}
-  {{ title }}
-{% endblock %}
+{% extends "../../components/basicTemplate.njk" %}
 
 {% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
   <link href="/public/javascript/games/sudoku/sudokuJS.css" rel="stylesheet" type="text/css"/>
+  {{ super() }}
 {% endblock %}
 
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block main %}
+{% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          <h1 id="title" class="govuk-heading-xl govuk-!-margin-bottom-6 govuk-!-margin-top-3">Sudoku</h1>
-        </div>
-      </div>
       <div class="govuk-grid-row govuk-!-margin-bottom-6">
         <div class="govuk-grid-column-one-half">
           <div id="sudoku" class="sudoku-board js-sudoku-board" data-board-size="9"></div>
@@ -67,15 +54,6 @@
             <button id="new-game" class="govuk-button" title="Start a new game">Start a new game</button>
           </p>
         </div>
-      </div>
-
-      <div class="govuk-hub-article-feedback">
-        {{ hubFeedbackWidget({
-          title: title,
-          heading: 'Tell us what you think:',
-          contentType: "game",
-          feedbackId: feedbackId
-        })}}
       </div>
     </main>
   </div>

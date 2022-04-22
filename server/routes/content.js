@@ -64,18 +64,6 @@ const createContentRouter = ({ cmsService, analyticsService }) => {
               topics,
             },
           });
-        case 'landing-page':
-          config.postscript = true;
-
-          return res.render('pages/category', {
-            title: data.title,
-            config,
-            data: {
-              ...data,
-              categories: data?.categoryId || '',
-              topics,
-            },
-          });
         case 'pdf': {
           const { url } = data;
 

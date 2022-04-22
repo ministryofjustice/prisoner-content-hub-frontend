@@ -57,7 +57,7 @@ class SeriesPageQuery {
       breadcrumbs: mapBreadcrumbs(series?.breadcrumbs, series.name),
       ...{
         relatedContent: {
-          contentType: 'default',
+          contentType: 'series',
           isLastPage: !links.next,
           data: deserializedResponse.map(getSmallTile),
         },

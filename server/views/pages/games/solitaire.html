@@ -1,24 +1,11 @@
-{% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "../../components/user-details/macro.njk" import userDetails %}
-{% extends "../../components/template.njk" %}
-
-{% block pageTitle %}
-  {{ title }}
-{% endblock %}
+{% extends "../../components/basicTemplate.njk" %}
 
 {% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
+  {{ super() }}
   <link href="/public/javascript/games/solitaire/main.css" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
-{% block userDetails %}{% endblock %}
-
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block main %}
+{% block content %}
   <!--
   Copyright (c) 2020 by Brent Alexander (https://codepen.io/bfa/pen/ggGYeE)
 
@@ -28,7 +15,6 @@
 
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   -->
-  <div class="govuk-width-container">
     <main class="govuk-main-wrapper">
       <div class="govuk-grid-row govuk-!-margin-bottom-6">
         <div class="govuk-grid-column-one-half">
@@ -36,7 +22,6 @@
         </div>
 
         <div class="govuk-grid-column-full" style="position: relative;">
-          <h1 id="title" class="govuk-heading-xl govuk-!-margin-bottom-6">{{ title }}</h1>
           <p class="govuk-body">You’ve told us that the solitaire game is not working as you can’t drag a card to where you want it.</p>
           <p class="govuk-body">Here’s how to make a move in this version of the game:</p>
           <p class="govuk-body">To move a card select the card you want to move. The edges will turn yellow. Next select the space where you want it to go.</p>
@@ -316,17 +301,7 @@
         </div>
       </div>
 
-      <div class="govuk-hub-article-feedback">
-        {{ hubFeedbackWidget({
-          title: title,
-          heading: 'Tell us what you think:',
-          contentType: "game",
-          feedbackId: feedbackId
-        })}}
-      </div>
-
     </main>
-  </div>
 {% endblock %}
 
 {% block bodyEnd %}

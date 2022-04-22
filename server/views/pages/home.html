@@ -1,18 +1,11 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "../components/personal-schedule-today/macro.njk" import personalScheduleToday %}
 {% from "../components/content-tile-large/macro.njk" import contentTileLarge %}
 {% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
 
-{% extends "../components/template.njk" %}
+{% extends "../components/basicTemplate.njk" %}
 
-{% block pageTitle %}
-  {{title}}
-{% endblock %}
-
-{% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
+{% set blackBackground = true %}
 
 {% block pageNavigation %}
     {{ govukButton({
@@ -23,15 +16,13 @@
     }) }}
 {% endblock %}
 
-{% block header %}
+{% block title %}
   {% if establishmentName != 'berwyn' %}
     <div class="govuk-width-container home-navigation govuk-!-margin-top-3">
       {{personalScheduleToday({ data: currentEvents, authReturnUrl: returnUrl }, userName if isSignedIn else '')}}
     </div>
   {% endif %}
 {% endblock %}
-
-{% block search %}{% endblock %}
 
 {% block content %}
   <div class="govuk-body home-content">
@@ -49,11 +40,5 @@
   </div>
 {% endblock %}
 
-{% block bodyEnd %}
-  <script src="/public/all.js"></script>
-  <script>
-    window
-      .GOVUKFrontend
-      .initAll();
-  </script>
+{% block feedback %}
 {% endblock %}

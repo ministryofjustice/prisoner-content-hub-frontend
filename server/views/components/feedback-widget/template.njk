@@ -1,7 +1,6 @@
 <div id="{{ params.id|default('feedback-widget', true) }}"
-      data-item-name="{{params.name}}"
       data-item-type="{{params.contentType}}"
-      data-item-title="{{ params.title|default(params.name, true) }}"
+      data-item-title="{{ params.title }}"
       data-item-series="{{params.series}}"
       data-item-topics="{{params.topics}}"
       data-item-categories="{{params.categories}}"
@@ -30,7 +29,7 @@
       data-feedback-form
       class="govuk-hub-comment-form govuk-u-hidden"
     >
-      <div class="govuk-form-group govuk-!-margin-bottom-2">
+      <div class="govuk-!-margin-bottom-2">
         <p id="more-detail" class="govuk-hint">
           <a href="/help" class="govuk-link govuk-link--no-visited-state">Click here if you need help and are struggling with mental health.</a><br>You will not get the help you need if you leave a message in the box below.
         </p>

@@ -93,7 +93,7 @@ describe('Secondary Tag page query', () => {
         ...createTransformedTopic(UUID),
         ...{
           relatedContent: {
-            contentType: 'default',
+            contentType: 'topic',
             isLastPage: false,
             data: [
               createTransformedContent('A'),
@@ -115,7 +115,7 @@ describe('Secondary Tag page query', () => {
         ...createTransformedTopic(UUID),
         ...{
           relatedContent: {
-            contentType: 'default',
+            contentType: 'topic',
             isLastPage: true,
             data: [createTransformedContent('A')],
           },

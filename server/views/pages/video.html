@@ -1,96 +1,26 @@
-{% from "../components/next-episodes-content/macro.njk" import nextEpisodesContent %}
-{% from "../components/suggested-content/macro.njk" import hubSuggestedContent %}
-{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "../components/user-details/macro.njk" import userDetails %}
-{% from "../components/related-topics/macro.njk" import hubRelatedTopics %}
+{% extends "../components/mediaTemplate.njk" %}
 
-{% extends "../components/template.njk" %}
-
-{% block pageTitle %}
-  {{ data.title }}
-{% endblock %}
-
-{% block head %}
-  <link href="/public/video-js.min.css" rel="stylesheet"/>
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block content %}
-  <div class="govuk-hub-media-player">
-    <header class="govuk-hub-media-player__header">
-      <div class="media-thumbnail">
-        <img id="thumbnail" src="{{ data.image.url }}" alt="{{ data.image.alt }}" class="govuk-hub-media-player__show-tag"/>
-      </div>
-      <div class="govuk-hub-title-container">
-        <p class="govuk-hub-media-player__catgeory govuk-heading-m">
-          <a href="/tags/{{data.seriesId}}" id="series" title="{{ data.seriesName }}" class="govuk-link govuk-hub-media-player__catgeory-link">{{ data.seriesName }}</a>
-        </p>
-        <h1 id="title" class="govuk-hub-media-player__title govuk-heading-xl govuk-body govuk-!-font-size-36 govuk-body govuk-!-font-weight-bold">{{ data.title }}</h1>
-      </div>
-    </header>
-
-    <div>
-      <video
-        id="hub-video"
-        class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause"
-        controls
-        preload="auto"
-        poster="{{ data.image.url }}"
-        data-setup='{
-          "fluid": true,
-          "controlBar": {
-            "children": [
-                "playToggle",
-                "volumePanel",
-                "currentTimeDisplay",
-                "progressControl",
-                "durationDisplay",
-                "fullscreenToggle"
-            ]
-          }
-        }'
-      >
-        <source src="{{ data.media }}" type="video/mp4"/>
-      </video>
-        {% if not data.excludeFeedback %}
-          <div class="govuk-hub-on-black-feedback">
-            {{ hubFeedbackWidget({
-              contentId: data.id,
-              title: data.title,
-              heading: '',
-              contentType: data.contentType,
-              series: data.seriesName,
-              feedbackId: feedbackId,
-              categories: data.categories,
-              topics: data.topics | join(',', 'id')
-            })}}
-          </div>
-        {% endif %}
-    </div>
-
-    <div class="govuk-hub-media-player__description">
-      <div id="body" class="govuk-body">{{ data.description | safe }}</div>
-    </div>
-
-    {{ hubRelatedTopics({ data: data.topics, darkmode: true }) }}
-  
-    <div id="next-episodes" class="govuk-hub-media-player__watch-next">
-      {{ nextEpisodesContent({ data: data.nextEpisodes }) }}
-    </div>
-  </div>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      <div id="suggested-content">
-        {{ hubSuggestedContent({ data: data.suggestedContent }) }}
-      </div>
-    </div>
-  </div>
-{% endblock %}
-
-{% block bodyEnd %}
-  <script src="/public/video.min.js"></script>
+{% block media %}
+  <video
+    id="hub-video"
+    class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause"
+    controls
+    preload="auto"
+    poster="{{ data.image.url }}"
+    data-setup='{
+      "fluid": true,
+      "controlBar": {
+        "children": [
+            "playToggle",
+            "volumePanel",
+            "currentTimeDisplay",
+            "progressControl",
+            "durationDisplay",
+            "fullscreenToggle"
+        ]
+      }
+    }'
+  >
+    <source src="{{ data.media }}" type="video/mp4"/>
+  </video>
 {% endblock %}

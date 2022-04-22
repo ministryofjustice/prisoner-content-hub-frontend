@@ -1,108 +1,84 @@
 {% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "../../components/user-details/macro.njk" import userDetails %}
-{% extends "../../components/template.njk" %}
-
-{% block pageTitle %}
-  {{ title }}
-{% endblock %}
+{% extends "../../components/basicTemplate.njk" %}
 
 {% block head %}
   <link href="/public/javascript/games/2048/stylesheets/main.css" rel="stylesheet" type="text/css"/>
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
+  {{ super() }}
 {% endblock %}
 
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-{% block main %}
-  <div class="govuk-width-container">
-    <div class="govuk-main-wrapper">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          <h1 id="title" class="govuk-heading-xl govuk-!-margin-bottom-4 govuk-!-margin-top-3">2048</h1>
-        </div>
-      </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          <div class="container">
-            <div class="game-container">
-              <div class="game-message">
-                <p></p>
-                <div class="lower">
-                  <button class="govuk-button keep-playing-button">Keep going</button>
-                  <button class="govuk-button retry-button">Try again</button>
-                </div>
-              </div>
-
-              <div class="grid-2048-container">
-                <div class="grid-2048-row">
-                  <div class="grid-2048-cell"></div>
-                  <div class="grid-2048-cell"></div>
-                  <div class="grid-2048-cell"></div>
-                  <div class="grid-2048-cell"></div>
-                </div>
-                <div class="grid-2048-row">
-                  <div class="grid-2048-cell"></div>
-                  <div class="grid-2048-cell"></div>
-                  <div class="grid-2048-cell"></div>
-                  <div class="grid-2048-cell"></div>
-                </div>
-                <div class="grid-2048-row">
-                  <div class="grid-2048-cell"></div>
-                  <div class="grid-2048-cell"></div>
-                  <div class="grid-2048-cell"></div>
-                  <div class="grid-2048-cell"></div>
-                </div>
-                <div class="grid-2048-row">
-                  <div class="grid-2048-cell"></div>
-                  <div class="grid-2048-cell"></div>
-                  <div class="grid-2048-cell"></div>
-                  <div class="grid-2048-cell"></div>
-                </div>
-              </div>
-
-              <div class="tile-2048-container">
-
+{% block content %}
+  <div class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <div class="container">
+          <div class="game-container">
+            <div class="game-message">
+              <p></p>
+              <div class="lower">
+                <button class="govuk-button keep-playing-button">Keep going</button>
+                <button class="govuk-button retry-button">Try again</button>
               </div>
             </div>
 
+            <div class="grid-2048-container">
+              <div class="grid-2048-row">
+                <div class="grid-2048-cell"></div>
+                <div class="grid-2048-cell"></div>
+                <div class="grid-2048-cell"></div>
+                <div class="grid-2048-cell"></div>
+              </div>
+              <div class="grid-2048-row">
+                <div class="grid-2048-cell"></div>
+                <div class="grid-2048-cell"></div>
+                <div class="grid-2048-cell"></div>
+                <div class="grid-2048-cell"></div>
+              </div>
+              <div class="grid-2048-row">
+                <div class="grid-2048-cell"></div>
+                <div class="grid-2048-cell"></div>
+                <div class="grid-2048-cell"></div>
+                <div class="grid-2048-cell"></div>
+              </div>
+              <div class="grid-2048-row">
+                <div class="grid-2048-cell"></div>
+                <div class="grid-2048-cell"></div>
+                <div class="grid-2048-cell"></div>
+                <div class="grid-2048-cell"></div>
+              </div>
+            </div>
+
+            <div class="tile-2048-container">
+
+            </div>
           </div>
 
-          <script src="/public/javascript/games/2048/keyboard_input_manager.js"></script>
-          <script src="/public/javascript/games/2048/html_actuator.js"></script>
-          <script src="/public/javascript/games/2048/grid.js"></script>
-          <script src="/public/javascript/games/2048/tile.js"></script>
-          <script src="/public/javascript/games/2048/local_storage_manager.js"></script>
-          <script src="/public/javascript/games/2048/game_manager.js"></script>
-          <script src="/public/javascript/games/2048/application.js"></script>
         </div>
-        <div class="govuk-grid-column-one-third govuk-body">
-          <div class="scores-container">
-            <div class="score-container">0</div>
-            <div class="best-container">0</div>
-          </div>
-          <button class="govuk-button restart-button" data-module="govuk-button">Start</button>
-            <p class="govuk-body">Make 2048 on one of your tiles.</p>
-          <h2 class="govuk-heading-m">Gameplay</h2>
-            <p>Use your arrow keys to move the tiles.<p/>
-            <p>When you press an arrow key it moves all the tiles on the board in one direction. Eg, press down and all the tiles are pulled to the bottom of the board.</p>
-            <p>When two tiles with the same number touch, they double and merge into one. Eg, when a 2 hits a 2, this creates one 4 tile.</p>
-          <h2 class="govuk-heading-m">Winning and losing</h2>
-            <p>If you can score 2048 on a tile you win.</p>
-            <p>If you cant move your tiles any more before you make 2048, its game over.</p>
+
+        <script src="/public/javascript/games/2048/keyboard_input_manager.js"></script>
+        <script src="/public/javascript/games/2048/html_actuator.js"></script>
+        <script src="/public/javascript/games/2048/grid.js"></script>
+        <script src="/public/javascript/games/2048/tile.js"></script>
+        <script src="/public/javascript/games/2048/local_storage_manager.js"></script>
+        <script src="/public/javascript/games/2048/game_manager.js"></script>
+        <script src="/public/javascript/games/2048/application.js"></script>
+      </div>
+      <div class="govuk-grid-column-one-third govuk-body">
+        <div class="scores-container">
+          <div class="score-container">0</div>
+          <div class="best-container">0</div>
         </div>
+        <button class="govuk-button restart-button" data-module="govuk-button">Start</button>
+          <p class="govuk-body">Make 2048 on one of your tiles.</p>
+        <h2 class="govuk-heading-m">Gameplay</h2>
+          <p>Use your arrow keys to move the tiles.<p/>
+          <p>When you press an arrow key it moves all the tiles on the board in one direction. Eg, press down and all the tiles are pulled to the bottom of the board.</p>
+          <p>When two tiles with the same number touch, they double and merge into one. Eg, when a 2 hits a 2, this creates one 4 tile.</p>
+        <h2 class="govuk-heading-m">Winning and losing</h2>
+          <p>If you can score 2048 on a tile you win.</p>
+          <p>If you cant move your tiles any more before you make 2048, its game over.</p>
       </div>
     </div>
-
-    <div class="govuk-hub-article-feedback govuk-!-margin-bottom-9">
-      {{ hubFeedbackWidget({
-        title: title,
-        heading: 'Tell us what you think:',
-        contentType: "game",
-        feedbackId: feedbackId
-      })}}
-    </div>
   </div>
-
 {% endblock %}
