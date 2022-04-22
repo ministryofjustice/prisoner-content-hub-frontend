@@ -1,10 +1,15 @@
 {% if params.data|length %}
 
-  <div class="govuk-body govuk-!-width-full govuk-hub-related-topics govuk-!-padding-4">
-    <h3 class="govuk-heading-m govuk-hub-related-topics__heading">Related topics</h3>
+  <div class="govuk-body govuk-!-width-full 
+              govuk-hub-related-topics 
+              govuk-!-padding-4">
+
+    <h3 class="govuk-heading-m 
+               govuk-hub-related-topics__heading">Related topics</h3>
 
     {% for tagItem in params.data %}
-      <a title="{{tagItem.name}}" href="/tags/{{tagItem.id}}" class="govuk-link--inverse govuk-!-margin-right-1">{{tagItem.name}}</a>
+      <a title="{{tagItem.name}}" href="/tags/{{tagItem.id}}" class="govuk-link--inverse 
+                                                                     govuk-!-margin-right-1">{{tagItem.name}}</a>
     {% endfor %}
     
   </div>
