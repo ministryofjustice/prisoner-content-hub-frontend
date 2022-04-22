@@ -36,14 +36,6 @@
     color: govuk-colour('white');
 
     &:hover {
-      color: govuk-colour('blue');
-    }
-
-    &:visited {
-      color: govuk-colour('light-grey');
-    }
-
-    &:active {
       color: govuk-colour('light-grey');
     }
   }
