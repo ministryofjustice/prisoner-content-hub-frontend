@@ -1,0 +1,30 @@
+/* ==========================================================================
+   COMPONENTS / #RELATED TOPICS
+   ========================================================================== */
+
+.govuk-hub-related-topics {
+  background-color: govuk-colour('light-grey');
+}
+
+.govuk-hub-related-topics__heading {
+  color: $real-dark-grey;
+}
+
+/* ==========================================================================
+   COMPONENTS / #RELATED TOPICS - DARK MODE
+   ========================================================================== */
+.govuk-hub-related-topics-dark {
+  background-color: $real-dark-grey;
+
+  a {
+    color: govuk-colour('white');
+
+    &:hover {
+      color: govuk-colour('blue');
+    }
+  }
+}
+
+.govuk-hub-related-topics__heading-dark {
+  color: govuk-colour('white');
+}
