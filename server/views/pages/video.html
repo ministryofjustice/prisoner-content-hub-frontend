@@ -79,7 +79,7 @@
     {{ hubRelatedTopics({ data: data.secondaryTags, mode: 'dark' }) }}
   
     <div id="next-episodes" class="govuk-hub-media-player__watch-next">
-      {{ nextEpisodesContent() }}
+      {{ nextEpisodesContent({ data: data.nextEpisodes }) }}
     </div>
   </div>
   <div class="govuk-grid-row">
