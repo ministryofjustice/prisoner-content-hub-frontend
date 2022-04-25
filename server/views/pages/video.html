@@ -76,7 +76,7 @@
       <div id="body" class="govuk-body">{{ data.description | safe }}</div>
     </div>
 
-    {{ hubRelatedTopics({ data: data.secondaryTags, mode: 'dark' }) }}
+    {{ hubRelatedTopics({ data: data.secondaryTags, darkmode: true }) }}
   
     <div id="next-episodes" class="govuk-hub-media-player__watch-next">
       {{ nextEpisodesContent({ data: data.nextEpisodes }) }}
