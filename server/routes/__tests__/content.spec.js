@@ -154,7 +154,7 @@ describe('GET /content/:id', () => {
           expect($('#thumbnail').attr('alt')).toBe('baz Bar');
 
           // tags
-          expect($('#tags-list li').length).toBe(2);
+          expect($('#related-links div a').length).toBe(2);
 
           // episodes
           expect($('#next-episodes a').length).toBe(1);
