@@ -152,7 +152,7 @@
           screen: window.screen.width + 'x' + window.screen.height,
           viewport: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'x' + Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
           categories: "{{ data.categories | join(',', 'name') }}",
-          secondaryTags: "{{ data.secondaryTags | join(',', 'name') }}",
+          topics: "{{ data.topics | join(',', 'name') }}",
           series: "{{data.seriesName}}"
         });
       </script>

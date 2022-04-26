@@ -107,7 +107,7 @@ describe('analyticsRepository', () => {
         userAgent: 'userAgent',
         screen: 'screen',
         viewport: 'viewport',
-        secondaryTags: 'secondaryTags',
+        topics: 'topics',
         categories: 'categories',
         series: 'series',
       };
@@ -134,9 +134,7 @@ describe('analyticsRepository', () => {
       expect(client.postFormData.mock.calls[0][1].ua).toBe(basicData.userAgent);
       expect(client.postFormData.mock.calls[0][1].sr).toBe(basicData.screen);
       expect(client.postFormData.mock.calls[0][1].vp).toBe(basicData.viewport);
-      expect(client.postFormData.mock.calls[0][1].cd1).toBe(
-        basicData.secondaryTags,
-      );
+      expect(client.postFormData.mock.calls[0][1].cd1).toBe(basicData.topics);
       expect(client.postFormData.mock.calls[0][1].cd2).toBe(
         basicData.categories,
       );
@@ -151,7 +149,7 @@ describe('analyticsRepository', () => {
         sessionId: 'sessionId',
         screen: 'screen',
         viewport: 'viewport',
-        secondaryTags: 'secondaryTags',
+        topics: 'topics',
         categories: 'categories',
         series: 'series',
       };
@@ -178,16 +176,14 @@ describe('analyticsRepository', () => {
       expect(client.postFormData.mock.calls[0][1].ua).toBe(undefined);
       expect(client.postFormData.mock.calls[0][1].sr).toBe(basicData.screen);
       expect(client.postFormData.mock.calls[0][1].vp).toBe(basicData.viewport);
-      expect(client.postFormData.mock.calls[0][1].cd1).toBe(
-        basicData.secondaryTags,
-      );
+      expect(client.postFormData.mock.calls[0][1].cd1).toBe(basicData.topics);
       expect(client.postFormData.mock.calls[0][1].cd2).toBe(
         basicData.categories,
       );
       expect(client.postFormData.mock.calls[0][1].cd3).toBe(basicData.series);
     });
 
-    it('should skip secondaryTags if not present', async () => {
+    it('should skip topics if not present', async () => {
       const basicData = {
         hostname: 'hostname',
         page: 'page',
@@ -299,9 +295,7 @@ describe('analyticsRepository', () => {
       expect(client.postFormData.mock.calls[0][1].cd1).toBe(
         basicData.categories,
       );
-      expect(client.postFormData.mock.calls[0][1].cd2).toBe(
-        basicData.secondaryTags,
-      );
+      expect(client.postFormData.mock.calls[0][1].cd2).toBe(basicData.topics);
       expect(client.postFormData.mock.calls[0][1].cd3).toBe(undefined);
     });
   });

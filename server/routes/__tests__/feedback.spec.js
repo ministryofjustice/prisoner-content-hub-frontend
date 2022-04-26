@@ -13,7 +13,7 @@ const feedback = {
   contentType: 'audio',
   series: 'Football highlight',
   categories: 'Ball sports',
-  secondaryTags: 'Fitness',
+  topics: 'Fitness',
   sentiment: 'Like',
   comment: 'Cracking stuff!',
 };
@@ -64,7 +64,7 @@ describe('POST /feedback', () => {
             comment: feedback.comment,
             contentType: feedback.contentType,
             date: expect.anything(),
-            secondaryTags: feedback.secondaryTags,
+            topics: feedback.topics,
             sentiment: feedback.sentiment,
             series: feedback.series,
           });

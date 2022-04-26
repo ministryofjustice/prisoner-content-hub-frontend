@@ -4,7 +4,7 @@ const {
   getLargeTile,
   getSmallTile,
   getCategoryId,
-  buildSecondaryTags,
+  buildFieldTopics,
   typeFrom,
   isBottomCategory,
 } = require('../jsonApi');
@@ -327,7 +327,7 @@ describe('getCategoryId', () => {
   });
 });
 
-describe('buildSecondaryTags', () => {
+describe('buildFieldTopics', () => {
   const ID1 = '42';
   const UUID1 = '418';
   const NAME1 = 'Chip';
@@ -339,7 +339,7 @@ describe('buildSecondaryTags', () => {
     { drupalInternal_Tid: ID2, id: UUID2, name: NAME2 },
     { drupalInternal_Tid: ID1, id: UUID2, name: NAME1 },
   ];
-  const result = buildSecondaryTags(categoryData);
+  const result = buildFieldTopics(categoryData);
   it('should return the category ids', () => {
     expect(result).toEqual([
       { id: ID1, uuid: UUID1, name: NAME1 },
@@ -389,9 +389,9 @@ describe('typeFrom', () => {
     });
   });
 
-  it('should return the correct type for a secondary tag', () => {
-    expect(typeFrom({ type: 'tags' })).toStrictEqual({
-      contentType: 'tags',
+  it('should return the correct type for a topic', () => {
+    expect(typeFrom({ type: 'topics' })).toStrictEqual({
+      contentType: 'topic',
       externalContent: false,
     });
   });

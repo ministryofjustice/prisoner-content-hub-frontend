@@ -62,7 +62,7 @@ describe('analytics', () => {
             screen: '1680x1050',
             viewport: '1680x882',
             categories: 'Informational',
-            secondaryTags: 'Black lives',
+            topics: 'Black lives',
             series: 'Diversity and Inclusion',
           })
           .expect(200)
@@ -72,7 +72,7 @@ describe('analytics', () => {
               hostname: 'berwyn.localhost',
               page: '/content/12114',
               screen: '1680x1050',
-              secondaryTags: 'Black lives',
+              topics: 'Black lives',
               series: 'Diversity and Inclusion',
               sessionId: 'abc123',
               title: 'D&amp;I Wayland | Sam Plays Joplin',

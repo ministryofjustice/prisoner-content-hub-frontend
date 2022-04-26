@@ -30,7 +30,7 @@ function analyticsRepository(httpClient) {
     userAgent,
     screen,
     viewport,
-    secondaryTags,
+    topics,
     categories,
     series,
   }) {
@@ -50,8 +50,8 @@ function analyticsRepository(httpClient) {
       postData.ua = userAgent;
     }
 
-    if (secondaryTags !== undefined) {
-      postData.cd1 = secondaryTags;
+    if (topics !== undefined) {
+      postData.cd1 = topics;
     }
 
     if (categories !== undefined) {

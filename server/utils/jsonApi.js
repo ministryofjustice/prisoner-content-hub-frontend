@@ -43,7 +43,7 @@ const isTag = ({ type }) =>
   [
     'taxonomy_term--series',
     'taxonomy_term--moj_categories',
-    'taxonomy_term--tags',
+    'taxonomy_term--topics',
   ].includes(type);
 
 const getSmallTile = item =>
@@ -71,7 +71,7 @@ const getCategoryId = categories => {
   };
 };
 
-const buildSecondaryTags = (arr = []) =>
+const buildFieldTopics = (arr = []) =>
   arr.map(({ drupalInternal_Tid: id, name, id: uuid }) => ({
     id,
     uuid,
@@ -119,8 +119,8 @@ const HUB_CONTENT_TYPES = {
           contentType: 'category',
           externalContent: false,
         },
-  tags: () => ({
-    contentType: 'tags',
+  topics: () => ({
+    contentType: 'topic',
     externalContent: false,
   }),
 };
@@ -151,7 +151,7 @@ module.exports = {
   getLargeTile,
   getLargeImage,
   getCategoryId,
-  buildSecondaryTags,
+  buildFieldTopics,
   typeFrom,
   isBottomCategory,
   mapBreadcrumbs,

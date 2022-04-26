@@ -8,7 +8,7 @@ class CategoryPageQuery {
     'title',
     'field_moj_thumbnail_image',
     'field_featured_image',
-    'field_moj_secondary_tags',
+    'field_topics',
     'path',
     'field_exclude_feedback',
   ];
