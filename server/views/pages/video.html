@@ -2,6 +2,7 @@
 {% from "../components/suggested-content/macro.njk" import hubSuggestedContent %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 {% from "../components/user-details/macro.njk" import userDetails %}
+{% from "../components/related-topics/macro.njk" import hubRelatedTopics %}
 
 {% extends "../components/template.njk" %}
 
@@ -75,16 +76,8 @@
       <div id="body" class="govuk-body">{{ data.description | safe }}</div>
     </div>
 
-    <ul id="tags-list" class="secondary-tags-list govuk-body">
-      {% for tagItem in data.secondaryTags %}
-        {% if tagItem.name %}
-          <li class="govuk-hub-navigation__list-item govuk-hub-navigation__list-item-topic">
-            <a title="{{tagItem.name}}" href="/tags/{{tagItem.id}}">{{tagItem.name}}</a>
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-
+    {{ hubRelatedTopics({ data: data.secondaryTags, darkmode: true }) }}
+  
     <div id="next-episodes" class="govuk-hub-media-player__watch-next">
       {{ nextEpisodesContent({ data: data.nextEpisodes }) }}
     </div>

@@ -1,5 +1,6 @@
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 {% extends "../components/template.njk" %}
+{% from "../components/related-topics/macro.njk" import hubRelatedTopics %}
 
 {% block pageTitle %}
   {{ data.title }}
@@ -16,7 +17,7 @@
 {% block main %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper">
-      <div class="govuk-grid-row govuk-!-margin-bottom-9">
+      <div class="govuk-grid-row govuk-!-margin-bottom-2">
         <div class="govuk-grid-column-two-thirds">
           <h1 id="title" class="govuk-heading-xl govuk-!-margin-bottom-6 govuk-!-margin-top-3">{{data.title}}</h1>
           <p id="stand-first" class="govuk-body-l">{{data.standFirst}}</p>
@@ -25,6 +26,9 @@
           </div>
         </div>
       </div>
+
+      {{ hubRelatedTopics({ data: data.secondaryTags }) }}
+
       {% if not data.excludeFeedback %}
             <div class="govuk-hub-article-feedback">
               {{ hubFeedbackWidget({

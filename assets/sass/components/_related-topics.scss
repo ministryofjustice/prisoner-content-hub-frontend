@@ -1,0 +1,26 @@
+/* ==========================================================================
+   COMPONENTS / #RELATED TOPICS
+   ========================================================================== */
+
+.govuk-hub-related-topics {
+  background-color: govuk-colour('light-grey');
+}
+
+/* ==========================================================================
+   COMPONENTS / #RELATED TOPICS - DARK MODE
+   ========================================================================== */
+.govuk-hub-related-topics-dark {
+  background-color: $real-dark-grey;
+
+  a {
+    color: govuk-colour('white');
+
+    &:hover {
+      color: govuk-colour('light-grey');
+    }
+  }
+
+  h3 {
+    color: govuk-colour('white');
+  }
+}
