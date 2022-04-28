@@ -25,7 +25,7 @@ const createFeedbackRouter = ({ feedbackService }) => {
       feedbackId,
       series: body?.series,
       categories: body?.categories,
-      secondaryTags: body?.secondaryTags,
+      topics: body?.topics,
       sentiment: body?.sentiment,
       comment: body?.comment,
       date: new Date().toISOString(),

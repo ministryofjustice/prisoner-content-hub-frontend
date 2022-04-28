@@ -18,7 +18,7 @@ const createAnalyticsService = ({ analyticsRepository }) => {
     userAgent,
     screen,
     viewport,
-    secondaryTags,
+    topics,
     categories,
     series,
   }) {
@@ -30,7 +30,7 @@ const createAnalyticsService = ({ analyticsRepository }) => {
       userAgent,
       screen,
       viewport,
-      secondaryTags,
+      topics,
       categories,
       series,
     });

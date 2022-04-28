@@ -15,7 +15,7 @@
     game: 'game',
     'landing-page': 'topic',
     series: 'series',
-    tags: 'topic'
+    topic: 'topic'
   };
   var types = {
     video: 'VIDEO',
@@ -24,7 +24,7 @@
     game: 'GAME',
     'landing-page': 'TOPIC',
     series: 'SERIES',
-    tags: 'TAG'
+    topic: 'TOPIC'
   };
 
   window._feedback = {};
@@ -32,14 +32,14 @@
   function feedbackTracker(rootElementId) {
     var widget = $('#' + rootElementId);
     var contentType = widget.data('item-type');
-    var secondaryTags = widget.data('item-tags');
+    var topics = widget.data('item-topics');
     var categories = widget.data('item-categories');
 
     window._feedback.title = widget.data('item-title');
     window._feedback.url = window.location.pathname;
     window._feedback.contentType = types[contentType] || contentType;
     window._feedback.categories = categories ? ('' + categories).split(',') : [];
-    window._feedback.secondaryTags = secondaryTags ? ('' + secondaryTags).split(',') : [];
+    window._feedback.topics = topics ? ('' + topics).split(',') : [];
     window._feedback.id = widget.data('item-feedback-id');
 
     var series = widget.data('item-series');

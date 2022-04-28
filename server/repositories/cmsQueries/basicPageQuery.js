@@ -2,7 +2,7 @@ const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const {
   mapBreadcrumbs,
   getCategoryId,
-  buildSecondaryTags,
+  buildFieldTopics,
 } = require('../../utils/jsonApi');
 
 class BasicPageQuery {
@@ -16,21 +16,18 @@ class BasicPageQuery {
         'created',
         'field_moj_description',
         'field_moj_stand_first',
-        'field_moj_secondary_tags',
+        'field_topics',
         'field_moj_series',
         'field_moj_top_level_categories',
         'field_exclude_feedback',
         'breadcrumbs',
       ])
-      .addFields('taxonomy_term--tags', ['drupal_internal__tid', 'name'])
+      .addFields('taxonomy_term--topics', ['drupal_internal__tid', 'name'])
       .addFields('taxonomy_term--moj_categories', [
         'drupal_internal__tid',
         'name',
       ])
-      .addInclude([
-        'field_moj_secondary_tags',
-        'field_moj_top_level_categories',
-      ])
+      .addInclude(['field_topics', 'field_moj_top_level_categories'])
 
       .getQueryString();
   }
@@ -49,7 +46,7 @@ class BasicPageQuery {
       description: item.fieldMojDescription?.processed,
       standFirst: item.fieldMojStandFirst,
       categories: getCategoryId(item.fieldMojTopLevelCategories),
-      secondaryTags: buildSecondaryTags(item.fieldMojSecondaryTags),
+      topics: buildFieldTopics(item.fieldTopics),
       excludeFeedback: item.fieldExcludeFeedback,
     };
   }

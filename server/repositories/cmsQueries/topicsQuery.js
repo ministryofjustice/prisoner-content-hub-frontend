@@ -2,8 +2,8 @@ const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 
 class TopicsQuery {
   static #QUERYSTRING = new Query()
-    .addFields('taxonomy_term--tags', ['drupal_internal__tid', 'name'])
-    .addFilter('vid.meta.drupal_internal__target_id', 'tags')
+    .addFields('taxonomy_term--topics', ['drupal_internal__tid', 'name'])
+    .addFilter('vid.meta.drupal_internal__target_id', 'topics')
     .addSort('name')
     .addPageLimit(100)
     .getQueryString();

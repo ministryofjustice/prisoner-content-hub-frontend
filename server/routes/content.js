@@ -29,7 +29,7 @@ const createContentRouter = ({ cmsService, analyticsService }) => {
       const contentType = prop('contentType', data);
       const sessionId = path(['session', 'id'], req);
       const categories = data?.categories || [];
-      const secondaryTags = data?.secondaryTags || [];
+      const topics = data?.topics || [];
 
       switch (contentType) {
         case 'radio':
@@ -39,7 +39,7 @@ const createContentRouter = ({ cmsService, analyticsService }) => {
             data: {
               ...data,
               categories,
-              secondaryTags,
+              topics,
             },
           });
         case 'video':
@@ -49,7 +49,7 @@ const createContentRouter = ({ cmsService, analyticsService }) => {
             data: {
               ...data,
               categories,
-              secondaryTags,
+              topics,
             },
           });
         case 'page':
@@ -61,7 +61,7 @@ const createContentRouter = ({ cmsService, analyticsService }) => {
             data: {
               ...data,
               categories,
-              secondaryTags,
+              topics,
             },
           });
         case 'landing-page':
@@ -73,7 +73,7 @@ const createContentRouter = ({ cmsService, analyticsService }) => {
             data: {
               ...data,
               categories: data?.categoryId || '',
-              secondaryTags,
+              topics,
             },
           });
         case 'pdf': {

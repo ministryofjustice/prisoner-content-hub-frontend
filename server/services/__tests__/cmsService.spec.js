@@ -16,11 +16,11 @@ const {
   VideoPageQuery,
 } = require('../../repositories/cmsQueries/videoPageQuery');
 const {
-  SecondaryTagPageQuery,
-} = require('../../repositories/cmsQueries/secondaryTagPageQuery');
+  TopicPageQuery,
+} = require('../../repositories/cmsQueries/topicPageQuery');
 const {
-  SecondaryTagHeaderPageQuery,
-} = require('../../repositories/cmsQueries/secondaryTagHeaderPageQuery');
+  TopicHeaderPageQuery,
+} = require('../../repositories/cmsQueries/topicHeaderPageQuery');
 const {
   SuggestionQuery,
 } = require('../../repositories/cmsQueries/suggestionQuery');
@@ -69,7 +69,7 @@ describe('cms Service', () => {
       description: 'Education content for prisoners',
       standFirst: 'Education',
       categories: [1234],
-      secondaryTags: [2345],
+      topics: [2345],
     });
 
     const createPdfPage = () => ({
@@ -94,7 +94,7 @@ describe('cms Service', () => {
       programmeCode: 'FAITH138',
       seasonId: 1,
       seriesSortValue: SERIES_SORT_VALUE,
-      secondaryTags: [
+      topics: [
         {
           id: 741,
           uuid: 147,
@@ -121,7 +121,7 @@ describe('cms Service', () => {
       media: 'https://cms.org/jdajsgjdfj.mp4',
       seasonId: 1,
       seriesSortValue: SERIES_SORT_VALUE,
-      secondaryTags: [
+      topics: [
         {
           id: 741,
           uuid: 147,
@@ -178,7 +178,7 @@ describe('cms Service', () => {
         contentType: 'page',
         description: 'Education content for prisoners',
         id: 5923,
-        secondaryTags: [2345],
+        topics: [2345],
         standFirst: 'Education',
         title: 'Novus',
       });
@@ -262,7 +262,7 @@ describe('cms Service', () => {
           programmeCode: 'FAITH138',
           seasonId: 1,
           seriesSortValue: SERIES_SORT_VALUE,
-          secondaryTags: [
+          topics: [
             {
               id: 741,
               name: 'Self-help',
@@ -355,7 +355,7 @@ describe('cms Service', () => {
           ],
           seasonId: 1,
           seriesSortValue: SERIES_SORT_VALUE,
-          secondaryTags: [
+          topics: [
             {
               id: 741,
               name: 'Self-help',
@@ -545,20 +545,20 @@ describe('cms Service', () => {
     const TAG_ID = 9;
     const uuid = 42;
 
-    describe('with a secondary tag', () => {
+    describe('with a topic', () => {
       const location = 'https://cms.org/tag/1234';
       beforeEach(() => {
         cmsApi.lookupTag.mockResolvedValue({
-          type: 'taxonomy_term--tags',
+          type: 'taxonomy_term--topics',
           location,
           uuid,
         });
       });
       describe('which contains related content', () => {
         let result;
-        const populatedSecondaryTag = { title: 'le name' };
+        const populatedTopic = { title: 'le name' };
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValue(populatedSecondaryTag);
+          cmsApi.get.mockResolvedValue(populatedTopic);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
         });
         it('looks up the tag', () => {
@@ -570,17 +570,17 @@ describe('cms Service', () => {
         it('returns the tag', async () => {
           expect(cmsApi.get).toHaveBeenCalledTimes(1);
           expect(cmsApi.get).toHaveBeenCalledWith(
-            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid, 1),
+            new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 1),
           );
-          expect(result).toBe(populatedSecondaryTag);
+          expect(result).toBe(populatedTopic);
         });
       });
       describe('which has no related content', () => {
         let result;
-        const populatedSecondaryTag = {};
+        const populatedTopic = {};
         beforeEach(async () => {
           cmsApi.get.mockResolvedValueOnce({});
-          cmsApi.get.mockResolvedValue(populatedSecondaryTag);
+          cmsApi.get.mockResolvedValue(populatedTopic);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
         });
         it('looks up the tag', () => {
@@ -592,13 +592,13 @@ describe('cms Service', () => {
         it('returns the tag', async () => {
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             1,
-            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid, 1),
+            new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 1),
           );
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             2,
-            new SecondaryTagHeaderPageQuery(location),
+            new TopicHeaderPageQuery(location),
           );
-          expect(result).toBe(populatedSecondaryTag);
+          expect(result).toBe(populatedTopic);
         });
       });
     });
@@ -731,20 +731,20 @@ describe('cms Service', () => {
     const TAG_ID = 9;
     const uuid = 42;
 
-    describe('with a secondary tag', () => {
+    describe('with a topic', () => {
       const location = 'https://cms.org/tag/1234';
       beforeEach(() => {
         cmsApi.lookupTag.mockResolvedValue({
-          type: 'taxonomy_term--tags',
+          type: 'taxonomy_term--topics',
           location,
           uuid,
         });
       });
       describe('which contains related content', () => {
         let result;
-        const populatedSecondaryTag = { title: 'le name', relatedContent: [] };
+        const populatedTopic = { title: 'le name', relatedContent: [] };
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValue(populatedSecondaryTag);
+          cmsApi.get.mockResolvedValue(populatedTopic);
           result = await cmsService.getPage(ESTABLISHMENT_NAME, TAG_ID, 2);
         });
         it('looks up the tag', () => {
@@ -756,17 +756,17 @@ describe('cms Service', () => {
         it('returns the tag', async () => {
           expect(cmsApi.get).toHaveBeenCalledTimes(1);
           expect(cmsApi.get).toHaveBeenCalledWith(
-            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid, 2),
+            new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
-          expect(result).toBe(populatedSecondaryTag.relatedContent);
+          expect(result).toBe(populatedTopic.relatedContent);
         });
       });
       describe('which has no related content', () => {
         let result;
-        const populatedSecondaryTag = { relatedContent: [] };
+        const populatedTopic = { relatedContent: [] };
         beforeEach(async () => {
           cmsApi.get.mockResolvedValueOnce({});
-          cmsApi.get.mockResolvedValue(populatedSecondaryTag);
+          cmsApi.get.mockResolvedValue(populatedTopic);
           result = await cmsService.getPage(ESTABLISHMENT_NAME, TAG_ID, 2);
         });
         it('looks up the tag', () => {
@@ -778,13 +778,13 @@ describe('cms Service', () => {
         it('returns the tag', async () => {
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             1,
-            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid, 2),
+            new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             2,
-            new SecondaryTagHeaderPageQuery(location),
+            new TopicHeaderPageQuery(location),
           );
-          expect(result).toBe(populatedSecondaryTag.relatedContent);
+          expect(result).toBe(populatedTopic.relatedContent);
         });
       });
     });
