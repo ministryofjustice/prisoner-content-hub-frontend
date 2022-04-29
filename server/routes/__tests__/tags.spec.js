@@ -39,7 +39,7 @@ describe('GET /tags', () => {
 
     describe('on success', () => {
       const data = {
-        contentType: 'tags',
+        contentType: 'topic',
         title: 'foo bar',
         summary: 'foo description',
         image: {
