@@ -17,7 +17,7 @@ class SearchQuery {
     return {
       title: item.title,
       summary: item.fieldMojDescription?.summary,
-      url: `/content/${item.drupalInternal_Nid}`,
+      url: item.path?.alias || `/content/${item.drupalInternal_Nid}`,
     };
   }
 }
