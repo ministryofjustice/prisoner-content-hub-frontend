@@ -1,3 +1,4 @@
+{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 {% extends "../components/basicTemplate.njk" %}
 
 {% set blackBackground = true %}
@@ -49,7 +50,23 @@
       <div id="body" class="govuk-body">{{ data.description.sanitized | safe }}</div>
     </div>
 
+    {% if not data.excludeFeedback %}
+      {{ hubFeedbackWidget({
+        contentId: data.id,
+        title: data.title,
+        heading: '',
+        contentType: data.contentType,
+        series: data.seriesName,
+        feedbackId: feedbackId,
+        categories: data.categories.name,
+        topics: data.topics | join(',', 'name')
+      })}}
+    {% endif %}
+
   </div>
+{% endblock %}
+
+{% block feedback %}
 {% endblock %}
 
 {% block bodyEnd %}

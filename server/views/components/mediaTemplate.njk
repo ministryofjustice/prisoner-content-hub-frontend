@@ -29,18 +29,16 @@
     </header>
     {% block media %}{% endblock %}
     {% if not data.excludeFeedback %}
-      <div class="govuk-hub-on-black-feedback">
-        {{ hubFeedbackWidget({
-          contentId: data.id,
-          title: data.title,
-          heading: '',
-          contentType: data.contentType,
-          series: data.seriesName,
-          feedbackId: feedbackId,
-          categories: data.categories.name,
-          topics: data.topics | join(',', 'name')
-        })}}
-      </div>
+      {{ hubFeedbackWidget({
+        contentId: data.id,
+        title: data.title,
+        heading: '',
+        contentType: data.contentType,
+        series: data.seriesName,
+        feedbackId: feedbackId,
+        categories: data.categories.name,
+        topics: data.topics | join(',', 'name')
+      })}}
     {% endif %}
     <div class="govuk-hub-media-player__description">
       <div id="body" class="govuk-body">{{ data.description | safe }}</div>

@@ -41,5 +41,17 @@ describe('search query', () => {
         url: '/content/1234',
       });
     });
+    it('should handle items without a summary', async () => {
+      const item = {
+        title: 'Prisoners in Prison',
+        drupalInternal_Nid: 1234,
+      };
+
+      expect(query.transformEach(item)).toStrictEqual({
+        summary: 'No summary available',
+        title: 'Prisoners in Prison',
+        url: '/content/1234',
+      });
+    });
   });
 });

@@ -47,32 +47,10 @@
             </select>
           </div>
 
-          {# <div class="govuk-form-group"> #}
-          {# <label for="timeBase" class="govuk-label">Base time (min)</label> #}
           <input type="hidden" id="timeBase" value="5"/>
-          {# </div> #}
 
-          {# <div class="govuk-form-group"> #}
-          {# <label for="timeInc" class="govuk-label">Increment (sec)</label> #}
           <input type="hidden"  id="timeInc" value="2"/>
-          {# </div> #}
 
-          {# <div class="govuk-form-group">
-          <label class="govuk-label" for="contemptLevel">
-          Contempt Level (-100 to 100)
-        </label>
-          <input type="number" class="govuk-input govuk-!-margin-bottom-2" id="contemptLevel" value="-100" max="100" min="-100">
-          <details class="govuk-details">
-            <summary class="govuk-details__summary">
-              <span class="govuk-details__summary-text">
-              Help with contempt level
-            </span>
-            </summary>
-            <div class="govuk-details__text">
-            Roughly equivalent to "optimism." Positive values of contempt favor more "risky" play, while negative values will favor draws. Zero is neutral.
-          </div>
-          </details>
-        </div> #}
           <div class="govuk-form-group">
 
             {{ govukRadios({
@@ -89,6 +67,7 @@
             items: [
               {
                 value: "0",
+                checked: true,
                 text: "Easy"
               },
               {

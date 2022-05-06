@@ -10,17 +10,15 @@
             <a class="govuk-link" href="{{item.url}}">
               <span class="govuk-!-font-weight-bold">{{ item.title }}</span>
               <p class="govuk-body">
-                {% if item.summary %}{{ item.summary }}
-                {% else %}No summary available{% endif%}
-                </p>
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <h3 class="govuk-heading-m">No results found for "{{ query }}"</h3>
-      {% endif %}
-    </div>
+                {{ item.summary }}
+              </p>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <h3 class="govuk-heading-m">No results found for "{{ query }}"</h3>
+    {% endif %}
   </div>
 
 {% endblock %}

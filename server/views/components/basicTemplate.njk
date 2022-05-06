@@ -133,9 +133,10 @@
 
       {% block feedback %}
         {% if not excludeFeedback %}
-          <div class="govuk-width-container">
+          <div class="govuk-width-container govuk-body">
             {% if not blackBackground %}<hr>{% endif %}
             {{ hubFeedbackWidget({
+              classes: 'govuk-!-margin-top-5',
               contentId: data.id,
               heading: feedbackHeading,
               title: title,

@@ -5,10 +5,7 @@
 
 {% block content %}
   <p class="govuk-body">
-    Return to the <a href="/">home page</a> or
-    <script>
-      document.write('<a href="' + document.referrer + '">try again</a>');
-    </script>
+    Return to the <a href="/">home page</a>{% if returnUrl %} or <a href="{{ returnUrl | safe }}">try again</a>{% endif %}
   </p>
   {% if error %}
     <h2 class="govuk-heading-m">Geek Stuff 👇</h2>
