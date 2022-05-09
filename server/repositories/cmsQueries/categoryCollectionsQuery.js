@@ -14,20 +14,23 @@ class CategoryCollectionsQuery {
 
   constructor(establishmentName, uuid, limit = 10, page = 1) {
     this.establishmentName = establishmentName;
-    this.uuid = uuid;
     const queryWithoutOffset = new Query()
       .addFields('taxonomy_term--series', CategoryCollectionsQuery.#TILE_FIELDS)
       .addFields(
         'taxonomy_term--moj_categories',
         CategoryCollectionsQuery.#TILE_FIELDS,
       )
+      .addGroup('series_sub_categories', 'OR')
+      .addFilter('parent.id', uuid, '=', 'series_sub_categories')
+      .addFilter('field_category.id', uuid, '=', 'series_sub_categories')
       .addInclude(['field_featured_image'])
+      .addSort('content_updated,drupal_internal__tid', 'DESC')
       .getQueryString();
     this.query = `${queryWithoutOffset}&${getPagination(page, limit)}`;
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/taxonomy_term/moj_categories/${this.uuid}/sub_terms?${this.query}`;
+    return `/jsonapi/prison/${this.establishmentName}/taxonomy_term?${this.query}`;
   }
 
   transform(deserializedResponse, links) {
