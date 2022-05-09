@@ -33,6 +33,9 @@ const {
 const {
   PrimaryNavigationQuery,
 } = require('../repositories/cmsQueries/PrimaryNavigationQuery');
+const {
+  MostRecentContentQuery,
+} = require('../repositories/cmsQueries/mostRecentContentQuery');
 
 class CmsService {
   #cmsApi;
@@ -220,6 +223,14 @@ class CmsService {
 
   async getPrimaryNavigation(establishmentName) {
     return this.#cmsApi.get(new PrimaryNavigationQuery(establishmentName));
+  }
+
+  async getMostRecentContent(establishmentName, page = 1, pageLimit = 4) {
+    const mostRecentContent = await this.#cmsApi.get(
+      new MostRecentContentQuery(establishmentName, page, pageLimit),
+    );
+
+    return mostRecentContent;
   }
 }
 
