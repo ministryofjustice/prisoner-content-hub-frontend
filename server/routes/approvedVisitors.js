@@ -42,6 +42,7 @@ const createApprovedVisitorsRouter = () => {
   //         detailsType: 'small',
   //         returnUrl,
   //         ...personalisation,
+  //         data: { contentType: 'profile' },
   //       });
   //     } catch (e) {
   //       return next(e);

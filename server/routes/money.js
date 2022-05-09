@@ -33,6 +33,11 @@ function processSelectedDate(selectedDate) {
 const createMoneyRouter = ({ prisonerInformationService }) => {
   const router = express.Router();
 
+  router.get('*', (req, res, next) => {
+    res.locals.data = { contentType: 'profile' };
+    next();
+  });
+
   router.get('/damage-obligations', async (req, res, next) => {
     try {
       const templateData = {

@@ -1,39 +1,12 @@
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "../components/topics/macro.njk" import hubTopics %}
-{% from "../components/user-details/macro.njk" import userDetails %}
 
-{% extends "../components/template.njk" %}
+{% extends "../components/basicTemplate.njk" %}
 
-{% block pageTitle %}
-  {{ title }}
+{% block content %}
+  {{ hubTopics({
+    data: topics
+  }) }}
 {% endblock %}
 
-{% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block header %}
-  <div class="govuk-width-container govuk-body">
-    <h1>{{ title }}</h1>
-  </div>
-{% endblock %}
-
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block main %}
-  <div class="govuk-width-container">
-    {{ hubTopics({
-      data: topics
-    }) }}
-  </div>
-{% endblock %}
-
-{% block bodyEnd %}
-  <script src="/public/all.js"></script>
-  <script>
-    window
-      .GOVUKFrontend
-      .initAll();
-  </script>
+{% block feedback %}
 {% endblock %}

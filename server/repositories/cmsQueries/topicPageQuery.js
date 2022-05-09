@@ -63,7 +63,7 @@ class TopicPageQuery {
       ...this.#getTopic(deserializedResponse[0].fieldTopics),
       ...{
         relatedContent: {
-          contentType: 'default',
+          contentType: 'topic',
           isLastPage: !links.next,
           data: deserializedResponse.map(item => getSmallTile(item)),
         },

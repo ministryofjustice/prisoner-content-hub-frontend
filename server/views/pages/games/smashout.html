@@ -1,28 +1,18 @@
-{% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "../../components/user-details/macro.njk" import userDetails %}
-{% extends "../../components/template.njk" %}
-
-{% block pageTitle %}
-  {{ title }}
-{% endblock %}
+{% extends "../../components/basicTemplate.njk" %}
 
 {% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
   <link href="/public/javascript/games/sudoku/sudokuJS.css" rel="stylesheet" type="text/css"/>
   <style type="text/css">
   canvas {
     background-color: #f3f2f1;
   }
   </style>
+  {{ super() }}
 {% endblock %}
 
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
+{% block title %}{% endblock %}
 
-{% block main %}
-  <div class="govuk-width-container">
+{% block content %}
     <main class="govuk-main-wrapper">
       <div class="govuk-grid-row govuk-!-margin-bottom-6">
       </div>
@@ -38,17 +28,7 @@
             <br>Spacebar = Release ball</p>
         </div>
       </div>
-
-      <div class="govuk-hub-article-feedback">
-        {{ hubFeedbackWidget({
-          title: title,
-          heading: 'Tell us what you think:',
-          contentType: "game",
-          feedbackId: feedbackId
-        })}}
-      </div>
     </main>
-  </div>
 {% endblock %}
 
 {% block bodyEnd %}

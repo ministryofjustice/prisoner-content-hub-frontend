@@ -82,7 +82,7 @@ describe('Series page query', () => {
         externalContent: false,
         contentUrl: `/tags/${UUID}`,
         relatedContent: {
-          contentType: 'default',
+          contentType: 'series',
           isLastPage: false,
           data: [
             createTransformedContent('A'),
@@ -114,7 +114,7 @@ describe('Series page query', () => {
         externalContent: false,
         contentUrl: `/tags/${UUID}`,
         relatedContent: {
-          contentType: 'default',
+          contentType: 'series',
           isLastPage: true,
           data: [createTransformedContent('A')],
         },

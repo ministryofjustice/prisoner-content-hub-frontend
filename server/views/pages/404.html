@@ -1,20 +1,13 @@
 {% from "../components/user-details/macro.njk" import userDetails %}
 
-{% extends "../components/template.njk" %}
+{% extends "../components/basicTemplate.njk" %}
 
-{% block pageTitle %}
-  The page you are looking for could not be found
+{% set title = "The page you are looking for could not be found" %}
+
+{% block title %}
 {% endblock %}
 
-{% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block main %}
+{% block content %}
   <div class="govuk-width-container govuk-!-padding-top-5">
     <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
       <div class="govuk-grid-row">
@@ -29,3 +22,5 @@
     </main>
   </div>
 {% endblock %}
+
+{% block feedback %}{% endblock %}

@@ -1,4 +1,8 @@
+{% from "../components/next-episodes-content/macro.njk" import nextEpisodesContent %}
+{% from "../components/suggested-content/macro.njk" import hubSuggestedContent %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
+{% from "../components/related-topics/macro.njk" import hubRelatedTopics %}
+
 {% extends "../components/basicTemplate.njk" %}
 
 {% set blackBackground = true %}
@@ -8,10 +12,14 @@
   {{ super() }}
 {% endblock %}
 
+{% block title %}{% endblock %}
+
 {% block content %}
   <div class="govuk-hub-media-player">
     <header class="govuk-hub-media-player__header">
-      <img width="100" height="100" id="thumbnail" src="/public/images/default_audio.png" alt="{{ data.image.alt }}" class="govuk-hub-media-player__show-tag"/>
+      <div class="media-thumbnail">
+        <img id="thumbnail" src="{{ data.image.url }}" alt="{{ data.image.alt }}" class="govuk-hub-media-player__show-tag"/>
+      </div>
       <div class="govuk-hub-title-container">
         <p class="govuk-hub-media-player__catgeory govuk-heading-m">
           <a href="/tags/{{data.seriesId}}" id="series" title="{{ data.seriesName }}" class="govuk-link govuk-hub-media-player__catgeory-link">{{ data.seriesName }}</a>
@@ -19,37 +27,7 @@
         <h1 id="title" class="govuk-hub-media-player__title govuk-heading-xl govuk-body govuk-!-font-size-36 govuk-body govuk-!-font-weight-bold">{{ data.title }}</h1>
       </div>
     </header>
-
-    <audio
-      id="hub-audio"
-      class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause"
-      controls
-      height="226"
-      width="900"
-      preload="auto"
-      poster="/public/images/radio-player-background.jpg"
-      data-setup='{
-        "controlBar": {
-          "children": [
-              "playToggle",
-              "volumePanel",
-              "currentTimeDisplay",
-              "progressControl",
-              "durationDisplay",
-              "fullscreenToggle"
-          ]
-        }
-      }'
-      data-title="{{ data.title }}"
-      data-programme-code="{{ data.programmeCode }}"
-    >
-      <source src="{{ data.media }}" type="audio/ogg"/>
-    </audio>
-
-    <div class="govuk-hub-media-player__description">
-      <div id="body" class="govuk-body">{{ data.description.sanitized | safe }}</div>
-    </div>
-
+    {% block media %}{% endblock %}
     {% if not data.excludeFeedback %}
       {{ hubFeedbackWidget({
         contentId: data.id,
@@ -62,14 +40,27 @@
         topics: data.topics | join(',', 'name')
       })}}
     {% endif %}
+    <div class="govuk-hub-media-player__description">
+      <div id="body" class="govuk-body">{{ data.description | safe }}</div>
+    </div>
 
+    {{ hubRelatedTopics({ data: data.topics, darkmode: true }) }}
+
+    <div id="next-episodes" class="govuk-hub-media-player__watch-next">
+      {{ nextEpisodesContent({ data: data.nextEpisodes }) }}
+    </div>
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <div id="suggested-content">
+        {{ hubSuggestedContent({ data: data.suggestedContent }) }}
+      </div>
+    </div>
   </div>
 {% endblock %}
 
-{% block feedback %}
-{% endblock %}
+{% block feedback %}{% endblock %}
 
 {% block bodyEnd %}
   <script src="/public/video.min.js"></script>
-  <script src="/public/javascript/audioPlayer.js"></script>
 {% endblock %}
