@@ -1,5 +1,5 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getSmallTile } = require('../../utils/jsonApi');
+const { getSmallTile, getPagination } = require('../../utils/jsonApi');
 const { getOffsetUnixTime } = require('../../utils/date');
 
 class MostRecentContentQuery {
@@ -17,8 +17,7 @@ class MostRecentContentQuery {
     const timeStamp = getOffsetUnixTime(14);
 
     this.establishmentName = establishmentName;
-    this.query = new Query()
-
+    const queryWithoutOffset = new Query()
       .addFields('node--page', MostRecentContentQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', MostRecentContentQuery.#TILE_FIELDS)
       .addFields('node--moj_radio_item', MostRecentContentQuery.#TILE_FIELDS)
@@ -40,8 +39,8 @@ class MostRecentContentQuery {
       .addFilter('created', timeStamp, '>=')
 
       .addSort('published_at,created', 'DESC')
-      .addPageLimit(pageLimit)
       .getQueryString();
+    this.query = `${queryWithoutOffset}&${getPagination(page, pageLimit)}`;
   }
 
   path() {
