@@ -5,7 +5,7 @@
 
 {% block content %}
   <p class="govuk-body">
-    Return to the <a href="/">home page</a>{% if returnUrl %} or <a href="{{ returnUrl | safe }}">try again</a>{% endif %}
+    Return to the <a href="/">home page</a>{% if returnUrl %} or <a href="{{ returnUrl }}">try again</a>{% endif %}
   </p>
   {% if error %}
     <h2 class="govuk-heading-m">Geek Stuff 👇</h2>
