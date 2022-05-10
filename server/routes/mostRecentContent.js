@@ -1,5 +1,4 @@
 const express = require('express');
-// const { groupBy } = require('../utils');
 
 const createMostRecentContentRouter = ({ cmsService }) => {
   const router = express.Router();
