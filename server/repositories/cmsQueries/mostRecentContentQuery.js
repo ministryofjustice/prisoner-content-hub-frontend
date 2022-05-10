@@ -30,6 +30,7 @@ class MostRecentContentQuery {
       ])
 
       // .addFilter('type', ['node--page', 'node--moj_video_item', 'node--moj_radio_item', 'node--moj_pdf_item'], 'IN')
+      // .addFilter('id', ['0b4c1bbc-2f91-454c-b717-6e06bd6403e9'], 'IN')
 
       .addFilter('created', timeStamp, '>=')
 
