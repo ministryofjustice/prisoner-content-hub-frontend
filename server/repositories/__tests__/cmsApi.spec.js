@@ -12,9 +12,8 @@ class TestPathTransformQuery {
   }
 
   transform(item, links) {
-    const { name, description, fieldLegacyLandingPage } = item;
-    const id =
-      fieldLegacyLandingPage?.resourceIdObjMeta?.drupal_internal__target_id;
+    const { name, description, fieldTopic } = item;
+    const id = fieldTopic?.resourceIdObjMeta?.drupal_internal__target_id;
     return {
       id,
       linkText: name,
@@ -31,9 +30,8 @@ class TestUrlTransformEachQuery {
   }
 
   transformEach(item) {
-    const { name, description, fieldLegacyLandingPage } = item;
-    const id =
-      fieldLegacyLandingPage?.resourceIdObjMeta?.drupal_internal__target_id;
+    const { name, description, fieldTopic } = item;
+    const id = fieldTopic?.resourceIdObjMeta?.drupal_internal__target_id;
     return {
       id,
       linkText: name,
@@ -56,9 +54,9 @@ const testItem = ({ id, title, processed }) => ({
     },
   },
   relationships: {
-    field_legacy_landing_page: {
+    field_topic: {
       data: {
-        type: 'node--landing_page',
+        type: 'node--topic',
         id: 'e442003a-1f77-4d7f-ac90-b518878cfacd',
         meta: {
           drupal_internal__target_id: id,

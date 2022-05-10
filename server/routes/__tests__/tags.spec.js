@@ -85,38 +85,6 @@ describe('GET /tags', () => {
             });
         });
       });
-
-      describe('landing page related content', () => {
-        it('correctly renders a tags page related content', () => {
-          cmsService.getTag.mockReturnValue(data);
-
-          return request(app)
-            .get('/tags/1')
-            .then(response => {
-              const $ = cheerio.load(response.text);
-
-              expect($('[data-featured-id]').length).toBe(
-                1,
-                'did not render the correct number of',
-              );
-
-              expect($('[data-featured-id="foo"]').text()).toContain(
-                data.relatedContent.data[0].title,
-                'did not render the correct related item title',
-              );
-
-              expect($('.tile-image').attr('src')).toContain(
-                data.relatedContent.data[0].image.url,
-                'did not render the correct related item image',
-              );
-
-              expect($('[data-featured-id="foo"]').attr('href')).toContain(
-                `/content/${data.relatedContent.data[0].id}`,
-                'did not render url',
-              );
-            });
-        });
-      });
     });
   });
 
