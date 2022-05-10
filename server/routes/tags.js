@@ -38,7 +38,7 @@ const createTagRouter = ({ cmsService }) => {
       );
 
       const pageType = ['topic', 'series'].includes(data.contentType)
-        ? 'tagsTopicsSeries'
+        ? 'collections'
         : 'tagsCategories';
 
       return res.render(`pages/${pageType}`, {
