@@ -1,22 +1,11 @@
-{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 {% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
+{% extends "../components/basicTemplate.njk" %}
 
-{% extends "../components/template.njk" %}
+{% set blackBackground = true %}
+{% set feedbackHeading = "Tell us what you think about this page" %}
 
-{% block pageTitle %}
-  {{ title }}
-{% endblock %}
-
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block main %}
-  <div class="govuk-hub-landing-page-header govuk-hub-landing-page-header--with-stripe">
+{% block title %}
+  <div id="category-{{tagId}}" class="govuk-hub-landing-page-header govuk-hub-landing-page-header--with-stripe">
     <div class="govuk-width-container">
       <div class="govuk-main-wrapper">
         <div class="govuk-grid-row">
@@ -28,6 +17,11 @@
               </div>
             {% endif %}
           </div>
+          {% if data.image.url %}
+            <div class="govuk-grid-column-one-half">
+              <div data-page-featured-image class="govuk-hub-tag-page-header__content-image" style="background-image: url({{data.image.url}});"  alt="{{ data.image.alt }}"></div>
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -44,24 +38,6 @@
   </div>
 
 
-  {% if not data.excludeFeedback %}
-    <div class="govuk-form-group govuk-hub-article-feedback govuk-hub-on-black-feedback">
-      {% set tagHeading %}
-        Tell us what you think about this page:
-      {% endset %}
-      {{ hubFeedbackWidget({
-        contentId: data.id,
-        heading: tagHeading,
-        title: title,
-        name: title,
-        contentType: data.contentType,
-        series: title,
-        feedbackId: feedbackId,
-        series: title if data.contentType == 'series',
-        topics: title if data.contentType == 'topic'
-      })}}
-    </div>
-  {% endif %}
 {% endblock %}
 {% block bodyEnd %}
 <script src="/public/generated/templates.js"></script>
