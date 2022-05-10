@@ -229,7 +229,7 @@ class CmsService {
     const mostRecentContent = await this.#cmsApi.get(
       new MostRecentContentQuery(establishmentName, page, pageLimit),
     );
-    // console.log('mostRecentContent', mostRecentContent)
+
     return mostRecentContent;
   }
 }
