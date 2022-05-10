@@ -13,7 +13,7 @@ class MostRecentContentQuery {
     'path',
   ];
 
-  constructor(establishmentName, page, pageLimit) {
+  constructor(establishmentName, page = 1, pageLimit = 4) {
     const timeStamp = getOffsetUnixTime(14);
 
     this.establishmentName = establishmentName;
@@ -40,6 +40,7 @@ class MostRecentContentQuery {
 
       .addSort('published_at,created', 'DESC')
       .getQueryString();
+
     this.query = `${queryWithoutOffset}&${getPagination(page, pageLimit)}`;
   }
 
