@@ -225,7 +225,7 @@ class CmsService {
     return this.#cmsApi.get(new PrimaryNavigationQuery(establishmentName));
   }
 
-  async getMostRecentContent(establishmentName, page = 1, pageLimit = 4) {
+  async getMostRecentContent(establishmentName, page, pageLimit) {
     const mostRecentContent = await this.#cmsApi.get(
       new MostRecentContentQuery(establishmentName, page, pageLimit),
     );
