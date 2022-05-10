@@ -55,16 +55,6 @@ class MostRecentContentQuery {
     return {
       isLastPage: !links.next,
       data: deserializedResponse.map(getSmallTile),
-      /*
-      .filter(({ type }) =>
-          [
-            'node--page',
-            'node--moj_video_item',
-            'node--moj_radio_item',
-            'node--moj_pdf_item',
-          ].includes(type),
-        )
-        */
     };
   }
 }
