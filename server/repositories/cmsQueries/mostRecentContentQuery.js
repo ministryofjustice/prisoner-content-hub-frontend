@@ -13,7 +13,7 @@ class MostRecentContentQuery {
     'path',
   ];
 
-  constructor(establishmentName, page = 1, pageLimit = 4) {
+  constructor(establishmentName, page, pageLimit) {
     const timeStamp = getOffsetUnixTime(14);
 
     this.establishmentName = establishmentName;
@@ -22,13 +22,6 @@ class MostRecentContentQuery {
       .addFields('node--moj_video_item', MostRecentContentQuery.#TILE_FIELDS)
       .addFields('node--moj_radio_item', MostRecentContentQuery.#TILE_FIELDS)
       .addFields('node--moj_pdf_item', MostRecentContentQuery.#TILE_FIELDS)
-      .addFields('taxonomy_term--series', [
-        'drupal_internal__tid',
-        'name',
-        'description',
-        'path',
-        'field_featured_image',
-      ])
 
       .addFields('file--file', [
         'drupal_internal__fid',
@@ -36,9 +29,12 @@ class MostRecentContentQuery {
         'image_style_uri',
       ])
 
+      // .addFilter('type', ['node--page', 'node--moj_video_item', 'node--moj_radio_item', 'node--moj_pdf_item'], 'IN')
+
       .addFilter('created', timeStamp, '>=')
 
       .addSort('published_at,created', 'DESC')
+
       .getQueryString();
 
     this.query = `${queryWithoutOffset}&${getPagination(page, pageLimit)}`;
@@ -50,6 +46,7 @@ class MostRecentContentQuery {
 
   transform(deserializedResponse, links) {
     if (deserializedResponse.length === 0) return null;
+
     return {
       isLastPage: !links.next,
       data: deserializedResponse.map(getSmallTile),
