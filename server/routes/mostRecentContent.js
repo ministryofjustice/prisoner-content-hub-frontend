@@ -12,15 +12,19 @@ const createMostRecentContentRouter = ({ cmsService }) => {
         throw new Error('Could not determine establishment!');
       }
 
-      const data = await cmsService.getMostRecentContent(
+      const { data, isLastPage } = await cmsService.getMostRecentContent(
         establishmentName,
         1,
         10,
       );
 
       res.render('pages/mostRecentContent', {
+        config: {
+          content: true,
+        },
         title: 'Recently added',
         data,
+        isLastPage,
         breadcrumbs: ['test'],
       });
     } catch (e) {
