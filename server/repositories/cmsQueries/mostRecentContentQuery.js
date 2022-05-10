@@ -11,6 +11,7 @@ class MostRecentContentQuery {
     'field_moj_description',
     'field_moj_series',
     'path',
+    'type.meta.drupal_internal__target_id',
   ];
 
   constructor(establishmentName, page, pageLimit) {
@@ -29,7 +30,11 @@ class MostRecentContentQuery {
         'image_style_uri',
       ])
 
-      // .addFilter('type', ['node--page', 'node--moj_video_item', 'node--moj_radio_item', 'node--moj_pdf_item'], 'IN')
+      .addFilter(
+        'type.meta.drupal_internal__target_id',
+        ['page', 'moj_video_item', 'moj_radio_item', 'moj_pdf_item'],
+        'IN',
+      )
 
       .addFilter('created', timeStamp, '>=')
 
@@ -49,8 +54,9 @@ class MostRecentContentQuery {
 
     return {
       isLastPage: !links.next,
-      data: deserializedResponse
-        .filter(({ type }) =>
+      data: deserializedResponse.map(getSmallTile),
+      /*
+      .filter(({ type }) =>
           [
             'node--page',
             'node--moj_video_item',
@@ -58,7 +64,7 @@ class MostRecentContentQuery {
             'node--moj_pdf_item',
           ].includes(type),
         )
-        .map(getSmallTile),
+        */
     };
   }
 }
