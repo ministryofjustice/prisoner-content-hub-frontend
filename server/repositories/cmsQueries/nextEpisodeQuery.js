@@ -19,7 +19,6 @@ class NextEpisodeQuery {
       .addFields('node--moj_video_item', NextEpisodeQuery.#EPISODE_FIELDS)
       .addFields('node--moj_radio_item', NextEpisodeQuery.#EPISODE_FIELDS)
       .addFields('node--moj_pdf_item', NextEpisodeQuery.#EPISODE_FIELDS)
-      .addFields('node--landing_page', NextEpisodeQuery.#EPISODE_FIELDS)
       .addFields('file--file', ['uri', 'image_style_uri'])
 
       .addFilter('field_moj_series.meta.drupal_internal__tid', seriesId)
