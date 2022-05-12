@@ -3,8 +3,8 @@ const express = require('express');
 const createMostRecentContentRouter = ({ cmsService }) => {
   const router = express.Router();
 
-  const buildResponse = (req, res, relatedContent) =>
-    req.params.json
+  const buildResponse = (req, res, relatedContent, respondWithJson) =>
+    respondWithJson
       ? res.json(relatedContent)
       : res.render('pages/collections', {
           config: {
@@ -24,6 +24,7 @@ const createMostRecentContentRouter = ({ cmsService }) => {
       }
 
       const { page } = req.query;
+      const respondWithJson = req.params.json;
 
       const relatedContent = await cmsService.getMostRecentContent(
         establishmentName,
@@ -31,7 +32,7 @@ const createMostRecentContentRouter = ({ cmsService }) => {
         40,
       );
 
-      buildResponse(req, res, relatedContent);
+      buildResponse(req, res, relatedContent, respondWithJson);
     } catch (e) {
       e.message = `Error loading content: ${e.message}`;
       next(e);
