@@ -93,7 +93,7 @@ describe('GET /tags', () => {
       it('passes caught exceptions to next', async () => {
         cmsService.getPage.mockRejectedValue('💥');
 
-        await request(app).get('/tags/1.json').expect(500);
+        await request(app).get('/tags/1/json').expect(500);
       });
     });
 
@@ -119,7 +119,7 @@ describe('GET /tags', () => {
           cmsService.getPage.mockReturnValue(data);
 
           return request(app)
-            .get('/tags/1.json')
+            .get('/tags/1/json')
             .expect(200)
             .expect('Content-Type', /application\/json/)
             .then(response => {
@@ -137,7 +137,7 @@ describe('GET /tags', () => {
           cmsService.getPage.mockReturnValue(data);
 
           return request(app)
-            .get('/tags/1.json?page=2')
+            .get('/tags/1/json?page=2')
             .expect(200)
             .expect('Content-Type', /application\/json/)
             .then(response => {
@@ -154,7 +154,7 @@ describe('GET /tags', () => {
           cmsService.getPage.mockReturnValue(data);
 
           return request(app)
-            .get('/tags/1.json?page=2&pageType=other')
+            .get('/tags/1/json?page=2&pageType=other')
             .expect(200)
             .expect('Content-Type', /application\/json/)
             .then(response => {
