@@ -3,7 +3,19 @@ const express = require('express');
 const createMostRecentContentRouter = ({ cmsService }) => {
   const router = express.Router();
 
-  router.get('/', async (req, res, next) => {
+  const buildResponse = (req, res, relatedContent) =>
+    req.params.json
+      ? res.json(relatedContent)
+      : res.render('pages/collections', {
+          config: {
+            content: true,
+          },
+          title: 'Recently added',
+          data: { relatedContent },
+          breadcrumbs: ['test'],
+        });
+
+  router.get('/:json?', async (req, res, next) => {
     try {
       const { establishmentName } = req.session;
 
@@ -11,22 +23,17 @@ const createMostRecentContentRouter = ({ cmsService }) => {
         throw new Error('Could not determine establishment!');
       }
 
+      const { page } = req.query;
+
       const relatedContent = await cmsService.getMostRecentContent(
         establishmentName,
-        1,
-        5,
+        page,
+        40,
       );
 
-      res.render('pages/collections', {
-        config: {
-          content: true,
-        },
-        title: 'Recently added',
-        data: { relatedContent },
-        breadcrumbs: ['test'],
-      });
+      buildResponse(req, res, relatedContent);
     } catch (e) {
-      e.message = `Error loading topics: ${e.message}`;
+      e.message = `Error loading content: ${e.message}`;
       next(e);
     }
   });
