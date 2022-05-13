@@ -14,8 +14,11 @@ const createMostRecentContentRouter = ({ cmsService }) => {
           data: {
             relatedContent,
             summary: 'The latest uploads on the Hub.',
+            breadcrumbs: [
+              { href: '/', text: 'Home' },
+              { href: '', text: 'Recently added' },
+            ],
           },
-          breadcrumbs: ['test'],
         });
 
   router.get('/:json?', async (req, res, next) => {
