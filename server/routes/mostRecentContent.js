@@ -11,7 +11,10 @@ const createMostRecentContentRouter = ({ cmsService }) => {
             content: true,
           },
           title: 'Recently added',
-          data: { relatedContent },
+          data: {
+            relatedContent,
+            summary: 'The latest uploads on the Hub.',
+          },
           breadcrumbs: ['test'],
         });
 
