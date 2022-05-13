@@ -1,4 +1,3 @@
-const { prop, path } = require('ramda');
 const express = require('express');
 
 const createContentRouter = ({ cmsService, analyticsService }) => {
@@ -17,7 +16,7 @@ const createContentRouter = ({ cmsService, analyticsService }) => {
       postscript: false,
     };
 
-    const userAgent = path(['headers', 'user-agent'], req);
+    const userAgent = req?.headers?.['user-agent'];
     const { establishmentName } = req.session;
 
     try {
@@ -26,10 +25,10 @@ const createContentRouter = ({ cmsService, analyticsService }) => {
         parseInt(id, 10),
       );
 
-      const contentType = prop('contentType', data);
-      const sessionId = path(['session', 'id'], req);
+      const contentType = data?.contentType;
+      const sessionId = req?.session?.id;
       const categories = data?.categories || [];
-      const topics = data?.topics || [];
+      const topics = data?.topics?.filter(topic => topic?.name) || [];
 
       switch (contentType) {
         case 'radio':

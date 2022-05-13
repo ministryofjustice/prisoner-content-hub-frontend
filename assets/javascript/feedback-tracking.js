@@ -13,18 +13,18 @@
     radio: 'podcast',
     page: 'article',
     game: 'game',
-    'landing-page': 'topic',
     series: 'series',
-    topic: 'topic'
+    topic: 'topic',
+    category: 'category'
   };
   var types = {
     video: 'VIDEO',
     radio: 'AUDIO',
     page: 'ARTICLE',
     game: 'GAME',
-    'landing-page': 'TOPIC',
     series: 'SERIES',
-    topic: 'TOPIC'
+    topic: 'TOPIC',
+    category: 'CATEGORY'
   };
 
   window._feedback = {};
@@ -38,8 +38,8 @@
     window._feedback.title = widget.data('item-title');
     window._feedback.url = window.location.pathname;
     window._feedback.contentType = types[contentType] || contentType;
-    window._feedback.categories = categories ? ('' + categories).split(',') : [];
-    window._feedback.topics = topics ? ('' + topics).split(',') : [];
+    window._feedback.categories = categories || '';
+    window._feedback.topics = topics || '';
     window._feedback.id = widget.data('item-feedback-id');
 
     var series = widget.data('item-series');
