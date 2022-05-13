@@ -3,6 +3,18 @@ import { activity, appointment } from '../../mockApis/data';
 import { horizontalTableToObject } from './utils';
 import { format, addDays } from 'date-fns';
 
+Given(
+  'that with an {string} content hub url, I request {string} page',
+  (establishment, page) => {
+    const establishmentString = establishment
+      ? `${establishment.toLowerCase().replace(' ', '')}.`
+      : '';
+    cy.request(
+      `http://${establishmentString}content-hub.localhost:3000/${page}`,
+    ).as('requestResponse');
+  },
+);
+
 Given('that I go to the Prisoner Content Hub for {string}', location => {
   cy.visit(
     `http://${location
@@ -14,6 +26,8 @@ Given('that I go to the Prisoner Content Hub for {string}', location => {
 Given(
   'that with an {string} content hub url, I go to the {string} page',
   (establishment, page) => {
+    cy.task('stubPrimaryNavigation');
+    cy.task('stubBrowseAllTopics');
     const establishmentString = establishment
       ? `${establishment.toLowerCase().replace(' ', '')}.`
       : '';
@@ -27,6 +41,8 @@ Given('that I am viewing some content', () => {
 });
 
 Given('that I go to the {string} page', val => {
+  cy.task('stubPrimaryNavigation');
+  cy.task('stubBrowseAllTopics');
   cy.visit(`/${val}`);
 });
 
