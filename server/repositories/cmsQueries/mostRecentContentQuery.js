@@ -30,6 +30,8 @@ class MostRecentContentQuery {
         'image_style_uri',
       ])
 
+      .addInclude(['field_moj_thumbnail_image'])
+
       .addFilter(
         'type.meta.drupal_internal__target_id',
         ['page', 'moj_video_item', 'moj_radio_item', 'moj_pdf_item'],
