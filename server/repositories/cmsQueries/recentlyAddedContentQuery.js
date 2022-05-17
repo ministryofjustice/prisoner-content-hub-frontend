@@ -2,7 +2,7 @@ const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { getSmallTile, getPagination } = require('../../utils/jsonApi');
 const { getOffsetUnixTime } = require('../../utils/date');
 
-class MostRecentContentQuery {
+class RecentlyAddedContentQuery {
   static #TILE_FIELDS = [
     'drupal_internal__nid',
     'title',
@@ -19,10 +19,10 @@ class MostRecentContentQuery {
 
     this.establishmentName = establishmentName;
     const queryWithoutOffset = new Query()
-      .addFields('node--page', MostRecentContentQuery.#TILE_FIELDS)
-      .addFields('node--moj_video_item', MostRecentContentQuery.#TILE_FIELDS)
-      .addFields('node--moj_radio_item', MostRecentContentQuery.#TILE_FIELDS)
-      .addFields('node--moj_pdf_item', MostRecentContentQuery.#TILE_FIELDS)
+      .addFields('node--page', RecentlyAddedContentQuery.#TILE_FIELDS)
+      .addFields('node--moj_video_item', RecentlyAddedContentQuery.#TILE_FIELDS)
+      .addFields('node--moj_radio_item', RecentlyAddedContentQuery.#TILE_FIELDS)
+      .addFields('node--moj_pdf_item', RecentlyAddedContentQuery.#TILE_FIELDS)
 
       .addFields('file--file', [
         'drupal_internal__fid',
@@ -61,4 +61,4 @@ class MostRecentContentQuery {
   }
 }
 
-module.exports = { MostRecentContentQuery };
+module.exports = { RecentlyAddedContentQuery };

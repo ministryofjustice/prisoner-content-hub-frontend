@@ -1,6 +1,6 @@
 const express = require('express');
 
-const createMostRecentContentRouter = ({ cmsService }) => {
+const createRecentlyAddedContentRouter = ({ cmsService }) => {
   const router = express.Router();
 
   const buildResponse = (req, res, relatedContent, respondWithJson) =>
@@ -32,7 +32,7 @@ const createMostRecentContentRouter = ({ cmsService }) => {
       const { page } = req.query;
       const respondWithJson = req.params.json;
 
-      const relatedContent = await cmsService.getMostRecentContent(
+      const relatedContent = await cmsService.getRecentlyAddedContent(
         establishmentName,
         page,
         40,
@@ -49,5 +49,5 @@ const createMostRecentContentRouter = ({ cmsService }) => {
 };
 
 module.exports = {
-  createMostRecentContentRouter,
+  createRecentlyAddedContentRouter,
 };
