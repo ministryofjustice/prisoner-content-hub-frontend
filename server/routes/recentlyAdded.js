@@ -3,42 +3,47 @@ const express = require('express');
 const createRecentlyAddedContentRouter = ({ cmsService }) => {
   const router = express.Router();
 
-  const buildResponse = (req, res, relatedContent, respondWithJson) =>
-    respondWithJson
-      ? res.json(relatedContent)
-      : res.render('pages/collections', {
-          config: {
-            content: true,
-          },
-          title: 'Recently added',
-          data: {
-            relatedContent,
-            summary: 'The latest uploads on the Hub.',
-            breadcrumbs: [
-              { href: '/', text: 'Home' },
-              { href: '', text: 'Recently added' },
-            ],
-          },
-        });
+  const body = req => {
+    const { establishmentName } = req.session;
 
-  router.get('/:json?', async (req, res, next) => {
+    if (!establishmentName) {
+      throw new Error('Could not determine establishment!');
+    }
+
+    const { page } = req.query;
+
+    return cmsService.getRecentlyAddedContent(establishmentName, page, 40);
+  };
+
+  router.get('/', async (req, res, next) => {
     try {
-      const { establishmentName } = req.session;
+      const relatedContent = await body(req);
 
-      if (!establishmentName) {
-        throw new Error('Could not determine establishment!');
-      }
+      res.render('pages/collections', {
+        config: {
+          content: true,
+        },
+        title: 'Recently added',
+        data: {
+          relatedContent,
+          summary: 'The latest uploads on the Hub.',
+          breadcrumbs: [
+            { href: '/', text: 'Home' },
+            { href: '', text: 'Recently added' },
+          ],
+        },
+      });
+    } catch (e) {
+      e.message = `Error loading content: ${e.message}`;
+      next(e);
+    }
+  });
 
-      const { page } = req.query;
-      const respondWithJson = req.params.json;
+  router.get('/json', async (req, res, next) => {
+    try {
+      const relatedContent = await body(req);
 
-      const relatedContent = await cmsService.getRecentlyAddedContent(
-        establishmentName,
-        page,
-        40,
-      );
-
-      buildResponse(req, res, relatedContent, respondWithJson);
+      res.json(relatedContent);
     } catch (e) {
       e.message = `Error loading content: ${e.message}`;
       next(e);
