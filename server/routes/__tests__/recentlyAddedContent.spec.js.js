@@ -11,7 +11,6 @@ describe('GET /recently-added', () => {
 
   const cmsService = {
     getRecentlyAddedContent: jest.fn(),
-    // getPage: jest.fn(),
   };
 
   const sessionMiddleware = (req, res, next) => {
@@ -141,6 +140,109 @@ describe('GET /recently-added', () => {
             .then(response => {
               const $ = cheerio.load(response.text);
               expect($('.show-more-tiles').length).toBe(0);
+            });
+        });
+      });
+    });
+  });
+
+  describe('/json', () => {
+    describe('on error', () => {
+      it('passes caught exceptions to next', async () => {
+        cmsService.getRecentlyAddedContent.mockRejectedValue('💥');
+        await request(app).get('/json').expect(500);
+      });
+    });
+
+    describe('on success', () => {
+      describe('json', () => {
+        it('it should return JSON data', () => {
+          cmsService.getRecentlyAddedContent.mockReturnValue(data);
+
+          return request(app)
+            .get('/json')
+            .expect(200)
+            .then(response => {
+              expect(response.body).toBeDefined();
+            });
+        });
+
+        it("it should return JSON data containing the expected 'isLastPage' key/value pair value", () => {
+          cmsService.getRecentlyAddedContent.mockReturnValue(data);
+
+          return request(app)
+            .get('/json')
+            .expect(200)
+            .then(response => {
+              const { isLastPage } = response.body;
+              expect(isLastPage).toBeDefined();
+              expect(isLastPage).toBe(false);
+            });
+        });
+
+        it('it should return JSON data containing the expected data', () => {
+          cmsService.getRecentlyAddedContent.mockReturnValue(data);
+
+          return request(app)
+            .get('/json')
+            .expect(200)
+            .then(response => {
+              const { data: respData } = response.body;
+              expect(respData).toBeDefined();
+              expect(respData.length).toBe(2);
+              expect(respData).toEqual(data.data);
+            });
+        });
+
+        it('it should return JSON data containing the expected data types', () => {
+          cmsService.getRecentlyAddedContent.mockReturnValue(data);
+
+          return request(app)
+            .get('/json')
+            .expect(200)
+            .then(response => {
+              const { data: respData } = response.body;
+              expect(respData).toBeDefined();
+              expect(respData[0]).toEqual(
+                expect.objectContaining({
+                  id: expect.any(Number),
+                  contentType: expect.any(String),
+                  externalContent: expect.any(Boolean),
+                  title: expect.any(String),
+                  contentUrl: expect.any(String),
+                  image: expect.any(Object),
+                }),
+              );
+            });
+        });
+
+        it("it should return JSON data containing an 'image' object with the expected data", () => {
+          cmsService.getRecentlyAddedContent.mockReturnValue(data);
+
+          return request(app)
+            .get('/json')
+            .expect(200)
+            .then(response => {
+              const { image } = response.body.data[0];
+              expect(image).toBeDefined();
+              expect(image).toEqual(data.data[0].image);
+            });
+        });
+
+        it("it should return JSON data containing an 'image' object with the expected data types", () => {
+          cmsService.getRecentlyAddedContent.mockReturnValue(data);
+
+          return request(app)
+            .get('/json')
+            .expect(200)
+            .then(response => {
+              const { image } = response.body.data[0];
+              expect(image).toEqual(
+                expect.objectContaining({
+                  alt: expect.any(String),
+                  url: expect.any(String),
+                }),
+              );
             });
         });
       });
