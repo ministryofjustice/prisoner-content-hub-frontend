@@ -37,6 +37,8 @@ const {
   RecentlyAddedContentQuery,
 } = require('../repositories/cmsQueries/recentlyAddedContentQuery');
 
+const { getOffsetUnixTime } = require('../utils/date');
+
 class CmsService {
   #cmsApi;
 
@@ -226,8 +228,14 @@ class CmsService {
   }
 
   async getRecentlyAddedContent(establishmentName, page = 1, pageLimit = 4) {
+    const timeStamp = getOffsetUnixTime(14);
     const recentlyAddedContent = await this.#cmsApi.get(
-      new RecentlyAddedContentQuery(establishmentName, page, pageLimit),
+      new RecentlyAddedContentQuery(
+        establishmentName,
+        page,
+        pageLimit,
+        timeStamp,
+      ),
     );
 
     return recentlyAddedContent;
