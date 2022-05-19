@@ -1,6 +1,5 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { getSmallTile, getPagination } = require('../../utils/jsonApi');
-const { getOffsetUnixTime } = require('../../utils/date');
 
 class RecentlyAddedContentQuery {
   static #TILE_FIELDS = [
@@ -14,9 +13,7 @@ class RecentlyAddedContentQuery {
     'type.meta.drupal_internal__target_id',
   ];
 
-  constructor(establishmentName, page, pageLimit) {
-    const timeStamp = getOffsetUnixTime(14);
-
+  constructor(establishmentName, page, pageLimit, timeStamp) {
     this.establishmentName = establishmentName;
     const queryWithoutOffset = new Query()
       .addFields('node--page', RecentlyAddedContentQuery.#TILE_FIELDS)
