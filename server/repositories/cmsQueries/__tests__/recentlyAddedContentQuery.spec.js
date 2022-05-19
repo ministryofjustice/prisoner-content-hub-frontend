@@ -22,4 +22,73 @@ describe('Recently Added Content page query', () => {
       );
     });
   });
+
+  describe('transform', () => {
+    let response;
+    let links;
+
+    beforeEach(() => {
+      response = [
+        {
+          type: 'node--moj_video_item',
+          drupalInternal_Nid: 111111,
+          title: 'A Title',
+          path: {
+            alias: '/content/111111',
+          },
+          fieldMojDescription: {
+            summary: 'A Summary',
+          },
+          fieldMojThumbnailImage: {
+            imageStyleUri: [
+              {
+                tile_large: 'AWS_URL',
+              },
+              {
+                tile_small: 'AWS_URL',
+              },
+            ],
+            resourceIdObjMeta: {
+              alt: 'IMAGE_ALT_TEXT',
+            },
+          },
+        },
+      ];
+
+      links = {
+        next: 'URL',
+      };
+    });
+
+    it('should return null when an empty array is provided', () => {
+      response = [];
+
+      const result = query.transform(response, links);
+
+      expect(result).toBeNull();
+    });
+
+    it('should create correct structure', () => {
+      const result = query.transform(response, links);
+
+      expect(result).toStrictEqual({
+        isLastPage: false,
+        data: [
+          {
+            id: 111111,
+            contentType: 'video',
+            externalContent: false,
+            title: 'A Title',
+            summary: 'A Summary',
+            contentUrl: '/content/111111',
+            displayUrl: undefined,
+            image: {
+              url: 'AWS_URL',
+              alt: 'IMAGE_ALT_TEXT',
+            },
+          },
+        ],
+      });
+    });
+  });
 });
