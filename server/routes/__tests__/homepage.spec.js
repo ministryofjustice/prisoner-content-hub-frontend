@@ -66,17 +66,6 @@ describe('GET /', () => {
       const establishmentData = {
         1: {
           name: 'berwyn',
-          homePageLinks: {
-            Coronavirus: '/tags/894',
-            Visits: '/content/4203',
-            Games: '/content/3621',
-            Inspiration: '/content/3659',
-            'Music & talk': '/content/3662',
-            'PSIs & PSOs': '/tags/796',
-            'Facilities list & catalogues': '/content/3990',
-            'Healthy mind & body': '/content/3657',
-            Chaplaincy: '/tags/901',
-          },
         },
       };
       router = createHomepageRouter({

@@ -3,255 +3,90 @@
     "name": "berwyn",
     "displayName": "HMP Berwyn",
     "youth": false,
-    "homePageLinks": {
-      "Coronavirus": "/tags/894",
-      "Berwyn Life": "/tags/655",
-      "Games": "/content/3621",
-      "Inspiration": "/tags/649",
-      "NPR": "/tags/785",
-      "PSIs & PSOs": "/tags/796",
-      "Facilities list & catalogues": "/tags/787",
-      "Healthy mind & body": "/tags/648",
-      "Chaplaincy": "/tags/901"
-    },
     "agencyId": "BWI"
   },
   "959": {
     "name": "cookhamwood",
     "displayName": "HMYOI Cookham Wood",
     "youth": true,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "Education": "/tags/1266",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "PSIs & PSOs": "/tags/796",
-      "What goes on in Cookham": "/tags/973"
-    },
     "agencyId": "CKI"
   },
   "1074": {
     "name": "erlestoke",
     "displayName": "HMP Erlestoke",
     "youth": false,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "Chaplaincy": "/tags/901",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "PSIs & PSOs": "/tags/796",
-      "Facilities list & catalogues": "/tags/787"
-    },
     "agencyId": "EEI"
   },
   "1083": {
     "name": "felthama",
     "displayName": "HMYOI Feltham A",
     "youth": true,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "PSIs & PSOs": "/tags/796",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "Feltham life": "/tags/1197",
-      "Facilities list & catalogues": "/tags/787"
-    },
     "agencyId": "FYI"
   },
   "1084": {
     "name": "felthamb",
     "displayName": "HMYOI Feltham B",
     "youth": true,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "PSIs & PSOs": "/tags/796",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "Feltham life": "/tags/1198",
-      "Facilities list & catalogues": "/tags/787"
-    },
     "agencyId": "FMI"
   },
   "1075": {
     "name": "garth",
     "displayName": "HMP Garth",
     "youth": false,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "Chaplaincy": "/tags/901",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "PSIs & PSOs": "/tags/796",
-      "Facilities list & catalogues": "/tags/787"
-    },
     "agencyId": "GHI"
   },
   "1076": {
     "name": "lindholme",
     "displayName": "HMP Lindholme",
     "youth": false,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "Chaplaincy": "/tags/901",
-      "PSIs & PSOs": "/tags/796",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "Lindholme Life": "/tags/1097",
-      "Facilities list & catalogues": "/tags/787"
-    },
     "agencyId": "LHI"
   },
   "1077": {
     "name": "newhall",
     "displayName": "HMPYOI New Hall",
     "youth": false,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "PSIs & PSOs": "/tags/796",
-      "Healthy mind & body": "/tags/648",
-      "Facilities list & catalogues": "/tags/787",
-      "New Hall life": "/tags/1165"
-    },
     "agencyId": "NHI"
   },
   "1078": {
     "name": "ranby",
     "displayName": "HMP Ranby",
     "youth": false,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "Chaplaincy": "/tags/901",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "PSIs & PSOs": "/tags/796",
-      "Facilities list & catalogues": "/tags/787"
-    },
     "agencyId": "RNI"
   },
   "1079": {
     "name": "stokeheath",
     "displayName": "HMPYOI Stoke Heath",
     "youth": false,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "Chaplaincy": "/tags/901",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "PSIs & PSOs": "/tags/796",
-      "Facilities list & catalogues": "/tags/787"
-    },
     "agencyId": "SHI"
   },
   "1080": {
     "name": "styal",
     "displayName": "HMPYOI Styal",
     "youth": false,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "PSIs & PSOs": "/tags/796",
-      "Healthy mind & body": "/tags/648",
-      "Facilities list & catalogues": "/tags/787",
-      "Styal life": "/tags/1166"
-    },
     "agencyId": "STI"
   },
   "1081": {
     "name": "swaleside",
     "displayName": "HMP Swaleside",
     "youth": false,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "Chaplaincy": "/tags/901",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "PSIs & PSOs": "/tags/796",
-      "Facilities list & catalogues": "/tags/787"
-    },
     "agencyId": "SLI"
   },
   "1082": {
     "name": "themount",
     "displayName": "HMP The Mount",
     "youth": false,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "Chaplaincy": "/tags/901",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "PSIs & PSOs": "/tags/796",
-      "Facilities list & catalogues": "/tags/787"
-    },
     "agencyId": "MTI"
   },
   "793": {
     "name": "wayland",
     "displayName": "HMP Wayland",
     "youth": false,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "Chaplaincy": "/tags/901",
-      "Wayland Life": "/tags/811",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "PSIs & PSOs": "/tags/796",
-      "Facilities list & catalogues": "/tags/787"
-    },
     "agencyId": "WLI"
   },
   "1085": {
     "name": "werrington",
     "displayName": "HMYOI Werrington",
     "youth": false,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "PSIs & PSOs": "/tags/796",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "Werrington life": "/tags/1199",
-      "Facilities list & catalogues": "/tags/787"
-    },
     "agencyId": "WNI"
   },
   "1086": {
@@ -259,17 +94,6 @@
     "formattedName": "Wetherby",
     "displayName": "HMYOI Wetherby",
     "youth": true,
-    "homePageLinks": {
-      "Your profile": "/profile",
-      "NPR": "/tags/785",
-      "PSIs & PSOs": "/tags/796",
-      "Inspiration": "/tags/649",
-      "Exercise": "/tags/1112",
-      "Games": "/content/3621",
-      "Healthy mind & body": "/tags/648",
-      "Wetherby life": "/tags/1200",
-      "Facilities list & catalogues": "/tags/787"
-    },
     "agencyId": "WYI"
   }
 }

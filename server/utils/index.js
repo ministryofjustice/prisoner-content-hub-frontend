@@ -29,14 +29,6 @@ const getEstablishment = (
   };
 };
 
-const getEstablishmentByName = (
-  name,
-  establishmentData = defaultEstablishmentData,
-) =>
-  Object.values(establishmentData).find(
-    establishment => establishment.name === name,
-  );
-
 const updateSessionEstablishment = (req, agencyId) => {
   if (!req.session?.establishmentName) {
     const { establishmentId, establishmentName } = getEstablishment(agencyId);
@@ -49,12 +41,6 @@ const getEstablishmentDisplayName = (
   id,
   establishmentData = defaultEstablishmentData,
 ) => establishmentData?.[id]?.displayName;
-
-const getHomepageLinks = (
-  establishmentName,
-  establishmentData = defaultEstablishmentData,
-) =>
-  getEstablishmentByName(establishmentName, establishmentData)?.homePageLinks;
 
 const capitalize = (str = '') =>
   str === '' ? '' : str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -92,7 +78,6 @@ module.exports = {
   getEstablishmentIsYoi,
   updateSessionEstablishment,
   getEstablishmentDisplayName,
-  getHomepageLinks,
   capitalize,
   capitalizeAll,
   capitalizePersonName,

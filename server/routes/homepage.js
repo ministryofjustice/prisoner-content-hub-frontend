@@ -1,12 +1,6 @@
 const express = require('express');
 
-const { getHomepageLinks } = require('../utils');
-
-const createHomepageRouter = ({
-  cmsService,
-  offenderService,
-  establishmentData,
-}) => {
+const createHomepageRouter = ({ cmsService, offenderService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
@@ -32,7 +26,6 @@ const createHomepageRouter = ({
         },
         hideSignInLink: true,
         title: 'Home',
-        links: getHomepageLinks(establishmentName, establishmentData),
         homepage,
         currentEvents,
       });
