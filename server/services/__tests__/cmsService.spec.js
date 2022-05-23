@@ -951,7 +951,7 @@ describe('cms Service', () => {
     });
 
     afterEach(() => {
-      jest.useRealTimers();
+      jest.useRealTimers().setSystemTime();
     });
 
     it('should call cmsApi.get once', async () => {

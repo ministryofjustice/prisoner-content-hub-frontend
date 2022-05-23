@@ -144,6 +144,6 @@ describe('getOffsetUnixTime', () => {
 
     expect(getOffsetUnixTime(null, null)).toBe(NOW_MILLISECONDS);
 
-    jest.useRealTimers();
+    jest.useRealTimers().setSystemTime();
   });
 });
