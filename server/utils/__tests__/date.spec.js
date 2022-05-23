@@ -2,6 +2,7 @@ const {
   formatDateOrDefault,
   formatTimeBetweenOrDefault,
   getDateSelection,
+  getOffsetUnixTime,
 } = require('../date');
 
 describe('DateUtils', () => {
@@ -114,5 +115,35 @@ describe('getDateSelectionFrom', () => {
       { text: 'October 2020', value: '2020-10-01' },
       { text: 'September 2020', value: '2020-09-01' },
     ]);
+  });
+});
+
+describe('getOffsetUnixTime', () => {
+  let NOW;
+  let NOW_MILLISECONDS;
+
+  beforeEach(() => {
+    NOW = new Date('2020-01-01');
+    NOW_MILLISECONDS = 1577836800;
+  });
+
+  it('should handle no offset value ', () => {
+    expect(getOffsetUnixTime(null, NOW)).toBe(NOW_MILLISECONDS);
+  });
+
+  it('should handle a real offset value ', () => {
+    expect(getOffsetUnixTime(27, NOW)).toBe(1575504000);
+  });
+
+  it('should handle a negative offset value ', () => {
+    expect(getOffsetUnixTime(-27, NOW)).toBe(1580169600);
+  });
+
+  it('should default to the current date ', () => {
+    jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
+
+    expect(getOffsetUnixTime(null, null)).toBe(NOW_MILLISECONDS);
+
+    jest.useRealTimers();
   });
 });
