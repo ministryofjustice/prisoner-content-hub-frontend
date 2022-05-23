@@ -58,8 +58,8 @@ const sortByDateTime = (firstDate, secondDate) => {
   return 0;
 };
 
-const getOffsetUnixTime = offset =>
-  getUnixTime(subDays(new Date(), offset || 0));
+const getOffsetUnixTime = (offset, timeStamp) =>
+  getUnixTime(subDays(timeStamp || new Date(), offset || 0));
 
 module.exports = {
   formatDateOrDefault,
