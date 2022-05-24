@@ -119,27 +119,27 @@ describe('getDateSelectionFrom', () => {
 });
 
 describe('getOffsetUnixTime', () => {
-  let NOW;
   const NOW_MILLISECONDS = 1577836800;
+  let now;
 
   beforeEach(() => {
-    NOW = new Date('2020-01-01');
+    now = new Date('2020-01-01');
   });
 
   it('should handle no offset value ', () => {
-    expect(getOffsetUnixTime(null, NOW)).toBe(NOW_MILLISECONDS);
+    expect(getOffsetUnixTime(null, now)).toBe(NOW_MILLISECONDS);
   });
 
   it('should handle a real offset value ', () => {
-    expect(getOffsetUnixTime(27, NOW)).toBe(1575504000);
+    expect(getOffsetUnixTime(27, now)).toBe(1575504000);
   });
 
   it('should handle a negative offset value ', () => {
-    expect(getOffsetUnixTime(-27, NOW)).toBe(1580169600);
+    expect(getOffsetUnixTime(-27, now)).toBe(1580169600);
   });
 
   it('should default to the current date ', () => {
-    jest.useFakeTimers().setSystemTime(NOW);
+    jest.useFakeTimers().setSystemTime(now);
 
     expect(getOffsetUnixTime(null, null)).toBe(NOW_MILLISECONDS);
 
