@@ -119,8 +119,12 @@ describe('getDateSelectionFrom', () => {
 });
 
 describe('getOffsetUnixTime', () => {
-  const NOW = new Date('2020-01-01');
+  let NOW;
   const NOW_MILLISECONDS = 1577836800;
+
+  beforeEach(() => {
+    NOW = new Date('2020-01-01');
+  });
 
   it('should handle no offset value ', () => {
     expect(getOffsetUnixTime(null, NOW)).toBe(NOW_MILLISECONDS);
