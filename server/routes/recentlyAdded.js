@@ -3,7 +3,7 @@ const express = require('express');
 const createRecentlyAddedContentRouter = ({ cmsService }) => {
   const router = express.Router();
 
-  const body = req => {
+  const getMostRecentContent = req => {
     const { establishmentName } = req.session;
 
     if (!establishmentName) {
@@ -17,7 +17,7 @@ const createRecentlyAddedContentRouter = ({ cmsService }) => {
 
   router.get('/', async (req, res, next) => {
     try {
-      const relatedContent = await body(req);
+      const mostRecentContent = await getMostRecentContent(req);
 
       res.render('pages/collections', {
         config: {
@@ -25,7 +25,7 @@ const createRecentlyAddedContentRouter = ({ cmsService }) => {
         },
         title: 'Recently added',
         data: {
-          relatedContent,
+          relatedContent: mostRecentContent,
           summary: 'The latest uploads on the Hub.',
           breadcrumbs: [
             { href: '/', text: 'Home' },
@@ -41,9 +41,9 @@ const createRecentlyAddedContentRouter = ({ cmsService }) => {
 
   router.get('/json', async (req, res, next) => {
     try {
-      const relatedContent = await body(req);
+      const mostRecentContent = await getMostRecentContent(req);
 
-      res.json(relatedContent);
+      res.json(mostRecentContent);
     } catch (e) {
       e.message = `Error loading content: ${e.message}`;
       next(e);
