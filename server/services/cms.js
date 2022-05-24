@@ -33,6 +33,11 @@ const {
 const {
   PrimaryNavigationQuery,
 } = require('../repositories/cmsQueries/PrimaryNavigationQuery');
+const {
+  RecentlyAddedContentQuery,
+} = require('../repositories/cmsQueries/recentlyAddedContentQuery');
+
+const { getOffsetUnixTime } = require('../utils/date');
 
 class CmsService {
   #cmsApi;
@@ -220,6 +225,21 @@ class CmsService {
 
   async getPrimaryNavigation(establishmentName) {
     return this.#cmsApi.get(new PrimaryNavigationQuery(establishmentName));
+  }
+
+  async getRecentlyAddedContent(establishmentName, page = 1, pageLimit = 4) {
+    const timeStamp = getOffsetUnixTime(14);
+
+    const recentlyAddedContent = await this.#cmsApi.get(
+      new RecentlyAddedContentQuery(
+        establishmentName,
+        page,
+        pageLimit,
+        timeStamp,
+      ),
+    );
+
+    return recentlyAddedContent;
   }
 }
 

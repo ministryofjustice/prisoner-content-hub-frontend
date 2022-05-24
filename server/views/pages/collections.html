@@ -31,11 +31,14 @@
 {% endblock %}
 
 {% block content %}
-  {{ hubRelatedContent({
-    id: tagId,
-    data: data.relatedContent,
-    lazyLoadContent: true
-  }) }}
+
+  {% if data.relatedContent|length %}
+    {{ hubRelatedContent({
+      id: tagId,
+      data: data.relatedContent,
+      lazyLoadContent: true
+    }) }}
+  {% endif %}
   <hr>
 {% endblock %}
 {% block bodyEnd %}

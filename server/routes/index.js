@@ -15,6 +15,7 @@ const { createFeedbackRouter } = require('./feedback');
 const { createSearchRouter } = require('./search');
 const { createNprRouter } = require('./npr');
 const { createHelpRouter } = require('./help');
+const { createRecentlyAddedContentRouter } = require('./recentlyAdded');
 const createPrimaryNavigationMiddleware = require('../middleware/primaryNavigationMiddleware');
 const retrieveTopicList = require('../middleware/retrieveTopicList');
 
@@ -46,6 +47,7 @@ module.exports = (
       '/profile',
       '/games',
       '^/search/?$',
+      '/recently-added',
     ],
     [
       createPrimaryNavigationMiddleware(cmsService),
@@ -109,6 +111,11 @@ module.exports = (
   );
 
   router.use('/help', createHelpRouter(establishmentData));
+
+  router.use(
+    '/recently-added',
+    createRecentlyAddedContentRouter({ cmsService }),
+  );
 
   router.use('*', (req, res) => {
     res.status(404);

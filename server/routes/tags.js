@@ -3,7 +3,7 @@ const express = require('express');
 const createTagRouter = ({ cmsService }) => {
   const router = express.Router();
 
-  router.get('/:id.json', async (req, res, next) => {
+  router.get('/:id/json', async (req, res, next) => {
     try {
       const { id } = req.params;
       const { page, pageType } = req.query;
@@ -38,7 +38,7 @@ const createTagRouter = ({ cmsService }) => {
       );
 
       const pageType = ['topic', 'series'].includes(data.contentType)
-        ? 'tagsTopicsSeries'
+        ? 'collections'
         : 'tagsCategories';
 
       return res.render(`pages/${pageType}`, {

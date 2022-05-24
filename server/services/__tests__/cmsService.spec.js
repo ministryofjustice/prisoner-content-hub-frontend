@@ -42,6 +42,10 @@ const {
 const {
   SeriesHeaderPageQuery,
 } = require('../../repositories/cmsQueries/seriesHeaderPageQuery');
+const {
+  RecentlyAddedContentQuery,
+} = require('../../repositories/cmsQueries/recentlyAddedContentQuery');
+const { getOffsetUnixTime } = require('../../utils/date');
 const { CmsService } = require('../cms');
 
 jest.mock('../../repositories/cmsApi');
@@ -927,6 +931,46 @@ describe('cms Service', () => {
     it('Source to have been called correctly', async () => {
       await cmsService.getLink(ESTABLISHMENT_NAME);
       expect(cmsApi.get).toHaveBeenCalledWith(new LinkPageQuery(LOCATION));
+    });
+  });
+
+  describe('getRecentlyAddedContent', () => {
+    const resObject = {
+      data: 'vegan bacon',
+    };
+    let result;
+
+    beforeEach(async () => {
+      cmsApi.get.mockResolvedValueOnce(resObject);
+      jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
+      result = await cmsService.getRecentlyAddedContent(
+        ESTABLISHMENT_NAME,
+        1,
+        40,
+      );
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('should call cmsApi.get once', async () => {
+      expect(cmsApi.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call cmsApi.get with the RecentlyAddedContentQuery', async () => {
+      expect(cmsApi.get).toHaveBeenCalledWith(
+        new RecentlyAddedContentQuery(
+          ESTABLISHMENT_NAME,
+          1,
+          40,
+          getOffsetUnixTime(14),
+        ),
+      );
+    });
+
+    it('should return a result when cmsApi.get is called', async () => {
+      expect(result).toBe(resObject);
     });
   });
 });
