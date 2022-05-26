@@ -48,6 +48,7 @@ module.exports = (
       '/games',
       '^/search/?$',
       '/recently-added',
+      '/new-homepage',
     ],
     [
       createPrimaryNavigationMiddleware(cmsService),
