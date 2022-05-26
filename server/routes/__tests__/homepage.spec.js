@@ -86,10 +86,7 @@ describe('GET /', () => {
         next();
       });
       app.use(setCurrentUser);
-      app.use(
-        ['^/$', '/content', '/npr', '/tags'],
-        retrieveTopicList(cmsService),
-      );
+      app.use(['^/*'], retrieveTopicList(cmsService));
       app.use(router);
       app.use(consoleLogError);
       userSupplier.mockReturnValue(testUser);
