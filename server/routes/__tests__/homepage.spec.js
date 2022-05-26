@@ -308,5 +308,153 @@ describe('GET /', () => {
           const $ = cheerio.load(response.text);
           expect($('.govuk-footer__list-item').length).toBe(2);
         }));
+
+    /* new homepage */
+    it('renders the homepage with a search bar', () =>
+      request(app)
+        .get('/new-homepage')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('#search-wrapper').length).toBe(1);
+        }));
+
+    it('renders the homepage events for today', () => {
+      const currentEvents = {
+        events: [
+          {
+            description: 'SUSPENDED ACTIVITY',
+            startTime: '8:10AM',
+            endTime: '11:25AM',
+            location: 'Main exercise yard',
+            timeString: '8:10AM to 11:25AM',
+            eventType: 'PRISON_ACT',
+            finished: false,
+            status: 'SCH',
+            paid: false,
+          },
+          {
+            description: 'EDU IT AM',
+            startTime: '8:10AM',
+            endTime: '11:25AM',
+            location: 'New education',
+            timeString: '8:10AM to 11:25AM',
+            eventType: 'PRISON_ACT',
+            finished: false,
+            status: 'SCH',
+            paid: false,
+          },
+        ],
+        isTomorrow: false,
+      };
+
+      offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
+
+      return request(app)
+        .get('/new-homepage')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('div.todays-events').first().find('h3').text()).toBe(
+            "Today's events",
+          );
+          expect($('[data-test="event"]').length).toBe(
+            2,
+            'Correct number of events',
+          );
+        });
+    });
+
+    it('renders the homepage events for tomorrow', () => {
+      const currentEvents = {
+        events: [
+          {
+            description: 'SUSPENDED ACTIVITY',
+            startTime: '8:10AM',
+            endTime: '11:25AM',
+            location: 'Main exercise yard',
+            timeString: '8:10AM to 11:25AM',
+            eventType: 'PRISON_ACT',
+            finished: false,
+            status: 'SCH',
+            paid: false,
+          },
+          {
+            description: 'EDU IT AM',
+            startTime: '8:10AM',
+            endTime: '11:25AM',
+            location: 'New education',
+            timeString: '8:10AM to 11:25AM',
+            eventType: 'PRISON_ACT',
+            finished: false,
+            status: 'SCH',
+            paid: false,
+          },
+        ],
+        isTomorrow: true,
+      };
+
+      offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
+
+      return request(app)
+        .get('/new-homepage')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('div.todays-events').first().find('h3').text()).toBe(
+            "Tomorrow's events",
+          );
+          expect($('[data-test="event"]').length).toBe(
+            2,
+            'Correct number of events',
+          );
+        });
+    });
+
+    it('renders the homepage with no events', () => {
+      const currentEvents = {
+        events: [],
+        isTomorrow: false,
+      };
+
+      offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
+
+      return request(app)
+        .get('/')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="event"]').length).toBe(0);
+          expect($('[data-test="no-events"]').length).toBe(1);
+        });
+    });
+
+    it('renders the homepage with placeholder content', () =>
+      request(app)
+        .get('/new-homepage')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('.home-content p').text()).toMatch(/New homepage/);
+        }));
+
+    it('renders an error when the homepage cannot retrieve events', () => {
+      offenderService.getCurrentEvents.mockResolvedValue({
+        error: 'We are not able to show your schedule for today at this time',
+      });
+
+      return request(app)
+        .get('/new-homepage')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="event-error"]').length).toBe(1);
+        });
+    });
+
+    it('renders the homepage with topics footer', () =>
+      request(app)
+        .get('/new-homepage')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('.govuk-footer__list-item').length).toBe(2);
+        }));
   });
 });
