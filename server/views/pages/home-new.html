@@ -1,0 +1,32 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../components/personal-schedule-today/macro.njk" import personalScheduleToday %}
+
+{% extends "../components/basicTemplate.njk" %}
+
+{% set blackBackground = true %}
+
+{% block pageNavigation %}
+    {{ govukButton({
+      text: "Browse all topics",
+      href: "/topics",
+      isStartButton: true,
+      classes: "govuk-!-margin-2"
+    }) }}
+{% endblock %}
+
+{% block title %}
+  {% if establishmentName != 'berwyn' %}
+    <div class="govuk-width-container home-navigation govuk-!-margin-top-3">
+      {{personalScheduleToday({ data: currentEvents, authReturnUrl: returnUrl }, userName if isSignedIn else '')}}
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-body home-content">
+  <p>New homepage</p>
+</div>
+{% endblock %}
+
+{% block feedback %}
+{% endblock %}
