@@ -1,4 +1,5 @@
 const express = require('express');
+const { renameKey } = require('../utils/object');
 
 const createTagRouter = ({ cmsService }) => {
   const router = express.Router();
@@ -32,10 +33,12 @@ const createTagRouter = ({ cmsService }) => {
         detailsType: 'small',
       };
 
-      const data = await cmsService.getTag(
+      let data = await cmsService.getTag(
         req.session.establishmentName,
         parseInt(id, 10),
       );
+
+      data = renameKey(data, 'relatedContent', 'hubContent');
 
       const pageType = ['topic', 'series'].includes(data.contentType)
         ? 'collections'
