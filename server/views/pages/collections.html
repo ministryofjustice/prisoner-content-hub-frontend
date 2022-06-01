@@ -1,4 +1,4 @@
-{% from "../components/related-content/macro.njk" import hubRelatedContent %}
+{% from "../components/related-content/macro.njk" import hubContent %}
 
 {% extends "../components/basicTemplate.njk" %}
 
@@ -31,11 +31,10 @@
 {% endblock %}
 
 {% block content %}
-
-  {% if data.relatedContent|length %}
-    {{ hubRelatedContent({
+  {% if data.hubContent|length %}
+    {{ hubContent({
       id: tagId,
-      data: data.relatedContent,
+      data: data.hubContent,
       lazyLoadContent: true
     }) }}
   {% endif %}
