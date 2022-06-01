@@ -92,7 +92,7 @@ describe('Secondary Tag page query', () => {
       expect(query.transform(response, { next: 'NextPageURL' })).toStrictEqual({
         ...createTransformedTopic(UUID),
         ...{
-          relatedContent: {
+          hubContentData: {
             contentType: 'topic',
             isLastPage: false,
             data: [
@@ -114,7 +114,7 @@ describe('Secondary Tag page query', () => {
       expect(query.transform(response, {})).toStrictEqual({
         ...createTransformedTopic(UUID),
         ...{
-          relatedContent: {
+          hubContentData: {
             contentType: 'topic',
             isLastPage: true,
             data: [createTransformedContent('A')],

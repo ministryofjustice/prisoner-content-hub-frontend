@@ -17,7 +17,7 @@ const createRecentlyAddedContentRouter = ({ cmsService }) => {
 
   router.get('/', async (req, res, next) => {
     try {
-      const mostRecentContent = await getMostRecentContent(req);
+      const hubContentData = await getMostRecentContent(req);
 
       res.render('pages/collections', {
         config: {
@@ -25,7 +25,7 @@ const createRecentlyAddedContentRouter = ({ cmsService }) => {
         },
         title: 'Recently added',
         data: {
-          relatedContent: mostRecentContent,
+          hubContentData,
           summary: 'The latest uploads on the Hub.',
           breadcrumbs: [
             { href: '/', text: 'Home' },
@@ -41,9 +41,9 @@ const createRecentlyAddedContentRouter = ({ cmsService }) => {
 
   router.get('/json', async (req, res, next) => {
     try {
-      const mostRecentContent = await getMostRecentContent(req);
+      const hubContentData = await getMostRecentContent(req);
 
-      res.json(mostRecentContent);
+      res.json(hubContentData);
     } catch (e) {
       e.message = `Error loading content: ${e.message}`;
       next(e);

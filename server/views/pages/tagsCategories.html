@@ -1,4 +1,4 @@
-{% from "../components/related-content/macro.njk" import hubRelatedContent %}
+{% from "../components/hub-content/macro.njk" import hubContent %}
 
 {% extends "../components/basicTemplate.njk" %}
 
@@ -9,7 +9,7 @@
   {% if data.categoryFeaturedContent.length > 0 %}
     <section class="govuk-!-margin-bottom-9">
       <h2 class="govuk-heading-l govuk-hub-white-heading">Featured</h2>
-      {{ hubRelatedContent({
+      {{ hubContent({
         data: { contentType:"default",isLastPage:true, data:data.categoryFeaturedContent },
         lazyLoadContent: true
       }) }}
@@ -19,7 +19,7 @@
   {% if data.categorySeries.data.length > 0 %}
     <section id="seriesTiles"class="govuk-!-margin-bottom-9 govuk-!-margin-top-5">
       <h2 class="govuk-heading-l  govuk-hub-white-heading">In this section</h2>
-      {{ hubRelatedContent({
+      {{ hubContent({
         data: { contentType:data.categorySeries.contentType ,isLastPage:data.categorySeries.isLastPage, data:data.categorySeries.data },
         lazyLoadContent: true
       }) }}
@@ -29,7 +29,7 @@
   {% if data.categoryContent.data.length > 0 %}
     <section id="otherContentTiles" class="govuk-!-margin-bottom-9 govuk-!-margin-top-5">
       <h2 class="govuk-heading-l  govuk-hub-white-heading">Content</h2>
-      {{ hubRelatedContent({
+      {{ hubContent({
         data: { contentType:data.categoryContent.contentType ,isLastPage:data.categoryContent.isLastPage, data:data.categoryContent.data },
         lazyLoadContent: true
       }) }}

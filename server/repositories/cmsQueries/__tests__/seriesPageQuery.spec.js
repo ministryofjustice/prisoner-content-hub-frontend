@@ -81,7 +81,7 @@ describe('Series page query', () => {
         excludeFeedback: undefined,
         externalContent: false,
         contentUrl: `/tags/${UUID}`,
-        relatedContent: {
+        hubContentData: {
           contentType: 'series',
           isLastPage: false,
           data: [
@@ -113,7 +113,7 @@ describe('Series page query', () => {
         excludeFeedback: undefined,
         externalContent: false,
         contentUrl: `/tags/${UUID}`,
-        relatedContent: {
+        hubContentData: {
           contentType: 'series',
           isLastPage: true,
           data: [createTransformedContent('A')],
