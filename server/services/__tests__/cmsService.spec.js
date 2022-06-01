@@ -762,7 +762,7 @@ describe('cms Service', () => {
           expect(cmsApi.get).toHaveBeenCalledWith(
             new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
-          expect(result).toBe(populatedTopic.relatedContent);
+          expect(result).toBe(populatedTopic.hubContentData);
         });
       });
       describe('which has no related content', () => {
@@ -788,7 +788,7 @@ describe('cms Service', () => {
             2,
             new TopicHeaderPageQuery(location),
           );
-          expect(result).toBe(populatedTopic.relatedContent);
+          expect(result).toBe(populatedTopic.hubContentData);
         });
       });
     });
@@ -820,12 +820,12 @@ describe('cms Service', () => {
           expect(cmsApi.get).toHaveBeenCalledWith(
             new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
-          expect(result).toBe(populatedSeries.relatedContent);
+          expect(result).toBe(populatedSeries.hubContentData);
         });
       });
       describe('which has no related content', () => {
         let result;
-        const populatedSeries = { relatedContent: [] };
+        const populatedSeries = { hubContentData: [] };
         beforeEach(async () => {
           cmsApi.get.mockResolvedValueOnce({});
           cmsApi.get.mockResolvedValue(populatedSeries);
@@ -846,7 +846,7 @@ describe('cms Service', () => {
             2,
             new SeriesHeaderPageQuery(location),
           );
-          expect(result).toBe(populatedSeries.relatedContent);
+          expect(result).toBe(populatedSeries.hubContentData);
         });
       });
     });

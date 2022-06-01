@@ -134,11 +134,11 @@ class CmsService {
     switch (type) {
       case 'taxonomy_term--topics':
         return this.getTopic(establishmentName, uuid, location, page).then(
-          ({ relatedContent }) => relatedContent,
+          ({ hubContentData }) => hubContentData,
         );
       case 'taxonomy_term--series':
         return this.getSeries(establishmentName, uuid, location, page).then(
-          ({ relatedContent }) => relatedContent,
+          ({ hubContentData }) => hubContentData,
         );
       case 'taxonomy_term--moj_categories':
         return this.getCategoryPage(establishmentName, uuid, page, catType);
