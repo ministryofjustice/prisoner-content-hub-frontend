@@ -56,7 +56,7 @@ class SeriesPageQuery {
       ...getLargeTile(series),
       breadcrumbs: mapBreadcrumbs(series?.breadcrumbs, series.name),
       ...{
-        relatedContent: {
+        hubContentData: {
           contentType: 'series',
           isLastPage: !links.next,
           data: deserializedResponse.map(getSmallTile),
