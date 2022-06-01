@@ -31,10 +31,10 @@
 {% endblock %}
 
 {% block content %}
-  {% if data.hubContent|length %}
+  {% if data.hubContentData|length %}
     {{ hubContent({
       id: tagId,
-      data: data.hubContent,
+      data: data.hubContentData,
       lazyLoadContent: true
     }) }}
   {% endif %}
