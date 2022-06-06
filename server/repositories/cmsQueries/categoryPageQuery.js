@@ -7,7 +7,6 @@ class CategoryPageQuery {
     'drupal_internal__tid',
     'title',
     'field_moj_thumbnail_image',
-    'field_moj_thumbnail_imagee',
     'field_topics',
     'path',
     'field_exclude_feedback',
