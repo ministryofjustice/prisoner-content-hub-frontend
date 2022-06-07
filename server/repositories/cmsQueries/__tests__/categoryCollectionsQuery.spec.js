@@ -31,7 +31,7 @@ describe('Category collection query', () => {
       name: `name`,
       description: { processed: `description` },
       fieldExcludeFeedback: true,
-      fieldFeaturedImage: {
+      fieldMojThumbnailImage: {
         imageStyleUri: [{ tile_small: `tile_small` }],
         resourceIdObjMeta: { alt: `alt` },
       },
@@ -74,7 +74,7 @@ describe('Category collection query', () => {
       name: `name`,
       description: { processed: `description` },
       fieldExcludeFeedback: true,
-      fieldFeaturedImage: {
+      fieldMojThumbnailImage: {
         imageStyleUri: [{ tile_small: `tile_small` }],
         resourceIdObjMeta: { alt: `alt` },
       },

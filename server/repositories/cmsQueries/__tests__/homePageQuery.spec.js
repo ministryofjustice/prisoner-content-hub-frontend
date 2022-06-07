@@ -75,7 +75,7 @@ describe('Homepage query', () => {
             type: 'taxonomy_term--series',
             name: 'Bob and Beyond',
             description: { processed: 'Music' },
-            fieldFeaturedImage: {
+            fieldMojThumbnailImage: {
               resourceIdObjMeta: { alt: 'Bob and Beyond' },
               imageStyleUri: [
                 { tile_large: 'large-image', tile_small: 'small-image' },

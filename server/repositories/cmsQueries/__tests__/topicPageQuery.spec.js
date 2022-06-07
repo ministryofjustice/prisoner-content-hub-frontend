@@ -24,7 +24,7 @@ describe('Secondary Tag page query', () => {
       name: `name${id}`,
       description: { processed: `description${id}` },
       fieldExcludeFeedback: true,
-      fieldFeaturedImage: {
+      fieldMojThumbnailImage: {
         imageStyleUri: [{ tile_large: `tile_large${id}` }],
         resourceIdObjMeta: { alt: `alt${id}` },
       },

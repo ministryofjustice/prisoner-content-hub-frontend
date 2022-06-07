@@ -35,7 +35,7 @@ const getCollectionTile = (item, imageSize) => {
     summary: item?.description?.processed,
     contentUrl: item?.path?.alias,
     displayUrl: item?.fieldDisplayUrl,
-    image: getImage(item?.fieldFeaturedImage, imageSize),
+    image: getImage(item?.fieldMojThumbnailImage, imageSize),
   };
 };
 

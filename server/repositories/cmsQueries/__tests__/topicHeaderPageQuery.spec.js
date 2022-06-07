@@ -17,7 +17,7 @@ describe('Secondary tag with no defined related content page query', () => {
         name: `name1`,
         type: 'taxonomy_term--topics',
         description: { processed: `description1` },
-        fieldFeaturedImage: {
+        fieldMojThumbnailImage: {
           imageStyleUri: [{ tile_large: `tile_large1` }],
           resourceIdObjMeta: { alt: `alt1` },
         },
