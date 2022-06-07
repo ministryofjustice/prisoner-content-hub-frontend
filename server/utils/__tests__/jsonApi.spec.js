@@ -217,7 +217,7 @@ describe('getting tile data', () => {
       type: 'taxonomy_term--series',
       name: 'title',
       description: { processed: 'summary' },
-      fieldFeaturedImage: {
+      fieldMojThumbnailImage: {
         imageStyleUri: [
           {
             tile_small: 'tile_small',
@@ -262,7 +262,7 @@ describe('getting tile data', () => {
       type: 'taxonomy_term--moj_categories',
       name: 'title',
       description: { processed: 'summary' },
-      fieldFeaturedImage: {
+      fieldMojThumbnailImage: {
         imageStyleUri: [
           {
             tile_small: 'tile_small',

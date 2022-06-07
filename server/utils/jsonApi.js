@@ -14,46 +14,19 @@ const getLargeImage = data => getImage(data, 'tile_large');
 const getTile = (item, imageSize) => {
   const { contentType, externalContent } = typeFrom(item);
   return {
-    id: item?.drupalInternal_Nid,
+    id: item?.drupalInternal_Nid || item?.drupalInternal_Tid,
     contentType,
     externalContent,
-    title: item?.title,
-    summary: item?.fieldMojDescription?.summary,
+    title: item?.title || item?.name,
+    summary: item?.fieldMojDescription?.summary || item?.description?.processed,
     contentUrl: item?.path?.alias,
     displayUrl: item?.fieldDisplayUrl,
     image: getImage(item?.fieldMojThumbnailImage, imageSize),
   };
 };
 
-const getCollectionTile = (item, imageSize) => {
-  const { contentType, externalContent } = typeFrom(item);
-  return {
-    id: item?.drupalInternal_Tid,
-    contentType,
-    externalContent,
-    title: item?.name,
-    summary: item?.description?.processed,
-    contentUrl: item?.path?.alias,
-    displayUrl: item?.fieldDisplayUrl,
-    image: getImage(item?.fieldFeaturedImage, imageSize),
-  };
-};
-
-const isTag = ({ type }) =>
-  [
-    'taxonomy_term--series',
-    'taxonomy_term--moj_categories',
-    'taxonomy_term--topics',
-  ].includes(type);
-
-const getSmallTile = item =>
-  isTag(item)
-    ? getCollectionTile(item, 'tile_small')
-    : getTile(item, 'tile_small');
-const getLargeTile = item =>
-  isTag(item)
-    ? getCollectionTile(item, 'tile_large')
-    : getTile(item, 'tile_large');
+const getSmallTile = item => getTile(item, 'tile_small');
+const getLargeTile = item => getTile(item, 'tile_large');
 
 const getCategoryId = categories => {
   if (!categories || (Array.isArray(categories) && categories.length === 0))

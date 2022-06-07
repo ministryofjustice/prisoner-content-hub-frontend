@@ -24,7 +24,7 @@ describe('Series page query', () => {
       breadcrumbs: [{ uri: 'parent1Url', title: 'parent1' }],
       description: { processed: `description${UUID}` },
       fieldExcludeFeedback: undefined,
-      fieldFeaturedImage: {
+      fieldMojThumbnailImage: {
         imageStyleUri: [{ tile_large: `tile_large${UUID}` }],
         resourceIdObjMeta: { alt: `alt${UUID}` },
       },
