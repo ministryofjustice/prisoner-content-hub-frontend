@@ -9,10 +9,10 @@ class TopicHeaderPageQuery {
         'name',
         'description',
         'drupal_internal__tid',
-        'field_featured_image',
+        'field_moj_thumbnail_image',
         'path',
       ])
-      .addInclude(['field_featured_image'])
+      .addInclude(['field_moj_thumbnail_image'])
       .getQueryString();
   }
 

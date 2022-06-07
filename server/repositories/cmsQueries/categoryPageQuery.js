@@ -7,7 +7,6 @@ class CategoryPageQuery {
     'drupal_internal__tid',
     'title',
     'field_moj_thumbnail_image',
-    'field_featured_image',
     'field_topics',
     'path',
     'field_exclude_feedback',
@@ -33,7 +32,6 @@ class CategoryPageQuery {
       .addInclude([
         'field_featured_tiles',
         'field_featured_tiles.field_moj_thumbnail_image',
-        'field_featured_tiles.field_featured_image',
       ])
       .getQueryString();
   }

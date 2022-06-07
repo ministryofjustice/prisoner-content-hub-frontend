@@ -30,14 +30,14 @@ class SeriesPageQuery {
         'name',
         'description',
         'drupal_internal__tid',
-        'field_featured_image',
+        'field_moj_thumbnail_image',
         'path',
         'field_exclude_feedback',
         'breadcrumbs',
       ])
       .addInclude([
         'field_moj_thumbnail_image',
-        'field_moj_series.field_featured_image',
+        'field_moj_series.field_moj_thumbnail_image',
       ])
       .addSort('series_sort_value,created', 'ASC')
       .getQueryString();

@@ -6,7 +6,7 @@ class CategoryCollectionsQuery {
     'type',
     'drupal_internal__tid',
     'name',
-    'field_featured_image',
+    'field_moj_thumbnail_image',
     'path',
     'content_updated',
     'child_term_count',
@@ -21,7 +21,7 @@ class CategoryCollectionsQuery {
         'taxonomy_term--moj_categories',
         CategoryCollectionsQuery.#TILE_FIELDS,
       )
-      .addInclude(['field_featured_image'])
+      .addInclude(['field_moj_thumbnail_image'])
       .getQueryString();
     this.query = `${queryWithoutOffset}&${getPagination(page, limit)}`;
   }
