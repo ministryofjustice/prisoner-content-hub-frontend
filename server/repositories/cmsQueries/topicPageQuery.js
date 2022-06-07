@@ -30,14 +30,14 @@ class TopicPageQuery {
         'name',
         'description',
         'drupal_internal__tid',
-        'field_featured_image',
+        'field_moj_thumbnail_image',
         'path',
         'field_exclude_feedback',
         'breadcrumbs',
       ])
       .addInclude([
         'field_moj_thumbnail_image',
-        'field_topics.field_featured_image',
+        'field_topics.field_moj_thumbnail_image',
       ])
       .addSort('created', 'DESC')
       .getQueryString();
