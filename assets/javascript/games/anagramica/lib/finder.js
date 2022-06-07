@@ -18,8 +18,8 @@ Finder.BinHash = [];
 
 //Loads files into memory, prepares hash/cache
 Finder.load = function() {
-    parseDictFile('assets/javascript/games/anagramica/lib/dict/words.txt',  Finder.Words);
-    parseAnagrams('assets/javascript/games/anagramica/lib/dict/anagrams.txt', Finder.Anagrams, Finder.AnaIndex);
+    parseDictFile(`${__dirname}/dict/words.txt`,  Finder.Words);
+    parseAnagrams(`${__dirname}/dict/anagrams.txt`, Finder.Anagrams, Finder.AnaIndex);
     cacheBinary(Finder.BinHash,10);
 };
 

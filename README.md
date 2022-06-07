@@ -58,7 +58,7 @@ Cypress is used for E2E testing
 #### Prerequisites
 
 Wiremock needs to run:
-`docker-compose -f docker-compose-wiremock.yml up`
+`docker-compose -f docker-compose.yml up`
 
 #### Running tests
 

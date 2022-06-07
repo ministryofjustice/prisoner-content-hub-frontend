@@ -311,9 +311,9 @@ workflows:
       - run_unit_tests:
           requires:
             - build
-#      - run_e2e_tests:
-#          requires:
-#            - build
+      - run_e2e_tests:
+          requires:
+            - build
       - build_preview:
           <<: *feature_branch
 
@@ -337,7 +337,7 @@ workflows:
           <<: *main_branch
           requires:
             - run_unit_tests
-#            - run_e2e_tests
+            - run_e2e_tests
 
       - deploy_cloud_platform:
           <<: *main_branch
