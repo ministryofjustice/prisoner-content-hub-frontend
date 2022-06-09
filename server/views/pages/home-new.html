@@ -1,5 +1,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../components/personal-schedule-today/macro.njk" import personalScheduleToday %}
+{% from "../components/hub-content-block/macro.njk" import hubContentBlock %}
 
 {% extends "../components/basicTemplate.njk" %}
 
@@ -23,9 +24,12 @@
 {% endblock %}
 
 {% block content %}
-<div class="govuk-body home-content">
-  <p>New homepage</p>
-</div>
+  {{ hubContentBlock({
+    title: 'Recently added',
+    viewAllUrl: '/recently-added',
+    id: 'recentlyAdded',
+    data: recentlyAddedContent
+  }) }}
 {% endblock %}
 
 {% block feedback %}

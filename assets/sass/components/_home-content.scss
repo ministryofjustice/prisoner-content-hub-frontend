@@ -246,3 +246,9 @@
   content: url('/public/images/icons/audio.svg');
   background-color: govuk-colour('green');
 }
+
+.hub-content-block__title-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}

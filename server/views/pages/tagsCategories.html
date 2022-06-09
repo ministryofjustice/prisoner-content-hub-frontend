@@ -1,3 +1,4 @@
+{% from "../components/hub-content-show-more/macro.njk" import hubContentShowMore %}
 {% from "../components/hub-content/macro.njk" import hubContent %}
 
 {% extends "../components/basicTemplate.njk" %}
@@ -10,8 +11,7 @@
     <section class="govuk-!-margin-bottom-9">
       <h2 class="govuk-heading-l govuk-hub-white-heading">Featured</h2>
       {{ hubContent({
-        data: { contentType:"default",isLastPage:true, data:data.categoryFeaturedContent },
-        lazyLoadContent: true
+        data: data.categoryFeaturedContent
       }) }}
     </section>
     <hr>
@@ -19,8 +19,8 @@
   {% if data.categorySeries.data.length > 0 %}
     <section id="seriesTiles"class="govuk-!-margin-bottom-9 govuk-!-margin-top-5">
       <h2 class="govuk-heading-l  govuk-hub-white-heading">In this section</h2>
-      {{ hubContent({
-        data: { contentType:data.categorySeries.contentType ,isLastPage:data.categorySeries.isLastPage, data:data.categorySeries.data },
+      {{ hubContentShowMore({
+        data: data.categorySeries,
         lazyLoadContent: true
       }) }}
     </section>
@@ -29,8 +29,8 @@
   {% if data.categoryContent.data.length > 0 %}
     <section id="otherContentTiles" class="govuk-!-margin-bottom-9 govuk-!-margin-top-5">
       <h2 class="govuk-heading-l  govuk-hub-white-heading">Content</h2>
-      {{ hubContent({
-        data: { contentType:data.categoryContent.contentType ,isLastPage:data.categoryContent.isLastPage, data:data.categoryContent.data },
+      {{ hubContentShowMore({
+        data: data.categoryContent,
         lazyLoadContent: true
       }) }}
     </section>
