@@ -1,26 +1,16 @@
 {% from "../content-tile-small/macro.njk" import contentTileSmall %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-<div data-content-type="{{params.data.contentType}}" data-content-id="{{params.id}}" >
-    <div class="small-tiles tags-content__four-items {{ 'hidden' if loop.index > 1 }}">
-      {% for item in params.data.data %}
-        {{ contentTileSmall ({
-          id: item.id,
-          title: item.title,
-          contentType: item.contentType,
-          image: item.image,
-          contentUrl: item.contentUrl,
-          displayUrl: item.displayUrl,
-          externalContent: item.externalContent
-        }) }}
-      {% endfor %}
-    </div>
-    {% if not params.data.isLastPage %}
-      <div class="show-more govuk-!-margin-top-9">
-        {{ govukButton({
-          text: "Show more",
-          classes: 'show-more-tiles govuk-button--secondary'
-        }) }}
-      </div>
-    {% endif %}
+<div class="small-tiles tags-content__four-items {{ 'hidden' if loop.index > 1 }}">
+  {% for item in params.data %}
+    {{ contentTileSmall ({
+      id: item.id,
+      title: item.title,
+      contentType: item.contentType,
+      image: item.image,
+      contentUrl: item.contentUrl,
+      displayUrl: item.displayUrl,
+      externalContent: item.externalContent
+    }) }}
+  {% endfor %}
 </div>

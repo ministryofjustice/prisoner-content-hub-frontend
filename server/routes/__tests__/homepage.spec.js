@@ -16,6 +16,7 @@ describe('GET /', () => {
   let offenderService;
   let router;
   let app;
+  let relatedContent;
 
   beforeEach(() => {
     featuredItem = {
@@ -36,7 +37,28 @@ describe('GET /', () => {
     offenderService = {
       getCurrentEvents: jest.fn().mockResolvedValue({}),
     };
-
+    relatedContent = [
+      {
+        id: 15826,
+        contentType: 'video',
+        externalContent: false,
+        title: 'BBC. The Story of Maths. The Language of the Universe',
+        summary: 'BBC. The Story of Maths. The Language of the Universe',
+        contentUrl: '/content/15826',
+        displayUrl: undefined,
+        image: { url: 'image url', alt: 'Alt text' },
+      },
+      {
+        id: 15825,
+        contentType: 'video',
+        externalContent: false,
+        title: 'The Queen: 70 Glorious Years - British Royal Documentary',
+        summary: 'The Queen: 70 Glorious Years - British Royal Documentary',
+        contentUrl: '/content/15825',
+        displayUrl: undefined,
+        image: { url: 'image url', alt: 'Alt text' },
+      },
+    ];
     cmsService = {
       getHomepage: jest.fn().mockReturnValue({
         upperFeatured: featuredItemWithId('large'),
@@ -47,6 +69,10 @@ describe('GET /', () => {
         { linkText: 'foo', href: '/content/foo' },
         { linkText: 'bar', href: '/content/bar' },
       ]),
+      getRecentlyAddedContent: jest.fn().mockResolvedValue({
+        data: relatedContent,
+        isLastPage: true,
+      }),
     };
   });
 
@@ -305,133 +331,170 @@ describe('GET /', () => {
           const $ = cheerio.load(response.text);
           expect($('.govuk-footer__list-item').length).toBe(2);
         }));
+  });
+  /* new homepage */
+  describe('New homepage', () => {
+    let testEvents;
+    const establishmentPersonalisationToggle = jest.fn();
+    const userSupplier = jest.fn();
 
-    /* new homepage */
-    describe('New homepage', () => {
-      let testEvents;
-
-      beforeEach(() => {
-        testEvents = {
-          events: [
-            {
-              description: 'SUSPENDED ACTIVITY',
-              startTime: '8:10AM',
-              endTime: '11:25AM',
-              location: 'Main exercise yard',
-              timeString: '8:10AM to 11:25AM',
-              eventType: 'PRISON_ACT',
-              finished: false,
-              status: 'SCH',
-              paid: false,
-            },
-            {
-              description: 'EDU IT AM',
-              startTime: '8:10AM',
-              endTime: '11:25AM',
-              location: 'New education',
-              timeString: '8:10AM to 11:25AM',
-              eventType: 'PRISON_ACT',
-              finished: false,
-              status: 'SCH',
-              paid: false,
-            },
-          ],
-          isTomorrow: false,
-        };
-      });
-
-      it('renders the homepage with a search bar', () =>
-        request(app)
-          .get('/new-homepage')
-          .expect(200)
-          .then(response => {
-            const $ = cheerio.load(response.text);
-            expect($('#search-wrapper').length).toBe(1);
-          }));
-
-      it('renders the homepage events for today', () => {
-        offenderService.getCurrentEvents.mockResolvedValue(testEvents);
-
-        return request(app)
-          .get('/new-homepage')
-          .then(response => {
-            const $ = cheerio.load(response.text);
-            expect($('div.todays-events').first().find('h3').text()).toBe(
-              "Today's events",
-            );
-            expect($('[data-test="event"]').length).toBe(
-              2,
-              'Correct number of events',
-            );
-          });
-      });
-
-      it('renders the homepage events for tomorrow', () => {
-        testEvents = { ...testEvents, isTomorrow: true };
-
-        offenderService.getCurrentEvents.mockResolvedValue(testEvents);
-
-        return request(app)
-          .get('/new-homepage')
-          .then(response => {
-            const $ = cheerio.load(response.text);
-            expect($('div.todays-events').first().find('h3').text()).toBe(
-              "Tomorrow's events",
-            );
-            expect($('[data-test="event"]').length).toBe(
-              2,
-              'Correct number of events',
-            );
-          });
-      });
-
-      it('renders the homepage with no events', () => {
-        const currentEvents = {
-          events: [],
-          isTomorrow: false,
-        };
-
-        offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
-
-        return request(app)
-          .get('/')
-          .then(response => {
-            const $ = cheerio.load(response.text);
-            expect($('[data-test="event"]').length).toBe(0);
-            expect($('[data-test="no-events"]').length).toBe(1);
-          });
-      });
-
-      it('renders the homepage with placeholder content', () =>
-        request(app)
-          .get('/new-homepage')
-          .expect(200)
-          .then(response => {
-            const $ = cheerio.load(response.text);
-            expect($('.home-content p').text()).toMatch(/New homepage/);
-          }));
-
-      it('renders an error when the homepage cannot retrieve events', () => {
-        offenderService.getCurrentEvents.mockResolvedValue({
-          error: 'We are not able to show your schedule for today at this time',
-        });
-
-        return request(app)
-          .get('/new-homepage')
-          .then(response => {
-            const $ = cheerio.load(response.text);
-            expect($('[data-test="event-error"]').length).toBe(1);
-          });
-      });
-
-      it('renders the homepage with topics footer', () =>
-        request(app)
-          .get('/new-homepage')
-          .expect(200)
-          .then(response => {
-            const $ = cheerio.load(response.text);
-            expect($('.govuk-footer__list-item').length).toBe(2);
-          }));
+    const testUser = new User({
+      prisonerId: 'A1234BC',
+      firstName: 'Test',
+      surname: 'User',
+      bookingId: 1234567,
     });
+
+    beforeEach(() => {
+      const establishmentData = {
+        1: {
+          name: 'berwyn',
+        },
+      };
+      router = createHomepageRouter({
+        cmsService,
+        offenderService,
+        establishmentData,
+      });
+
+      app = setupBasicApp();
+      app.use((req, res, next) => {
+        req.session = {
+          establishmentName: 'berwyn',
+          isSignedIn: true,
+          establishmentPersonalisationEnabled:
+            establishmentPersonalisationToggle(),
+        };
+        req.user = userSupplier();
+        next();
+      });
+      app.use(setCurrentUser);
+      app.use(['^/*'], retrieveTopicList(cmsService));
+      app.use(router);
+      app.use(consoleLogError);
+      userSupplier.mockReturnValue(testUser);
+      establishmentPersonalisationToggle.mockReturnValue(true);
+
+      testEvents = {
+        events: [
+          {
+            description: 'SUSPENDED ACTIVITY',
+            startTime: '8:10AM',
+            endTime: '11:25AM',
+            location: 'Main exercise yard',
+            timeString: '8:10AM to 11:25AM',
+            eventType: 'PRISON_ACT',
+            finished: false,
+            status: 'SCH',
+            paid: false,
+          },
+          {
+            description: 'EDU IT AM',
+            startTime: '8:10AM',
+            endTime: '11:25AM',
+            location: 'New education',
+            timeString: '8:10AM to 11:25AM',
+            eventType: 'PRISON_ACT',
+            finished: false,
+            status: 'SCH',
+            paid: false,
+          },
+        ],
+        isTomorrow: false,
+      };
+    });
+
+    it('renders the homepage with a search bar', () =>
+      request(app)
+        .get('/new-homepage')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('#search-wrapper').length).toBe(1);
+        }));
+
+    it('renders the homepage events for today', () => {
+      offenderService.getCurrentEvents.mockResolvedValue(testEvents);
+
+      return request(app)
+        .get('/new-homepage')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('div.todays-events').first().find('h3').text()).toBe(
+            "Today's events",
+          );
+          expect($('[data-test="event"]').length).toBe(
+            2,
+            'Correct number of events',
+          );
+        });
+    });
+
+    it('renders the homepage events for tomorrow', () => {
+      testEvents = { ...testEvents, isTomorrow: true };
+
+      offenderService.getCurrentEvents.mockResolvedValue(testEvents);
+
+      return request(app)
+        .get('/new-homepage')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('div.todays-events').first().find('h3').text()).toBe(
+            "Tomorrow's events",
+          );
+          expect($('[data-test="event"]').length).toBe(
+            2,
+            'Correct number of events',
+          );
+        });
+    });
+
+    it('renders the homepage with no events', () => {
+      const currentEvents = {
+        events: [],
+        isTomorrow: false,
+      };
+
+      offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
+
+      return request(app)
+        .get('/')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="event"]').length).toBe(0);
+          expect($('[data-test="no-events"]').length).toBe(1);
+        });
+    });
+
+    it('renders the homepage with recently the correct number of recently added content tiles', () =>
+      request(app)
+        .get('/new-homepage')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('#recentlyAdded .small-tiles a').length).toBe(2);
+        }));
+
+    it('renders an error when the homepage cannot retrieve events', () => {
+      offenderService.getCurrentEvents.mockResolvedValue({
+        error: 'We are not able to show your schedule for today at this time',
+      });
+
+      return request(app)
+        .get('/new-homepage')
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('[data-test="event-error"]').length).toBe(1);
+        });
+    });
+
+    it('renders the homepage with topics footer', () =>
+      request(app)
+        .get('/new-homepage')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('.govuk-footer__list-item').length).toBe(2);
+        }));
   });
 });
