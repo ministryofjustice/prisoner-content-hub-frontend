@@ -36,6 +36,9 @@ const {
 const {
   RecentlyAddedContentQuery,
 } = require('../repositories/cmsQueries/recentlyAddedContentQuery');
+const {
+  ExploreContentQuery,
+} = require('../repositories/cmsQueries/exploreContentQuery');
 
 const { getOffsetUnixTime } = require('../utils/date');
 
@@ -205,6 +208,13 @@ class CmsService {
       new HomepageQuery(establishmentName),
     );
     return homepages[0];
+  }
+
+  async getExploreContent(establishmentName) {
+    const exploreContent = await this.#cmsApi.get(
+      new ExploreContentQuery(establishmentName),
+    );
+    return exploreContent;
   }
 
   async getNextEpisode(

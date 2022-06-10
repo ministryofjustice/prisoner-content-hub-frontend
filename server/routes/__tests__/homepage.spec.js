@@ -16,7 +16,7 @@ describe('GET /', () => {
   let offenderService;
   let router;
   let app;
-  let relatedContent;
+  let hubContent;
 
   beforeEach(() => {
     featuredItem = {
@@ -37,7 +37,7 @@ describe('GET /', () => {
     offenderService = {
       getCurrentEvents: jest.fn().mockResolvedValue({}),
     };
-    relatedContent = [
+    hubContent = [
       {
         id: 15826,
         contentType: 'video',
@@ -70,7 +70,11 @@ describe('GET /', () => {
         { linkText: 'bar', href: '/content/bar' },
       ]),
       getRecentlyAddedContent: jest.fn().mockResolvedValue({
-        data: relatedContent,
+        data: hubContent,
+        isLastPage: true,
+      }),
+      getExploreContent: jest.fn().mockResolvedValue({
+        data: hubContent,
         isLastPage: true,
       }),
     };
@@ -466,13 +470,22 @@ describe('GET /', () => {
         });
     });
 
-    it('renders the homepage with recently the correct number of recently added content tiles', () =>
+    it('renders the homepage with the correct number of recently added content tiles', () =>
       request(app)
         .get('/new-homepage')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
           expect($('#recentlyAdded .small-tiles a').length).toBe(2);
+        }));
+
+    it('renders the homepage with the correct number of explore content tiles', () =>
+      request(app)
+        .get('/new-homepage')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('#exploreContent .small-tiles a').length).toBe(2);
         }));
 
     it('renders an error when the homepage cannot retrieve events', () => {

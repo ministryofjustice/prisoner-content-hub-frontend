@@ -42,10 +42,12 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         throw new Error('Could not determine establishment!');
       }
 
-      const [homepage, recentlyAddedContent] = await Promise.all([
-        cmsService.getHomepage(establishmentName),
-        cmsService.getRecentlyAddedContent(establishmentName),
-      ]);
+      const [homepage, recentlyAddedContent, exploreContent] =
+        await Promise.all([
+          cmsService.getHomepage(establishmentName),
+          cmsService.getRecentlyAddedContent(establishmentName),
+          cmsService.getExploreContent(establishmentName),
+        ]);
       const currentEvents = res.locals.isSignedIn
         ? await offenderService.getCurrentEvents(req.user)
         : {};
@@ -61,6 +63,7 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         title: 'Home',
         homepage,
         recentlyAddedContent,
+        exploreContent,
         currentEvents,
       });
     } catch (error) {
