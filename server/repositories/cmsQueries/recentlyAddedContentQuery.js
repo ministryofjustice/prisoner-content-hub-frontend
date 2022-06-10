@@ -6,7 +6,6 @@ class RecentlyAddedContentQuery {
     'drupal_internal__nid',
     'title',
     'field_moj_thumbnail_image',
-    'field_thumbnail_image',
     'field_moj_description',
     'field_moj_series',
     'path',
