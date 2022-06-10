@@ -977,9 +977,6 @@ describe('cms Service', () => {
     });
   });
 
-  /*
-    to do - explore
-  */
   describe('getExploreContent', () => {
     const resObject = {
       data: 'some data',
