@@ -28,7 +28,7 @@ class ExploreContentQuery {
   }
 
   path() {
-    return `/jsonapi/explore/node?${this.query}`;
+    return `/jsonapi/prison/${this.establishmentName}/explore/node?${this.query}`;
   }
 
   transform(deserializedResponse, links) {
