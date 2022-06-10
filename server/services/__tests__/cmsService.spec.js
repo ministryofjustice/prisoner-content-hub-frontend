@@ -45,6 +45,9 @@ const {
 const {
   RecentlyAddedContentQuery,
 } = require('../../repositories/cmsQueries/recentlyAddedContentQuery');
+const {
+  ExploreContentQuery,
+} = require('../../repositories/cmsQueries/exploreContentQuery');
 const { getOffsetUnixTime } = require('../../utils/date');
 const { CmsService } = require('../cms');
 
@@ -966,6 +969,32 @@ describe('cms Service', () => {
           40,
           getOffsetUnixTime(14),
         ),
+      );
+    });
+
+    it('should return a result when cmsApi.get is called', async () => {
+      expect(result).toBe(resObject);
+    });
+  });
+
+  describe('getExploreContent', () => {
+    const resObject = {
+      data: 'some data',
+    };
+    let result;
+
+    beforeEach(async () => {
+      cmsApi.get.mockResolvedValueOnce(resObject);
+      result = await cmsService.getExploreContent(ESTABLISHMENT_NAME, 4);
+    });
+
+    it('should call cmsApi.get once', async () => {
+      expect(cmsApi.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call cmsApi.get with the ExploreContentQuery', async () => {
+      expect(cmsApi.get).toHaveBeenCalledWith(
+        new ExploreContentQuery(ESTABLISHMENT_NAME, 4),
       );
     });
 

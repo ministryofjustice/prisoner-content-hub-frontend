@@ -1,11 +1,11 @@
 {% from "../hub-content/macro.njk" import hubContent %}
 
 {% if params.data|length %}
-<section id="{{ params.id }}">
+<section id="{{ params.id }}" class="govuk-!-margin-bottom-5">
   <div class="hub-content-block__title-bar govuk-!-margin-bottom-3">
-    <h2 class="govuk-heading-l  govuk-hub-white-heading govuk-!-margin-bottom-0">{{ params.title }}</h2>
+    <h2 class="govuk-heading-l govuk-hub-white-heading govuk-!-margin-bottom-0">{{ params.title }}</h2>
     {% if params.viewAllUrl %}
-      <a class="govuk-body govuk-link govuk-link--no-visited-state" href="{{ params.viewAllUrl }}">View all</a>
+      <a class="govuk-body govuk-link govuk-!-font-size-24 govuk-link--no-visited-state govuk-!-margin-left-4 govuk-!-margin-bottom-0 " href="{{ params.viewAllUrl }}">View all</a>
     {% endif %}
   </div>
   {{ hubContent({
