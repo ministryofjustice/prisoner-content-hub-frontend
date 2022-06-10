@@ -1002,7 +1002,4 @@ describe('cms Service', () => {
       expect(result).toBe(resObject);
     });
   });
-  /*
-    end - to do - explore
-  */
 });
