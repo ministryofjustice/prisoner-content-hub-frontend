@@ -262,3 +262,14 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.hub-content-panel {
+  box-sizing: border-box;
+  background-color: $real-dark-grey;
+}
+
+.hub-horizontal-rule-title {
+  border-bottom: 1px solid govuk-colour('white');
+  line-height: 0.1em;
+  width: 100%;
+}
