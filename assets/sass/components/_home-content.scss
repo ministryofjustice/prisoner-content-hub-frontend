@@ -86,13 +86,16 @@
 
 .home-content > :first-child,
 .home-content > :last-child,
-.home-content__four-items > a {
+.home-content__four-items > a,
+.tags-content__four-items > a {
   position: relative;
   transition: transform 0.5s ease;
 }
 
 .home-content__four-items > a:hover,
-.home-content__four-items > a:focus {
+.home-content__four-items > a:focus,
+.tags-content__four-items > a:hover,
+.tags-content__four-items > a:focus {
   @include scale-tile;
   outline: none;
   @include tile-shadow;
