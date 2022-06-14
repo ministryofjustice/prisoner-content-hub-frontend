@@ -69,9 +69,8 @@ describe('GET /', () => {
         { linkText: 'foo', href: '/content/foo' },
         { linkText: 'bar', href: '/content/bar' },
       ]),
-      getRecentlyAddedContent: jest.fn().mockResolvedValue({
+      getRecentlyAddedHomepageContent: jest.fn().mockResolvedValue({
         data: hubContent,
-        isLastPage: true,
       }),
       getExploreContent: jest.fn().mockResolvedValue({
         data: hubContent,

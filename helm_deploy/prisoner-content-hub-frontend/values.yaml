@@ -7,7 +7,7 @@ maxReplicaCount: 6
 tier: frontend
 
 image:
-  repository: mojdigitalstudio/prisoner-content-hub-frontend
+  repository: quay.io/hmpps/prisoner-content-hub-frontend
   pullPolicy: IfNotPresent
   tag: latest
 

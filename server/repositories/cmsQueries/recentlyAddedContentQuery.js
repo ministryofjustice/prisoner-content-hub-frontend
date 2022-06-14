@@ -28,6 +28,12 @@ class RecentlyAddedContentQuery {
 
       .addInclude(['field_moj_thumbnail_image'])
 
+      .addFilter(
+        'type.meta.drupal_internal__target_id',
+        ['page', 'moj_video_item', 'moj_radio_item', 'moj_pdf_item'],
+        'IN',
+      )
+
       .addFilter('created', timeStamp, '>=')
 
       .addSort('published_at,created', 'DESC')
@@ -38,7 +44,7 @@ class RecentlyAddedContentQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/recently-added?${this.query}`;
+    return `/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
   }
 
   transform(deserializedResponse, links) {

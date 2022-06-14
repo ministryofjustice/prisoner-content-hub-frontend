@@ -37,6 +37,9 @@ const {
   RecentlyAddedContentQuery,
 } = require('../repositories/cmsQueries/recentlyAddedContentQuery');
 const {
+  RecentlyAddedHomepageContentQuery,
+} = require('../repositories/cmsQueries/recentlyAddedHomepageContentQuery');
+const {
   ExploreContentQuery,
 } = require('../repositories/cmsQueries/exploreContentQuery');
 
@@ -250,6 +253,14 @@ class CmsService {
     );
 
     return recentlyAddedContent;
+  }
+
+  async getRecentlyAddedHomepageContent(establishmentName) {
+    const RecentlyAddedHomepageContent = await this.#cmsApi.get(
+      new RecentlyAddedHomepageContentQuery(establishmentName),
+    );
+
+    return RecentlyAddedHomepageContent;
   }
 }
 

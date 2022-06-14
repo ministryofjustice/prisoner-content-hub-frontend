@@ -46,6 +46,9 @@ const {
   RecentlyAddedContentQuery,
 } = require('../../repositories/cmsQueries/recentlyAddedContentQuery');
 const {
+  RecentlyAddedHomepageContentQuery,
+} = require('../../repositories/cmsQueries/recentlyAddedHomepageContentQuery');
+const {
   ExploreContentQuery,
 } = require('../../repositories/cmsQueries/exploreContentQuery');
 const { getOffsetUnixTime } = require('../../utils/date');
@@ -969,6 +972,34 @@ describe('cms Service', () => {
           40,
           getOffsetUnixTime(14),
         ),
+      );
+    });
+
+    it('should return a result when cmsApi.get is called', async () => {
+      expect(result).toBe(resObject);
+    });
+  });
+
+  describe('getRecentlyAddedHomepageContent', () => {
+    const resObject = {
+      data: 'vegan sausage',
+    };
+    let result;
+
+    beforeEach(async () => {
+      cmsApi.get.mockResolvedValueOnce(resObject);
+      result = await cmsService.getRecentlyAddedHomepageContent(
+        ESTABLISHMENT_NAME,
+      );
+    });
+
+    it('should call cmsApi.get once', async () => {
+      expect(cmsApi.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call cmsApi.get with the RecentlyAddedContentQuery', async () => {
+      expect(cmsApi.get).toHaveBeenCalledWith(
+        new RecentlyAddedHomepageContentQuery(ESTABLISHMENT_NAME),
       );
     });
 
