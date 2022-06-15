@@ -49,6 +49,9 @@ const {
   RecentlyAddedHomepageContentQuery,
 } = require('../../repositories/cmsQueries/recentlyAddedHomepageContentQuery');
 const {
+  HomepageContentQuery,
+} = require('../../repositories/cmsQueries/homepageContentQuery');
+const {
   ExploreContentQuery,
 } = require('../../repositories/cmsQueries/exploreContentQuery');
 const { getOffsetUnixTime } = require('../../utils/date');
@@ -1005,6 +1008,62 @@ describe('cms Service', () => {
 
     it('should return a result when cmsApi.get is called', async () => {
       expect(result).toBe(resObject);
+    });
+  });
+
+  describe('getHomepageContent', () => {
+    const resObj = {
+      featuredContent: {
+        data: [
+          {
+            contentType: 'video',
+            contentUrl: '/content/111111',
+            displayUrl: undefined,
+            externalContent: false,
+            id: 111111,
+            image: {
+              alt: 'Alt text',
+              url: 'small-image-url',
+            },
+            summary: 'A description',
+            title: 'A title',
+          },
+          {
+            contentType: 'radio',
+            contentUrl: '/content/222222',
+            displayUrl: undefined,
+            externalContent: false,
+            id: 222222,
+            image: {
+              alt: 'Alt text',
+              url: 'small-image-url',
+            },
+            summary: 'A description',
+            title: 'A title',
+          },
+        ],
+      },
+    };
+
+    let result;
+
+    beforeEach(async () => {
+      cmsApi.get.mockResolvedValueOnce([resObj]);
+      result = await cmsService.getHomepageContent(ESTABLISHMENT_NAME, 4);
+    });
+
+    it('should call cmsApi.get once', async () => {
+      expect(cmsApi.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call cmsApi.get with the HomepageContentQuery', async () => {
+      expect(cmsApi.get).toHaveBeenCalledWith(
+        new HomepageContentQuery(ESTABLISHMENT_NAME, 4),
+      );
+    });
+
+    it('should return a result when cmsApi.get is called', async () => {
+      expect(result).toBe(resObj);
     });
   });
 
