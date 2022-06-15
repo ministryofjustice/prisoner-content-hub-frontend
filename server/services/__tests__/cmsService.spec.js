@@ -48,9 +48,11 @@ const {
 const {
   RecentlyAddedHomepageContentQuery,
 } = require('../../repositories/cmsQueries/recentlyAddedHomepageContentQuery');
-const { HomepageContentQuery,
+const {
+  HomepageContentQuery,
 } = require('../../repositories/cmsQueries/homepageContentQuery');
-const { ExploreContentQuery,
+const {
+  ExploreContentQuery,
 } = require('../../repositories/cmsQueries/exploreContentQuery');
 const { getOffsetUnixTime } = require('../../utils/date');
 const { CmsService } = require('../cms');
@@ -941,7 +943,6 @@ describe('cms Service', () => {
     });
   });
 
-  
   describe('getRecentlyAddedContent', () => {
     const resObject = {
       data: 'vegan bacon',
@@ -1009,7 +1010,7 @@ describe('cms Service', () => {
       expect(result).toBe(resObject);
     });
   });
-  
+
   describe('getHomepageContent', () => {
     const resObj = {
       featuredContent: {

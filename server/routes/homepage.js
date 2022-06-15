@@ -42,7 +42,6 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         throw new Error('Could not determine establishment!');
       }
 
-
       const [homepageContent, recentlyAddedHomepageContent, exploreContent] =
         await Promise.all([
           cmsService.getHomepageContent(establishmentName),
