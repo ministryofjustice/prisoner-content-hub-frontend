@@ -496,13 +496,13 @@ describe('GET /', () => {
         }));
 
     it('renders the homepage with the correct number of featured content tiles', () =>
-      request(app)
-        .get('/new-homepage')
-        .expect(200)
-        .then(response => {
-          const $ = cheerio.load(response.text);
-          expect($('#featuredContent .small-tiles a').length).toBe(2);
-        }));
+    request(app)
+      .get('/new-homepage')
+      .expect(200)
+      .then(response => {
+        const $ = cheerio.load(response.text);
+        expect($('#featuredContent .small-tiles a').length).toBe(2);
+      }));
 
     it('renders an error when the homepage cannot retrieve events', () => {
       offenderService.getCurrentEvents.mockResolvedValue({
