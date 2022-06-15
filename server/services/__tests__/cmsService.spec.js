@@ -943,7 +943,6 @@ describe('cms Service', () => {
     });
   });
 
-  
   describe('getRecentlyAddedContent', () => {
     const resObject = {
       data: 'vegan bacon',
@@ -1011,7 +1010,7 @@ describe('cms Service', () => {
       expect(result).toBe(resObject);
     });
   });
-  
+
   describe('getHomepageContent', () => {
     const resObj = {
       featuredContent: {

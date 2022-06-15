@@ -39,7 +39,8 @@ const {
 const {
   RecentlyAddedHomepageContentQuery,
 } = require('../repositories/cmsQueries/recentlyAddedHomepageContentQuery');
-const { HomepageContentQuery
+const {
+  HomepageContentQuery,
 } = require('../repositories/cmsQueries/homepageContentQuery');
 const {
   ExploreContentQuery,
