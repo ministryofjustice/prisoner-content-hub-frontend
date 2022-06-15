@@ -41,12 +41,11 @@ class HomepageContentQuery {
   }
 
   transformEach(item) {
-    const homepageContent = {
+    return {
       featuredContent: {
         data: item.fieldFeaturedTiles.map(getSmallTile),
       },
     };
-    return homepageContent;
   }
 }
 

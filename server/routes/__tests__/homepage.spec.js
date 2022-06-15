@@ -500,7 +500,6 @@ describe('GET /', () => {
         .get('/new-homepage')
         .expect(200)
         .then(response => {
-          // console.log(response.text)
           const $ = cheerio.load(response.text);
           expect($('#featuredContent .small-tiles a').length).toBe(2);
         }));
