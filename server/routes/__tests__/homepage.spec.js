@@ -79,7 +79,6 @@ describe('GET /', () => {
       }),
       getHomepageContent: jest.fn().mockResolvedValue({
         featuredContent,
-        isLastPage: true,
       }),
       getExploreContent: jest.fn().mockResolvedValue({
         data: hubContent,
