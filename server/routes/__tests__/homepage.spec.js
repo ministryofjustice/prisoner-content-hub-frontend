@@ -17,6 +17,7 @@ describe('GET /', () => {
   let router;
   let app;
   let hubContent;
+  let featuredContent;
 
   beforeEach(() => {
     featuredItem = {
@@ -59,6 +60,10 @@ describe('GET /', () => {
         image: { url: 'image url', alt: 'Alt text' },
       },
     ];
+    featuredContent = {
+      data: hubContent,
+    };
+
     cmsService = {
       getHomepage: jest.fn().mockReturnValue({
         upperFeatured: featuredItemWithId('large'),
@@ -71,6 +76,10 @@ describe('GET /', () => {
       ]),
       getRecentlyAddedHomepageContent: jest.fn().mockResolvedValue({
         data: hubContent,
+      }),
+      getHomepageContent: jest.fn().mockResolvedValue({
+        featuredContent,
+        isLastPage: true,
       }),
       getExploreContent: jest.fn().mockResolvedValue({
         data: hubContent,
@@ -485,6 +494,16 @@ describe('GET /', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
           expect($('#exploreContent .small-tiles a').length).toBe(2);
+        }));
+
+    it('renders the homepage with the correct number of featured content tiles', () =>
+      request(app)
+        .get('/new-homepage')
+        .expect(200)
+        .then(response => {
+          // console.log(response.text)
+          const $ = cheerio.load(response.text);
+          expect($('#featuredContent .small-tiles a').length).toBe(2);
         }));
 
     it('renders an error when the homepage cannot retrieve events', () => {
