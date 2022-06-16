@@ -28,6 +28,12 @@ env:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
           key: prisonApiBaseUrl
 
+    - name: PRISONER_CONTACT_REGISTRY_BASE_URL
+      valueFrom:
+        secretKeyRef:
+          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+          key: prisonerContactRegistryApiBaseUrl
+
     - name: INCENTIVES_API_BASE_URL
       valueFrom:
         secretKeyRef:
@@ -85,9 +91,6 @@ env:
     - name: ENABLE_MOCK_AUTH
       value: {{ .Values.application.config.mockAuthEnabled | quote }}
 
-    - name: HOTJAR_ID
-      value: {{ .Values.hotJarId | quote }}
-
     - name: CACHE_SECRET
       valueFrom:
         secretKeyRef:
@@ -105,6 +108,22 @@ env:
         secretKeyRef:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
           key: azureAdClientSecret
+
+    - name: REDIS_HOST
+      valueFrom:
+        secretKeyRef:
+          name: frontend-redis
+          key: primary_endpoint_address
+
+    - name: REDIS_AUTH_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: frontend-redis
+          key: auth_token
+    
+    - name: REDIS_TLS_ENABLED
+      value: {{ .Values.application.config.REDIS_TLS_ENABLED }}
+      value: "true"
 
     - name: SINGLE_HOST_NAME
     {{- with .Values.ingress.host }}

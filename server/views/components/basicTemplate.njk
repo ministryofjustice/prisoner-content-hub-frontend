@@ -6,6 +6,7 @@
 {% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "./top-bar/macro.njk" import topBar %}
 {% from "./user-details/macro.njk" import userDetails %}
+{% from "./urgent-banner/macro.njk" import urgentBanner %}
 
 <!DOCTYPE html>
 <html lang="{{ htmlLang | default('en') }}" class="govuk-template {{ htmlClasses }}">
@@ -38,25 +39,6 @@
       gtag('js', new Date());
       gtag('config', 'UA-152065860-4');
     </script>
-    {% if hotJarId %}
-      {# Load HotJar #}
-      <script>
-        (function (h, o, t, j, a, r) {
-          h.hj = h.hj || function () {
-            (h.hj.q = h.hj.q || []).push(arguments)
-          };
-          h._hjSettings = {
-            hjid: '{{hotJarId}}',
-            hjsv: 6
-          };
-          a = o.getElementsByTagName('head')[0];
-          r = o.createElement('script');
-          r.async = 1;
-          r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
-          a.appendChild(r);
-        })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
-      </script>
-    {% endif %}
   </head>
   <body class="govuk-template__body {{ bodyClasses }}">
     <script>
@@ -86,8 +68,12 @@
         }) }}
       {% endif %}
     {% endblock %}
+
     {% block notificationUserDetailsBar %}
       <div class="govuk-width-container">
+
+        {{ urgentBanner(urgentBanners) }}
+
         <div class="govuk-hub-navigationUserDetailsBar">
           {% block pageNavigation %}
             {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs  }) }}

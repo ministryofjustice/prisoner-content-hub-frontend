@@ -2,6 +2,7 @@ import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
 import { activity, appointment } from '../../mockApis/data';
 import { horizontalTableToObject } from './utils';
 import { format, addDays } from 'date-fns';
+import { cy } from 'date-fns/locale';
 
 Given(
   'that with an {string} content hub url, I request {string} page',
@@ -27,6 +28,7 @@ Given(
   'that with an {string} content hub url, I go to the {string} page',
   (establishment, page) => {
     cy.task('stubPrimaryNavigation');
+    cy.task('stubUrgentBanners');
     cy.task('stubBrowseAllTopics');
     const establishmentString = establishment
       ? `${establishment.toLowerCase().replace(' ', '')}.`
@@ -42,6 +44,7 @@ Given('that I am viewing some content', () => {
 
 Given('that I go to the {string} page', val => {
   cy.task('stubPrimaryNavigation');
+  cy.task('stubUrgentBanners');
   cy.task('stubBrowseAllTopics');
   cy.visit(`/${val}`);
 });

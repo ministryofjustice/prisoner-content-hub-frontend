@@ -90,6 +90,7 @@ const createProfileRouter = ({ offenderService }) => {
         detailsType: 'small',
         data: { contentType: 'profile' },
         ...personalisation,
+        // displayApprovedVisitorsCard: req.session.establishmentName === 'ADD_ESTABLISHMENT_NAME_HERE',
       });
     } catch (e) {
       return next(e);

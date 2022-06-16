@@ -11,49 +11,34 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         throw new Error('Could not determine establishment!');
       }
 
-      const homepage = await cmsService.getHomepage(establishmentName);
-
+      const [
+        { featuredContent, keyInfo, largeUpdateTile: largeUpdateTileSpecified },
+        recentlyAddedHomepageContent,
+        exploreContent,
+        { largeUpdateTileDefault, updatesContent, isLastPage },
+      ] = await Promise.all([
+        cmsService.getHomepageContent(establishmentName),
+        cmsService.getRecentlyAddedHomepageContent(establishmentName),
+        cmsService.getExploreContent(establishmentName),
+        cmsService.getUpdatesContent(establishmentName),
+      ]);
       const currentEvents = res.locals.isSignedIn
         ? await offenderService.getCurrentEvents(req.user)
         : {};
+      const useLargeUpdateTile = Boolean(largeUpdateTileSpecified?.contentUrl);
 
-      res.render('pages/home', {
-        config: {
-          content: true,
-          header: true,
-          postscript: true,
-          detailsType: 'large',
-        },
-        hideSignInLink: true,
-        title: 'Home',
-        homepage,
-        currentEvents,
-      });
-    } catch (error) {
-      next(error);
-    }
-  });
+      const largeUpdateTile = useLargeUpdateTile
+        ? largeUpdateTileSpecified
+        : largeUpdateTileDefault;
 
-  router.get('/new-homepage', async (req, res, next) => {
-    try {
-      const { establishmentName } = req.session;
+      const updatesContentWithDuplicatesRemoved = removeDuplicateUpdates(
+        updatesContent,
+        largeUpdateTile,
+      );
 
-      if (!establishmentName) {
-        throw new Error('Could not determine establishment!');
-      }
-
-      const [homepageContent, recentlyAddedHomepageContent, exploreContent] =
-        await Promise.all([
-          cmsService.getHomepageContent(establishmentName),
-          cmsService.getRecentlyAddedHomepageContent(establishmentName),
-          cmsService.getExploreContent(establishmentName),
-        ]);
-
-      const currentEvents = res.locals.isSignedIn
-        ? await offenderService.getCurrentEvents(req.user)
-        : {};
-
-      const { featuredContent } = homepageContent;
+      const updatesContentHideViewAll =
+        isLastPage &&
+        (updatesContentWithDuplicatesRemoved.length < 5 || !useLargeUpdateTile);
 
       res.render('pages/home-new', {
         config: {
@@ -65,7 +50,11 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         hideSignInLink: true,
         title: 'Home',
         recentlyAddedHomepageContent,
+        updatesContent: updatesContentWithDuplicatesRemoved.splice(0, 4),
+        updatesContentHideViewAll,
         featuredContent,
+        keyInfo,
+        largeUpdateTile,
         exploreContent,
         currentEvents,
       });
@@ -77,6 +66,10 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
   return router;
 };
 
+const removeDuplicateUpdates = (updatesContent, { id }) =>
+  updatesContent.filter(update => update.id !== id);
+
 module.exports = {
   createHomepageRouter,
+  removeDuplicateUpdates,
 };

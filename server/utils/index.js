@@ -11,11 +11,6 @@ const getEstablishmentId = (
     10,
   );
 
-const getEstablishmentIsYoi = (
-  establishmentId,
-  establishmentData = defaultEstablishmentData,
-) => establishmentData[establishmentId]?.youth || false;
-
 const getEstablishment = (
   agencyId,
   establishmentData = defaultEstablishmentData,
@@ -72,14 +67,19 @@ function groupBy(items, keyAccessor) {
   }, {});
 }
 
+const sortBy = key => (a, b) => {
+  if (a === b) return 0;
+  return a[key] < b[key] ? -1 : 1;
+};
+
 module.exports = {
   getEstablishmentId,
   getEstablishment,
-  getEstablishmentIsYoi,
   updateSessionEstablishment,
   getEstablishmentDisplayName,
   capitalize,
   capitalizeAll,
   capitalizePersonName,
   groupBy,
+  sortBy,
 };

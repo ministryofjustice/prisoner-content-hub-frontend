@@ -42,6 +42,12 @@ module.exports = {
   caching: {
     secret: getRequiredEnv('CACHE_SECRET', 'secret-2'),
   },
+  redis: {
+    host: getRequiredEnv('REDIS_HOST', 'localhost'),
+    port: process.env.REDIS_PORT || 6379,
+    password: process.env.REDIS_AUTH_TOKEN,
+    tls_enabled: getEnv('REDIS_TLS_ENABLED', 'false'),
+  },
   prisonApi: {
     auth: {
       clientId: getEnv('HMPPS_AUTH_CLIENT_ID', 'UNSET'),
@@ -49,6 +55,17 @@ module.exports = {
       authUrl: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
     },
     baseUrl: getRequiredEnv('PRISON_API_BASE_URL', 'https://api.nomis'),
+  },
+  prisonerContactRegistryApi: {
+    auth: {
+      clientId: getEnv('HMPPS_AUTH_CLIENT_ID', 'UNSET'),
+      clientSecret: getEnv('HMPPS_AUTH_CLIENT_SECRET', 'UNSET'),
+      authUrl: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
+    },
+    baseUrl: getRequiredEnv(
+      'PRISONER_CONTACT_REGISTRY_BASE_URL',
+      'http://localhost:8080',
+    ),
   },
   incentivesApi: {
     auth: {
@@ -65,6 +82,7 @@ module.exports = {
     useMockAuth: getEnv('ENABLE_MOCK_AUTH', 'false') === 'true',
     showStackTraces:
       getEnv('ENABLE_STACK_TRACES_ON_ERROR_PAGES', 'false') === 'true',
+    useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'true') === 'true',
   },
   analytics: {
     endpoint: getEnv(

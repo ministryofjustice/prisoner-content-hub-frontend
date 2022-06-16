@@ -1,3 +1,28 @@
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% macro feedbackOptions(feedbackTexts, sentiment) %}
+  <div class="{{ sentiment }} govuk-u-hidden">
+    {% set feedbackOptions = [] %}
+    {% for feedbackText in feedbackTexts %}
+      {% set feedbackOptions = (feedbackOptions.push({text:feedbackText, value: feedbackText}), feedbackOptions) %}
+    {% endfor %}
+    {{ govukRadios({
+      classes: "govuk-radios--small",
+      idPrefix: sentiment,
+      name: 'feedbackOption',
+      fieldset: {
+        legend: {
+          text: "Select one:",
+          isPageHeading: true,
+          classes: "govuk-fieldset__legend--m"
+        }
+      },
+      items: feedbackOptions
+    }) }}
+  </div>
+{% endmacro %}
+
 <div id="{{ params.id|default('feedback-widget', true) }}"
       data-item-type="{{params.contentType}}"
       data-item-title="{{ params.title }}"
@@ -30,24 +55,41 @@
       class="govuk-hub-comment-form govuk-u-hidden"
     >
       <div class="govuk-!-margin-bottom-2">
-        <p id="more-detail" class="govuk-hint">
-          <a href="/help" class="govuk-link govuk-link--no-visited-state">Click here if you need help and are struggling with mental health.</a><br>You will not get the help you need if you leave a message in the box below.
-        </p>
-        <p class="govuk-body">We get a lot of feedback but try to read as much as we can. Feedback is treated anonymously, unless it breaks prison rules or raises safety concerns.</p>
-        <textarea data-feedback-comment class="govuk-textarea govuk-!-margin-bottom-0 govuk-!-padding-2" id="more-detail" name="value" rows="4" placeholder="I think the Hub should:" maxlength="240" required></textarea>
+        {% set feedbackLikeTexts = [
+          "This content made a positive difference to me",
+          "I’d like more of this kind of content"
+        ] %}
+        {{ feedbackOptions(feedbackLikeTexts, 'feedbackOption-LIKE') }}
+        {% set feedbackDislikeTexts = [
+          "Content is missing",
+          "Broken link on this page",
+          "Audio or video isn’t playing",
+          "Images aren’t working",
+          "There is wrong information on this page"
+        ] %}
+        {{ feedbackOptions(feedbackDislikeTexts, 'feedbackOption-DISLIKE') }}
       </div>
-      <div class="govuk-hub-comment-form__footer">
-        <div class="govuk-hub-comment-counter">
-          <span data-feedback-comment-counter >240</span> characters left</div>
-        <button type="submit" class="govuk-button">Send</button>
-      </div>
+      {{ govukButton({
+        type: "submit",
+        text: "Send"
+      }) }}
     </form>
   </div>
   <div class="govuk-hub-feedback-confirmation govuk-u-hidden">
     <h3 class="govuk-body govuk-!-font-weight-bold">Thanks for your feedback</h3>
     <p class="govuk-body">
-      You can read more about what we do with it <a href="{{ knownPages.feedback }}" class="{{ 'govuk-link' if params.sidebar }}">here</a>.
+      <a href="{{ knownPages.feedback }}" class="govuk-link">What happens to your feedback?</a>.
     </p>
+  </div>
+  <div class="govuk-hub-feedback-more-info govuk-body govuk-u-hidden">
+    If you want to contact someone about anything else: 
+    <ul>
+      <li>Send an app or a digital request</li>
+      <li>Speak to your Digital PID, an officer or keyworker</li>
+      <li><a class="govuk-link" href="/help">Call a helpline</a></li>
+      <li><a class="govuk-link" href="{{ knownPages.mentalHealthLink }}">Read and watch more about mental health</a></li>
+      <li><a class="govuk-link" href="{{ knownPages.NPRRequestLink }}">Contact NPR with a shout out or song request</a></li>
+    </ul>
   </div>
 </div>
 <script defer src="/public/javascript/feedback-tracking.js"></script>

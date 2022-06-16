@@ -1,0 +1,30 @@
+.govuk-hub-content-tile-featured {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: $real-dark-grey;
+  text-decoration: none;
+  box-sizing: border-box;
+  & p,
+  & h3 {
+    margin: 0;
+    overflow: hidden;
+  }
+  & .govuk-hub-content-tile-featured_content {
+    & img {
+      height: 210px;
+      max-width: 100%;
+      min-width: 100%;
+      object-fit: cover;
+      object-position: 50% 50%;
+    }
+    & div {
+      padding: govuk-spacing(2) govuk-spacing(3) govuk-spacing(1)
+        govuk-spacing(3);
+    }
+  }
+  > p {
+    padding: govuk-spacing(2) govuk-spacing(3);
+  }
+}

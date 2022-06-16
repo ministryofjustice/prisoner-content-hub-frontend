@@ -1,0 +1,16 @@
+version: '3.1'
+services:
+
+  hub-frontend-redis:
+    image: 'bitnami/redis:5.0'
+    networks:
+      - hmpps
+    container_name: hub-frontend-redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+
+networks:
+  hmpps:
+  

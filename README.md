@@ -20,6 +20,10 @@ Create a `.env` file using the provided template
 
 The `.env` can then be configured to point to local or remote backend services as required and toggle application features
 
+### Redis cache
+
+The application caches certain of the CMS queries in redis cache. To not use redis and instead use memory cache, set `ENABLE_REDIS_CACHE=false` in your `.env` file. Alternatively running `docker-compose up` will spin up a local redis instance.
+
 ### Establishment from Hostname
 
 The app now takes it's establishment name from the hostname of each request. In order for dev and staging sites to work we use a reg exp `/-prisoner-content-hub.*$/g` in order to only use the site name, i.e. production uses `wayland.` whereas staging uses `wayland-prisoner-content-hub-staging.`. The reg exp ensures `wayland` will be used in all cases.
@@ -39,6 +43,7 @@ When running locally, in order to access the application as if you were at a spe
 - `styal.prisoner-content-hub.local`
 - `swaleside.prisoner-content-hub.local`
 - `themount.prisoner-content-hub.local`
+- `thestudio.prisoner-content-hub.local`
 - `wayland.prisoner-content-hub.local`
 - `werrington.prisoner-content-hub.local`
 - `wetherby.prisoner-content-hub.local`

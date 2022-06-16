@@ -1,5 +1,8 @@
+const { clone } = require('ramda');
 const { Jsona, SwitchCaseJsonMapper } = require('jsona');
 const { NotFound } = require('./apiError');
+const { InMemoryCachingStrategy } = require('../utils/caching/memory');
+const { getCmsCacheKey } = require('../utils/caching/cms');
 
 const dataFormatter = new Jsona({
   jsonPropertiesMapper: new SwitchCaseJsonMapper({
@@ -10,23 +13,43 @@ const dataFormatter = new Jsona({
     switchChar: '_',
   }),
 });
+
+const CMS_ROUTER = 'router';
+
 class CmsApi {
-  constructor(jsonApiClient) {
+  #cache;
+
+  constructor({ jsonApiClient, cachingStrategy }) {
     this.jsonApiClient = jsonApiClient;
+    this.#cache = cachingStrategy || new InMemoryCachingStrategy();
   }
 
-  #lookup = async (establishmentName, lookupType, id) =>
+  #lookup = async (establishmentName, lookupType, id) => {
+    const cacheKey = getCmsCacheKey(
+      CMS_ROUTER,
+      establishmentName,
+      lookupType,
+      id,
+    );
+    const cacheValue = (await this.#cache.get(cacheKey)) || null;
+    if (cacheValue) return clone(cacheValue);
     // Router will return 403 when content exists but not assigned to this prison
-    this.#throwNotFoundWhenStatusIs([403, 404], async () => {
-      const data = await this.jsonApiClient.getRelative(
-        `/router/prison/${establishmentName}/translate-path?path=${lookupType}/${id}`,
-      );
-      const {
-        jsonapi: { resourceName: type, individual: location },
-        entity: { uuid },
-      } = data;
-      return { type, location, uuid };
-    });
+    const lookupResult = await this.#throwNotFoundWhenStatusIs(
+      [403, 404],
+      async () => {
+        const data = await this.jsonApiClient.getRelative(
+          `/router/prison/${establishmentName}/translate-path?path=${lookupType}/${id}`,
+        );
+        const {
+          jsonapi: { resourceName: type, individual: location },
+          entity: { uuid },
+        } = data;
+        return { type, location, uuid };
+      },
+    );
+    await this.#cache.set(cacheKey, lookupResult, 86400);
+    return clone(lookupResult);
+  };
 
   async lookupContent(establishmentName, contentId) {
     return this.#lookup(establishmentName, 'content', contentId);
@@ -51,6 +74,22 @@ class CmsApi {
         ? deserializedResponse.map(item => query.transformEach(item))
         : query.transform(deserializedResponse, response.links);
     });
+  }
+
+  async getCache(query) {
+    const key = query.getKey?.() || null;
+    if (!key)
+      throw new Error(
+        `Could not retrieve cache key from query: ${query?.constructor?.name}`,
+      );
+    const expiry = query.getExpiry?.() || 300;
+    let data = key ? await this.#cache.get(key) : null;
+    if (!data) {
+      data = (await this.get(query)) || [];
+      if (data) await this.#cache.set(key, data, expiry);
+    }
+    // move to "structuredClone" when on node 18+
+    return clone(data);
   }
 
   #throwNotFoundWhenStatusIs = async (statusCodes, call) => {

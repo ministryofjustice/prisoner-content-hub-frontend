@@ -80,12 +80,13 @@ const createOffenderService = (
     }
   }
 
-  async function getApprovedVisitorsFor({ prisonerId, bookingId }) {
+  async function getApprovedVisitorsFor({ prisonerId }) {
     try {
       logger.info(
         `OffenderService (getApprovedVisitorsFor) - User: ${prisonerId}`,
       );
-      const response = await repository.getVisitorsFor(bookingId);
+      const response = await repository.getVisitorsFor(prisonerId);
+
       return { approvedVisitors: approvedVisitors(response) };
     } catch (e) {
       logger.error(

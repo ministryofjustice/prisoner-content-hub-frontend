@@ -42,8 +42,8 @@ describe('getEstablishmentFromUrl', () => {
   describe('for development urls', () => {
     getTests(
       'development',
-      'cookhamwood-prisoner-content-hub-development-395.apps.live.cloud-platform.service.justice.gov.uk/',
-      'prisoner-content-hub-development-395.apps.live.cloud-platform.service.justice.gov.uk/',
+      'cookhamwood-395.prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk/',
+      '395.prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk/',
     );
   });
   describe('for staging urls', () => {

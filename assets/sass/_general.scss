@@ -1,6 +1,6 @@
 .govuk-width-container,
 .moj-primary-navigation__container {
-  max-width: $width-override; // override gov container
+  @include govuk-width-container($width-override);
 }
 
 .govuk-main-wrapper {
@@ -21,7 +21,9 @@
 
 .black-background .govuk-body,
 .black-background .govuk-body a,
+.black-background .govuk-heading-s,
 .black-background .govuk-heading-m,
+.black-background .govuk-heading-l,
 .black-background .govuk-hint,
 .black-background .govuk-hint a,
 .black-background .govuk-hub-comment-counter {
@@ -86,6 +88,16 @@
   @include govuk-font($size: 19);
   color: govuk-colour('white');
   margin-bottom: govuk-spacing(4);
+}
+
+.black-background .govuk-hub-comment-form .govuk-fieldset__legend,
+.black-background .govuk-hub-comment-form .govuk-label {
+  color: govuk-colour('white');
+}
+
+.black-background #feedback-widget .govuk-link,
+.black-background .govuk-hub-content-tile-featured {
+  @extend .govuk-link--inverse;
 }
 
 .govuk-hub-article-feedback {

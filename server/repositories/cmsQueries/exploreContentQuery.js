@@ -1,5 +1,6 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { getSmallTile } = require('../../utils/jsonApi');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class ExploreContentQuery {
   static #TILE_FIELDS = [
@@ -10,10 +11,12 @@ class ExploreContentQuery {
     'field_moj_series',
     'path',
     'type.meta.drupal_internal__target_id',
+    'published_at',
   ];
 
   constructor(establishmentName, pageLimit = 4) {
     this.establishmentName = establishmentName;
+    this.limit = pageLimit;
     this.query = new Query()
       .addFields('node--page', ExploreContentQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', ExploreContentQuery.#TILE_FIELDS)
@@ -25,6 +28,18 @@ class ExploreContentQuery {
       .addPageLimit(pageLimit)
 
       .getQueryString();
+  }
+
+  getKey() {
+    return getCmsCacheKey(
+      'exploreContent',
+      this.establishmentName,
+      `limit:${this.limit}`,
+    );
+  }
+
+  getExpiry() {
+    return 300;
   }
 
   path() {

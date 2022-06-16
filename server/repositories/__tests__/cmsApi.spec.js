@@ -6,6 +6,7 @@ const { CmsApi } = require('../cmsApi');
 
 const host = 'http://localhost:3333';
 const path = `/jsonapi/test`;
+const key = 'TESTKEY';
 class TestPathTransformQuery {
   path() {
     return path;
@@ -21,6 +22,10 @@ class TestPathTransformQuery {
       description: description?.processed,
       href: `/content/${id}`,
     };
+  }
+
+  getKey() {
+    return key;
   }
 }
 
@@ -74,11 +79,21 @@ describe('CmsApi', () => {
   let cmsApi;
   let mockDrupal;
 
+  const testCacheStrategy = {
+    set: jest.fn(),
+    get: jest.fn(),
+  };
+
   beforeEach(() => {
+    testCacheStrategy.set.mockClear();
+    testCacheStrategy.get.mockClear();
     if (!nock.isActive()) {
       nock.activate();
     }
-    cmsApi = new CmsApi(new JsonApiClient(host));
+    cmsApi = new CmsApi({
+      jsonApiClient: new JsonApiClient(host),
+      cachingStrategy: testCacheStrategy,
+    });
     mockDrupal = nock(host);
   });
 
@@ -86,6 +101,63 @@ describe('CmsApi', () => {
     nock.restore();
   });
 
+  describe('getCache', () => {
+    describe('no cache key defined', () => {
+      it('should throw an error', async () => {
+        const query = new TestUrlTransformEachQuery();
+        await expect(cmsApi.getCache(query)).rejects.toThrow(
+          'Could not retrieve cache key from query: TestUrlTransformEachQuery',
+        );
+      });
+    });
+    describe('with cached data', () => {
+      it('should return the cached value', async () => {
+        const cachedValue = {
+          location: 'https://cms.org/jsonapi/node/page/carrot',
+          type: 'node--bun',
+          uuid: 42,
+        };
+        testCacheStrategy.get.mockResolvedValueOnce(cachedValue);
+        const response = await cmsApi.getCache(new TestPathTransformQuery());
+        expect(response).toStrictEqual(cachedValue);
+      });
+    });
+    describe('with no cached data', () => {
+      const expectedResult = {
+        description: 'Desc 1',
+        href: '/content/1',
+        id: '1',
+        self: {
+          href: 'http://cms.prg/jsonapi/node/not-used',
+        },
+        linkText: 'One',
+      };
+      let response;
+      beforeEach(async () => {
+        mockDrupal.get(path).reply(
+          200,
+          jsonApiResponse(
+            testItem({
+              id: '1',
+              title: 'One',
+              processed: 'Desc 1',
+            }),
+          ),
+        );
+        response = await cmsApi.getCache(new TestPathTransformQuery());
+      });
+      it('should return the drupal value', async () => {
+        expect(response).toStrictEqual(expectedResult);
+      });
+      it('should set the cache', async () => {
+        expect(testCacheStrategy.set).toHaveBeenCalledWith(
+          key,
+          expectedResult,
+          300,
+        );
+      });
+    });
+  });
   describe('get', () => {
     it('should handle returning no items', async () => {
       mockDrupal.get(path).reply(200, jsonApiResponse([]));
@@ -208,24 +280,50 @@ describe('CmsApi', () => {
         new NotFound(lookupPath),
       );
     });
-
-    it('should format and return single value', async () => {
-      mockDrupal.get(lookupPath).reply(200, {
-        jsonapi: {
-          individual:
+    describe('when not using cache', () => {
+      let response;
+      let lookupResult;
+      beforeEach(async () => {
+        mockDrupal.get(lookupPath).reply(200, {
+          jsonapi: {
+            individual:
+              'https://cms.org/jsonapi/node/page/abd97f5c-072b-4e1f-a446-85fd021d7fa7',
+            resourceName: 'node--page',
+          },
+          entity: { uuid: 101 },
+        });
+        response = await cmsApi.lookupContent('berwyn', 1234);
+        lookupResult = {
+          location:
             'https://cms.org/jsonapi/node/page/abd97f5c-072b-4e1f-a446-85fd021d7fa7',
-          resourceName: 'node--page',
-        },
-        entity: { uuid: 101 },
+          type: 'node--page',
+          uuid: 101,
+        };
       });
+      it('should check the cache', async () => {
+        expect(testCacheStrategy.get).toHaveBeenCalledTimes(1);
+      });
+      it('should format and return single value', async () => {
+        expect(response).toStrictEqual(lookupResult);
+      });
+      it('should save the value to the cache', async () => {
+        expect(testCacheStrategy.set).toHaveBeenCalledTimes(1);
+        expect(testCacheStrategy.set).toHaveBeenCalledWith(
+          'CMS:router:berwyn:content:1234',
+          lookupResult,
+          86400,
+        );
+      });
+    });
+    it('should use cache if available', async () => {
+      const cachedValue = {
+        location: 'https://cms.org/jsonapi/node/page/carrot',
+        type: 'node--bun',
+        uuid: 42,
+      };
+      testCacheStrategy.get.mockResolvedValueOnce(cachedValue);
       const response = await cmsApi.lookupContent('berwyn', 1234);
-
-      expect(response).toStrictEqual({
-        location:
-          'https://cms.org/jsonapi/node/page/abd97f5c-072b-4e1f-a446-85fd021d7fa7',
-        type: 'node--page',
-        uuid: 101,
-      });
+      expect(response).toStrictEqual(cachedValue);
     });
   });
 

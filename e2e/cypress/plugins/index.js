@@ -1,4 +1,3 @@
-const cucumber = require('cypress-cucumber-preprocessor').default;
 const auth = require('../mockApis/auth');
 const prisonApi = require('../mockApis/prisonApi');
 const incentivesApi = require('../mockApis/incentivesApi');
@@ -22,7 +21,6 @@ const { resetStubs } = require('../mockApis/wiremock');
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
-  on('file:preprocessor', cucumber());
 
   on('task', {
     ...auth,

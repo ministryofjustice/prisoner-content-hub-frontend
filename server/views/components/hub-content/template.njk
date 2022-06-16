@@ -1,7 +1,7 @@
 {% from "../content-tile-small/macro.njk" import contentTileSmall %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-<div class="small-tiles tags-content__four-items {{ 'hidden' if loop.index > 1 }}">
+<div class="small-tiles content__four-items {{ 'hidden' if loop.index > 1 }}">
   {% for item in params.data %}
     {{ contentTileSmall ({
       id: item.id,
@@ -10,7 +10,8 @@
       image: item.image,
       contentUrl: item.contentUrl,
       displayUrl: item.displayUrl,
-      externalContent: item.externalContent
+      externalContent: item.externalContent,
+      isNew: item.isNew
     }) }}
   {% endfor %}
 </div>

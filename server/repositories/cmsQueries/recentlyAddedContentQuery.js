@@ -1,5 +1,6 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { getSmallTile, getPagination } = require('../../utils/jsonApi');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class RecentlyAddedContentQuery {
   static #TILE_FIELDS = [
@@ -10,10 +11,13 @@ class RecentlyAddedContentQuery {
     'field_moj_series',
     'path',
     'type.meta.drupal_internal__target_id',
+    'published_at',
   ];
 
   constructor(establishmentName, page, pageLimit, timeStamp) {
     this.establishmentName = establishmentName;
+    this.page = page;
+    this.limit = pageLimit;
     const queryWithoutOffset = new Query()
       .addFields('node--page', RecentlyAddedContentQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', RecentlyAddedContentQuery.#TILE_FIELDS)
@@ -41,6 +45,19 @@ class RecentlyAddedContentQuery {
       .getQueryString();
 
     this.query = `${queryWithoutOffset}&${getPagination(page, pageLimit)}`;
+  }
+
+  getKey() {
+    return getCmsCacheKey(
+      'recentlyAddedContent',
+      this.establishmentName,
+      `limit:${this.limit}`,
+      `page:${this.page}`,
+    );
+  }
+
+  getExpiry() {
+    return 300;
   }
 
   path() {

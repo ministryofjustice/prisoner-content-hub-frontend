@@ -21,13 +21,18 @@
         <img id="thumbnail" src="{{ data.image.url }}" alt="{{ data.image.alt }}" class="govuk-hub-media-player__show-tag"/>
       </div>
       <div class="govuk-hub-title-container">
-        <p class="govuk-hub-media-player__catgeory govuk-heading-m">
-          <a href="/tags/{{data.seriesId}}" id="series" title="{{ data.seriesName }}" class="govuk-link govuk-hub-media-player__catgeory-link">{{ data.seriesName }}</a>
-        </p>
-        <h1 id="title" class="govuk-hub-media-player__title govuk-heading-xl govuk-body govuk-!-font-size-36 govuk-body govuk-!-font-weight-bold">{{ data.title }}</h1>
+        {% if data.seriesId %}
+          <p class="govuk-hub-media-player__catgeory govuk-heading-m">
+            <a href="/tags/{{data.seriesId}}" id="series" title="{{ data.seriesName }}" class="govuk-link govuk-hub-media-player__catgeory-link">{{ data.seriesName }}</a>
+          </p>
+        {% endif %}
+        <h1 id="title" class="govuk-heading-xl govuk-body govuk-!-font-size-36 govuk-hub-media-player__title govuk-!-font-weight-bold">{{ data.title }}</h1>
       </div>
     </header>
     {% block media %}{% endblock %}
+    <div class="govuk-hub-media-player__description">
+      <div id="body" class="govuk-body">{{ data.description | safe }}</div>
+    </div>
     {% if not data.excludeFeedback %}
       {{ hubFeedbackWidget({
         contentId: data.id,
@@ -40,9 +45,6 @@
         topics: data.topics | join(',', 'name')
       })}}
     {% endif %}
-    <div class="govuk-hub-media-player__description">
-      <div id="body" class="govuk-body">{{ data.description | safe }}</div>
-    </div>
 
     {{ hubRelatedTopics({ data: data.topics, darkmode: true }) }}
 

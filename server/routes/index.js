@@ -5,7 +5,7 @@ const { createTopicsRouter } = require('./topics');
 const { createTimetableRouter } = require('./timetable');
 const { createContentRouter } = require('./content');
 const { createMoneyRouter } = require('./money');
-const { createApprovedVisitorsRouter } = require('./approvedVisitors');
+// const { createApprovedVisitorsRouter } = require('./approvedVisitors');
 const { createProfileRouter } = require('./profile');
 const { createTagRouter } = require('./tags');
 const { createLinkRouter } = require('./link');
@@ -16,8 +16,10 @@ const { createSearchRouter } = require('./search');
 const { createNprRouter } = require('./npr');
 const { createHelpRouter } = require('./help');
 const { createRecentlyAddedContentRouter } = require('./recentlyAdded');
+const { createUpdatesContentRouter } = require('./updates');
 const createPrimaryNavigationMiddleware = require('../middleware/primaryNavigationMiddleware');
 const retrieveTopicList = require('../middleware/retrieveTopicList');
+const urgentBannerMiddleware = require('../middleware/urgentBannerMiddleware');
 
 module.exports = (
   {
@@ -43,16 +45,17 @@ module.exports = (
       '/topics',
       '/timetable',
       '/money',
-      '/approved-visitors',
+      // '/approved-visitors',
       '/profile',
       '/games',
       '^/search/?$',
       '/recently-added',
-      '/new-homepage',
+      '/updates',
     ],
     [
       createPrimaryNavigationMiddleware(cmsService),
       retrieveTopicList(cmsService),
+      urgentBannerMiddleware(cmsService),
     ],
   );
 
@@ -78,12 +81,12 @@ module.exports = (
     }),
   );
 
-  router.use(
-    '/approved-visitors',
-    createApprovedVisitorsRouter({
-      offenderService,
-    }),
-  );
+  // router.use(
+  //   '/approved-visitors',
+  //   createApprovedVisitorsRouter({
+  //     offenderService,
+  //   }),
+  // );
 
   router.use(
     '/profile',
@@ -111,12 +114,14 @@ module.exports = (
     createSearchRouter({ searchService, analyticsService }),
   );
 
-  router.use('/help', createHelpRouter(establishmentData));
+  router.use('/help', createHelpRouter());
 
   router.use(
     '/recently-added',
     createRecentlyAddedContentRouter({ cmsService }),
   );
+
+  router.use('/updates', createUpdatesContentRouter({ cmsService }));
 
   router.use('*', (req, res) => {
     res.status(404);

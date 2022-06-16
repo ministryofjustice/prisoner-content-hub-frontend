@@ -1,0 +1,23 @@
+<div class="govuk-hub-key-info-items">
+  {% for item in params.data %}
+    <div class="govuk-hub-key-info-item " id="keyInfo">
+      <a data-featured-tile-id="{{item.id}}" 
+        data-featured-id="{{item.id}}" 
+        data-featured-title="{{ item.title }}" 
+        href="{{item.contentUrl}}" 
+        {% if item.externalContent %}target="_blank"{% endif %}
+        class="govuk-link govuk-link--no-visited-state govuk-link--no-underline govuk-!-margin-bottom-2">
+
+        {% if item.image.url %}
+          <img src="{{item.image.url}}" 
+              alt="{{item.image.alt}}">
+        {% else %}
+          <img src="/public/images/default_key_info_item_hub_logo.png"
+              alt="logo">
+        {% endif %}
+          <h3 class="govuk-heading-s govuk-!-margin-0">{{item.title}}</h3>
+
+      </a>
+    </div>
+  {% endfor %}
+</div>

@@ -14,7 +14,7 @@ module.exports =
   };
 
 const mapNoneCMSUrls = (originalUrl, primaryNavigation) => {
-  switch (originalUrl.match(/^\/[a-z]*/g)[0]) {
+  switch (originalUrl.match(/^\/[a-z,-]*/g)[0]) {
     case '/money':
     case '/timetable':
     case '/approved-visitors':

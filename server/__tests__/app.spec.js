@@ -317,8 +317,8 @@ describe('App', () => {
 function app(opts = {}) {
   const services = {
     cmsService: {
-      getHomepage: jest.fn().mockResolvedValue([]),
       getPrimaryNavigation: jest.fn().mockResolvedValue([]),
+      getUrgentBanners: jest.fn().mockResolvedValue([]),
       getTopics: jest.fn().mockResolvedValue([]),
     },
     offenderService: {

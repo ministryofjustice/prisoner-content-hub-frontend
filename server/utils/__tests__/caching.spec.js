@@ -1,4 +1,5 @@
 const { InMemoryCachingStrategy } = require('../caching/memory');
+const { getCmsCacheKey } = require('../caching/cms');
 
 const TEST_KEY = 'bar';
 const TEST_VALUE = 'foo';
@@ -51,6 +52,17 @@ describe('InMemoryCachingStrategy', () => {
     );
     await expect(strategy.get()).rejects.toThrow(
       'Unable to retrieve cache - key not provided',
+    );
+  });
+});
+
+describe('getCmsCacheKey', () => {
+  it('should concatenate two params with ":"', () => {
+    expect(getCmsCacheKey('start', 'end')).toBe('CMS:start:end');
+  });
+  it('should concatenate multiple params with ":"', () => {
+    expect(getCmsCacheKey('start', 'middle', 'end')).toBe(
+      'CMS:start:middle:end',
     );
   });
 });

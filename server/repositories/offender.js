@@ -6,6 +6,7 @@ function validateOffenderNumberFor(offenderNo) {
 }
 
 const prisonApiBaseUrl = `${config.prisonApi.baseUrl}/api`;
+const prisonContactRegistryBaseUrl = `${config.prisonerContactRegistryApi.baseUrl}`;
 const incentivesApiBaseUrl = `${config.incentivesApi.baseUrl}`;
 
 function offenderRepository(prisonApiHttpClient, incentivesApiHttpClient) {
@@ -42,9 +43,9 @@ function offenderRepository(prisonApiHttpClient, incentivesApiHttpClient) {
     );
   }
 
-  function getVisitorsFor(bookingId) {
+  function getVisitorsFor(prisonerId) {
     return prisonApiHttpClient.get(
-      `${prisonApiBaseUrl}/bookings/${bookingId}/contacts`,
+      `${prisonContactRegistryBaseUrl}/prisoners/${prisonerId}/contacts`,
     );
   }
 

@@ -1,0 +1,27 @@
+<a class="govuk-hub-content-tile-featured govuk-body govuk-link govuk-link--no-underline govuk-!-margin-0"
+  data-featured-tile-id="{{params.id}}" 
+  data-featured-id="{{params.id}}" 
+  data-featured-title="{{ params.title }}" 
+  href="{{params.contentUrl}}" 
+  {% if params.externalContent %}target="_blank"{% endif %}>
+  <div class="govuk-hub-content-tile-featured_content">
+    <img src="{{params.image.url}}" alt="{{params.image.alt}}">
+    <div>
+      <h3 class="govuk-heading-l">{{params.title}}</h3>
+      <p>{{params.summary | safe}}</p>
+    </div>
+  </div>
+  {% if params.contentType === "video" %}
+    <p class="content-link--video">Watch</p>
+  {% elif params.contentType === "radio" %}
+    <p class="content-link--audio">Listen</p>
+  {% elif params.contentType === "external_link" %}
+    <p class="content-link--external">{{ params.displayUrl }}</p>
+  {% elif params.contentType === "internal_link" %}
+    <p class="content-link--internal"></p>
+  {% elif params.contentType === "series" or params.contentType === "category" %}
+    <p class="content-link--collection">Collection</p>
+  {% else %}
+    <p class="content-link--article">Read</p>
+  {% endif %}
+</a>

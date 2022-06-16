@@ -3,10 +3,14 @@ const {
   getLargeImage,
   getLargeTile,
   getSmallTile,
+  getPublishedAtSmallTile,
   getCategoryId,
   buildFieldTopics,
   typeFrom,
   isBottomCategory,
+  isNew,
+  cropTextWithEllipsis,
+  isUnpublished,
 } = require('../jsonApi');
 
 const LARGE_TILE = 'enormous.jpg';
@@ -90,6 +94,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -103,6 +108,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: true,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -122,6 +128,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: true,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -141,6 +148,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -156,6 +164,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: false,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -169,6 +178,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: true,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -188,6 +198,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: true,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -207,6 +218,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: false,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -238,6 +250,7 @@ describe('getting tile data', () => {
           contentUrl: '/tags/42',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -252,6 +265,7 @@ describe('getting tile data', () => {
           contentUrl: '/tags/42',
           externalContent: false,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -287,6 +301,7 @@ describe('getting tile data', () => {
           contentUrl: '/tags/42',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
       it('should return the small tile data for a bottom category', () => {
@@ -305,6 +320,7 @@ describe('getting tile data', () => {
           contentUrl: '/tags/42',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -324,6 +340,28 @@ describe('getCategoryId', () => {
   });
   it('should cater for legacy receiving an array and return the category id from the first element', () => {
     expect(getCategoryId([categoryData])).toEqual({ id: ID1, uuid: UUID1 });
+  });
+});
+
+describe('isUnpublished', () => {
+  const now = new Date('2022-08-04T15:14:34+00:00').getTime();
+  let data;
+  beforeEach(() => {
+    data = { unpublishOn: now };
+  });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+  it('should return false when the unpublish on date is in the past', () => {
+    jest.useFakeTimers().setSystemTime(new Date('2022-08-05'));
+    expect(isUnpublished(data)).toBeFalsy();
+  });
+  it('should return true when the unpublish on date is in the future', () => {
+    jest.useFakeTimers().setSystemTime(new Date('2022-08-03'));
+    expect(isUnpublished(data)).toBeTruthy();
+  });
+  it('should return true when the unpublish on date is not set', () => {
+    expect(isUnpublished({ unpublishOn: null })).toBeTruthy();
   });
 });
 
@@ -442,6 +480,68 @@ describe('with content tile data', () => {
     },
     path: { alias: '/content/42' },
   };
+
+  describe('getPublishedAtSmallTile', () => {
+    describe('with a valid publishedAt date', () => {
+      it('should return small tile data and generate a valid date string', () => {
+        expect(
+          getPublishedAtSmallTile({
+            ...tileData,
+            publishedAt: '2020-07-10T14:02:58+00:00',
+          }),
+        ).toEqual({
+          id: 42,
+          contentType: 'video',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/content/42',
+          displayUrl: 'link',
+          externalContent: false,
+          image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
+          publishedAt: 'Friday 10 July',
+        });
+      });
+      it('should ellipse longer values', () => {
+        expect(
+          getPublishedAtSmallTile({
+            ...tileData,
+            title:
+              'A title that is long enough to be cropped with an ellipse added to the end',
+            publishedAt: '2020-07-10T14:02:58+00:00',
+          }),
+        ).toEqual({
+          id: 42,
+          contentType: 'video',
+          title:
+            'A title that is long enough to be cropped with an ellipse added to...',
+          summary: 'summary',
+          contentUrl: '/content/42',
+          displayUrl: 'link',
+          externalContent: false,
+          image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
+          publishedAt: 'Friday 10 July',
+        });
+      });
+    });
+    describe('with an undefined publishedAt date', () => {
+      it('should return small tile data and', () => {
+        expect(getPublishedAtSmallTile(tileData)).toEqual({
+          id: 42,
+          contentType: 'video',
+          title: 'title',
+          summary: 'summary',
+          contentUrl: '/content/42',
+          displayUrl: 'link',
+          externalContent: false,
+          image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
+          publishedAt: '',
+        });
+      });
+    });
+  });
   describe('getSmallTile', () => {
     it('should return the small tile data', () => {
       expect(getSmallTile(tileData)).toEqual({
@@ -453,6 +553,7 @@ describe('with content tile data', () => {
         displayUrl: 'link',
         externalContent: false,
         image: { url: 'tile_small', alt: 'alt' },
+        isNew: false,
       });
     });
 
@@ -466,6 +567,7 @@ describe('with content tile data', () => {
         displayUrl: 'link',
         externalContent: true,
         image: { url: 'tile_small', alt: 'alt' },
+        isNew: false,
       });
     });
 
@@ -485,6 +587,7 @@ describe('with content tile data', () => {
         displayUrl: 'link',
         externalContent: false,
         image: { url: 'tile_small', alt: 'alt' },
+        isNew: false,
       });
     });
 
@@ -504,6 +607,7 @@ describe('with content tile data', () => {
         displayUrl: 'link',
         externalContent: true,
         image: { url: 'tile_small', alt: 'alt' },
+        isNew: false,
       });
     });
   });
@@ -524,5 +628,82 @@ describe('with content tile data', () => {
     it('should return the correct pagination for page three', () => {
       expect(getPagination(3)).toEqual('page[offset]=80&page[limit]=40');
     });
+  });
+});
+
+describe('isNew', () => {
+  it('should return true when the date provided is within the past 2 days', () => {
+    expect(isNew(new Date())).toBe(true);
+  });
+
+  it('should return false when the date provided is more than 2 days in the past', () => {
+    expect(isNew('2000-01-01T00:00:00.000Z')).toBe(false);
+  });
+
+  it('should return false if an invalid date value is provided', () => {
+    expect(isNew('NOT_A_VALID_DATE')).toBe(false);
+  });
+});
+
+describe('cropTextWithEllipsis', () => {
+  let item;
+  let outputItem;
+
+  beforeEach(() => {
+    item = {
+      id: 999999,
+      contentType: 'page',
+      externalContent: false,
+      title:
+        'A title that is long enough to be cropped with an ellipse added to the end',
+      summary: 'A summary',
+      contentUrl: '/content/999999',
+      displayUrl: undefined,
+      image: {
+        url: 'url path',
+        alt: 'Alt text',
+      },
+      isNew: false,
+    };
+
+    outputItem = {
+      ...item,
+      title: 'A title that is long enough...',
+    };
+  });
+
+  it("should crop the 'title' value when is longer than 30 characters and add '...' to the end of the string", () => {
+    const { title } = cropTextWithEllipsis(item, 30);
+    expect(title).toStrictEqual(outputItem.title);
+  });
+
+  it('should not crop the string mid word and only return entire words in the output', () => {
+    const { title } = cropTextWithEllipsis(item, 10);
+    expect(title).toEqual('A title...');
+  });
+
+  it('should not crop strings that are shorter than the specified number of charactors', () => {
+    const { title } = cropTextWithEllipsis(item, 75);
+    expect(title).toStrictEqual(item.title);
+  });
+
+  it("should return an item object with only the 'title' value updated", () => {
+    expect(cropTextWithEllipsis(item, 30)).toStrictEqual(outputItem);
+  });
+
+  it('should use the default value of 30 when a maxNumberOfChars value is not provided', () => {
+    expect(cropTextWithEllipsis(item)).toStrictEqual(outputItem);
+  });
+
+  it('should throw an error with the expected message when an item object is not provided', () => {
+    expect(() => cropTextWithEllipsis(null, 30)).toThrow(
+      'An item object with the expected structure is required',
+    );
+  });
+
+  it('should throw an error with the expected message when an item object is not provided', () => {
+    expect(() => cropTextWithEllipsis({}, 30)).toThrow(
+      'An item object with the expected structure is required',
+    );
   });
 });

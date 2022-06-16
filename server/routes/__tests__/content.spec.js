@@ -98,9 +98,6 @@ describe('GET /content/:id', () => {
 
           expect($('#next-episodes a').length).toBe(1);
           expect($('#next-episodes a').text()).toContain('Foo episode');
-          expect($('#episode-thumbnail').attr('style')).toContain(
-            'foo.image.png',
-          );
 
           expect($('#next-episodes a').attr('href')).toContain(
             `/content/${radioShowResponse.nextEpisodes[0].id}`,
@@ -159,9 +156,6 @@ describe('GET /content/:id', () => {
           // episodes
           expect($('#next-episodes a').length).toBe(1);
           expect($('#next-episodes a').text()).toContain('Baz episode');
-          expect($('#episode-thumbnail').attr('style')).toContain(
-            'baz.image.png',
-          );
 
           expect($('#next-episodes a').attr('href')).toContain(
             `/content/${videoShowResponse.nextEpisodes[0].id}`,
@@ -208,9 +202,6 @@ describe('GET /content/:id', () => {
 
           expect($('#next-episodes a').length).toBe(1);
           expect($('#next-episodes a').text()).toContain('Baz episode');
-          expect($('#episode-thumbnail').attr('style')).toContain(
-            'baz.image.png',
-          );
 
           expect($('#next-episodes a').attr('href')).toContain(
             `/content/${videoShowResponse.nextEpisodes[0].id}`,

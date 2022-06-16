@@ -1,3 +1,5 @@
+const { differenceInDays, format } = require('date-fns');
+
 const getPagination = (page, size = 40) =>
   `page[offset]=${Math.max(page - 1, 0) * size}&page[limit]=${size}`;
 
@@ -11,6 +13,24 @@ const getImage = (data, type) => {
 
 const getLargeImage = data => getImage(data, 'tile_large');
 
+const isNew = fromDate => differenceInDays(new Date(), new Date(fromDate)) <= 2;
+
+const cropTextWithEllipsis = (item, maxNumberOfChars = 30) => {
+  if (!item || JSON.stringify(item) === '{}') {
+    throw new Error('An item object with the expected structure is required');
+  }
+
+  const title =
+    item.title.length > maxNumberOfChars
+      ? `${item.title
+          .substr(0, maxNumberOfChars - 2) // - 2: identifies a space after the last charactor
+          .match(/^.*[\w\d]+(?=[^\w\d]+[\w\d]*)/g)[0] // matches all characters ending with a whole word, that come before incomplete words or none alphanumeric characters
+          .substr(0, maxNumberOfChars - 3)}...` // - 3: accomodates the ... ellipse
+      : item.title;
+
+  return { ...item, title };
+};
+
 const getTile = (item, imageSize) => {
   const { contentType, externalContent } = typeFrom(item);
   return {
@@ -22,11 +42,23 @@ const getTile = (item, imageSize) => {
     contentUrl: item?.path?.alias,
     displayUrl: item?.fieldDisplayUrl,
     image: getImage(item?.fieldMojThumbnailImage, imageSize),
+    isNew: isNew(item?.publishedAt),
   };
 };
 
 const getSmallTile = item => getTile(item, 'tile_small');
 const getLargeTile = item => getTile(item, 'tile_large');
+
+const getPublishedAtSmallTile = item =>
+  cropTextWithEllipsis(
+    {
+      ...getTile(item, 'tile_small'),
+      publishedAt: item?.publishedAt
+        ? format(new Date(item?.publishedAt), 'EEEE d MMMM')
+        : '',
+    },
+    70,
+  );
 
 const getCategoryId = categories => {
   if (!categories || (Array.isArray(categories) && categories.length === 0))
@@ -43,6 +75,9 @@ const getCategoryId = categories => {
     name,
   };
 };
+
+const isUnpublished = ({ unpublishOn = null }) =>
+  !unpublishOn || unpublishOn >= new Date().getTime();
 
 const buildFieldTopics = (arr = []) =>
   arr.map(({ drupalInternal_Tid: id, name, id: uuid }) => ({
@@ -112,6 +147,7 @@ const mapBreadcrumbs = (rawBreadcrumbs = [], self = '') => {
   const breadcrumbs = self
     ? [...rawBreadcrumbs, { title: self }]
     : rawBreadcrumbs;
+
   return breadcrumbs.map(({ uri: href = '', title: text }) => ({
     href,
     text,
@@ -123,9 +159,13 @@ module.exports = {
   getSmallTile,
   getLargeTile,
   getLargeImage,
+  getPublishedAtSmallTile,
   getCategoryId,
+  isUnpublished,
   buildFieldTopics,
   typeFrom,
   isBottomCategory,
   mapBreadcrumbs,
+  isNew,
+  cropTextWithEllipsis,
 };

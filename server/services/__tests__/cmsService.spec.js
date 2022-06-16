@@ -1,7 +1,4 @@
 const { CmsApi } = require('../../repositories/cmsApi');
-const {
-  HomepageQuery,
-} = require('../../repositories/cmsQueries/homePageQuery');
 const { TopicsQuery } = require('../../repositories/cmsQueries/topicsQuery');
 const {
   LinkPageQuery,
@@ -56,11 +53,22 @@ const {
 } = require('../../repositories/cmsQueries/exploreContentQuery');
 const { getOffsetUnixTime } = require('../../utils/date');
 const { CmsService } = require('../cms');
+const {
+  PrimaryNavigationQuery,
+} = require('../../repositories/cmsQueries/PrimaryNavigationQuery');
+const {
+  UrgentBannerQuery,
+} = require('../../repositories/cmsQueries/urgentBannerQuery');
 
 jest.mock('../../repositories/cmsApi');
 
 describe('cms Service', () => {
-  const cmsApi = new CmsApi();
+  const testCacheStrategy = {
+    set: jest.fn(),
+    get: jest.fn(),
+  };
+
+  const cmsApi = new CmsApi({ cachingStrategy: testCacheStrategy });
   let cmsService;
   const ESTABLISHMENT_NAME = 'wayland';
   const SERIES_SORT_VALUE = 1001;
@@ -68,7 +76,12 @@ describe('cms Service', () => {
   const UUID = '846';
 
   beforeEach(() => {
-    cmsService = new CmsService(cmsApi);
+    testCacheStrategy.set.mockClear();
+    testCacheStrategy.get.mockClear();
+    cmsService = new CmsService({
+      cmsApi,
+      cachingStrategy: testCacheStrategy,
+    });
   });
   afterEach(() => {
     jest.resetAllMocks();
@@ -427,133 +440,31 @@ describe('cms Service', () => {
     });
   });
 
+  describe('getPrimaryNavigation', () => {
+    beforeEach(async () => {
+      cmsApi.getCache.mockResolvedValue([]);
+      await cmsService.getPrimaryNavigation(ESTABLISHMENT_NAME);
+    });
+    it('calls cmsApi.getCache', () => {
+      expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
+      expect(cmsApi.getCache).toHaveBeenCalledWith(
+        new PrimaryNavigationQuery(ESTABLISHMENT_NAME),
+      );
+    });
+  });
+
   describe('getTopics', () => {
-    const createTopic = name => ({
-      description: `${name} Desc`,
-      href: '/content/1',
-      id: '1',
-      linkText: name,
-    });
-
-    it('returns topics', async () => {
-      cmsApi.get.mockResolvedValue([createTopic('topic')]);
-
-      const result = await cmsService.getTopics(ESTABLISHMENT_NAME);
-
-      expect(result).toStrictEqual([
-        {
-          description: 'topic Desc',
-          href: '/content/1',
-          id: '1',
-          linkText: 'topic',
-        },
-      ]);
-    });
-
-    it('Source to have been called correctly', async () => {
-      cmsApi.get.mockResolvedValue([]);
-
+    beforeEach(async () => {
       await cmsService.getTopics(ESTABLISHMENT_NAME);
-
-      expect(cmsApi.get).toHaveBeenCalledWith(
+    });
+    it('first checks the cache', () => {
+      expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
+      expect(cmsApi.getCache).toHaveBeenCalledWith(
         new TopicsQuery(ESTABLISHMENT_NAME),
       );
     });
   });
 
-  describe('getHomepage', () => {
-    const homepage = {
-      upperFeatured: {
-        id: '10002',
-        contentUrl: '/content/10002',
-        contentType: 'moj_video_item',
-        title: 'Yoga',
-        summary: 'Yoga workout',
-        image: {
-          url: 'https://cloud-platform-c3b3.eu-west-2',
-          alt: 'Picture of Yoga workout',
-        },
-      },
-      lowerFeatured: {
-        id: '10003',
-        contentUrl: '/content/10003',
-        contentType: 'moj_video_item',
-        title: 'Lower Abs workout',
-        summary: 'Intense lower core workout',
-        image: {
-          url: 'https://cloud-platform-c3b3.eu-west-2',
-          alt: 'Picture of core workout',
-        },
-      },
-      smallTiles: [
-        {
-          id: '10001',
-          contentUrl: '/content/10001',
-          contentType: 'moj_video_item',
-          title: 'Lower Abs workout',
-          summary: 'Intense lower core workout',
-          image: {
-            url: 'https://cloud-platform-c3b3.eu-west-2',
-            alt: 'Picture of core workout',
-          },
-        },
-      ],
-    };
-
-    it('returns homepage content', async () => {
-      cmsApi.get.mockResolvedValue([homepage]);
-
-      const result = await cmsService.getHomepage(ESTABLISHMENT_NAME);
-
-      expect(result).toStrictEqual({
-        upperFeatured: {
-          id: '10002',
-          contentUrl: '/content/10002',
-          contentType: 'moj_video_item',
-          title: 'Yoga',
-          summary: 'Yoga workout',
-          image: {
-            url: 'https://cloud-platform-c3b3.eu-west-2',
-            alt: 'Picture of Yoga workout',
-          },
-        },
-        lowerFeatured: {
-          id: '10003',
-          contentUrl: '/content/10003',
-          contentType: 'moj_video_item',
-          title: 'Lower Abs workout',
-          summary: 'Intense lower core workout',
-          image: {
-            url: 'https://cloud-platform-c3b3.eu-west-2',
-            alt: 'Picture of core workout',
-          },
-        },
-        smallTiles: [
-          {
-            id: '10001',
-            contentUrl: '/content/10001',
-            contentType: 'moj_video_item',
-            title: 'Lower Abs workout',
-            summary: 'Intense lower core workout',
-            image: {
-              url: 'https://cloud-platform-c3b3.eu-west-2',
-              alt: 'Picture of core workout',
-            },
-          },
-        ],
-      });
-    });
-
-    it('Source to have been called correctly', async () => {
-      cmsApi.get.mockResolvedValue([]);
-
-      await cmsService.getHomepage(ESTABLISHMENT_NAME);
-
-      expect(cmsApi.get).toHaveBeenCalledWith(
-        new HomepageQuery(ESTABLISHMENT_NAME),
-      );
-    });
-  });
   describe('getTag', () => {
     const TAG_ID = 9;
     const uuid = 42;
@@ -571,7 +482,7 @@ describe('cms Service', () => {
         let result;
         const populatedTopic = { title: 'le name' };
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValue(populatedTopic);
+          cmsApi.getCache.mockResolvedValue(populatedTopic);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
         });
         it('looks up the tag', () => {
@@ -581,8 +492,7 @@ describe('cms Service', () => {
           );
         });
         it('returns the tag', async () => {
-          expect(cmsApi.get).toHaveBeenCalledTimes(1);
-          expect(cmsApi.get).toHaveBeenCalledWith(
+          expect(cmsApi.getCache).toHaveBeenCalledWith(
             new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 1),
           );
           expect(result).toBe(populatedTopic);
@@ -592,8 +502,8 @@ describe('cms Service', () => {
         let result;
         const populatedTopic = {};
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValueOnce({});
-          cmsApi.get.mockResolvedValue(populatedTopic);
+          cmsApi.getCache.mockResolvedValueOnce({});
+          cmsApi.getCache.mockResolvedValue(populatedTopic);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
         });
         it('looks up the tag', () => {
@@ -603,11 +513,11 @@ describe('cms Service', () => {
           );
         });
         it('returns the tag', async () => {
-          expect(cmsApi.get).toHaveBeenNthCalledWith(
+          expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             1,
             new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 1),
           );
-          expect(cmsApi.get).toHaveBeenNthCalledWith(
+          expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             2,
             new TopicHeaderPageQuery(location),
           );
@@ -629,7 +539,7 @@ describe('cms Service', () => {
         let result;
         const populatedSeries = { title: 'le name' };
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValue(populatedSeries);
+          cmsApi.getCache.mockResolvedValue(populatedSeries);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
         });
         it('looks up the series', () => {
@@ -639,8 +549,8 @@ describe('cms Service', () => {
           );
         });
         it('returns the series', async () => {
-          expect(cmsApi.get).toHaveBeenCalledTimes(1);
-          expect(cmsApi.get).toHaveBeenCalledWith(
+          expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
+          expect(cmsApi.getCache).toHaveBeenCalledWith(
             new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 1),
           );
           expect(result).toBe(populatedSeries);
@@ -650,8 +560,8 @@ describe('cms Service', () => {
         let result;
         const populatedSeries = {};
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValueOnce({});
-          cmsApi.get.mockResolvedValue(populatedSeries);
+          cmsApi.getCache.mockResolvedValueOnce({});
+          cmsApi.getCache.mockResolvedValue(populatedSeries);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
         });
         it('looks up the series', () => {
@@ -661,11 +571,11 @@ describe('cms Service', () => {
           );
         });
         it('returns the series', async () => {
-          expect(cmsApi.get).toHaveBeenNthCalledWith(
+          expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             1,
             new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 1),
           );
-          expect(cmsApi.get).toHaveBeenNthCalledWith(
+          expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             2,
             new SeriesHeaderPageQuery(location),
           );
@@ -689,9 +599,9 @@ describe('cms Service', () => {
         const populatedAllSeries = [{ name: 'Ralf', drupalInternal_Tid: '1' }];
         const populatedOther = [{ name: 'Ralf', drupalInternal_Tid: '1' }];
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValueOnce(populatedCategory);
-          cmsApi.get.mockResolvedValueOnce(populatedAllSeries);
-          cmsApi.get.mockResolvedValueOnce(populatedOther);
+          cmsApi.getCache.mockResolvedValueOnce(populatedCategory);
+          cmsApi.getCache.mockResolvedValueOnce(populatedAllSeries);
+          cmsApi.getCache.mockResolvedValueOnce(populatedOther);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
         });
         it('looks up the category', () => {
@@ -701,8 +611,8 @@ describe('cms Service', () => {
           );
         });
         it('returns the category', async () => {
-          expect(cmsApi.get).toHaveBeenCalledTimes(2);
-          expect(cmsApi.get).toHaveBeenCalledWith(
+          expect(cmsApi.getCache).toHaveBeenCalledTimes(2);
+          expect(cmsApi.getCache).toHaveBeenCalledWith(
             new CategoryPageQuery(ESTABLISHMENT_NAME, uuid),
           );
           expect(result).toStrictEqual({
@@ -715,9 +625,11 @@ describe('cms Service', () => {
       describe('which has no related content', () => {
         let result;
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValueOnce({ categoryFeaturedContent: [] });
-          cmsApi.get.mockResolvedValueOnce([]);
-          cmsApi.get.mockResolvedValueOnce([]);
+          cmsApi.getCache.mockResolvedValueOnce({
+            categoryFeaturedContent: [],
+          });
+          cmsApi.getCache.mockResolvedValueOnce([]);
+          cmsApi.getCache.mockResolvedValueOnce([]);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
         });
         it('looks up the category', () => {
@@ -727,7 +639,7 @@ describe('cms Service', () => {
           );
         });
         it('returns the category', async () => {
-          expect(cmsApi.get).toHaveBeenNthCalledWith(
+          expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             1,
             new CategoryPageQuery(ESTABLISHMENT_NAME, uuid),
           );
@@ -757,7 +669,7 @@ describe('cms Service', () => {
         let result;
         const populatedTopic = { title: 'le name', relatedContent: [] };
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValue(populatedTopic);
+          cmsApi.getCache.mockResolvedValue(populatedTopic);
           result = await cmsService.getPage(ESTABLISHMENT_NAME, TAG_ID, 2);
         });
         it('looks up the tag', () => {
@@ -767,8 +679,8 @@ describe('cms Service', () => {
           );
         });
         it('returns the tag', async () => {
-          expect(cmsApi.get).toHaveBeenCalledTimes(1);
-          expect(cmsApi.get).toHaveBeenCalledWith(
+          expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
+          expect(cmsApi.getCache).toHaveBeenCalledWith(
             new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
           expect(result).toBe(populatedTopic.hubContentData);
@@ -778,8 +690,8 @@ describe('cms Service', () => {
         let result;
         const populatedTopic = { relatedContent: [] };
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValueOnce({});
-          cmsApi.get.mockResolvedValue(populatedTopic);
+          cmsApi.getCache.mockResolvedValueOnce({});
+          cmsApi.getCache.mockResolvedValue(populatedTopic);
           result = await cmsService.getPage(ESTABLISHMENT_NAME, TAG_ID, 2);
         });
         it('looks up the tag', () => {
@@ -789,11 +701,11 @@ describe('cms Service', () => {
           );
         });
         it('returns the tag', async () => {
-          expect(cmsApi.get).toHaveBeenNthCalledWith(
+          expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             1,
             new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
-          expect(cmsApi.get).toHaveBeenNthCalledWith(
+          expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             2,
             new TopicHeaderPageQuery(location),
           );
@@ -815,7 +727,7 @@ describe('cms Service', () => {
         let result;
         const populatedSeries = { title: 'le name', relatedContent: [] };
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValue(populatedSeries);
+          cmsApi.getCache.mockResolvedValue(populatedSeries);
           result = await cmsService.getPage(ESTABLISHMENT_NAME, TAG_ID, 2);
         });
         it('looks up the series', () => {
@@ -825,8 +737,8 @@ describe('cms Service', () => {
           );
         });
         it('returns the series', async () => {
-          expect(cmsApi.get).toHaveBeenCalledTimes(1);
-          expect(cmsApi.get).toHaveBeenCalledWith(
+          expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
+          expect(cmsApi.getCache).toHaveBeenCalledWith(
             new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
           expect(result).toBe(populatedSeries.hubContentData);
@@ -836,8 +748,8 @@ describe('cms Service', () => {
         let result;
         const populatedSeries = { hubContentData: [] };
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValueOnce({});
-          cmsApi.get.mockResolvedValue(populatedSeries);
+          cmsApi.getCache.mockResolvedValueOnce({});
+          cmsApi.getCache.mockResolvedValue(populatedSeries);
           result = await cmsService.getPage(ESTABLISHMENT_NAME, TAG_ID, 2);
         });
         it('looks up the series', () => {
@@ -847,11 +759,11 @@ describe('cms Service', () => {
           );
         });
         it('returns the series', async () => {
-          expect(cmsApi.get).toHaveBeenNthCalledWith(
+          expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             1,
             new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
-          expect(cmsApi.get).toHaveBeenNthCalledWith(
+          expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             2,
             new SeriesHeaderPageQuery(location),
           );
@@ -873,7 +785,7 @@ describe('cms Service', () => {
         let result;
         const populatedSeries = ['bob'];
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValue(populatedSeries);
+          cmsApi.getCache.mockResolvedValue(populatedSeries);
           result = await cmsService.getPage(
             ESTABLISHMENT_NAME,
             TAG_ID,
@@ -888,8 +800,8 @@ describe('cms Service', () => {
           );
         });
         it('returns the series', async () => {
-          expect(cmsApi.get).toHaveBeenCalledTimes(1);
-          expect(cmsApi.get).toHaveBeenCalledWith(
+          expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
+          expect(cmsApi.getCache).toHaveBeenCalledWith(
             new CategoryCollectionsQuery(ESTABLISHMENT_NAME, uuid, 40, 2),
           );
           expect(result).toBe(populatedSeries);
@@ -899,7 +811,7 @@ describe('cms Service', () => {
         let result;
         const populatedOtherCategory = ['bob'];
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValue(populatedOtherCategory);
+          cmsApi.getCache.mockResolvedValue(populatedOtherCategory);
           result = await cmsService.getPage(
             ESTABLISHMENT_NAME,
             TAG_ID,
@@ -914,8 +826,8 @@ describe('cms Service', () => {
           );
         });
         it('returns the other content', async () => {
-          expect(cmsApi.get).toHaveBeenCalledTimes(1);
-          expect(cmsApi.get).toHaveBeenCalledWith(
+          expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
+          expect(cmsApi.getCache).toHaveBeenCalledWith(
             new CategoryContentQuery(ESTABLISHMENT_NAME, uuid, 40, 2),
           );
           expect(result).toBe(populatedOtherCategory);
@@ -950,7 +862,7 @@ describe('cms Service', () => {
     let result;
 
     beforeEach(async () => {
-      cmsApi.get.mockResolvedValueOnce(resObject);
+      cmsApi.getCache.mockResolvedValueOnce(resObject);
       jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
       result = await cmsService.getRecentlyAddedContent(
         ESTABLISHMENT_NAME,
@@ -964,11 +876,11 @@ describe('cms Service', () => {
     });
 
     it('should call cmsApi.get once', async () => {
-      expect(cmsApi.get).toHaveBeenCalledTimes(1);
+      expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
     });
 
     it('should call cmsApi.get with the RecentlyAddedContentQuery', async () => {
-      expect(cmsApi.get).toHaveBeenCalledWith(
+      expect(cmsApi.getCache).toHaveBeenCalledWith(
         new RecentlyAddedContentQuery(
           ESTABLISHMENT_NAME,
           1,
@@ -990,18 +902,18 @@ describe('cms Service', () => {
     let result;
 
     beforeEach(async () => {
-      cmsApi.get.mockResolvedValueOnce(resObject);
+      cmsApi.getCache.mockResolvedValueOnce(resObject);
       result = await cmsService.getRecentlyAddedHomepageContent(
         ESTABLISHMENT_NAME,
       );
     });
 
     it('should call cmsApi.get once', async () => {
-      expect(cmsApi.get).toHaveBeenCalledTimes(1);
+      expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
     });
 
     it('should call cmsApi.get with the RecentlyAddedContentQuery', async () => {
-      expect(cmsApi.get).toHaveBeenCalledWith(
+      expect(cmsApi.getCache).toHaveBeenCalledWith(
         new RecentlyAddedHomepageContentQuery(ESTABLISHMENT_NAME),
       );
     });
@@ -1048,16 +960,16 @@ describe('cms Service', () => {
     let result;
 
     beforeEach(async () => {
-      cmsApi.get.mockResolvedValueOnce([resObj]);
+      cmsApi.getCache.mockResolvedValueOnce([resObj]);
       result = await cmsService.getHomepageContent(ESTABLISHMENT_NAME, 4);
     });
 
     it('should call cmsApi.get once', async () => {
-      expect(cmsApi.get).toHaveBeenCalledTimes(1);
+      expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
     });
 
     it('should call cmsApi.get with the HomepageContentQuery', async () => {
-      expect(cmsApi.get).toHaveBeenCalledWith(
+      expect(cmsApi.getCache).toHaveBeenCalledWith(
         new HomepageContentQuery(ESTABLISHMENT_NAME, 4),
       );
     });
@@ -1074,22 +986,57 @@ describe('cms Service', () => {
     let result;
 
     beforeEach(async () => {
-      cmsApi.get.mockResolvedValueOnce(resObject);
+      cmsApi.getCache.mockResolvedValueOnce(resObject);
       result = await cmsService.getExploreContent(ESTABLISHMENT_NAME, 4);
     });
 
     it('should call cmsApi.get once', async () => {
-      expect(cmsApi.get).toHaveBeenCalledTimes(1);
+      expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
     });
 
     it('should call cmsApi.get with the ExploreContentQuery', async () => {
-      expect(cmsApi.get).toHaveBeenCalledWith(
+      expect(cmsApi.getCache).toHaveBeenCalledWith(
         new ExploreContentQuery(ESTABLISHMENT_NAME, 4),
       );
     });
 
     it('should return a result when cmsApi.get is called', async () => {
       expect(result).toBe(resObject);
+    });
+  });
+
+  describe('getUrgentBanners', () => {
+    const resArray = [
+      {
+        title: 'banner',
+        moreInfoLink: '/more/info',
+        unpublishedOn: '111',
+      },
+    ];
+    let result;
+
+    beforeEach(async () => {
+      cmsApi.getCache.mockResolvedValueOnce(resArray);
+      result = await cmsService.getUrgentBanners(ESTABLISHMENT_NAME);
+    });
+    it('should call cmsApi.getCache once', () => {
+      expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call cmsApi.get with the ExploreContentQuery', async () => {
+      expect(cmsApi.getCache).toHaveBeenCalledWith(
+        new UrgentBannerQuery(ESTABLISHMENT_NAME),
+      );
+    });
+
+    it('returns urgent banner', () => {
+      expect(result).toStrictEqual([
+        {
+          title: `banner`,
+          moreInfoLink: '/more/info',
+          unpublishedOn: '111',
+        },
+      ]);
     });
   });
 });
