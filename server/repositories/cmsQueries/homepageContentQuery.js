@@ -43,7 +43,9 @@ class HomepageContentQuery {
   transformEach(item) {
     return {
       featuredContent: {
-        data: item.fieldFeaturedTiles.map(getSmallTile),
+        data: item.fieldFeaturedTiles
+          .filter(({ title = null, name = null }) => title || name)
+          .map(getSmallTile),
       },
     };
   }

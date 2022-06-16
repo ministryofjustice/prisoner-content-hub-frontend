@@ -29,6 +29,8 @@ describe('HomepageContent query', () => {
 
   describe('transformEach', () => {
     let item;
+    let data;
+    let unpublishedNode;
 
     beforeEach(() => {
       item = {
@@ -81,39 +83,68 @@ describe('HomepageContent query', () => {
           },
         ],
       };
+
+      data = [
+        {
+          contentType: 'video',
+          contentUrl: '/content/111111',
+          displayUrl: undefined,
+          externalContent: false,
+          id: 111111,
+          image: {
+            alt: 'Alt text',
+            url: 'small-image-url',
+          },
+          summary: 'A description',
+          title: 'A title',
+        },
+        {
+          contentType: 'radio',
+          contentUrl: '/content/222222',
+          displayUrl: undefined,
+          externalContent: false,
+          id: 222222,
+          image: {
+            alt: 'Alt text',
+            url: 'small-image-url',
+          },
+          summary: 'A description',
+          title: 'A title',
+        },
+      ];
+
+      unpublishedNode = {
+        type: 'node--page',
+        id: '11111-11111-11111-11111-11111',
+        resourceIdObjMeta: {
+          target_type: 'node',
+          drupal_internal__target_id: 111111,
+        },
+      };
     });
 
     it('should create correct structure', () => {
       expect(query.transformEach(item)).toStrictEqual({
         featuredContent: {
-          data: [
-            {
-              contentType: 'video',
-              contentUrl: '/content/111111',
-              displayUrl: undefined,
-              externalContent: false,
-              id: 111111,
-              image: {
-                alt: 'Alt text',
-                url: 'small-image-url',
-              },
-              summary: 'A description',
-              title: 'A title',
-            },
-            {
-              contentType: 'radio',
-              contentUrl: '/content/222222',
-              displayUrl: undefined,
-              externalContent: false,
-              id: 222222,
-              image: {
-                alt: 'Alt text',
-                url: 'small-image-url',
-              },
-              summary: 'A description',
-              title: 'A title',
-            },
-          ],
+          data,
+        },
+      });
+    });
+
+    it('should contain the expected number of objects when unpublished nodes are filtered out the data', () => {
+      item.fieldFeaturedTiles.push(unpublishedNode);
+
+      expect(query.transformEach(item).featuredContent.data).toHaveLength(
+        data.length,
+      );
+    });
+
+    it('should remove unpublished nodes from the data', () => {
+      item.fieldFeaturedTiles.push(unpublishedNode);
+
+      expect(query.transformEach(item)).toStrictEqual({
+        featuredContent: {
+          data,
         },
       });
     });
