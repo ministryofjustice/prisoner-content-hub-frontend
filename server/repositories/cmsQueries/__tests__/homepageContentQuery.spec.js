@@ -29,6 +29,7 @@ describe('HomepageContent query', () => {
 
   describe('transformEach', () => {
     let item;
+    let data;
 
     beforeEach(() => {
       item = {
@@ -81,39 +82,73 @@ describe('HomepageContent query', () => {
           },
         ],
       };
+
+      data = [
+        {
+          contentType: 'video',
+          contentUrl: '/content/111111',
+          displayUrl: undefined,
+          externalContent: false,
+          id: 111111,
+          image: {
+            alt: 'Alt text',
+            url: 'small-image-url',
+          },
+          summary: 'A description',
+          title: 'A title',
+        },
+        {
+          contentType: 'radio',
+          contentUrl: '/content/222222',
+          displayUrl: undefined,
+          externalContent: false,
+          id: 222222,
+          image: {
+            alt: 'Alt text',
+            url: 'small-image-url',
+          },
+          summary: 'A description',
+          title: 'A title',
+        },
+      ];
     });
 
     it('should create correct structure', () => {
       expect(query.transformEach(item)).toStrictEqual({
         featuredContent: {
-          data: [
-            {
-              contentType: 'video',
-              contentUrl: '/content/111111',
-              displayUrl: undefined,
-              externalContent: false,
-              id: 111111,
-              image: {
-                alt: 'Alt text',
-                url: 'small-image-url',
-              },
-              summary: 'A description',
-              title: 'A title',
-            },
-            {
-              contentType: 'radio',
-              contentUrl: '/content/222222',
-              displayUrl: undefined,
-              externalContent: false,
-              id: 222222,
-              image: {
-                alt: 'Alt text',
-                url: 'small-image-url',
-              },
-              summary: 'A description',
-              title: 'A title',
-            },
-          ],
+          data,
+        },
+      });
+    });
+
+    it('should contain the expected number of objects when unpublished nodes are filtered out the data', () => {
+      item.fieldFeaturedTiles.push({
+        type: 'node--page',
+        id: '5c8fdb81-377c-40d1-a1f3-e96fe5d20d9a',
+        resourceIdObjMeta: {
+          target_type: 'node',
+          drupal_internal__target_id: 16191,
+        },
+      });
+
+      expect(query.transformEach(item).featuredContent.data).toHaveLength(
+        data.length,
+      );
+    });
+
+    it('should remove unpublished nodes from the data', () => {
+      item.fieldFeaturedTiles.push({
+        type: 'node--page',
+        id: '5c8fdb81-377c-40d1-a1f3-e96fe5d20d9a',
+        resourceIdObjMeta: {
+          target_type: 'node',
+          drupal_internal__target_id: 16191,
+        },
+      });
+
+      expect(query.transformEach(item)).toStrictEqual({
+        featuredContent: {
+          data,
         },
       });
     });
