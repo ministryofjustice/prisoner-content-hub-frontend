@@ -1,3 +1,5 @@
+{# {%- from "govuk/components/tag/macro.njk" import govukTag -%} #}
+
 {% if params.id %}
   <a data-featured-tile-id="{{params.id}}" data-featured-id="{{params.id}}" data-featured-title="{{ params.title }}" href="{{params.contentUrl}}" {% if params.externalContent %}target="_blank"{% endif %}>
     <div>
@@ -24,6 +26,14 @@
         <p class="content-link--article">Read</p>
       {% endif %}
     </div>
+
+    {% if params.isNew %}
+    TEST
+      {# {{ govukTag({
+        text: "New",
+        classes: "govuk-tag--green"
+      }) }} #}
+    {% endif %}
   </a>
 {% else %}
   <div class="empty-tile"></div>

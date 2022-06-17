@@ -10,6 +10,7 @@ class RecentlyAddedContentQuery {
     'field_moj_series',
     'path',
     'type.meta.drupal_internal__target_id',
+    'published_at',
   ];
 
   constructor(establishmentName, page, pageLimit, timeStamp) {
