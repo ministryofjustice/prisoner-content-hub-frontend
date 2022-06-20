@@ -90,6 +90,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -103,6 +104,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: true,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -122,6 +124,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: true,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -141,6 +144,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -156,6 +160,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: false,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -169,6 +174,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: true,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -188,6 +194,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: true,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -207,6 +214,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: false,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -238,6 +246,7 @@ describe('getting tile data', () => {
           contentUrl: '/tags/42',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -252,6 +261,7 @@ describe('getting tile data', () => {
           contentUrl: '/tags/42',
           externalContent: false,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -287,6 +297,7 @@ describe('getting tile data', () => {
           contentUrl: '/tags/42',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
       it('should return the small tile data for a bottom category', () => {
@@ -305,6 +316,7 @@ describe('getting tile data', () => {
           contentUrl: '/tags/42',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -453,6 +465,7 @@ describe('with content tile data', () => {
         displayUrl: 'link',
         externalContent: false,
         image: { url: 'tile_small', alt: 'alt' },
+        isNew: false,
       });
     });
 
@@ -466,6 +479,7 @@ describe('with content tile data', () => {
         displayUrl: 'link',
         externalContent: true,
         image: { url: 'tile_small', alt: 'alt' },
+        isNew: false,
       });
     });
 
@@ -485,6 +499,7 @@ describe('with content tile data', () => {
         displayUrl: 'link',
         externalContent: false,
         image: { url: 'tile_small', alt: 'alt' },
+        isNew: false,
       });
     });
 
@@ -504,6 +519,7 @@ describe('with content tile data', () => {
         displayUrl: 'link',
         externalContent: true,
         image: { url: 'tile_small', alt: 'alt' },
+        isNew: false,
       });
     });
   });

@@ -42,6 +42,7 @@ describe('Category collection query', () => {
         url: `tile_small_101`,
         alt: `alt_101`,
       },
+      isNew: false,
       displayUrl: undefined,
       externalContent: false,
     };

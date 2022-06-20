@@ -36,6 +36,7 @@ describe('Series with no defined related content page query', () => {
           url: `tile_large1`,
           alt: `alt1`,
         },
+        isNew: false,
         contentUrl: '/tags/123',
       });
     });

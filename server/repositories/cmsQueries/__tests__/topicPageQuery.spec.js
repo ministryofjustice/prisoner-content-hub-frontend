@@ -53,6 +53,7 @@ describe('Secondary Tag page query', () => {
         url: `tile_large${id}`,
         alt: `alt${id}`,
       },
+      isNew: false,
       breadcrumbs: [
         { href: 'parent1Url', text: 'parent1' },
         { href: '', text: `name${id}` },
@@ -72,6 +73,7 @@ describe('Secondary Tag page query', () => {
         url: `tile_small${id}`,
         alt: `alt${id}`,
       },
+      isNew: false,
       displayUrl: undefined,
       externalContent: false,
     });

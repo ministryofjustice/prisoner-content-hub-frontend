@@ -34,6 +34,7 @@ describe('Secondary tag with no defined related content page query', () => {
           url: `tile_large1`,
           alt: `alt1`,
         },
+        isNew: false,
         displayUrl: undefined,
         externalContent: false,
         contentUrl: 'tags/1',

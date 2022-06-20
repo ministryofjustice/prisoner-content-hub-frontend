@@ -51,6 +51,7 @@ describe('Category collection query', () => {
         alt: 'alt',
         url: 'tile_small',
       },
+      isNew: false,
       summary: 'description',
       title: 'name',
     };
@@ -64,6 +65,7 @@ describe('Category collection query', () => {
         alt: 'alt',
         url: 'tile_small',
       },
+      isNew: false,
       summary: 'description',
       title: 'name',
     };

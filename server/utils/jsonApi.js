@@ -13,8 +13,7 @@ const getImage = (data, type) => {
 
 const getLargeImage = data => getImage(data, 'tile_large');
 
-const isNew = fromDate =>
-  differenceInDays(new Date(), new Date(fromDate)) <= 20;
+const isNew = fromDate => differenceInDays(new Date(), new Date(fromDate)) <= 2;
 
 const getTile = (item, imageSize) => {
   const { contentType, externalContent } = typeFrom(item);
