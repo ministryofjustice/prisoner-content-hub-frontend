@@ -11,6 +11,7 @@ class TopicHeaderPageQuery {
         'drupal_internal__tid',
         'field_moj_thumbnail_image',
         'path',
+        'published_at',
       ])
       .addInclude(['field_moj_thumbnail_image'])
       .getQueryString();
