@@ -8,6 +8,7 @@ class CategoryContentQuery {
     'field_moj_description',
     'field_moj_thumbnail_image',
     'path',
+    'published_at',
   ];
 
   constructor(establishmentName, uuid, limit = 4, page = 1) {

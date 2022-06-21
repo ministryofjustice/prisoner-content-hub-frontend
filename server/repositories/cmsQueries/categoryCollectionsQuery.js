@@ -10,6 +10,7 @@ class CategoryCollectionsQuery {
     'path',
     'content_updated',
     'child_term_count',
+    'published_at',
   ];
 
   constructor(establishmentName, uuid, limit = 10, page = 1) {
