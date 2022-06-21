@@ -550,7 +550,7 @@ describe('isNew', () => {
   });
 
   it('should return false when the date provided is more than 2 days in the past', () => {
-    expect(isNew('2021-01-01T00:00:00.000Z')).toBe(false);
+    expect(isNew('2000-01-01T00:00:00.000Z')).toBe(false);
   });
 
   it('should return false if an invalid date value is provided', () => {
