@@ -14,6 +14,7 @@ class TopicPageQuery {
     'field_moj_thumbnail_image',
     'field_topics',
     'path',
+    'published_at',
   ];
 
   constructor(establishmentName, uuid, page) {
