@@ -13,7 +13,8 @@ const getImage = (data, type) => {
 
 const getLargeImage = data => getImage(data, 'tile_large');
 
-const isNew = fromDate => differenceInDays(new Date(), new Date(fromDate)) <= 2;
+const isNew = fromDate =>
+  differenceInDays(new Date(), new Date(fromDate)) <= 450; // change back to 2 ****************************
 
 const getTile = (item, imageSize) => {
   const { contentType, externalContent } = typeFrom(item);
@@ -133,4 +134,5 @@ module.exports = {
   typeFrom,
   isBottomCategory,
   mapBreadcrumbs,
+  isNew,
 };

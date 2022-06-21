@@ -7,6 +7,7 @@ const {
   buildFieldTopics,
   typeFrom,
   isBottomCategory,
+  isNew,
 } = require('../jsonApi');
 
 const LARGE_TILE = 'enormous.jpg';
@@ -540,5 +541,19 @@ describe('with content tile data', () => {
     it('should return the correct pagination for page three', () => {
       expect(getPagination(3)).toEqual('page[offset]=80&page[limit]=40');
     });
+  });
+});
+
+describe('isNew', () => {
+  it('should return true when the date provided is within the past 2 days', () => {
+    expect(isNew(new Date())).toBe(true);
+  });
+
+  it('should return false when the date provided is more than 2 days in the past', () => {
+    expect(isNew('2021-01-01T00:00:00.000Z')).toBe(false);
+  });
+
+  it('should return false if an invalid date value is provided', () => {
+    expect(isNew('NOT_A_VALID_DATE')).toBe(false);
   });
 });
