@@ -1,3 +1,5 @@
+const { differenceInDays } = require('date-fns');
+
 const getPagination = (page, size = 40) =>
   `page[offset]=${Math.max(page - 1, 0) * size}&page[limit]=${size}`;
 
@@ -11,6 +13,8 @@ const getImage = (data, type) => {
 
 const getLargeImage = data => getImage(data, 'tile_large');
 
+const isNew = fromDate => differenceInDays(new Date(), new Date(fromDate)) <= 2;
+
 const getTile = (item, imageSize) => {
   const { contentType, externalContent } = typeFrom(item);
   return {
@@ -22,6 +26,7 @@ const getTile = (item, imageSize) => {
     contentUrl: item?.path?.alias,
     displayUrl: item?.fieldDisplayUrl,
     image: getImage(item?.fieldMojThumbnailImage, imageSize),
+    isNew: isNew(item?.publishedAt),
   };
 };
 
@@ -128,4 +133,5 @@ module.exports = {
   typeFrom,
   isBottomCategory,
   mapBreadcrumbs,
+  isNew,
 };

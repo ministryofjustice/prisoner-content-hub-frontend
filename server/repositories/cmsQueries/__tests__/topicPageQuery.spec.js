@@ -8,7 +8,7 @@ describe('Secondary Tag page query', () => {
   describe('path', () => {
     it('should create correct path', async () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/${ESTABLISHMENTNAME}/node?filter%5Bfield_topics.id%5D=${UUID}&include=field_moj_thumbnail_image%2Cfield_topics.field_moj_thumbnail_image&sort=-created&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_topics%2Cpath&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_topics%2Cpath&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_topics%2Cpath&fields%5Bnode--moj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_topics%2Cpath&fields%5Bfile--file%5D=image_style_uri&fields%5Btaxonomy_term--topics%5D=name%2Cdescription%2Cdrupal_internal__tid%2Cfield_moj_thumbnail_image%2Cpath%2Cfield_exclude_feedback%2Cbreadcrumbs&${getPagination(
+        `/jsonapi/prison/${ESTABLISHMENTNAME}/node?filter%5Bfield_topics.id%5D=${UUID}&include=field_moj_thumbnail_image%2Cfield_topics.field_moj_thumbnail_image&sort=-created&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_topics%2Cpath%2Cpublished_at&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_topics%2Cpath%2Cpublished_at&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_topics%2Cpath%2Cpublished_at&fields%5Bnode--moj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_topics%2Cpath%2Cpublished_at&fields%5Bfile--file%5D=image_style_uri&fields%5Btaxonomy_term--topics%5D=name%2Cdescription%2Cdrupal_internal__tid%2Cfield_moj_thumbnail_image%2Cpath%2Cfield_exclude_feedback%2Cbreadcrumbs&${getPagination(
           10,
         )}`,
       );
@@ -53,6 +53,7 @@ describe('Secondary Tag page query', () => {
         url: `tile_large${id}`,
         alt: `alt${id}`,
       },
+      isNew: false,
       breadcrumbs: [
         { href: 'parent1Url', text: 'parent1' },
         { href: '', text: `name${id}` },
@@ -72,6 +73,7 @@ describe('Secondary Tag page query', () => {
         url: `tile_small${id}`,
         alt: `alt${id}`,
       },
+      isNew: false,
       displayUrl: undefined,
       externalContent: false,
     });

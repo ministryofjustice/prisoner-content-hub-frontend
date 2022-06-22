@@ -9,6 +9,7 @@ class HomepageQuery {
     'field_moj_description',
     'field_moj_series',
     'path',
+    'published_at',
   ];
 
   constructor(establishmentName) {

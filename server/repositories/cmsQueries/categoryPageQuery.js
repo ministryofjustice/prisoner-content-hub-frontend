@@ -10,6 +10,7 @@ class CategoryPageQuery {
     'field_topics',
     'path',
     'field_exclude_feedback',
+    'published_at',
   ];
 
   constructor(establishmentName, uuid) {

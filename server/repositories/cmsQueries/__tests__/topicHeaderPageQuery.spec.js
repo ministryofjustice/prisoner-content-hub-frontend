@@ -5,7 +5,7 @@ describe('Secondary tag with no defined related content page query', () => {
   describe('url', () => {
     it('should create the correct url', async () => {
       expect(query.url()).toStrictEqual(
-        'https://cms/content/1234?include=field_moj_thumbnail_image&fields%5Btaxonomy_term--topics%5D=name%2Cdescription%2Cdrupal_internal__tid%2Cfield_moj_thumbnail_image%2Cpath',
+        'https://cms/content/1234?include=field_moj_thumbnail_image&fields%5Btaxonomy_term--topics%5D=name%2Cdescription%2Cdrupal_internal__tid%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at',
       );
     });
   });
@@ -34,6 +34,7 @@ describe('Secondary tag with no defined related content page query', () => {
           url: `tile_large1`,
           alt: `alt1`,
         },
+        isNew: false,
         displayUrl: undefined,
         externalContent: false,
         contentUrl: 'tags/1',

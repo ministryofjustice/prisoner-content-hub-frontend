@@ -14,6 +14,7 @@ class SeriesPageQuery {
     'field_moj_thumbnail_image',
     'field_moj_series',
     'path',
+    'published_at',
   ];
 
   constructor(establishmentName, uuid, page) {
