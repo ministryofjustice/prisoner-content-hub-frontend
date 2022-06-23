@@ -12,7 +12,7 @@ describe('HomepageContent query', () => {
   describe('path', () => {
     it('should return correct path', () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/${ESTABLISHMENTNAME}/node/homepage?include=field_featured_tiles.field_moj_thumbnail_image%2Cfield_featured_tiles&page%5Blimit%5D=4&fields%5Bnode--field_featured_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bfile--file%5D=drupal_internal__fid%2Cid%2Cimage_style_uri`,
+        `/jsonapi/prison/${ESTABLISHMENTNAME}/node/homepage?include=field_featured_tiles.field_moj_thumbnail_image%2Cfield_featured_tiles%2Cfield_large_update_tile%2Cfield_key_info_tiles&page%5Blimit%5D=4&fields%5Bnode--field_featured_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bfile--file%5D=drupal_internal__fid%2Cid%2Cimage_style_uri`,
       );
     });
 
@@ -29,91 +29,94 @@ describe('HomepageContent query', () => {
 
   describe('transformEach', () => {
     let item;
-    let data;
     let unpublishedNode;
+    let processedContent1;
+    let processedContent2;
+    let rawContent1;
+    let rawContent2;
 
     beforeEach(() => {
+      rawContent1 = {
+        type: 'node--moj_video_item',
+        drupalInternal_Nid: 111111,
+        title: 'A title',
+        path: {
+          alias: '/content/111111',
+          pid: 111111,
+          langcode: 'en',
+        },
+        fieldMojDescription: {
+          summary: 'A description',
+        },
+        fieldMojThumbnailImage: {
+          imageStyleUri: [
+            {
+              tile_small: 'image-url',
+              tile_large: 'image-url',
+            },
+          ],
+          resourceIdObjMeta: {
+            alt: 'Alt text',
+          },
+        },
+      };
+      rawContent2 = {
+        type: 'node--moj_radio_item',
+        drupalInternal_Nid: 222222,
+        title: 'A title',
+        path: {
+          alias: '/content/222222',
+          pid: 222222,
+          langcode: 'en',
+        },
+        fieldMojDescription: {
+          summary: 'A description',
+        },
+        fieldMojThumbnailImage: {
+          imageStyleUri: [
+            {
+              tile_small: 'small-image-url',
+            },
+          ],
+          resourceIdObjMeta: {
+            alt: 'Alt text',
+          },
+        },
+      };
       item = {
-        fieldFeaturedTiles: [
-          {
-            type: 'node--moj_video_item',
-            drupalInternal_Nid: 111111,
-            title: 'A title',
-            path: {
-              alias: '/content/111111',
-              pid: 111111,
-              langcode: 'en',
-            },
-            fieldMojDescription: {
-              summary: 'A description',
-            },
-            fieldMojThumbnailImage: {
-              imageStyleUri: [
-                {
-                  tile_small: 'small-image-url',
-                },
-              ],
-              resourceIdObjMeta: {
-                alt: 'Alt text',
-              },
-            },
-          },
-          {
-            type: 'node--moj_radio_item',
-            drupalInternal_Nid: 222222,
-            title: 'A title',
-            path: {
-              alias: '/content/222222',
-              pid: 222222,
-              langcode: 'en',
-            },
-            fieldMojDescription: {
-              summary: 'A description',
-            },
-            fieldMojThumbnailImage: {
-              imageStyleUri: [
-                {
-                  tile_small: 'small-image-url',
-                },
-              ],
-              resourceIdObjMeta: {
-                alt: 'Alt text',
-              },
-            },
-          },
-        ],
+        fieldFeaturedTiles: [rawContent1, rawContent2],
+        fieldKeyInfoTiles: [rawContent2, rawContent1],
+        fieldLargeUpdateTile: rawContent1,
       };
 
-      data = [
-        {
-          contentType: 'video',
-          contentUrl: '/content/111111',
-          displayUrl: undefined,
-          externalContent: false,
-          id: 111111,
-          image: {
-            alt: 'Alt text',
-            url: 'small-image-url',
-          },
-          isNew: false,
-          summary: 'A description',
-          title: 'A title',
+      processedContent1 = {
+        contentType: 'video',
+        contentUrl: '/content/111111',
+        displayUrl: undefined,
+        externalContent: false,
+        id: 111111,
+        image: {
+          alt: 'Alt text',
+          url: 'image-url',
         },
-        {
-          contentType: 'radio',
-          contentUrl: '/content/222222',
-          displayUrl: undefined,
-          externalContent: false,
-          id: 222222,
-          image: {
-            alt: 'Alt text',
-            url: 'small-image-url',
-          },
-          isNew: false,
-          summary: 'A description',
-          title: 'A title',
+        isNew: false,
+        summary: 'A description',
+        title: 'A title',
+      };
+      processedContent2 = {
+        contentType: 'radio',
+        contentUrl: '/content/222222',
+        displayUrl: undefined,
+        externalContent: false,
+        id: 222222,
+        image: {
+          alt: 'Alt text',
+          url: 'small-image-url',
         },
-      ];
+        isNew: false,
+        summary: 'A description',
+        title: 'A title',
+      };
 
       unpublishedNode = {
         type: 'node--page',
@@ -128,26 +131,30 @@ describe('HomepageContent query', () => {
     it('should create correct structure', () => {
       expect(query.transformEach(item)).toStrictEqual({
         featuredContent: {
-          data,
+          data: [processedContent1, processedContent2],
         },
+        keyInfo: {
+          data: [processedContent2, processedContent1],
+        },
+        largeUpdateTile: processedContent1,
       });
     });
 
     it('should contain the expected number of objects when unpublished nodes are filtered out the data', () => {
       item.fieldFeaturedTiles.push(unpublishedNode);
-
-      expect(query.transformEach(item).featuredContent.data).toHaveLength(
-        data.length,
-      );
+      const processed = query.transformEach(item);
+      expect(processed.featuredContent.data).toHaveLength(2);
+      expect(processed.keyInfo.data).toHaveLength(2);
+      expect(processed.largeUpdateTile).toBeTruthy();
     });
 
     it('should remove unpublished nodes from the data', () => {
       item.fieldFeaturedTiles.push(unpublishedNode);
 
       expect(query.transformEach(item)).toStrictEqual({
-        featuredContent: {
-          data,
-        },
+        featuredContent: { data: [processedContent1, processedContent2] },
+        keyInfo: { data: [processedContent2, processedContent1] },
+        largeUpdateTile: processedContent1,
       });
     });
   });

@@ -53,14 +53,6 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         ? await offenderService.getCurrentEvents(req.user)
         : {};
 
-      console.log(`**************************`);
-      console.log(`**************************`);
-      console.log(`**************************`);
-      console.log(JSON.stringify(homepageContent, null, 2));
-      console.log(`**************************`);
-      console.log(`**************************`);
-      console.log(`**************************`);
-
       res.render('pages/home-new', {
         config: {
           content: true,
