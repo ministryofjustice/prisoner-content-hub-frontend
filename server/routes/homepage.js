@@ -53,7 +53,13 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         ? await offenderService.getCurrentEvents(req.user)
         : {};
 
-      const { featuredContent } = homepageContent;
+      console.log(`**************************`);
+      console.log(`**************************`);
+      console.log(`**************************`);
+      console.log(JSON.stringify(homepageContent, null, 2));
+      console.log(`**************************`);
+      console.log(`**************************`);
+      console.log(`**************************`);
 
       res.render('pages/home-new', {
         config: {
@@ -65,7 +71,7 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         hideSignInLink: true,
         title: 'Home',
         recentlyAddedHomepageContent,
-        featuredContent,
+        ...homepageContent,
         exploreContent,
         currentEvents,
       });

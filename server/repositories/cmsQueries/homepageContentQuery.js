@@ -1,5 +1,5 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getSmallTile } = require('../../utils/jsonApi');
+const { getSmallTile, getLargeTile } = require('../../utils/jsonApi');
 
 class HomepageContentQuery {
   static #TILE_FIELDS = [
@@ -31,6 +31,8 @@ class HomepageContentQuery {
       .addInclude([
         'field_featured_tiles.field_moj_thumbnail_image',
         'field_featured_tiles',
+        'field_large_update_tile',
+        'field_key_info_tiles',
       ])
 
       .addPageLimit(pageLimit)
@@ -48,6 +50,12 @@ class HomepageContentQuery {
           .filter(({ title = null, name = null }) => title || name)
           .map(getSmallTile),
       },
+      keyInfo: {
+        data: item.fieldKeyInfoTiles
+          .filter(({ title = null, name = null }) => title || name)
+          .map(getSmallTile),
+      },
+      largeUpdateTile: getLargeTile(item.fieldLargeUpdateTile),
     };
   }
 }
