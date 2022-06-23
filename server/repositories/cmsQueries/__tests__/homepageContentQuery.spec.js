@@ -29,7 +29,6 @@ describe('HomepageContent query', () => {
 
   describe('transformEach', () => {
     let item;
-    let unpublishedNode;
     let processedContent1;
     let processedContent2;
     let rawContent1;
@@ -117,18 +116,9 @@ describe('HomepageContent query', () => {
         summary: 'A description',
         title: 'A title',
       };
-
-      unpublishedNode = {
-        type: 'node--page',
-        id: '11111-11111-11111-11111-11111',
-        resourceIdObjMeta: {
-          target_type: 'node',
-          drupal_internal__target_id: 111111,
-        },
-      };
     });
 
-    it('should create correct structure', () => {
+    it('should create the correct structure', () => {
       expect(query.transformEach(item)).toStrictEqual({
         featuredContent: {
           data: [processedContent1, processedContent2],
@@ -139,22 +129,52 @@ describe('HomepageContent query', () => {
         largeUpdateTile: processedContent1,
       });
     });
-
-    it('should contain the expected number of objects when unpublished nodes are filtered out the data', () => {
-      item.fieldFeaturedTiles.push(unpublishedNode);
+    it('should handle no large tile data', () => {
+      item.fieldLargeUpdateTile = null;
       const processed = query.transformEach(item);
-      expect(processed.featuredContent.data).toHaveLength(2);
-      expect(processed.keyInfo.data).toHaveLength(2);
-      expect(processed.largeUpdateTile).toBeTruthy();
+      expect(processed.largeUpdateTile).toBe(null);
     });
 
-    it('should remove unpublished nodes from the data', () => {
-      item.fieldFeaturedTiles.push(unpublishedNode);
+    describe('with unpublished nodes', () => {
+      let unpublishedNode;
+      let processed;
+      beforeEach(() => {
+        unpublishedNode = {
+          type: 'node--page',
+          id: '11111-11111-11111-11111-11111',
+          resourceIdObjMeta: {
+            target_type: 'node',
+            drupal_internal__target_id: 111111,
+          },
+        };
+        item = {
+          fieldFeaturedTiles: [rawContent1, unpublishedNode, rawContent2],
+          fieldKeyInfoTiles: [
+            unpublishedNode,
+            rawContent2,
+            rawContent1,
+            unpublishedNode,
+          ],
+          fieldLargeUpdateTile: rawContent1,
+        };
+        processed = query.transformEach(item);
+      });
+      it('featuredContent should contain the expected number of objects when unpublished nodes are filtered out the data', () => {
+        expect(processed.featuredContent.data).toHaveLength(2);
+      });
 
-      expect(query.transformEach(item)).toStrictEqual({
-        featuredContent: { data: [processedContent1, processedContent2] },
-        keyInfo: { data: [processedContent2, processedContent1] },
-        largeUpdateTile: processedContent1,
+      it('keyInfo should contain the expected number of objects when unpublished nodes are filtered out the data', () => {
+        expect(processed.keyInfo.data).toHaveLength(2);
+      });
+
+      it('should remove unpublished nodes from the data and process the rest', () => {
+        item.fieldFeaturedTiles.push(unpublishedNode);
+
+        expect(query.transformEach(item)).toStrictEqual({
+          featuredContent: { data: [processedContent1, processedContent2] },
+          keyInfo: { data: [processedContent2, processedContent1] },
+          largeUpdateTile: processedContent1,
+        });
       });
     });
   });

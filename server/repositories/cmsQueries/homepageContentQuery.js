@@ -55,7 +55,9 @@ class HomepageContentQuery {
           .filter(({ title = null, name = null }) => title || name)
           .map(getSmallTile),
       },
-      largeUpdateTile: getLargeTile(item.fieldLargeUpdateTile),
+      largeUpdateTile: item?.fieldLargeUpdateTile
+        ? getLargeTile(item.fieldLargeUpdateTile)
+        : null,
     };
   }
 }
