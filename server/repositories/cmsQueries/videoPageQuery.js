@@ -2,7 +2,7 @@ const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const {
   getLargeImage,
   getCategoryId,
-  buildSecondaryTags,
+  buildFieldTopics,
   mapBreadcrumbs,
 } = require('../../utils/jsonApi');
 
@@ -17,7 +17,7 @@ class VideoPageQuery {
         'created',
         'field_video',
         'field_moj_description',
-        'field_moj_secondary_tags',
+        'field_topics',
         'field_moj_series',
         'field_moj_season',
         'field_moj_episode',
@@ -34,7 +34,7 @@ class VideoPageQuery {
         'name',
         'path',
       ])
-      .addFields('taxonomy_term--tags', [
+      .addFields('taxonomy_term--topics', [
         'drupal_internal__tid',
         'name',
         'path',
@@ -47,7 +47,7 @@ class VideoPageQuery {
         'field_moj_thumbnail_image',
         'field_moj_series',
         'field_video',
-        'field_moj_secondary_tags',
+        'field_topics',
         'field_moj_top_level_categories',
       ])
 
@@ -78,7 +78,7 @@ class VideoPageQuery {
       seriesSortValue: item.seriesSortValue,
       media: item.fieldVideo?.uri?.url,
       categories: getCategoryId(item.fieldMojTopLevelCategories),
-      secondaryTags: buildSecondaryTags(item.fieldMojSecondaryTags),
+      topics: buildFieldTopics(item.fieldTopics),
       image: getLargeImage(item.fieldMojThumbnailImage),
       excludeFeedback: item.fieldExcludeFeedback,
     };

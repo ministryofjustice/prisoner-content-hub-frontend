@@ -1,75 +1,48 @@
 {%- from "govuk/components/tag/macro.njk" import govukTag -%}
-{% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "../../components/user-details/macro.njk" import userDetails %}
-{% extends "../../components/template.njk" %}
-
-{% block pageTitle %}
-  {{ title }}
-{% endblock %}
+{% extends "../../components/basicTemplate.njk" %}
 
 {% block head %}
   <link href="/public/javascript/games/fadingsnake/stylesheets/main.css" rel="stylesheet"/>
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
+  {{ super() }}
 {% endblock %}
 
-{% block userDetails %}{% endblock %}
-
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block main %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          <h1 id="title" class="govuk-heading-xl govuk-!-margin-bottom-6 govuk-!-margin-top-6">{{title}}</h1>
+{% block content %}
+  <main class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-one-half govuk-body">
+        <div class="govuk-grid-row govuk-!-padding-left-2">
+            <h2 class="fade_text">Fade</h2>
+            <h2 class="fade_text contrast">100%</h2>
         </div>
+        <div class="container">
+            <div class="grid"></div>
+        </div>
+        <div class="govuk-heading-s gameMsg"></div>
       </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-one-half govuk-body">
-          <div class="govuk-grid-row govuk-!-padding-left-2">
-              <h2 class="fade_text">Fade</h2>
-              <h2 class="fade_text contrast">100%</h2>
+      <div class="govuk-grid-column-one-half govuk-body govuk-!-padding-left-6">
+          <div class="scores-container">
+            <div class="score-container"></div>
+            <div class="best-container"></div>
           </div>
-          <div class="container">
-              <div class="grid"></div>
+          <div id="hard-mode">
+              {{ govukTag({
+              text: "Hard Mode",
+              classes: "govuk-tag--red"
+              })}}
           </div>
-          <div class="govuk-heading-s gameMsg"></div>
-        </div>
-        <div class="govuk-grid-column-one-half govuk-body govuk-!-padding-left-6">
-            <div class="scores-container">
-              <div class="score-container"></div>
-              <div class="best-container"></div>
-            </div>
-            <div id="hard-mode">
-                {{ govukTag({
-                text: "Hard Mode",
-                classes: "govuk-tag--red"
-                })}}
-            </div>
-            <p>Keep moving your snake around the board, eating the white pellets.</p>
-            <p>Don’t hit the wall.</p>
-            <p>Don’t hit yourself.</p>
-            <p>Don’t fade to nothing.</p>
-              <h2>How to play:</h2>
-            <p>Arrow Keys	= Left, Right, Up, Down</p>
-            <p>Space / Arrow key = Start Game</p>
-            <p>Space = Restart</p>
-            <p>E Key = Easy Mode</p>
-            <p>H Key = Hard Mode</p>
-        </div>
+          <p>Keep moving your snake around the board, eating the white pellets.</p>
+          <p>Don’t hit the wall.</p>
+          <p>Don’t hit yourself.</p>
+          <p>Don’t fade to nothing.</p>
+            <h2>How to play:</h2>
+          <p>Arrow Keys	= Left, Right, Up, Down</p>
+          <p>Space / Arrow key = Start Game</p>
+          <p>Space = Restart</p>
+          <p>E Key = Easy Mode</p>
+          <p>H Key = Hard Mode</p>
       </div>
-      <div class="govuk-hub-article-feedback">
-        {{ hubFeedbackWidget({
-          heading: 'Tell us what you think:',
-          title: title,
-          contentType: "game",
-          feedbackId: feedbackId
-        })}}
-      </div>
-    </main>
-  </div>
+    </div>
+  </main>
 {% endblock %}
 
 {% block bodyEnd %}

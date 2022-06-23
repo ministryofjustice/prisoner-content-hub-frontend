@@ -6,6 +6,8 @@ const {
   startOfMonth,
   subMonths,
   formatISO,
+  getUnixTime,
+  subDays,
 } = require('date-fns');
 
 const formatDateOrDefault = (placeHolder, dateFormat, date) => {
@@ -56,9 +58,13 @@ const sortByDateTime = (firstDate, secondDate) => {
   return 0;
 };
 
+const getOffsetUnixTime = (offset, timeStamp) =>
+  getUnixTime(subDays(timeStamp || new Date(), offset || 0));
+
 module.exports = {
   formatDateOrDefault,
   formatTimeBetweenOrDefault,
   getDateSelection,
   sortByDateTime,
+  getOffsetUnixTime,
 };

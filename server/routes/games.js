@@ -10,6 +10,11 @@ const createGamesRouter = () => {
     postscript: false,
   };
 
+  router.get('*', (req, res, next) => {
+    res.locals.data = { contentType: 'games' };
+    next();
+  });
+
   router.get('/2048', (req, res) => {
     config.detailsType = 'small';
 

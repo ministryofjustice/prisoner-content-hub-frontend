@@ -39,7 +39,7 @@ describe('GET /tags', () => {
 
     describe('on success', () => {
       const data = {
-        contentType: 'tags',
+        contentType: 'topic',
         title: 'foo bar',
         summary: 'foo description',
         image: {
@@ -85,38 +85,6 @@ describe('GET /tags', () => {
             });
         });
       });
-
-      describe('landing page related content', () => {
-        it('correctly renders a tags page related content', () => {
-          cmsService.getTag.mockReturnValue(data);
-
-          return request(app)
-            .get('/tags/1')
-            .then(response => {
-              const $ = cheerio.load(response.text);
-
-              expect($('[data-featured-id]').length).toBe(
-                1,
-                'did not render the correct number of',
-              );
-
-              expect($('[data-featured-id="foo"]').text()).toContain(
-                data.relatedContent.data[0].title,
-                'did not render the correct related item title',
-              );
-
-              expect($('.tile-image').attr('src')).toContain(
-                data.relatedContent.data[0].image.url,
-                'did not render the correct related item image',
-              );
-
-              expect($('[data-featured-id="foo"]').attr('href')).toContain(
-                `/content/${data.relatedContent.data[0].id}`,
-                'did not render url',
-              );
-            });
-        });
-      });
     });
   });
 
@@ -125,7 +93,7 @@ describe('GET /tags', () => {
       it('passes caught exceptions to next', async () => {
         cmsService.getPage.mockRejectedValue('💥');
 
-        await request(app).get('/tags/1.json').expect(500);
+        await request(app).get('/tags/1/json').expect(500);
       });
     });
 
@@ -151,7 +119,7 @@ describe('GET /tags', () => {
           cmsService.getPage.mockReturnValue(data);
 
           return request(app)
-            .get('/tags/1.json')
+            .get('/tags/1/json')
             .expect(200)
             .expect('Content-Type', /application\/json/)
             .then(response => {
@@ -169,7 +137,7 @@ describe('GET /tags', () => {
           cmsService.getPage.mockReturnValue(data);
 
           return request(app)
-            .get('/tags/1.json?page=2')
+            .get('/tags/1/json?page=2')
             .expect(200)
             .expect('Content-Type', /application\/json/)
             .then(response => {
@@ -186,7 +154,7 @@ describe('GET /tags', () => {
           cmsService.getPage.mockReturnValue(data);
 
           return request(app)
-            .get('/tags/1.json?page=2&pageType=other')
+            .get('/tags/1/json?page=2&pageType=other')
             .expect(200)
             .expect('Content-Type', /application\/json/)
             .then(response => {

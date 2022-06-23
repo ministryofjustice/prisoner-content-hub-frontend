@@ -2,12 +2,10 @@ const { TopicsQuery } = require('../repositories/cmsQueries/topicsQuery');
 const { HomepageQuery } = require('../repositories/cmsQueries/homePageQuery');
 const { BasicPageQuery } = require('../repositories/cmsQueries/basicPageQuery');
 const { LinkPageQuery } = require('../repositories/cmsQueries/linkPageQuery');
+const { TopicPageQuery } = require('../repositories/cmsQueries/topicPageQuery');
 const {
-  SecondaryTagPageQuery,
-} = require('../repositories/cmsQueries/secondaryTagPageQuery');
-const {
-  SecondaryTagHeaderPageQuery,
-} = require('../repositories/cmsQueries/secondaryTagHeaderPageQuery');
+  TopicHeaderPageQuery,
+} = require('../repositories/cmsQueries/topicHeaderPageQuery');
 const {
   SeriesPageQuery,
 } = require('../repositories/cmsQueries/seriesPageQuery');
@@ -35,6 +33,20 @@ const {
 const {
   PrimaryNavigationQuery,
 } = require('../repositories/cmsQueries/PrimaryNavigationQuery');
+const {
+  RecentlyAddedContentQuery,
+} = require('../repositories/cmsQueries/recentlyAddedContentQuery');
+const {
+  RecentlyAddedHomepageContentQuery,
+} = require('../repositories/cmsQueries/recentlyAddedHomepageContentQuery');
+const {
+  HomepageContentQuery,
+} = require('../repositories/cmsQueries/homepageContentQuery');
+const {
+  ExploreContentQuery,
+} = require('../repositories/cmsQueries/exploreContentQuery');
+
+const { getOffsetUnixTime } = require('../utils/date');
 
 class CmsService {
   #cmsApi;
@@ -43,13 +55,13 @@ class CmsService {
     this.#cmsApi = cmsApi;
   }
 
-  async getSecondaryTag(establishmentName, uuid, location, page = 1) {
+  async getTopic(establishmentName, uuid, location, page = 1) {
     const result = await this.#cmsApi.get(
-      new SecondaryTagPageQuery(establishmentName, uuid, page),
+      new TopicPageQuery(establishmentName, uuid, page),
     );
     if (result?.title) return result;
     const tagResult = await this.#cmsApi.get(
-      new SecondaryTagHeaderPageQuery(location),
+      new TopicHeaderPageQuery(location),
     );
     return tagResult;
   }
@@ -114,8 +126,8 @@ class CmsService {
     const lookupData = await this.#cmsApi.lookupTag(establishmentName, id);
     const { type, uuid, location } = lookupData;
     switch (type) {
-      case 'taxonomy_term--tags':
-        return this.getSecondaryTag(establishmentName, uuid, location);
+      case 'taxonomy_term--topics':
+        return this.getTopic(establishmentName, uuid, location);
       case 'taxonomy_term--series':
         return this.getSeries(establishmentName, uuid, location);
       case 'taxonomy_term--moj_categories':
@@ -129,16 +141,13 @@ class CmsService {
     const lookupData = await this.#cmsApi.lookupTag(establishmentName, id);
     const { type, uuid, location } = lookupData;
     switch (type) {
-      case 'taxonomy_term--tags':
-        return this.getSecondaryTag(
-          establishmentName,
-          uuid,
-          location,
-          page,
-        ).then(({ relatedContent }) => relatedContent);
+      case 'taxonomy_term--topics':
+        return this.getTopic(establishmentName, uuid, location, page).then(
+          ({ hubContentData }) => hubContentData,
+        );
       case 'taxonomy_term--series':
         return this.getSeries(establishmentName, uuid, location, page).then(
-          ({ relatedContent }) => relatedContent,
+          ({ hubContentData }) => hubContentData,
         );
       case 'taxonomy_term--moj_categories':
         return this.getCategoryPage(establishmentName, uuid, page, catType);
@@ -207,6 +216,21 @@ class CmsService {
     return homepages[0];
   }
 
+  async getHomepageContent(establishmentName) {
+    const homepageContent = await this.#cmsApi.get(
+      new HomepageContentQuery(establishmentName),
+    );
+
+    return homepageContent[0];
+  }
+
+  async getExploreContent(establishmentName) {
+    const exploreContent = await this.#cmsApi.get(
+      new ExploreContentQuery(establishmentName),
+    );
+    return exploreContent;
+  }
+
   async getNextEpisode(
     establishmentName,
     seriesId,
@@ -225,6 +249,29 @@ class CmsService {
 
   async getPrimaryNavigation(establishmentName) {
     return this.#cmsApi.get(new PrimaryNavigationQuery(establishmentName));
+  }
+
+  async getRecentlyAddedContent(establishmentName, page = 1, pageLimit = 4) {
+    const timeStamp = getOffsetUnixTime(14);
+
+    const recentlyAddedContent = await this.#cmsApi.get(
+      new RecentlyAddedContentQuery(
+        establishmentName,
+        page,
+        pageLimit,
+        timeStamp,
+      ),
+    );
+
+    return recentlyAddedContent;
+  }
+
+  async getRecentlyAddedHomepageContent(establishmentName) {
+    const RecentlyAddedHomepageContent = await this.#cmsApi.get(
+      new RecentlyAddedHomepageContentQuery(establishmentName),
+    );
+
+    return RecentlyAddedHomepageContent;
   }
 }
 

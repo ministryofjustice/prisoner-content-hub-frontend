@@ -1,5 +1,6 @@
 {% from "govuk/components/skip-link/macro.njk" import govukSkipLink %}
 {% from "../components/footer/macro.njk" import footer %}
+{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {%- from "moj/components/primary-navigation/macro.njk" import mojPrimaryNavigation -%}
 {% from "../components/page-navigation/macro.njk" import pageNavigation %}
@@ -11,17 +12,18 @@
   <head>
     <meta charset="utf-8"/>
     <title>
-      {% block pageTitle %}{{establishmentDisplayName}}
+      {% block pageTitle %}{{ title if title else establishmentDisplayName}}
       {% endblock %}
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="{{ themeColor | default('#0b0c0c') }}"/>
     <meta name="robots" content="noindex, nofollow, noimageindex">
-    {# Hardcoded value of $govuk-black #}
     {% block headIcons %}
       <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/public/images/favicon.ico" type="image/x-icon"/>
     {% endblock %}
-    {% block head %}{% endblock %}
+    {% block head %}
+      <link href="/public/stylesheets/application.css" rel="stylesheet"/>
+    {% endblock %}
 
     {# The default og:image is added below head so that scrapers see any custom metatags first, and this is just a fallback #}
     <meta property="og:image" content="{{ assetPath | default('/assets') }}/images/govuk-opengraph-image.png">
@@ -111,21 +113,43 @@
       </div>
     {% endif %}
 
-    {% block header %}{% endblock %}
-
-    {% block main %}{% endblock %}
-
-    {% block timetable %}{% endblock %}
-
-    {% if config.content %}
-      <div class="black-background">
-        <div class="govuk-width-container">
-          <main class="govuk-main-wrapper" id="main-content">
-            {% block content %}{% endblock %}
-          </main>
+    {% block title %}
+      {% set longTitle = longTitle or title%}
+      {% if longTitle %}
+        <div class="govuk-width-container govuk-body govuk-clearfix">
+          <div class="hub-header">
+            <h1 class="govuk-heading-l" id="title">{{ longTitle }}</h1>
+          </div>
         </div>
-      </div>
-    {% endif %}
+      {% endif %}
+    {% endblock %}
+    <div class="{{ 'black-background govuk-!-padding-top-5' if blackBackground }} govuk-!-padding-bottom-7">
+      {% block main %}
+        <div class="govuk-width-container">
+          {% block content %}{% endblock %}
+        </div>
+      {% endblock %}
+      {% block main_full_width %}{% endblock %}
+
+      {% block feedback %}
+        {% if not excludeFeedback %}
+          <div class="govuk-width-container govuk-body">
+            {% if not blackBackground %}<hr>{% endif %}
+            {{ hubFeedbackWidget({
+              classes: 'govuk-!-margin-top-5',
+              contentId: data.id,
+              heading: feedbackHeading,
+              title: title,
+              contentType: data.contentType,
+              feedbackId: feedbackId,
+              categories: title if data.contentType == 'category',
+              series: title if data.contentType == 'series',
+              topics: title if data.contentType == 'topic'
+            })}}
+          </div>
+        {% endif %}
+      {% endblock %}
+    </div>
 
     {% if config.postscript %}
       {% block postscript %}{% endblock %}
@@ -133,7 +157,6 @@
 
     {% block footer %}
       {{ footer({ allTopics: allTopics }) }}
-
     {% endblock %}
 
     <script src="/public/jquery.min.js"></script>
@@ -152,7 +175,7 @@
           screen: window.screen.width + 'x' + window.screen.height,
           viewport: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'x' + Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
           categories: "{{ data.categories | join(',', 'name') }}",
-          secondaryTags: "{{ data.secondaryTags | join(',', 'name') }}",
+          topics: "{{ data.topics | join(',', 'name') }}",
           series: "{{data.seriesName}}"
         });
       </script>

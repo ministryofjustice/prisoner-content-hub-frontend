@@ -15,7 +15,7 @@ describe('Category collection query', () => {
   describe('path', () => {
     it('should create correct path', () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/${ESTABLISHMENTNAME}/taxonomy_term?filter%5Bseries_sub_categories%5D%5Bgroup%5D%5Bconjunction%5D=OR&filter%5Bparent.id%5D%5Bcondition%5D%5Bpath%5D=parent.id&filter%5Bparent.id%5D%5Bcondition%5D%5Bvalue%5D=${UUID}&filter%5Bparent.id%5D%5Bcondition%5D%5BmemberOf%5D=series_sub_categories&filter%5Bfield_category.id%5D%5Bcondition%5D%5Bpath%5D=field_category.id&filter%5Bfield_category.id%5D%5Bcondition%5D%5Bvalue%5D=${UUID}&filter%5Bfield_category.id%5D%5Bcondition%5D%5BmemberOf%5D=series_sub_categories&include=field_featured_image&sort=-content_updated%2Cdrupal_internal__tid&fields%5Btaxonomy_term--series%5D=type%2Cdrupal_internal__tid%2Cname%2Cfield_featured_image%2Cpath%2Ccontent_updated%2Cchild_term_count&fields%5Btaxonomy_term--moj_categories%5D=type%2Cdrupal_internal__tid%2Cname%2Cfield_featured_image%2Cpath%2Ccontent_updated%2Cchild_term_count&${getPagination(
+        `/jsonapi/prison/${ESTABLISHMENTNAME}/taxonomy_term/moj_categories/${UUID}/sub_terms?include=field_moj_thumbnail_image&fields%5Btaxonomy_term--series%5D=type%2Cdrupal_internal__tid%2Cname%2Cfield_moj_thumbnail_image%2Cpath%2Ccontent_updated%2Cchild_term_count%2Cpublished_at&fields%5Btaxonomy_term--moj_categories%5D=type%2Cdrupal_internal__tid%2Cname%2Cfield_moj_thumbnail_image%2Cpath%2Ccontent_updated%2Cchild_term_count%2Cpublished_at&${getPagination(
           PAGE,
           LIMIT,
         )}`,
@@ -31,7 +31,7 @@ describe('Category collection query', () => {
       name: `name`,
       description: { processed: `description` },
       fieldExcludeFeedback: true,
-      fieldFeaturedImage: {
+      fieldMojThumbnailImage: {
         imageStyleUri: [{ tile_small: `tile_small` }],
         resourceIdObjMeta: { alt: `alt` },
       },
@@ -51,6 +51,7 @@ describe('Category collection query', () => {
         alt: 'alt',
         url: 'tile_small',
       },
+      isNew: false,
       summary: 'description',
       title: 'name',
     };
@@ -64,6 +65,7 @@ describe('Category collection query', () => {
         alt: 'alt',
         url: 'tile_small',
       },
+      isNew: false,
       summary: 'description',
       title: 'name',
     };
@@ -74,7 +76,7 @@ describe('Category collection query', () => {
       name: `name`,
       description: { processed: `description` },
       fieldExcludeFeedback: true,
-      fieldFeaturedImage: {
+      fieldMojThumbnailImage: {
         imageStyleUri: [{ tile_small: `tile_small` }],
         resourceIdObjMeta: { alt: `alt` },
       },

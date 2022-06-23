@@ -2,7 +2,7 @@ const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const {
   getLargeImage,
   getCategoryId,
-  buildSecondaryTags,
+  buildFieldTopics,
   mapBreadcrumbs,
 } = require('../../utils/jsonApi');
 
@@ -17,7 +17,7 @@ class AudioPageQuery {
         'created',
         'field_moj_audio',
         'field_moj_description',
-        'field_moj_secondary_tags',
+        'field_topics',
         'field_moj_series',
         'field_moj_season',
         'field_moj_episode',
@@ -35,7 +35,7 @@ class AudioPageQuery {
         'name',
         'path',
       ])
-      .addFields('taxonomy_term--tags', [
+      .addFields('taxonomy_term--topics', [
         'drupal_internal__tid',
         'name',
         'path',
@@ -48,7 +48,7 @@ class AudioPageQuery {
         'field_moj_thumbnail_image',
         'field_moj_series',
         'field_moj_audio',
-        'field_moj_secondary_tags',
+        'field_topics',
         'field_moj_top_level_categories',
       ])
 
@@ -80,7 +80,7 @@ class AudioPageQuery {
       seriesSortValue: item.seriesSortValue,
       media: item.fieldMojAudio?.uri?.url,
       categories: getCategoryId(item.fieldMojTopLevelCategories),
-      secondaryTags: buildSecondaryTags(item.fieldMojSecondaryTags),
+      topics: buildFieldTopics(item.fieldTopics),
       image: getLargeImage(item.fieldMojThumbnailImage),
       excludeFeedback: item.fieldExcludeFeedback,
     };

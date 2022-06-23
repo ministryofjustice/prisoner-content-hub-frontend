@@ -3,22 +3,24 @@
 {% from "../personal-transactions-tabs/macro.njk" import personalTransactionsTabs %}
 {% from "../prompt-to-sign-in/macro.njk" import promptToSignIn %}
 
-{% if not isLoggedIn %}
-  {{ promptToSignIn(returnUrl) }}
-{% else %}
-  {{ personalTransactionsHelp() }}
-  {{ personalTransactionsTabs(data.selected, data.accountTypes, data.shouldShowDamageObligationsTab) }}
-  <div class="govuk-tabs__panel">
-    {% if data.damageObligations.userNotification %}
-      <p>
-        {{data.damageObligations.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>.
-      </p>
-    {% elif data.damageObligations.rows %}
-      <h3 class="govuk-heading-m">You currently owe</h3>
-      <p  data-hj-suppress>{{data.damageObligations.totalRemainingAmount}}</p>
-      <div id="damage-obligations" data-hj-suppress>
-        {{ govukTable({ head: data.damageObligations.head, rows: data.damageObligations.rows }) }}
-      </div>
-    {% endif %}
-  </div>
-{% endif %}
+<div class="govuk-body">
+  {% if not isLoggedIn %}
+    {{ promptToSignIn(returnUrl) }}
+  {% else %}
+    {{ personalTransactionsHelp() }}
+    {{ personalTransactionsTabs(data.selected, data.accountTypes, data.shouldShowDamageObligationsTab) }}
+    <div class="govuk-tabs__panel">
+      {% if data.damageObligations.userNotification %}
+        <p>
+          {{data.damageObligations.userNotification}}, <a href="{{ returnUrl }}" class="govuk-link">try again</a>.
+        </p>
+      {% elif data.damageObligations.rows %}
+        <h3 class="govuk-heading-m">You currently owe</h3>
+        <p class="govuk-body govuk-!-margin-top-5" data-hj-suppress>{{data.damageObligations.totalRemainingAmount}}</p>
+        <div id="damage-obligations" data-hj-suppress>
+          {{ govukTable({ head: data.damageObligations.head, rows: data.damageObligations.rows }) }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>

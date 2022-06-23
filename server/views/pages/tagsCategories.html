@@ -1,88 +1,42 @@
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
-{% from "../components/user-details/macro.njk" import userDetails %}
-{% from "../components/content-tile-large/macro.njk" import contentTileLarge %}
-{% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
-{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "../components/related-content/macro.njk" import hubRelatedContent %}
-{% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
+{% from "../components/hub-content-show-more/macro.njk" import hubContentShowMore %}
+{% from "../components/hub-content/macro.njk" import hubContent %}
 
+{% extends "../components/basicTemplate.njk" %}
 
-{% extends "../components/template.njk" %}
+{% set blackBackground = true %}
+{% set feedbackHeading = "Tell us what you think about this page" %}
 
-{% block pageTitle %}
-  {{ title }}
-{% endblock %}
-
-{% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block header %}
-  <div class="govuk-width-container govuk-body govuk-clearfix">
-    <div class="hub-header">
-      <h1 class="govuk-heading-l" id="title">{{ title }}</h1>
-    </div>
-  </div>
-{% endblock %}
 {% block content %}
-  <div class="govuk-body">
-    {% if data.categoryFeaturedContent.length > 0 %}
-      <section class="govuk-!-margin-bottom-9">
-        <h2 class="govuk-heading-l govuk-hub-white-heading">Featured</h2>
-        {{ hubRelatedContent({
-          data: { contentType:"default",isLastPage:true, data:data.categoryFeaturedContent },
-          lazyLoadContent: true
-        }) }}
-      </section>
-      <hr>
-    {% endif %}
-    {% if data.categorySeries.data.length > 0 %}
-      <section id="seriesTiles"class="govuk-!-margin-bottom-9 govuk-!-margin-top-5">
-        <h2 class="govuk-heading-l  govuk-hub-white-heading">In this section</h2>
-        {{ hubRelatedContent({
-          data: { contentType:data.categorySeries.contentType ,isLastPage:data.categorySeries.isLastPage, data:data.categorySeries.data },
-          lazyLoadContent: true
-        }) }}
-      </section>
-      <hr>
-    {% endif %}
-    {% if data.categoryContent.data.length > 0 %}
-      <section id="otherContentTiles" class="govuk-!-margin-bottom-9 govuk-!-margin-top-5">
-        <h2 class="govuk-heading-l  govuk-hub-white-heading">Content</h2>
-        {{ hubRelatedContent({
-          data: { contentType:data.categoryContent.contentType ,isLastPage:data.categoryContent.isLastPage, data:data.categoryContent.data },
-          lazyLoadContent: true
-        }) }}
-      </section>
-      <hr>
-    {% endif %}
-  </div>
-
-
-  {% if not data.excludeFeedback %}
-    <div class="govuk-form-group govuk-hub-on-black-feedback">
-      {% set tagHeading %}
-        Tell us what you think about this page
-      {% endset %}
-      {{ hubFeedbackWidget({
-        contentId: data.id,
-        heading: tagHeading,
-        title: title,
-        name: title,
-        contentType: data.contentType,
-        series: title,
-        feedbackId: feedbackId,
-        series: title if data.contentType == 'series',
-        secondaryTags: title if data.contentType == 'tags',
-        classes: 'govuk-!-padding-top-0'
-      })}}
-    </div>
+  {% if data.categoryFeaturedContent.length > 0 %}
+    <section class="govuk-!-margin-bottom-9">
+      <h2 class="govuk-heading-l govuk-hub-white-heading">Featured</h2>
+      {{ hubContent({
+        data: data.categoryFeaturedContent
+      }) }}
+    </section>
+    <hr>
+  {% endif %}
+  {% if data.categorySeries.data.length > 0 %}
+    <section id="seriesTiles"class="govuk-!-margin-bottom-9 govuk-!-margin-top-5">
+      <h2 class="govuk-heading-l  govuk-hub-white-heading">In this section</h2>
+      {{ hubContentShowMore({
+        data: data.categorySeries,
+        lazyLoadContent: true
+      }) }}
+    </section>
+    <hr>
+  {% endif %}
+  {% if data.categoryContent.data.length > 0 %}
+    <section id="otherContentTiles" class="govuk-!-margin-bottom-9 govuk-!-margin-top-5">
+      <h2 class="govuk-heading-l  govuk-hub-white-heading">Content</h2>
+      {{ hubContentShowMore({
+        data: data.categoryContent,
+        lazyLoadContent: true
+      }) }}
+    </section>
+    <hr>
   {% endif %}
 {% endblock %}
-
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
 
 {% block bodyEnd %}
 <script src="/public/generated/templates.js"></script>

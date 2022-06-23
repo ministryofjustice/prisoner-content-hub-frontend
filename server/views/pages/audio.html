@@ -1,97 +1,34 @@
-{% from "../components/next-episodes-content/macro.njk" import nextEpisodesContent %}
-{% from "../components/suggested-content/macro.njk" import hubSuggestedContent %}
-{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "../components/related-topics/macro.njk" import hubRelatedTopics %}
+{% extends "../components/mediaTemplate.njk" %}
 
-{% extends "../components/template.njk" %}
-
-{% block pageTitle %}
-  {{ data.title }}
-{% endblock %}
-
-{% block head %}
-  <link href="/public/video-js.min.css" rel="stylesheet"/>
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block content %}
-  <div class="govuk-hub-media-player">
-    <header class="govuk-hub-media-player__header">
-      <div class="media-thumbnail">
-        <img id="thumbnail" src="{{ data.image.url }}" alt="{{ data.image.alt }}" class="govuk-hub-media-player__show-tag"/>
-      </div>
-      <div class="govuk-hub-title-container">
-        <p class="govuk-hub-media-player__catgeory govuk-heading-m">
-          <a href="/tags/{{data.seriesId}}" id="series" title="{{ data.seriesName }}" class="govuk-link govuk-hub-media-player__catgeory-link">{{ data.seriesName }}</a>
-        </p>
-        <h1 id="title" class="govuk-hub-media-player__title govuk-heading-xl govuk-body govuk-!-font-size-36 govuk-body govuk-!-font-weight-bold">{{ data.title }}</h1>
-      </div>
-    </header>
-
-    <audio
-      id="hub-audio"
-      class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause"
-      controls
-      height="226"
-      width="900"
-      preload="auto"
-      poster="/public/images/radio-player-background.jpg"
-      data-setup='{
-        "controlBar": {
-          "children": [
-              "playToggle",
-              "volumePanel",
-              "currentTimeDisplay",
-              "progressControl",
-              "durationDisplay",
-              "fullscreenToggle"
-          ]
-        }
-      }'
-      data-title="{{ data.title }}"
-      data-programme-code="{{ data.programmeCode }}"
-    >
-      <source src="{{ data.media }}" type="audio/mp3"/>
-    </audio>
-      {% if not data.excludeFeedback %}
-        <div class="govuk-hub-on-black-feedback">
-          {{ hubFeedbackWidget({
-            heading: '',
-            contentId: data.id,
-            title: data.title,
-            contentType: data.contentType,
-            series: data.seriesName,
-            feedbackId: feedbackId,
-            categories: data.categories.id,
-            secondaryTags: data.secondaryTags | join(',', 'id')
-          }) }}
-        </div>
-      {% endif %}
-    <div class="govuk-hub-media-player__description">
-      <div id="body" class="govuk-body">{{ data.description | safe }}</div>
-    </div>
-
-    {{ hubRelatedTopics({ data: data.secondaryTags, darkmode: true }) }}
-
-    <div id="next-episodes" class="govuk-hub-media-player__watch-next">
-      {{ nextEpisodesContent({ data: data.nextEpisodes }) }}
-    </div>
-  </div>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      <div id="suggested-content">
-        {{ hubSuggestedContent({ data: data.suggestedContent }) }}
-      </div>
-    </div>
-  </div>
+{% block media %}
+  <audio
+    id="hub-audio"
+    class="video-js vjs-default-skin vjs-big-play-centered vjs-show-big-play-button-on-pause"
+    controls
+    height="226"
+    width="900"
+    preload="auto"
+    poster="/public/images/radio-player-background.jpg"
+    data-setup='{
+      "controlBar": {
+        "children": [
+            "playToggle",
+            "volumePanel",
+            "currentTimeDisplay",
+            "progressControl",
+            "durationDisplay",
+            "fullscreenToggle"
+        ]
+      }
+    }'
+    data-title="{{ data.title }}"
+    data-programme-code="{{ data.programmeCode }}"
+  >
+    <source src="{{ data.media }}" type="audio/mp3"/>
+  </audio>
 {% endblock %}
 
 {% block bodyEnd %}
-  <script src="/public/jquery.min.js"></script>
-  <script src="/public/video.min.js"></script>
+  {{ super() }}
   <script src="/public/javascript/audioPlayer.js"></script>
 {% endblock %}

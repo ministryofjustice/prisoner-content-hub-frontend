@@ -1,77 +1,45 @@
-{% from "../../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "../../components/user-details/macro.njk" import userDetails %}
-{% extends "../../components/template.njk" %}
+{% extends "../../components/basicTemplate.njk" %}
 
-{% block pageTitle %}
-  {{ title }}
-{% endblock %}
-
-{% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block main %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          <h1 id="title" class="govuk-heading-xl govuk-!-margin-bottom-6 govuk-!-margin-top-3">{{ title }}</h1>
+{% block content %}
+  <main class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <div id="crossword-notification" class="visually-hidden">
+          {{ govukPanel({
+            titleText: "Congratulations",
+            html: "You have completed the crossword"
+          }) }}
         </div>
       </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          <div id="crossword-notification" class="visually-hidden">
-            {{ govukPanel({
-              titleText: "Congratulations",
-              html: "You have completed the crossword"
-            }) }}
-          </div>
+    </div>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <div id="crossword-info">
+          <button id="crossword-new-game" class="govuk-button">New Game</button>
+          <button id="crossword-reset" class="govuk-button">Reset</button>
+          <span id="crossword-score"></span>
         </div>
       </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          <div id="crossword-info">
-            <button id="crossword-new-game" class="govuk-button">New Game</button>
-            <button id="crossword-reset" class="govuk-button">Reset</button>
-            <span id="crossword-score"></span>
-          </div>
+    </div>
+    <div class="govuk-grid-row govuk-!-margin-bottom-6">
+      <div class="govuk-grid-column-three-quarters">
+        <div id="crossword-board"></div>
+      </div>
+      <div class="govuk-grid-column-one-quarter">
+        <div id="crossword-clues">
+          <h2 class="govuk-heading-m">Current Clue</h2>
+          <p id="crossword-clues-current"></p>
+          <h2 class="govuk-heading-m">Across</h2>
+          <ol id="crossword-clues-across"></ol>
+          <h2 class="govuk-heading-m">Down</h2>
+          <ol id="crossword-clues-down"></ol>
         </div>
       </div>
-      <div class="govuk-grid-row govuk-!-margin-bottom-6">
-        <div class="govuk-grid-column-three-quarters">
-          <div id="crossword-board"></div>
-        </div>
-        <div class="govuk-grid-column-one-quarter">
-          <div id="crossword-clues">
-            <h2 class="govuk-heading-m">Current Clue</h2>
-            <p id="crossword-clues-current"></p>
-            <h2 class="govuk-heading-m">Across</h2>
-            <ol id="crossword-clues-across"></ol>
-            <h2 class="govuk-heading-m">Down</h2>
-            <ol id="crossword-clues-down"></ol>
-          </div>
-        </div>
-      </div>
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
-          <div class="govuk-hub-article-feedback">
-            {{ hubFeedbackWidget({
-              title: title,
-              heading: 'Tell us what you think:',
-              contentType: "game",
-              feedbackId: feedbackId
-            })}}
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
+    </div>
+  </main>
 {% endblock %}
 
 {% block bodyEnd %}

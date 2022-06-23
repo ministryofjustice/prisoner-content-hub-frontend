@@ -16,7 +16,7 @@ const setUpShowMore = (showMoreButton, showMoreTiles, pageType = '') => {
   let page = 1;
   showMoreButton.on('click', () => {
     page++;
-    const nextPage = `${location.pathname}.json?page=${page}&pageType=${pageType}`;
+    const nextPage = `${location.pathname}/json?page=${page}&pageType=${pageType}`;
     disableShowMore();
 
     $.getJSON(nextPage, response => {

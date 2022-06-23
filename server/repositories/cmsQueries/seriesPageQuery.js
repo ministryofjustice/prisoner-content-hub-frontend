@@ -14,6 +14,7 @@ class SeriesPageQuery {
     'field_moj_thumbnail_image',
     'field_moj_series',
     'path',
+    'published_at',
   ];
 
   constructor(establishmentName, uuid, page) {
@@ -30,14 +31,14 @@ class SeriesPageQuery {
         'name',
         'description',
         'drupal_internal__tid',
-        'field_featured_image',
+        'field_moj_thumbnail_image',
         'path',
         'field_exclude_feedback',
         'breadcrumbs',
       ])
       .addInclude([
         'field_moj_thumbnail_image',
-        'field_moj_series.field_featured_image',
+        'field_moj_series.field_moj_thumbnail_image',
       ])
       .addSort('series_sort_value,created', 'ASC')
       .getQueryString();
@@ -56,8 +57,8 @@ class SeriesPageQuery {
       ...getLargeTile(series),
       breadcrumbs: mapBreadcrumbs(series?.breadcrumbs, series.name),
       ...{
-        relatedContent: {
-          contentType: 'default',
+        hubContentData: {
+          contentType: 'series',
           isLastPage: !links.next,
           data: deserializedResponse.map(getSmallTile),
         },

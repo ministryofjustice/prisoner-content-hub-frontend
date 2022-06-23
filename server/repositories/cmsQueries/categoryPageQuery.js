@@ -7,10 +7,10 @@ class CategoryPageQuery {
     'drupal_internal__tid',
     'title',
     'field_moj_thumbnail_image',
-    'field_featured_image',
-    'field_moj_secondary_tags',
+    'field_topics',
     'path',
     'field_exclude_feedback',
+    'published_at',
   ];
 
   constructor(establishmentName, uuid) {
@@ -33,7 +33,6 @@ class CategoryPageQuery {
       .addInclude([
         'field_featured_tiles',
         'field_featured_tiles.field_moj_thumbnail_image',
-        'field_featured_tiles.field_featured_image',
       ])
       .getQueryString();
   }

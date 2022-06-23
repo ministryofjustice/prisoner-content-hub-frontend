@@ -6,10 +6,10 @@ class HomepageQuery {
     'drupal_internal__nid',
     'title',
     'field_moj_thumbnail_image',
-    'field_thumbnail_image',
     'field_moj_description',
     'field_moj_series',
     'path',
+    'published_at',
   ];
 
   constructor(establishmentName) {
@@ -31,7 +31,7 @@ class HomepageQuery {
         'name',
         'description',
         'path',
-        'field_featured_image',
+        'field_moj_thumbnail_image',
       ])
 
       .addFields('file--file', [
@@ -43,8 +43,6 @@ class HomepageQuery {
       .addInclude([
         'field_featured_tile_large.field_moj_thumbnail_image',
         'field_featured_tile_small.field_moj_thumbnail_image',
-        'field_featured_tile_large.field_featured_image',
-        'field_featured_tile_small.field_featured_image',
       ])
       .addPageLimit(1)
       .getQueryString();

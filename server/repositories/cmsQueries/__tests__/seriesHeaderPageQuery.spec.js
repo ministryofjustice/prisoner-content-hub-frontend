@@ -5,7 +5,7 @@ describe('Series with no defined related content page query', () => {
   describe('url', () => {
     it('should create the correct url', async () => {
       expect(query.url()).toStrictEqual(
-        'https://cms/content/1234?include=field_featured_image&fields%5Btaxonomy_term--series%5D=name%2Cdescription%2Cdrupal_internal__tid%2Cfield_featured_image%2Cpath',
+        'https://cms/content/1234?include=field_moj_thumbnail_image&fields%5Btaxonomy_term--series%5D=name%2Cdescription%2Cdrupal_internal__tid%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at',
       );
     });
   });
@@ -17,7 +17,7 @@ describe('Series with no defined related content page query', () => {
         name: `name1`,
         type: 'taxonomy_term--series',
         description: { processed: `description1` },
-        fieldFeaturedImage: {
+        fieldMojThumbnailImage: {
           imageStyleUri: [{ tile_large: `tile_large1` }],
           resourceIdObjMeta: { alt: `alt1` },
         },
@@ -36,6 +36,7 @@ describe('Series with no defined related content page query', () => {
           url: `tile_large1`,
           alt: `alt1`,
         },
+        isNew: false,
         contentUrl: '/tags/123',
       });
     });

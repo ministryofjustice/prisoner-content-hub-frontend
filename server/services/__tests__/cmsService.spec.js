@@ -16,11 +16,11 @@ const {
   VideoPageQuery,
 } = require('../../repositories/cmsQueries/videoPageQuery');
 const {
-  SecondaryTagPageQuery,
-} = require('../../repositories/cmsQueries/secondaryTagPageQuery');
+  TopicPageQuery,
+} = require('../../repositories/cmsQueries/topicPageQuery');
 const {
-  SecondaryTagHeaderPageQuery,
-} = require('../../repositories/cmsQueries/secondaryTagHeaderPageQuery');
+  TopicHeaderPageQuery,
+} = require('../../repositories/cmsQueries/topicHeaderPageQuery');
 const {
   SuggestionQuery,
 } = require('../../repositories/cmsQueries/suggestionQuery');
@@ -42,6 +42,19 @@ const {
 const {
   SeriesHeaderPageQuery,
 } = require('../../repositories/cmsQueries/seriesHeaderPageQuery');
+const {
+  RecentlyAddedContentQuery,
+} = require('../../repositories/cmsQueries/recentlyAddedContentQuery');
+const {
+  RecentlyAddedHomepageContentQuery,
+} = require('../../repositories/cmsQueries/recentlyAddedHomepageContentQuery');
+const {
+  HomepageContentQuery,
+} = require('../../repositories/cmsQueries/homepageContentQuery');
+const {
+  ExploreContentQuery,
+} = require('../../repositories/cmsQueries/exploreContentQuery');
+const { getOffsetUnixTime } = require('../../utils/date');
 const { CmsService } = require('../cms');
 
 jest.mock('../../repositories/cmsApi');
@@ -69,7 +82,7 @@ describe('cms Service', () => {
       description: 'Education content for prisoners',
       standFirst: 'Education',
       categories: [1234],
-      secondaryTags: [2345],
+      topics: [2345],
     });
 
     const createPdfPage = () => ({
@@ -94,7 +107,7 @@ describe('cms Service', () => {
       programmeCode: 'FAITH138',
       seasonId: 1,
       seriesSortValue: SERIES_SORT_VALUE,
-      secondaryTags: [
+      topics: [
         {
           id: 741,
           uuid: 147,
@@ -121,7 +134,7 @@ describe('cms Service', () => {
       media: 'https://cms.org/jdajsgjdfj.mp4',
       seasonId: 1,
       seriesSortValue: SERIES_SORT_VALUE,
-      secondaryTags: [
+      topics: [
         {
           id: 741,
           uuid: 147,
@@ -178,7 +191,7 @@ describe('cms Service', () => {
         contentType: 'page',
         description: 'Education content for prisoners',
         id: 5923,
-        secondaryTags: [2345],
+        topics: [2345],
         standFirst: 'Education',
         title: 'Novus',
       });
@@ -262,7 +275,7 @@ describe('cms Service', () => {
           programmeCode: 'FAITH138',
           seasonId: 1,
           seriesSortValue: SERIES_SORT_VALUE,
-          secondaryTags: [
+          topics: [
             {
               id: 741,
               name: 'Self-help',
@@ -355,7 +368,7 @@ describe('cms Service', () => {
           ],
           seasonId: 1,
           seriesSortValue: SERIES_SORT_VALUE,
-          secondaryTags: [
+          topics: [
             {
               id: 741,
               name: 'Self-help',
@@ -545,20 +558,20 @@ describe('cms Service', () => {
     const TAG_ID = 9;
     const uuid = 42;
 
-    describe('with a secondary tag', () => {
+    describe('with a topic', () => {
       const location = 'https://cms.org/tag/1234';
       beforeEach(() => {
         cmsApi.lookupTag.mockResolvedValue({
-          type: 'taxonomy_term--tags',
+          type: 'taxonomy_term--topics',
           location,
           uuid,
         });
       });
       describe('which contains related content', () => {
         let result;
-        const populatedSecondaryTag = { title: 'le name' };
+        const populatedTopic = { title: 'le name' };
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValue(populatedSecondaryTag);
+          cmsApi.get.mockResolvedValue(populatedTopic);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
         });
         it('looks up the tag', () => {
@@ -570,17 +583,17 @@ describe('cms Service', () => {
         it('returns the tag', async () => {
           expect(cmsApi.get).toHaveBeenCalledTimes(1);
           expect(cmsApi.get).toHaveBeenCalledWith(
-            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid, 1),
+            new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 1),
           );
-          expect(result).toBe(populatedSecondaryTag);
+          expect(result).toBe(populatedTopic);
         });
       });
       describe('which has no related content', () => {
         let result;
-        const populatedSecondaryTag = {};
+        const populatedTopic = {};
         beforeEach(async () => {
           cmsApi.get.mockResolvedValueOnce({});
-          cmsApi.get.mockResolvedValue(populatedSecondaryTag);
+          cmsApi.get.mockResolvedValue(populatedTopic);
           result = await cmsService.getTag(ESTABLISHMENT_NAME, TAG_ID);
         });
         it('looks up the tag', () => {
@@ -592,13 +605,13 @@ describe('cms Service', () => {
         it('returns the tag', async () => {
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             1,
-            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid, 1),
+            new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 1),
           );
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             2,
-            new SecondaryTagHeaderPageQuery(location),
+            new TopicHeaderPageQuery(location),
           );
-          expect(result).toBe(populatedSecondaryTag);
+          expect(result).toBe(populatedTopic);
         });
       });
     });
@@ -731,20 +744,20 @@ describe('cms Service', () => {
     const TAG_ID = 9;
     const uuid = 42;
 
-    describe('with a secondary tag', () => {
+    describe('with a topic', () => {
       const location = 'https://cms.org/tag/1234';
       beforeEach(() => {
         cmsApi.lookupTag.mockResolvedValue({
-          type: 'taxonomy_term--tags',
+          type: 'taxonomy_term--topics',
           location,
           uuid,
         });
       });
       describe('which contains related content', () => {
         let result;
-        const populatedSecondaryTag = { title: 'le name', relatedContent: [] };
+        const populatedTopic = { title: 'le name', relatedContent: [] };
         beforeEach(async () => {
-          cmsApi.get.mockResolvedValue(populatedSecondaryTag);
+          cmsApi.get.mockResolvedValue(populatedTopic);
           result = await cmsService.getPage(ESTABLISHMENT_NAME, TAG_ID, 2);
         });
         it('looks up the tag', () => {
@@ -756,17 +769,17 @@ describe('cms Service', () => {
         it('returns the tag', async () => {
           expect(cmsApi.get).toHaveBeenCalledTimes(1);
           expect(cmsApi.get).toHaveBeenCalledWith(
-            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid, 2),
+            new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
-          expect(result).toBe(populatedSecondaryTag.relatedContent);
+          expect(result).toBe(populatedTopic.hubContentData);
         });
       });
       describe('which has no related content', () => {
         let result;
-        const populatedSecondaryTag = { relatedContent: [] };
+        const populatedTopic = { relatedContent: [] };
         beforeEach(async () => {
           cmsApi.get.mockResolvedValueOnce({});
-          cmsApi.get.mockResolvedValue(populatedSecondaryTag);
+          cmsApi.get.mockResolvedValue(populatedTopic);
           result = await cmsService.getPage(ESTABLISHMENT_NAME, TAG_ID, 2);
         });
         it('looks up the tag', () => {
@@ -778,13 +791,13 @@ describe('cms Service', () => {
         it('returns the tag', async () => {
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             1,
-            new SecondaryTagPageQuery(ESTABLISHMENT_NAME, uuid, 2),
+            new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
           expect(cmsApi.get).toHaveBeenNthCalledWith(
             2,
-            new SecondaryTagHeaderPageQuery(location),
+            new TopicHeaderPageQuery(location),
           );
-          expect(result).toBe(populatedSecondaryTag.relatedContent);
+          expect(result).toBe(populatedTopic.hubContentData);
         });
       });
     });
@@ -816,12 +829,12 @@ describe('cms Service', () => {
           expect(cmsApi.get).toHaveBeenCalledWith(
             new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 2),
           );
-          expect(result).toBe(populatedSeries.relatedContent);
+          expect(result).toBe(populatedSeries.hubContentData);
         });
       });
       describe('which has no related content', () => {
         let result;
-        const populatedSeries = { relatedContent: [] };
+        const populatedSeries = { hubContentData: [] };
         beforeEach(async () => {
           cmsApi.get.mockResolvedValueOnce({});
           cmsApi.get.mockResolvedValue(populatedSeries);
@@ -842,7 +855,7 @@ describe('cms Service', () => {
             2,
             new SeriesHeaderPageQuery(location),
           );
-          expect(result).toBe(populatedSeries.relatedContent);
+          expect(result).toBe(populatedSeries.hubContentData);
         });
       });
     });
@@ -927,6 +940,156 @@ describe('cms Service', () => {
     it('Source to have been called correctly', async () => {
       await cmsService.getLink(ESTABLISHMENT_NAME);
       expect(cmsApi.get).toHaveBeenCalledWith(new LinkPageQuery(LOCATION));
+    });
+  });
+
+  describe('getRecentlyAddedContent', () => {
+    const resObject = {
+      data: 'vegan bacon',
+    };
+    let result;
+
+    beforeEach(async () => {
+      cmsApi.get.mockResolvedValueOnce(resObject);
+      jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
+      result = await cmsService.getRecentlyAddedContent(
+        ESTABLISHMENT_NAME,
+        1,
+        40,
+      );
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('should call cmsApi.get once', async () => {
+      expect(cmsApi.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call cmsApi.get with the RecentlyAddedContentQuery', async () => {
+      expect(cmsApi.get).toHaveBeenCalledWith(
+        new RecentlyAddedContentQuery(
+          ESTABLISHMENT_NAME,
+          1,
+          40,
+          getOffsetUnixTime(14),
+        ),
+      );
+    });
+
+    it('should return a result when cmsApi.get is called', async () => {
+      expect(result).toBe(resObject);
+    });
+  });
+
+  describe('getRecentlyAddedHomepageContent', () => {
+    const resObject = {
+      data: 'vegan sausage',
+    };
+    let result;
+
+    beforeEach(async () => {
+      cmsApi.get.mockResolvedValueOnce(resObject);
+      result = await cmsService.getRecentlyAddedHomepageContent(
+        ESTABLISHMENT_NAME,
+      );
+    });
+
+    it('should call cmsApi.get once', async () => {
+      expect(cmsApi.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call cmsApi.get with the RecentlyAddedContentQuery', async () => {
+      expect(cmsApi.get).toHaveBeenCalledWith(
+        new RecentlyAddedHomepageContentQuery(ESTABLISHMENT_NAME),
+      );
+    });
+
+    it('should return a result when cmsApi.get is called', async () => {
+      expect(result).toBe(resObject);
+    });
+  });
+
+  describe('getHomepageContent', () => {
+    const resObj = {
+      featuredContent: {
+        data: [
+          {
+            contentType: 'video',
+            contentUrl: '/content/111111',
+            displayUrl: undefined,
+            externalContent: false,
+            id: 111111,
+            image: {
+              alt: 'Alt text',
+              url: 'small-image-url',
+            },
+            summary: 'A description',
+            title: 'A title',
+          },
+          {
+            contentType: 'radio',
+            contentUrl: '/content/222222',
+            displayUrl: undefined,
+            externalContent: false,
+            id: 222222,
+            image: {
+              alt: 'Alt text',
+              url: 'small-image-url',
+            },
+            summary: 'A description',
+            title: 'A title',
+          },
+        ],
+      },
+    };
+
+    let result;
+
+    beforeEach(async () => {
+      cmsApi.get.mockResolvedValueOnce([resObj]);
+      result = await cmsService.getHomepageContent(ESTABLISHMENT_NAME, 4);
+    });
+
+    it('should call cmsApi.get once', async () => {
+      expect(cmsApi.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call cmsApi.get with the HomepageContentQuery', async () => {
+      expect(cmsApi.get).toHaveBeenCalledWith(
+        new HomepageContentQuery(ESTABLISHMENT_NAME, 4),
+      );
+    });
+
+    it('should return a result when cmsApi.get is called', async () => {
+      expect(result).toBe(resObj);
+    });
+  });
+
+  describe('getExploreContent', () => {
+    const resObject = {
+      data: 'some data',
+    };
+    let result;
+
+    beforeEach(async () => {
+      cmsApi.get.mockResolvedValueOnce(resObject);
+      result = await cmsService.getExploreContent(ESTABLISHMENT_NAME, 4);
+    });
+
+    it('should call cmsApi.get once', async () => {
+      expect(cmsApi.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call cmsApi.get with the ExploreContentQuery', async () => {
+      expect(cmsApi.get).toHaveBeenCalledWith(
+        new ExploreContentQuery(ESTABLISHMENT_NAME, 4),
+      );
+    });
+
+    it('should return a result when cmsApi.get is called', async () => {
+      expect(result).toBe(resObject);
     });
   });
 });

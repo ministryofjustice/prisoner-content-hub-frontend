@@ -5,29 +5,31 @@
 {% from "../try-again/macro.njk" import tryAgainWithMessage %}
 {% from "../prompt-to-sign-in/macro.njk" import promptToSignIn %}
 
-{% if not isLoggedIn %}
-  {{ promptToSignIn(returnUrl) }}
-{% else %}
-  {{ personalTransactionsHelp() }}
-  {{ personalTransactionsTabs(data.selected, data.accountTypes, data.shouldShowDamageObligationsTab) }}
-  <div class="govuk-tabs__panel">
-    <ul class="transaction__balances">
-      <li>
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Current balance</h2>
-        {% if data.balance.userNotification %}
-          {{ tryAgainWithMessage(data.balance.userNotification, returnUrl) }}
-        {% elif data.balance.amount %}
-          <p  data-hj-suppress>{{ data.balance.amount }}</P>
-        {% endif %}
-      </li>
-    </ul>
-    {% if data.transactions.userNotification %}
-      {{ tryAgainWithMessage(data.transactions.userNotification, returnUrl) }}
-    {% else %}
-      {{ personalTransactionsDateSelection(data.dateSelection, data.selected) }}
-      <div id="transactions" data-hj-suppress>
-        {{ govukTable({ head: data.transactions.head, rows: data.transactions.rows }) }}
-      </div>
-    {% endif %}
-  </div>
-{% endif %}
+<div class="govuk-body">
+  {% if not isLoggedIn %}
+    {{ promptToSignIn(returnUrl) }}
+  {% else %}
+    {{ personalTransactionsHelp() }}
+    {{ personalTransactionsTabs(data.selected, data.accountTypes, data.shouldShowDamageObligationsTab) }}
+    <div class="govuk-tabs__panel">
+      <ul class="transaction__balances">
+        <li>
+          <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Current balance</h2>
+          {% if data.balance.userNotification %}
+            {{ tryAgainWithMessage(data.balance.userNotification, returnUrl) }}
+          {% elif data.balance.amount %}
+            <p class="govuk-body govuk-!-margin-top-5" data-hj-suppress>{{ data.balance.amount }}</P>
+          {% endif %}
+        </li>
+      </ul>
+      {% if data.transactions.userNotification %}
+        {{ tryAgainWithMessage(data.transactions.userNotification, returnUrl) }}
+      {% else %}
+        {{ personalTransactionsDateSelection(data.dateSelection, data.selected) }}
+        <div id="transactions" data-hj-suppress>
+          {{ govukTable({ head: data.transactions.head, rows: data.transactions.rows }) }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>

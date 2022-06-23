@@ -8,21 +8,28 @@
       {% endif %}
       <h3 class="govuk-heading-m" style="">{{params.title}}</h3>
     </div>
-    <div>
-      {% if params.contentType === "video" %}
-        <p class="content-link--video">Watch</p>
-      {% elif params.contentType === "radio" %}
-        <p class="content-link--audio">Listen</p>
-      {% elif params.contentType === "external_link" %}
-        <p class="content-link--external">{{ params.displayUrl }}</p>
-      {% elif params.contentType === "internal_link" %}
-      <p class="content-link--internal"></p>
-      {% elif params.contentType === "series" or params.contentType === "category_bottom" %}
-        <p class="content-link--collection">Collection</p>
-      {% elif params.contentType === "category" %}
-      {% else %}
-        <p class="content-link--article">Read</p>
-      {% endif %}
+    <div class="govuk-grid-column-full govuk-hub-contentTileSmall">
+      <div>
+        {% if params.contentType === "video" %}
+          <p class="content-link--video">Watch</p>
+        {% elif params.contentType === "radio" %}
+          <p class="content-link--audio">Listen</p>
+        {% elif params.contentType === "external_link" %}
+          <p class="content-link--external">{{ params.displayUrl }}</p>
+        {% elif params.contentType === "internal_link" %}
+        <p class="content-link--internal"></p>
+        {% elif params.contentType === "series" or params.contentType === "category_bottom" %}
+          <p class="content-link--collection">Collection</p>
+        {% elif params.contentType === "category" %}
+        {% else %}
+          <p class="content-link--article">Read</p>
+        {% endif %}
+      </div>
+      <div>
+        {% if params.isNew %}
+          <strong class="govuk-tag govuk-tag--green">NEW</strong>
+        {% endif %} 
+      </div>
     </div>
   </a>
 {% else %}

@@ -1,0 +1,73 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../components/personal-schedule-today/macro.njk" import personalScheduleToday %}
+{% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
+{% from "../components/hub-content-block/macro.njk" import hubContentBlock %}
+
+{% extends "../components/basicTemplate.njk" %}
+
+{% set blackBackground = true %}
+
+{% block pageNavigation %}
+    {{ govukButton({
+      text: "Browse all topics",
+      href: "/topics",
+      isStartButton: true,
+      classes: "govuk-!-margin-2"
+    }) }}
+{% endblock %}
+
+{% block title %}
+  {% if establishmentName != 'berwyn' %}
+    <div class="govuk-width-container home-navigation govuk-!-margin-top-3">
+      {{personalScheduleToday({ data: currentEvents, authReturnUrl: returnUrl }, userName if isSignedIn else '')}}
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <h2 class="govuk-heading-l govuk-hub-white-heading govuk-!-margin-top-5 govuk-!-margin-bottom-6 hub-horizontal-rule-title">
+    <span class="black-background govuk-!-padding-right-2">Updates</span>
+  </h2>
+  <div class="govuk-grid-row govuk-!-margin-0 govuk-body">
+    <div class="govuk-grid-column-three-quarters govuk-!-padding-0">
+      <div class="govuk-grid-row govuk-!-margin-0">
+        <div class="govuk-grid-column-one-half govuk-!-padding-0">
+          <!-- 450px column, large update link -->
+          Large update link
+        </div>
+        <div class="govuk-grid-column-one-half govuk-!-padding-0">
+          <!-- 450px column, small update links -->
+          Small update links
+        </div>
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-quarter govuk-!-padding-0">
+      <!-- 300px column, updates small guide links -->
+      Guide links
+    </div>
+  </div>
+  <hr class="govuk-!-margin-top-5 govuk-!-margin-bottom-5">
+
+  {{ hubContentBlock({
+    title: 'Recently added',
+    viewAllUrl: '/recently-added',
+    id: 'recentlyAdded',
+    data: recentlyAddedHomepageContent
+  }) }}
+
+  {{ hubContentBlock({
+    title: 'Featured',
+    id: 'featuredContent',
+    data: featuredContent
+  }) }}
+
+  {{ hubContentBlock({
+    title: 'Explore the Hub',
+    id: 'exploreContent',
+    data: exploreContent,
+    hideHorizontalRule: true
+  }) }}
+{% endblock %}
+
+{% block feedback %}
+{% endblock %}

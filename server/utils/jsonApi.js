@@ -1,3 +1,5 @@
+const { differenceInDays } = require('date-fns');
+
 const getPagination = (page, size = 40) =>
   `page[offset]=${Math.max(page - 1, 0) * size}&page[limit]=${size}`;
 
@@ -11,49 +13,25 @@ const getImage = (data, type) => {
 
 const getLargeImage = data => getImage(data, 'tile_large');
 
+const isNew = fromDate => differenceInDays(new Date(), new Date(fromDate)) <= 2;
+
 const getTile = (item, imageSize) => {
   const { contentType, externalContent } = typeFrom(item);
   return {
-    id: item?.drupalInternal_Nid,
+    id: item?.drupalInternal_Nid || item?.drupalInternal_Tid,
     contentType,
     externalContent,
-    title: item?.title,
-    summary: item?.fieldMojDescription?.summary,
+    title: item?.title || item?.name,
+    summary: item?.fieldMojDescription?.summary || item?.description?.processed,
     contentUrl: item?.path?.alias,
     displayUrl: item?.fieldDisplayUrl,
     image: getImage(item?.fieldMojThumbnailImage, imageSize),
+    isNew: isNew(item?.publishedAt),
   };
 };
 
-const getCollectionTile = (item, imageSize) => {
-  const { contentType, externalContent } = typeFrom(item);
-  return {
-    id: item?.drupalInternal_Tid,
-    contentType,
-    externalContent,
-    title: item?.name,
-    summary: item?.description?.processed,
-    contentUrl: item?.path?.alias,
-    displayUrl: item?.fieldDisplayUrl,
-    image: getImage(item?.fieldFeaturedImage, imageSize),
-  };
-};
-
-const isTag = ({ type }) =>
-  [
-    'taxonomy_term--series',
-    'taxonomy_term--moj_categories',
-    'taxonomy_term--tags',
-  ].includes(type);
-
-const getSmallTile = item =>
-  isTag(item)
-    ? getCollectionTile(item, 'tile_small')
-    : getTile(item, 'tile_small');
-const getLargeTile = item =>
-  isTag(item)
-    ? getCollectionTile(item, 'tile_large')
-    : getTile(item, 'tile_large');
+const getSmallTile = item => getTile(item, 'tile_small');
+const getLargeTile = item => getTile(item, 'tile_large');
 
 const getCategoryId = categories => {
   if (!categories || (Array.isArray(categories) && categories.length === 0))
@@ -71,7 +49,7 @@ const getCategoryId = categories => {
   };
 };
 
-const buildSecondaryTags = (arr = []) =>
+const buildFieldTopics = (arr = []) =>
   arr.map(({ drupalInternal_Tid: id, name, id: uuid }) => ({
     id,
     uuid,
@@ -119,8 +97,8 @@ const HUB_CONTENT_TYPES = {
           contentType: 'category',
           externalContent: false,
         },
-  tags: () => ({
-    contentType: 'tags',
+  topics: () => ({
+    contentType: 'topic',
     externalContent: false,
   }),
 };
@@ -151,8 +129,9 @@ module.exports = {
   getLargeTile,
   getLargeImage,
   getCategoryId,
-  buildSecondaryTags,
+  buildFieldTopics,
   typeFrom,
   isBottomCategory,
   mapBreadcrumbs,
+  isNew,
 };

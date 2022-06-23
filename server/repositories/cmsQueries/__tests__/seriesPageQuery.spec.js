@@ -8,7 +8,7 @@ describe('Series page query', () => {
   describe('path', () => {
     it('should create correct path', async () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/${ESTABLISHMENTNAME}/node?filter%5Bfield_moj_series.id%5D=${UUID}&include=field_moj_thumbnail_image%2Cfield_moj_series.field_featured_image&sort=series_sort_value%2Ccreated&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath&fields%5Bnode--moj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath&fields%5Bfile--file%5D=image_style_uri&fields%5Btaxonomy_term--series%5D=name%2Cdescription%2Cdrupal_internal__tid%2Cfield_featured_image%2Cpath%2Cfield_exclude_feedback%2Cbreadcrumbs&${getPagination(
+        `/jsonapi/prison/${ESTABLISHMENTNAME}/node?filter%5Bfield_moj_series.id%5D=${UUID}&include=field_moj_thumbnail_image%2Cfield_moj_series.field_moj_thumbnail_image&sort=series_sort_value%2Ccreated&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath%2Cpublished_at&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath%2Cpublished_at&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath%2Cpublished_at&fields%5Bnode--moj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath%2Cpublished_at&fields%5Bfile--file%5D=image_style_uri&fields%5Btaxonomy_term--series%5D=name%2Cdescription%2Cdrupal_internal__tid%2Cfield_moj_thumbnail_image%2Cpath%2Cfield_exclude_feedback%2Cbreadcrumbs&${getPagination(
           2,
         )}`,
       );
@@ -24,7 +24,7 @@ describe('Series page query', () => {
       breadcrumbs: [{ uri: 'parent1Url', title: 'parent1' }],
       description: { processed: `description${UUID}` },
       fieldExcludeFeedback: undefined,
-      fieldFeaturedImage: {
+      fieldMojThumbnailImage: {
         imageStyleUri: [{ tile_large: `tile_large${UUID}` }],
         resourceIdObjMeta: { alt: `alt${UUID}` },
       },
@@ -53,6 +53,7 @@ describe('Series page query', () => {
         url: `tile_small${id}`,
         alt: `alt${id}`,
       },
+      isNew: false,
       displayUrl: undefined,
       externalContent: false,
       contentType: 'video',
@@ -77,12 +78,13 @@ describe('Series page query', () => {
           url: `tile_large${UUID}`,
           alt: `alt${UUID}`,
         },
+        isNew: false,
         displayUrl: undefined,
         excludeFeedback: undefined,
         externalContent: false,
         contentUrl: `/tags/${UUID}`,
-        relatedContent: {
-          contentType: 'default',
+        hubContentData: {
+          contentType: 'series',
           isLastPage: false,
           data: [
             createTransformedContent('A'),
@@ -109,12 +111,13 @@ describe('Series page query', () => {
           url: `tile_large${UUID}`,
           alt: `alt${UUID}`,
         },
+        isNew: false,
         displayUrl: undefined,
         excludeFeedback: undefined,
         externalContent: false,
         contentUrl: `/tags/${UUID}`,
-        relatedContent: {
-          contentType: 'default',
+        hubContentData: {
+          contentType: 'series',
           isLastPage: true,
           data: [createTransformedContent('A')],
         },

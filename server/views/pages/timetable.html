@@ -1,52 +1,18 @@
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "../components/personal-schedule-one-day/macro.njk" import personalScheduleOneDay %}
 {% from "../components/personal-schedule-nav/macro.njk" import personalScheduleNav %}
-{% from "../components/user-details/macro.njk" import userDetails %}
-{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
 
-{% extends "../components/template.njk" %}
+{% extends "../components/basicTemplate.njk" %}
 
-{% block pageTitle %}
-  {{ title }}
-{% endblock %}
-
-{% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block header %}
-  <div class="govuk-width-container govuk-body timetable-header">
-    <h1>{{ title }}</h1>
+{% block title %}
+  <div class="govuk-width-container govuk-body hub-header timetable-header">
+    <h1 class="govuk-heading-l" id="title">{{ title }}</h1>
     {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }, isSignedIn)}}
   </div>
 {% endblock %}
 
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block timetable %}
+{% block content %}
   {{personalScheduleOneDay({ data: events | first, authReturnUrl:  returnUrl }, isSignedIn)}}
   <div class="govuk-width-container govuk-body timetable-header timetable-footer">
     {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }, isSignedIn) }}
   </div>
-  <div class="govuk-width-container govuk-body">
-    <div class="govuk-hub-article-feedback">
-      {{ hubFeedbackWidget({
-        title: title,
-        heading: 'Tell us what you think:',
-        contentType: 'TIMETABLE',
-        feedbackId: feedbackId
-      })}}
-    </div>
-  </div>
-{% endblock %}
-
-{% block bodyEnd %}
-  <script src="/public/all.js"></script>
-  <script>
-    window
-      .GOVUKFrontend
-      .initAll();
-  </script>
 {% endblock %}

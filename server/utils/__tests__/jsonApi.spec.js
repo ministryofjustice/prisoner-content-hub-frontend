@@ -4,9 +4,10 @@ const {
   getLargeTile,
   getSmallTile,
   getCategoryId,
-  buildSecondaryTags,
+  buildFieldTopics,
   typeFrom,
   isBottomCategory,
+  isNew,
 } = require('../jsonApi');
 
 const LARGE_TILE = 'enormous.jpg';
@@ -90,6 +91,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -103,6 +105,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: true,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -122,6 +125,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: true,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -141,6 +145,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -156,6 +161,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: false,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -169,6 +175,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: true,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -188,6 +195,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: true,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
 
@@ -207,6 +215,7 @@ describe('getting tile data', () => {
           displayUrl: 'link',
           externalContent: false,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -217,7 +226,7 @@ describe('getting tile data', () => {
       type: 'taxonomy_term--series',
       name: 'title',
       description: { processed: 'summary' },
-      fieldFeaturedImage: {
+      fieldMojThumbnailImage: {
         imageStyleUri: [
           {
             tile_small: 'tile_small',
@@ -238,6 +247,7 @@ describe('getting tile data', () => {
           contentUrl: '/tags/42',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -252,6 +262,7 @@ describe('getting tile data', () => {
           contentUrl: '/tags/42',
           externalContent: false,
           image: { url: 'tile_large', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -262,7 +273,7 @@ describe('getting tile data', () => {
       type: 'taxonomy_term--moj_categories',
       name: 'title',
       description: { processed: 'summary' },
-      fieldFeaturedImage: {
+      fieldMojThumbnailImage: {
         imageStyleUri: [
           {
             tile_small: 'tile_small',
@@ -287,6 +298,7 @@ describe('getting tile data', () => {
           contentUrl: '/tags/42',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
       it('should return the small tile data for a bottom category', () => {
@@ -305,6 +317,7 @@ describe('getting tile data', () => {
           contentUrl: '/tags/42',
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
         });
       });
     });
@@ -327,7 +340,7 @@ describe('getCategoryId', () => {
   });
 });
 
-describe('buildSecondaryTags', () => {
+describe('buildFieldTopics', () => {
   const ID1 = '42';
   const UUID1 = '418';
   const NAME1 = 'Chip';
@@ -339,7 +352,7 @@ describe('buildSecondaryTags', () => {
     { drupalInternal_Tid: ID2, id: UUID2, name: NAME2 },
     { drupalInternal_Tid: ID1, id: UUID2, name: NAME1 },
   ];
-  const result = buildSecondaryTags(categoryData);
+  const result = buildFieldTopics(categoryData);
   it('should return the category ids', () => {
     expect(result).toEqual([
       { id: ID1, uuid: UUID1, name: NAME1 },
@@ -389,9 +402,9 @@ describe('typeFrom', () => {
     });
   });
 
-  it('should return the correct type for a secondary tag', () => {
-    expect(typeFrom({ type: 'tags' })).toStrictEqual({
-      contentType: 'tags',
+  it('should return the correct type for a topic', () => {
+    expect(typeFrom({ type: 'topics' })).toStrictEqual({
+      contentType: 'topic',
       externalContent: false,
     });
   });
@@ -453,6 +466,7 @@ describe('with content tile data', () => {
         displayUrl: 'link',
         externalContent: false,
         image: { url: 'tile_small', alt: 'alt' },
+        isNew: false,
       });
     });
 
@@ -466,6 +480,7 @@ describe('with content tile data', () => {
         displayUrl: 'link',
         externalContent: true,
         image: { url: 'tile_small', alt: 'alt' },
+        isNew: false,
       });
     });
 
@@ -485,6 +500,7 @@ describe('with content tile data', () => {
         displayUrl: 'link',
         externalContent: false,
         image: { url: 'tile_small', alt: 'alt' },
+        isNew: false,
       });
     });
 
@@ -504,6 +520,7 @@ describe('with content tile data', () => {
         displayUrl: 'link',
         externalContent: true,
         image: { url: 'tile_small', alt: 'alt' },
+        isNew: false,
       });
     });
   });
@@ -524,5 +541,19 @@ describe('with content tile data', () => {
     it('should return the correct pagination for page three', () => {
       expect(getPagination(3)).toEqual('page[offset]=80&page[limit]=40');
     });
+  });
+});
+
+describe('isNew', () => {
+  it('should return true when the date provided is within the past 2 days', () => {
+    expect(isNew(new Date())).toBe(true);
+  });
+
+  it('should return false when the date provided is more than 2 days in the past', () => {
+    expect(isNew('2000-01-01T00:00:00.000Z')).toBe(false);
+  });
+
+  it('should return false if an invalid date value is provided', () => {
+    expect(isNew('NOT_A_VALID_DATE')).toBe(false);
   });
 });

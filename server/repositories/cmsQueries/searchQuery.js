@@ -16,8 +16,8 @@ class SearchQuery {
   transformEach(item) {
     return {
       title: item.title,
-      summary: item.fieldMojDescription?.summary,
-      url: `/content/${item.drupalInternal_Nid}`,
+      summary: item.fieldMojDescription?.summary || 'No summary available',
+      url: item.path?.alias || `/content/${item.drupalInternal_Nid}`,
     };
   }
 }

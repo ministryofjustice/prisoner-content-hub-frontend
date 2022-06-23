@@ -29,7 +29,8 @@ const createSearchRouter = ({ searchService, analyticsService }) => {
           postscript: false,
           detailsType: 'small',
         },
-        data: results,
+        results,
+        data: { contentType: 'search' },
         query,
       });
     } catch (error) {

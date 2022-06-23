@@ -1,22 +1,12 @@
-{% from "../components/next-episodes-content/macro.njk" import nextEpisodesContent %}
-{% from "../components/suggested-content/macro.njk" import hubSuggestedContent %}
 {% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "../components/user-details/macro.njk" import userDetails %}
+{% extends "../components/basicTemplate.njk" %}
 
-{% extends "../components/template.njk" %}
-
-{% block pageTitle %}
-  {{ data.title }}
-{% endblock %}
+{% set blackBackground = true %}
 
 {% block head %}
   <link href="/public/video-js.min.css" rel="stylesheet"/>
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
+  {{ super() }}
 {% endblock %}
-
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
 
 {% block content %}
   <div class="govuk-hub-media-player">
@@ -55,26 +45,31 @@
     >
       <source src="{{ data.media }}" type="audio/ogg"/>
     </audio>
-    <div class="govuk-hub-on-black-feedback">
-      {{ hubFeedbackWidget({
-        heading: '',
-        contentId: data.id,
-        title: data.title,
-        contentType: data.contentType,
-        series: data.seriesName,
-        feedbackId: feedbackId
-      }) }}
-    </div>
 
     <div class="govuk-hub-media-player__description">
       <div id="body" class="govuk-body">{{ data.description.sanitized | safe }}</div>
     </div>
 
+    {% if not data.excludeFeedback %}
+      {{ hubFeedbackWidget({
+        contentId: data.id,
+        title: data.title,
+        heading: '',
+        contentType: data.contentType,
+        series: data.seriesName,
+        feedbackId: feedbackId,
+        categories: data.categories.name,
+        topics: data.topics | join(',', 'name')
+      })}}
+    {% endif %}
+
   </div>
 {% endblock %}
 
+{% block feedback %}
+{% endblock %}
+
 {% block bodyEnd %}
-  <script src="/public/jquery.min.js"></script>
   <script src="/public/video.min.js"></script>
   <script src="/public/javascript/audioPlayer.js"></script>
 {% endblock %}

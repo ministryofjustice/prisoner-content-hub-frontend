@@ -16,10 +16,39 @@ describe('search query', () => {
         title: 'Prisoners in Prison',
         drupalInternal_Nid: 1234,
         fieldMojDescription: { summary: 'Lived experiences in prison' },
+        path: {
+          alias: '/content/2345',
+        },
       };
 
       expect(query.transformEach(item)).toStrictEqual({
         summary: 'Lived experiences in prison',
+        title: 'Prisoners in Prison',
+        url: '/content/2345',
+      });
+    });
+
+    it('should create correct structure when missing alias', async () => {
+      const item = {
+        title: 'Prisoners in Prison',
+        drupalInternal_Nid: 1234,
+        fieldMojDescription: { summary: 'Lived experiences in prison' },
+      };
+
+      expect(query.transformEach(item)).toStrictEqual({
+        summary: 'Lived experiences in prison',
+        title: 'Prisoners in Prison',
+        url: '/content/1234',
+      });
+    });
+    it('should handle items without a summary', async () => {
+      const item = {
+        title: 'Prisoners in Prison',
+        drupalInternal_Nid: 1234,
+      };
+
+      expect(query.transformEach(item)).toStrictEqual({
+        summary: 'No summary available',
         title: 'Prisoners in Prison',
         url: '/content/1234',
       });

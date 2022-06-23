@@ -7,7 +7,7 @@ function feedbackRepository(httpClient) {
     contentType,
     series,
     categories,
-    secondaryTags,
+    topics,
     sentiment,
     comment,
     date,
@@ -24,7 +24,7 @@ function feedbackRepository(httpClient) {
       establishment,
       sessionId,
       categories,
-      secondaryTags,
+      topics,
     };
 
     if (series) {

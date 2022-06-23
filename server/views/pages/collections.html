@@ -1,22 +1,11 @@
-{% from "../components/related-content/macro.njk" import hubRelatedContent %}
-{% from "../components/feedback-widget/macro.njk" import hubFeedbackWidget %}
-{% from "../components/user-details/macro.njk" import userDetails %}
+{% from "../components/hub-content-show-more/macro.njk" import hubContentShowMore %}
 
-{% extends "../components/template.njk" %}
+{% extends "../components/basicTemplate.njk" %}
 
-{% block pageTitle %}
-  {{ title }}
-{% endblock %}
+{% set blackBackground = true %}
+{% set feedbackHeading = "Tell us what you think about this page" %}
 
-{% block header %}{% endblock %}
-{% block homeNavigation %}{% endblock %}
-{% block search %}{% endblock %}
-
-{% block head %}
-  <link href="/public/stylesheets/application.css" rel="stylesheet"/>
-{% endblock %}
-
-{% block main %}
+{% block title %}
   <div id="category-{{tagId}}" class="govuk-hub-landing-page-header govuk-hub-landing-page-header--with-stripe">
     <div class="govuk-width-container">
       <div class="govuk-main-wrapper">
@@ -42,31 +31,14 @@
 {% endblock %}
 
 {% block content %}
-  {{ hubRelatedContent({
-    id: tagId,
-    data: data.relatedContent,
-    lazyLoadContent: true
-  }) }}
-
-
-  {% if not data.excludeFeedback %}
-    <div class="govuk-form-group govuk-hub-article-feedback govuk-hub-on-black-feedback">
-      {% set tagHeading %}
-        Tell us what you think about this page:
-      {% endset %}
-      {{ hubFeedbackWidget({
-        contentId: data.id,
-        heading: tagHeading,
-        title: title,
-        name: title,
-        contentType: data.contentType,
-        series: title,
-        feedbackId: feedbackId,
-        series: title if data.contentType == 'series',
-        secondaryTags: title if data.contentType == 'tags'
-      })}}
-    </div>
+  {% if data.hubContentData|length %}
+    {{ hubContentShowMore({
+      id: tagId,
+      data: data.hubContentData,
+      lazyLoadContent: true
+    }) }}
   {% endif %}
+  <hr>
 {% endblock %}
 {% block bodyEnd %}
 <script src="/public/generated/templates.js"></script>
