@@ -18,6 +18,8 @@ describe('GET /', () => {
   let app;
   let hubContent;
   let featuredContent;
+  let keyInfo;
+  let largeUpdateTile;
 
   beforeEach(() => {
     featuredItem = {
@@ -63,6 +65,10 @@ describe('GET /', () => {
     featuredContent = {
       data: hubContent,
     };
+    keyInfo = {
+      data: hubContent,
+    };
+    [largeUpdateTile] = hubContent;
 
     cmsService = {
       getHomepage: jest.fn().mockReturnValue({
@@ -79,6 +85,8 @@ describe('GET /', () => {
       }),
       getHomepageContent: jest.fn().mockResolvedValue({
         featuredContent,
+        keyInfo,
+        largeUpdateTile,
       }),
       getExploreContent: jest.fn().mockResolvedValue({
         data: hubContent,
