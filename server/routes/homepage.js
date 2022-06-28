@@ -52,7 +52,6 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
       const currentEvents = res.locals.isSignedIn
         ? await offenderService.getCurrentEvents(req.user)
         : {};
-
       res.render('pages/home-new', {
         config: {
           content: true,

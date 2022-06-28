@@ -22,6 +22,16 @@ class HomepageContentQuery {
         HomepageContentQuery.#TILE_FIELDS,
       )
 
+      .addFields(
+        'node--field_key_info_tiles',
+        HomepageContentQuery.#TILE_FIELDS,
+      )
+
+      .addFields(
+        'node--field_large_update_tile',
+        HomepageContentQuery.#TILE_FIELDS,
+      )
+
       .addFields('file--file', [
         'drupal_internal__fid',
         'id',
