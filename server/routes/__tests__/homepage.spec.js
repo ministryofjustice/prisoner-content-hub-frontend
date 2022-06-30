@@ -61,6 +61,28 @@ describe('GET /', () => {
         displayUrl: undefined,
         image: { url: 'image url', alt: 'Alt text' },
       },
+      {
+        id: 333333,
+        contentType: 'video',
+        externalContent: false,
+        title:
+          'A title that is long enough to be cropped with an ellipse added to the end',
+        summary: 'A summary',
+        contentUrl: '/content/333333',
+        displayUrl: undefined,
+        image: { url: 'image url', alt: 'Alt text' },
+      },
+      {
+        id: 444444,
+        contentType: 'video',
+        externalContent: false,
+        title:
+          'A title that is long enough to be cropped with an ellipse added to the end',
+        summary: 'A summary',
+        contentUrl: '/content/444444',
+        displayUrl: undefined,
+        image: { url: 'image url', alt: 'Alt text' },
+      },
     ];
     featuredContent = {
       data: hubContent,
@@ -485,13 +507,53 @@ describe('GET /', () => {
         });
     });
 
+    it('renders the homepage with the correct number of update key info content tiles', () =>
+      request(app)
+        .get('/new-homepage')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('#keyInfo a').length).toBe(4);
+        }));
+
+    it('Should render a html img tag in the homepage key info content tile', () =>
+      request(app)
+        .get('/new-homepage')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('#keyInfo a div div').children()[0].type).toBe('tag');
+          expect($('#keyInfo a div div').children()[0].name).toBe('img');
+        }));
+
+    it('Should render a html h3 tag in the homepage key info content tile', () =>
+      request(app)
+        .get('/new-homepage')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('#keyInfo a div div').children()[1].type).toBe('tag');
+          expect($('#keyInfo a div div').children()[1].name).toBe('h3');
+        }));
+
+    it('Should render a html h3 tag with the expected text in the homepage key info content tile', () =>
+      request(app)
+        .get('/new-homepage')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('#keyInfo a div div h3:last').text()).toBe(
+            'A title that is long enough to be cropped with an ellipse added to the end',
+          );
+        }));
+
     it('renders the homepage with the correct number of recently added content tiles', () =>
       request(app)
         .get('/new-homepage')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
-          expect($('#recentlyAdded .small-tiles a').length).toBe(2);
+          expect($('#recentlyAdded .small-tiles a').length).toBe(4);
         }));
 
     it('renders the homepage with the correct number of explore content tiles', () =>
@@ -500,7 +562,7 @@ describe('GET /', () => {
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
-          expect($('#exploreContent .small-tiles a').length).toBe(2);
+          expect($('#exploreContent .small-tiles a').length).toBe(4);
         }));
 
     it('renders the homepage with the correct number of featured content tiles', () =>
@@ -509,7 +571,7 @@ describe('GET /', () => {
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
-          expect($('#featuredContent .small-tiles a').length).toBe(2);
+          expect($('#featuredContent .small-tiles a').length).toBe(4);
         }));
 
     it('renders an error when the homepage cannot retrieve events', () => {

@@ -8,6 +8,7 @@ const {
   typeFrom,
   isBottomCategory,
   isNew,
+  cropTextWithEllipsis,
 } = require('../jsonApi');
 
 const LARGE_TILE = 'enormous.jpg';
@@ -555,5 +556,78 @@ describe('isNew', () => {
 
   it('should return false if an invalid date value is provided', () => {
     expect(isNew('NOT_A_VALID_DATE')).toBe(false);
+  });
+});
+
+describe('cropTextWithEllipsis', () => {
+  let item;
+  let outputItem;
+
+  beforeEach(() => {
+    item = {
+      id: 999999,
+      contentType: 'page',
+      externalContent: false,
+      title:
+        'A title that is long enough to be cropped with an ellipse added to the end',
+      summary: 'A summary',
+      contentUrl: '/content/999999',
+      displayUrl: undefined,
+      image: {
+        url: 'url path',
+        alt: 'Alt text',
+      },
+      isNew: false,
+    };
+
+    outputItem = {
+      id: 999999,
+      contentType: 'page',
+      externalContent: false,
+      title: 'A title that is long enough...',
+      summary: 'A summary',
+      contentUrl: '/content/999999',
+      displayUrl: undefined,
+      image: {
+        url: 'url path',
+        alt: 'Alt text',
+      },
+      isNew: false,
+    };
+  });
+
+  it("should crop the 'title' value when is longer than 30 characters and add '...' to the end of the string", () => {
+    const { title } = cropTextWithEllipsis(item, 30);
+    expect(title).toStrictEqual(outputItem.title);
+  });
+
+  it('should not crop the string mid word and only return entire words in the output', () => {
+    const { title } = cropTextWithEllipsis(item, 10);
+    expect(title).toEqual('A title...');
+  });
+
+  it('should not crop strings that are shorter than the specified number of charactors', () => {
+    const { title } = cropTextWithEllipsis(item, 75);
+    expect(title).toStrictEqual(item.title);
+  });
+
+  it("should return an item object with only the 'title' value updated", () => {
+    expect(cropTextWithEllipsis(item, 30)).toStrictEqual(outputItem);
+  });
+
+  it('should return the item provided without changes when a maxNumberOfChars value is not provided', () => {
+    expect(cropTextWithEllipsis(item)).toStrictEqual(item);
+  });
+
+  it('should throw an error with the expected message when an item object is not provided', () => {
+    expect(() => cropTextWithEllipsis(null, 30)).toThrow(
+      'An item object with the expected structure is required',
+    );
+  });
+
+  it('should throw an error with the expected message when an item object is not provided', () => {
+    expect(() => cropTextWithEllipsis({}, 30)).toThrow(
+      'An item object with the expected structure is required',
+    );
   });
 });

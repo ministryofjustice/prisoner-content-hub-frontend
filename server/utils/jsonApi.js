@@ -15,6 +15,26 @@ const getLargeImage = data => getImage(data, 'tile_large');
 
 const isNew = fromDate => differenceInDays(new Date(), new Date(fromDate)) <= 2;
 
+const cropTextWithEllipsis = (item, maxNumberOfChars) => {
+  if (!item || JSON.stringify(item) === '{}') {
+    throw new Error('An item object with the expected structure is required');
+  }
+
+  if (!maxNumberOfChars) {
+    return item;
+  }
+
+  const title =
+    item.title.length > maxNumberOfChars
+      ? `${item.title
+          .substr(0, maxNumberOfChars)
+          .match(/^.*[\w\d]+(?=[^\w\d]+[\w\d]*)/g)[0]
+          .substr(0, maxNumberOfChars - 1)}...`
+      : item.title;
+
+  return { ...item, title };
+};
+
 const getTile = (item, imageSize) => {
   const { contentType, externalContent } = typeFrom(item);
   return {
@@ -134,4 +154,5 @@ module.exports = {
   isBottomCategory,
   mapBreadcrumbs,
   isNew,
+  cropTextWithEllipsis,
 };

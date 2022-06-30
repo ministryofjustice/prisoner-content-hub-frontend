@@ -87,7 +87,8 @@
 .home-content > :first-child,
 .home-content > :last-child,
 .home-content__four-items > a,
-.tags-content__four-items > a {
+.tags-content__four-items > a,
+.key-info-item {
   position: relative;
   transition: transform 0.5s ease;
 }
@@ -110,7 +111,9 @@
 }
 
 .home-content > a:hover,
-.home-content > a:focus {
+.home-content > a:focus,
+.key-info-item:hover,
+.key-info-item:focus {
   @include scale-tile;
   outline: none;
   @include tile-shadow;
@@ -272,4 +275,23 @@
   border-bottom: 1px solid govuk-colour('white');
   line-height: 0.1em;
   width: 100%;
+}
+
+.key-info-item {
+  display: block;
+
+  .key-info-item-container {
+    height: 90px;
+    background-color: $real-dark-grey;
+    overflow: hidden;
+  }
+
+  .govuk-heading-s {
+    color: govuk-colour('white');
+  }
+
+  img {
+    width: 100%;
+    height: 90px;
+  }
 }

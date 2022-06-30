@@ -1,0 +1,35 @@
+{% for item in params.data %}
+  <a data-featured-tile-id="{{item.id}}" 
+    data-featured-id="{{item.id}}" 
+    data-featured-title="{{ item.title }}" 
+    href="{{item.contentUrl}}" 
+    {% if item.externalContent %}target="_blank"{% endif %}
+    class="key-info-item">
+
+    <div class="govuk-grid-row
+                key-info-item-container
+                govuk-!-margin-bottom-2">
+
+      <div class="govuk-grid-column-one-half 
+                  govuk-!-padding-0
+                  govuk-!-margin-0">
+        {% if item.image.url %}
+          <img src="{{item.image.url}}" 
+               alt="{{item.image.alt}}">
+        {% else %}
+          <img src="/public/images/default_key_info_item_hub_logo.png"
+               alt="logo">
+        {% endif %}
+      </div>
+
+      <div class="govuk-grid-column-one-half
+                  govuk-!-padding-top-1
+                  govuk-!-padding-bottom-1">
+          <h3 class="govuk-!-font-size-19
+                     govuk-!-margin-top-0
+                     govuk-!-margin-bottom-0">{{item.title}}</h3>
+      </div>
+
+    </div>
+  </a>
+{% endfor %}
