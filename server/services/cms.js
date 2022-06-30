@@ -43,6 +43,9 @@ const {
   HomepageContentQuery,
 } = require('../repositories/cmsQueries/homepageContentQuery');
 const {
+  HomepageUpdatesContentQuery,
+} = require('../repositories/cmsQueries/homepageUpdatesContentQuery');
+const {
   ExploreContentQuery,
 } = require('../repositories/cmsQueries/exploreContentQuery');
 
@@ -221,6 +224,13 @@ class CmsService {
       new HomepageContentQuery(establishmentName),
     );
     return homepageContent[0];
+  }
+
+  async getUpdatesContent(establishmentName, page = 1, pageLimit = 5) {
+    const updatesContent = await this.#cmsApi.get(
+      new HomepageUpdatesContentQuery(establishmentName, page, pageLimit),
+    );
+    return updatesContent;
   }
 
   async getExploreContent(establishmentName) {

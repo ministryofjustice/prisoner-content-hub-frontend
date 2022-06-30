@@ -4,11 +4,7 @@
     data-featured-title="{{ item.title }}" 
     href="{{item.contentUrl}}" 
     {% if item.externalContent %}target="_blank"{% endif %}
-    class="key-info-item">
-
-    <div class="govuk-grid-row
-                key-info-item-container
-                govuk-!-margin-bottom-2">
+    class="key-info-item govuk-grid-row govuk-!-margin-bottom-2">
 
       <div class="govuk-grid-column-one-half 
                   govuk-!-padding-0
@@ -30,6 +26,5 @@
                     govuk-!-margin-bottom-0">{{item.title}}</h3>
       </div>
 
-    </div>
   </a>
 {% endfor %}

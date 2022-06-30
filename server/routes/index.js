@@ -16,6 +16,7 @@ const { createSearchRouter } = require('./search');
 const { createNprRouter } = require('./npr');
 const { createHelpRouter } = require('./help');
 const { createRecentlyAddedContentRouter } = require('./recentlyAdded');
+const { createUpdatesContentRouter } = require('./updates');
 const createPrimaryNavigationMiddleware = require('../middleware/primaryNavigationMiddleware');
 const retrieveTopicList = require('../middleware/retrieveTopicList');
 
@@ -48,6 +49,7 @@ module.exports = (
       '/games',
       '^/search/?$',
       '/recently-added',
+      '/updates',
       '/new-homepage',
     ],
     [
@@ -117,6 +119,8 @@ module.exports = (
     '/recently-added',
     createRecentlyAddedContentRouter({ cmsService }),
   );
+
+  router.use('/updates', createUpdatesContentRouter({ cmsService }));
 
   router.use('*', (req, res) => {
     res.status(404);

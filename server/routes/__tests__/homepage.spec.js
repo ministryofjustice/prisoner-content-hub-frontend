@@ -50,6 +50,7 @@ describe('GET /', () => {
         contentUrl: '/content/15826',
         displayUrl: undefined,
         image: { url: 'image url', alt: 'Alt text' },
+        publishedAt: 'Monday 1st November',
       },
       {
         id: 15825,
@@ -60,6 +61,7 @@ describe('GET /', () => {
         contentUrl: '/content/15825',
         displayUrl: undefined,
         image: { url: 'image url', alt: 'Alt text' },
+        publishedAt: 'Wednesday 27th March',
       },
       {
         id: 333333,
@@ -71,6 +73,7 @@ describe('GET /', () => {
         contentUrl: '/content/333333',
         displayUrl: undefined,
         image: { url: 'image url', alt: 'Alt text' },
+        publishedAt: 'Tuesday 23rd August',
       },
       {
         id: 444444,
@@ -82,6 +85,7 @@ describe('GET /', () => {
         contentUrl: '/content/444444',
         displayUrl: undefined,
         image: { url: 'image url', alt: 'Alt text' },
+        publishedAt: 'Monday 17th October',
       },
     ];
     featuredContent = {
@@ -103,7 +107,7 @@ describe('GET /', () => {
         { linkText: 'bar', href: '/content/bar' },
       ]),
       getRecentlyAddedHomepageContent: jest.fn().mockResolvedValue({
-        data: hubContent,
+        data: [...hubContent],
       }),
       getHomepageContent: jest.fn().mockResolvedValue({
         featuredContent,
@@ -111,8 +115,12 @@ describe('GET /', () => {
         largeUpdateTile,
       }),
       getExploreContent: jest.fn().mockResolvedValue({
-        data: hubContent,
+        data: [...hubContent],
         isLastPage: true,
+      }),
+      getUpdatesContent: jest.fn().mockResolvedValue({
+        largeUpdateTileDefault: hubContent[0],
+        updatesContent: [...hubContent],
       }),
     };
   });
@@ -454,98 +462,213 @@ describe('GET /', () => {
           expect($('#search-wrapper').length).toBe(1);
         }));
 
-    it('renders the homepage events for today', () => {
-      offenderService.getCurrentEvents.mockResolvedValue(testEvents);
+    describe('timetable events', () => {
+      it('renders the homepage events for today', () => {
+        offenderService.getCurrentEvents.mockResolvedValue(testEvents);
 
-      return request(app)
-        .get('/new-homepage')
-        .then(response => {
-          const $ = cheerio.load(response.text);
-          expect($('div.todays-events').first().find('h3').text()).toBe(
-            "Today's events",
-          );
-          expect($('[data-test="event"]').length).toBe(
-            2,
-            'Correct number of events',
-          );
-        });
+        return request(app)
+          .get('/new-homepage')
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect($('div.todays-events').first().find('h3').text()).toBe(
+              "Today's events",
+            );
+            expect($('[data-test="event"]').length).toBe(
+              2,
+              'Correct number of events',
+            );
+          });
+      });
+
+      it('renders the homepage events for tomorrow', () => {
+        testEvents = { ...testEvents, isTomorrow: true };
+
+        offenderService.getCurrentEvents.mockResolvedValue(testEvents);
+
+        return request(app)
+          .get('/new-homepage')
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect($('div.todays-events').first().find('h3').text()).toBe(
+              "Tomorrow's events",
+            );
+            expect($('[data-test="event"]').length).toBe(
+              2,
+              'Correct number of events',
+            );
+          });
+      });
+
+      it('renders the homepage with no events', () => {
+        const currentEvents = {
+          events: [],
+          isTomorrow: false,
+        };
+
+        offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
+
+        return request(app)
+          .get('/')
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect($('[data-test="event"]').length).toBe(0);
+            expect($('[data-test="no-events"]').length).toBe(1);
+          });
+      });
     });
 
-    it('renders the homepage events for tomorrow', () => {
-      testEvents = { ...testEvents, isTomorrow: true };
+    describe('featured update tile', () => {
+      it('renders the homepage with the featured update tile', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect($('.govuk-hub-content-tile-featured').length).toBe(1);
+          }));
 
-      offenderService.getCurrentEvents.mockResolvedValue(testEvents);
+      it('renders the homepage with the featured update tile containing an image', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect(
+              $('.govuk-hub-content-tile-featured div').children()[0].type,
+            ).toBe('tag');
+            expect(
+              $('.govuk-hub-content-tile-featured div').children()[0].name,
+            ).toBe('img');
+          }));
 
-      return request(app)
-        .get('/new-homepage')
-        .then(response => {
-          const $ = cheerio.load(response.text);
-          expect($('div.todays-events').first().find('h3').text()).toBe(
-            "Tomorrow's events",
-          );
-          expect($('[data-test="event"]').length).toBe(
-            2,
-            'Correct number of events',
-          );
-        });
+      it('renders the homepage with the featured update tile containing a h3 title', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect(
+              $('.govuk-hub-content-tile-featured div div').children()[0].type,
+            ).toBe('tag');
+            expect(
+              $('.govuk-hub-content-tile-featured div div').children()[0].name,
+            ).toBe('h3');
+          }));
+
+      it('renders the homepage with the featured update tile containing a h3 title', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect($('.govuk-hub-content-tile-featured h3:last').text()).toBe(
+              'BBC. The Story of Maths. The Language of the Universe',
+            );
+          }));
     });
 
-    it('renders the homepage with no events', () => {
-      const currentEvents = {
-        events: [],
-        isTomorrow: false,
-      };
+    describe('updates tiles', () => {
+      it('renders the homepage with the correct number of update tiles', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect($('.govuk-hub-update-items-link').length).toBe(4);
+          }));
 
-      offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
+      it('Should render a html img tag in an update tile', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect(
+              $('.govuk-hub-update-items-link div').children()[0].type,
+            ).toBe('tag');
+            expect(
+              $('.govuk-hub-update-items-link div').children()[0].name,
+            ).toBe('img');
+          }));
 
-      return request(app)
-        .get('/')
-        .then(response => {
-          const $ = cheerio.load(response.text);
-          expect($('[data-test="event"]').length).toBe(0);
-          expect($('[data-test="no-events"]').length).toBe(1);
-        });
+      it('Should render a html h3 tag in an update tile', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect(
+              $('.govuk-hub-update-items-link_text').children()[0].type,
+            ).toBe('tag');
+            expect(
+              $('.govuk-hub-update-items-link_text').children()[0].name,
+            ).toBe('h3');
+          }));
+
+      it('Should render a html h3 tag with the published date in an update tile', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect($('.govuk-hub-update-items-link_text h3:last').text()).toBe(
+              'Monday 17th October',
+            );
+          }));
+
+      it('Should render a "View all" link in the updates section', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect($('.govuk-hub-update-items a:last').text()).toContain(
+              'View all',
+            );
+          }));
     });
 
-    it('renders the homepage with the correct number of update key info content tiles', () =>
-      request(app)
-        .get('/new-homepage')
-        .expect(200)
-        .then(response => {
-          const $ = cheerio.load(response.text);
-          expect($('#keyInfo a').length).toBe(4);
-        }));
+    describe('key info tiles', () => {
+      it('renders the homepage with the correct number of update key info content tiles', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect($('#keyInfo a').length).toBe(4);
+          }));
 
-    it('Should render a html img tag in the homepage key info content tile', () =>
-      request(app)
-        .get('/new-homepage')
-        .expect(200)
-        .then(response => {
-          const $ = cheerio.load(response.text);
-          expect($('#keyInfo a div div').children()[0].type).toBe('tag');
-          expect($('#keyInfo a div div').children()[0].name).toBe('img');
-        }));
+      it('Should render a html img tag in the homepage key info content tile', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect($('#keyInfo a div').children()[0].type).toBe('tag');
+            expect($('#keyInfo a div').children()[0].name).toBe('img');
+          }));
 
-    it('Should render a html h3 tag in the homepage key info content tile', () =>
-      request(app)
-        .get('/new-homepage')
-        .expect(200)
-        .then(response => {
-          const $ = cheerio.load(response.text);
-          expect($('#keyInfo a div div').children()[1].type).toBe('tag');
-          expect($('#keyInfo a div div').children()[1].name).toBe('h3');
-        }));
+      it('Should render a html h3 tag in the homepage key info content tile', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect($('#keyInfo a div').children()[1].type).toBe('tag');
+            expect($('#keyInfo a div').children()[1].name).toBe('h3');
+          }));
 
-    it('Should render a html h3 tag with the expected text in the homepage key info content tile', () =>
-      request(app)
-        .get('/new-homepage')
-        .expect(200)
-        .then(response => {
-          const $ = cheerio.load(response.text);
-          expect($('#keyInfo a div div h3:last').text()).toBe(
-            'A title that is long enough to be cropped with an ellipse added to the end',
-          );
-        }));
+      it('Should render a html h3 tag with the expected text in the homepage key info content tile', () =>
+        request(app)
+          .get('/new-homepage')
+          .expect(200)
+          .then(response => {
+            const $ = cheerio.load(response.text);
+            expect($('#keyInfo a div h3:last').text()).toBe(
+              'A title that is long enough to be cropped with an ellipse added to the end',
+            );
+          }));
+    });
 
     it('renders the homepage with the correct number of recently added content tiles', () =>
       request(app)
