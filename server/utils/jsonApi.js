@@ -15,13 +15,9 @@ const getLargeImage = data => getImage(data, 'tile_large');
 
 const isNew = fromDate => differenceInDays(new Date(), new Date(fromDate)) <= 2;
 
-const cropTextWithEllipsis = (item, maxNumberOfChars) => {
+const cropTextWithEllipsis = (item, maxNumberOfChars = 30) => {
   if (!item || JSON.stringify(item) === '{}') {
     throw new Error('An item object with the expected structure is required');
-  }
-
-  if (!maxNumberOfChars) {
-    return item;
   }
 
   const title =

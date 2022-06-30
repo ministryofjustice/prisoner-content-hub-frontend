@@ -581,18 +581,8 @@ describe('cropTextWithEllipsis', () => {
     };
 
     outputItem = {
-      id: 999999,
-      contentType: 'page',
-      externalContent: false,
+      ...item,
       title: 'A title that is long enough...',
-      summary: 'A summary',
-      contentUrl: '/content/999999',
-      displayUrl: undefined,
-      image: {
-        url: 'url path',
-        alt: 'Alt text',
-      },
-      isNew: false,
     };
   });
 
@@ -615,8 +605,8 @@ describe('cropTextWithEllipsis', () => {
     expect(cropTextWithEllipsis(item, 30)).toStrictEqual(outputItem);
   });
 
-  it('should return the item provided without changes when a maxNumberOfChars value is not provided', () => {
-    expect(cropTextWithEllipsis(item)).toStrictEqual(item);
+  it('should use the default value of 30 when a maxNumberOfChars value is not provided', () => {
+    expect(cropTextWithEllipsis(item)).toStrictEqual(outputItem);
   });
 
   it('should throw an error with the expected message when an item object is not provided', () => {
