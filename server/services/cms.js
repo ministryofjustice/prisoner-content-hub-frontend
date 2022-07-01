@@ -220,7 +220,6 @@ class CmsService {
     const homepageContent = await this.#cmsApi.get(
       new HomepageContentQuery(establishmentName),
     );
-
     return homepageContent[0];
   }
 

@@ -1,5 +1,9 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getSmallTile, getLargeTile } = require('../../utils/jsonApi');
+const {
+  getSmallTile,
+  getLargeTile,
+  cropTextWithEllipsis,
+} = require('../../utils/jsonApi');
 
 class HomepageContentQuery {
   static #TILE_FIELDS = [
@@ -24,11 +28,6 @@ class HomepageContentQuery {
 
       .addFields(
         'node--field_key_info_tiles',
-        HomepageContentQuery.#TILE_FIELDS,
-      )
-
-      .addFields(
-        'node--field_large_update_tile',
         HomepageContentQuery.#TILE_FIELDS,
       )
 
@@ -63,7 +62,8 @@ class HomepageContentQuery {
       keyInfo: {
         data: item.fieldKeyInfoTiles
           .filter(({ title = null, name = null }) => title || name)
-          .map(getSmallTile),
+          .map(getSmallTile)
+          .map(keyInfoItem => cropTextWithEllipsis(keyInfoItem, 30)),
       },
       largeUpdateTile: item?.fieldLargeUpdateTile
         ? getLargeTile(item.fieldLargeUpdateTile)

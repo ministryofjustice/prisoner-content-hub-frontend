@@ -2,6 +2,7 @@
 {% from "../components/personal-schedule-today/macro.njk" import personalScheduleToday %}
 {% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
 {% from "../components/hub-content-block/macro.njk" import hubContentBlock %}
+{% from "../components/key-info-items/macro.njk" import keyInfoItems %}
 
 {% extends "../components/basicTemplate.njk" %}
 
@@ -41,9 +42,10 @@
         </div>
       </div>
     </div>
-    <div class="govuk-grid-column-one-quarter govuk-!-padding-0">
-      <!-- 300px column, updates small guide links -->
-      Guide links
+    <div class="govuk-grid-column-one-quarter" id="keyInfo">
+      {% if keyInfo.data | length %}
+        {{ keyInfoItems(keyInfo) }}
+      {% endif %}
     </div>
   </div>
   <hr class="govuk-!-margin-top-5 govuk-!-margin-bottom-5">

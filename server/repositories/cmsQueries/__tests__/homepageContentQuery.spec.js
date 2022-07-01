@@ -12,7 +12,7 @@ describe('HomepageContent query', () => {
   describe('path', () => {
     it('should return correct path', () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/${ESTABLISHMENTNAME}/node/homepage?include=field_featured_tiles.field_moj_thumbnail_image%2Cfield_featured_tiles%2Cfield_large_update_tile%2Cfield_key_info_tiles&page%5Blimit%5D=4&fields%5Bnode--field_featured_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--field_key_info_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--field_large_update_tile%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bfile--file%5D=drupal_internal__fid%2Cid%2Cimage_style_uri`,
+        `/jsonapi/prison/${ESTABLISHMENTNAME}/node/homepage?include=field_featured_tiles.field_moj_thumbnail_image%2Cfield_featured_tiles%2Cfield_large_update_tile%2Cfield_key_info_tiles&page%5Blimit%5D=4&fields%5Bnode--field_featured_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--field_key_info_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bfile--file%5D=drupal_internal__fid%2Cid%2Cimage_style_uri`,
       );
     });
 
@@ -31,8 +31,10 @@ describe('HomepageContent query', () => {
     let item;
     let processedContent1;
     let processedContent2;
+    let processedContent3;
     let rawContent1;
     let rawContent2;
+    let rawContent3;
 
     beforeEach(() => {
       rawContent1 = {
@@ -82,9 +84,32 @@ describe('HomepageContent query', () => {
           },
         },
       };
+      rawContent3 = {
+        type: 'node--moj_radio_item',
+        drupalInternal_Nid: 333333,
+        title: 'A long title that will be cropped',
+        path: {
+          alias: '/content/333333',
+          pid: 333333,
+          langcode: 'en',
+        },
+        fieldMojDescription: {
+          summary: 'A description',
+        },
+        fieldMojThumbnailImage: {
+          imageStyleUri: [
+            {
+              tile_small: 'small-image-url',
+            },
+          ],
+          resourceIdObjMeta: {
+            alt: 'Alt text',
+          },
+        },
+      };
       item = {
         fieldFeaturedTiles: [rawContent1, rawContent2],
-        fieldKeyInfoTiles: [rawContent2, rawContent1],
+        fieldKeyInfoTiles: [rawContent3, rawContent2, rawContent1],
         fieldLargeUpdateTile: rawContent1,
       };
 
@@ -116,6 +141,20 @@ describe('HomepageContent query', () => {
         summary: 'A description',
         title: 'A title',
       };
+      processedContent3 = {
+        contentType: 'radio',
+        contentUrl: '/content/333333',
+        displayUrl: undefined,
+        externalContent: false,
+        id: 333333,
+        image: {
+          alt: 'Alt text',
+          url: 'small-image-url',
+        },
+        isNew: false,
+        summary: 'A description',
+        title: 'A long title that will be...',
+      };
     });
 
     it('should create the correct structure', () => {
@@ -124,7 +163,7 @@ describe('HomepageContent query', () => {
           data: [processedContent1, processedContent2],
         },
         keyInfo: {
-          data: [processedContent2, processedContent1],
+          data: [processedContent3, processedContent2, processedContent1],
         },
         largeUpdateTile: processedContent1,
       });
