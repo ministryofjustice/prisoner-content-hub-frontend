@@ -23,9 +23,9 @@ const cropTextWithEllipsis = (item, maxNumberOfChars = 30) => {
   const title =
     item.title.length > maxNumberOfChars
       ? `${item.title
-          .substr(0, maxNumberOfChars)
+          .substr(0, maxNumberOfChars - 2)
           .match(/^.*[\w\d]+(?=[^\w\d]+[\w\d]*)/g)[0]
-          .substr(0, maxNumberOfChars - 1)}...`
+          .substr(0, maxNumberOfChars - 3)}...`
       : item.title;
 
   return { ...item, title };
