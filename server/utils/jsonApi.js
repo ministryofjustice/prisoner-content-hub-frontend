@@ -23,9 +23,9 @@ const cropTextWithEllipsis = (item, maxNumberOfChars = 30) => {
   const title =
     item.title.length > maxNumberOfChars
       ? `${item.title
-          .substr(0, maxNumberOfChars - 2)
-          .match(/^.*[\w\d]+(?=[^\w\d]+[\w\d]*)/g)[0]
-          .substr(0, maxNumberOfChars - 3)}...`
+          .substr(0, maxNumberOfChars - 2) // - 2: identifies a space after the last charactor
+          .match(/^.*[\w\d]+(?=[^\w\d]+[\w\d]*)/g)[0] // matches all characters ending with a whole word, that come before incomplete words or none alphanumeric characters
+          .substr(0, maxNumberOfChars - 3)}...` // - 3: accomodates the ... ellipse
       : item.title;
 
   return { ...item, title };
