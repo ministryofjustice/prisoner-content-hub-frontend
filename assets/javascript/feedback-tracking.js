@@ -47,25 +47,18 @@
       window._feedback.series = series;
     }
 
-    function showFeedbackForm() {
+    function showFeedbackForm(sentiment) {
       $('[data-feedback-form]').removeClass('govuk-u-hidden');
+      $('.govuk-hub-feedback-more-info').removeClass('govuk-u-hidden');
+      $('.feedbackOption-LIKE, .feedbackOption-DISLIKE').addClass('govuk-u-hidden');
+      $(`.feedbackOption-${sentiment}`).removeClass('govuk-u-hidden');
+      $('input[name="feedbackOption"]:checked').prop('checked', false);
     }
 
     function hideFeedbackForm() {
       $('.govuk-hub-feedback-ui').addClass('govuk-u-hidden');
       $('.govuk-hub-feedback-confirmation').removeClass('govuk-u-hidden');
 
-    }
-
-    function updateCharacterCount(characterCount) {
-      var characterCount = characterCount || 0;
-      $('[data-feedback-comment-counter]').text(CHARACTER_LIMIT - characterCount);
-    }
-
-    function enableFormSubmit() {
-      $('[data-feedback-form]')
-        .find('button')
-        .attr('disabled', false);
     }
 
     function disableButtons() {
@@ -79,7 +72,7 @@
     function updateFeedbackSentimentText(feedback) {
       var type = widget.data('item-type');
       var typeText = typesDisplay[type] ? typesDisplay[type] : '';
-      $('[data-item-feedback-text]').text(`I ${feedback === 'LIKE'?'':' do not' } like this ${typeText}`);
+      $('[data-item-feedback-text]').text(`I ${feedback === 'LIKE'?'':' don\'t' } like this ${typeText}`);
     }
 
     function updateSentimentIcons(sentiment) {
@@ -93,27 +86,16 @@
       window._feedback.sentiment = sentiment;
       updateFeedbackSentimentText(sentiment);
       updateSentimentIcons(sentiment);
-      showFeedbackForm();
+      showFeedbackForm(sentiment);
       sendFeedback(window._feedback);
-    });
-
-    widget.find('[data-feedback-comment]').on('keyup', function (e) {
-      e.preventDefault();
-      var value = $(this)
-        .val()
-        .slice(0, CHARACTER_LIMIT);
-      var characterCount = value.length;
-      $('[data-feedback-comment]').val(value);
-      updateCharacterCount(characterCount);
-      enableFormSubmit();
     });
 
     widget.find('[data-feedback-form]').on('submit', function (e) {
       e.preventDefault();
       window._feedback.comment = $(this)
-        .find('[data-feedback-comment]')
+        .find('input[name="feedbackOption"]:checked')
         .val();
-      sendFeedback(window._feedback);
+        sendFeedback(window._feedback);
       disableButtons();
 
       setTimeout(function () {

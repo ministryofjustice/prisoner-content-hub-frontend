@@ -88,6 +88,15 @@
   margin-bottom: govuk-spacing(4);
 }
 
+.black-background .govuk-hub-comment-form .govuk-fieldset__legend,
+.black-background .govuk-hub-comment-form .govuk-label {
+  color: govuk-colour('white');
+}
+
+.black-background #feedback-widget .govuk-link {
+  @extend .govuk-link--inverse;
+}
+
 .govuk-hub-article-feedback {
   border-top: solid 1px $govuk-border-colour;
   margin-top: govuk-spacing(4);
