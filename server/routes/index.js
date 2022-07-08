@@ -111,7 +111,7 @@ module.exports = (
     createSearchRouter({ searchService, analyticsService }),
   );
 
-  router.use('/help', createHelpRouter(establishmentData));
+  router.use('/help', createHelpRouter());
 
   router.use(
     '/recently-added',
