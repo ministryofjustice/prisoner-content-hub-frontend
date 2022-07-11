@@ -42,6 +42,7 @@ class HomepageContentQuery {
         'field_featured_tiles',
         'field_large_update_tile',
         'field_key_info_tiles',
+        'field_key_info_tiles.field_moj_thumbnail_image',
       ])
 
       .addPageLimit(pageLimit)
