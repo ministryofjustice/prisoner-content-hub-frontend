@@ -171,7 +171,7 @@ describe('GET /', () => {
     it('prompts the user to sign in when they are signed out', () => {
       userSupplier.mockReturnValue(undefined);
       return request(app)
-        .get('/')
+        .get('/old-homepage')
         .expect(200)
         .expect('Content-Type', /text\/html/)
         .then(response => {
@@ -183,7 +183,7 @@ describe('GET /', () => {
 
     it('does not prompt the user to sign in when they are signed in', () =>
       request(app)
-        .get('/')
+        .get('/old-homepage')
         .expect(200)
         .expect('Content-Type', /text\/html/)
         .then(response => {
@@ -194,7 +194,7 @@ describe('GET /', () => {
 
     it('renders homepage content', () =>
       request(app)
-        .get('/')
+        .get('/old-homepage')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
@@ -234,7 +234,7 @@ describe('GET /', () => {
 
     it('has a search bar', () =>
       request(app)
-        .get('/')
+        .get('/old-homepage')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
@@ -273,7 +273,7 @@ describe('GET /', () => {
       offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
 
       return request(app)
-        .get('/')
+        .get('/old-homepage')
         .then(response => {
           const $ = cheerio.load(response.text);
           expect($('div.todays-events').first().find('h3').text()).toBe(
@@ -318,7 +318,7 @@ describe('GET /', () => {
       offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
 
       return request(app)
-        .get('/')
+        .get('/old-homepage')
         .then(response => {
           const $ = cheerio.load(response.text);
           expect($('div.todays-events').first().find('h3').text()).toBe(
@@ -340,7 +340,7 @@ describe('GET /', () => {
       offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
 
       return request(app)
-        .get('/')
+        .get('/old-homepage')
         .then(response => {
           const $ = cheerio.load(response.text);
           expect($('[data-test="event"]').length).toBe(0);
@@ -352,7 +352,7 @@ describe('GET /', () => {
       userSupplier.mockReturnValue(undefined);
 
       return request(app)
-        .get('/')
+        .get('/old-homepage')
         .then(response => {
           const $ = cheerio.load(response.text);
           expect($('.todays-events__placeholder').length).toBe(1);
@@ -365,7 +365,7 @@ describe('GET /', () => {
       });
 
       return request(app)
-        .get('/')
+        .get('/old-homepage')
         .then(response => {
           const $ = cheerio.load(response.text);
           expect($('[data-test="event-error"]').length).toBe(1);
@@ -374,7 +374,7 @@ describe('GET /', () => {
 
     it('returns topics footer', () =>
       request(app)
-        .get('/')
+        .get('/old-homepage')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
@@ -455,7 +455,7 @@ describe('GET /', () => {
 
     it('renders the homepage with a search bar', () =>
       request(app)
-        .get('/new-homepage')
+        .get('/')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
@@ -467,7 +467,7 @@ describe('GET /', () => {
         offenderService.getCurrentEvents.mockResolvedValue(testEvents);
 
         return request(app)
-          .get('/new-homepage')
+          .get('/')
           .then(response => {
             const $ = cheerio.load(response.text);
             expect($('div.todays-events').first().find('h3').text()).toBe(
@@ -486,7 +486,7 @@ describe('GET /', () => {
         offenderService.getCurrentEvents.mockResolvedValue(testEvents);
 
         return request(app)
-          .get('/new-homepage')
+          .get('/')
           .then(response => {
             const $ = cheerio.load(response.text);
             expect($('div.todays-events').first().find('h3').text()).toBe(
@@ -520,7 +520,7 @@ describe('GET /', () => {
     describe('featured update tile', () => {
       it('renders the homepage with the featured update tile', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -529,7 +529,7 @@ describe('GET /', () => {
 
       it('renders the homepage with the featured update tile containing an image', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -543,7 +543,7 @@ describe('GET /', () => {
 
       it('renders the homepage with the featured update tile containing a h3 title', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -557,7 +557,7 @@ describe('GET /', () => {
 
       it('renders the homepage with the featured update tile containing a h3 title', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -570,7 +570,7 @@ describe('GET /', () => {
     describe('updates tiles', () => {
       it('renders the homepage with the correct number of update tiles', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -579,7 +579,7 @@ describe('GET /', () => {
 
       it('Should render a html img tag in an update tile', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -593,7 +593,7 @@ describe('GET /', () => {
 
       it('Should render a html h3 tag in an update tile', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -607,7 +607,7 @@ describe('GET /', () => {
 
       it('Should render a html h3 tag with the published date in an update tile', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -618,7 +618,7 @@ describe('GET /', () => {
 
       it('Should render a "View all" link in the updates section', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -636,7 +636,7 @@ describe('GET /', () => {
               isLastPage: true,
             });
             return request(app)
-              .get('/new-homepage')
+              .get('/')
               .expect(200)
               .then(response => {
                 const $ = cheerio.load(response.text);
@@ -654,7 +654,7 @@ describe('GET /', () => {
               isLastPage: true,
             });
             return request(app)
-              .get('/new-homepage')
+              .get('/')
               .expect(200)
               .then(response => {
                 const $ = cheerio.load(response.text);
@@ -677,7 +677,7 @@ describe('GET /', () => {
               largeUpdateTile: null,
             });
             return request(app)
-              .get('/new-homepage')
+              .get('/')
               .expect(200)
               .then(response => {
                 const $ = cheerio.load(response.text);
@@ -693,7 +693,7 @@ describe('GET /', () => {
     describe('key info tiles', () => {
       it('renders the homepage with the correct number of update key info content tiles', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -702,7 +702,7 @@ describe('GET /', () => {
 
       it('Should render a html img tag in the homepage key info content tile', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -712,7 +712,7 @@ describe('GET /', () => {
 
       it('Should render a html h3 tag in the homepage key info content tile', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -722,7 +722,7 @@ describe('GET /', () => {
 
       it('Should render a html h3 tag with the expected text in the homepage key info content tile', () =>
         request(app)
-          .get('/new-homepage')
+          .get('/')
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
@@ -734,7 +734,7 @@ describe('GET /', () => {
 
     it('renders the homepage with the correct number of recently added content tiles', () =>
       request(app)
-        .get('/new-homepage')
+        .get('/')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
@@ -743,7 +743,7 @@ describe('GET /', () => {
 
     it('renders the homepage with the correct number of explore content tiles', () =>
       request(app)
-        .get('/new-homepage')
+        .get('/')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
@@ -752,7 +752,7 @@ describe('GET /', () => {
 
     it('renders the homepage with the correct number of featured content tiles', () =>
       request(app)
-        .get('/new-homepage')
+        .get('/')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
@@ -765,7 +765,7 @@ describe('GET /', () => {
       });
 
       return request(app)
-        .get('/new-homepage')
+        .get('/')
         .then(response => {
           const $ = cheerio.load(response.text);
           expect($('[data-test="event-error"]').length).toBe(1);
@@ -774,7 +774,7 @@ describe('GET /', () => {
 
     it('renders the homepage with topics footer', () =>
       request(app)
-        .get('/new-homepage')
+        .get('/')
         .expect(200)
         .then(response => {
           const $ = cheerio.load(response.text);
