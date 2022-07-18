@@ -57,7 +57,7 @@
     "jsona": "^1.9.7",
     "jsonwebtoken": "^8.5.1",
     "mkdirp": "^1.0.4",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "nocache": "^3.0.3",
     "nunjucks": "^3.2.3",
     "passport": "^0.5.2",
