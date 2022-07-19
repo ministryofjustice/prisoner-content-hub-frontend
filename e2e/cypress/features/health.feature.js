@@ -1,11 +1,15 @@
-context('Healthcheck', () => {
-  context('All healthy', () => {
+describe('Healthcheck', () => {
+  describe('All healthy', () => {
     beforeEach(() => {
       cy.task('reset');
     });
 
-    it('Health check page is visible', () => {
+    it("'healthy' key/value pair is present with the expected value", () => {
       cy.request('/health').its('body.healthy').should('equal', true);
+    });
+
+    it("'uptime' key/value pair is present with the expected value", () => {
+      cy.request('/health').its('body.uptime').should('greaterThan', 0);
     });
 
     it('Health/readiness is visible and UP', () => {
