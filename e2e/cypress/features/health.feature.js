@@ -1,7 +1,11 @@
-context('Healthcheck', () => {
-  context('All healthy', () => {
+describe('Healthcheck', () => {
+  describe('All healthy', () => {
     beforeEach(() => {
       cy.task('reset');
+    });
+
+    it('Health check page is visible', () => {
+      cy.request('/health').its('body.healthy').should('equal', true);
     });
 
     it('Health check page is visible', () => {
