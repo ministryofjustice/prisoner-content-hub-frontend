@@ -1,3 +1,5 @@
+import { format, addDays } from 'date-fns';
+
 const horizontalTableToObject = ({ rawTable }) => {
   const [keys, ...rows] = rawTable;
   return rows.map(values =>
@@ -25,4 +27,6 @@ const verticalTableToObject = ({ rawTable }) => {
   }, []);
 };
 
-export { horizontalTableToObject, verticalTableToObject };
+const daysFromNow = n => format(addDays(new Date(), n), 'yyyy-MM-dd');
+
+export { horizontalTableToObject, verticalTableToObject, daysFromNow };
