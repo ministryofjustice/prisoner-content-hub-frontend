@@ -1,3 +1,4 @@
+import { last } from 'ramda';
 import { activity, appointment } from '../mockApis/data';
 import { daysFromNow } from '../support/step_definitions/utils';
 
@@ -40,10 +41,51 @@ describe('Timetable', () => {
       cy.task('stubPrisonerSignIn');
       cy.get('[data-test="signin-prompt"] > .govuk-link').click();
     });
+
+    it('displays the expected page title', () => {
+      cy.get('#title').contains('Timetable');
+    });
+
+    it("displays timetable 'This week' text", () => {
+      cy.get('.timetable-nav > span').contains('This week');
+    });
+
     it('displays timetable navigation links for last and next week', () => {
       cy.get('.timetable-nav > a').contains('Last week');
       cy.get('.timetable-nav > a').contains('Next week');
     });
+
+    it('displays the expected number of time of day headings', () => {
+      cy.get('.timetable-day')
+        .find('[data-test="time-of-day"]')
+        .first()
+        .children()
+        .should('have.length', 3);
+    });
+
+    it('displays the expected time of day headings', () => {
+      cy.get('.timetable-day')
+        .find('[data-test="time-of-day"]')
+        .first()
+        .children()
+        .first()
+        .contains('Morning');
+
+      cy.get('.timetable-day')
+        .find('[data-test="time-of-day"]')
+        .first()
+        .children()
+        .next()
+        .contains('Afternoon');
+
+      cy.get('.timetable-day')
+        .find('[data-test="time-of-day"]')
+        .first()
+        .children()
+        .last()
+        .contains('Evening');
+    });
+
     it('shows me my timetable', () => {
       const days = [
         {
