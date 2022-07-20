@@ -11,8 +11,8 @@
       </p>
     {% endif %}
     {% for day, event in params.data.events %}
-      <h3>{{event.title}}</h3>
-      <div>
+      <h3 data-test="date">{{event.title}}</h3>
+      <div data-test="time-of-day">
         {% if params.data.hasEvents %}
           <h4{% if event.morning.finished %} class="day-block-finished"{% endif %}>Morning</h4>
           <h4{% if event.afternoon.finished %} class="day-block-finished"{% endif %}>Afternoon</h4>
