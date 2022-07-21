@@ -1,4 +1,3 @@
-import { last } from 'ramda';
 import { activity, appointment } from '../mockApis/data';
 import { daysFromNow } from '../support/step_definitions/utils';
 
@@ -42,17 +41,17 @@ describe('Timetable', () => {
       cy.get('[data-test="signin-prompt"] > .govuk-link').click();
     });
 
-    it('displays the expected page title', () => {
-      cy.get('#title').contains('Timetable');
+    it('displays the expected page title in the timetable header section', () => {
+      cy.get('.timetable-header > #title').contains('Timetable');
     });
 
-    it("displays timetable 'This week' text", () => {
-      cy.get('.timetable-nav > span').contains('This week');
+    it("displays timetable 'This week' text in the timetable header section", () => {
+      cy.get('.timetable-header > .timetable-nav > span').contains('This week');
     });
 
-    it('displays timetable navigation links for last and next week', () => {
-      cy.get('.timetable-nav > a').contains('Last week');
-      cy.get('.timetable-nav > a').contains('Next week');
+    it('displays timetable navigation links for last and next week in the timetable header section', () => {
+      cy.get('.timetable-header > .timetable-nav > a').contains('Last week');
+      cy.get('.timetable-header > .timetable-nav > a').contains('Next week');
     });
 
     it('displays the expected number of time of day headings', () => {
@@ -143,6 +142,19 @@ describe('Timetable', () => {
           .should('contain', event)
           .should('contain', location);
       });
+    });
+
+    it("displays timetable 'This week' text in the timetable footer section", () => {
+      cy.get('.timetable-footer > .timetable-nav > span').contains('This week');
+    });
+
+    it('displays timetable navigation links for last and next week in the timetable footer section', () => {
+      cy.get('.timetable-footer > .timetable-nav > a').contains('Last week');
+      cy.get('.timetable-footer > .timetable-nav > a').contains('Next week');
+    });
+
+    it('displays the feedback widget', () => {
+      cy.get('#feedback-widget').contains('Give us feedback');
     });
   });
 });
