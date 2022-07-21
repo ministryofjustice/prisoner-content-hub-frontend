@@ -23,138 +23,216 @@ describe('Timetable', () => {
       'appointment 4',
     ];
     const activities = ['activity 1', 'activity 2', 'activity 3', 'activity 4'];
-    beforeEach(() => {
-      const TOMORROW = daysFromNow(1);
-      const TODAY = daysFromNow(0);
-      const events = [
-        activity(TODAY, '11:00', '12:00', activities[0], locations[0]),
-        activity(TODAY, '12:00', '13:00', activities[1], locations[1]),
-        activity(TODAY, '16:00', '17:00', activities[2], locations[2]),
-        activity(TODAY, '17:00', '18:00', activities[3], locations[0]),
-        appointment(TOMORROW, '11:00', '12:00', appointments[0], locations[1]),
-        appointment(TOMORROW, '12:00', '13:00', appointments[1], locations[2]),
-        appointment(TOMORROW, '16:00', '17:00', appointments[2], locations[0]),
-        appointment(TOMORROW, '17:00', '18:00', appointments[3], locations[2]),
-      ];
-      cy.task('stubEvents', events);
-      cy.task('stubPrisonerSignIn');
-      cy.get('[data-test="signin-prompt"] > .govuk-link').click();
+
+    describe('Last week', () => {
+      // to do....
     });
 
-    it('displays the expected page title in the timetable header section', () => {
-      cy.get('.timetable-header > #title').contains('Timetable');
-    });
+    describe('This week', () => {
+      beforeEach(() => {
+        const TOMORROW = daysFromNow(1);
+        const TODAY = daysFromNow(0);
 
-    it("displays timetable 'This week' text in the timetable header section", () => {
-      cy.get('.timetable-header > .timetable-nav > span').contains('This week');
-    });
+        const events = [
+          activity(TODAY, '11:00', '12:00', activities[0], locations[0]),
+          activity(TODAY, '12:00', '13:00', activities[1], locations[1]),
+          activity(TODAY, '16:00', '17:00', activities[2], locations[2]),
+          activity(TODAY, '17:00', '18:00', activities[3], locations[0]),
+          appointment(
+            TOMORROW,
+            '11:00',
+            '12:00',
+            appointments[0],
+            locations[1],
+          ),
+          appointment(
+            TOMORROW,
+            '12:00',
+            '13:00',
+            appointments[1],
+            locations[2],
+          ),
+          appointment(
+            TOMORROW,
+            '16:00',
+            '17:00',
+            appointments[2],
+            locations[0],
+          ),
+          appointment(
+            TOMORROW,
+            '17:00',
+            '18:00',
+            appointments[3],
+            locations[2],
+          ),
+        ];
 
-    it('displays timetable navigation links for last and next week in the timetable header section', () => {
-      cy.get('.timetable-header > .timetable-nav > a').contains('Last week');
-      cy.get('.timetable-header > .timetable-nav > a').contains('Next week');
-    });
+        cy.task('stubEvents', events);
+        cy.task('stubPrisonerSignIn');
+        cy.get('[data-test="signin-prompt"] > .govuk-link').click();
+      });
 
-    it('displays the expected number of time of day headings', () => {
-      cy.get('.timetable-day')
-        .find('[data-test="time-of-day"]')
-        .first()
-        .children()
-        .should('have.length', 3);
-    });
+      it('change the URL to include the expected path', () => {
+        cy.url().should('include', '/timetable');
+      });
 
-    it('displays the expected time of day headings', () => {
-      cy.get('.timetable-day')
-        .find('[data-test="time-of-day"]')
-        .first()
-        .children()
-        .first()
-        .contains('Morning');
+      it('displays the expected page title in the timetable header section', () => {
+        cy.get('.timetable-header > #title').contains('Timetable');
+      });
 
-      cy.get('.timetable-day')
-        .find('[data-test="time-of-day"]')
-        .first()
-        .children()
-        .next()
-        .contains('Afternoon');
+      it("displays timetable 'This week' text in the timetable header section", () => {
+        cy.get('.timetable-header > .timetable-nav > span').contains(
+          'This week',
+        );
+      });
 
-      cy.get('.timetable-day')
-        .find('[data-test="time-of-day"]')
-        .first()
-        .children()
-        .last()
-        .contains('Evening');
-    });
+      it('displays timetable navigation links for last and next week in the timetable header section', () => {
+        cy.get('.timetable-header > .timetable-nav > a').contains('Last week');
+        cy.get('.timetable-header > .timetable-nav > a').contains('Next week');
+      });
 
-    it('shows me my timetable', () => {
-      const days = [
-        {
-          type: 'Today',
-          period: '8:30am to 12:00pm',
-          location: locations[0],
-          event: activities[0],
-        },
-        {
-          type: 'Today',
-          period: '12:00pm to 5:00pm',
-          location: locations[1],
-          event: activities[1],
-        },
-        {
-          type: 'Today',
-          period: '12:00pm to 5:00pm',
-          location: locations[2],
-          event: activities[2],
-        },
-        {
-          type: 'Today',
-          period: '5:00pm to 7:30pm',
-          location: locations[0],
-          event: activities[3],
-        },
-        {
-          type: 'Tomorrow',
-          period: '8:30am to 12:00pm',
-          location: locations[1],
-          event: appointments[0],
-        },
-        {
-          type: 'Tomorrow',
-          period: '12:00pm to 5:00pm',
-          location: locations[2],
-          event: appointments[1],
-        },
-        {
-          type: 'Tomorrow',
-          period: '12:00pm to 5:00pm',
-          location: locations[0],
-          event: appointments[2],
-        },
-        {
-          type: 'Tomorrow',
-          period: '5:00pm to 7:30pm',
-          location: locations[2],
-          event: appointments[3],
-        },
-      ];
-      days.forEach(({ type, period, event, location }) => {
-        const section = cy
-          .get(`[data-test="${type}"] [data-test="${period}"]`)
-          .should('contain', event)
-          .should('contain', location);
+      it('displays the expected number of time of day headings', () => {
+        cy.get('.timetable-day')
+          .find('[data-test="time-of-day"]')
+          .first()
+          .children()
+          .should('have.length', 3);
+      });
+
+      it('displays the expected time of day headings', () => {
+        cy.get('.timetable-day')
+          .find('[data-test="time-of-day"]')
+          .first()
+          .children()
+          .first()
+          .contains('Morning');
+
+        cy.get('.timetable-day')
+          .find('[data-test="time-of-day"]')
+          .first()
+          .children()
+          .next()
+          .contains('Afternoon');
+
+        cy.get('.timetable-day')
+          .find('[data-test="time-of-day"]')
+          .first()
+          .children()
+          .last()
+          .contains('Evening');
+      });
+
+      it('shows me my timetable', () => {
+        const days = [
+          {
+            type: 'Today',
+            period: '8:30am to 12:00pm',
+            location: locations[0],
+            event: activities[0],
+          },
+          {
+            type: 'Today',
+            period: '12:00pm to 5:00pm',
+            location: locations[1],
+            event: activities[1],
+          },
+          {
+            type: 'Today',
+            period: '12:00pm to 5:00pm',
+            location: locations[2],
+            event: activities[2],
+          },
+          {
+            type: 'Today',
+            period: '5:00pm to 7:30pm',
+            location: locations[0],
+            event: activities[3],
+          },
+          {
+            type: 'Tomorrow',
+            period: '8:30am to 12:00pm',
+            location: locations[1],
+            event: appointments[0],
+          },
+          {
+            type: 'Tomorrow',
+            period: '12:00pm to 5:00pm',
+            location: locations[2],
+            event: appointments[1],
+          },
+          {
+            type: 'Tomorrow',
+            period: '12:00pm to 5:00pm',
+            location: locations[0],
+            event: appointments[2],
+          },
+          {
+            type: 'Tomorrow',
+            period: '5:00pm to 7:30pm',
+            location: locations[2],
+            event: appointments[3],
+          },
+        ];
+        days.forEach(({ type, period, event, location }) => {
+          const section = cy
+            .get(`[data-test="${type}"] [data-test="${period}"]`)
+            .should('contain', event)
+            .should('contain', location);
+        });
+      });
+
+      it("displays timetable 'This week' text in the timetable footer section", () => {
+        cy.get('.timetable-footer > .timetable-nav > span').contains(
+          'This week',
+        );
+      });
+
+      it('displays timetable navigation links for last and next week in the timetable footer section', () => {
+        cy.get('.timetable-footer > .timetable-nav > a').contains('Last week');
+        cy.get('.timetable-footer > .timetable-nav > a').contains('Next week');
+      });
+
+      it('displays the feedback widget', () => {
+        cy.get('#feedback-widget').contains('Give us feedback');
       });
     });
 
-    it("displays timetable 'This week' text in the timetable footer section", () => {
-      cy.get('.timetable-footer > .timetable-nav > span').contains('This week');
-    });
+    describe('Next week', () => {
+      beforeEach(() => {
+        const NEXT_WEEK = daysFromNow(7);
+        const eventsNextWeek = [
+          activity(NEXT_WEEK, '11:00', '12:00', activities[0], locations[0]),
+          activity(NEXT_WEEK, '12:00', '13:00', activities[1], locations[1]),
+          appointment(
+            NEXT_WEEK,
+            '16:00',
+            '17:00',
+            appointments[2],
+            locations[0],
+          ),
+          appointment(
+            NEXT_WEEK,
+            '17:00',
+            '18:00',
+            appointments[3],
+            locations[2],
+          ),
+        ];
 
-    it('displays timetable navigation links for last and next week in the timetable footer section', () => {
-      cy.get('.timetable-footer > .timetable-nav > a').contains('Last week');
-      cy.get('.timetable-footer > .timetable-nav > a').contains('Next week');
-    });
+        cy.task('stubEvents', eventsNextWeek);
+        cy.task('stubPrisonerSignIn');
+        cy.get('[data-test="signin-prompt"] > .govuk-link').click();
+        cy.get('.timetable-header > .timetable-nav > a:last').click();
+      });
 
-    it('displays the feedback widget', () => {
-      cy.get('#feedback-widget').contains('Give us feedback');
+      it('change the URL to include the expected path', () => {
+        cy.url().should('include', '/timetable/nextweek');
+      });
+
+      it('displays my timetable for next week', () => {
+        cy.get('.timetable-day-blocks > div').first().contains(activities[0]);
+      });
     });
   });
 });
