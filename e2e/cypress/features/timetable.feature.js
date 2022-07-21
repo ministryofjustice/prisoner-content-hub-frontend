@@ -25,7 +25,68 @@ describe('Timetable', () => {
     const activities = ['activity 1', 'activity 2', 'activity 3', 'activity 4'];
 
     describe('Last week', () => {
-      // to do....
+      beforeEach(() => {
+        const LAST_WEEK = daysFromNow(-7);
+        const eventsLastWeek = [
+          activity(LAST_WEEK, '10:00', '11:00', activities[3], locations[1]),
+          activity(LAST_WEEK, '13:00', '14:00', activities[2], locations[3]),
+          appointment(
+            LAST_WEEK,
+            '15:00',
+            '16:00',
+            appointments[3],
+            locations[0],
+          ),
+          appointment(
+            LAST_WEEK,
+            '14:00',
+            '16:00',
+            appointments[1],
+            locations[1],
+          ),
+        ];
+
+        cy.task('stubEvents', eventsLastWeek);
+        cy.task('stubPrisonerSignIn');
+        cy.get('[data-test="signin-prompt"] > .govuk-link').click();
+        cy.get('.timetable-header > .timetable-nav > a').first().click();
+      });
+
+      it('change the URL to include the expected path', () => {
+        cy.url().should('include', '/timetable/lastweek');
+      });
+
+      it('displays timetable navigation links for last and this week in the timetable header section', () => {
+        cy.get('.timetable-header > .timetable-nav > a').contains('This week');
+        cy.get('.timetable-header > .timetable-nav > a').contains('Next week');
+      });
+
+      it("displays timetable 'Next week' text in the timetable header section", () => {
+        cy.get('.timetable-header > .timetable-nav > span').contains(
+          'Last week',
+        );
+      });
+
+      it("displays timetable 'Next week' text in the timetable footer section", () => {
+        cy.get('.timetable-footer > .timetable-nav > span').contains(
+          'Last week',
+        );
+      });
+
+      it('displays my timetable for last week', () => {
+        cy.get('.timetable-day-blocks > div')
+          .first()
+          .find('.timetable-time')
+          .contains('10:00am to 11:00am');
+
+        cy.get('.timetable-day-blocks > div').first().contains(activities[3]);
+
+        cy.get('.timetable-day-blocks > div').first().contains(locations[1]);
+      });
+
+      it("displays 'No activities' in my timetable when no activities or appointments are scheduled", () => {
+        cy.get('.timetable-day-blocks > div').last().contains('No activities');
+      });
     });
 
     describe('This week', () => {
@@ -223,15 +284,44 @@ describe('Timetable', () => {
         cy.task('stubEvents', eventsNextWeek);
         cy.task('stubPrisonerSignIn');
         cy.get('[data-test="signin-prompt"] > .govuk-link').click();
-        cy.get('.timetable-header > .timetable-nav > a:last').click();
+        cy.get('.timetable-header > .timetable-nav > a').last().click();
       });
 
       it('change the URL to include the expected path', () => {
         cy.url().should('include', '/timetable/nextweek');
       });
 
+      it('displays timetable navigation links for last and this week in the timetable header section', () => {
+        cy.get('.timetable-header > .timetable-nav > a').contains('Last week');
+        cy.get('.timetable-header > .timetable-nav > a').contains('This week');
+      });
+
+      it('displays timetable navigation links for last and this week in the timetable footer section', () => {
+        cy.get('.timetable-footer > .timetable-nav > a').contains('Last week');
+        cy.get('.timetable-footer > .timetable-nav > a').contains('This week');
+      });
+
+      it("displays timetable 'Next week' text in the timetable header section", () => {
+        cy.get('.timetable-header > .timetable-nav > span').contains(
+          'Next week',
+        );
+      });
+
+      it("displays timetable 'Next week' text in the timetable header section", () => {
+        cy.get('.timetable-footer > .timetable-nav > span').contains(
+          'Next week',
+        );
+      });
+
       it('displays my timetable for next week', () => {
+        cy.get('.timetable-day-blocks > div')
+          .first()
+          .find('.timetable-time')
+          .contains('11:00am to 12:00pm');
+
         cy.get('.timetable-day-blocks > div').first().contains(activities[0]);
+
+        cy.get('.timetable-day-blocks > div').first().contains(locations[0]);
       });
     });
   });
