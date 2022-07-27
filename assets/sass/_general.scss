@@ -21,7 +21,9 @@
 
 .black-background .govuk-body,
 .black-background .govuk-body a,
+.black-background .govuk-heading-s,
 .black-background .govuk-heading-m,
+.black-background .govuk-heading-l,
 .black-background .govuk-hint,
 .black-background .govuk-hint a,
 .black-background .govuk-hub-comment-counter {
@@ -93,7 +95,8 @@
   color: govuk-colour('white');
 }
 
-.black-background #feedback-widget .govuk-link {
+.black-background #feedback-widget .govuk-link,
+.black-background .govuk-hub-content-tile-featured {
   @extend .govuk-link--inverse;
 }
 

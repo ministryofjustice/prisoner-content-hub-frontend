@@ -42,13 +42,17 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         throw new Error('Could not determine establishment!');
       }
 
-      const [homepageContent, recentlyAddedHomepageContent, exploreContent] =
-        await Promise.all([
-          cmsService.getHomepageContent(establishmentName),
-          cmsService.getRecentlyAddedHomepageContent(establishmentName),
-          cmsService.getExploreContent(establishmentName),
-        ]);
-
+      const [
+        { featuredContent, keyInfo, largeUpdateTile },
+        recentlyAddedHomepageContent,
+        exploreContent,
+        { largeUpdateTileDefault, updatesContent },
+      ] = await Promise.all([
+        cmsService.getHomepageContent(establishmentName),
+        cmsService.getRecentlyAddedHomepageContent(establishmentName),
+        cmsService.getExploreContent(establishmentName),
+        cmsService.getUpdatesContent(establishmentName),
+      ]);
       const currentEvents = res.locals.isSignedIn
         ? await offenderService.getCurrentEvents(req.user)
         : {};
@@ -62,7 +66,10 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         hideSignInLink: true,
         title: 'Home',
         recentlyAddedHomepageContent,
-        ...homepageContent,
+        updatesContent: updatesContent.splice(largeUpdateTile ? 0 : 1, 4),
+        featuredContent,
+        keyInfo,
+        largeUpdateTile: largeUpdateTile || largeUpdateTileDefault,
         exploreContent,
         currentEvents,
       });

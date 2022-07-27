@@ -1,4 +1,4 @@
-const { differenceInDays } = require('date-fns');
+const { differenceInDays, format } = require('date-fns');
 
 const getPagination = (page, size = 40) =>
   `page[offset]=${Math.max(page - 1, 0) * size}&page[limit]=${size}`;
@@ -48,6 +48,13 @@ const getTile = (item, imageSize) => {
 
 const getSmallTile = item => getTile(item, 'tile_small');
 const getLargeTile = item => getTile(item, 'tile_large');
+
+const getPublishedAtSmallTile = item => ({
+  ...getTile(item, 'tile_small'),
+  publishedAt: item?.publishedAt
+    ? format(new Date(item?.publishedAt), 'EEEE do MMMM')
+    : '',
+});
 
 const getCategoryId = categories => {
   if (!categories || (Array.isArray(categories) && categories.length === 0))
@@ -144,6 +151,7 @@ module.exports = {
   getSmallTile,
   getLargeTile,
   getLargeImage,
+  getPublishedAtSmallTile,
   getCategoryId,
   buildFieldTopics,
   typeFrom,

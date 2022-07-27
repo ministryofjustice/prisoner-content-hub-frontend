@@ -1,6 +1,8 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../components/personal-schedule-today/macro.njk" import personalScheduleToday %}
 {% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
+{% from "../components/content-tile-featured/macro.njk" import contentTileFeatured %}
+{% from "../components/update-items/macro.njk" import updateItems %}
 {% from "../components/hub-content-block/macro.njk" import hubContentBlock %}
 {% from "../components/key-info-items/macro.njk" import keyInfoItems %}
 
@@ -31,14 +33,14 @@
   </h2>
   <div class="govuk-grid-row govuk-!-margin-0 govuk-body">
     <div class="govuk-grid-column-three-quarters govuk-!-padding-0">
-      <div class="govuk-grid-row govuk-!-margin-0">
-        <div class="govuk-grid-column-one-half govuk-!-padding-0">
+      <div class="govuk-grid-row govuk-!-margin-0 govuk-hub-home-updates">
+        <div class="govuk-grid-column-one-half govuk-!-padding-0 govuk-!-padding-right-3">
           <!-- 450px column, large update link -->
-          Large update link
+          {{ contentTileFeatured(largeUpdateTile) }}
         </div>
-        <div class="govuk-grid-column-one-half govuk-!-padding-0">
+        <div class="govuk-grid-column-one-half govuk-!-padding-0 govuk-!-padding-right-3">
           <!-- 450px column, small update links -->
-          Small update links
+          {{ updateItems(updatesContent) }}
         </div>
       </div>
     </div>
