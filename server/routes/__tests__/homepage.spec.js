@@ -626,6 +626,68 @@ describe('GET /', () => {
               'View all',
             );
           }));
+
+      describe('when there are no more updates section links', () => {
+        describe('returning less than 5 links and the default large update is not required', () => {
+          it('Should hide the "View all" link', () => {
+            cmsService.getUpdatesContent = jest.fn().mockResolvedValue({
+              largeUpdateTileDefault: hubContent[0],
+              updatesContent: [...hubContent],
+              isLastPage: true,
+            });
+            return request(app)
+              .get('/new-homepage')
+              .expect(200)
+              .then(response => {
+                const $ = cheerio.load(response.text);
+                expect(
+                  $('.govuk-hub-update-items a:last').text(),
+                ).not.toContain('View all');
+              });
+          });
+        });
+        describe('returning 5 links and the default large update is not required', () => {
+          it('Should render a "View all" link in the updates section', () => {
+            cmsService.getUpdatesContent = jest.fn().mockResolvedValue({
+              largeUpdateTileDefault: hubContent[0],
+              updatesContent: [...hubContent, hubContent[0]],
+              isLastPage: true,
+            });
+            return request(app)
+              .get('/new-homepage')
+              .expect(200)
+              .then(response => {
+                const $ = cheerio.load(response.text);
+                expect($('.govuk-hub-update-items a:last').text()).toContain(
+                  'View all',
+                );
+              });
+          });
+        });
+        describe('returning 5 links and the default large update is required', () => {
+          it('Should hide the "View all" link', () => {
+            cmsService.getUpdatesContent = jest.fn().mockResolvedValue({
+              largeUpdateTileDefault: hubContent[0],
+              updatesContent: [...hubContent, hubContent[0]],
+              isLastPage: true,
+            });
+            cmsService.getHomepageContent = jest.fn().mockResolvedValue({
+              featuredContent,
+              keyInfo,
+              largeUpdateTile: null,
+            });
+            return request(app)
+              .get('/new-homepage')
+              .expect(200)
+              .then(response => {
+                const $ = cheerio.load(response.text);
+                expect(
+                  $('.govuk-hub-update-items a:last').text(),
+                ).not.toContain('View all');
+              });
+          });
+        });
+      });
     });
 
     describe('key info tiles', () => {

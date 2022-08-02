@@ -19,7 +19,13 @@
         & p {
           width: 100%;
           margin: 0;
+          max-height: 50px;
           text-decoration: underline;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
         }
         & h3 {
           margin: 0;
@@ -28,6 +34,7 @@
 
       & img {
         min-width: 96px;
+        max-width: 96px;
         height: 54px;
         object-fit: cover;
         object-position: 50% 50%;

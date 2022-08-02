@@ -46,7 +46,7 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         { featuredContent, keyInfo, largeUpdateTile },
         recentlyAddedHomepageContent,
         exploreContent,
-        { largeUpdateTileDefault, updatesContent },
+        { largeUpdateTileDefault, updatesContent, isLastPage },
       ] = await Promise.all([
         cmsService.getHomepageContent(establishmentName),
         cmsService.getRecentlyAddedHomepageContent(establishmentName),
@@ -56,6 +56,9 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
       const currentEvents = res.locals.isSignedIn
         ? await offenderService.getCurrentEvents(req.user)
         : {};
+      const useLargeUpdateTile = Boolean(largeUpdateTile?.contentUrl);
+      const updatesContentHideViewAll =
+        isLastPage && (updatesContent.length < 5 || !useLargeUpdateTile);
       res.render('pages/home-new', {
         config: {
           content: true,
@@ -66,10 +69,13 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         hideSignInLink: true,
         title: 'Home',
         recentlyAddedHomepageContent,
-        updatesContent: updatesContent.splice(largeUpdateTile ? 0 : 1, 4),
+        updatesContent: updatesContent.splice(useLargeUpdateTile ? 0 : 1, 4),
+        updatesContentHideViewAll,
         featuredContent,
         keyInfo,
-        largeUpdateTile: largeUpdateTile || largeUpdateTileDefault,
+        largeUpdateTile: useLargeUpdateTile
+          ? largeUpdateTile
+          : largeUpdateTileDefault,
         exploreContent,
         currentEvents,
       });
