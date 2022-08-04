@@ -117,6 +117,9 @@ const createApp = services => {
       resave: false,
       saveUninitialized: true,
       maxAge: 4.32e7, // 12 Hours
+      cookie: {
+        domain: config.singleHostName,
+      },
     }),
   );
 
