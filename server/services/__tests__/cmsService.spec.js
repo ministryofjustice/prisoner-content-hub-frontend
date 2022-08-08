@@ -56,6 +56,9 @@ const {
 } = require('../../repositories/cmsQueries/exploreContentQuery');
 const { getOffsetUnixTime } = require('../../utils/date');
 const { CmsService } = require('../cms');
+const {
+  PrimaryNavigationQuery,
+} = require('../../repositories/cmsQueries/PrimaryNavigationQuery');
 
 jest.mock('../../repositories/cmsApi');
 
@@ -67,8 +70,18 @@ describe('cms Service', () => {
   const SERIES_ID = 923;
   const UUID = '846';
 
+  const testCacheStrategy = {
+    set: jest.fn(),
+    get: jest.fn(),
+  };
+
   beforeEach(() => {
-    cmsService = new CmsService(cmsApi);
+    testCacheStrategy.set.mockClear();
+    testCacheStrategy.get.mockClear();
+    cmsService = new CmsService({
+      cmsApi,
+      cachingStrategy: testCacheStrategy,
+    });
   });
   afterEach(() => {
     jest.resetAllMocks();
@@ -426,6 +439,67 @@ describe('cms Service', () => {
       );
     });
   });
+  describe('getQueryWrapper', () => {
+    const testClass = jest.fn();
+    const ARGUMENT1 = 'argument1';
+    const ARGUMENT2 = 'argument2';
+    let resultFunction;
+    beforeEach(() => {
+      resultFunction = cmsService.getQueryWrapper(
+        testClass,
+        ARGUMENT1,
+        ARGUMENT2,
+      );
+    });
+    it('should return a function', () => {
+      expect(typeof resultFunction).toBe('function');
+    });
+
+    it('the wrapped query should not have been called initially', () => {
+      expect(testClass).toHaveBeenCalledTimes(0);
+    });
+    it('should call the query with the arguments from function', () => {
+      resultFunction();
+      expect(testClass).toHaveBeenCalledTimes(1);
+      expect(testClass).toHaveBeenCalledWith(ARGUMENT1, ARGUMENT2);
+    });
+  });
+
+  describe('getPrimaryNavigation', () => {
+    const createCategory = name => ({
+      description: `${name} Desc`,
+      href: '/content/1',
+      id: '1',
+      linkText: name,
+    });
+    let result;
+    beforeEach(async () => {
+      cmsApi.get.mockResolvedValue([createCategory('topic')]);
+      result = await cmsService.getPrimaryNavigation(ESTABLISHMENT_NAME);
+    });
+    it('first checks the cache', () => {
+      expect(testCacheStrategy.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('returns primary navigation', () => {
+      expect(result).toStrictEqual([
+        {
+          description: 'topic Desc',
+          href: '/content/1',
+          id: '1',
+          linkText: 'topic',
+        },
+      ]);
+    });
+    it('it sets the cache', () => {
+      expect(testCacheStrategy.set).toHaveBeenCalledTimes(1);
+    });
+    it('Source to have been called correctly', async () => {
+      expect(cmsApi.get).toHaveBeenCalledWith(
+        new PrimaryNavigationQuery(ESTABLISHMENT_NAME),
+      );
+    });
+  });
 
   describe('getTopics', () => {
     const createTopic = name => ({
@@ -434,12 +508,16 @@ describe('cms Service', () => {
       id: '1',
       linkText: name,
     });
-
-    it('returns topics', async () => {
+    let result;
+    beforeEach(async () => {
       cmsApi.get.mockResolvedValue([createTopic('topic')]);
+      result = await cmsService.getTopics(ESTABLISHMENT_NAME);
+    });
+    it('first checks the cache', () => {
+      expect(testCacheStrategy.get).toHaveBeenCalledTimes(1);
+    });
 
-      const result = await cmsService.getTopics(ESTABLISHMENT_NAME);
-
+    it('returns topics', () => {
       expect(result).toStrictEqual([
         {
           description: 'topic Desc',
@@ -450,11 +528,11 @@ describe('cms Service', () => {
       ]);
     });
 
+    it('it sets the cache', () => {
+      expect(testCacheStrategy.set).toHaveBeenCalledTimes(1);
+    });
+
     it('Source to have been called correctly', async () => {
-      cmsApi.get.mockResolvedValue([]);
-
-      await cmsService.getTopics(ESTABLISHMENT_NAME);
-
       expect(cmsApi.get).toHaveBeenCalledWith(
         new TopicsQuery(ESTABLISHMENT_NAME),
       );

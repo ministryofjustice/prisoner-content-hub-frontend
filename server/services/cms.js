@@ -49,13 +49,22 @@ const {
   ExploreContentQuery,
 } = require('../repositories/cmsQueries/exploreContentQuery');
 
+const { InMemoryCachingStrategy } = require('../utils/caching/memory');
+const { getCacheArrayQuery, getCacheKey } = require('../utils/caching/cms');
+
 const { getOffsetUnixTime } = require('../utils/date');
+
+const CMS_PRIMARY_NAVIGATION = 'CMS:primaryNavigation';
+const CMS_TOPICS = 'CMS:topics';
 
 class CmsService {
   #cmsApi;
 
-  constructor(cmsApi) {
+  #cache;
+
+  constructor({ cmsApi, cachingStrategy }) {
     this.#cmsApi = cmsApi;
+    this.#cache = cachingStrategy || new InMemoryCachingStrategy();
   }
 
   async getTopic(establishmentName, uuid, location, page = 1) {
@@ -208,8 +217,17 @@ class CmsService {
     };
   }
 
+  getQueryWrapper(constructor, ...args) {
+    return () => this.#cmsApi.get(new constructor(...args));
+  }
+
   async getTopics(establishmentName) {
-    return this.#cmsApi.get(new TopicsQuery(establishmentName));
+    return getCacheArrayQuery(
+      this.getQueryWrapper(TopicsQuery, establishmentName),
+      this.#cache,
+      getCacheKey(CMS_TOPICS, establishmentName),
+      86400,
+    );
   }
 
   async getHomepage(establishmentName) {
@@ -257,7 +275,12 @@ class CmsService {
   }
 
   async getPrimaryNavigation(establishmentName) {
-    return this.#cmsApi.get(new PrimaryNavigationQuery(establishmentName));
+    return getCacheArrayQuery(
+      this.getQueryWrapper(PrimaryNavigationQuery, establishmentName),
+      this.#cache,
+      getCacheKey(CMS_PRIMARY_NAVIGATION, establishmentName),
+      86400,
+    );
   }
 
   async getRecentlyAddedContent(establishmentName, page = 1, pageLimit = 4) {

@@ -35,7 +35,10 @@ const incentivesApiClient = new IncentivesApiClient({
 });
 
 const cmsApi = new CmsApi(jsonApiClient);
-const cmsService = new CmsService(cmsApi);
+const cmsService = new CmsService({
+  cmsApi,
+  cachingStrategy: new InMemoryCachingStrategy(),
+});
 
 module.exports = {
   logger,
