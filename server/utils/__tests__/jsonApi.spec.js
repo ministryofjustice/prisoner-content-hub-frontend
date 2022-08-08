@@ -479,6 +479,28 @@ describe('with content tile data', () => {
           publishedAt: 'Friday 10th July',
         });
       });
+      it('should ellipse longer values', () => {
+        expect(
+          getPublishedAtSmallTile({
+            ...tileData,
+            title:
+              'A title that is long enough to be cropped with an ellipse added to the end',
+            publishedAt: '2020-07-10T14:02:58+00:00',
+          }),
+        ).toEqual({
+          id: 42,
+          contentType: 'video',
+          title:
+            'A title that is long enough to be cropped with an ellipse added to...',
+          summary: 'summary',
+          contentUrl: '/content/42',
+          displayUrl: 'link',
+          externalContent: false,
+          image: { url: 'tile_small', alt: 'alt' },
+          isNew: false,
+          publishedAt: 'Friday 10th July',
+        });
+      });
     });
     describe('with an undefined publishedAt date', () => {
       it('should return small tile data and', () => {

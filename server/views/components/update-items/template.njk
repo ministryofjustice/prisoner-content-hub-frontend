@@ -16,7 +16,9 @@
       {{ updateItem(item) }}
     {% endfor %}
   </div>
-  <a class="govuk-link" href="/updates">
-    View all
-  </a>
+  {% if not updatesContentHideViewAll %}
+    <a class="govuk-link" href="/updates">
+      View all
+    </a>
+  {% endif %}
 </div>

@@ -4,6 +4,7 @@ const {
   getLargeTile,
   getPagination,
 } = require('../../utils/jsonApi');
+const { getOffsetUnixTime } = require('../../utils/date');
 
 class HomepageUpdatesContentQuery {
   static #TILE_FIELDS = [
@@ -53,6 +54,8 @@ class HomepageUpdatesContentQuery {
         '=',
         'categories_group',
       )
+      .addFilter('published_at', getOffsetUnixTime(90), '>=')
+      .addSort('published_at,created', 'DESC')
       .getQueryString();
 
     this.query = `${queryWithoutOffset}&${getPagination(page, pageLimit)}`;
@@ -63,13 +66,13 @@ class HomepageUpdatesContentQuery {
   }
 
   transform(items, links) {
-    return items.length
+    return items?.length
       ? {
           largeUpdateTileDefault: getLargeTile(items[0]),
           updatesContent: items.map(getPublishedAtSmallTile),
           isLastPage: !links.next,
         }
-      : null;
+      : { largeUpdateTileDefault: null, updatesContent: [], isLastPage: true };
   }
 }
 
