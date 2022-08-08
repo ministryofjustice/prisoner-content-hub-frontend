@@ -49,12 +49,16 @@ const getTile = (item, imageSize) => {
 const getSmallTile = item => getTile(item, 'tile_small');
 const getLargeTile = item => getTile(item, 'tile_large');
 
-const getPublishedAtSmallTile = item => ({
-  ...getTile(item, 'tile_small'),
-  publishedAt: item?.publishedAt
-    ? format(new Date(item?.publishedAt), 'EEEE do MMMM')
-    : '',
-});
+const getPublishedAtSmallTile = item =>
+  cropTextWithEllipsis(
+    {
+      ...getTile(item, 'tile_small'),
+      publishedAt: item?.publishedAt
+        ? format(new Date(item?.publishedAt), 'EEEE do MMMM')
+        : '',
+    },
+    70,
+  );
 
 const getCategoryId = categories => {
   if (!categories || (Array.isArray(categories) && categories.length === 0))
