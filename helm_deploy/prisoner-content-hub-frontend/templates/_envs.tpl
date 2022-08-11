@@ -85,9 +85,6 @@ env:
     - name: ENABLE_MOCK_AUTH
       value: {{ .Values.application.config.mockAuthEnabled | quote }}
 
-    - name: HOTJAR_ID
-      value: {{ .Values.hotJarId | quote }}
-
     - name: CACHE_SECRET
       valueFrom:
         secretKeyRef:

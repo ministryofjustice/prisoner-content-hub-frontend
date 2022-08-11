@@ -247,18 +247,6 @@ const createApp = services => {
 
   app.use([setCurrentUser, setReturnUrl]);
 
-  // Routing
-  if (!process.env.HOTJAR_ID) {
-    logger.warn('HOTJAR_ID not set');
-    Sentry.captureMessage('HOTJAR_ID not set', 'warning');
-  }
-
-  app.use((req, res, next) => {
-    const hotJarId = process.env.HOTJAR_ID;
-    res.locals.hotJarId = hotJarId;
-    next();
-  });
-
   app.use(routes(services, establishmentData));
   // the sentry error handler has to be placed between our controllers and our error handler
   // https://docs.sentry.io/platforms/node/guides/express/
