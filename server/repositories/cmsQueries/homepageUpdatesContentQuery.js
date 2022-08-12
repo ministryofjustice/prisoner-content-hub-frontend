@@ -40,21 +40,29 @@ class HomepageUpdatesContentQuery {
 
       .addInclude(['field_moj_thumbnail_image'])
 
-      .addGroup('categories_group', 'OR')
+      .addGroup('parent_or_group', 'OR')
+      .addGroup('categories_group', 'AND', 'parent_or_group')
+      .addGroup('series_group', 'AND', 'parent_or_group')
 
       .addFilter(
         'field_moj_top_level_categories.field_is_homepage_updates',
-        true,
+        1,
         '=',
+        'categories_group',
+      )
+      .addFilter(
+        'published_at',
+        getOffsetUnixTime(90),
+        '>=',
         'categories_group',
       )
       .addFilter(
         'field_moj_series.field_is_homepage_updates',
-        true,
+        1,
         '=',
-        'categories_group',
+        'series_group',
       )
-      .addFilter('published_at', getOffsetUnixTime(90), '>=')
+      .addFilter('published_at', getOffsetUnixTime(90), '>=', 'series_group')
       .addSort('published_at,created', 'DESC')
       .getQueryString();
 
