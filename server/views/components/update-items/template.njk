@@ -1,5 +1,5 @@
 {% macro updateItem(item) %}
-  <a class="govuk-hub-update-items-link govuk-link govuk-!-margin-bottom-3" data-featured-tile-id="{{ item.content.id }}" data-featured-id="{{item.content.id}}" data-featured-title="{{ item.content.title }}" href="{{item.content.contentUrl}}" {% if item.content.externalContent %}target="_blank"{% endif %}>
+  <a class="govuk-hub-update-items-link govuk-link govuk-!-margin-bottom-3" data-featured-tile-id="{{ item.id }}" data-featured-id="{{item.id}}" data-featured-title="{{ item.title }}" href="{{item.contentUrl}}" {% if item.externalContent %}target="_blank"{% endif %}>
     <div class="govuk-hub-update-items-link_content">
       <img src="{{item.image.url}}" alt="{{item.image.alt}}">
 
