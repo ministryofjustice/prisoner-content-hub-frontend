@@ -1,6 +1,5 @@
 {% from "../hub-content/macro.njk" import hubContent %}
-
-{% if params.data|length %}
+{% if params.data.data|length %}
 <section id="{{ params.id }}" class="govuk-!-margin-bottom-5">
   <div class="hub-content-block__title-bar govuk-!-margin-bottom-3">
     <h2 class="govuk-heading-l govuk-hub-white-heading govuk-!-margin-bottom-0">{{ params.title }}</h2>
