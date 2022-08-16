@@ -476,7 +476,7 @@ describe('with content tile data', () => {
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
           isNew: false,
-          publishedAt: 'Friday 10th July',
+          publishedAt: 'Friday 10 July',
         });
       });
       it('should ellipse longer values', () => {
@@ -498,7 +498,7 @@ describe('with content tile data', () => {
           externalContent: false,
           image: { url: 'tile_small', alt: 'alt' },
           isNew: false,
-          publishedAt: 'Friday 10th July',
+          publishedAt: 'Friday 10 July',
         });
       });
     });
