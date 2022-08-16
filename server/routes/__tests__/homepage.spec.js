@@ -706,8 +706,8 @@ describe('GET /', () => {
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
-            expect($('#keyInfo a div').children()[0].type).toBe('tag');
-            expect($('#keyInfo a div').children()[0].name).toBe('img');
+            expect($('#keyInfo a').children()[0].type).toBe('tag');
+            expect($('#keyInfo a').children()[0].name).toBe('img');
           }));
 
       it('Should render a html h3 tag in the homepage key info content tile', () =>
@@ -716,8 +716,8 @@ describe('GET /', () => {
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
-            expect($('#keyInfo a div').children()[1].type).toBe('tag');
-            expect($('#keyInfo a div').children()[1].name).toBe('h3');
+            expect($('#keyInfo a').children()[1].type).toBe('tag');
+            expect($('#keyInfo a').children()[1].name).toBe('h3');
           }));
 
       it('Should render a html h3 tag with the expected text in the homepage key info content tile', () =>
@@ -726,7 +726,7 @@ describe('GET /', () => {
           .expect(200)
           .then(response => {
             const $ = cheerio.load(response.text);
-            expect($('#keyInfo a div h3:last').text()).toBe(
+            expect($('#keyInfo a h3:last').text()).toBe(
               'A title that is long enough to be cropped with an ellipse added to the end',
             );
           }));
