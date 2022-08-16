@@ -54,7 +54,7 @@ const getPublishedAtSmallTile = item =>
     {
       ...getTile(item, 'tile_small'),
       publishedAt: item?.publishedAt
-        ? format(new Date(item?.publishedAt), 'EEEE do MMMM')
+        ? format(new Date(item?.publishedAt), 'EEEE d MMMM')
         : '',
     },
     70,
