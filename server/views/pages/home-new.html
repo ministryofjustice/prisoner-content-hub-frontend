@@ -33,14 +33,12 @@
       <span class="black-background govuk-!-padding-right-2">Updates</span>
     </h2>
     <div class="govuk-grid-row govuk-!-margin-0 govuk-body govuk-hub-home-updates">
-      <div class="govuk-hub-home-updates-feature govuk-!-padding-right-1">
-        <!-- 450px column, large update link -->
+      <div class="govuk-hub-home-updates-feature">
         {% if largeUpdateTile %}
           {{ contentTileFeatured(largeUpdateTile) }}
         {% endif %}
       </div>
-      <div class="govuk-hub-home-updates-content govuk-!-padding-left-1">
-        <!-- 450px column, small update links -->
+      <div class="govuk-hub-home-updates-content">
         {% if updatesContent | length %}
           {{ updateItems(updatesContent, updatesContentHideViewAll) }}
         {% endif %}

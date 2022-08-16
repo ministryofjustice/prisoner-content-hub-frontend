@@ -292,12 +292,25 @@
   }
 }
 
+.govuk-hub-home-updates-feature {
+  padding-right: govuk-spacing(1);
+}
+
+.govuk-hub-home-updates-content {
+  padding-left: govuk-spacing(1);
+}
+
 .govuk-hub-home-updates-feature,
 .govuk-hub-home-updates-content {
   max-width: 50%;
   flex-grow: 3;
   @include govuk-media-query($from: $width-override) {
     max-width: 450px;
+  }
+  @include govuk-media-query($until: tablet) {
+    max-width: none;
+    min-width: 100%;
+    padding: 0 0 govuk-spacing(2) 0;
   }
 }
 
