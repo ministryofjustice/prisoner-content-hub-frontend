@@ -32,24 +32,20 @@
     <h2 class="govuk-heading-l govuk-hub-white-heading govuk-!-margin-top-5 govuk-!-margin-bottom-6 hub-horizontal-rule-title">
       <span class="black-background govuk-!-padding-right-2">Updates</span>
     </h2>
-    <div class="govuk-grid-row govuk-!-margin-0 govuk-body">
-      <div class="govuk-grid-column-three-quarters govuk-!-padding-0">
-        <div class="govuk-grid-row govuk-!-margin-0 govuk-hub-home-updates">
-          <div class="govuk-grid-column-one-half govuk-!-padding-0 govuk-!-padding-right-3">
-            <!-- 450px column, large update link -->
-            {% if largeUpdateTile %}
-              {{ contentTileFeatured(largeUpdateTile) }}
-            {% endif %}
-          </div>
-          <div class="govuk-grid-column-one-half govuk-!-padding-0 govuk-!-padding-right-3">
-            <!-- 450px column, small update links -->
-            {% if updatesContent | length %}
-              {{ updateItems(updatesContent, updatesContentHideViewAll) }}
-            {% endif %}
-          </div>
-        </div>
+    <div class="govuk-grid-row govuk-!-margin-0 govuk-body govuk-hub-home-updates">
+      <div class="govuk-hub-home-updates-feature govuk-!-padding-right-1">
+        <!-- 450px column, large update link -->
+        {% if largeUpdateTile %}
+          {{ contentTileFeatured(largeUpdateTile) }}
+        {% endif %}
       </div>
-      <div class="govuk-grid-column-one-quarter" id="keyInfo">
+      <div class="govuk-hub-home-updates-content govuk-!-padding-left-1">
+        <!-- 450px column, small update links -->
+        {% if updatesContent | length %}
+          {{ updateItems(updatesContent, updatesContentHideViewAll) }}
+        {% endif %}
+      </div>
+      <div class="govuk-hub-home-updates-keyInfo" id="keyInfo">
         {% if keyInfo.data | length %}
           {{ keyInfoItems(keyInfo) }}
         {% endif %}
