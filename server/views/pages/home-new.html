@@ -53,16 +53,16 @@
   {% endif %}
 
   {{ hubContentBlock({
+    title: 'Featured',
+    id: 'featuredContent',
+    data: featuredContent
+  }) }}
+
+  {{ hubContentBlock({
     title: 'Recently added',
     viewAllUrl: '/recently-added',
     id: 'recentlyAdded',
     data: recentlyAddedHomepageContent
-  }) }}
-
-  {{ hubContentBlock({
-    title: 'Featured',
-    id: 'featuredContent',
-    data: featuredContent
   }) }}
 
   {{ hubContentBlock({
