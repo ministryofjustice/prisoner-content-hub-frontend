@@ -50,7 +50,7 @@ module.exports = (
       '^/search/?$',
       '/recently-added',
       '/updates',
-      '/new-homepage',
+      '/old-homepage',
     ],
     [
       createPrimaryNavigationMiddleware(cmsService),
