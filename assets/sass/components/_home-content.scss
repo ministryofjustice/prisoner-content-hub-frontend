@@ -151,7 +151,7 @@
     position: relative;
     margin-bottom: govuk-spacing(1);
     margin-right: 0.4%;
-
+    max-width: 24.7%;
     @media (min-width: $desktop-breakpoint) {
       flex: 0 0 24.7%;
     }
@@ -160,6 +160,7 @@
       color: govuk-colour('white');
       margin: govuk-spacing(1) govuk-spacing(3);
       padding-bottom: 50px;
+      overflow-wrap: break-word;
       @include govuk-font(24, 'bold');
       @media (min-width: $desktop-breakpoint) {
         @include govuk-font(24, 'bold');
