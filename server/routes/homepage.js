@@ -3,7 +3,7 @@ const express = require('express');
 const createHomepageRouter = ({ cmsService, offenderService }) => {
   const router = express.Router();
 
-  router.get('/', async (req, res, next) => {
+  router.get('/old-homepage', async (req, res, next) => {
     try {
       const { establishmentName } = req.session;
 
@@ -34,7 +34,7 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
     }
   });
 
-  router.get('/new-homepage', async (req, res, next) => {
+  router.get('/', async (req, res, next) => {
     try {
       const { establishmentName } = req.session;
 
