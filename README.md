@@ -39,6 +39,7 @@ When running locally, in order to access the application as if you were at a spe
 - `styal.prisoner-content-hub.local`
 - `swaleside.prisoner-content-hub.local`
 - `themount.prisoner-content-hub.local`
+- `thestudio.prisoner-content-hub.local`
 - `wayland.prisoner-content-hub.local`
 - `werrington.prisoner-content-hub.local`
 - `wetherby.prisoner-content-hub.local`
