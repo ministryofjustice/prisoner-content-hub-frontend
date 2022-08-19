@@ -20,7 +20,6 @@ const configureEstablishment = require('./middleware/configureEstablishment');
 
 const { User } = require('./auth/user');
 const defaultConfig = require('./config');
-const defaultEstablishmentData = require('./content/establishmentData.json');
 const defaultAuthMiddleware = require('./auth/middleware');
 const routes = require('./routes');
 const { NotFound } = require('./repositories/apiError');
@@ -33,7 +32,6 @@ const createApp = services => {
     offenderService,
     analyticsService,
     config = defaultConfig,
-    establishmentData = defaultEstablishmentData,
     authMiddleware = defaultAuthMiddleware,
   } = services;
 
@@ -247,7 +245,7 @@ const createApp = services => {
 
   app.use([setCurrentUser, setReturnUrl]);
 
-  app.use(routes(services, establishmentData));
+  app.use(routes(services));
   // the sentry error handler has to be placed between our controllers and our error handler
   // https://docs.sentry.io/platforms/node/guides/express/
   app.use(

@@ -20,19 +20,14 @@ const { createUpdatesContentRouter } = require('./updates');
 const createPrimaryNavigationMiddleware = require('../middleware/primaryNavigationMiddleware');
 const retrieveTopicList = require('../middleware/retrieveTopicList');
 
-module.exports = (
-  {
-    logger,
-    cmsService,
-    offenderService,
-    prisonerInformationService,
-    searchService,
-    analyticsService,
-    feedbackService,
-    config,
-  },
-  establishmentData,
-) => {
+module.exports = ({
+  cmsService,
+  offenderService,
+  prisonerInformationService,
+  searchService,
+  analyticsService,
+  feedbackService,
+}) => {
   const router = express.Router();
 
   router.use(
@@ -61,11 +56,8 @@ module.exports = (
   router.use(
     '/',
     createHomepageRouter({
-      logger,
       cmsService,
       offenderService,
-      config,
-      establishmentData,
     }),
   );
 

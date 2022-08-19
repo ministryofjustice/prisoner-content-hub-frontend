@@ -138,15 +138,9 @@ describe('GET /', () => {
     const userSupplier = jest.fn();
 
     beforeEach(() => {
-      const establishmentData = {
-        1: {
-          name: 'berwyn',
-        },
-      };
       router = createHomepageRouter({
         cmsService,
         offenderService,
-        establishmentData,
       });
 
       app = setupBasicApp();
@@ -395,15 +389,9 @@ describe('GET /', () => {
     });
 
     beforeEach(() => {
-      const establishmentData = {
-        1: {
-          name: 'berwyn',
-        },
-      };
       router = createHomepageRouter({
         cmsService,
         offenderService,
-        establishmentData,
       });
 
       app = setupBasicApp();

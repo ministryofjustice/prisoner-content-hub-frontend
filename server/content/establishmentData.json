@@ -2,98 +2,82 @@
   "792": {
     "name": "berwyn",
     "displayName": "HMP Berwyn",
-    "youth": false,
     "agencyId": "BWI"
   },
   "959": {
     "name": "cookhamwood",
     "displayName": "HMYOI Cookham Wood",
-    "youth": true,
     "agencyId": "CKI"
   },
   "1074": {
     "name": "erlestoke",
     "displayName": "HMP Erlestoke",
-    "youth": false,
     "agencyId": "EEI"
   },
   "1083": {
     "name": "felthama",
     "displayName": "HMYOI Feltham A",
-    "youth": true,
     "agencyId": "FYI"
   },
   "1084": {
     "name": "felthamb",
     "displayName": "HMYOI Feltham B",
-    "youth": true,
     "agencyId": "FMI"
   },
   "1075": {
     "name": "garth",
     "displayName": "HMP Garth",
-    "youth": false,
     "agencyId": "GHI"
   },
   "1076": {
     "name": "lindholme",
     "displayName": "HMP Lindholme",
-    "youth": false,
     "agencyId": "LHI"
   },
   "1077": {
     "name": "newhall",
     "displayName": "HMPYOI New Hall",
-    "youth": false,
     "agencyId": "NHI"
   },
   "1078": {
     "name": "ranby",
     "displayName": "HMP Ranby",
-    "youth": false,
     "agencyId": "RNI"
   },
   "1079": {
     "name": "stokeheath",
     "displayName": "HMPYOI Stoke Heath",
-    "youth": false,
     "agencyId": "SHI"
   },
   "1080": {
     "name": "styal",
     "displayName": "HMPYOI Styal",
-    "youth": false,
     "agencyId": "STI"
   },
   "1081": {
     "name": "swaleside",
     "displayName": "HMP Swaleside",
-    "youth": false,
     "agencyId": "SLI"
   },
   "1082": {
     "name": "themount",
     "displayName": "HMP The Mount",
-    "youth": false,
     "agencyId": "MTI"
   },
   "793": {
     "name": "wayland",
     "displayName": "HMP Wayland",
-    "youth": false,
     "agencyId": "WLI"
   },
   "1085": {
     "name": "werrington",
     "displayName": "HMYOI Werrington",
-    "youth": false,
     "agencyId": "WNI"
   },
   "1086": {
     "name": "wetherby",
     "formattedName": "Wetherby",
     "displayName": "HMYOI Wetherby",
-    "youth": true,
     "agencyId": "WYI"
   }
 }
