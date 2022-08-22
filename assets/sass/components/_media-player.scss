@@ -17,6 +17,13 @@
   margin-right: govuk-spacing(4);
 }
 
+.govuk-hub-title-container {
+  @include govuk-media-query($until: $width-override) {
+    width: 75%;
+    word-wrap: break-word;
+  }
+}
+
 .govuk-hub-media-player__catgeory,
 .govuk-hub-media-player__title {
   color: govuk-colour('white');
