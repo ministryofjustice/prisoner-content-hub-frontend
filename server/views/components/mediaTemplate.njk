@@ -21,9 +21,11 @@
         <img id="thumbnail" src="{{ data.image.url }}" alt="{{ data.image.alt }}" class="govuk-hub-media-player__show-tag"/>
       </div>
       <div class="govuk-hub-title-container">
-        <p class="govuk-hub-media-player__catgeory govuk-heading-m">
-          <a href="/tags/{{data.seriesId}}" id="series" title="{{ data.seriesName }}" class="govuk-link govuk-hub-media-player__catgeory-link">{{ data.seriesName }}</a>
-        </p>
+        {% if data.seriesId %}
+          <p class="govuk-hub-media-player__catgeory govuk-heading-m">
+            <a href="/tags/{{data.seriesId}}" id="series" title="{{ data.seriesName }}" class="govuk-link govuk-hub-media-player__catgeory-link">{{ data.seriesName }}</a>
+          </p>
+        {% endif %}
         <h1 id="title" class="govuk-heading-xl govuk-body govuk-!-font-size-36 govuk-hub-media-player__title govuk-!-font-weight-bold">{{ data.title }}</h1>
       </div>
     </header>
