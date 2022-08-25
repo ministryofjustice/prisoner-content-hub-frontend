@@ -1,8 +1,11 @@
 {% macro updateItem(item) %}
   <a class="govuk-hub-update-items-link govuk-link govuk-!-margin-bottom-3" data-featured-tile-id="{{ item.id }}" data-featured-id="{{item.id}}" data-featured-title="{{ item.title }}" href="{{item.contentUrl}}" {% if item.externalContent %}target="_blank"{% endif %}>
     <div class="govuk-hub-update-items-link_content">
-      <img src="{{item.image.url}}" alt="{{item.image.alt}}">
-
+       {% if item.image.url %}
+        <img src="{{item.image.url}}" alt="{{item.image.alt}}" class="tile-image">
+      {% else %}
+        <img src="/public/images/default_small_tile_hub_logo.png" alt="logo" class="tile-image">
+      {% endif %}
       <div class="govuk-hub-update-items-link_text govuk-!-margin-0">
         <h3 class="govuk-heading-s">{{item.publishedAt}}</h3>
         <p class="govuk-body">{{item.title | safe}}</p>
