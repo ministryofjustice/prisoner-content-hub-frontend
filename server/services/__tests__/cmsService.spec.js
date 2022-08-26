@@ -1,7 +1,4 @@
 const { CmsApi } = require('../../repositories/cmsApi');
-const {
-  HomepageQuery,
-} = require('../../repositories/cmsQueries/homePageQuery');
 const { TopicsQuery } = require('../../repositories/cmsQueries/topicsQuery');
 const {
   LinkPageQuery,
@@ -539,99 +536,6 @@ describe('cms Service', () => {
     });
   });
 
-  describe('getHomepage', () => {
-    const homepage = {
-      upperFeatured: {
-        id: '10002',
-        contentUrl: '/content/10002',
-        contentType: 'moj_video_item',
-        title: 'Yoga',
-        summary: 'Yoga workout',
-        image: {
-          url: 'https://cloud-platform-c3b3.eu-west-2',
-          alt: 'Picture of Yoga workout',
-        },
-      },
-      lowerFeatured: {
-        id: '10003',
-        contentUrl: '/content/10003',
-        contentType: 'moj_video_item',
-        title: 'Lower Abs workout',
-        summary: 'Intense lower core workout',
-        image: {
-          url: 'https://cloud-platform-c3b3.eu-west-2',
-          alt: 'Picture of core workout',
-        },
-      },
-      smallTiles: [
-        {
-          id: '10001',
-          contentUrl: '/content/10001',
-          contentType: 'moj_video_item',
-          title: 'Lower Abs workout',
-          summary: 'Intense lower core workout',
-          image: {
-            url: 'https://cloud-platform-c3b3.eu-west-2',
-            alt: 'Picture of core workout',
-          },
-        },
-      ],
-    };
-
-    it('returns homepage content', async () => {
-      cmsApi.get.mockResolvedValue([homepage]);
-
-      const result = await cmsService.getHomepage(ESTABLISHMENT_NAME);
-
-      expect(result).toStrictEqual({
-        upperFeatured: {
-          id: '10002',
-          contentUrl: '/content/10002',
-          contentType: 'moj_video_item',
-          title: 'Yoga',
-          summary: 'Yoga workout',
-          image: {
-            url: 'https://cloud-platform-c3b3.eu-west-2',
-            alt: 'Picture of Yoga workout',
-          },
-        },
-        lowerFeatured: {
-          id: '10003',
-          contentUrl: '/content/10003',
-          contentType: 'moj_video_item',
-          title: 'Lower Abs workout',
-          summary: 'Intense lower core workout',
-          image: {
-            url: 'https://cloud-platform-c3b3.eu-west-2',
-            alt: 'Picture of core workout',
-          },
-        },
-        smallTiles: [
-          {
-            id: '10001',
-            contentUrl: '/content/10001',
-            contentType: 'moj_video_item',
-            title: 'Lower Abs workout',
-            summary: 'Intense lower core workout',
-            image: {
-              url: 'https://cloud-platform-c3b3.eu-west-2',
-              alt: 'Picture of core workout',
-            },
-          },
-        ],
-      });
-    });
-
-    it('Source to have been called correctly', async () => {
-      cmsApi.get.mockResolvedValue([]);
-
-      await cmsService.getHomepage(ESTABLISHMENT_NAME);
-
-      expect(cmsApi.get).toHaveBeenCalledWith(
-        new HomepageQuery(ESTABLISHMENT_NAME),
-      );
-    });
-  });
   describe('getTag', () => {
     const TAG_ID = 9;
     const uuid = 42;
