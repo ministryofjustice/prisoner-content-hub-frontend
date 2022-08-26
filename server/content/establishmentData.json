@@ -77,6 +77,11 @@
     "youth": false,
     "agencyId": "MTI"
   },
+  "1603": {
+    "name": "thestudio",
+    "displayName": "HMPPS The Studio",
+    "agencyId": ""
+  },
   "793": {
     "name": "wayland",
     "displayName": "HMP Wayland",
