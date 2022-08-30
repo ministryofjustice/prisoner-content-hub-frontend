@@ -1006,34 +1006,37 @@ describe('cms Service', () => {
   });
 
   describe('getUrgentBanners', () => {
-    const createUrgentBanner = name => ({
-      title: `${name}`,
-      more_info_link: '/more/info',
-    });
+    const resArray = [
+      {
+        title: 'banner',
+        moreInfoLink: '/more/info',
+        unpublishedOn: '111',
+      },
+    ];
     let result;
+
     beforeEach(async () => {
-      cmsApi.get.mockResolvedValue([createUrgentBanner('banner')]);
+      cmsApi.getCache.mockResolvedValueOnce(resArray);
       result = await cmsService.getUrgentBanners(ESTABLISHMENT_NAME);
     });
-    it('first checks the cache', () => {
-      expect(testCacheStrategy.get).toHaveBeenCalledTimes(1);
+    it('should call cmsApi.getCache once', () => {
+      expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call cmsApi.get with the ExploreContentQuery', async () => {
+      expect(cmsApi.getCache).toHaveBeenCalledWith(
+        new UrgentBannerQuery(ESTABLISHMENT_NAME),
+      );
     });
 
     it('returns urgent banner', () => {
       expect(result).toStrictEqual([
         {
           title: `banner`,
-          more_info_link: '/more/info',
+          moreInfoLink: '/more/info',
+          unpublishedOn: '111',
         },
       ]);
-    });
-    it('it sets the cache', () => {
-      expect(testCacheStrategy.set).toHaveBeenCalledTimes(1);
-    });
-    it('Source to have been called correctly', async () => {
-      expect(cmsApi.get).toHaveBeenCalledWith(
-        new UrgentBannerQuery(ESTABLISHMENT_NAME),
-      );
     });
   });
 });
