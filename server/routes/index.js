@@ -19,6 +19,7 @@ const { createRecentlyAddedContentRouter } = require('./recentlyAdded');
 const { createUpdatesContentRouter } = require('./updates');
 const createPrimaryNavigationMiddleware = require('../middleware/primaryNavigationMiddleware');
 const retrieveTopicList = require('../middleware/retrieveTopicList');
+const urgentBannerMiddleware = require('../middleware/urgentBannerMiddleware');
 
 module.exports = (
   {
@@ -54,6 +55,7 @@ module.exports = (
     [
       createPrimaryNavigationMiddleware(cmsService),
       retrieveTopicList(cmsService),
+      urgentBannerMiddleware(cmsService),
     ],
   );
 
