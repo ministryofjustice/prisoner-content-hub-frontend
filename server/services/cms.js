@@ -55,6 +55,8 @@ const { InMemoryCachingStrategy } = require('../utils/caching/memory');
 
 const { getOffsetUnixTime } = require('../utils/date');
 
+const { isUnpublished } = require('../utils/jsonApi');
+
 class CmsService {
   #cmsApi;
 
@@ -284,12 +286,10 @@ class CmsService {
   }
 
   async getUrgentBanners(establishmentName) {
-    return getCacheArrayQuery(
-      this.getQueryWrapper(UrgentBannerQuery, establishmentName),
-      this.#cache,
-      getCacheKey(CMS_URGENT_BANNER, establishmentName),
-      300,
-    );
+    const urgentBanner = await this.#cmsApi
+      .getCache(new UrgentBannerQuery(establishmentName))
+      .then(res => res.filter(isUnpublished));
+    return urgentBanner;
   }
 }
 

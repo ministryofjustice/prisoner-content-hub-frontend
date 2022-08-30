@@ -24,7 +24,7 @@
     color: #000000;
   }
 
-  @media (max-width: $tablet-breakpoint) {
+  @include govuk-media-query($until: tablet) {
     h2 {
       padding: 0.2em 0;
     }

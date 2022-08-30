@@ -76,6 +76,9 @@ const getCategoryId = categories => {
   };
 };
 
+const isUnpublished = ({ unpublishOn = null }) =>
+  !unpublishOn || unpublishOn >= new Date().getTime();
+
 const buildFieldTopics = (arr = []) =>
   arr.map(({ drupalInternal_Tid: id, name, id: uuid }) => ({
     id,
@@ -157,6 +160,7 @@ module.exports = {
   getLargeImage,
   getPublishedAtSmallTile,
   getCategoryId,
+  isUnpublished,
   buildFieldTopics,
   typeFrom,
   isBottomCategory,
