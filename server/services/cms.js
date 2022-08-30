@@ -47,6 +47,9 @@ const {
 const {
   ExploreContentQuery,
 } = require('../repositories/cmsQueries/exploreContentQuery');
+const {
+  UrgentBannerQuery,
+} = require('../repositories/cmsQueries/urgentBannerQuery');
 
 const { InMemoryCachingStrategy } = require('../utils/caching/memory');
 
@@ -278,6 +281,15 @@ class CmsService {
     );
 
     return RecentlyAddedHomepageContent;
+  }
+
+  async getUrgentBanners(establishmentName) {
+    return getCacheArrayQuery(
+      this.getQueryWrapper(UrgentBannerQuery, establishmentName),
+      this.#cache,
+      getCacheKey(CMS_URGENT_BANNER, establishmentName),
+      300,
+    );
   }
 }
 

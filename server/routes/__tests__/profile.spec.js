@@ -20,6 +20,7 @@ describe('GET /profile', () => {
   beforeEach(() => {
     const cmsService = {
       getPrimaryNavigation: jest.fn().mockResolvedValue([]),
+      getUrgentBanners: jest.fn().mockResolvedValue([]),
       getTopics: jest.fn().mockReturnValue([]),
     };
     app = setupApp({ offenderService, cmsService });

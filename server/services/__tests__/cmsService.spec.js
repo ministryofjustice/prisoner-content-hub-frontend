@@ -56,6 +56,9 @@ const { CmsService } = require('../cms');
 const {
   PrimaryNavigationQuery,
 } = require('../../repositories/cmsQueries/PrimaryNavigationQuery');
+const {
+  UrgentBannerQuery,
+} = require('../../repositories/cmsQueries/urgentBannerQuery');
 
 jest.mock('../../repositories/cmsApi');
 
@@ -999,6 +1002,38 @@ describe('cms Service', () => {
 
     it('should return a result when cmsApi.get is called', async () => {
       expect(result).toBe(resObject);
+    });
+  });
+
+  describe('getUrgentBanners', () => {
+    const createUrgentBanner = name => ({
+      title: `${name}`,
+      more_info_link: '/more/info',
+    });
+    let result;
+    beforeEach(async () => {
+      cmsApi.get.mockResolvedValue([createUrgentBanner('banner')]);
+      result = await cmsService.getUrgentBanners(ESTABLISHMENT_NAME);
+    });
+    it('first checks the cache', () => {
+      expect(testCacheStrategy.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('returns urgent banner', () => {
+      expect(result).toStrictEqual([
+        {
+          title: `banner`,
+          more_info_link: '/more/info',
+        },
+      ]);
+    });
+    it('it sets the cache', () => {
+      expect(testCacheStrategy.set).toHaveBeenCalledTimes(1);
+    });
+    it('Source to have been called correctly', async () => {
+      expect(cmsApi.get).toHaveBeenCalledWith(
+        new UrgentBannerQuery(ESTABLISHMENT_NAME),
+      );
     });
   });
 });
