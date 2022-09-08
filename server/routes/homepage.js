@@ -59,6 +59,11 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
       const useLargeUpdateTile = Boolean(largeUpdateTile?.contentUrl);
       const updatesContentHideViewAll =
         isLastPage && (updatesContent.length < 5 || !useLargeUpdateTile);
+
+      const largeUpdateTileContent = useLargeUpdateTile
+        ? largeUpdateTile
+        : largeUpdateTileDefault;
+
       res.render('pages/home-new', {
         config: {
           content: true,
@@ -69,13 +74,14 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         hideSignInLink: true,
         title: 'Home',
         recentlyAddedHomepageContent,
-        updatesContent: updatesContent.splice(useLargeUpdateTile ? 0 : 1, 4),
+        updatesContent: removeDuplicateUpdates(
+          updatesContent,
+          largeUpdateTileContent,
+        ),
         updatesContentHideViewAll,
         featuredContent,
         keyInfo,
-        largeUpdateTile: useLargeUpdateTile
-          ? largeUpdateTile
-          : largeUpdateTileDefault,
+        largeUpdateTile: largeUpdateTileContent,
         exploreContent,
         currentEvents,
       });
@@ -86,6 +92,9 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
 
   return router;
 };
+
+const removeDuplicateUpdates = (updatesContent, { id }) =>
+  updatesContent.filter(update => update.id !== id).splice(0, 4);
 
 module.exports = {
   createHomepageRouter,
