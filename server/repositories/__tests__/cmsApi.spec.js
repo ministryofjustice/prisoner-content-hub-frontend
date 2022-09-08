@@ -74,11 +74,21 @@ describe('CmsApi', () => {
   let cmsApi;
   let mockDrupal;
 
+  const testCacheStrategy = {
+    set: jest.fn(),
+    get: jest.fn(),
+  };
+
   beforeEach(() => {
+    testCacheStrategy.set.mockClear();
+    testCacheStrategy.get.mockClear();
     if (!nock.isActive()) {
       nock.activate();
     }
-    cmsApi = new CmsApi(new JsonApiClient(host));
+    cmsApi = new CmsApi({
+      jsonApiClient: new JsonApiClient(host),
+      cachingStrategy: testCacheStrategy,
+    });
     mockDrupal = nock(host);
   });
 
@@ -208,24 +218,50 @@ describe('CmsApi', () => {
         new NotFound(lookupPath),
       );
     });
-
-    it('should format and return single value', async () => {
-      mockDrupal.get(lookupPath).reply(200, {
-        jsonapi: {
-          individual:
+    describe('when not using cache', () => {
+      let response;
+      let lookupResult;
+      beforeEach(async () => {
+        mockDrupal.get(lookupPath).reply(200, {
+          jsonapi: {
+            individual:
+              'https://cms.org/jsonapi/node/page/abd97f5c-072b-4e1f-a446-85fd021d7fa7',
+            resourceName: 'node--page',
+          },
+          entity: { uuid: 101 },
+        });
+        response = await cmsApi.lookupContent('berwyn', 1234);
+        lookupResult = {
+          location:
             'https://cms.org/jsonapi/node/page/abd97f5c-072b-4e1f-a446-85fd021d7fa7',
-          resourceName: 'node--page',
-        },
-        entity: { uuid: 101 },
+          type: 'node--page',
+          uuid: 101,
+        };
       });
+      it('should check the cache', async () => {
+        expect(testCacheStrategy.get).toHaveBeenCalledTimes(1);
+      });
+      it('should format and return single value', async () => {
+        expect(response).toStrictEqual(lookupResult);
+      });
+      it('should save the value to the cache', async () => {
+        expect(testCacheStrategy.set).toHaveBeenCalledTimes(1);
+        expect(testCacheStrategy.set).toHaveBeenCalledWith(
+          'CMS:router:berwyn:content:1234',
+          lookupResult,
+          86400,
+        );
+      });
+    });
+    it('should use cache if available', async () => {
+      const cachedValue = {
+        location: 'https://cms.org/jsonapi/node/page/carrot',
+        type: 'node--bun',
+        uuid: 42,
+      };
+      testCacheStrategy.get.mockResolvedValueOnce(cachedValue);
       const response = await cmsApi.lookupContent('berwyn', 1234);
-
-      expect(response).toStrictEqual({
-        location:
-          'https://cms.org/jsonapi/node/page/abd97f5c-072b-4e1f-a446-85fd021d7fa7',
-        type: 'node--page',
-        uuid: 101,
-      });
+      expect(response).toStrictEqual(cachedValue);
     });
   });
 
