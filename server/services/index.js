@@ -33,8 +33,10 @@ const incentivesApiClient = new IncentivesApiClient({
   incentivesApi: config.incentivesApi,
   cachingStrategy: new InMemoryCachingStrategy(),
 });
-
-const cmsApi = new CmsApi(jsonApiClient);
+const cmsApi = new CmsApi({
+  jsonApiClient,
+  cachingStrategy: new InMemoryCachingStrategy(),
+});
 const cmsService = new CmsService({
   cmsApi,
   cachingStrategy: new InMemoryCachingStrategy(),
