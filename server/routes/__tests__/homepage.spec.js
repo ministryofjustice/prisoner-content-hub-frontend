@@ -20,6 +20,7 @@ describe('GET /', () => {
   let featuredContent;
   let keyInfo;
   let largeUpdateTile;
+  let hubUpdatesContent;
 
   beforeEach(() => {
     featuredItem = {
@@ -85,6 +86,21 @@ describe('GET /', () => {
         contentUrl: '/content/444444',
         displayUrl: undefined,
         image: { url: 'image url', alt: 'Alt text' },
+        publishedAt: 'Monday 30th October',
+      },
+    ];
+    hubUpdatesContent = [
+      ...hubContent,
+      {
+        id: 555555,
+        contentType: 'video',
+        externalContent: false,
+        title:
+          'A title that is long enough to be cropped with an ellipse added to the end',
+        summary: 'A summary',
+        contentUrl: '/content/555555',
+        displayUrl: undefined,
+        image: { url: 'image url', alt: 'Alt text' },
         publishedAt: 'Monday 17th October',
       },
     ];
@@ -120,7 +136,7 @@ describe('GET /', () => {
       }),
       getUpdatesContent: jest.fn().mockResolvedValue({
         largeUpdateTileDefault: hubContent[0],
-        updatesContent: [...hubContent],
+        updatesContent: [...hubUpdatesContent],
       }),
     };
   });
