@@ -98,4 +98,5 @@ const removeDuplicateUpdates = (updatesContent, { id }) =>
 
 module.exports = {
   createHomepageRouter,
+  removeDuplicateUpdates,
 };
