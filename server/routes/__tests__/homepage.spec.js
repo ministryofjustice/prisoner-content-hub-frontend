@@ -21,6 +21,7 @@ describe('GET /', () => {
   let keyInfo;
   let largeUpdateTile;
   let hubUpdatesContent;
+  let uniqueHubcontent;
 
   beforeEach(() => {
     featuredItem = {
@@ -89,6 +90,18 @@ describe('GET /', () => {
         publishedAt: 'Monday 30th October',
       },
     ];
+    uniqueHubcontent = {
+      id: 666666,
+      contentType: 'video',
+      externalContent: false,
+      title: 'BBC. The Story of Maths. The Language of the Universe',
+      summary: 'BBC. The Story of Maths. The Language of the Universe',
+      contentUrl: '/content/666666',
+      displayUrl: undefined,
+      image: { url: 'image url', alt: 'Alt text' },
+      publishedAt: 'Monday 1st November',
+    };
+
     hubUpdatesContent = [
       ...hubContent,
       {
@@ -110,7 +123,7 @@ describe('GET /', () => {
     keyInfo = {
       data: hubContent,
     };
-    [largeUpdateTile] = hubContent;
+    largeUpdateTile = uniqueHubcontent;
 
     cmsService = {
       getHomepage: jest.fn().mockReturnValue({
@@ -628,7 +641,7 @@ describe('GET /', () => {
           .then(response => {
             const $ = cheerio.load(response.text);
             expect($('.govuk-hub-update-items-link_text h3:last').text()).toBe(
-              'Monday 17th October',
+              'Monday 30th October',
             );
           }));
 
@@ -647,7 +660,7 @@ describe('GET /', () => {
         describe('returning less than 5 links and the default large update is not required', () => {
           it('Should hide the "View all" link', () => {
             cmsService.getUpdatesContent = jest.fn().mockResolvedValue({
-              largeUpdateTileDefault: hubContent[0],
+              largeUpdateTileDefault: uniqueHubcontent,
               updatesContent: [...hubContent],
               isLastPage: true,
             });
@@ -662,7 +675,7 @@ describe('GET /', () => {
               });
           });
         });
-        describe('returning 5 links and the default large update is not required', () => {
+        describe('returning 5 unique links and the default large update is not required', () => {
           it('Should render a "View all" link in the updates section', () => {
             cmsService.getUpdatesContent = jest.fn().mockResolvedValue({
               largeUpdateTileDefault: hubContent[0],

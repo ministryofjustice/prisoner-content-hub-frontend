@@ -43,7 +43,7 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
       }
 
       const [
-        { featuredContent, keyInfo, largeUpdateTile },
+        { featuredContent, keyInfo, largeUpdateTile: largeUpdateTileSpecified },
         recentlyAddedHomepageContent,
         exploreContent,
         { largeUpdateTileDefault, updatesContent, isLastPage },
@@ -56,15 +56,15 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
       const currentEvents = res.locals.isSignedIn
         ? await offenderService.getCurrentEvents(req.user)
         : {};
-      const useLargeUpdateTile = Boolean(largeUpdateTile?.contentUrl);
+      const useLargeUpdateTile = Boolean(largeUpdateTileSpecified?.contentUrl);
 
-      const largeUpdateTileContent = useLargeUpdateTile
-        ? largeUpdateTile
+      const largeUpdateTile = useLargeUpdateTile
+        ? largeUpdateTileSpecified
         : largeUpdateTileDefault;
 
       const updatesContentWithDuplicatesRemoved = removeDuplicateUpdates(
         updatesContent,
-        largeUpdateTileContent,
+        largeUpdateTile,
       );
 
       const updatesContentHideViewAll =
@@ -85,7 +85,7 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         updatesContentHideViewAll,
         featuredContent,
         keyInfo,
-        largeUpdateTile: largeUpdateTileContent,
+        largeUpdateTile,
         exploreContent,
         currentEvents,
       });
