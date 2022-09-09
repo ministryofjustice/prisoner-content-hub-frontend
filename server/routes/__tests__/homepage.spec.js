@@ -721,9 +721,8 @@ describe('GET /', () => {
           expect.not.objectContaining(hubUpdatesContent[0]),
         ));
 
-      it('should return the remaining 4 items in the updatesContent array when a duplicate item has been removed', () => {
-        expect(updatesContentWithDuplicateRemoved.length).toBe(4);
-      });
+      it('should return the remaining 4 items in the updatesContent array when a duplicate item has been removed', () =>
+        expect(updatesContentWithDuplicateRemoved.length).toBe(4));
 
       it('should return the first 4 items from the updatesContent array when no duplicates are found', () =>
         expect(
