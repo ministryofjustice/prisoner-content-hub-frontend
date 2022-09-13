@@ -43,7 +43,7 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
       }
 
       const [
-        { featuredContent, keyInfo, largeUpdateTile },
+        { featuredContent, keyInfo, largeUpdateTile: largeUpdateTileSpecified },
         recentlyAddedHomepageContent,
         exploreContent,
         { largeUpdateTileDefault, updatesContent, isLastPage },
@@ -56,9 +56,21 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
       const currentEvents = res.locals.isSignedIn
         ? await offenderService.getCurrentEvents(req.user)
         : {};
-      const useLargeUpdateTile = Boolean(largeUpdateTile?.contentUrl);
+      const useLargeUpdateTile = Boolean(largeUpdateTileSpecified?.contentUrl);
+
+      const largeUpdateTile = useLargeUpdateTile
+        ? largeUpdateTileSpecified
+        : largeUpdateTileDefault;
+
+      const updatesContentWithDuplicatesRemoved = removeDuplicateUpdates(
+        updatesContent,
+        largeUpdateTile,
+      );
+
       const updatesContentHideViewAll =
-        isLastPage && (updatesContent.length < 5 || !useLargeUpdateTile);
+        isLastPage &&
+        (updatesContentWithDuplicatesRemoved.length < 5 || !useLargeUpdateTile);
+
       res.render('pages/home-new', {
         config: {
           content: true,
@@ -69,13 +81,11 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         hideSignInLink: true,
         title: 'Home',
         recentlyAddedHomepageContent,
-        updatesContent: updatesContent.splice(useLargeUpdateTile ? 0 : 1, 4),
+        updatesContent: updatesContentWithDuplicatesRemoved.splice(0, 4),
         updatesContentHideViewAll,
         featuredContent,
         keyInfo,
-        largeUpdateTile: useLargeUpdateTile
-          ? largeUpdateTile
-          : largeUpdateTileDefault,
+        largeUpdateTile,
         exploreContent,
         currentEvents,
       });
@@ -87,6 +97,10 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
   return router;
 };
 
+const removeDuplicateUpdates = (updatesContent, { id }) =>
+  updatesContent.filter(update => update.id !== id);
+
 module.exports = {
   createHomepageRouter,
+  removeDuplicateUpdates,
 };
