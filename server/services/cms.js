@@ -50,12 +50,8 @@ const {
 } = require('../repositories/cmsQueries/exploreContentQuery');
 
 const { InMemoryCachingStrategy } = require('../utils/caching/memory');
-const { getCacheArrayQuery, getCacheKey } = require('../utils/caching/cms');
 
 const { getOffsetUnixTime } = require('../utils/date');
-
-const CMS_PRIMARY_NAVIGATION = 'CMS:primaryNavigation';
-const CMS_TOPICS = 'CMS:topics';
 
 class CmsService {
   #cmsApi;
@@ -96,7 +92,7 @@ class CmsService {
           .get(new CategoryPageQuery(establishmentName, uuid))
           .then(async data => {
             if (!(data?.breadcrumbs?.length >= 1)) return [data];
-            const rawCategoryContent = await this.#cmsApi.get(
+            const rawCategoryContent = await this.#cmsApi.getCache(
               new CategoryContentQuery(establishmentName, uuid, 40),
             );
             return [data, rawCategoryContent];
@@ -217,17 +213,8 @@ class CmsService {
     };
   }
 
-  getQueryWrapper(constructor, ...args) {
-    return () => this.#cmsApi.get(new constructor(...args));
-  }
-
   async getTopics(establishmentName) {
-    return getCacheArrayQuery(
-      this.getQueryWrapper(TopicsQuery, establishmentName),
-      this.#cache,
-      getCacheKey(CMS_TOPICS, establishmentName),
-      86400,
-    );
+    return this.#cmsApi.getCache(new TopicsQuery(establishmentName));
   }
 
   async getHomepage(establishmentName) {
@@ -245,7 +232,7 @@ class CmsService {
   }
 
   async getUpdatesContent(establishmentName, page = 1, pageLimit = 5) {
-    const updatesContent = await this.#cmsApi.get(
+    const updatesContent = await this.#cmsApi.getCache(
       new HomepageUpdatesContentQuery(establishmentName, page, pageLimit),
     );
     return updatesContent;
@@ -275,12 +262,7 @@ class CmsService {
   }
 
   async getPrimaryNavigation(establishmentName) {
-    return getCacheArrayQuery(
-      this.getQueryWrapper(PrimaryNavigationQuery, establishmentName),
-      this.#cache,
-      getCacheKey(CMS_PRIMARY_NAVIGATION, establishmentName),
-      86400,
-    );
+    return this.#cmsApi.getCache(new PrimaryNavigationQuery(establishmentName));
   }
 
   async getRecentlyAddedContent(establishmentName, page = 1, pageLimit = 4) {

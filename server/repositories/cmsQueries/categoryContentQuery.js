@@ -1,5 +1,6 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { getSmallTile, getPagination } = require('../../utils/jsonApi');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class CategoryContentQuery {
   static #TILE_FIELDS = [
@@ -24,6 +25,14 @@ class CategoryContentQuery {
       .addSort('created', 'DESC')
       .getQueryString();
     this.query = `${queryWithoutOffset}&${getPagination(page, limit)}`;
+  }
+
+  getKey() {
+    getCmsCacheKey('categoryContent', this.establishmentName);
+  }
+
+  getExpiry() {
+    return 3600;
   }
 
   path() {

@@ -1,0 +1,43 @@
+version: '3.1'
+services:
+
+  auth-server:
+    image: quay.io/hmpps/hmpps-auth:latest
+    networks:
+      - hmpps
+    container_name: auth-server
+    ports:
+      - "9090:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
+    environment:
+      SPRING_PROFILES_ACTIVE: dev,token-verification
+      TOKENVERIFICATION_ENDPOINT_URL: "http://token-verification-api:8080"
+      DELIUS_ENABLED: "false"
+
+  hub-frontend-redis:
+    image: 'bitnami/redis:5.0'
+    networks:
+      - hmpps
+    container_name: hub-frontend-redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+
+  prison-api:
+    image: quay.io/hmpps/prison-api:latest
+    networks:
+      - hmpps
+    container_name: prison-api
+    depends_on:
+      - auth-server
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+    environment:
+      - SPRING_PROFILES_ACTIVE=nomis-hsqldb
+
+networks:
+  hmpps:

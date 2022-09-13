@@ -1,4 +1,5 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class TopicsQuery {
   static #QUERYSTRING = new Query()
@@ -10,6 +11,10 @@ class TopicsQuery {
 
   constructor(establishmentName) {
     this.establishmentName = establishmentName;
+  }
+
+  getKey() {
+    getCmsCacheKey('topics', this.establishmentName);
   }
 
   path() {
