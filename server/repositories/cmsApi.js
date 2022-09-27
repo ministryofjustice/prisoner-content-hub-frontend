@@ -78,11 +78,15 @@ class CmsApi {
 
   async getCache(query) {
     const key = query.getKey?.() || null;
-    const expiry = query.getExpiry?.() || 8640;
+    if (!key)
+      throw new Error(
+        `Could not retrieve cache key from query: ${query?.constructor?.name}`,
+      );
+    const expiry = query.getExpiry?.() || 300;
     let data = key ? await this.#cache.get(key) : null;
     if (!data) {
       data = (await this.get(query)) || [];
-      if (key && expiry && data) await this.#cache.set(key, data, expiry);
+      if (data) await this.#cache.set(key, data, expiry);
     }
     // move to "structuredClone" when on node 18+
     return clone(data);

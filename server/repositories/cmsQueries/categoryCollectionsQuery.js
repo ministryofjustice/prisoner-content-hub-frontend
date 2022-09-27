@@ -1,5 +1,6 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { getSmallTile, getPagination } = require('../../utils/jsonApi');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class CategoryCollectionsQuery {
   static #TILE_FIELDS = [
@@ -16,6 +17,8 @@ class CategoryCollectionsQuery {
   constructor(establishmentName, uuid, limit = 10, page = 1) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
+    this.limit = 10;
+    this.page = 1;
     const queryWithoutOffset = new Query()
       .addFields('taxonomy_term--series', CategoryCollectionsQuery.#TILE_FIELDS)
       .addFields(
@@ -25,6 +28,20 @@ class CategoryCollectionsQuery {
       .addInclude(['field_moj_thumbnail_image'])
       .getQueryString();
     this.query = `${queryWithoutOffset}&${getPagination(page, limit)}`;
+  }
+
+  getKey() {
+    return getCmsCacheKey(
+      'categoryCollections',
+      this.establishmentName,
+      this.uuid,
+      `limit:${this.limit}`,
+      `page:${this.page}`,
+    );
+  }
+
+  getExpiry() {
+    return 300;
   }
 
   path() {

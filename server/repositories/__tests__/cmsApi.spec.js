@@ -6,6 +6,7 @@ const { CmsApi } = require('../cmsApi');
 
 const host = 'http://localhost:3333';
 const path = `/jsonapi/test`;
+const key = 'TESTKEY';
 class TestPathTransformQuery {
   path() {
     return path;
@@ -21,6 +22,10 @@ class TestPathTransformQuery {
       description: description?.processed,
       href: `/content/${id}`,
     };
+  }
+
+  getKey() {
+    return key;
   }
 }
 
@@ -96,6 +101,63 @@ describe('CmsApi', () => {
     nock.restore();
   });
 
+  describe('getCache', () => {
+    describe('no cache key defined', () => {
+      it('should throw an error', async () => {
+        const query = new TestUrlTransformEachQuery();
+        await expect(cmsApi.getCache(query)).rejects.toThrow(
+          'Could not retrieve cache key from query: TestUrlTransformEachQuery',
+        );
+      });
+    });
+    describe('with cached data', () => {
+      it('should return the cached value', async () => {
+        const cachedValue = {
+          location: 'https://cms.org/jsonapi/node/page/carrot',
+          type: 'node--bun',
+          uuid: 42,
+        };
+        testCacheStrategy.get.mockResolvedValueOnce(cachedValue);
+        const response = await cmsApi.getCache(new TestPathTransformQuery());
+        expect(response).toStrictEqual(cachedValue);
+      });
+    });
+    describe('with no cached data', () => {
+      const expectedResult = {
+        description: 'Desc 1',
+        href: '/content/1',
+        id: '1',
+        self: {
+          href: 'http://cms.prg/jsonapi/node/not-used',
+        },
+        linkText: 'One',
+      };
+      let response;
+      beforeEach(async () => {
+        mockDrupal.get(path).reply(
+          200,
+          jsonApiResponse(
+            testItem({
+              id: '1',
+              title: 'One',
+              processed: 'Desc 1',
+            }),
+          ),
+        );
+        response = await cmsApi.getCache(new TestPathTransformQuery());
+      });
+      it('should return the drupal value', async () => {
+        expect(response).toStrictEqual(expectedResult);
+      });
+      it('should set the cache', async () => {
+        expect(testCacheStrategy.set).toHaveBeenCalledWith(
+          key,
+          expectedResult,
+          300,
+        );
+      });
+    });
+  });
   describe('get', () => {
     it('should handle returning no items', async () => {
       mockDrupal.get(path).reply(200, jsonApiResponse([]));

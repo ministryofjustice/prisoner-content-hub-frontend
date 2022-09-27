@@ -10,7 +10,11 @@ class PrimaryNavigationQuery {
   }
 
   getKey() {
-    getCmsCacheKey('primaryNavigation', this.establishmentName);
+    return getCmsCacheKey('primaryNavigation', this.establishmentName);
+  }
+
+  getExpiry() {
+    return 86400;
   }
 
   path() {

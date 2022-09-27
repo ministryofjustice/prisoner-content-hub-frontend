@@ -14,6 +14,9 @@ class CategoryContentQuery {
 
   constructor(establishmentName, uuid, limit = 4, page = 1) {
     this.establishmentName = establishmentName;
+    this.uuid = uuid;
+    this.limit = 4;
+    this.page = 1;
     const queryWithoutOffset = new Query()
       .addFilter('field_moj_top_level_categories.id', uuid)
       .addFilter('field_not_in_series', 1)
@@ -28,11 +31,17 @@ class CategoryContentQuery {
   }
 
   getKey() {
-    getCmsCacheKey('categoryContent', this.establishmentName);
+    return getCmsCacheKey(
+      'categoryContent',
+      this.establishmentName,
+      this.uuid,
+      `limit:${this.limit}`,
+      `page:${this.page}`,
+    );
   }
 
   getExpiry() {
-    return 3600;
+    return 60;
   }
 
   path() {
