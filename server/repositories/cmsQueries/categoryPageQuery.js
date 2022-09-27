@@ -1,5 +1,6 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { getSmallTile, mapBreadcrumbs } = require('../../utils/jsonApi');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class CategoryPageQuery {
   static #TILE_FIELDS = [
@@ -35,6 +36,14 @@ class CategoryPageQuery {
         'field_featured_tiles.field_moj_thumbnail_image',
       ])
       .getQueryString();
+  }
+
+  getKey() {
+    return getCmsCacheKey('categoryPage', this.establishmentName, this.uuid);
+  }
+
+  getExpiry() {
+    return 60;
   }
 
   path() {

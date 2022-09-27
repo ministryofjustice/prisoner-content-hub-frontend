@@ -1,7 +1,6 @@
 const { createClient } = require('redis');
-const encryption = require('../encryption');
 const { redis: redisConfig } = require('../../config');
-const logger = require('../logger');
+const { logger } = require('../logger');
 
 const url =
   redisConfig.tls_enabled === 'true'
@@ -9,10 +8,8 @@ const url =
     : `redis://${redisConfig.host}:${redisConfig.port}`;
 
 class RedisCachingStrategy {
-  constructor(secret) {
-    const { encrypt, decrypt } = encryption(secret);
-    this.encrypt = encrypt;
-    this.decrypt = decrypt;
+  constructor() {
+    logger.info('Connecting to redis cache.');
     this.client = createClient({
       url,
       password: redisConfig.password,

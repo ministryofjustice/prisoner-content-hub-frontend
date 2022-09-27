@@ -116,7 +116,7 @@ env:
           key: auth_token
     
     - name: REDIS_TLS_ENABLED
-      value: {{ .Values.env.REDIS_TLS_ENABLED }}
+      value: {{ .Values.application.config.REDIS_TLS_ENABLED }}
       value: "true"
 
     - name: SINGLE_HOST_NAME

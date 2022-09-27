@@ -30,6 +30,9 @@
       </div>
     </header>
     {% block media %}{% endblock %}
+    <div class="govuk-hub-media-player__description">
+      <div id="body" class="govuk-body">{{ data.description | safe }}</div>
+    </div>
     {% if not data.excludeFeedback %}
       {{ hubFeedbackWidget({
         contentId: data.id,
@@ -42,9 +45,6 @@
         topics: data.topics | join(',', 'name')
       })}}
     {% endif %}
-    <div class="govuk-hub-media-player__description">
-      <div id="body" class="govuk-body">{{ data.description | safe }}</div>
-    </div>
 
     {{ hubRelatedTopics({ data: data.topics, darkmode: true }) }}
 

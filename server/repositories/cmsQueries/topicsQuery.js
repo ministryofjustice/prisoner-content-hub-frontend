@@ -14,7 +14,11 @@ class TopicsQuery {
   }
 
   getKey() {
-    getCmsCacheKey('topics', this.establishmentName);
+    return getCmsCacheKey('topics', this.establishmentName);
+  }
+
+  getExpiry() {
+    return 86400;
   }
 
   path() {

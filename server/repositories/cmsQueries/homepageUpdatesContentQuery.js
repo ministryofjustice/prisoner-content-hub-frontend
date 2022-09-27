@@ -71,7 +71,7 @@ class HomepageUpdatesContentQuery {
   }
 
   getKey() {
-    getCmsCacheKey('homepageUpdates', this.establishmentName);
+    return getCmsCacheKey('homepageUpdates', this.establishmentName);
   }
 
   getExpiry() {

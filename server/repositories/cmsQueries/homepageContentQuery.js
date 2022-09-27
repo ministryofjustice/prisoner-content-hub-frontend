@@ -4,6 +4,7 @@ const {
   getLargeTile,
   cropTextWithEllipsis,
 } = require('../../utils/jsonApi');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class HomepageContentQuery {
   static #TILE_FIELDS = [
@@ -48,6 +49,14 @@ class HomepageContentQuery {
 
       .addPageLimit(pageLimit)
       .getQueryString();
+  }
+
+  getKey() {
+    return getCmsCacheKey('homepageContent', this.establishmentName);
+  }
+
+  getExpiry() {
+    return 60;
   }
 
   path() {
