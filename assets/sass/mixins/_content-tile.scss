@@ -1,0 +1,13 @@
+@mixin content-tile {
+  @include scale-tile;
+  outline: none;
+  @include tile-shadow;
+  background-color: $govuk-focus-colour;
+  & h3,
+  & p {
+    color: govuk-colour('black');
+  }
+  ::after {
+    filter: brightness(0);
+  }
+}

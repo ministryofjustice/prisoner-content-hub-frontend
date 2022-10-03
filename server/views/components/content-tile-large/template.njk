@@ -1,13 +1,13 @@
 {% macro tileImage(params) %}
-  <div class="home-content__feature-image">
+  <div class="content__feature-image">
     <img src="{{params.image.url}}" alt="{{params.image.alt}}">
   </div>
 {% endmacro %}
 
 {% macro tileContent(params) %}
-  <div class="home-content__feature-text">
+  <div class="content__feature-text">
     <h3 class="govuk-heading-l">{{params.title}}</h3>
-    <p class="home-content-storyline">{{params.summary | safe}}</p>
+    <p class="content-storyline">{{params.summary | safe}}</p>
     {% if params.contentType === "video" %}
       <p class="content-link--video">Watch</p>
     {% elif params.contentType === "radio" %}
