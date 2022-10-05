@@ -9,5 +9,5 @@ Then('I am on the {string} page', topicName => {
 });
 
 And('I see content for that Secondary Tag', () => {
-  cy.get('.home-content__four-items a').its('length').should('be.gt', 0);
+  cy.get('.content__four-items a').its('length').should('be.gt', 0);
 });

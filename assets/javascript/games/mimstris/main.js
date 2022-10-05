@@ -6241,7 +6241,7 @@ var ExecutionEnvironment = __webpack_require__(7);
 var DOMNamespaces = __webpack_require__(102);
 
 var WHITESPACE_TEST = /^[ \r\n\t\f]/;
-var NONVISIBLE_TEST = /<(!--|link|noscript|meta|script|style)[ \r\n\t\f\/>]/;
+var NONVISIBLE_TEST = /<(!--|link|noscript|meta|script|style)[ \r\n\t\f\/>]/i;
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(109);
 
