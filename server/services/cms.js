@@ -1,5 +1,4 @@
 const { TopicsQuery } = require('../repositories/cmsQueries/topicsQuery');
-const { HomepageQuery } = require('../repositories/cmsQueries/homePageQuery');
 const { BasicPageQuery } = require('../repositories/cmsQueries/basicPageQuery');
 const { LinkPageQuery } = require('../repositories/cmsQueries/linkPageQuery');
 const { TopicPageQuery } = require('../repositories/cmsQueries/topicPageQuery');
@@ -228,13 +227,6 @@ class CmsService {
       getCacheKey(CMS_TOPICS, establishmentName),
       86400,
     );
-  }
-
-  async getHomepage(establishmentName) {
-    const homepages = await this.#cmsApi.get(
-      new HomepageQuery(establishmentName),
-    );
-    return homepages[0];
   }
 
   async getHomepageContent(establishmentName) {
