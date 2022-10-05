@@ -5,6 +5,7 @@ const {
   getPagination,
   mapBreadcrumbs,
 } = require('../../utils/jsonApi');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class TopicPageQuery {
   static #TILE_FIELDS = [
@@ -20,6 +21,7 @@ class TopicPageQuery {
   constructor(establishmentName, uuid, page) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
+    this.page = page;
     const queryWithoutOffset = new Query()
       .addFilter('field_topics.id', uuid)
       .addFields('node--page', TopicPageQuery.#TILE_FIELDS)
@@ -43,6 +45,19 @@ class TopicPageQuery {
       .addSort('created', 'DESC')
       .getQueryString();
     this.query = `${queryWithoutOffset}&${getPagination(page)}`;
+  }
+
+  getKey() {
+    return getCmsCacheKey(
+      'topicPage',
+      this.establishmentName,
+      this.uuid,
+      `page:${this.page}`,
+    );
+  }
+
+  getExpiry() {
+    return 60;
   }
 
   path() {

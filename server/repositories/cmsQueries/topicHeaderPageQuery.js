@@ -1,5 +1,6 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { getLargeTile } = require('../../utils/jsonApi');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class TopicHeaderPageQuery {
   constructor(location) {
@@ -15,6 +16,14 @@ class TopicHeaderPageQuery {
       ])
       .addInclude(['field_moj_thumbnail_image'])
       .getQueryString();
+  }
+
+  getKey() {
+    return getCmsCacheKey('topicHeaderPage', this.establishmentName);
+  }
+
+  getExpiry() {
+    return 300;
   }
 
   url() {

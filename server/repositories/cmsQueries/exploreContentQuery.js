@@ -1,5 +1,6 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { getSmallTile } = require('../../utils/jsonApi');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class ExploreContentQuery {
   static #TILE_FIELDS = [
@@ -26,6 +27,14 @@ class ExploreContentQuery {
       .addPageLimit(pageLimit)
 
       .getQueryString();
+  }
+
+  getKey() {
+    return getCmsCacheKey('exploreContent', this.establishmentName);
+  }
+
+  getExpiry() {
+    return 300;
   }
 
   path() {

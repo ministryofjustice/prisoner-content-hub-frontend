@@ -103,6 +103,22 @@ env:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
           key: azureAdClientSecret
 
+    - name: REDIS_HOST
+      valueFrom:
+        secretKeyRef:
+          name: frontend-redis
+          key: primary_endpoint_address
+
+    - name: REDIS_AUTH_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: frontend-redis
+          key: auth_token
+    
+    - name: REDIS_TLS_ENABLED
+      value: {{ .Values.application.config.REDIS_TLS_ENABLED }}
+      value: "true"
+
     - name: SINGLE_HOST_NAME
     {{- with .Values.ingress.host }}
       value: {{ tpl .pattern (dict "qualifier" $.Values.ingress.qualifier "Template" $.Template) }}

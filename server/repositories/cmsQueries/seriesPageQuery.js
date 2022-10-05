@@ -5,6 +5,7 @@ const {
   getPagination,
   mapBreadcrumbs,
 } = require('../../utils/jsonApi');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class SeriesPageQuery {
   static #TILE_FIELDS = [
@@ -43,6 +44,14 @@ class SeriesPageQuery {
       .addSort('series_sort_value,created', 'ASC')
       .getQueryString();
     this.query = `${queryWithoutOffset}&${getPagination(page)}`;
+  }
+
+  getKey() {
+    return getCmsCacheKey('seriesPage', this.establishmentName);
+  }
+
+  getExpiry() {
+    return 60;
   }
 
   path() {

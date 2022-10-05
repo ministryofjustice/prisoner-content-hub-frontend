@@ -2,7 +2,7 @@ const { clone } = require('ramda');
 const { Jsona, SwitchCaseJsonMapper } = require('jsona');
 const { NotFound } = require('./apiError');
 const { InMemoryCachingStrategy } = require('../utils/caching/memory');
-const { getCacheKey } = require('../utils/caching/cms');
+const { getCmsCacheKey } = require('../utils/caching/cms');
 
 const dataFormatter = new Jsona({
   jsonPropertiesMapper: new SwitchCaseJsonMapper({
@@ -14,7 +14,7 @@ const dataFormatter = new Jsona({
   }),
 });
 
-const CMS_ROUTER = 'CMS:router';
+const CMS_ROUTER = 'router';
 
 class CmsApi {
   #cache;
@@ -25,7 +25,12 @@ class CmsApi {
   }
 
   #lookup = async (establishmentName, lookupType, id) => {
-    const cacheKey = getCacheKey(CMS_ROUTER, establishmentName, lookupType, id);
+    const cacheKey = getCmsCacheKey(
+      CMS_ROUTER,
+      establishmentName,
+      lookupType,
+      id,
+    );
     const cacheValue = (await this.#cache.get(cacheKey)) || null;
     if (cacheValue) return clone(cacheValue);
     // Router will return 403 when content exists but not assigned to this prison
@@ -69,6 +74,22 @@ class CmsApi {
         ? deserializedResponse.map(item => query.transformEach(item))
         : query.transform(deserializedResponse, response.links);
     });
+  }
+
+  async getCache(query) {
+    const key = query.getKey?.() || null;
+    if (!key)
+      throw new Error(
+        `Could not retrieve cache key from query: ${query?.constructor?.name}`,
+      );
+    const expiry = query.getExpiry?.() || 300;
+    let data = key ? await this.#cache.get(key) : null;
+    if (!data) {
+      data = (await this.get(query)) || [];
+      if (data) await this.#cache.set(key, data, expiry);
+    }
+    // move to "structuredClone" when on node 18+
+    return clone(data);
   }
 
   #throwNotFoundWhenStatusIs = async (statusCodes, call) => {

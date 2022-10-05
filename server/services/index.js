@@ -7,6 +7,7 @@ const { IncentivesApiClient } = require('../clients/incentivesApiClient');
 const { JsonApiClient } = require('../clients/jsonApiClient');
 
 const { InMemoryCachingStrategy } = require('../utils/caching/memory');
+const RedisCachingStrategy = require('../utils/caching/redisClient');
 
 // Repositories
 const { offenderRepository } = require('../repositories/offender');
@@ -23,6 +24,9 @@ const { createAnalyticsService } = require('./analytics');
 const { createFeedbackService } = require('./feedback');
 const PrisonerInformationService = require('./prisonerInformation');
 
+const cmsCachingStrategy = config?.features?.useRedisCache
+  ? new RedisCachingStrategy()
+  : new InMemoryCachingStrategy();
 const jsonApiClient = new JsonApiClient(config.api.hubEndpoint);
 const standardClient = new StandardClient();
 const prisonApiClient = new PrisonApiClient({
@@ -35,11 +39,11 @@ const incentivesApiClient = new IncentivesApiClient({
 });
 const cmsApi = new CmsApi({
   jsonApiClient,
-  cachingStrategy: new InMemoryCachingStrategy(),
+  cachingStrategy: cmsCachingStrategy,
 });
 const cmsService = new CmsService({
   cmsApi,
-  cachingStrategy: new InMemoryCachingStrategy(),
+  cachingStrategy: cmsCachingStrategy,
 });
 
 module.exports = {

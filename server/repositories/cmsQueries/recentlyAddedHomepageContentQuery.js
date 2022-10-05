@@ -1,5 +1,6 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
 const { getSmallTile, getPagination } = require('../../utils/jsonApi');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class RecentlyAddedHomepageContentQuery {
   static #TILE_FIELDS = [
@@ -43,6 +44,17 @@ class RecentlyAddedHomepageContentQuery {
       .getQueryString();
 
     this.query = `${queryWithoutOffset}&${getPagination(1, 4)}`;
+  }
+
+  getKey() {
+    return getCmsCacheKey(
+      'recentlyAddedHomepageContent',
+      this.establishmentName,
+    );
+  }
+
+  getExpiry() {
+    return 300;
   }
 
   path() {

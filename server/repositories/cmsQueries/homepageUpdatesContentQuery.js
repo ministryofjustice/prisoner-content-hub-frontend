@@ -1,4 +1,5 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
+const { getCmsCacheKey } = require('../../utils/caching/cms');
 const {
   getPublishedAtSmallTile,
   getLargeTile,
@@ -67,6 +68,14 @@ class HomepageUpdatesContentQuery {
       .getQueryString();
 
     this.query = `${queryWithoutOffset}&${getPagination(page, pageLimit)}`;
+  }
+
+  getKey() {
+    return getCmsCacheKey('homepageUpdates', this.establishmentName);
+  }
+
+  getExpiry() {
+    return 300;
   }
 
   path() {
