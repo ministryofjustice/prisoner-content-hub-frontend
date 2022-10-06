@@ -38,7 +38,7 @@ class RedisCachingStrategy {
       throw new Error('Unable to cache - key, value or expiry not provided');
     }
     await this.#ensureConnected();
-    await this.client.set(key, JSON.stringify(value), 'EX', expiresInSeconds);
+    await this.client.set(key, JSON.stringify(value), { EX: expiresInSeconds });
   }
 
   async get(key) {
