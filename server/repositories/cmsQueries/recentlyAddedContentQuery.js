@@ -16,6 +16,8 @@ class RecentlyAddedContentQuery {
 
   constructor(establishmentName, page, pageLimit, timeStamp) {
     this.establishmentName = establishmentName;
+    this.page = page;
+    this.limit = pageLimit;
     const queryWithoutOffset = new Query()
       .addFields('node--page', RecentlyAddedContentQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', RecentlyAddedContentQuery.#TILE_FIELDS)
@@ -46,7 +48,12 @@ class RecentlyAddedContentQuery {
   }
 
   getKey() {
-    return getCmsCacheKey('recentlyAddedContent', this.establishmentName);
+    return getCmsCacheKey(
+      'recentlyAddedContent',
+      this.establishmentName,
+      `limit:${this.limit}`,
+      `page:${this.page}`,
+    );
   }
 
   getExpiry() {

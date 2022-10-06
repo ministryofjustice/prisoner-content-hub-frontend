@@ -19,7 +19,7 @@ class TopicHeaderPageQuery {
   }
 
   getKey() {
-    return getCmsCacheKey('topicHeaderPage', this.establishmentName);
+    return getCmsCacheKey('topicHeaderPage', this.location);
   }
 
   getExpiry() {

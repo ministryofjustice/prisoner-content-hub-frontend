@@ -19,7 +19,7 @@ class SeriesHeaderPageQuery {
   }
 
   getKey() {
-    return getCmsCacheKey('seriesHeaderPage', this.establishmentName);
+    return getCmsCacheKey('seriesHeaderPage', this.location);
   }
 
   getExpiry() {
