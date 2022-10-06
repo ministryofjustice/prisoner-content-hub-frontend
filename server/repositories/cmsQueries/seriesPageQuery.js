@@ -21,6 +21,7 @@ class SeriesPageQuery {
   constructor(establishmentName, uuid, page) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
+    this.page = page;
     const queryWithoutOffset = new Query()
       .addFilter('field_moj_series.id', uuid)
       .addFields('node--page', SeriesPageQuery.#TILE_FIELDS)
@@ -47,7 +48,12 @@ class SeriesPageQuery {
   }
 
   getKey() {
-    return getCmsCacheKey('seriesPage', this.establishmentName);
+    return getCmsCacheKey(
+      'seriesPage',
+      this.establishmentName,
+      this.uuid,
+      `page:${this.page}`,
+    );
   }
 
   getExpiry() {

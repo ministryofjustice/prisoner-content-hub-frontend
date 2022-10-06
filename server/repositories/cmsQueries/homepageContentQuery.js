@@ -20,6 +20,7 @@ class HomepageContentQuery {
 
   constructor(establishmentName, pageLimit = 4) {
     this.establishmentName = establishmentName;
+    this.limit = pageLimit;
     this.query = new Query()
 
       .addFields(
@@ -52,7 +53,11 @@ class HomepageContentQuery {
   }
 
   getKey() {
-    return getCmsCacheKey('homepageContent', this.establishmentName);
+    return getCmsCacheKey(
+      'homepageContent',
+      this.establishmentName,
+      `limit:${this.limit}`,
+    );
   }
 
   getExpiry() {

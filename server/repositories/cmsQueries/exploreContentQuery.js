@@ -16,6 +16,7 @@ class ExploreContentQuery {
 
   constructor(establishmentName, pageLimit = 4) {
     this.establishmentName = establishmentName;
+    this.limit = pageLimit;
     this.query = new Query()
       .addFields('node--page', ExploreContentQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', ExploreContentQuery.#TILE_FIELDS)
@@ -30,7 +31,11 @@ class ExploreContentQuery {
   }
 
   getKey() {
-    return getCmsCacheKey('exploreContent', this.establishmentName);
+    return getCmsCacheKey(
+      'exploreContent',
+      this.establishmentName,
+      `limit:${this.limit}`,
+    );
   }
 
   getExpiry() {

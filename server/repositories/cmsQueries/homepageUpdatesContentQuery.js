@@ -21,6 +21,8 @@ class HomepageUpdatesContentQuery {
 
   constructor(establishmentName, page, pageLimit) {
     this.establishmentName = establishmentName;
+    this.page = page;
+    this.limit = pageLimit;
     const queryWithoutOffset = new Query()
       .addFields('node--page', HomepageUpdatesContentQuery.#TILE_FIELDS)
       .addFields(
@@ -71,7 +73,12 @@ class HomepageUpdatesContentQuery {
   }
 
   getKey() {
-    return getCmsCacheKey('homepageUpdates', this.establishmentName);
+    return getCmsCacheKey(
+      'homepageUpdates',
+      this.establishmentName,
+      `limit:${this.limit}`,
+      `page:${this.page}`,
+    );
   }
 
   getExpiry() {
