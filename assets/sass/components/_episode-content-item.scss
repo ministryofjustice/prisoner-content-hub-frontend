@@ -1,18 +1,49 @@
 .govuk-hub-episode-content-item {
+  background-color: $real-dark-grey;
+
+  &:hover,
+  &:focus {
+    position: relative;
+    transition: transform 0.5s ease;
+    @include content-tile;
+  }
+
   p {
     color: govuk-colour('white');
+    margin: govuk-spacing(1) govuk-spacing(3);
+    padding-bottom: 20px;
+    overflow-wrap: break-word;
+    @include govuk-font(19, 'bold');
+
+    @media (min-width: $desktop-breakpoint) {
+      @include govuk-font(19, 'bold');
+    }
   }
+
   a {
     text-decoration: none;
+  }
+
+  & img {
+    display: block;
+    height: 11rem;
+    width: 100%;
+    object-fit: cover;
+    display: block;
   }
 }
 
 .govuk-hub-episodes-content-items {
   display: flex;
   flex-wrap: wrap;
+  padding-left: govuk-spacing(3);
+  padding-right: govuk-spacing(3);
   max-width: 880px; // Temporary fix for IE browsers
 
   .item {
+    display: flex;
+    margin-bottom: govuk-spacing(8);
+
     &:first-child {
       padding-left: govuk-spacing(1);
     }
