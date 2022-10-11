@@ -54,7 +54,7 @@
     "govuk-frontend": "^4.3.1",
     "helmet": "^5.1.1",
     "jquery": "^3.6.1",
-    "jsona": "^1.10.1",
+    "jsona": "^1.9.7",
     "jsonwebtoken": "^8.5.1",
     "mkdirp": "^1.0.4",
     "moment": "^2.29.4",
