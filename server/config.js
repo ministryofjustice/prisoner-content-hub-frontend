@@ -11,7 +11,7 @@ const elasticsearchEndpoint = getRequiredEnv(
 );
 const elasticsearchIndexName = getRequiredEnv(
   'ELASTICSEARCH_INDEX_NAME',
-  'content_index',
+  'content_for_search',
 );
 const drupalDatabaseName = getRequiredEnv('DRUPAL_DATABASE_NAME', 'hubdb');
 

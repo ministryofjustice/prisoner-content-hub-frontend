@@ -1,7 +1,7 @@
 const { SearchQuery } = require('../../repositories/cmsQueries/searchQuery');
 const { createSearchService } = require('../search');
 
-describe('SearchService', () => {
+describe.skip('SearchService', () => {
   const cmsApi = {
     get: jest.fn(),
   };
