@@ -50,7 +50,7 @@ env:
       value: {{ include "prisoner-content-hub-frontend.elasticsearchServiceHost" . }}
 
     - name: ELASTICSEARCH_INDEX_NAME
-      value: "content_index"
+      value: "content_for_search"
 
     - name: DRUPAL_DATABASE_NAME
       valueFrom:

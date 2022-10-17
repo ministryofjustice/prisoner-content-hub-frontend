@@ -45,6 +45,7 @@ const cmsService = new CmsService({
   cmsApi,
   cachingStrategy: cmsCachingStrategy,
 });
+const { searchRepository } = require('../repositories/search');
 
 module.exports = {
   logger,
@@ -58,7 +59,9 @@ module.exports = {
       apiUrl: config.prisonApi.baseUrl,
     }),
   }),
-  searchService: createSearchService({ cmsApi }),
+  searchService: createSearchService({
+    searchRepository: searchRepository(standardClient, logger),
+  }),
   analyticsService: createAnalyticsService({
     analyticsRepository: analyticsRepository(standardClient),
   }),
