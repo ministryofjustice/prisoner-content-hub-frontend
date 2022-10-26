@@ -17,8 +17,8 @@ class CategoryCollectionsQuery {
   constructor(establishmentName, uuid, limit = 10, page = 1) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
-    this.limit = 10;
-    this.page = 1;
+    this.limit = limit;
+    this.page = page;
     const queryWithoutOffset = new Query()
       .addFields('taxonomy_term--series', CategoryCollectionsQuery.#TILE_FIELDS)
       .addFields(

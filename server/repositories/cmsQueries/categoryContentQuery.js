@@ -15,8 +15,8 @@ class CategoryContentQuery {
   constructor(establishmentName, uuid, limit = 4, page = 1) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
-    this.limit = 4;
-    this.page = 1;
+    this.limit = limit;
+    this.page = page;
     const queryWithoutOffset = new Query()
       .addFilter('field_moj_top_level_categories.id', uuid)
       .addFilter('field_not_in_series', 1)
