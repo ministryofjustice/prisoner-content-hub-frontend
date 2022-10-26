@@ -3,18 +3,18 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}-ingress
+  name: {{ $fullName }}
   labels:
     {{- include "prisoner-content-hub-frontend.labels" . | nindent 4 }}
   annotations:
     {{- range $k, $v := .Values.ingress.annotations }}
     {{ $k }}: {{ tpl $v (dict "qualifier" $.Values.ingress.qualifier "Template" $.Template) | quote }}
     {{- end}}
+    kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/whitelist-source-range: {{ include "app.joinListWithComma" .Values.ingress.allowed | quote }}
-    external-dns.alpha.kubernetes.io/aws-weight: "100"
-    external-dns.alpha.kubernetes.io/set-identifier: prisoner-content-hub-frontend-ingress-prisoner-content-hub-{{ .Values.environmentName }}-green
+    external-dns.alpha.kubernetes.io/aws-weight: "0"
+    external-dns.alpha.kubernetes.io/set-identifier: prisoner-content-hub-frontend-prisoner-content-hub-{{ .Values.environmentName }}-green
 spec:
-  ingressClassName: default
   tls:
   - hosts:
   {{- range .Values.ingress.hosts }}
