@@ -5,6 +5,7 @@ describe('Profile', () => {
   beforeEach(() => {
     cy.task('reset');
     cy.task('stubPrimaryNavigation');
+    cy.task('stubUrgentBanners');
     cy.task('stubBrowseAllTopics');
     cy.visit(`http://cookhamwood.content-hub.localhost:3000/profile`);
   });

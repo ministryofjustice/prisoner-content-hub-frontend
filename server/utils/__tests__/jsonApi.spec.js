@@ -10,6 +10,7 @@ const {
   isBottomCategory,
   isNew,
   cropTextWithEllipsis,
+  isUnpublished,
 } = require('../jsonApi');
 
 const LARGE_TILE = 'enormous.jpg';
@@ -339,6 +340,28 @@ describe('getCategoryId', () => {
   });
   it('should cater for legacy receiving an array and return the category id from the first element', () => {
     expect(getCategoryId([categoryData])).toEqual({ id: ID1, uuid: UUID1 });
+  });
+});
+
+describe('isUnpublished', () => {
+  const now = new Date('2022-08-04T15:14:34+00:00').getTime();
+  let data;
+  beforeEach(() => {
+    data = { unpublishOn: now };
+  });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+  it('should return false when the unpublish on date is in the past', () => {
+    jest.useFakeTimers().setSystemTime(new Date('2022-08-05'));
+    expect(isUnpublished(data)).toBeFalsy();
+  });
+  it('should return true when the unpublish on date is in the future', () => {
+    jest.useFakeTimers().setSystemTime(new Date('2022-08-03'));
+    expect(isUnpublished(data)).toBeTruthy();
+  });
+  it('should return true when the unpublish on date is not set', () => {
+    expect(isUnpublished({ unpublishOn: null })).toBeTruthy();
   });
 });
 

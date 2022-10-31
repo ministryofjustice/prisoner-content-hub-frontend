@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const { stubFor } = require('./wiremock');
 const primaryNavigationData = require('./drupalData/primaryNavigation.json');
 const browseAllTopicsData = require('./drupalData/browseAllTopics.json');
+const urgentBannersData = require('./drupalData/urgentBanners.json');
 
 const stubPrimaryNavigation = () =>
   stubFor({
@@ -33,7 +34,23 @@ const stubBrowseAllTopics = () =>
     },
   });
 
+const stubUrgentBanners = () =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/drupal/jsonapi/prison/.*?/node/urgent_banner.*?',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: urgentBannersData,
+    },
+  });
+
 module.exports = {
   stubPrimaryNavigation,
   stubBrowseAllTopics,
+  stubUrgentBanners,
 };

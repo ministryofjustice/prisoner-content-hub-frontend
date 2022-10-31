@@ -47,10 +47,15 @@ const {
 const {
   ExploreContentQuery,
 } = require('../repositories/cmsQueries/exploreContentQuery');
+const {
+  UrgentBannerQuery,
+} = require('../repositories/cmsQueries/urgentBannerQuery');
 
 const { InMemoryCachingStrategy } = require('../utils/caching/memory');
 
 const { getOffsetUnixTime } = require('../utils/date');
+
+const { isUnpublished } = require('../utils/jsonApi');
 
 class CmsService {
   #cmsApi;
@@ -278,6 +283,13 @@ class CmsService {
     );
 
     return RecentlyAddedHomepageContent;
+  }
+
+  async getUrgentBanners(establishmentName) {
+    const urgentBanner = await this.#cmsApi
+      .getCache(new UrgentBannerQuery(establishmentName))
+      .then(res => res.filter(isUnpublished));
+    return urgentBanner;
   }
 }
 

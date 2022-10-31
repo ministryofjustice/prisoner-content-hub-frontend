@@ -6,6 +6,7 @@
 {% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "./top-bar/macro.njk" import topBar %}
 {% from "./user-details/macro.njk" import userDetails %}
+{% from "./urgent-banner/macro.njk" import urgentBanner %}
 
 <!DOCTYPE html>
 <html lang="{{ htmlLang | default('en') }}" class="govuk-template {{ htmlClasses }}">
@@ -67,8 +68,12 @@
         }) }}
       {% endif %}
     {% endblock %}
+
     {% block notificationUserDetailsBar %}
       <div class="govuk-width-container">
+
+        {{ urgentBanner(urgentBanners) }}
+
         <div class="govuk-hub-navigationUserDetailsBar">
           {% block pageNavigation %}
             {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs  }) }}
