@@ -1,15 +1,10 @@
-const { capitalizePersonName } = require('../../../utils/index');
+const { capitalizePersonName, sortBy } = require('../../../utils/index');
 
-const sortContacts = ({ createDateTime: a }, { createDateTime: b }) =>
-  new Date(b) - new Date(a);
-
-module.exports = ({ nextOfKin, otherContacts }) =>
-  [...nextOfKin, ...otherContacts]
-    .filter(
-      ({ activeFlag, approvedVisitorFlag }) =>
-        activeFlag && approvedVisitorFlag,
-    )
-    .sort(sortContacts)
+module.exports = contacts =>
+  contacts
+    .filter(contact => contact.approvedVisitor)
+    .sort(sortBy('firstName'))
+    .sort(sortBy('lastName'))
     .map(({ firstName, lastName }) =>
       capitalizePersonName(`${firstName} ${lastName}`),
     );
