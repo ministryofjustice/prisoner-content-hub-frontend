@@ -61,6 +61,7 @@ module.exports = expressApp => {
           breadcrumbs.find(({ href }) => href === navItemHref)
         );
       });
+
       if (currentPrimaryCategory) currentPrimaryCategory.active = true;
       return primaryNavigation;
     },
