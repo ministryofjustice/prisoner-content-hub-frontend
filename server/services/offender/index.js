@@ -86,6 +86,7 @@ const createOffenderService = (
         `OffenderService (getApprovedVisitorsFor) - User: ${prisonerId}`,
       );
       const response = await repository.getVisitorsFor(prisonerId);
+
       return { approvedVisitors: approvedVisitors(response) };
     } catch (e) {
       logger.error(

@@ -55,7 +55,7 @@ commands:
               --set hmppsAuthClientSecret="${HMPPS_AUTH_CLIENT_SECRET}" \
               --set hmppsAuthBaseUrl="${HMPPS_AUTH_BASE_URL}" \
               --set prisonApiBaseUrl="${PRISON_API_BASE_URL}" \
-              --set prisonerContactRegisteryApiBaseUrl="${PRISONER_CONTACT_REGISTERY_BASE_URL}" \
+              --set prisonerContactRegistryApiBaseUrl="${PRISONER_CONTACT_REGISTRY_BASE_URL}" \
               --set incentivesApiBaseUrl="${INCENTIVES_API_BASE_URL}" \
               --set cacheSecret="${CACHE_SECRET}" \
               --set prisonerAuthAD.clientId=${AZURE_AD_CLIENT_ID} \

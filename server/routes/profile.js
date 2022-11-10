@@ -90,7 +90,8 @@ const createProfileRouter = ({ offenderService }) => {
         detailsType: 'small',
         data: { contentType: 'profile' },
         ...personalisation,
-        // displayApprovedVisitorsCard: req.session.establishmentName === 'ESTABLISHMENT_NAME_HERE',
+        displayApprovedVisitorsCard:
+          req.session.establishmentName === 'cookhamwood',
       });
     } catch (e) {
       return next(e);
