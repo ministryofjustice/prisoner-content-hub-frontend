@@ -5,7 +5,7 @@ const { createTopicsRouter } = require('./topics');
 const { createTimetableRouter } = require('./timetable');
 const { createContentRouter } = require('./content');
 const { createMoneyRouter } = require('./money');
-const { createApprovedVisitorsRouter } = require('./approvedVisitors');
+// const { createApprovedVisitorsRouter } = require('./approvedVisitors');
 const { createProfileRouter } = require('./profile');
 const { createTagRouter } = require('./tags');
 const { createLinkRouter } = require('./link');
@@ -45,7 +45,7 @@ module.exports = (
       '/topics',
       '/timetable',
       '/money',
-      '/approved-visitors',
+      // '/approved-visitors',
       '/profile',
       '/games',
       '^/search/?$',
@@ -81,12 +81,12 @@ module.exports = (
     }),
   );
 
-  router.use(
-    '/approved-visitors',
-    createApprovedVisitorsRouter({
-      offenderService,
-    }),
-  );
+  // router.use(
+  //   '/approved-visitors',
+  //   createApprovedVisitorsRouter({
+  //     offenderService,
+  //   }),
+  // );
 
   router.use(
     '/profile',
