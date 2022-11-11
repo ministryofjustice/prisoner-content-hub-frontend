@@ -113,7 +113,7 @@ describe('offenderRepository', () => {
       const repository = offenderRepository(client);
       const result = await repository.getVisitorsFor('FOO_ID');
 
-      expect(lastCall(client.get)[0]).toContain('bookings/FOO_ID/contacts');
+      expect(lastCall(client.get)[0]).toContain('prisoners/FOO_ID/contacts');
 
       expect(result).toBe('SOME_RESULT');
     });

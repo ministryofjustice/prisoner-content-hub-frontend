@@ -147,6 +147,7 @@ const mapBreadcrumbs = (rawBreadcrumbs = [], self = '') => {
   const breadcrumbs = self
     ? [...rawBreadcrumbs, { title: self }]
     : rawBreadcrumbs;
+
   return breadcrumbs.map(({ uri: href = '', title: text }) => ({
     href,
     text,

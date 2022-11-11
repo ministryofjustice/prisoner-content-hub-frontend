@@ -56,6 +56,17 @@ module.exports = {
     },
     baseUrl: getRequiredEnv('PRISON_API_BASE_URL', 'https://api.nomis'),
   },
+  prisonerContactRegistryApi: {
+    auth: {
+      clientId: getEnv('HMPPS_AUTH_CLIENT_ID', 'UNSET'),
+      clientSecret: getEnv('HMPPS_AUTH_CLIENT_SECRET', 'UNSET'),
+      authUrl: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
+    },
+    baseUrl: getRequiredEnv(
+      'PRISONER_CONTACT_REGISTRY_BASE_URL',
+      'http://localhost:8080',
+    ),
+  },
   incentivesApi: {
     auth: {
       clientId: getEnv('HMPPS_AUTH_CLIENT_ID', 'UNSET'),

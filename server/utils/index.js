@@ -67,6 +67,11 @@ function groupBy(items, keyAccessor) {
   }, {});
 }
 
+const sortBy = key => (a, b) => {
+  if (a === b) return 0;
+  return a[key] < b[key] ? -1 : 1;
+};
+
 module.exports = {
   getEstablishmentId,
   getEstablishment,
@@ -76,4 +81,5 @@ module.exports = {
   capitalizeAll,
   capitalizePersonName,
   groupBy,
+  sortBy,
 };

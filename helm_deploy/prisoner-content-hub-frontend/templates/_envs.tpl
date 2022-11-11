@@ -28,11 +28,11 @@ env:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
           key: prisonApiBaseUrl
 
-    - name: PRISONER_CONTACT_REGISTERY_BASE_URL
+    - name: PRISONER_CONTACT_REGISTRY_BASE_URL
       valueFrom:
         secretKeyRef:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
-          key: prisonerContactRegisteryApiBaseUrl
+          key: prisonerContactRegistryApiBaseUrl
 
     - name: INCENTIVES_API_BASE_URL
       valueFrom:

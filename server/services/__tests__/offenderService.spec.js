@@ -106,6 +106,7 @@ describe('Offender Service', () => {
       const repository = {
         getVisitorsFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
       };
+
       const mockApprovedVisitors = jest.fn();
       mockApprovedVisitors.mockReturnValue(FORMATTED_RESPONSE);
       const service = createOffenderService(repository, {
@@ -114,7 +115,7 @@ describe('Offender Service', () => {
 
       const data = await service.getApprovedVisitorsFor(TEST_USER);
 
-      expect(repository.getVisitorsFor).toHaveBeenCalledWith(TEST_BOOKING_ID);
+      expect(repository.getVisitorsFor).toHaveBeenCalledWith(TEST_PRISONER_ID);
       expect(mockApprovedVisitors).toHaveBeenCalledWith(RAW_RESPONSE);
       expect(data).toStrictEqual({ approvedVisitors: FORMATTED_RESPONSE });
     });
