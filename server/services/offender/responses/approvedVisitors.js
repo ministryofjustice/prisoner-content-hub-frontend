@@ -5,6 +5,8 @@ module.exports = contacts =>
     .filter(contact => contact.approvedVisitor)
     .sort(sortBy('firstName'))
     .sort(sortBy('lastName'))
-    .map(({ firstName, lastName }) =>
-      capitalizePersonName(`${firstName} ${lastName}`),
-    );
+    .map(({ firstName, lastName }) => [
+      {
+        text: capitalizePersonName(`${firstName} ${lastName}`),
+      },
+    ]);

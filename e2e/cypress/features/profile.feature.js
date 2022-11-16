@@ -891,7 +891,7 @@ describe('Profile', () => {
           cy.get('[data-test="visitsLink"] > h3 > a').should('exist');
           cy.get('[data-test="visitsLink"] > h3 > a').should(
             'contain',
-            'Read more about visits',
+            'Find out more about visits',
           );
         });
 

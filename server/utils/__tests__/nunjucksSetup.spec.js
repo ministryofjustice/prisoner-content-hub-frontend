@@ -40,18 +40,16 @@ describe('toPagination', () => {
   it('should generate a page one pagination data', () => {
     expect(toPagination(pageData, '')).toEqual({
       items: [
-        { href: '?page=1', selected: true, text: 1 },
+        { href: '?page=1', current: true, number: 1 },
 
-        { href: '?page=2', selected: false, text: 2 },
+        { href: '?page=2', current: false, number: 2 },
 
-        { href: '?page=3', selected: false, text: 3 },
+        { href: '?page=3', current: false, number: 3 },
       ],
 
       next: { href: '?page=2', text: 'Next' },
 
       previous: false,
-
-      results: { count: 19, from: 1, to: 7 },
     });
   });
 
@@ -60,18 +58,16 @@ describe('toPagination', () => {
 
     expect(toPagination(pageData, '')).toEqual({
       items: [
-        { href: '?page=1', selected: false, text: 1 },
+        { href: '?page=1', current: false, number: 1 },
 
-        { href: '?page=2', selected: true, text: 2 },
+        { href: '?page=2', current: true, number: 2 },
 
-        { href: '?page=3', selected: false, text: 3 },
+        { href: '?page=3', current: false, number: 3 },
       ],
 
       next: { href: '?page=3', text: 'Next' },
 
       previous: { href: '?page=1', text: 'Previous' },
-
-      results: { count: 19, from: 8, to: 14 },
     });
   });
 
@@ -80,18 +76,16 @@ describe('toPagination', () => {
 
     expect(toPagination(pageData, '')).toEqual({
       items: [
-        { href: '?page=1', selected: false, text: 1 },
+        { href: '?page=1', current: false, number: 1 },
 
-        { href: '?page=2', selected: false, text: 2 },
+        { href: '?page=2', current: false, number: 2 },
 
-        { href: '?page=3', selected: true, text: 3 },
+        { href: '?page=3', current: true, number: 3 },
       ],
 
       next: false,
 
       previous: { href: '?page=2', text: 'Previous' },
-
-      results: { count: 19, from: 15, to: 19 },
     });
   });
 });
