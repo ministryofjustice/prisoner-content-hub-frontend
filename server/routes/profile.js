@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('../config');
 
 const createProfileRouter = ({ offenderService }) => {
   const router = express.Router();
@@ -82,6 +83,7 @@ const createProfileRouter = ({ offenderService }) => {
     try {
       const { user } = req;
       const personalisation = user ? await getPersonalisation(user) : {};
+
       return res.render('pages/profile', {
         title: 'Your profile',
         content: true,
@@ -90,7 +92,9 @@ const createProfileRouter = ({ offenderService }) => {
         detailsType: 'small',
         data: { contentType: 'profile' },
         ...personalisation,
-        // displayApprovedVisitorsCard: req.session.establishmentName === 'ADD_ESTABLISHMENT_NAME_HERE',
+        displayApprovedVisitorsCard:
+          config.features.approvedVisitorsFeatureEnabled &&
+          req.session.establishmentName === 'ranby',
       });
     } catch (e) {
       return next(e);

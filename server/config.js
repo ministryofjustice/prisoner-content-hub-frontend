@@ -83,6 +83,8 @@ module.exports = {
     showStackTraces:
       getEnv('ENABLE_STACK_TRACES_ON_ERROR_PAGES', 'false') === 'true',
     useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'true') === 'true',
+    approvedVisitorsFeatureEnabled:
+      getEnv('APPROVED_VISITORS_FEATURE_ENABLED', 'false') === 'true',
   },
   analytics: {
     endpoint: getEnv(

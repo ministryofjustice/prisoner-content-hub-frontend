@@ -46,6 +46,9 @@ env:
           name: {{ .Values.application.contentConfigMapName }}
           key: internalUrl
 
+    - name: APPROVED_VISITORS_FEATURE_ENABLED
+      value: {{ .Values.application.config.approvedVisitorsFeatureEnabled | quote }}
+
     - name: ELASTICSEARCH_ENDPOINT
       value: {{ include "prisoner-content-hub-frontend.elasticsearchServiceHost" . }}
 
