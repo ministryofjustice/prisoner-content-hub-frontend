@@ -19,37 +19,29 @@ module.exports = expressApp => {
   nunjucksEnv.addGlobal('knownPages', knownPages);
   nunjucksEnv.addFilter('skip', (array, count) => array.slice(count));
 
-  nunjucksEnv.addFilter(
-    'toPagination',
-    ({ page, totalPages, min, max, totalCount }, query) => {
-      const urlForPage = n => {
-        const urlSearchParams = new URLSearchParams(query);
-        urlSearchParams.set('page', n);
-        return `?${urlSearchParams.toString()}`;
-      };
-      const items = [...Array(totalPages).keys()].map(n => ({
-        text: n + 1,
-        href: urlForPage(n + 1),
-        selected: n + 1 === page,
-      }));
-      return {
-        results: {
-          from: min,
-          to: max,
-          count: totalCount,
-        },
-        previous: page > 1 && {
-          text: 'Previous',
-          href: urlForPage(page - 1),
-        },
-        next: page < totalPages && {
-          text: 'Next',
-          href: urlForPage(page + 1),
-        },
-        items,
-      };
-    },
-  );
+  nunjucksEnv.addFilter('toPagination', ({ page, totalPages }, query) => {
+    const urlForPage = n => {
+      const urlSearchParams = new URLSearchParams(query);
+      urlSearchParams.set('page', n);
+      return `?${urlSearchParams.toString()}`;
+    };
+    const items = [...Array(totalPages).keys()].map(n => ({
+      number: n + 1,
+      href: urlForPage(n + 1),
+      current: n + 1 === page,
+    }));
+    return {
+      previous: page > 1 && {
+        text: 'Previous',
+        href: urlForPage(page - 1),
+      },
+      next: page < totalPages && {
+        text: 'Next',
+        href: urlForPage(page + 1),
+      },
+      items,
+    };
+  });
 
   nunjucksEnv.addFilter(
     'makeCurrentPrimaryCategoryActive',

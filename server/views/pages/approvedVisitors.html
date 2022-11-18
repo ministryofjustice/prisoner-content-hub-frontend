@@ -1,4 +1,5 @@
-{% from "moj/components/pagination/macro.njk" import mojPagination %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/pagination/macro.njk" import govukPagination %}
 
 {% extends "../components/basicTemplate.njk" %}
 
@@ -9,24 +10,34 @@
         <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
       </p>
   {% else %}
-    {% if error %}
-      <p class="govuk-!-font-size-24" data-test="approved-visitors-error">We are not able to show your approved visitor list information at this time, <a href="{{ params.returnUrl }}" class="govuk-link">try again</a>.</p>
-    {% else %}
-      {% if approvedVisitors.length > 0 %}
-        <dl class="govuk-summary-list" data-test="approved-visitors-list" data-hj-suppress>
-          {% for approvedVisitor in approvedVisitors %}
-            <div class="govuk-summary-list__row">
-              <dd class="govuk-summary-list__value">
-                {{ approvedVisitor }}
-              </dd>
-            </div>
-          {% endfor %}
-        </dl>
+  
+  {% if error %}
+    <p class="govuk-body govuk-!-font-size-24 govuk-!-margin-bottom-9" data-test="approved-visitors-error">We can not list your approved visitors at this time, please <a href="{{ params.returnUrl }}" class="govuk-link">try again</a> or <a href="{{ knownPages.profile.visitorInfo }}" class="govuk-link">find out more about visits</a>.</p>
+  {% else %}  
+        {% if approvedVisitors.length > 0 %}
+          <div class="govuk-!-margin-bottom-7">
+            <a href="{{ knownPages.profile.visitorInfo }}" class="govuk-link govuk-!-font-size-24">Find out more about visits</a>
+          </div>  
+          {{ govukTable({
+            firstCellIsHeader: false,
+            head: [
+              {
+                text: "Name"
+              }
+            ],
+            rows: approvedVisitors
+            
+          }) }}
         {% if pageData.totalPages > 1 %}
-          {{ mojPagination( pageData | toPagination(rawQuery) ) }}
+          <div class="govuk-!-margin-bottom-9">
+            {{ govukPagination( pageData | toPagination(rawQuery) ) }}
+          </div>
         {% endif %}
       {% else %}
-        <p class="govuk-!-font-size-24" data-test="no-approved-visitors">You do not have any approved visitors yet</p>
+        <div class="govuk-!-margin-bottom-9">
+          <p class="govuk-heading-m" data-test="no-approved-visitors">You do not have any approved visitors.</p>
+          <a href="{{ knownPages.profile.visitorInfo }}" class="govuk-link govuk-!-font-size-24">Find out more about visits</a>
+        </div>
       {% endif %}
     {% endif %}
   {% endif %}

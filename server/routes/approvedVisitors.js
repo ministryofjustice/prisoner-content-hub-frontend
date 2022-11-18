@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('../config');
 
 const createApprovedVisitorsRouter = ({ offenderService }) => {
   const router = express.Router();
@@ -6,6 +7,7 @@ const createApprovedVisitorsRouter = ({ offenderService }) => {
   const getPersonalisation = async (user, rawQuery) => {
     const { approvedVisitors: rawApprovedVisitors, error = null } =
       await offenderService.getApprovedVisitorsFor(user);
+
     if (error) return { signedInUser: user.getFullName(), error };
     const maxVisitorsPerPage = 10;
     const totalCount = rawApprovedVisitors.length;
@@ -17,6 +19,7 @@ const createApprovedVisitorsRouter = ({ offenderService }) => {
     const pageData = { page, totalPages, min, max, totalCount };
 
     const approvedVisitors = rawApprovedVisitors.slice(min - 1, max);
+
     return {
       signedInUser: user.getFullName(),
       pageData,
@@ -27,25 +30,32 @@ const createApprovedVisitorsRouter = ({ offenderService }) => {
 
   router.get(
     '/',
-    async ({ user, originalUrl: returnUrl, query }, res, next) => {
-      try {
-        const personalisation = user
-          ? await getPersonalisation(user, query)
-          : {};
+    async ({ user, originalUrl: returnUrl, query, session }, res, next) => {
+      if (
+        config.features.approvedVisitorsFeatureEnabled &&
+        session.establishmentName === 'ranby'
+      ) {
+        try {
+          const personalisation = user
+            ? await getPersonalisation(user, query)
+            : {};
 
-        return res.render('pages/approvedVisitors', {
-          title: 'Your approved visitors',
-          content: false,
-          header: false,
-          postscript: true,
-          detailsType: 'small',
-          returnUrl,
-          ...personalisation,
-          data: { contentType: 'profile' },
-        });
-      } catch (e) {
-        return next(e);
+          return res.render('pages/approvedVisitors', {
+            title: 'Your approved visitors',
+            content: false,
+            header: false,
+            postscript: true,
+            detailsType: 'small',
+            returnUrl,
+            ...personalisation,
+            data: { contentType: 'profile' },
+            displayImportantNotice: true,
+          });
+        } catch (e) {
+          return next(e);
+        }
       }
+      return next();
     },
   );
 
