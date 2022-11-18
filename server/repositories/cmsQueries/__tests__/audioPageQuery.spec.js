@@ -100,7 +100,6 @@ describe('Audio page query', () => {
         breadcrumbs: [
           { href: 'parent1Url', text: 'parent1' },
           { href: 'parent2Url', text: 'parent2' },
-          { href: '', text: 'Buddhist reflection: 29 July' },
         ],
         contentType: 'radio',
         created: '2020-01-03T01:02:30',

@@ -68,10 +68,7 @@ describe('Series page query', () => {
       expect(query.transform(response, { next: 'URL' })).toStrictEqual({
         id: `100${UUID}`,
         contentType: 'series',
-        breadcrumbs: [
-          { href: 'parent1Url', text: 'parent1' },
-          { href: '', text: `name${UUID}` },
-        ],
+        breadcrumbs: [{ href: 'parent1Url', text: 'parent1' }],
         title: `name${UUID}`,
         summary: `description${UUID}`,
         image: {
@@ -101,10 +98,7 @@ describe('Series page query', () => {
       expect(query.transform(response, {})).toStrictEqual({
         id: `100${UUID}`,
         contentType: 'series',
-        breadcrumbs: [
-          { href: 'parent1Url', text: 'parent1' },
-          { href: '', text: `name${UUID}` },
-        ],
+        breadcrumbs: [{ href: 'parent1Url', text: 'parent1' }],
         title: `name${UUID}`,
         summary: `description${UUID}`,
         image: {

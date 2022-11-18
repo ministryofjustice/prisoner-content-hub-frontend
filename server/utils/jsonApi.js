@@ -143,16 +143,11 @@ const isBottomCategory = ({
   sub_series_count: subSeriesCount = 0,
 } = {}) => subCategoriesCount === 0 && subSeriesCount === 0;
 
-const mapBreadcrumbs = (rawBreadcrumbs = [], self = '') => {
-  const breadcrumbs = self
-    ? [...rawBreadcrumbs, { title: self }]
-    : rawBreadcrumbs;
-
-  return breadcrumbs.map(({ uri: href = '', title: text }) => ({
+const mapBreadcrumbs = (rawBreadcrumbs = []) =>
+  rawBreadcrumbs.map(({ uri: href = '', title: text }) => ({
     href,
     text,
   }));
-};
 
 module.exports = {
   getPagination,

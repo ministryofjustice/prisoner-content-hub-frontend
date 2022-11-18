@@ -92,10 +92,7 @@ describe('Video page query', () => {
           name: 'steve',
         },
         contentType: 'video',
-        breadcrumbs: [
-          { href: 'parent1Url', text: 'parent1' },
-          { href: '', text: 'Buddhist reflection: 29 July' },
-        ],
+        breadcrumbs: [{ href: 'parent1Url', text: 'parent1' }],
         description: 'Education content for prisoners',
         episodeId: 1036,
         excludeFeedback: undefined,
