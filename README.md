@@ -6,13 +6,13 @@ The frontend for the Digital Hub service using Node
 
 ### Prerequisites
 
-    Node >= v14
+    Node >= v16
 
 ### Install dependencies
 
     npm install
 
-### Running the application
+### The application environment
 
 Create a `.env` file using the provided template
 
@@ -23,6 +23,16 @@ The `.env` can then be configured to point to local or remote backend services a
 ### Redis cache
 
 The application caches certain of the CMS queries in redis cache. To not use redis and instead use memory cache, set `ENABLE_REDIS_CACHE=false` in your `.env` file. Alternatively running `docker-compose up` will spin up a local redis instance.
+
+### Running the app
+
+To run this locally you first need to build the CSS and templates:
+
+    npm run build
+
+You can then start the app in dev mode with:
+
+    npm run dev
 
 ### Establishment from Hostname
 
