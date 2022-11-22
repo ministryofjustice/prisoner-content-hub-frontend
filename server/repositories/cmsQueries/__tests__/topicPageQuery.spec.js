@@ -54,10 +54,7 @@ describe('Secondary Tag page query', () => {
         alt: `alt${id}`,
       },
       isNew: false,
-      breadcrumbs: [
-        { href: 'parent1Url', text: 'parent1' },
-        { href: '', text: `name${id}` },
-      ],
+      breadcrumbs: [{ href: 'parent1Url', text: 'parent1' }],
       displayUrl: undefined,
       excludeFeedback: true,
       externalContent: false,

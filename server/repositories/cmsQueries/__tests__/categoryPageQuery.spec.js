@@ -104,7 +104,6 @@ describe('Category collection query', () => {
       { href: 'bread01/url', text: 'bread01' },
       { href: 'bread02/url', text: 'bread02' },
       { href: 'bread03/url', text: 'bread03' },
-      { href: '', text: 'Category' },
     ];
 
     beforeEach(() => {

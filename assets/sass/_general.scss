@@ -129,7 +129,7 @@
 
 .govuk-breadcrumbs li {
   @extend .govuk-body;
-  @include govuk-font(16);
+  @include govuk-font(19);
 }
 .govuk-breadcrumbs li a {
   @extend .govuk-link;

@@ -34,10 +34,7 @@ describe('Basic page query', () => {
         title: 'Novus',
         created: '2020-01-03T01:02:30',
         contentType: 'page',
-        breadcrumbs: [
-          { href: 'parent1Url', text: 'parent1' },
-          { href: '', text: 'Novus' },
-        ],
+        breadcrumbs: [{ href: 'parent1Url', text: 'parent1' }],
         description: 'Education content for prisoners',
         excludeFeedback: true,
         standFirst: 'Education',
@@ -68,10 +65,7 @@ describe('Basic page query', () => {
         created: '2020-01-03T01:02:30',
         title: 'Novus',
         contentType: 'page',
-        breadcrumbs: [
-          { href: 'parent1Url', text: 'parent1' },
-          { href: '', text: 'Novus' },
-        ],
+        breadcrumbs: [{ href: 'parent1Url', text: 'parent1' }],
         description: undefined,
         excludeFeedback: true,
         standFirst: 'Education',
