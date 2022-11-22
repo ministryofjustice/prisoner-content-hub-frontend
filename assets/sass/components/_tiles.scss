@@ -86,8 +86,7 @@
 
 .content-link--article,
 .content-link--audio,
-.content-link--video,
-.content-link--collection {
+.content-link--video {
   @include govuk-font(19);
   text-decoration: underline;
   color: govuk-colour('white');
@@ -122,11 +121,6 @@
     text-align: center;
     content: url('/public/images/icons/icon_external_website.svg');
   }
-}
-
-.content-link--collection::before {
-  content: url('/public/images/icons/collection.svg');
-  background-color: govuk-colour('light-purple');
 }
 
 .content-link--video::before {
