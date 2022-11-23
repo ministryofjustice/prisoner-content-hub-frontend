@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
 COPY reporter-config.json .
-COPY cypress.config.json .
+COPY cypress.config.js .
 ADD cypress cypress
 
 
