@@ -24,6 +24,11 @@ The `.env` can then be configured to point to local or remote backend services a
 
 The application caches certain of the CMS queries in redis cache. To not use redis and instead use memory cache, set `ENABLE_REDIS_CACHE=false` in your `.env` file. Alternatively running `docker-compose up` will spin up a local redis instance.
 
+### Using a local instance of Drupal as the front-end application data source
+
+To point to a locally running Drupal backend application that has been spun up using docker-compose.
+Set `HUB_API_ENDPOINT=http://localhost:11001` in your `.env` file.
+
 ### Running the app
 
 To run this locally you first need to build the CSS and templates:
