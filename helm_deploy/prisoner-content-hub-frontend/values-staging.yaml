@@ -5,7 +5,7 @@ application:
     feedbackEndpoint: /prod-feedback/_doc
     analyticsSiteId: UA-152065860-7
     mockAuthEnabled: false
-    approvedVisitorsFeatureEnabled: true
+    approvedVisitorsFeatureEnabled: false
 
 ingress:
   annotations:
