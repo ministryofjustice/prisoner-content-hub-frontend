@@ -149,6 +149,11 @@ const mapBreadcrumbs = (rawBreadcrumbs = []) =>
     text,
   }));
 
+const setIsFeatured = data => ({
+  ...data,
+  isFeatured: true,
+});
+
 module.exports = {
   getPagination,
   getSmallTile,
@@ -163,4 +168,5 @@ module.exports = {
   mapBreadcrumbs,
   isNew,
   cropTextWithEllipsis,
+  setIsFeatured,
 };

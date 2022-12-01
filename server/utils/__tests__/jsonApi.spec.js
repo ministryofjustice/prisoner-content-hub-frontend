@@ -11,6 +11,7 @@ const {
   isNew,
   cropTextWithEllipsis,
   isUnpublished,
+  setIsFeatured,
 } = require('../jsonApi');
 
 const LARGE_TILE = 'enormous.jpg';
@@ -705,5 +706,36 @@ describe('cropTextWithEllipsis', () => {
     expect(() => cropTextWithEllipsis({}, 30)).toThrow(
       'An item object with the expected structure is required',
     );
+  });
+});
+
+describe('setIsfeatured', () => {
+  let data;
+  let outputData;
+
+  beforeEach(() => {
+    data = {
+      id: 999999,
+      contentType: 'series',
+      externalContent: false,
+      title: 'A title',
+      summary: 'A summary',
+      contentUrl: '/content/999999',
+      displayUrl: undefined,
+      image: {
+        url: 'url path',
+        alt: 'Alt text',
+      },
+      isNew: false,
+    };
+
+    outputData = {
+      ...data,
+      isFeatured: true,
+    };
+  });
+
+  it("should add an 'isFeatured' field to the object", () => {
+    expect(setIsFeatured(data)).toEqual(outputData);
   });
 });

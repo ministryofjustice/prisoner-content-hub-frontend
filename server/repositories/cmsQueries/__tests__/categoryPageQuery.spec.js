@@ -1,4 +1,5 @@
 const { CategoryPageQuery } = require('../categoryPageQuery');
+const { setIsFeatured } = require('../../../utils/jsonApi');
 
 describe('Category collection query', () => {
   const ESTABLISHMENTNAME = 'Wayland';
@@ -132,11 +133,11 @@ describe('Category collection query', () => {
 
     it('should return an array of featured tiles', () => {
       expect(result.categoryFeaturedContent).toStrictEqual([
-        TILE_VIDEO,
-        TILE_CATEGORY,
-        TILE_SERIES,
-        TILE_CATEGORY,
-        TILE_VIDEO,
+        setIsFeatured(TILE_VIDEO),
+        setIsFeatured(TILE_CATEGORY),
+        setIsFeatured(TILE_SERIES),
+        setIsFeatured(TILE_CATEGORY),
+        setIsFeatured(TILE_VIDEO),
       ]);
     });
     it('should return an array of breadcrumbs', () => {

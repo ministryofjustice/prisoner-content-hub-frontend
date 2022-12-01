@@ -1,9 +1,11 @@
 {% if params.id %}
   <a data-featured-tile-id="{{params.id}}" data-featured-id="{{params.id}}" data-featured-title="{{ params.title }}" href="{{params.contentUrl}}" {% if params.externalContent %}target="_blank"{% endif %}>
     <div class="tile-top">
-      {% if params.contentType === "series" %}
+      {% if params.isFeatured %}
+        <strong class="govuk-tag govuk-tag--blue">FEATURED</strong>
+      {% elif params.contentType === "series" %}
         <strong class="govuk-tag govuk-tag--purple">SERIES</strong>
-      {% endif %}
+      {% endif %} 
       {% if params.image.url %}
         <img src="{{params.image.url}}" alt="{{params.image.alt}}" class="tile-image">
       {% else %}

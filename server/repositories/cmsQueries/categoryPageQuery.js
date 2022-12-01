@@ -1,5 +1,9 @@
 const { DrupalJsonApiParams: Query } = require('drupal-jsonapi-params');
-const { getSmallTile, mapBreadcrumbs } = require('../../utils/jsonApi');
+const {
+  setIsFeatured,
+  getSmallTile,
+  mapBreadcrumbs,
+} = require('../../utils/jsonApi');
 const { getCmsCacheKey } = require('../../utils/caching/cms');
 
 class CategoryPageQuery {
@@ -67,7 +71,8 @@ class CategoryPageQuery {
       categoryFeaturedContent: data?.fieldFeaturedTiles
         .filter(({ title = null, name = null }) => title || name)
         .slice(0, 12)
-        .map(getSmallTile),
+        .map(getSmallTile)
+        .map(setIsFeatured),
     };
   }
 }
