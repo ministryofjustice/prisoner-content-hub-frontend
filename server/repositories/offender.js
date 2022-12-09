@@ -45,7 +45,7 @@ function offenderRepository(prisonApiHttpClient, incentivesApiHttpClient) {
 
   function getVisitorsFor(prisonerId) {
     return prisonApiHttpClient.get(
-      `${prisonContactRegistryBaseUrl}/prisoners/${prisonerId}/contacts`,
+      `${prisonContactRegistryBaseUrl}/prisoners/${prisonerId}/contacts?type='S'`,
     );
   }
 
