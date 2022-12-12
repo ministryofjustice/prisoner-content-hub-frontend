@@ -12,7 +12,7 @@
   {% else %}
   
   {% if error %}
-    <p class="govuk-body govuk-!-font-size-24 govuk-!-margin-bottom-9" data-test="approved-visitors-error">We can not list your approved visitors at this time, please <a href="{{ params.returnUrl }}" class="govuk-link">try again</a> or <a href="{{ knownPages.profile.visitorInfo }}" class="govuk-link">find out more about visits</a>.</p>
+    <p class="govuk-body govuk-!-font-size-24 govuk-!-margin-bottom-9" data-test="approved-visitors-error">We can not list your approved social visitors at this time, please <a href="{{ params.returnUrl }}" class="govuk-link">try again</a> or <a href="{{ knownPages.profile.visitorInfo }}" class="govuk-link">find out more about visits</a>.</p>
   {% else %}  
         {% if approvedVisitors.length > 0 %}
           <div class="govuk-!-margin-bottom-7">
@@ -35,7 +35,7 @@
         {% endif %}
       {% else %}
         <div class="govuk-!-margin-bottom-9">
-          <p class="govuk-heading-m" data-test="no-approved-visitors">You do not have any approved visitors.</p>
+          <p class="govuk-heading-m" data-test="no-approved-visitors">You do not have any approved social visitors.</p>
           <a href="{{ knownPages.profile.visitorInfo }}" class="govuk-link govuk-!-font-size-24">Find out more about visits</a>
         </div>
       {% endif %}

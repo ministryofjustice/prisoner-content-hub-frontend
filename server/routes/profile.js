@@ -93,8 +93,7 @@ const createProfileRouter = ({ offenderService }) => {
         data: { contentType: 'profile' },
         ...personalisation,
         displayApprovedVisitorsCard:
-          config.features.approvedVisitorsFeatureEnabled &&
-          req.session.establishmentName === 'ranby',
+          config.features.approvedVisitorsFeatureEnabled,
       });
     } catch (e) {
       return next(e);
