@@ -30,18 +30,15 @@ const createApprovedVisitorsRouter = ({ offenderService }) => {
 
   router.get(
     '/',
-    async ({ user, originalUrl: returnUrl, query, session }, res, next) => {
-      if (
-        config.features.approvedVisitorsFeatureEnabled &&
-        session.establishmentName === 'ranby'
-      ) {
+    async ({ user, originalUrl: returnUrl, query }, res, next) => {
+      if (config.features.approvedVisitorsFeatureEnabled) {
         try {
           const personalisation = user
             ? await getPersonalisation(user, query)
             : {};
 
           return res.render('pages/approvedVisitors', {
-            title: 'Your approved visitors',
+            title: 'Your approved visitors - social',
             content: false,
             header: false,
             postscript: true,
