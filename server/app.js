@@ -262,6 +262,13 @@ const createApp = services => {
 
   // eslint-disable-next-line no-unused-vars
   function renderErrors(error, req, res, next) {
+    if (error.response?.status === 403) {
+      logger.warn(`Failed to find: ${error.message}`);
+      logger.debug(error.stack);
+      res.status(403);
+      return res.render('pages/404', { title: 'Page not found' });
+    }
+
     if (error instanceof NotFound) {
       logger.warn(`Failed to find: ${error.message}`);
       logger.debug(error.stack);
