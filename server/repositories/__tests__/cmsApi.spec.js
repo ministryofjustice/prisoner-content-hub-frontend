@@ -183,6 +183,14 @@ describe('CmsApi', () => {
       ).rejects.toEqual(new NotFound('/jsonapi/test'));
     });
 
+    it('propogates 403', () => {
+      mockDrupal.get(path).reply(403, 'unexpected error');
+
+      return expect(
+        cmsApi.get(new TestUrlTransformEachQuery()),
+      ).rejects.toEqual(Error('Request failed with status code 403'));
+    });
+
     it('should format and return single value', async () => {
       mockDrupal.get(path).reply(
         200,
