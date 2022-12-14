@@ -1,6 +1,5 @@
 const { path } = require('ramda');
 const express = require('express');
-const config = require('../config');
 
 const createSearchRouter = ({ searchService, analyticsService }) => {
   const router = express.Router();
@@ -22,17 +21,6 @@ const createSearchRouter = ({ searchService, analyticsService }) => {
         userAgent,
       });
 
-      let dateTimeCacheTest;
-      if (
-        config.features.approvedVisitorsFeatureEnabled &&
-        req.headers.referer.includes('/approved-visitors')
-      ) {
-        res.set('Cache-Control', 'public, max-age=86400');
-        res.removeHeader('Expires');
-        res.removeHeader('Pragma');
-        dateTimeCacheTest = new Date().toLocaleString();
-      }
-
       return res.render('pages/search', {
         title: 'Search',
         config: {
@@ -44,7 +32,6 @@ const createSearchRouter = ({ searchService, analyticsService }) => {
         results,
         data: { contentType: 'search' },
         query,
-        dateTimeCacheTest,
       });
     } catch (error) {
       return next(error);
