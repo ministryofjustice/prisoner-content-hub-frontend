@@ -29,7 +29,7 @@ describe('Series with no defined related content page query', () => {
         id: `1001`,
         contentType: 'series',
         title: `name1`,
-        summary: `description1`,
+        summary: undefined,
         displayUrl: undefined,
         externalContent: false,
         image: {

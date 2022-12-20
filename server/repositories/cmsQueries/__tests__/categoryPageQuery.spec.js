@@ -17,7 +17,7 @@ describe('Category collection query', () => {
       drupalInternal_Nid: 101,
       title: `title_101`,
       type: 'node--moj_video_item',
-      fieldMojDescription: { summary: `summary_101` },
+      field_summary: `summary_101`,
       fieldMojThumbnailImage: {
         imageStyleUri: [{}, { tile_small: `tile_small_101` }],
         resourceIdObjMeta: { alt: `alt_101` },
@@ -31,7 +31,6 @@ describe('Category collection query', () => {
       type: 'taxonomy_term--moj_categories',
       drupalInternal_Tid: `1001`,
       name: `name`,
-      description: { processed: `description` },
       fieldExcludeFeedback: true,
       fieldMojThumbnailImage: {
         imageStyleUri: [{ tile_small: `tile_small` }],
@@ -48,7 +47,7 @@ describe('Category collection query', () => {
       type: 'taxonomy_term--series',
       drupalInternal_Tid: `1001`,
       name: `name`,
-      description: { processed: `description` },
+      fieldDescription: { processed: `description` },
       fieldExcludeFeedback: true,
       fieldMojThumbnailImage: {
         imageStyleUri: [{ tile_small: `tile_small` }],
@@ -60,7 +59,7 @@ describe('Category collection query', () => {
       id: 101,
       title: `title_101`,
       contentType: 'video',
-      summary: `summary_101`,
+      summary: 'summary_101',
       contentUrl: `/content/101`,
       image: {
         url: `tile_small_101`,
@@ -81,7 +80,7 @@ describe('Category collection query', () => {
         url: 'tile_small',
       },
       isNew: false,
-      summary: 'description',
+      summary: undefined,
       title: 'name',
     };
     const TILE_SERIES = {
@@ -95,7 +94,7 @@ describe('Category collection query', () => {
         url: 'tile_small',
       },
       isNew: false,
-      summary: 'description',
+      summary: undefined,
       title: 'name',
     };
     let rawData;

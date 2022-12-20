@@ -5,7 +5,7 @@ class SuggestionQuery {
   static #TILE_FIELDS = [
     'drupal_internal__nid',
     'title',
-    'field_moj_description',
+    'field_summary',
     'field_moj_thumbnail_image',
     'path',
     'published_at',

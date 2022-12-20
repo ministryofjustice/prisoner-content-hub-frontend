@@ -10,7 +10,7 @@ describe('Category collection query', () => {
   describe('path', () => {
     it('should create correct path', () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/${ESTABLISHMENTNAME}/node?filter%5Bfield_moj_top_level_categories.id%5D=${UUID}&filter%5Bfield_not_in_series%5D=1&include=field_moj_thumbnail_image&sort=-created&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&fields%5Bmoj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&${getPagination(
+        `/jsonapi/prison/${ESTABLISHMENTNAME}/node?filter%5Bfield_moj_top_level_categories.id%5D=${UUID}&filter%5Bfield_not_in_series%5D=1&include=field_moj_thumbnail_image&sort=-created&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&fields%5Bmoj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&${getPagination(
           PAGE,
           LIMIT,
         )}`,
@@ -23,7 +23,7 @@ describe('Category collection query', () => {
       drupalInternal_Nid: 101,
       title: `title_101`,
       type: 'node--moj_video_item',
-      fieldMojDescription: { summary: `summary_101` },
+      field_summary: `summary_101`,
       fieldMojThumbnailImage: {
         imageStyleUri: [{}, { tile_small: `tile_small_101` }],
         resourceIdObjMeta: { alt: `alt_101` },
