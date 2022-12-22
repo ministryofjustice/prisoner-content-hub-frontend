@@ -29,7 +29,6 @@ describe('Category collection query', () => {
       type: 'taxonomy_term--moj_categories',
       drupalInternal_Tid: `1001`,
       name: `name`,
-      // description: { processed: `description` },
       fieldExcludeFeedback: true,
       fieldMojThumbnailImage: {
         imageStyleUri: [{ tile_small: `tile_small` }],

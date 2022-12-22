@@ -28,6 +28,10 @@
       flex: 1 0 auto;
     }
 
+    & a:hover {
+      text-decoration: underline;
+    }
+
     & img {
       flex: 0 1 auto;
     }

@@ -4,7 +4,7 @@
   <div class="govuk-width-container top-bar">
     <h1 class="govuk-heading-m">
       <img class="hub-logo" src="/public/images/icons/content-hub.png" alt="logo">
-      <a href="/" style="">Content Hub <span>{{ params.establishmentDisplayName }}</span></a>
+      <a href="/" class="govuk-link govuk-link--inverse">Content Hub <span>{{ params.establishmentDisplayName }}</span></a>
     </h1>
     {% if params.showSearch %}
       {{ hubSearch({ query: params.searchQuery, small: true }) }}
