@@ -1,0 +1,18 @@
+{
+  "home": {
+    "href": "/",
+    "text": "Home"
+  },
+  "profile": {
+    "href": "/profile",
+    "text": "My Profile"
+  },
+  "entertainment": {
+    "href": "/tags/1282",
+    "text": "Entertainment"
+  },
+  "games": {
+    "href": "/tags/647",
+    "text": "Games"
+  }
+}

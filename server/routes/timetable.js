@@ -1,5 +1,6 @@
 const express = require('express');
 const { format, addDays, subDays } = require('date-fns');
+const { createBreadcrumbs } = require('../utils/breadcrumbs');
 
 const createTimetableRouter = ({ offenderService }) => {
   const router = express.Router();
@@ -37,6 +38,7 @@ const createTimetableRouter = ({ offenderService }) => {
         title: 'Timetable',
         config,
         events,
+        data: { breadcrumbs: createBreadcrumbs(req) },
       });
     } catch (exception) {
       next(exception);
@@ -72,6 +74,7 @@ const createTimetableRouter = ({ offenderService }) => {
         title: 'Timetable',
         config,
         events,
+        data: { breadcrumbs: createBreadcrumbs(req) },
       });
     } catch (exception) {
       next(exception);
@@ -107,6 +110,7 @@ const createTimetableRouter = ({ offenderService }) => {
         title: 'Timetable',
         config,
         events,
+        data: { breadcrumbs: createBreadcrumbs(req) },
       });
     } catch (exception) {
       next(exception);

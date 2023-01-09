@@ -87,3 +87,36 @@ Can either run the tests headlessly:
 
 Or with the cypress user interface:
 `npm run test:e2e:ui`
+
+## Adding new breadcrumbs to none Drupal pages
+
+### breadcrumbs.json
+
+The server > content > breadcrumbs.json file lists the href and link text for breadcrumb navigation links that are displayed in sections of the site that do not use content from Drupal.
+
+### breadcrumbs.js
+
+The server > utils > breadcrumbs.js creates breadcrumbs structure for each path defined.
+
+When breadcrumbs are required for a path it should be added within the switch statement in this file.
+
+### Add breadcrumbs to the required routers
+
+Import the createBreadcrumbs function into the router
+
+```
+const { createBreadcrumbs } = require('../utils/breadcrumbs');
+```
+
+Pass the breadcrumb data into the view within res.render
+
+```
+return res.render('pages/approvedVisitors', {
+    ...
+    data: {
+        contentType: 'profile',
+        breadcrumbs: createBreadcrumbs(req)
+        },
+    ...
+});
+```

@@ -1,5 +1,6 @@
 const express = require('express');
 const config = require('../config');
+const { createBreadcrumbs } = require('../utils/breadcrumbs');
 
 const createApprovedVisitorsRouter = ({ offenderService }) => {
   const router = express.Router();
@@ -28,33 +29,32 @@ const createApprovedVisitorsRouter = ({ offenderService }) => {
     };
   };
 
-  router.get(
-    '/',
-    async ({ user, originalUrl: returnUrl, query }, res, next) => {
-      if (config.features.approvedVisitorsFeatureEnabled) {
-        try {
-          const personalisation = user
-            ? await getPersonalisation(user, query)
-            : {};
+  router.get('/', async (req, res, next) => {
+    const { user, originalUrl: returnUrl, query } = req;
 
-          return res.render('pages/approvedVisitors', {
-            title: 'Your approved visitors - social',
-            content: false,
-            header: false,
-            postscript: true,
-            detailsType: 'small',
-            returnUrl,
-            ...personalisation,
-            data: { contentType: 'profile' },
-            displayImportantNotice: true,
-          });
-        } catch (e) {
-          return next(e);
-        }
+    if (config.features.approvedVisitorsFeatureEnabled) {
+      try {
+        const personalisation = user
+          ? await getPersonalisation(user, query)
+          : {};
+
+        return res.render('pages/approvedVisitors', {
+          title: 'Your approved visitors - social',
+          content: false,
+          header: false,
+          postscript: true,
+          detailsType: 'small',
+          returnUrl,
+          ...personalisation,
+          data: { contentType: 'profile', breadcrumbs: createBreadcrumbs(req) },
+          displayImportantNotice: true,
+        });
+      } catch (e) {
+        return next(e);
       }
-      return next();
-    },
-  );
+    }
+    return next();
+  });
 
   return router;
 };
