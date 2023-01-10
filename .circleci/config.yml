@@ -241,6 +241,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "12:7d:f1:9e:93:67:11:0e:93:ea:9a:c0:d3:6e:dc:4c"
+            - "a7:cf:5f:a6:3b:2b:79:de:d5:ed:0a:e0:ba:bb:0f:fb"
       - run:
           name: Create Git Tag
           command: |
