@@ -6,6 +6,7 @@ const {
   createPendingTransactionsResponseFrom,
 } = require('./formatters');
 const { getDateSelection } = require('../utils/date');
+const { createBreadcrumbs } = require('../utils/breadcrumbs');
 
 const accountTypes = ['spends', 'private', 'savings'];
 
@@ -48,6 +49,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
           postscript: true,
           detailsType: 'small',
         },
+        data: { breadcrumbs: createBreadcrumbs(req) },
       };
 
       if (res.locals.isSignedIn) {
@@ -80,6 +82,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
             postscript: true,
             detailsType: 'small',
           },
+          data: { breadcrumbs: createBreadcrumbs(req) },
         };
 
         if (res.locals.isSignedIn) {
@@ -140,6 +143,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
           postscript: true,
           detailsType: 'small',
         },
+        data: { breadcrumbs: createBreadcrumbs(req) },
       };
 
       if (res.locals.isSignedIn) {
@@ -199,6 +203,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
           postscript: true,
           detailsType: 'small',
         },
+        data: { breadcrumbs: createBreadcrumbs(req) },
       };
 
       if (res.locals.isSignedIn) {

@@ -1,5 +1,6 @@
 const express = require('express');
 const config = require('../config');
+const { createBreadcrumbs } = require('../utils/breadcrumbs');
 
 const createProfileRouter = ({ offenderService }) => {
   const router = express.Router();
@@ -90,7 +91,7 @@ const createProfileRouter = ({ offenderService }) => {
         header: false,
         postscript: true,
         detailsType: 'small',
-        data: { contentType: 'profile' },
+        data: { contentType: 'profile', breadcrumbs: createBreadcrumbs(req) },
         ...personalisation,
         displayApprovedVisitorsCard:
           config.features.approvedVisitorsFeatureEnabled,
