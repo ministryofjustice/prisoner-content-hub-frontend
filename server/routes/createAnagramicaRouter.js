@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const { createBreadcrumbs } = require('../utils/breadcrumbs');
 
 const { logger } = require('../utils/logger');
 const finder = require('../../assets/javascript/games/anagramica/lib/finder');
@@ -19,6 +20,7 @@ const createAnagramicaRouter = config => {
       res.render('pages/games/anagramica.html', {
         title: 'Anagramica',
         config: { ...config, detailsType: 'small' },
+        data: { breadcrumbs: createBreadcrumbs(req) },
       }),
     )
     .post((req, res) => {
