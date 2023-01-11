@@ -29,7 +29,7 @@ describe('Secondary tag with no defined related content page query', () => {
         id: `1001`,
         contentType: 'topic',
         title: `name1`,
-        summary: `description1`,
+        summary: undefined,
         image: {
           url: `tile_large1`,
           alt: `alt1`,

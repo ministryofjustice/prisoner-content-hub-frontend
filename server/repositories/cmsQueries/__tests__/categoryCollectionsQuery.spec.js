@@ -29,7 +29,6 @@ describe('Category collection query', () => {
       type: 'taxonomy_term--moj_categories',
       drupalInternal_Tid: `1001`,
       name: `name`,
-      description: { processed: `description` },
       fieldExcludeFeedback: true,
       fieldMojThumbnailImage: {
         imageStyleUri: [{ tile_small: `tile_small` }],
@@ -52,7 +51,7 @@ describe('Category collection query', () => {
         url: 'tile_small',
       },
       isNew: false,
-      summary: 'description',
+      summary: undefined,
       title: 'name',
     };
     const TILE_SERIES = {
@@ -66,7 +65,7 @@ describe('Category collection query', () => {
         url: 'tile_small',
       },
       isNew: false,
-      summary: 'description',
+      summary: undefined,
       title: 'name',
     };
     const COLLECTION_ITEM_SERIES = {

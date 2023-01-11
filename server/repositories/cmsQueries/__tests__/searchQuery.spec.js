@@ -15,7 +15,7 @@ describe('search query', () => {
       const item = {
         title: 'Prisoners in Prison',
         drupalInternal_Nid: 1234,
-        fieldMojDescription: { summary: 'Lived experiences in prison' },
+        fieldSummary: 'Lived experiences in prison',
         path: {
           alias: '/content/2345',
         },
@@ -32,7 +32,7 @@ describe('search query', () => {
       const item = {
         title: 'Prisoners in Prison',
         drupalInternal_Nid: 1234,
-        fieldMojDescription: { summary: 'Lived experiences in prison' },
+        fieldSummary: 'Lived experiences in prison',
       };
 
       expect(query.transformEach(item)).toStrictEqual({

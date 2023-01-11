@@ -12,7 +12,7 @@ class HomepageUpdatesContentQuery {
     'drupal_internal__nid',
     'title',
     'field_moj_thumbnail_image',
-    'field_moj_description',
+    'field_summary',
     'field_moj_series',
     'path',
     'type.meta.drupal_internal__target_id',

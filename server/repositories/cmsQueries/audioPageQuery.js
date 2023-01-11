@@ -16,7 +16,7 @@ class AudioPageQuery {
         'title',
         'created',
         'field_moj_audio',
-        'field_moj_description',
+        'field_description',
         'field_topics',
         'field_moj_series',
         'field_moj_season',
@@ -67,7 +67,7 @@ class AudioPageQuery {
       title: item.title,
       contentType: 'radio',
       breadcrumbs: mapBreadcrumbs(item.breadcrumbs, item.title),
-      description: item.fieldMojDescription?.processed,
+      description: item.fieldDescription?.processed,
       programmeCode: item.fieldMojProgrammeCode,
       episodeId:
         item.fieldMojSeason !== undefined && item.fieldMojEpisode !== undefined

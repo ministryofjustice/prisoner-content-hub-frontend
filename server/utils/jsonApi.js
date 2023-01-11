@@ -38,7 +38,7 @@ const getTile = (item, imageSize) => {
     contentType,
     externalContent,
     title: item?.title || item?.name,
-    summary: item?.fieldMojDescription?.summary || item?.description?.processed,
+    summary: item?.field_summary,
     contentUrl: item?.path?.alias,
     displayUrl: item?.fieldDisplayUrl,
     image: getImage(item?.fieldMojThumbnailImage, imageSize),

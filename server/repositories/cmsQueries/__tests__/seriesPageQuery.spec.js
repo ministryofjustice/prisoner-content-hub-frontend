@@ -8,7 +8,7 @@ describe('Series page query', () => {
   describe('path', () => {
     it('should create correct path', async () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/${ESTABLISHMENTNAME}/node?filter%5Bfield_moj_series.id%5D=${UUID}&include=field_moj_thumbnail_image%2Cfield_moj_series.field_moj_thumbnail_image&sort=series_sort_value%2Ccreated&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath%2Cpublished_at&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath%2Cpublished_at&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath%2Cpublished_at&fields%5Bnode--moj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_description%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath%2Cpublished_at&fields%5Bfile--file%5D=image_style_uri&fields%5Btaxonomy_term--series%5D=name%2Cdescription%2Cdrupal_internal__tid%2Cfield_moj_thumbnail_image%2Cpath%2Cfield_exclude_feedback%2Cbreadcrumbs&${getPagination(
+        `/jsonapi/prison/${ESTABLISHMENTNAME}/node?filter%5Bfield_moj_series.id%5D=${UUID}&include=field_moj_thumbnail_image%2Cfield_moj_series.field_moj_thumbnail_image&sort=series_sort_value%2Ccreated&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath%2Cpublished_at&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath%2Cpublished_at&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath%2Cpublished_at&fields%5Bnode--moj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cfield_moj_series%2Cpath%2Cpublished_at&fields%5Bfile--file%5D=image_style_uri&fields%5Btaxonomy_term--series%5D=name%2Cdescription%2Cdrupal_internal__tid%2Cfield_moj_thumbnail_image%2Cpath%2Cfield_exclude_feedback%2Cbreadcrumbs&${getPagination(
           2,
         )}`,
       );
@@ -33,7 +33,7 @@ describe('Series page query', () => {
     const createContent = id => ({
       drupalInternal_Nid: id,
       title: `title${id}`,
-      fieldMojDescription: { summary: `summary${id}` },
+      fieldSummary: `summary${id}`,
       fieldMojThumbnailImage: {
         imageStyleUri: [{}, { tile_small: `tile_small${id}` }],
         resourceIdObjMeta: { alt: `alt${id}` },
@@ -47,7 +47,7 @@ describe('Series page query', () => {
     const createTransformedContent = id => ({
       id,
       title: `title${id}`,
-      summary: `summary${id}`,
+      summary: undefined,
       contentUrl: `/content/${id}`,
       image: {
         url: `tile_small${id}`,
@@ -70,7 +70,7 @@ describe('Series page query', () => {
         contentType: 'series',
         breadcrumbs: [{ href: 'parent1Url', text: 'parent1' }],
         title: `name${UUID}`,
-        summary: `description${UUID}`,
+        summary: undefined,
         image: {
           url: `tile_large${UUID}`,
           alt: `alt${UUID}`,
@@ -100,7 +100,7 @@ describe('Series page query', () => {
         contentType: 'series',
         breadcrumbs: [{ href: 'parent1Url', text: 'parent1' }],
         title: `name${UUID}`,
-        summary: `description${UUID}`,
+        summary: undefined,
         image: {
           url: `tile_large${UUID}`,
           alt: `alt${UUID}`,

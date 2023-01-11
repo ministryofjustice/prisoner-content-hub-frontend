@@ -5,7 +5,7 @@ describe('Basic page query', () => {
   describe('url', () => {
     it('should create correct path', async () => {
       expect(query.url()).toStrictEqual(
-        'https://cms/content/1234?include=field_topics%2Cfield_moj_top_level_categories&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Ccreated%2Cfield_moj_description%2Cfield_moj_stand_first%2Cfield_topics%2Cfield_moj_series%2Cfield_moj_top_level_categories%2Cfield_exclude_feedback%2Cbreadcrumbs&fields%5Btaxonomy_term--topics%5D=drupal_internal__tid%2Cname&fields%5Btaxonomy_term--moj_categories%5D=drupal_internal__tid%2Cname',
+        'https://cms/content/1234?include=field_topics%2Cfield_moj_top_level_categories&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Ccreated%2Cfield_main_body_content%2Cfield_moj_stand_first%2Cfield_topics%2Cfield_moj_series%2Cfield_moj_top_level_categories%2Cfield_exclude_feedback%2Cbreadcrumbs&fields%5Btaxonomy_term--topics%5D=drupal_internal__tid%2Cname&fields%5Btaxonomy_term--moj_categories%5D=drupal_internal__tid%2Cname',
       );
     });
   });
@@ -18,7 +18,7 @@ describe('Basic page query', () => {
         type: 'node--node--page',
         breadcrumbs: [{ uri: 'parent1Url', title: 'parent1' }],
         created: '2020-01-03T01:02:30',
-        fieldMojDescription: { processed: 'Education content for prisoners' },
+        fieldMainBodyContent: { processed: 'Education content for prisoners' },
         fieldExcludeFeedback: true,
         fieldMojStandFirst: 'Education',
         fieldMojTopLevelCategories: {
@@ -50,6 +50,7 @@ describe('Basic page query', () => {
         title: 'Novus',
         type: 'node--node--page',
         breadcrumbs: [{ uri: 'parent1Url', title: 'parent1' }],
+        fieldMainBodyContent: {},
         fieldExcludeFeedback: true,
         fieldMojStandFirst: 'Education',
         fieldMojTopLevelCategories: {

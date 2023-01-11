@@ -16,7 +16,7 @@ class VideoPageQuery {
         'title',
         'created',
         'field_video',
-        'field_moj_description',
+        'field_description',
         'field_topics',
         'field_moj_series',
         'field_moj_season',
@@ -66,7 +66,7 @@ class VideoPageQuery {
       title: item.title,
       contentType: 'video',
       breadcrumbs: mapBreadcrumbs(item.breadcrumbs, item.title),
-      description: item.fieldMojDescription?.processed,
+      description: item.fieldDescription?.processed,
       episodeId:
         item.fieldMojSeason !== undefined && item.fieldMojEpisode !== undefined
           ? item.fieldMojSeason * 1000 + item.fieldMojEpisode

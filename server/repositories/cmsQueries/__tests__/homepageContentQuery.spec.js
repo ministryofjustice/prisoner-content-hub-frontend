@@ -12,7 +12,7 @@ describe('HomepageContent query', () => {
   describe('path', () => {
     it('should return correct path', () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/${ESTABLISHMENTNAME}/node/homepage?include=field_featured_tiles.field_moj_thumbnail_image%2Cfield_featured_tiles%2Cfield_large_update_tile%2Cfield_key_info_tiles%2Cfield_key_info_tiles.field_moj_thumbnail_image%2Cfield_large_update_tile.field_moj_thumbnail_image&page%5Blimit%5D=4&fields%5Bnode--field_featured_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--field_key_info_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_moj_description%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bfile--file%5D=drupal_internal__fid%2Cid%2Cimage_style_uri`,
+        `/jsonapi/prison/${ESTABLISHMENTNAME}/node/homepage?include=field_featured_tiles.field_moj_thumbnail_image%2Cfield_featured_tiles%2Cfield_large_update_tile%2Cfield_key_info_tiles%2Cfield_key_info_tiles.field_moj_thumbnail_image%2Cfield_large_update_tile.field_moj_thumbnail_image&page%5Blimit%5D=4&fields%5Bnode--field_featured_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--field_key_info_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bfile--file%5D=drupal_internal__fid%2Cid%2Cimage_style_uri`,
       );
     });
 
@@ -46,9 +46,7 @@ describe('HomepageContent query', () => {
           pid: 111111,
           langcode: 'en',
         },
-        fieldMojDescription: {
-          summary: 'A description',
-        },
+        fieldSummary: undefined,
         fieldMojThumbnailImage: {
           imageStyleUri: [
             {
@@ -70,9 +68,7 @@ describe('HomepageContent query', () => {
           pid: 222222,
           langcode: 'en',
         },
-        fieldMojDescription: {
-          summary: 'A description',
-        },
+        fieldSummary: undefined,
         fieldMojThumbnailImage: {
           imageStyleUri: [
             {
@@ -93,9 +89,7 @@ describe('HomepageContent query', () => {
           pid: 333333,
           langcode: 'en',
         },
-        fieldMojDescription: {
-          summary: 'A description',
-        },
+        fieldSummary: undefined,
         fieldMojThumbnailImage: {
           imageStyleUri: [
             {
@@ -110,7 +104,7 @@ describe('HomepageContent query', () => {
       item = {
         fieldFeaturedTiles: [rawContent1, rawContent2],
         fieldKeyInfoTiles: [rawContent3, rawContent2, rawContent1],
-        fieldLargeUpdateTile: rawContent1,
+        fieldLargeUpdateTile: null,
       };
 
       processedContent1 = {
@@ -124,7 +118,7 @@ describe('HomepageContent query', () => {
           url: 'image-url',
         },
         isNew: false,
-        summary: 'A description',
+        summary: undefined,
         title: 'A title',
       };
       processedContent2 = {
@@ -138,7 +132,7 @@ describe('HomepageContent query', () => {
           url: 'small-image-url',
         },
         isNew: false,
-        summary: 'A description',
+        summary: undefined,
         title: 'A title',
       };
       processedContent3 = {
@@ -152,7 +146,7 @@ describe('HomepageContent query', () => {
           url: 'small-image-url',
         },
         isNew: false,
-        summary: 'A description',
+        summary: undefined,
         title: 'A long title that will be...',
       };
     });
@@ -165,7 +159,7 @@ describe('HomepageContent query', () => {
         keyInfo: {
           data: [processedContent3, processedContent2, processedContent1],
         },
-        largeUpdateTile: processedContent1,
+        largeUpdateTile: null,
       });
     });
     it('should handle no large tile data', () => {
