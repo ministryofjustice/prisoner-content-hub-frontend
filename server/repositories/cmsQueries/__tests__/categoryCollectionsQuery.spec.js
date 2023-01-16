@@ -65,7 +65,7 @@ describe('Category collection query', () => {
         url: 'tile_small',
       },
       isNew: false,
-      summary: undefined,
+      summary: 'description',
       title: 'name',
     };
     const COLLECTION_ITEM_SERIES = {

@@ -34,7 +34,7 @@ describe('Secondary Tag page query', () => {
       drupalInternal_Nid: id,
       title: `title${id}`,
       type: 'node--moj_video_item',
-      fieldSummary: `summary${id}`,
+      fieldSummary: `description${id}`,
       fieldMojThumbnailImage: {
         imageStyleUri: [{}, { tile_small: `tile_small${id}` }],
         resourceIdObjMeta: { alt: `alt${id}` },
@@ -48,7 +48,7 @@ describe('Secondary Tag page query', () => {
       id: `100${id}`,
       contentType: 'topic',
       title: `name${id}`,
-      summary: undefined,
+      summary: `description${id}`,
       image: {
         url: `tile_large${id}`,
         alt: `alt${id}`,
@@ -64,7 +64,7 @@ describe('Secondary Tag page query', () => {
       id,
       title: `title${id}`,
       contentType: 'video',
-      summary: undefined,
+      summary: `description${id}`,
       contentUrl: `/content/${id}`,
       image: {
         url: `tile_small${id}`,
