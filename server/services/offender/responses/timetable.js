@@ -16,11 +16,11 @@ const getTimeOfDay = date => {
 
   const dateString = isoDate(date);
 
-  if (isBefore(dateObject, parseISO(`${dateString} 12:00:00`))) {
+  if (isBefore(dateObject, parseISO(`${dateString} 12.00.00`))) {
     return MORNING;
   }
 
-  if (isBefore(dateObject, parseISO(`${dateString} 17:00:00`))) {
+  if (isBefore(dateObject, parseISO(`${dateString} 17.00.00`))) {
     return AFTERNOON;
   }
 
@@ -39,7 +39,6 @@ class Timetable {
 
     do {
       startDateString = format(startDate, ISO_DATE);
-
       this.timetable.events[startDateString] = Timetable.createNewTableRow({
         title: Timetable.getTimetableRowTitle(startDateString),
         hasDateElapsed: isBefore(startDate, todaysDate),

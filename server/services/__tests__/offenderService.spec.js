@@ -370,14 +370,14 @@ describe('Offender Service', () => {
           events: [
             {
               description: 'Case - Legal Aid',
-              endTime: '10:45pm',
+              endTime: '10.45pm',
               eventType: 'APP',
               finished: false,
               location: 'Body repair',
               paid: undefined,
-              startTime: '10:10pm',
+              startTime: '10.10pm',
               status: 'SCH',
-              timeString: '10:10pm to 10:45pm',
+              timeString: '10.10pm to 10.45pm',
             },
           ],
           finished: true,

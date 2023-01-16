@@ -86,7 +86,7 @@ const createProfileRouter = ({ offenderService }) => {
       const personalisation = user ? await getPersonalisation(user) : {};
 
       return res.render('pages/profile', {
-        title: 'Your profile',
+        title: 'My profile',
         content: true,
         header: false,
         postscript: true,
