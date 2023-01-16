@@ -36,7 +36,6 @@ const createTagRouter = ({ cmsService }) => {
         req.session.establishmentName,
         parseInt(id, 10),
       );
-
       const pageType = ['topic', 'series'].includes(data.contentType)
         ? 'collections'
         : 'tagsCategories';

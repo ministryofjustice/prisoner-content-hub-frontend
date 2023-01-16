@@ -17,7 +17,7 @@ describe('Category collection query', () => {
       drupalInternal_Nid: 101,
       title: `title_101`,
       type: 'node--moj_video_item',
-      field_summary: `summary_101`,
+      fieldSummary: `summary_101`,
       fieldMojThumbnailImage: {
         imageStyleUri: [{}, { tile_small: `tile_small_101` }],
         resourceIdObjMeta: { alt: `alt_101` },

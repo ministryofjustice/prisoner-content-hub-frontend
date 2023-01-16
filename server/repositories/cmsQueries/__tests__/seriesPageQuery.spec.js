@@ -47,7 +47,7 @@ describe('Series page query', () => {
     const createTransformedContent = id => ({
       id,
       title: `title${id}`,
-      summary: undefined,
+      summary: `summary${id}`,
       contentUrl: `/content/${id}`,
       image: {
         url: `tile_small${id}`,
@@ -70,7 +70,7 @@ describe('Series page query', () => {
         contentType: 'series',
         breadcrumbs: [{ href: 'parent1Url', text: 'parent1' }],
         title: `name${UUID}`,
-        summary: undefined,
+        summary: `description${UUID}`,
         image: {
           url: `tile_large${UUID}`,
           alt: `alt${UUID}`,
@@ -100,7 +100,7 @@ describe('Series page query', () => {
         contentType: 'series',
         breadcrumbs: [{ href: 'parent1Url', text: 'parent1' }],
         title: `name${UUID}`,
-        summary: undefined,
+        summary: `description${UUID}`,
         image: {
           url: `tile_large${UUID}`,
           alt: `alt${UUID}`,

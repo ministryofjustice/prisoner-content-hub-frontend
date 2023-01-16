@@ -60,7 +60,7 @@ describe('Recently Added Content page query', () => {
         contentType: 'video',
         externalContent: false,
         title: 'A Title',
-        summary: undefined,
+        summary: 'A Summary',
         contentUrl: '/content/111111',
         displayUrl: undefined,
         image: {
