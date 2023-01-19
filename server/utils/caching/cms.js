@@ -1,4 +1,4 @@
-const getCmsCacheKey = (...args) => `CMS:${args.join(':')}`;
+const getCmsCacheKey = (...args) => `cms:${args.join(':')}`;
 
 module.exports = {
   getCmsCacheKey,
