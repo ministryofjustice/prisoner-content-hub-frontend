@@ -317,7 +317,7 @@ describe('CmsApi', () => {
       it('should save the value to the cache', async () => {
         expect(testCacheStrategy.set).toHaveBeenCalledTimes(1);
         expect(testCacheStrategy.set).toHaveBeenCalledWith(
-          'cms:router:berwyn:content:1234',
+          'cms-api:router:berwyn:content:1234',
           lookupResult,
           86400,
         );

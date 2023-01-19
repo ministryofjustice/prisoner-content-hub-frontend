@@ -58,11 +58,11 @@ describe('InMemoryCachingStrategy', () => {
 
 describe('getCmsCacheKey', () => {
   it('should concatenate two params with ":"', () => {
-    expect(getCmsCacheKey('start', 'end')).toBe('cms:start:end');
+    expect(getCmsCacheKey('start', 'end')).toBe('cms-api:start:end');
   });
   it('should concatenate multiple params with ":"', () => {
     expect(getCmsCacheKey('start', 'middle', 'end')).toBe(
-      'cms:start:middle:end',
+      'cms-api:start:middle:end',
     );
   });
 });
