@@ -11,6 +11,7 @@ govuk_modules
 node_modules/*
 e2e/node_modules/*
 e2e/cypress/artifacts/
+e2e/cypress/downloads/
 .tmuxp.*
 .idea
 npm-debug.log
