@@ -102,7 +102,7 @@ When breadcrumbs are required for a path it should be added within the switch st
 
 ### Add breadcrumbs to the required routers
 
-Import the createBreadcrumbs function into the router
+Import the createBreadcrumbs function into the router:
 
 ```
 const { createBreadcrumbs } = require('../utils/breadcrumbs');
