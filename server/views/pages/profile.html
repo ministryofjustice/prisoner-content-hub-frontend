@@ -12,7 +12,7 @@
         {{event.location}}
       </div>
       {% else %}
-        <strong data-test="no-activities">No activities scheduled</strong>
+        <strong data-test="no-activities">No activities</strong>
     {% endfor %}
 {% endmacro %}
 
@@ -50,34 +50,32 @@
                 {%- endcall %}
               </li>
               <li class="govuk-grid-column-one-quarter card-group__item">
-                {{imageCard({ id: 'timetableLink', src: "/public/images/image_timetable.jpg", alt: "timetable picture", link: knownPages.profile.timetable, description: "View your full timetable" }) }}
+                {{imageCard({ id: 'timetableLink', src: "/public/images/image_timetable.jpg", alt: "timetable picture", link: knownPages.profile.timetable, description: "View my timetable" }) }}
               </li>
             </ul>
+            <a href= '{{ knownPages.profile.learningAndSkills }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">
+              <span>Read more about learning and skills</span>
+            </a>
           {% endif %}
         </div>
       </div>
 
       <div class="card-background grey">
         <div class="govuk-width-container" data-test="incentive-container">
-          <h2 class="govuk-heading-m">Incentive level (IEP)</h2>
+          <h2 class="govuk-heading-m">Incentives (IEP)</h2>
           {% if incentivesSummary.error %}
             <p class="govuk-!-font-size-24" data-test="incentives-error">We are not able to show your incentive level at this time. <a href="{{ params.returnUrl }}" class="govuk-link">Try again</a> or <a href="{{ incentivesSummary.link }}" class="govuk-link">find out more about incentive levels</a>.</p>
           {% else %}
             <ul class="govuk-grid-row card-group">
               <li class="govuk-grid-column-one-quarter card-group__item">
-                {% call card({ id: 'currentLevel', heading: 'Your current incentive level is'}) -%}
+                {% call card({ id: 'currentLevel', heading: 'My current level:'}) -%}
                   {{ incentivesSummary.incentivesLevel }}
                 {%- endcall %}
               </li>
-              <li class="govuk-grid-column-one-quarter card-group__item">
-                {% call card({ id: 'reviewDate', heading: 'This can be reviewed from'}) -%}
-                  {{ incentivesSummary.reviewDate }}
-                {%- endcall %}
-              </li>
-              <li class="govuk-grid-column-one-quarter card-group__item">
-              {{imageCard({ id: 'incentivesLink', src: "/public/images/image_incentive_level.jpg", alt: "incentives picture", link: knownPages.profile.incentivesInfo, description: "Read more about incentive levels" }) }}
-              </li>
             </ul>
+            <a href= '{{ knownPages.profile.incentivesInfo }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state" data-test="incentivesLink">
+              <span>Read more about incentives (IEP)</span>
+            </a>
           {% endif %}
         </div>
       </div>
@@ -87,8 +85,8 @@
           <h2 class="govuk-heading-m card-title">Money
             {% if not moneySummary.error %}
               <a href='#' class="sensitive-card-control govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state" data-is-closed="true">
-                <span class="open">Open all balances</span>
-                <span class="closed hidden">Close all balances</span>
+                <span class="open">Open</span>
+                <span class="closed hidden">Close</span>
               </a>
             {% endif %}
           </h2>
@@ -98,24 +96,30 @@
             <ul class="govuk-grid-row card-group sensitive-cards">
               <li class="govuk-grid-column-one-quarter card-group__item">
                 {% call cardSensitiveData({ id: 'moneySpends', heading: 'Spends' }) -%}
-                  <p>Spends account current balance</p>
-                  <strong class="hidden sensitive" data-test="money-spends">{{ moneySummary.spends }}</strong>
+                <div class="hidden sensitive">
+                  <p>My current balance is:</p>
+                  <strong data-test="money-spends">{{ moneySummary.spends }}</strong>
+                </div>
                 {%- endcall %}
               </li>
               <li class="govuk-grid-column-one-quarter card-group__item">
                 {% call cardSensitiveData({ id: 'moneyPrivate', heading: 'Private' }) -%}
-                  <p>Private account current balance</p>
-                  <strong class="hidden sensitive" data-test="money-private">{{ moneySummary.privateAccount }}</strong>
+                <div class="hidden sensitive">
+                  <p>My current balance is:</p>
+                  <strong data-test="money-private">{{ moneySummary.privateAccount }}</strong>
+                </div>
                 {%- endcall %}
               </li>
               <li class="govuk-grid-column-one-quarter card-group__item">
                 {% call cardSensitiveData({ id: 'moneySavings', heading: 'Savings' }) -%}
-                  <p>Savings account current balance</p>
-                  <strong class="hidden sensitive" data-test="money-savings">{{ moneySummary.savings }}</strong>
+                <div class="hidden sensitive">
+                  <p>My current balance is:</p>
+                  <strong data-test="money-savings">{{ moneySummary.savings }}</strong>
+                </div>
                 {%- endcall %}
               </li>
               <li class="govuk-grid-column-one-quarter card-group__item">
-              {{imageCard({ id: 'moneyLink', src: "/public/images/image_transactions.jpg", alt: "money picture", link: knownPages.profile.transactions, description: "View your transactions" }) }}
+              {{imageCard({ id: 'moneyLink', src: "/public/images/image_transactions.jpg", alt: "money picture", link: knownPages.profile.transactions, description: "View my transactions" }) }}
               </li>
             </ul>
             <a href= '{{ knownPages.profile.moneyAndDebtInfo }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">
@@ -134,7 +138,7 @@
           {% else %}
             <ul class="govuk-grid-row card-group">
               <li class="govuk-grid-column-one-quarter card-group__item">
-                {% call card({ id: 'nextVisit', heading: 'Your next visit'}) -%}
+                {% call card({ id: 'nextVisit', heading: 'My next visit'}) -%}
                   {% if visitsSummary.hasNextVisit %}
                     <strong>{{ visitsSummary.nextVisit }}</strong><br/>
                     {{ visitsSummary.startTime }} to {{ visitsSummary.endTime }}
@@ -147,17 +151,14 @@
               </li>
               {% if visitsSummary.hasNextVisit %}
                 <li class="govuk-grid-column-one-quarter card-group__item">
-                  {% call cardSensitiveData({ id: 'visitors', heading: 'Visitors coming to your next visit' }) -%}
-                    <div class="closed">
-                      See who’s coming to your next visit
-                    </div>
+                  {% call cardSensitiveData({ id: 'visitors', heading: 'Who is coming to my next visit?' }) -%}
                     <div class="hidden sensitive" data-test="visitors">
                       {% if visitsSummary.visitors.length > 1 %}
                         <ol class="hidden sensitive visitors-names" data-test="visitors">
                           {% for visit in visitsSummary.visitors %}
                             <li class="govuk-!-padding-bottom-2">{{ visit }}</li>
                           {% else %}
-                            <strong data-test="no-activities">No activities scheduled</strong>
+                            <strong data-test="no-activities">No activities</strong>
                           {% endfor %}
                         </ol>
                       {% else %}
@@ -167,20 +168,20 @@
                   {%- endcall %}
                 </li>
                 <li class="govuk-grid-column-one-quarter card-group__item">
-                  {% call card({ id: 'visitsRemaining', heading: 'Total visits remaining'}) -%}
+                  {% call card({ id: 'visitsRemaining', heading: 'Visits I\'ve got left'}) -%}
                     <strong>{{ visitsSummary.visitsRemaining}}</strong>
                   {%- endcall %}
                 </li>
               {%- endif %}
               {% if displayApprovedVisitorsCard %}
                 <li class="govuk-grid-column-one-quarter card-group__item">
-                  {{imageCard({ id: 'approvedVisitors', src: "/public/images/image_visitors.jpg", alt: "visitor picture", link: knownPages.profile.visitorsLink, description: "List of approved visitors - social" }) }}
+                  {{imageCard({ id: 'approvedVisitors', src: "/public/images/image_visitors.jpg", alt: "visitor picture", link: knownPages.profile.visitorsLink, description: "View my visitors - social" }) }}
                 </li>
               {%- endif %}
-              <li class="govuk-grid-column-one-quarter card-group__item">
-                {{imageCard({ id: 'visitsLink', src: "/public/images/image_visits.jpg", alt: "visits picture", link: knownPages.profile.visitorInfo, description: "Find out more about visits" }) }}
-              </li>
             </ul>
+            <a href= '{{ knownPages.profile.visitorInfo }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state" data-test="visitsLink">
+              <span>Read more about visits</span>
+            </a>
           {% endif %}
         </div>
       </div>

@@ -162,7 +162,7 @@ describe('Profile', () => {
       });
 
       it('displays the expected page title', () => {
-        cy.get('.hub-header > h1').contains('Your profile');
+        cy.get('.hub-header > h1').contains('My profile');
       });
 
       it("should contain the 'Todays timetable' section", () => {
@@ -213,7 +213,7 @@ describe('Profile', () => {
             .should('contain', activities[0]);
           cy.get('[data-test="morningEvents"] > div')
             .first()
-            .should('contain', '8:10am to 11:25am');
+            .should('contain', '8.10am to 11.25am');
           cy.get('[data-test="morningEvents"] > div')
             .first()
             .should('contain', locations[0]);
@@ -223,7 +223,7 @@ describe('Profile', () => {
             .should('contain', activities[1]);
           cy.get('[data-test="morningEvents"] > div')
             .last()
-            .should('contain', '11:25am to 12:00pm');
+            .should('contain', '11.25am to 12.00pm');
           cy.get('[data-test="morningEvents"] > div')
             .last()
             .should('contain', locations[1]);
@@ -249,7 +249,7 @@ describe('Profile', () => {
             .should('contain', activities[2]);
           cy.get('[data-test="afternoonEvents"] > div')
             .first()
-            .should('contain', '1:35pm to 4:45pm');
+            .should('contain', '1.35pm to 4.45pm');
           cy.get('[data-test="afternoonEvents"] > div')
             .first()
             .should('contain', locations[2]);
@@ -272,7 +272,7 @@ describe('Profile', () => {
         it('displays the expected message when no activities are scheduled during the period', () => {
           cy.get('[data-test="eveningEvents"] > p').should(
             'contain',
-            'No activities scheduled',
+            'No activities',
           );
         });
       });
@@ -290,7 +290,7 @@ describe('Profile', () => {
           cy.get('[data-test="timetableLink"] > h3 > a').should('exist');
           cy.get('[data-test="timetableLink"] > h3 > a').should(
             'contain',
-            'View your full timetable',
+            'View my timetable',
           );
         });
 
@@ -305,7 +305,7 @@ describe('Profile', () => {
       it('displays the expected section heading', () => {
         cy.get('[data-test="incentive-container"] > h2').should(
           'contain',
-          'Incentive level (IEP)',
+          'Incentives (IEP)',
         );
       });
 
@@ -318,7 +318,7 @@ describe('Profile', () => {
           cy.get('[data-test="currentLevel"] > h3').should('exist');
           cy.get('[data-test="currentLevel"] > h3').should(
             'contain',
-            'Your current incentive level is',
+            'My current level:',
           );
         });
 
@@ -327,46 +327,21 @@ describe('Profile', () => {
         });
       });
 
-      describe('Incentive review date panel', () => {
-        it('displays the current incentive level panel', () => {
-          cy.get('[data-test="reviewDate"]').should('exist');
-        });
-
-        it('displays the expected panel heading', () => {
-          cy.get('[data-test="reviewDate"] > h3').should('exist');
-          cy.get('[data-test="reviewDate"] > h3').should(
-            'contain',
-            'This can be reviewed from',
-          );
-        });
-
-        it('displays the expected description', () => {
-          cy.get('[data-test="reviewDate"] > p').should(
-            'contain',
-            'Thursday 8 June 2017',
-          );
-        });
-      });
-
       describe('Incentives link panel', () => {
         it('displays the incentives link panel', () => {
           cy.get('[data-test="incentivesLink"]').should('exist');
         });
 
-        it('displays an incentives image', () => {
-          cy.get('[data-test="incentivesLink"] > img').should('exist');
-        });
-
         it('displays a link to read more about incentive levels', () => {
-          cy.get('[data-test="incentivesLink"] > h3 > a').should('exist');
-          cy.get('[data-test="incentivesLink"] > h3 > a').should(
+          cy.get('[data-test="incentivesLink"]').should('exist');
+          cy.get('[data-test="incentivesLink"] > span').should(
             'contain',
-            'Read more about incentive levels',
+            'Read more about incentives (IEP)',
           );
         });
 
         it("changes to the incentives page when the 'Read more about incentive levels' link is clicked", () => {
-          cy.get('[data-test="incentivesLink"] > h3 > a').click();
+          cy.get('[data-test="incentivesLink"]').click();
           cy.url().should('include', '/tags/1417');
         });
       });
@@ -383,26 +358,26 @@ describe('Profile', () => {
       it("displays the 'Open all balances' link", () => {
         cy.get('[data-test="money-container"] > div > h2 > a > span')
           .first()
-          .should('contain', 'Open all balances')
+          .should('contain', 'Open')
           .should('be.visible');
       });
 
       it("hides the 'Close all balances' link by default", () => {
         cy.get('[data-test="money-container"] > div > h2 > a > span')
           .last()
-          .should('contain', 'Close all balances')
+          .should('contain', 'Close')
           .should('not.be.visible');
       });
 
       it("displays the 'Close all balances' link when 'Open all balances' link is clicked", () => {
         cy.get('[data-test="money-container"] > div > h2 > a').should(
           'contain',
-          'Open all balances',
+          'Open',
         );
         cy.get('[data-test="money-container"] > div > h2 > a').click();
         cy.get('[data-test="money-container"] > div > h2 > a > span')
           .last()
-          .should('contain', 'Close all balances')
+          .should('contain', 'Close')
           .should('be.visible');
       });
 
@@ -410,7 +385,7 @@ describe('Profile', () => {
         cy.get('[data-test="money-container"] > div > h2 > a').click();
         cy.get('[data-test="money-container"] > div > h2 > a > span')
           .first()
-          .should('contain', 'Open all balances')
+          .should('contain', 'Open')
           .should('not.be.visible');
       });
 
@@ -433,7 +408,7 @@ describe('Profile', () => {
       it("toggles the +/- link on the 'Spends', 'Private' and 'Savings' panels when the 'Open all balances' link is clicked", () => {
         cy.get('[data-test="money-container"] > div > h2 > a').should(
           'contain',
-          'Open all balances',
+          'Open',
         );
 
         cy.get('[data-test="money-container"] > div > h2 > a').click();
@@ -472,7 +447,7 @@ describe('Profile', () => {
       it("toggles the +/- link on the 'Spends', 'Private' and 'Savings' panels when the 'Close all balances' link is clicked", () => {
         cy.get('[data-test="money-container"] > div > h2 > a').should(
           'contain',
-          'Close all balances',
+          'Close',
         );
 
         cy.get('[data-test="money-container"] > div > h2 > a').dblclick();
@@ -535,13 +510,6 @@ describe('Profile', () => {
           cy.get('[data-test="moneySpends"] > h3').should('contain', 'Spends');
         });
 
-        it('displays the expected description', () => {
-          cy.get('[data-test="moneySpends"] > p').should(
-            'contain',
-            'Spends account current balance',
-          );
-        });
-
         it('hides the current balance by default', () => {
           cy.get('[data-test="money-spends"]').should('not.be.visible');
         });
@@ -600,13 +568,6 @@ describe('Profile', () => {
           cy.get('[data-test="moneyPrivate"] > h3').should(
             'contain',
             'Private',
-          );
-        });
-
-        it('displays the expected description', () => {
-          cy.get('[data-test="moneyPrivate"] > p').should(
-            'contain',
-            'Private account current balance',
           );
         });
 
@@ -671,13 +632,6 @@ describe('Profile', () => {
           );
         });
 
-        it('displays the expected description', () => {
-          cy.get('[data-test="moneySavings"] > p').should(
-            'contain',
-            'Savings account current balance',
-          );
-        });
-
         it('hides the current balance by default', () => {
           cy.get('[data-test="money-savings"]').should('not.be.visible');
         });
@@ -737,7 +691,7 @@ describe('Profile', () => {
           cy.get('[data-test="moneyLink"] > h3 > a').should('exist');
           cy.get('[data-test="moneyLink"] > h3 > a').should(
             'contain',
-            'View your transactions',
+            'View my transactions',
           );
         });
 
@@ -767,7 +721,7 @@ describe('Profile', () => {
           cy.get('[data-test="nextVisit"] > h3').should('exist');
           cy.get('[data-test="nextVisit"] > h3').should(
             'contain',
-            'Your next visit',
+            'My next visit',
           );
         });
 
@@ -777,7 +731,7 @@ describe('Profile', () => {
             'Tuesday 12 December',
           );
           cy.get('[data-test="nextVisit"] > p')
-            .should('contain', '9:00am to 9:59am')
+            .should('contain', '9.00am to 9.59am')
             .should('contain', 'Social visit');
         });
       });
@@ -791,14 +745,7 @@ describe('Profile', () => {
           cy.get('[data-test="visitors"] > h3 > a').should('exist');
           cy.get('[data-test="visitors"] > h3 > a').should(
             'contain',
-            'Visitors coming to your next visit',
-          );
-        });
-
-        it('displays the expected description', () => {
-          cy.get('[data-test="visitors"] > div').should(
-            'contain',
-            'See who’s coming to your next visit',
+            'Who is coming to my next visit?',
           );
         });
 
@@ -866,7 +813,7 @@ describe('Profile', () => {
           cy.get('[data-test="visitsRemaining"] > h3').should('exist');
           cy.get('[data-test="visitsRemaining"] > h3').should(
             'contain',
-            'Total visits remaining',
+            "Visits I've got left",
           );
         });
 
@@ -878,25 +825,17 @@ describe('Profile', () => {
         });
       });
 
-      describe('Read more about visits link panel', () => {
-        it("displays the 'Read more about visits' link panel", () => {
-          cy.get('[data-test="visitsLink"]').should('exist');
-        });
-
-        it('displays a visits image', () => {
-          cy.get('[data-test="visitsLink"] > img').should('exist');
-        });
-
+      describe('Read more about visits link', () => {
         it('displays a link to read more about visits', () => {
-          cy.get('[data-test="visitsLink"] > h3 > a').should('exist');
-          cy.get('[data-test="visitsLink"] > h3 > a').should(
+          cy.get('[data-test="visitsLink"]').should('exist');
+          cy.get('[data-test="visitsLink"]').should(
             'contain',
-            'Find out more about visits',
+            'Read more about visits',
           );
         });
 
         it("changes to the visits information page when the 'Read more about visits' link is clicked", () => {
-          cy.get('[data-test="visitsLink"] > h3 > a').click();
+          cy.get('[data-test="visitsLink"]').click();
           cy.url().should('include', '/tags/1133');
         });
       });

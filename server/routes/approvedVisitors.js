@@ -39,7 +39,7 @@ const createApprovedVisitorsRouter = ({ offenderService }) => {
           : {};
 
         return res.render('pages/approvedVisitors', {
-          title: 'Your approved visitors - social',
+          title: 'My visitors - social',
           content: false,
           header: false,
           postscript: true,

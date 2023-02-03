@@ -78,7 +78,7 @@ describe('Timetable', () => {
         cy.get('.timetable-day-blocks > div')
           .first()
           .find('.timetable-time')
-          .contains('10:00am to 11:00am');
+          .contains('10.00am to 11.00am');
 
         cy.get('.timetable-day-blocks > div').first().contains(activities[3]);
 
@@ -140,7 +140,7 @@ describe('Timetable', () => {
       });
 
       it('displays the expected page title in the timetable header section', () => {
-        cy.get('.timetable-header > #title').contains('Timetable');
+        cy.get('.timetable-header > #title').contains('My timetable');
       });
 
       it("displays timetable 'This week' text in the timetable header section", () => {
@@ -189,49 +189,49 @@ describe('Timetable', () => {
         const days = [
           {
             type: 'Today',
-            period: '8:30am to 12:00pm',
+            period: '8.30am to 12.00pm',
             location: locations[0],
             event: activities[0],
           },
           {
             type: 'Today',
-            period: '12:00pm to 5:00pm',
+            period: '12.00pm to 5.00pm',
             location: locations[1],
             event: activities[1],
           },
           {
             type: 'Today',
-            period: '12:00pm to 5:00pm',
+            period: '12.00pm to 5.00pm',
             location: locations[2],
             event: activities[2],
           },
           {
             type: 'Today',
-            period: '5:00pm to 7:30pm',
+            period: '5.00pm to 7.30pm',
             location: locations[0],
             event: activities[3],
           },
           {
             type: 'Tomorrow',
-            period: '8:30am to 12:00pm',
+            period: '8.30am to 12.00pm',
             location: locations[1],
             event: appointments[0],
           },
           {
             type: 'Tomorrow',
-            period: '12:00pm to 5:00pm',
+            period: '12.00pm to 5.00pm',
             location: locations[2],
             event: appointments[1],
           },
           {
             type: 'Tomorrow',
-            period: '12:00pm to 5:00pm',
+            period: '12.00pm to 5.00pm',
             location: locations[0],
             event: appointments[2],
           },
           {
             type: 'Tomorrow',
-            period: '5:00pm to 7:30pm',
+            period: '5.00pm to 7.30pm',
             location: locations[2],
             event: appointments[3],
           },
@@ -318,7 +318,7 @@ describe('Timetable', () => {
         cy.get('.timetable-day-blocks > div')
           .first()
           .find('.timetable-time')
-          .contains('11:00am to 12:00pm');
+          .contains('11.00am to 12.00pm');
 
         cy.get('.timetable-day-blocks > div').first().contains(activities[0]);
 

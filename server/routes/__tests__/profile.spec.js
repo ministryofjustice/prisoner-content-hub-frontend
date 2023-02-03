@@ -240,9 +240,6 @@ describe('GET /profile', () => {
 
           const currentLevel = $('[data-test="currentLevel"]').text();
           expect(currentLevel).toContain('Basic');
-
-          const reviewDate = $('[data-test="reviewDate"]').text();
-          expect(reviewDate).toContain('Thursday 8 June');
         });
     });
     it('displays the incentives link', () =>
@@ -253,7 +250,7 @@ describe('GET /profile', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('[data-test="incentivesLink"] a').attr('href')).toBe(
+          expect($('[data-test="incentivesLink"]').attr('href')).toBe(
             '/tags/1417',
           );
         }));
@@ -389,9 +386,7 @@ describe('GET /profile', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
 
-          expect($('[data-test="visitsLink"] a').attr('href')).toBe(
-            '/tags/1133',
-          );
+          expect($('[data-test="visitsLink"]').attr('href')).toBe('/tags/1133');
         }));
   });
 

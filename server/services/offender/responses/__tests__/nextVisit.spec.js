@@ -29,8 +29,8 @@ describe('NextVisit', () => {
       nextVisit: 'Saturday 7 December',
       nextVisitDate: '7 December',
       nextVisitDay: 'Saturday',
-      startTime: '11:30am',
-      endTime: '1:00pm',
+      startTime: '11.30am',
+      endTime: '1.00pm',
       visitType: visitTypeDisplayText[VISIT_TYPE],
       visitors: [],
     });
@@ -53,8 +53,8 @@ describe('NextVisit', () => {
       nextVisitDay: 'Saturday',
       visitType: visitTypeDisplayText[VISIT_TYPE],
       visitors: ['Donald Mouse'],
-      startTime: '11:30am',
-      endTime: '12:30pm',
+      startTime: '11.30am',
+      endTime: '12.30pm',
     });
   });
 });

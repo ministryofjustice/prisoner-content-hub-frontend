@@ -42,7 +42,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
   router.get('/damage-obligations', async (req, res, next) => {
     try {
       const templateData = {
-        title: 'Your transactions',
+        title: 'My transactions',
         config: {
           content: false,
           header: false,
@@ -75,7 +75,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
     async (req, res, next) => {
       try {
         const templateData = {
-          title: 'Your transactions',
+          title: 'My transactions',
           config: {
             content: false,
             header: false,
@@ -136,7 +136,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
   router.get('/transactions/savings', async (req, res, next) => {
     try {
       const templateData = {
-        title: 'Your transactions',
+        title: 'My transactions',
         config: {
           content: false,
           header: false,
@@ -196,7 +196,7 @@ const createMoneyRouter = ({ prisonerInformationService }) => {
   router.get('/transactions/private', async (req, res, next) => {
     try {
       const templateData = {
-        title: 'Your transactions',
+        title: 'My transactions',
         config: {
           content: false,
           header: false,
