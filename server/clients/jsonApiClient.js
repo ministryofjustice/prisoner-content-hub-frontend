@@ -1,5 +1,4 @@
 const axios = require('axios');
-const httpAdapter = require('axios/lib/adapters/http');
 const { logger } = require('../utils/logger');
 
 class JsonApiClient {
@@ -7,7 +6,6 @@ class JsonApiClient {
     this.baseURL = baseURL;
     this.client = axios.create({
       timeout: 30000,
-      adapter: httpAdapter,
     });
     this.client.interceptors.request.use(request => {
       logger.debug(
