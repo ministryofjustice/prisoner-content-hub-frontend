@@ -85,6 +85,8 @@ module.exports = {
     useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'true') === 'true',
     approvedVisitorsFeatureEnabled:
       getEnv('APPROVED_VISITORS_FEATURE_ENABLED', 'false') === 'true',
+    adjudicationsFeatureEnabled:
+      getEnv('ADJUDICATIONS_FEATURE_ENABLED', 'false') === 'true',
   },
   analytics: {
     endpoint: getEnv(
