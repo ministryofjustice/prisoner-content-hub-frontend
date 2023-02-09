@@ -49,6 +49,9 @@ env:
     - name: APPROVED_VISITORS_FEATURE_ENABLED
       value: {{ .Values.application.config.approvedVisitorsFeatureEnabled | quote }}
 
+    - name: ADJUDICATIONS_FEATURE_ENABLED
+      value: {{ .Values.application.config.adjudicationsFeatureEnabled | quote }}
+
     - name: ELASTICSEARCH_ENDPOINT
       value: {{ include "prisoner-content-hub-frontend.elasticsearchServiceHost" . }}
 

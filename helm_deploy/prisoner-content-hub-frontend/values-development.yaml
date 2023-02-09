@@ -9,6 +9,7 @@ application:
     analyticsSiteId: UA-152065860-4
     mockAuthEnabled: true
     approvedVisitorsFeatureEnabled: true
+    adjudicationsFeatureEnabled: true
 
 ingress:
   annotations:

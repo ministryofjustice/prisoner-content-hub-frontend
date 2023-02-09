@@ -95,6 +95,9 @@ const createProfileRouter = ({ offenderService }) => {
         ...personalisation,
         displayApprovedVisitorsCard:
           config.features.approvedVisitorsFeatureEnabled,
+        displayAdjudicationsFeature:
+          req.session.establishmentName === 'thestudio' &&
+          config.features.adjudicationsFeatureEnabled,
       });
     } catch (e) {
       return next(e);
