@@ -6,7 +6,7 @@ application:
     analyticsSiteId: UA-152065860-7
     mockAuthEnabled: false
     approvedVisitorsFeatureEnabled: true
-    adjudicationsFeatureEnabled: false
+    adjudicationsFeatureEnabled: true
 
 ingress:
   annotations:
