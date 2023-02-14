@@ -176,4 +176,20 @@ describe('offenderRepository', () => {
       expect(result).toBe('SOME_RESULT');
     });
   });
+
+  describe('getAdjudicationsFor', () => {
+    it('calls the adjudications endpoint for a given ID', async () => {
+      const client = {
+        get: jest.fn().mockResolvedValue('SOME_RESULT'),
+      };
+      const repository = offenderRepository(client);
+      const result = await repository.getAdjudicationsFor('FOO_ID');
+
+      expect(lastCall(client.get)[0]).toContain(
+        'offenders/FOO_ID/adjudications',
+      );
+
+      expect(result).toBe('SOME_RESULT');
+    });
+  });
 });

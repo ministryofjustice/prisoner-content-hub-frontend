@@ -5,6 +5,7 @@ const { createTopicsRouter } = require('./topics');
 const { createTimetableRouter } = require('./timetable');
 const { createContentRouter } = require('./content');
 const { createMoneyRouter } = require('./money');
+const { createAdjudicationsRouter } = require('./adjudications');
 const { createApprovedVisitorsRouter } = require('./approvedVisitors');
 const { createProfileRouter } = require('./profile');
 const { createTagRouter } = require('./tags');
@@ -51,6 +52,7 @@ module.exports = (
       '^/search/?$',
       '/recently-added',
       '/updates',
+      '/adjudications',
     ],
     [
       createPrimaryNavigationMiddleware(cmsService),
@@ -100,6 +102,13 @@ module.exports = (
     createContentRouter({
       cmsService,
       analyticsService,
+    }),
+  );
+
+  router.use(
+    '/adjudications',
+    createAdjudicationsRouter({
+      offenderService,
     }),
   );
 

@@ -198,7 +198,7 @@
                   {{imageCard({ id: 'adjudications', src: "/public/images/image_visitors.jpg", alt: "visitor picture", link: knownPages.profile.adjudications, description: "View my adjudications" }) }}
                 </li>
               </ul>
-              <a href='#' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state" data-test="adjudicationsLink">
+              <a href='{{ knownPages.profile.adjudicationsInfo }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state" data-test="adjudicationsLink">
                 <span>Read more about adjudications</span>
               </a>
             {% endif %}

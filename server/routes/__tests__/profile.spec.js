@@ -13,6 +13,7 @@ describe('GET /profile', () => {
     getVisitsFor: jest.fn().mockResolvedValue({}),
     getVisitsRemaining: jest.fn().mockResolvedValue({}),
     getBalancesFor: jest.fn().mockResolvedValue({}),
+    getAdjudicationsFor: jest.fn().mockResolvedValue({}),
   };
 
   let app;

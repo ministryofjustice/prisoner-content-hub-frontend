@@ -17,6 +17,7 @@ const createOffenderService = (
     ImportantDates,
     Timetable,
     TimetableEvent,
+    Adjudications,
   } = responses,
 ) => {
   async function getOffenderDetailsFor({ prisonerId }) {
@@ -254,6 +255,25 @@ const createOffenderService = (
     return Timetable.create({ startDate, endDate }).build();
   }
 
+  async function getAdjudicationsFor({ prisonerId }) {
+    try {
+      logger.info(
+        `OffenderService (getAdjudicationsFor) - User: ${prisonerId}`,
+      );
+
+      const response = await repository.getAdjudicationsFor(prisonerId);
+      return Adjudications.from(response).format();
+    } catch (e) {
+      logger.error(
+        `OffenderService (getAdjudicationsFor) - Failed: ${e.message} - User: ${prisonerId}`,
+      );
+      logger.debug(e.stack);
+      return {
+        error: true,
+      };
+    }
+  }
+
   return {
     getOffenderDetailsFor,
     getIncentivesSummaryFor,
@@ -267,6 +287,7 @@ const createOffenderService = (
     getEventsFor,
     getEventsForToday,
     getEmptyTimetable,
+    getAdjudicationsFor,
   };
 };
 

@@ -420,4 +420,29 @@ describe('Offender Service', () => {
       });
     });
   });
+
+  describe('getAdjudicationsFor', () => {
+    const mockNextVisit = jest.fn();
+    beforeAll(() => {
+      mockNextVisit.mockReturnValue(FORMATTED_RESPONSE);
+    });
+
+    it('returns formatted Adjudications data', async () => {
+      const repository = {
+        getAdjudicationsFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
+      };
+
+      const service = createOffenderService(repository, {
+        Adjudications: mockAdapter,
+      });
+
+      const data = await service.getAdjudicationsFor(TEST_USER);
+
+      expect(repository.getAdjudicationsFor).toHaveBeenCalledWith(
+        TEST_USER.prisonerId,
+      );
+      expect(mockAdapter.from).toHaveBeenCalledWith(RAW_RESPONSE);
+      expect(data).toBe(FORMATTED_RESPONSE);
+    });
+  });
 });
