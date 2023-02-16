@@ -1,0 +1,51 @@
+{% extends "../components/basicTemplate.njk" %}
+
+{% block content %}
+  {% if not isSignedIn %}
+      <h2 class="govuk-heading-m">You are signed out</h2>
+      <p class="govuk-!-font-size-24" data-test="signin-prompt">
+        <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
+      </p>
+  {% else %}
+  
+  {% if error %}
+    <p class="govuk-body govuk-!-font-size-24 govuk-!-margin-bottom-9" data-test="approved-visitors-error">We can not list your adjudications at this time, please <a href="{{ params.returnUrl }}" class="govuk-link">try again</a> or <a href="{{ knownPages.profile.adjudicationsInfo }}" class="govuk-link">read more about adjudications</a>.</p>
+  {% else %}  
+
+      <div class="govuk-!-margin-bottom-7">
+        <a href="{{ knownPages.profile.adjudicationsInfo }}" class="govuk-link govuk-!-font-size-24">Read more about adjudications</a>
+      </div>  
+
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">Adjudication number</th>
+            <th scope="col" class="govuk-table__header">Report date and time</th>
+            <th scope="col" class="govuk-table__header">Number of charges</th>
+            <th scope="col" class="govuk-table__header"></th>
+          </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+          {% for adjudication in adjudications %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">{{ adjudication.adjudicationNumber }}</td>
+            <td class="govuk-table__cell">{{ adjudication.reportTime }}</td>
+            <td class="govuk-table__cell">{{ adjudication.numberOfCharges }}</td>
+            <td class="govuk-table__cell">[VIEW]</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+  {% endif %}
+  {% endif %}
+{% endblock %}
+
+{% block bodyEnd %}
+  <script src="/public/all.js"></script>
+  <script>
+    window
+      .GOVUKFrontend
+      .initAll();
+  </script>
+{% endblock %}

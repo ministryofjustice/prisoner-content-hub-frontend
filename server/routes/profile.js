@@ -12,12 +12,14 @@ const createProfileRouter = ({ offenderService }) => {
       visitsSummary,
       visitsBalances,
       moneySummary,
+      adjudications,
     ] = await Promise.all([
       offenderService.getEventsForToday(user),
       offenderService.getIncentivesSummaryFor(user),
       offenderService.getVisitsFor(user),
       offenderService.getVisitsRemaining(user),
       offenderService.getBalancesFor(user),
+      offenderService.getAdjudicationsFor(user),
     ]);
 
     const {
@@ -77,6 +79,7 @@ const createProfileRouter = ({ offenderService }) => {
         privateAccount,
         savings,
       },
+      hasAdjudications: adjudications.length > 0,
     };
   };
 
@@ -97,7 +100,8 @@ const createProfileRouter = ({ offenderService }) => {
           config.features.approvedVisitorsFeatureEnabled,
         displayAdjudicationsFeature:
           req.session.establishmentName === 'ranby' &&
-          config.features.adjudicationsFeatureEnabled,
+          config.features.adjudicationsFeatureEnabled &&
+          personalisation.hasAdjudications,
       });
     } catch (e) {
       return next(e);

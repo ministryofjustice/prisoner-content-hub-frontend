@@ -3,6 +3,7 @@ module.exports = {
     DEFAULT: 'Unavailable',
   },
   dateFormats: {
+    GDS_PRETTY_DATE_TIME: 'd MMMM yyyy, h.mmaaa',
     LONG_PRETTY_DATE: 'EEEE d MMMM',
     PRETTY_DATE: 'EEEE d MMMM yyyy',
     PRETTY_DAY: 'EEEE',

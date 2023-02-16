@@ -37,6 +37,15 @@ describe('DateUtils', () => {
       );
       expect(formatted).toBe('PLACEHOLDER');
     });
+
+    it('should return a valid date in the expected GDS date format', () => {
+      const formatted = formatDateOrDefault(
+        'PLACEHOLDER',
+        'd MMMM yyyy, h.mmaaa',
+        '2016-05-08T14:16:00',
+      );
+      expect(formatted).toBe('8 May 2016, 2.16pm');
+    });
   });
 
   describe('formatTimeBetweenOrDefault', () => {

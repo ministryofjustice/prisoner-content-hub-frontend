@@ -74,6 +74,12 @@ function offenderRepository(prisonApiHttpClient, incentivesApiHttpClient) {
     return prisonApiHttpClient.get(`${endpoint}?${query.join('&')}`);
   }
 
+  function getAdjudicationsFor(offenderNo) {
+    return prisonApiHttpClient.get(
+      `${prisonApiBaseUrl}/offenders/${offenderNo}/adjudications`,
+    );
+  }
+
   return {
     getOffenderDetailsFor,
     getIncentivesSummaryFor,
@@ -85,6 +91,7 @@ function offenderRepository(prisonApiHttpClient, incentivesApiHttpClient) {
     sentenceDetailsFor,
     getCurrentEvents,
     getEventsFor,
+    getAdjudicationsFor,
   };
 }
 
