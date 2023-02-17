@@ -55,6 +55,10 @@ module.exports = {
       authUrl: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
     },
     baseUrl: getRequiredEnv('PRISON_API_BASE_URL', 'https://api.nomis'),
+    adjudications: {
+      pageLimit: 50,
+      maxAdjudicationsPerPage: 10,
+    },
   },
   prisonerContactRegistryApi: {
     auth: {

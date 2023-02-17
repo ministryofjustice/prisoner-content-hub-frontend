@@ -59,7 +59,7 @@ const createMockSignIn = ({ offenderService }) =>
   async function mockSignIn(req, res, next) {
     try {
       const user = new User({
-        prisonerId: 'G6046GQ',
+        prisonerId: 'G2311GO',
         firstName: 'Test',
         lastName: 'User',
       });
