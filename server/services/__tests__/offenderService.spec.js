@@ -445,4 +445,40 @@ describe('Offender Service', () => {
       expect(data).toBe(FORMATTED_RESPONSE);
     });
   });
+
+  describe('getAdjudicationFor', () => {
+    let adjudicationId;
+
+    const mockNextVisit = jest.fn();
+    beforeAll(() => {
+      mockNextVisit.mockReturnValue(FORMATTED_RESPONSE);
+    });
+
+    beforeEach(() => {
+      adjudicationId = 123456;
+    });
+
+    afterEach(() => {
+      adjudicationId = 123456;
+    });
+
+    it('returns formatted Adjudication detail data', async () => {
+      const repository = {
+        getAdjudicationFor: jest.fn().mockResolvedValue(RAW_RESPONSE),
+      };
+
+      const service = createOffenderService(repository, {
+        Adjudication: mockAdapter,
+      });
+
+      const data = await service.getAdjudicationFor(TEST_USER, adjudicationId);
+
+      expect(repository.getAdjudicationFor).toHaveBeenCalledWith(
+        TEST_USER.prisonerId,
+        adjudicationId,
+      );
+      expect(mockAdapter.from).toHaveBeenCalledWith(RAW_RESPONSE);
+      expect(data).toBe(FORMATTED_RESPONSE);
+    });
+  });
 });

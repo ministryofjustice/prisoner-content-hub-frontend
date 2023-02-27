@@ -49,6 +49,38 @@ const createAdjudicationsRouter = ({ offenderService }) => {
     return next();
   });
 
+  router.get('/:adjudicationId', async (req, res, next) => {
+    const { user, originalUrl: returnUrl } = req;
+    const { adjudicationId } = req.params;
+
+    if (config.features.adjudicationsFeatureEnabled && adjudicationId) {
+      try {
+        const adjudication = await offenderService.getAdjudicationFor(
+          user,
+          adjudicationId,
+        );
+
+        return res.render('pages/adjudication', {
+          title: `View details of ${adjudication.adjudicationNumber}`,
+          content: false,
+          header: false,
+          postscript: true,
+          detailsType: 'small',
+          returnUrl,
+          data: {
+            contentType: 'profile',
+            breadcrumbs: createBreadcrumbs(req),
+            adjudication,
+          },
+          displayImportantNotice: true,
+        });
+      } catch (e) {
+        return next(e);
+      }
+    }
+    return next();
+  });
+
   return router;
 };
 

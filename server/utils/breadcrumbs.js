@@ -5,7 +5,7 @@ const createBreadcrumbs = ({ originalUrl }) => {
     return [];
   }
 
-  switch (originalUrl.match(/^\/[a-z,-]*/g)[0]) {
+  switch (originalUrl.match(/^\/[a-z,-]*\/?/g)[0]) {
     case '/profile':
       return [breadcrumbs.home];
 
@@ -14,6 +14,9 @@ const createBreadcrumbs = ({ originalUrl }) => {
     case '/approved-visitors':
     case '/adjudications':
       return [breadcrumbs.home, breadcrumbs.profile];
+
+    case '/adjudications/':
+      return [breadcrumbs.home, breadcrumbs.profile, breadcrumbs.adjudications];
 
     case '/games':
       return [breadcrumbs.home, breadcrumbs.entertainment, breadcrumbs.games];

@@ -8,6 +8,7 @@ const { ImportantDates } = require('./importantDates');
 const { Timetable } = require('./timetable');
 const { TimetableEvent } = require('./timetableEvent');
 const { Adjudications } = require('./adjudications');
+const { Adjudication } = require('./adjudication');
 
 module.exports = {
   IncentivesSummary,
@@ -20,4 +21,5 @@ module.exports = {
   Timetable,
   TimetableEvent,
   Adjudications,
+  Adjudication,
 };
