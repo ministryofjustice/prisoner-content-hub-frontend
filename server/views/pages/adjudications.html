@@ -1,4 +1,5 @@
 {% extends "../components/basicTemplate.njk" %}
+{% from "govuk/components/pagination/macro.njk" import govukPagination %}
 
 {% block content %}
   {% if not isSignedIn %}
@@ -13,29 +14,34 @@
   {% else %}  
 
       <div class="govuk-!-margin-bottom-7">
+        <p class="govuk-body govuk-!-font-size-24">Up to 50 adjudications are shown here, in date order, with the newest first.</p>
         <a href="{{ knownPages.profile.adjudicationsInfo }}" class="govuk-link govuk-!-font-size-24">Read more about adjudications</a>
       </div>  
 
       <table class="govuk-table">
         <thead class="govuk-table__head">
           <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Adjudication number</th>
+            <th scope="col" class="govuk-table__header">Report number</th>
             <th scope="col" class="govuk-table__header">Report date and time</th>
-            <th scope="col" class="govuk-table__header">Number of charges</th>
             <th scope="col" class="govuk-table__header"></th>
           </tr>
         </thead>
         <tbody class="govuk-table__body">
-          {% for adjudication in adjudications %}
+          {% for adjudication in paginatedData %}
           <tr class="govuk-table__row">
-            <td class="govuk-table__cell">{{ adjudication.adjudicationNumber }}</td>
+            <td class="govuk-table__cell"><a href="/adjudications/{{adjudication.adjudicationNumber}}" class="govuk-link">{{ adjudication.adjudicationNumber }}</a></td>
             <td class="govuk-table__cell">{{ adjudication.reportTime }}</td>
-            <td class="govuk-table__cell">{{ adjudication.numberOfCharges }}</td>
-            <td class="govuk-table__cell">[VIEW]</td>
+            <td class="govuk-table__cell"><a href="/adjudications/{{adjudication.adjudicationNumber}}" class="govuk-link">View</a></td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
+
+      {% if pageData.totalPages > 1 %}
+        <div class="govuk-!-margin-bottom-9">
+          {{ govukPagination( pageData | toPagination(rawQuery) ) }}
+        </div>
+      {% endif %}
 
   {% endif %}
   {% endif %}
@@ -43,6 +49,8 @@
 
 {% block bodyEnd %}
   <script src="/public/all.js"></script>
+  <script src="/public/javascript/showMore.js"></script>
+  <script>setUpShowMore($('.show-more-tiles'), $('.small-tiles'))</script>
   <script>
     window
       .GOVUKFrontend

@@ -72,7 +72,7 @@ class PrisonApiClient {
     return token;
   }
 
-  async get(url) {
+  async get(url, additionalHeaders) {
     logger.debug(`PrisonApiClient (GET) - ${url}`);
 
     let token = await this.cache.get(PRISON_API_TOKEN_KEY);
@@ -81,13 +81,16 @@ class PrisonApiClient {
       token = await this.requestNewAccessToken();
     }
 
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      ...additionalHeaders,
+    };
+
     const response = await this.client({
       method: 'GET',
       url,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/json',
-      },
+      headers,
     });
 
     return response.data;

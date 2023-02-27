@@ -77,6 +77,9 @@ function offenderRepository(prisonApiHttpClient, incentivesApiHttpClient) {
   function getAdjudicationsFor(offenderNo) {
     return prisonApiHttpClient.get(
       `${prisonApiBaseUrl}/offenders/${offenderNo}/adjudications`,
+      {
+        'Page-Limit': config.prisonApi.adjudications.pageLimit,
+      },
     );
   }
 
