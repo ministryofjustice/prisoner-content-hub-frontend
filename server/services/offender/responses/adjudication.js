@@ -50,7 +50,10 @@ class Adjudication {
         this.reportTime,
       ),
       incidentDetails: this.incidentDetails,
-      hearings: this.hearings.map(formatHearing),
+      hearings: this.hearings
+        .sort((a, b) => a.hearingTime.localeCompare(b.hearingTime))
+        .reverse()
+        .map(formatHearing),
     };
   }
 
