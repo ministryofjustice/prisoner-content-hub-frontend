@@ -25,7 +25,10 @@ const createAdjudicationsRouter = ({ offenderService }) => {
   router.get('/', async (req, res, next) => {
     const { user, originalUrl: returnUrl, query } = req;
 
-    if (config.features.adjudicationsFeatureEnabled) {
+    if (
+      config.features.adjudicationsFeatureEnabled &&
+      req.session.establishmentName === 'ranby'
+    ) {
       try {
         const personalisation = user
           ? await getPersonalisation(user, query)
@@ -53,7 +56,11 @@ const createAdjudicationsRouter = ({ offenderService }) => {
     const { user, originalUrl: returnUrl } = req;
     const { adjudicationId } = req.params;
 
-    if (config.features.adjudicationsFeatureEnabled && adjudicationId) {
+    if (
+      config.features.adjudicationsFeatureEnabled &&
+      adjudicationId &&
+      req.session.establishmentName === 'ranby'
+    ) {
       try {
         const adjudication = await offenderService.getAdjudicationFor(
           user,
