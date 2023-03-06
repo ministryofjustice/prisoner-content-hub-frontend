@@ -27,7 +27,9 @@ const createAdjudicationsRouter = ({ offenderService }) => {
 
     if (
       config.features.adjudicationsFeatureEnabled &&
-      req.session.establishmentName === 'ranby'
+      config.features.adjudicationsFeatureEnabledAt.includes(
+        req.session.establishmentName,
+      )
     ) {
       try {
         const personalisation = user
@@ -58,8 +60,10 @@ const createAdjudicationsRouter = ({ offenderService }) => {
 
     if (
       config.features.adjudicationsFeatureEnabled &&
-      adjudicationId &&
-      req.session.establishmentName === 'ranby'
+      config.features.adjudicationsFeatureEnabledAt.includes(
+        req.session.establishmentName,
+      ) &&
+      adjudicationId
     ) {
       try {
         const adjudication = await offenderService.getAdjudicationFor(
