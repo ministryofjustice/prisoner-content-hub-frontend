@@ -25,7 +25,12 @@ const createAdjudicationsRouter = ({ offenderService }) => {
   router.get('/', async (req, res, next) => {
     const { user, originalUrl: returnUrl, query } = req;
 
-    if (config.features.adjudicationsFeatureEnabled) {
+    if (
+      config.features.adjudicationsFeatureEnabled &&
+      config.features.adjudicationsFeatureEnabledAt.includes(
+        req.session.establishmentName,
+      )
+    ) {
       try {
         const personalisation = user
           ? await getPersonalisation(user, query)
@@ -40,6 +45,44 @@ const createAdjudicationsRouter = ({ offenderService }) => {
           returnUrl,
           ...personalisation,
           data: { contentType: 'profile', breadcrumbs: createBreadcrumbs(req) },
+          displayImportantNotice: true,
+        });
+      } catch (e) {
+        return next(e);
+      }
+    }
+    return next();
+  });
+
+  router.get('/:adjudicationId', async (req, res, next) => {
+    const { user, originalUrl: returnUrl } = req;
+    const { adjudicationId } = req.params;
+
+    if (
+      config.features.adjudicationsFeatureEnabled &&
+      config.features.adjudicationsFeatureEnabledAt.includes(
+        req.session.establishmentName,
+      ) &&
+      adjudicationId
+    ) {
+      try {
+        const adjudication = await offenderService.getAdjudicationFor(
+          user,
+          adjudicationId,
+        );
+
+        return res.render('pages/adjudication', {
+          title: `View details of ${adjudication.adjudicationNumber}`,
+          content: false,
+          header: false,
+          postscript: true,
+          detailsType: 'small',
+          returnUrl,
+          data: {
+            contentType: 'profile',
+            breadcrumbs: createBreadcrumbs(req),
+            adjudication,
+          },
           displayImportantNotice: true,
         });
       } catch (e) {

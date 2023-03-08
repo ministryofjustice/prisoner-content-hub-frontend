@@ -4,6 +4,7 @@ module.exports = {
   },
   dateFormats: {
     GDS_PRETTY_DATE_TIME: 'd MMMM yyyy, h.mmaaa',
+    GDS_PRETTY_DATE: 'd MMMM yyyy',
     LONG_PRETTY_DATE: 'EEEE d MMMM',
     PRETTY_DATE: 'EEEE d MMMM yyyy',
     PRETTY_DAY: 'EEEE',

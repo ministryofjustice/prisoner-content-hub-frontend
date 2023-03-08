@@ -91,6 +91,7 @@ module.exports = {
       getEnv('APPROVED_VISITORS_FEATURE_ENABLED', 'false') === 'true',
     adjudicationsFeatureEnabled:
       getEnv('ADJUDICATIONS_FEATURE_ENABLED', 'false') === 'true',
+    adjudicationsFeatureEnabledAt: ['lindholme'],
   },
   analytics: {
     endpoint: getEnv(

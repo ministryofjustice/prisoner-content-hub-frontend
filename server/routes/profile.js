@@ -99,8 +99,10 @@ const createProfileRouter = ({ offenderService }) => {
         displayApprovedVisitorsCard:
           config.features.approvedVisitorsFeatureEnabled,
         displayAdjudicationsFeature:
-          req.session.establishmentName === 'ranby' &&
           config.features.adjudicationsFeatureEnabled &&
+          config.features.adjudicationsFeatureEnabledAt.includes(
+            req.session.establishmentName,
+          ) &&
           personalisation.hasAdjudications,
       });
     } catch (e) {
