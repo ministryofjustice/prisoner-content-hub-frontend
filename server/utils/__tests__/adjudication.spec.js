@@ -40,7 +40,7 @@ describe('formatSanction', () => {
     formattedSanction = {
       sanctionType: 'Cellular Confinement',
       sanctionDays: '7 days',
-      startDate: '21 March 2017',
+      effectiveDate: '21 March 2017',
       status: 'Immediate',
       statusDate: '21 March 2017',
     };
@@ -64,7 +64,7 @@ describe('formatSanction', () => {
     expect(formatSanction(incompleteSanction)).toStrictEqual({
       sanctionType: 'Unavailable',
       sanctionDays: '7 days',
-      startDate: '21 March 2017',
+      effectiveDate: '21 March 2017',
       status: 'Immediate',
       statusDate: 'Unavailable',
     });

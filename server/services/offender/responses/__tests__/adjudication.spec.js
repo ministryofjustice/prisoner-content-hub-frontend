@@ -104,7 +104,7 @@ describe('Adjudication', () => {
                 {
                   sanctionType: 'Cellular Confinement',
                   sanctionDays: '7 days',
-                  startDate: '21 March 2017',
+                  effectiveDate: '21 March 2017',
                   status: 'Immediate',
                   statusDate: '21 March 2017',
                 },
@@ -129,7 +129,7 @@ describe('Adjudication', () => {
                 {
                   sanctionType: 'Cellular Confinement',
                   sanctionDays: '7 days',
-                  startDate: '21 March 2017',
+                  effectiveDate: '21 March 2017',
                   status: 'Immediate',
                   statusDate: '21 March 2017',
                 },

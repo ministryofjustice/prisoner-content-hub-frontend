@@ -22,7 +22,7 @@ const formatSanction = sanction =>
         sanctionDays: sanction.sanctionDays
           ? `${sanction.sanctionDays} days`
           : DEFAULT,
-        startDate: formatDateOrDefault(
+        effectiveDate: formatDateOrDefault(
           DEFAULT,
           GDS_PRETTY_DATE,
           sanction.effectiveDate,
