@@ -93,7 +93,7 @@
               <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
                   <th scope="col" class="govuk-table__header">Type</th>
-                  <th scope="col" class="govuk-table__header">How long</th>
+                  <th scope="col" class="govuk-table__header sanction_no_wrap">How long</th>
                   <th scope="col" class="govuk-table__header sanction_no_wrap">Effective date</th>
                   <th scope="col" class="govuk-table__header">Status</th>
                   <th scope="col" class="govuk-table__header sanction_no_wrap">Status date</th>
@@ -103,7 +103,7 @@
                 {% for sanction in offence.sanctions %}
                   <tr class="govuk-table__row">
                     <td class="govuk-table__cell">{{sanction.sanctionType}}</td>
-                    <td class="govuk-table__cell">{{sanction.sanctionDays}}</td>
+                    <td class="govuk-table__cell sanction_no_wrap">{{sanction.sanctionDays}}</td>
                     <td class="govuk-table__cell sanction_no_wrap">{{sanction.startDate}}</td>
                     <td class="govuk-table__cell">{{sanction.status}}</td>
                     <td class="govuk-table__cell sanction_no_wrap">{{sanction.statusDate}}</td>
