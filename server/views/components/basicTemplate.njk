@@ -95,7 +95,9 @@
 
     {% if data.breadcrumbs %}
       <div class="govuk-width-container govuk-body govuk-clearfix">
-        {{ govukBreadcrumbs({ items: data.breadcrumbs }) }}
+        <nav aria-label="breadcrumb"> 
+          {{ govukBreadcrumbs({ items: data.breadcrumbs }) }}
+        </nav>
       </div>
     {% endif %}
 
