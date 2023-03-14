@@ -10,7 +10,7 @@ const createBreadcrumbs = ({ originalUrl }) => {
       return [breadcrumbs.home];
 
     case '/timetable':
-    case '/money':
+    case '/money/':
     case '/approved-visitors':
     case '/adjudications':
       return [breadcrumbs.home, breadcrumbs.profile];
