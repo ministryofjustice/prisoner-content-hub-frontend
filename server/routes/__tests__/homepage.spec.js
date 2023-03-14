@@ -243,7 +243,7 @@ describe('GET /', () => {
           .get('/')
           .then(response => {
             const $ = cheerio.load(response.text);
-            expect($('div.todays-events').first().find('h3').text()).toBe(
+            expect($('div.todays-events').first().find('h2').text()).toBe(
               "Today's events",
             );
             expect($('[data-test="event"]').length).toBe(
@@ -262,7 +262,7 @@ describe('GET /', () => {
           .get('/')
           .then(response => {
             const $ = cheerio.load(response.text);
-            expect($('div.todays-events').first().find('h3').text()).toBe(
+            expect($('div.todays-events').first().find('h2').text()).toBe(
               "Tomorrow's events",
             );
             expect($('[data-test="event"]').length).toBe(
