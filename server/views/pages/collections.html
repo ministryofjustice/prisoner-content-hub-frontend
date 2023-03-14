@@ -6,11 +6,11 @@
 {% set feedbackHeading = "Tell us what you think about this page" %}
 
 {% block title %}
-  <div id="category-{{tagId}}" class="govuk-hub-landing-page-header govuk-hub-landing-page-header--with-stripe">
+  <div id="category-{{tagId}}" class="govuk-hub-landing-page-header govuk-hub-landing-page-header--with-stripe"> 
     <div class="govuk-width-container">
       <div class="govuk-main-wrapper">
         <div class="govuk-grid-row">
-          <div class="govuk-grid-column-one-half govuk-!-padding-top-2">
+          <div class="govuk-grid-column-one-half govuk-!-padding-top-2" id="main-content">
             <h1 id="title" class="govuk-heading-xl">{{ title }}</h1>
             {% if data.summary %}
               <div id="description" class="govuk-body-l">
