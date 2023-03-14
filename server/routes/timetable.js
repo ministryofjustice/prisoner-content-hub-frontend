@@ -71,7 +71,7 @@ const createTimetableRouter = ({ offenderService }) => {
       }
 
       res.render('pages/timetable', {
-        title: 'My Timetable',
+        title: 'My timetable',
         config,
         events,
         data: { breadcrumbs: createBreadcrumbs(req) },
@@ -107,7 +107,7 @@ const createTimetableRouter = ({ offenderService }) => {
       }
 
       res.render('pages/timetable', {
-        title: 'My Timetable',
+        title: 'My timetable',
         config,
         events,
         data: { breadcrumbs: createBreadcrumbs(req) },
