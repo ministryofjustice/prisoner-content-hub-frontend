@@ -2,9 +2,11 @@
 <div class="govuk-width-container">
   <div class="govuk-grid-row govuk-!-margin-bottom-5">
     <div class="govuk-grid-column-full">
-      {{ govukBreadcrumbs({
-        items: params.breadcrumbs
-      }) }}
+      <nav aria-label="breadcrumb"> 
+        {{ govukBreadcrumbs({
+          items: params.breadcrumbs
+        }) }}
+      </nav>
     </div>
   </div>
 </div>

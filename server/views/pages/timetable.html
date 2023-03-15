@@ -4,7 +4,7 @@
 {% extends "../components/basicTemplate.njk" %}
 
 {% block title %}
-  <div class="govuk-width-container govuk-body hub-header timetable-header">
+  <div class="govuk-width-container govuk-body hub-header timetable-header" id="main-content">
     <h1 class="govuk-heading-l" id="title">{{ title }}</h1>
     {{ personalScheduleNav({ nextWeek: config.nextWeek, lastWeek: config.lastWeek }, isSignedIn) }}
   </div>

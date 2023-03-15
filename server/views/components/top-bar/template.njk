@@ -2,8 +2,8 @@
 
 <header class="govuk-header top-bar-container" data-module="header">
   <div class="govuk-width-container top-bar">
+    <img class="hub-logo" src="/public/images/icons/content-hub.png" alt="logo">
     <h1 class="govuk-heading-m">
-      <img class="hub-logo" src="/public/images/icons/content-hub.png" alt="logo">
       <a href="/" class="govuk-link govuk-link--inverse">Content Hub <span>{{ params.establishmentDisplayName }}</span></a>
     </h1>
     {% if params.showSearch %}
@@ -11,4 +11,4 @@
     {% endif %}
   </div>
 </header>
-<hr class="govuk-section-break govuk-top-bar-break--visible">
+<hr class="govuk-section-break govuk-top-bar-break--visible" aria-hidden="true">
