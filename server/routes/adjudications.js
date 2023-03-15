@@ -7,19 +7,23 @@ const createAdjudicationsRouter = ({ offenderService }) => {
   const router = express.Router();
 
   const getPersonalisation = async (user, query) => {
-    const adjudications = await offenderService.getAdjudicationsFor(user);
+    try {
+      const adjudications = await offenderService.getAdjudicationsFor(user);
 
-    const { paginatedData, pageData } = createPagination({
-      data: adjudications,
-      maxItemsPerPage: config.prisonApi.adjudications.maxAdjudicationsPerPage,
-      query,
-    });
+      const { paginatedData, pageData } = createPagination({
+        data: adjudications,
+        maxItemsPerPage: config.prisonApi.adjudications.maxAdjudicationsPerPage,
+        query,
+      });
 
-    return {
-      signedInUser: user.getFullName(),
-      paginatedData,
-      pageData,
-    };
+      return {
+        signedInUser: user.getFullName(),
+        paginatedData,
+        pageData,
+      };
+    } catch (error) {
+      throw ('error', error);
+    }
   };
 
   router.get('/', async (req, res, next) => {
