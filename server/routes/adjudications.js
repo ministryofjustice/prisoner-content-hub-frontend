@@ -37,7 +37,7 @@ const createAdjudicationsRouter = ({ offenderService }) => {
       try {
         personalisation = user ? await getPersonalisation(user, query) : {};
       } catch (e) {
-        error = e;
+        error = e.message;
       }
 
       return res.render('pages/adjudications', {
