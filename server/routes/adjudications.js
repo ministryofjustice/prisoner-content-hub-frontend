@@ -7,23 +7,19 @@ const createAdjudicationsRouter = ({ offenderService }) => {
   const router = express.Router();
 
   const getPersonalisation = async (user, query) => {
-    try {
-      const adjudications = await offenderService.getAdjudicationsFor(user);
+    const adjudications = await offenderService.getAdjudicationsFor(user);
 
-      const { paginatedData, pageData } = createPagination({
-        data: adjudications,
-        maxItemsPerPage: config.prisonApi.adjudications.maxAdjudicationsPerPage,
-        query,
-      });
+    const { paginatedData, pageData } = createPagination({
+      data: adjudications,
+      maxItemsPerPage: config.prisonApi.adjudications.maxAdjudicationsPerPage,
+      query,
+    });
 
-      return {
-        signedInUser: user.getFullName(),
-        paginatedData,
-        pageData,
-      };
-    } catch (error) {
-      throw ('error', error);
-    }
+    return {
+      signedInUser: user.getFullName(),
+      paginatedData,
+      pageData,
+    };
   };
 
   router.get('/', async (req, res, next) => {
@@ -35,25 +31,27 @@ const createAdjudicationsRouter = ({ offenderService }) => {
         req.session.establishmentName,
       )
     ) {
-      try {
-        const personalisation = user
-          ? await getPersonalisation(user, query)
-          : {};
+      let personalisation;
+      let error = null;
 
-        return res.render('pages/adjudications', {
-          title: 'My adjudications',
-          content: false,
-          header: false,
-          postscript: true,
-          detailsType: 'small',
-          returnUrl,
-          ...personalisation,
-          data: { contentType: 'profile', breadcrumbs: createBreadcrumbs(req) },
-          displayImportantNotice: true,
-        });
+      try {
+        personalisation = user ? await getPersonalisation(user, query) : {};
       } catch (e) {
-        return next(e);
+        error = e;
       }
+
+      return res.render('pages/adjudications', {
+        title: 'My adjudications',
+        content: false,
+        header: false,
+        postscript: true,
+        detailsType: 'small',
+        returnUrl,
+        error,
+        ...personalisation,
+        data: { contentType: 'profile', breadcrumbs: createBreadcrumbs(req) },
+        displayImportantNotice: true,
+      });
     }
     return next();
   });
