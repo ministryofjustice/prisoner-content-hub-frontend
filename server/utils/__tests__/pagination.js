@@ -123,4 +123,14 @@ describe('Pagination', () => {
       totalCount: 12,
     });
   });
+
+  it('should throw an error when data is not an Array', () => {
+    expect(() =>
+      createPagination({
+        data: {},
+        maxItemsPerPage,
+        query,
+      }),
+    ).toThrow('data.slice is not a function');
+  });
 });

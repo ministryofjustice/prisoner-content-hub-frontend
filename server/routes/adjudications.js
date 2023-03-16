@@ -31,25 +31,27 @@ const createAdjudicationsRouter = ({ offenderService }) => {
         req.session.establishmentName,
       )
     ) {
-      try {
-        const personalisation = user
-          ? await getPersonalisation(user, query)
-          : {};
+      let personalisation;
+      let error = null;
 
-        return res.render('pages/adjudications', {
-          title: 'My adjudications',
-          content: false,
-          header: false,
-          postscript: true,
-          detailsType: 'small',
-          returnUrl,
-          ...personalisation,
-          data: { contentType: 'profile', breadcrumbs: createBreadcrumbs(req) },
-          displayImportantNotice: true,
-        });
+      try {
+        personalisation = user ? await getPersonalisation(user, query) : {};
       } catch (e) {
-        return next(e);
+        error = e.message;
       }
+
+      return res.render('pages/adjudications', {
+        title: 'My adjudications',
+        content: false,
+        header: false,
+        postscript: true,
+        detailsType: 'small',
+        returnUrl,
+        error,
+        ...personalisation,
+        data: { contentType: 'profile', breadcrumbs: createBreadcrumbs(req) },
+        displayImportantNotice: true,
+      });
     }
     return next();
   });
