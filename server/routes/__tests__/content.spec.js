@@ -76,7 +76,7 @@ describe('GET /content/:id', () => {
           expect($('#series').text()).toBe('Foo series');
           expect($('#hub-audio source').attr('src')).toBe('foo.mp3');
           expect($('#thumbnail').attr('src')).toBe('foo.png');
-          expect($('#thumbnail').attr('alt')).toBe('foo Bar');
+          expect($('#thumbnail').attr('alt')).toBe('');
         }));
 
     it('returns the correct tags for a radio page', () =>
@@ -148,7 +148,7 @@ describe('GET /content/:id', () => {
           expect($('#series').text()).toBe('Baz series');
           expect($('#hub-video source').attr('src')).toBe('baz.mp4');
           expect($('#thumbnail').attr('src')).toBe('baz.png');
-          expect($('#thumbnail').attr('alt')).toBe('baz Bar');
+          expect($('#thumbnail').attr('alt')).toBe('');
 
           // tags
           expect($('#related-links div a').length).toBe(2);
@@ -180,7 +180,7 @@ describe('GET /content/:id', () => {
           expect($('#series').text()).toBe('Baz series');
           expect($('#hub-video source').attr('src')).toBe('baz.mp4');
           expect($('#thumbnail').attr('src')).toBe('baz.png');
-          expect($('#thumbnail').attr('alt')).toBe('baz Bar');
+          expect($('#thumbnail').attr('alt')).toBe('');
         }));
 
     it('returns the correct tags for a video page', () =>
