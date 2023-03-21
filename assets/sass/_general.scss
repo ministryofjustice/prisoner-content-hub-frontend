@@ -115,10 +115,12 @@
   background-color: transparent;
 }
 
+.black-background .govuk-hub-thumbs--down:focus,
 .govuk-hub-thumbs--down.is-selected {
   background-image: url('/public/images/icon-thumbs/thumbs-down-selected.svg');
 }
 
+.black-background .govuk-hub-thumbs--up:focus,
 .govuk-hub-thumbs--up.is-selected {
   background-image: url('/public/images/icon-thumbs/thumbs-up-selected.svg');
 }

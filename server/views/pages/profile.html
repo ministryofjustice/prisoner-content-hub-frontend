@@ -50,7 +50,7 @@
                 {%- endcall %}
               </li>
               <li class="govuk-grid-column-one-quarter card-group__item">
-                {{imageCard({ id: 'timetableLink', src: "/public/images/image_timetable.jpg", alt: "timetable picture", link: knownPages.profile.timetable, description: "View my timetable" }) }}
+                {{imageCard({ id: 'timetableLink', src: "/public/images/image_timetable.jpg", link: knownPages.profile.timetable, description: "View my timetable" }) }}
               </li>
             </ul>
             <a href= '{{ knownPages.profile.learningAndSkills }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">
@@ -119,7 +119,7 @@
                 {%- endcall %}
               </li>
               <li class="govuk-grid-column-one-quarter card-group__item">
-              {{imageCard({ id: 'moneyLink', src: "/public/images/image_transactions.jpg", alt: "money picture", link: knownPages.profile.transactions, description: "View my transactions" }) }}
+              {{imageCard({ id: 'moneyLink', src: "/public/images/image_transactions.jpg", link: knownPages.profile.transactions, description: "View my transactions" }) }}
               </li>
             </ul>
             <a href= '{{ knownPages.profile.moneyAndDebtInfo }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">
@@ -175,7 +175,7 @@
               {%- endif %}
               {% if displayApprovedVisitorsCard %}
                 <li class="govuk-grid-column-one-quarter card-group__item">
-                  {{imageCard({ id: 'approvedVisitors', src: "/public/images/image_visitors.jpg", alt: "visitor picture", link: knownPages.profile.visitorsLink, description: "View my visitors - social" }) }}
+                  {{imageCard({ id: 'approvedVisitors', src: "/public/images/image_visitors.jpg", link: knownPages.profile.visitorsLink, description: "View my visitors - social" }) }}
                 </li>
               {%- endif %}
             </ul>
@@ -195,7 +195,7 @@
             {% else %}
               <ul class="govuk-grid-row card-group">
                 <li class="govuk-grid-column-one-quarter card-group__item">
-                  {{imageCard({ id: 'adjudications', src: "/public/images/image_adjudications.jpg", alt: "adjudications picture", link: knownPages.profile.adjudications, description: "View my adjudications" }) }}
+                  {{imageCard({ id: 'adjudications', src: "/public/images/image_adjudications.jpg", link: knownPages.profile.adjudications, description: "View my adjudications" }) }}
                 </li>
               </ul>
               <a href='{{ knownPages.profile.adjudicationsInfo }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state" data-test="adjudicationsLink">
