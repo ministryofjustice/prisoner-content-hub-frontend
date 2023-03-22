@@ -91,7 +91,23 @@ module.exports = {
       getEnv('APPROVED_VISITORS_FEATURE_ENABLED', 'false') === 'true',
     adjudicationsFeatureEnabled:
       getEnv('ADJUDICATIONS_FEATURE_ENABLED', 'false') === 'true',
-    adjudicationsFeatureEnabledAt: ['lindholme'],
+    adjudicationsFeatureEnabledAt: [
+      'cookhamwood',
+      'erlestoke',
+      'felthama',
+      'felthamb',
+      'garth',
+      'lindholme',
+      'newhall',
+      'ranby',
+      'stokeheath',
+      'styal',
+      'swaleside',
+      'themount',
+      'wayland',
+      'werrington',
+      'wetherby',
+    ],
   },
   analytics: {
     endpoint: getEnv(
