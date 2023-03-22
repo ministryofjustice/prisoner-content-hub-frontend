@@ -21,23 +21,18 @@
     flex: 0 1 auto;
   }
 
-  & h1 {
+  & a {
+    color: govuk-colour('white');
+    text-decoration: none;
     margin-bottom: 0;
-    display: flex;
-    align-items: center;
+  }
 
-    & a {
-      color: govuk-colour('white');
-      text-decoration: none;
-    }
+  & a:hover {
+    text-decoration: underline;
+  }
 
-    & a:hover {
-      text-decoration: underline;
-    }
-
-    & span {
-      font-weight: 400;
-    }
+  & span {
+    font-weight: 400;
   }
 }
 
