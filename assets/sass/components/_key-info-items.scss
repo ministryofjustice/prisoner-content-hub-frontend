@@ -41,9 +41,7 @@
 
 .govuk-hub-key-info-item > a {
   display: flex;
-  height: 90px;
   background-color: $real-dark-grey;
-  overflow: hidden;
   text-decoration: none;
   box-sizing: border-box;
 
@@ -53,9 +51,9 @@
   }
 
   > img {
-    min-width: 50%;
-    max-width: 50%;
-    height: 90px;
+    min-width: 40%;
+    max-width: 40%;
+    max-height: 90px;
     object-fit: cover;
     object-position: 50% 50%;
   }
