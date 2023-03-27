@@ -1,5 +1,5 @@
 # First stage
-FROM node:16.13-bullseye-slim as builder
+FROM node:18.15-bullseye-slim as builder
 
 ARG BUILD_NUMBER
 ARG GIT_REF
