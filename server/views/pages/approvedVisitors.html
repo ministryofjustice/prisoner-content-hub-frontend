@@ -5,10 +5,10 @@
 
 {% block content %}
   {% if not isSignedIn %}
-      <h2 class="govuk-heading-m">You are signed out</h2>
-      <p class="govuk-!-font-size-24" data-test="signin-prompt">
-        <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
-      </p>
+    <h2 class="govuk-heading-m">You are signed out</h2>
+    <p class="govuk-!-font-size-24 govuk-body" data-test="signin-prompt">
+      <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link">Sign in</a> to see your personal information.
+    </p>
   {% else %}
   
   {% if error %}
