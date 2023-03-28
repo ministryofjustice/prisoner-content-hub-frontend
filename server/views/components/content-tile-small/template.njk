@@ -1,7 +1,9 @@
 {% if params.id %}
   <a data-featured-tile-id="{{params.id}}" data-featured-id="{{params.id}}" data-featured-title="{{ params.title }}" href="{{params.contentUrl}}" {% if params.externalContent %}target="_blank"{% endif %}>
     <div class="tile-top">
-      {% if params.contentType === "series" %}
+      {% if params.isNew %}
+        <strong class="govuk-tag govuk-tag--green">NEW</strong>
+      {% elif params.contentType === "series" %}
         <strong class="govuk-tag govuk-tag--purple">SERIES</strong>
       {% endif %}
       {% if params.image.url %}
@@ -12,24 +14,19 @@
       <h3 class="govuk-heading-m" style="">{{params.title}}</h3>
     </div>
     <div class="govuk-grid-column-full govuk-hub-contentTileSmall">
-    <div>
-      {% if params.contentType === "video" %}
-        <p class="content-link--video">Watch</p>
-      {% elif params.contentType === "radio" %}
-        <p class="content-link--audio">Listen</p>
-      {% elif params.contentType === "external_link" %}
-        <p class="content-link--external">{{ params.displayUrl }}</p>
-      {% elif params.contentType === "internal_link" %}
-      <p class="content-link--internal"></p>
-      {% elif params.contentType === "category" %}
-      {% elif params.contentType !== "series" and params.contentType !== "category_bottom" %}
-        <p class="content-link--article">Read</p>
-      {% endif %}
-    </div>
       <div>
-        {% if params.isNew %}
-          <strong class="govuk-tag govuk-tag--green">NEW</strong>
-        {% endif %} 
+        {% if params.contentType === "video" %}
+          <p class="content-link--video">Watch</p>
+        {% elif params.contentType === "radio" %}
+          <p class="content-link--audio">Listen</p>
+        {% elif params.contentType === "external_link" %}
+          <p class="content-link--external">{{ params.displayUrl }}</p>
+        {% elif params.contentType === "internal_link" %}
+        <p class="content-link--internal"></p>
+        {% elif params.contentType === "category" %}
+        {% elif params.contentType !== "series" and params.contentType !== "category_bottom" %}
+          <p class="content-link--article">Read</p>
+        {% endif %}
       </div>
     </div>
   </a>
