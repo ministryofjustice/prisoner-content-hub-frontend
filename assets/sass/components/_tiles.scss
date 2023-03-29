@@ -131,7 +131,7 @@
 }
 
 .content-link--video::before {
-  content: '\25ba';
+  content: url('/public/images/icons/watch.svg');
   background-color: govuk-colour('pink');
 }
 
