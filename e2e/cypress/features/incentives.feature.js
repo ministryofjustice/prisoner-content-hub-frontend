@@ -1,6 +1,3 @@
-import { activity } from '../mockApis/data';
-import { daysFromNow } from '../support/step_definitions/utils';
-
 describe('Profile', () => {
   beforeEach(() => {
     cy.task('reset');
