@@ -59,7 +59,6 @@
     "mkdirp": "^2.1.6",
     "moment": "^2.29.4",
     "nocache": "^3.0.4",
-    "npm": "^9.6.2",
     "nunjucks": "^3.2.3",
     "passport": "^0.5.3",
     "passport-azure-ad-oauth2": "0.0.4",
