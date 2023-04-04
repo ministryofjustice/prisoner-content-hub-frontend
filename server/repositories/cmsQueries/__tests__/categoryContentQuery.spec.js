@@ -25,7 +25,7 @@ describe('Category collection query', () => {
       type: 'node--moj_video_item',
       fieldSummary: `summary_101`,
       fieldMojThumbnailImage: {
-        imageStyleUri: [{}, { tile_small: `tile_small_101` }],
+        imageStyleUri: { tile_small: `tile_small_101` },
         resourceIdObjMeta: { alt: `alt_101` },
       },
       path: { alias: `/content/101` },

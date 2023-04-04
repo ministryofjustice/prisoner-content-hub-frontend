@@ -25,7 +25,7 @@ describe('Series page query', () => {
       description: { processed: `description${UUID}` },
       fieldExcludeFeedback: undefined,
       fieldMojThumbnailImage: {
-        imageStyleUri: [{ tile_large: `tile_large${UUID}` }],
+        imageStyleUri: { tile_large: `tile_large${UUID}` },
         resourceIdObjMeta: { alt: `alt${UUID}` },
       },
       path: { alias: `/tags/${UUID}` },
@@ -35,7 +35,7 @@ describe('Series page query', () => {
       title: `title${id}`,
       fieldSummary: `summary${id}`,
       fieldMojThumbnailImage: {
-        imageStyleUri: [{}, { tile_small: `tile_small${id}` }],
+        imageStyleUri: { tile_small: `tile_small${id}` },
         resourceIdObjMeta: { alt: `alt${id}` },
       },
       type: 'node--moj_video_item',
