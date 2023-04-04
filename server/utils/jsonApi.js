@@ -6,7 +6,7 @@ const getPagination = (page, size = 40) =>
 const getImage = (data, type) => {
   if (!data) return null;
   return {
-    url: data?.imageStyleUri?.find(img => Boolean(img?.[type]))[type] || '',
+    url: data?.imageStyleUri?.[type] || '',
     alt: data?.resourceIdObjMeta?.alt || '',
   };
 };

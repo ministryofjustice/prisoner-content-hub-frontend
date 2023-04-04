@@ -20,12 +20,10 @@ const ALT_TEXT = 'alt text';
 let imgData;
 beforeEach(() => {
   imgData = {
-    imageStyleUri: [
-      {
-        tile_large: LARGE_TILE,
-        tile_small: SMALL_TILE,
-      },
-    ],
+    imageStyleUri: {
+      tile_large: LARGE_TILE,
+      tile_small: SMALL_TILE,
+    },
     resourceIdObjMeta: {
       alt: ALT_TEXT,
     },
@@ -52,7 +50,7 @@ describe('getLargeImage', () => {
   describe('with partial data', () => {
     it('should return only the image if provided', () => {
       expect(
-        getLargeImage({ imageStyleUri: [{ tile_large: LARGE_TILE }] }),
+        getLargeImage({ imageStyleUri: { tile_large: LARGE_TILE } }),
       ).toEqual({ url: LARGE_TILE, alt: '' });
     });
     it('should return only the alt if provided', () => {
@@ -73,12 +71,10 @@ describe('getting tile data', () => {
       fieldDisplayUrl: 'link',
       fieldSummary: 'summary',
       fieldMojThumbnailImage: {
-        imageStyleUri: [
-          {
-            tile_small: 'tile_small',
-            tile_large: 'tile_large',
-          },
-        ],
+        imageStyleUri: {
+          tile_small: 'tile_small',
+          tile_large: 'tile_large',
+        },
         resourceIdObjMeta: { alt: 'alt' },
       },
       path: { alias: '/content/42' },
@@ -230,12 +226,10 @@ describe('getting tile data', () => {
       name: 'title',
       description: { processed: 'summary' },
       fieldMojThumbnailImage: {
-        imageStyleUri: [
-          {
-            tile_small: 'tile_small',
-            tile_large: 'tile_large',
-          },
-        ],
+        imageStyleUri: {
+          tile_small: 'tile_small',
+          tile_large: 'tile_large',
+        },
         resourceIdObjMeta: { alt: 'alt' },
       },
       path: { alias: '/tags/42' },
@@ -277,12 +271,10 @@ describe('getting tile data', () => {
       name: 'title',
       description: { processed: 'summary' },
       fieldMojThumbnailImage: {
-        imageStyleUri: [
-          {
-            tile_small: 'tile_small',
-            tile_large: 'tile_large',
-          },
-        ],
+        imageStyleUri: {
+          tile_small: 'tile_small',
+          tile_large: 'tile_large',
+        },
         resourceIdObjMeta: { alt: 'alt' },
       },
       path: { alias: '/tags/42' },
@@ -470,12 +462,10 @@ describe('with content tile data', () => {
     fieldDisplayUrl: 'link',
     fieldSummary: 'summary',
     fieldMojThumbnailImage: {
-      imageStyleUri: [
-        {
-          tile_small: 'tile_small',
-          tile_large: 'tile_large',
-        },
-      ],
+      imageStyleUri: {
+        tile_small: 'tile_small',
+        tile_large: 'tile_large',
+      },
       resourceIdObjMeta: { alt: 'alt' },
     },
     path: { alias: '/content/42' },

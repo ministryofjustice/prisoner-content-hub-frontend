@@ -48,12 +48,10 @@ describe('HomepageContent query', () => {
         },
         fieldSummary: undefined,
         fieldMojThumbnailImage: {
-          imageStyleUri: [
-            {
-              tile_small: 'image-url',
-              tile_large: 'image-url',
-            },
-          ],
+          imageStyleUri: {
+            tile_small: 'image-url',
+            tile_large: 'image-url',
+          },
           resourceIdObjMeta: {
             alt: 'Alt text',
           },
@@ -70,11 +68,9 @@ describe('HomepageContent query', () => {
         },
         fieldSummary: undefined,
         fieldMojThumbnailImage: {
-          imageStyleUri: [
-            {
-              tile_small: 'small-image-url',
-            },
-          ],
+          imageStyleUri: {
+            tile_small: 'small-image-url',
+          },
           resourceIdObjMeta: {
             alt: 'Alt text',
           },
@@ -91,11 +87,9 @@ describe('HomepageContent query', () => {
         },
         fieldSummary: undefined,
         fieldMojThumbnailImage: {
-          imageStyleUri: [
-            {
-              tile_small: 'small-image-url',
-            },
-          ],
+          imageStyleUri: {
+            tile_small: 'small-image-url',
+          },
           resourceIdObjMeta: {
             alt: 'Alt text',
           },

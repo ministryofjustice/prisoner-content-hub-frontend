@@ -25,7 +25,7 @@ describe('Secondary Tag page query', () => {
       description: { processed: `description${id}` },
       fieldExcludeFeedback: true,
       fieldMojThumbnailImage: {
-        imageStyleUri: [{ tile_large: `tile_large${id}` }],
+        imageStyleUri: { tile_large: `tile_large${id}` },
         resourceIdObjMeta: { alt: `alt${id}` },
       },
       path: { alias: `/tags/${id}` },
@@ -36,7 +36,7 @@ describe('Secondary Tag page query', () => {
       type: 'node--moj_video_item',
       fieldSummary: `description${id}`,
       fieldMojThumbnailImage: {
-        imageStyleUri: [{}, { tile_small: `tile_small${id}` }],
+        imageStyleUri: { tile_small: `tile_small${id}` },
         resourceIdObjMeta: { alt: `alt${id}` },
       },
       fieldTopics,

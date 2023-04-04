@@ -66,11 +66,9 @@ describe('Video page query', () => {
         },
         fieldMojThumbnailImage: {
           type: 'file--file',
-          imageStyleUri: [
-            {
-              tile_large: 'https://cms.org/jdajsgjdfj.jpg',
-            },
-          ],
+          imageStyleUri: {
+            tile_large: 'https://cms.org/jdajsgjdfj.jpg',
+          },
           resourceIdObjMeta: {
             alt: 'faith',
           },

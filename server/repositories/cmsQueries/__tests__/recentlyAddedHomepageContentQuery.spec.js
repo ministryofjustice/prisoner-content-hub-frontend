@@ -43,14 +43,10 @@ describe('Recently Added Content page query', () => {
             alias: '/content/111111',
           },
           fieldMojThumbnailImage: {
-            imageStyleUri: [
-              {
-                tile_large: 'AWS_URL',
-              },
-              {
-                tile_small: 'AWS_URL',
-              },
-            ],
+            imageStyleUri: {
+              tile_large: 'AWS_URL',
+              tile_small: 'AWS_URL',
+            },
             resourceIdObjMeta: {
               alt: 'IMAGE_ALT_TEXT',
             },
