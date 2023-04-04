@@ -19,7 +19,7 @@ describe('Category collection query', () => {
       type: 'node--moj_video_item',
       fieldSummary: `summary_101`,
       fieldMojThumbnailImage: {
-        imageStyleUri: [{}, { tile_small: `tile_small_101` }],
+        imageStyleUri: { tile_small: `tile_small_101` },
         resourceIdObjMeta: { alt: `alt_101` },
       },
       path: { alias: `/content/101` },
@@ -33,7 +33,7 @@ describe('Category collection query', () => {
       name: `name`,
       fieldExcludeFeedback: true,
       fieldMojThumbnailImage: {
-        imageStyleUri: [{ tile_small: `tile_small` }],
+        imageStyleUri: { tile_small: `tile_small` },
         resourceIdObjMeta: { alt: `alt` },
       },
       path: { alias: `/tags/101` },
@@ -50,7 +50,7 @@ describe('Category collection query', () => {
       fieldDescription: { processed: `description` },
       fieldExcludeFeedback: true,
       fieldMojThumbnailImage: {
-        imageStyleUri: [{ tile_small: `tile_small` }],
+        imageStyleUri: { tile_small: `tile_small` },
         resourceIdObjMeta: { alt: `alt` },
       },
       path: { alias: `/tags/101` },

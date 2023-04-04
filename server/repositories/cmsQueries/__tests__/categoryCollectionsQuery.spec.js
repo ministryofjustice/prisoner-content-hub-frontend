@@ -31,7 +31,7 @@ describe('Category collection query', () => {
       name: `name`,
       fieldExcludeFeedback: true,
       fieldMojThumbnailImage: {
-        imageStyleUri: [{ tile_small: `tile_small` }],
+        imageStyleUri: { tile_small: `tile_small` },
         resourceIdObjMeta: { alt: `alt` },
       },
       path: { alias: `/tags/101` },
@@ -76,7 +76,7 @@ describe('Category collection query', () => {
       description: { processed: `description` },
       fieldExcludeFeedback: true,
       fieldMojThumbnailImage: {
-        imageStyleUri: [{ tile_small: `tile_small` }],
+        imageStyleUri: { tile_small: `tile_small` },
         resourceIdObjMeta: { alt: `alt` },
       },
       path: { alias: `/tags/101` },
