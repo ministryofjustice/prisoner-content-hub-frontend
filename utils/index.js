@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const { dirname } = require('path');
-const mkdirp = require('mkdirp');
+const { mkdirp } = require('mkdirp');
 
 const production = process.env.NODE_ENV === 'production';
 
