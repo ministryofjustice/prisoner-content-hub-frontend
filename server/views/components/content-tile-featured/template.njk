@@ -5,7 +5,7 @@
   href="{{params.contentUrl}}" 
   {% if params.externalContent %}target="_blank"{% endif %}>
   <div class="govuk-hub-content-tile-featured_content">
-    <img src="{{params.image.url}}" alt="">
+    <img src="{{params.image.url}}" alt="" loading="lazy">
     <div>
       <h3 class="govuk-heading-l">{{params.title}}</h3>
       <p>{{params.summary | safe}}</p>
