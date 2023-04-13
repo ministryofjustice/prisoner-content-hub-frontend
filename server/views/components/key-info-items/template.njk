@@ -9,11 +9,9 @@
         class="govuk-link govuk-link--no-visited-state govuk-link--no-underline govuk-!-margin-bottom-2">
 
         {% if item.image.url %}
-          <img src="{{item.image.url}}" 
-              alt="">
+          <img src="{{item.image.url}}" alt="" loading="lazy">
         {% else %}
-          <img src="/public/images/default_key_info_item_hub_logo.png"
-              alt="logo">
+          <img src="/public/images/default_key_info_item_hub_logo.png" alt="logo" loading="lazy">
         {% endif %}
           <h3 class="govuk-heading-s govuk-!-margin-0">{{item.title}}</h3>
 
