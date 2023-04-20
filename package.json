@@ -59,7 +59,7 @@
     "mkdirp": "^3.0.0",
     "moment": "^2.29.4",
     "nocache": "^3.0.4",
-    "nunjucks": "^3.2.3",
+    "nunjucks": "^3.2.4",
     "passport": "^0.6.0",
     "passport-azure-ad-oauth2": "0.0.4",
     "ramda": "^0.29.0",
