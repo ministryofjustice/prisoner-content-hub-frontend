@@ -80,7 +80,7 @@ env:
       value: {{ .Values.application.config.analyticsSiteId }}
 
     - name: ANALYTICS_STREAM_ID
-      value: {{ .Values.application.config.analyticsStreamId }}
+      value: {{ .Values.application.config.analyticsStreamId | quote }}
 
     - name: ANALYTICS_MEASUREMENT_ID
       value: {{ .Values.application.config.analyticsMeasurementId }}
