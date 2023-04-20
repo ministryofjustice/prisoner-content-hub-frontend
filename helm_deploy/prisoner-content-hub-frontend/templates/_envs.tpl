@@ -79,6 +79,18 @@ env:
     - name: ANALYTICS_SITE_ID
       value: {{ .Values.application.config.analyticsSiteId }}
 
+    - name: ANALYTICS_STREAM_ID
+      value: {{ .Values.application.config.analyticsStreamId }}
+
+    - name: ANALYTICS_MEASUREMENT_ID
+      value: {{ .Values.application.config.analyticsMeasurementId }}
+
+    - name: ANALYTICS_API_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+          key: analyticsApiSecret
+
     - name: SENTRY_DSN
       value: {{ .Values.application.sentry_dsn }}
 

@@ -115,6 +115,9 @@ module.exports = {
       'https://www.google-analytics.com/collect',
     ),
     siteId: getEnv('ANALYTICS_SITE_ID', 'UA-152065860-4'),
+    streamId: getEnv('ANALYTICS_STREAM_ID', '5073677105'),
+    measurementId: getEnv('ANALYTICS_MEASUREMENT_ID', 'G-0RBPFCWD3X'),
+    apiSecret: getEnv('ANALYTICS_API_SECRET', 'someSecret'),
   },
   feedback: {
     endpoint: getRequiredEnv(
