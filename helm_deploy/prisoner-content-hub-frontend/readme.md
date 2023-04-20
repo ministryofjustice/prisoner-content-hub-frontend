@@ -70,6 +70,7 @@ helm upgrade [Release Name] . \
 --set prisonApiBaseUrl=[Prison API base URL] \
 --set incentivesApiBaseUrl=[Incentives API base URL] \
 --set cacheSecret=[32Byte string used for encrypting cached items] \
+--set analyticsApiSecret=[API from Google Analytics 4] \
 --set prisonerAuthAD.clientId=[Azure AD Client ID] \
 --set prisonerAuthAD.clientSecret=[Azure AD Client secret] \
 --set image.tag=[Image Tag]
