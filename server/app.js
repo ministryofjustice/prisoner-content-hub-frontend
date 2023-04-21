@@ -69,9 +69,11 @@ const createApp = services => {
       return transactionName &&
         (transactionName.includes('/health') ||
           transactionName.includes('/public/') ||
-          transactionName.includes('/assets/'))
+          transactionName.includes('/assets/') ||
+          transactionName.includes('/analytics/page') ||
+          transactionName.includes('/analytics/event'))
         ? 0
-        : 0.25;
+        : 0.5;
     },
   });
   app.use(Sentry.Handlers.requestHandler());
