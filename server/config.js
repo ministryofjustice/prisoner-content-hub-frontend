@@ -114,6 +114,10 @@ module.exports = {
       'ANALYTICS_ENDPOINT',
       'https://www.google-analytics.com/collect',
     ),
+    endpointg4: getEnv(
+      'ANALYTICS_ENDPOINT_G4',
+      'https://www.google-analytics.com/mp/collect',
+    ),
     siteId: getEnv('ANALYTICS_SITE_ID', 'UA-152065860-4'),
     streamId: getEnv('ANALYTICS_STREAM_ID', '5073677105'),
     measurementId: getEnv('ANALYTICS_MEASUREMENT_ID', 'G-0RBPFCWD3X'),

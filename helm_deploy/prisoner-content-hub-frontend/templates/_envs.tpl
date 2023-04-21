@@ -76,6 +76,9 @@ env:
     - name: ANALYTICS_ENDPOINT
       value: "https://www.google-analytics.com/collect"
 
+    - name: ANALYTICS_ENDPOINT_G4
+      value: "https://www.google-analytics.com/mp/collect"
+
     - name: ANALYTICS_SITE_ID
       value: {{ .Values.application.config.analyticsSiteId }}
 

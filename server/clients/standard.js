@@ -1,6 +1,6 @@
 const Sentry = require('@sentry/node');
-const qs = require('querystring');
-const { path } = require('ramda');
+const querystring = require('node:querystring');
+
 const { baseClient } = require('./baseClient');
 const { logger } = require('../utils/logger');
 
@@ -13,7 +13,7 @@ class StandardClient {
     return this.client
       .get(endpoint, { params: query, ...rest })
       .then(res => {
-        logger.debug(`StandardClient (GET) ${endpoint}?${qs.stringify(query)}`);
+        logger.debug(`StandardClient (GET) ${endpoint}?${querystring.stringify(query)}`);
         return res.data;
       })
       .catch(e => {
@@ -40,24 +40,53 @@ class StandardClient {
   }
 
   postFormData(endpoint, data) {
-    const querystring = qs.stringify(data);
+    const encodedPostData = querystring.stringify(data);
 
     const headers = {
       'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
     };
-    const userAgent = path(['userAgent'], data);
 
-    if (userAgent) {
-      headers['User-Agent'] = userAgent;
+    if (data?.userAgent) {
+      headers['User-Agent'] = data.userAgent;
     }
 
     return this.client
-      .post(endpoint, querystring, {
+      .post(endpoint, encodedPostData, {
         headers,
       })
       .then(res => {
         logger.debug(
-          `StandardClient (POST URLENCODED) - ${endpoint}?${querystring}`,
+          `StandardClient (POST URLENCODED) - ${endpoint}?${encodedPostData}`,
+        );
+        return res.data;
+      })
+      .catch(e => {
+        Sentry.captureException(e);
+        logger.error(`StandardClient (POST URLENCODED) - Failed: ${e.message}`);
+        logger.debug(e.stack);
+        return null;
+      });
+  }
+
+  postWithQueryFormData(endpoint, queryParams, postData) {
+    const encodedQueryString = querystring.stringify(queryParams)
+    const fullEndpoint = `${endpoint}?${encodedQueryString}`
+
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    if (postData?.userAgent) {
+      headers['User-Agent'] = postData.userAgent;
+    }
+
+    return this.client
+      .post(fullEndpoint, postData, {
+        headers,
+      })
+      .then(res => {
+        logger.debug(
+          `StandardClient (POST URLENCODED) - ${fullEndpoint}`,
         );
         return res.data;
       })
