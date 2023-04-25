@@ -73,7 +73,7 @@ const createApp = services => {
           transactionName.includes('/analytics/page') ||
           transactionName.includes('/analytics/event'))
         ? 0
-        : 0.5;
+        : 0.05;
     },
   });
   app.use(Sentry.Handlers.requestHandler());
