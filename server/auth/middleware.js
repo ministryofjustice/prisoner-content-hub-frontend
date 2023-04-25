@@ -1,6 +1,5 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["_passport"] }] */
 const _passport = require('passport');
-const { path } = require('ramda');
 const { User } = require('./user');
 const { updateSessionEstablishment } = require('../utils');
 
@@ -99,8 +98,8 @@ const createSignInCallbackMiddleware = ({
   authenticate = _authenticate,
 }) =>
   async function signInCallback(req, res, next) {
-    const sessionId = path(['session', 'id'], req);
-    const userAgent = path(['body', 'userAgent'], req);
+    const sessionId = req?.session?.id;
+    const userAgent = req?.body?.userAgent;
     try {
       const user = await authenticate(req, res, next);
       if (!user) {
@@ -160,8 +159,8 @@ const createSignOutMiddleware = ({ logger, analyticsService }) =>
         action: 'signout',
         label: 'success',
         value: 1,
-        sessionId: path(['session', 'id'], req),
-        userAgent: path(['body', 'userAgent'], req),
+        sessionId: req?.session?.id,
+        userAgent: req?.body?.userAgent,
       });
     }
     res.redirect(getSafeReturnUrl(req.query));

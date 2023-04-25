@@ -1,4 +1,3 @@
-const { path } = require('ramda');
 const express = require('express');
 const config = require('../config');
 
@@ -6,15 +5,15 @@ const createAnalyticsRouter = ({ analyticsService }) => {
   const router = express.Router();
 
   router.post('/event', (req, res) => {
-    const sessionId = path(['session', 'id'], req);
+    const sessionId = req?.session?.id;
 
     analyticsService.sendEvent({
-      category: path(['body', 'category'], req),
-      action: path(['body', 'action'], req),
-      label: path(['body', 'label'], req),
-      value: path(['body', 'value'], req),
+      category: req?.body?.category,
+      action: req?.body?.action,
+      label: req?.body?.label,
+      value: req?.body?.value,
       sessionId,
-      userAgent: path(['body', 'userAgent'], req),
+      userAgent: req?.body?.userAgent,
     });
 
     return res.send('OK');
@@ -26,15 +25,15 @@ const createAnalyticsRouter = ({ analyticsService }) => {
 
     analyticsService.sendPageTrack({
       hostname,
-      page: path(['body', 'page'], req),
-      title: path(['body', 'title'], req),
+      page: req?.body?.page,
+      title: req?.body?.title,
       sessionId,
-      userAgent: path(['body', 'userAgent'], req),
-      screen: path(['body', 'screen'], req),
-      viewport: path(['body', 'viewport'], req),
-      topics: path(['body', 'topics'], req),
-      categories: path(['body', 'categories'], req),
-      series: path(['body', 'series'], req),
+      userAgent: req?.body?.userAgent,
+      screen: req?.body?.screen,
+      viewport: req?.body?.viewport,
+      topics: req?.body?.topics,
+      categories: req?.body?.categories,
+      series: req?.body?.series,
     });
 
     return res.send('OK');
