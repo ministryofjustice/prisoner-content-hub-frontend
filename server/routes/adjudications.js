@@ -69,7 +69,7 @@ const createAdjudicationsRouter = ({ offenderService }) => {
     ) {
       try {
         const adjudication = await offenderService.getAdjudicationFor(
-          user,
+          user?.prisonerId,
           adjudicationId,
         );
 

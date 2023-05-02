@@ -275,7 +275,7 @@ const createOffenderService = (
     }
   }
 
-  async function getAdjudicationFor({ prisonerId }, adjudicationId) {
+  async function getAdjudicationFor(prisonerId, adjudicationId) {
     try {
       logger.info(
         `OffenderService (getAdjudicationFor) - User: ${prisonerId}, Adjudication: ${adjudicationId}`,

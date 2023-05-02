@@ -471,7 +471,10 @@ describe('Offender Service', () => {
         Adjudication: mockAdapter,
       });
 
-      const data = await service.getAdjudicationFor(TEST_USER, adjudicationId);
+      const data = await service.getAdjudicationFor(
+        TEST_USER.prisonerId,
+        adjudicationId,
+      );
 
       expect(repository.getAdjudicationFor).toHaveBeenCalledWith(
         TEST_USER.prisonerId,
