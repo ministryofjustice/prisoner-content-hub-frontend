@@ -30,11 +30,10 @@ $(document).ready(function() {
 
   function analyticsAudioEvent(config) {
     return function() {
-      sendEvent({
-        category: 'Radio',
+      gtag("event", "audio", {
+        event_category: "Radio",
+        event_label: config.label,
         action: config.action,
-        label: config.label,
-        value: 1,
         userAgent: navigator.userAgent
       });
     };

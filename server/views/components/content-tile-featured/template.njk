@@ -1,4 +1,4 @@
-<a class="govuk-hub-content-tile-featured govuk-body govuk-link govuk-link--no-underline govuk-!-margin-0"
+<a class="govuk-hub-content-tile-featured govuk-body govuk-link govuk-link--no-underline govuk-!-margin-0 {% if params.contentType === 'pdf' or params.contentType === 'moj_pdf_item' %}is-pdf{% endif %}"
   data-featured-tile-id="{{params.id}}" 
   data-featured-id="{{params.id}}" 
   data-featured-title="{{ params.title }}" 

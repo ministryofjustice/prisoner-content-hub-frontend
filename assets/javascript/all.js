@@ -1,19 +1,3 @@
-function sendEvent(data) {
-  $.ajax({
-    type: "POST",
-    url: '/analytics/event',
-    data: data
-  });
-}
-
-function sendPageTrack(data) {
-  $.ajax({
-    type: "POST",
-    url: '/analytics/page',
-    data: data
-  });
-}
-
 (function () {
   document.body.addEventListener('click', function (event) {
     if (matchesAll('[data-state]', event.target)) {
@@ -43,6 +27,8 @@ function sendPageTrack(data) {
       window.history.go(1);
     }
   });
+
+
 
   function toggleShowing(state) {
     if (state === 'hidden') {
@@ -89,3 +75,28 @@ function showHiddenBlock(block) {
     hiddenData.style.display = 'none';
   }, 3000);
 }
+
+$('.is-pdf').on('click', function() {
+  gtag("event", "file_download", {
+    event_category: "PDFs",
+    event_label: "Downloads",
+    userAgent: navigator.userAgent
+  });
+});
+
+$('a.sign-in-btn').on('click', function() {
+  gtag("event", "signin", {
+    event_category: "signin",
+    event_label: "signin",
+    userAgent: navigator.userAgent
+  });
+});
+
+$('a.sign-out-btn').on('click', function() {
+  gtag("event", "signout", {
+    event_category: "signout",
+    event_label: "signout",
+    userAgent: navigator.userAgent
+  });
+});
+

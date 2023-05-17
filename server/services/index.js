@@ -11,7 +11,6 @@ const RedisCachingStrategy = require('../utils/caching/redisClient');
 
 // Repositories
 const { offenderRepository } = require('../repositories/offender');
-const { analyticsRepository } = require('../repositories/analytics');
 const { feedbackRepository } = require('../repositories/feedback');
 const { CmsApi } = require('../repositories/cmsApi');
 const PrisonApiRepository = require('../repositories/prisonApi');
@@ -20,7 +19,6 @@ const PrisonApiRepository = require('../repositories/prisonApi');
 const { CmsService } = require('./cms');
 const { createOffenderService } = require('./offender');
 const { createSearchService } = require('./search');
-const { createAnalyticsService } = require('./analytics');
 const { createFeedbackService } = require('./feedback');
 const PrisonerInformationService = require('./prisonerInformation');
 
@@ -59,9 +57,6 @@ module.exports = {
     }),
   }),
   searchService: createSearchService({ cmsApi }),
-  analyticsService: createAnalyticsService({
-    analyticsRepository: analyticsRepository(standardClient),
-  }),
   feedbackService: createFeedbackService({
     feedbackRepository: feedbackRepository(standardClient),
   }),

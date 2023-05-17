@@ -11,7 +11,6 @@ const { createProfileRouter } = require('./profile');
 const { createTagRouter } = require('./tags');
 const { createLinkRouter } = require('./link');
 const { createGamesRouter } = require('./games');
-const { createAnalyticsRouter } = require('./analytics');
 const { createFeedbackRouter } = require('./feedback');
 const { createSearchRouter } = require('./search');
 const { createNprRouter } = require('./npr');
@@ -29,7 +28,6 @@ module.exports = (
     offenderService,
     prisonerInformationService,
     searchService,
-    analyticsService,
     feedbackService,
     config,
   },
@@ -101,7 +99,6 @@ module.exports = (
     '/content',
     createContentRouter({
       cmsService,
-      analyticsService,
     }),
   );
 
@@ -116,12 +113,8 @@ module.exports = (
   router.use('/tags', createTagRouter({ cmsService }));
   router.use('/link', createLinkRouter({ cmsService }));
   router.use('/games', createGamesRouter());
-  router.use('/analytics', createAnalyticsRouter({ analyticsService }));
   router.use('/feedback', createFeedbackRouter({ feedbackService }));
-  router.use(
-    '/search',
-    createSearchRouter({ searchService, analyticsService }),
-  );
+  router.use('/search', createSearchRouter({ searchService }));
 
   router.use('/help', createHelpRouter());
 
