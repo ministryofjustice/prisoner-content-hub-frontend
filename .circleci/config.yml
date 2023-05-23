@@ -324,11 +324,29 @@ workflows:
           context:
             - hmpps-common-vars
             - prisoner-content-hub-development
+          name: deploy_to_dev
           environment: "development"
           qualifier: "${CIRCLE_PULL_REQUEST##*/}"
           releaseChannel: "hub_dev_releases"
           requires:
             - build_preview
+
+      - approve_deploy_staging:
+          <<: *feature_branch
+          type: approval
+          requires:
+            - deploy_to_dev
+
+      - deploy_cloud_platform:
+          <<: *feature_branch
+          context:
+            - hmpps-common-vars
+            - prisoner-content-hub-staging
+          name: deploy_to_staging_branch
+          environment: "staging"
+          releaseChannel: "hub_dev_releases"
+          requires:
+            - approve_deploy_staging
 
       - clean_up_dev_deployments:
           <<: *main_branch
