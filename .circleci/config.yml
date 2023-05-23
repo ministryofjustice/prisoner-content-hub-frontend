@@ -342,7 +342,7 @@ workflows:
           context:
             - hmpps-common-vars
             - prisoner-content-hub-staging
-          name: deploy_to_staging
+          name: deploy_to_staging_branch
           environment: "staging"
           releaseChannel: "hub_dev_releases"
           requires:
