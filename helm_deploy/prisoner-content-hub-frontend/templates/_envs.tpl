@@ -79,6 +79,9 @@ env:
     - name: ANALYTICS_SITE_ID
       value: {{ .Values.application.config.analyticsSiteId }}
 
+    - name: GOOGLE_TAG_MANAGER_SITE_ID
+      value: {{ .Values.application.config.googleTagManagerSiteId }}
+
     - name: SENTRY_DSN
       value: {{ .Values.application.sentry_dsn }}
 

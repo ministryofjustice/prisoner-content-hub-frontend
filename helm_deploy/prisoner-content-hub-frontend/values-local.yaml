@@ -7,6 +7,7 @@ application:
     feedbackServiceName: hub-elasticsearch-elasticsearch-coordinating-only
     feedbackEndpoint: /prod-feedback/_doc
     analyticsSiteId: G-0RBPFCWD3X
+    googleTagManagerSiteId: GTM-M62TTBK
 
 ingress:
   enabled: false
