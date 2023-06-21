@@ -4,6 +4,7 @@ application:
     feedbackServiceName: aws-es-proxy-service
     feedbackEndpoint: /prod-feedback/_doc
     analyticsSiteId: UA-152065860-6
+    googleTagManagerSiteId: GTM-M62TTBK
     mockAuthEnabled: false
     approvedVisitorsFeatureEnabled: true
     adjudicationsFeatureEnabled: true
