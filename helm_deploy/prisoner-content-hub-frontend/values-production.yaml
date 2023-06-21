@@ -3,8 +3,7 @@ application:
     elasticsearchServiceName: aws-es-proxy-service
     feedbackServiceName: aws-es-proxy-service
     feedbackEndpoint: /prod-feedback/_doc
-    analyticsSiteId: G-H1MT63QRLQ
-    googleTagManagerSiteId: GTM-M62TTBK
+    analyticsSiteId: UA-152065860-6
     mockAuthEnabled: false
     approvedVisitorsFeatureEnabled: true
     adjudicationsFeatureEnabled: true

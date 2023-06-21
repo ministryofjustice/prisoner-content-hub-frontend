@@ -1,7 +1,6 @@
 const nunjucks = require('nunjucks');
 const path = require('path');
 const { URLSearchParams } = require('url');
-const { analytics } = require('../config');
 
 const knownPages = require('../content/knownPages.json');
 
@@ -18,8 +17,6 @@ module.exports = expressApp => {
   });
 
   nunjucksEnv.addGlobal('knownPages', knownPages);
-  nunjucksEnv.addGlobal('GA4SiteId', analytics.siteId);
-  nunjucksEnv.addGlobal('GTMSiteId', analytics.gtmSiteId);
   nunjucksEnv.addFilter('skip', (array, count) => array.slice(count));
 
   nunjucksEnv.addFilter('toPagination', ({ page, totalPages }, query) => {

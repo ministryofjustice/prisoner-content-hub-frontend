@@ -1,5 +1,6 @@
 /* eslint no-underscore-dangle: ["error", { "allow": ["_passport"] }] */
 const _passport = require('passport');
+const { path } = require('ramda');
 const { User } = require('./user');
 const { updateSessionEstablishment } = require('../utils');
 
@@ -94,9 +95,12 @@ const createMockSignOut = () =>
 const createSignInCallbackMiddleware = ({
   logger,
   offenderService,
+  analyticsService,
   authenticate = _authenticate,
 }) =>
   async function signInCallback(req, res, next) {
+    const sessionId = path(['session', 'id'], req);
+    const userAgent = path(['body', 'userAgent'], req);
     try {
       const user = await authenticate(req, res, next);
       if (!user) {
@@ -120,19 +124,45 @@ const createSignInCallbackMiddleware = ({
       }
       req.session.passport.user = user.serialize();
 
+      analyticsService.sendEvent({
+        category: 'Signin',
+        action: 'signin',
+        label: 'success',
+        value: 1,
+        sessionId,
+        userAgent,
+      });
+
       return res.redirect(req.session.returnUrl);
     } catch (e) {
       e.message = `SignInCallbackMiddleware (signInCallback) - Failed: ${e.message}`;
+
+      analyticsService.sendEvent({
+        category: 'Signin',
+        action: 'signin',
+        label: 'failure',
+        value: 1,
+        sessionId,
+        userAgent,
+      });
 
       return next(e);
     }
   };
 
-const createSignOutMiddleware = ({ logger }) =>
+const createSignOutMiddleware = ({ logger, analyticsService }) =>
   function signOut(req, res) {
     if (req.session?.isSignedIn) {
       logger.info(`SignOutMiddleware (signOut) - User: ${req.user.prisonerId}`);
       req.session.isSignedIn = false;
+      analyticsService.sendEvent({
+        category: 'Signin',
+        action: 'signout',
+        label: 'success',
+        value: 1,
+        sessionId: path(['session', 'id'], req),
+        userAgent: path(['body', 'userAgent'], req),
+      });
     }
     res.redirect(getSafeReturnUrl(req.query));
   };

@@ -1,15 +1,25 @@
 const { path } = require('ramda');
 const express = require('express');
 
-const createSearchRouter = ({ searchService }) => {
+const createSearchRouter = ({ searchService, analyticsService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
     let results = [];
     const query = path(['query', 'query'], req);
+    const sessionId = path(['session', 'id'], req);
+    const userAgent = path(['headers', 'user-agent'], req);
 
     try {
       results = await searchService.find(query, req.session?.establishmentName);
+      analyticsService.sendEvent({
+        category: 'Search',
+        action: query,
+        label: JSON.stringify(results),
+        value: results.length,
+        sessionId,
+        userAgent,
+      });
 
       return res.render('pages/search', {
         title: 'Search',

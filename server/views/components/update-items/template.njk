@@ -1,5 +1,5 @@
 {% macro updateItem(item) %}
-  <a class="govuk-hub-update-items-link govuk-link govuk-!-margin-bottom-3 {% if item.contentType === 'pdf' or item.contentType === 'moj_pdf_item' %}is-pdf{% endif %}" data-featured-tile-id="{{ item.id }}" data-featured-id="{{item.id}}" data-featured-title="{{ item.title }}" href="{{item.contentUrl}}" {% if item.externalContent %}target="_blank"{% endif %}>
+  <a class="govuk-hub-update-items-link govuk-link govuk-!-margin-bottom-3" data-featured-tile-id="{{ item.id }}" data-featured-id="{{item.id}}" data-featured-title="{{ item.title }}" href="{{item.contentUrl}}" {% if item.externalContent %}target="_blank"{% endif %}>
     <div class="govuk-hub-update-items-link_content">
        {% if item.image.url %}
         <img src="{{item.image.url}}" alt="{{item.image.alt}}" class="tile-image" loading="lazy">
