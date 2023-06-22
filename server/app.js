@@ -31,6 +31,7 @@ const createApp = services => {
   const {
     logger,
     offenderService,
+    analyticsService,
     config = defaultConfig,
     establishmentData = defaultEstablishmentData,
     authMiddleware = defaultAuthMiddleware,
@@ -237,9 +238,11 @@ const createApp = services => {
         signIn: authMiddleware.createSignInMiddleware(),
         signInCallback: authMiddleware.createSignInCallbackMiddleware({
           offenderService,
+          analyticsService,
           logger,
         }),
         signOut: authMiddleware.createSignOutMiddleware({
+          analyticsService,
           logger,
         }),
       }),

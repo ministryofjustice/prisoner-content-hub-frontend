@@ -18,23 +18,24 @@
     {# The default og:image is added below head so that scrapers see any custom metatags first, and this is just a fallback #}
     <meta property="og:image" content="{{ assetPath | default('/assets') }}/images/govuk-opengraph-image.png">
 
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','{{GTMSiteId}}');</script>
-    <!-- End Google Tag Manager -->
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{GA4SiteId}}"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152065860-4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag() {
+        dataLayer.push(arguments);
+      }
       gtag('js', new Date());
-
-      gtag('config', '{{GA4SiteId}}');
+      gtag('config', 'UA-152065860-4');
     </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','{{GTMSiteId}}');</script>
+      <!-- End Google Tag Manager -->
 
   </head>
   <body class="govuk-body">
@@ -42,7 +43,7 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{GTMSiteId}}"
       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-
+    
     <div class="govuk-width-container govuk-!-padding-top-9">
       <main class="govuk-main-wrapper">
         <script>
@@ -83,6 +84,14 @@
         <script src="/public/jquery.min.js"></script>
         <script src="/public/javascript/all.js"></script>
         <script>
+          sendPageTrack({
+            page: document.location.pathname + document.location.search,
+            title: "External Link",
+            userAgent: navigator.userAgent,
+            screen: window.screen.width + 'x' + window.screen.height,
+            viewport: Math.max(document.documentElement.clientWidth, window.innerWidth || 0) + 'x' + Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+          });
+
           $('#doNotShowMessage').change(
             function(){
                 document.cookie = `externalLink_{{ url }}=${$(this).is(':checked') ? 'true; Max-Age=315600000000' : 'false; Max-Age=0'}; SameSite=Lax; Secure; path=/;`;

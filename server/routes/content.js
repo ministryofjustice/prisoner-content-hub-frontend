@@ -1,6 +1,6 @@
 const express = require('express');
 
-const createContentRouter = ({ cmsService }) => {
+const createContentRouter = ({ cmsService, analyticsService }) => {
   const router = express.Router();
 
   router.get('/:id', async (req, res, next) => {
@@ -16,6 +16,7 @@ const createContentRouter = ({ cmsService }) => {
       postscript: false,
     };
 
+    const userAgent = req?.headers?.['user-agent'];
     const { establishmentName } = req.session;
 
     try {
@@ -25,6 +26,7 @@ const createContentRouter = ({ cmsService }) => {
       );
 
       const contentType = data?.contentType;
+      const sessionId = req?.session?.id;
       const categories = data?.categories || [];
       const topics = data?.topics?.filter(topic => topic?.name) || [];
 
@@ -63,6 +65,16 @@ const createContentRouter = ({ cmsService }) => {
           });
         case 'pdf': {
           const { url } = data;
+
+          analyticsService.sendEvent({
+            category: 'PDFs',
+            action: `${data.title}`,
+            label: 'Downloads',
+            sessionId,
+            value: 1,
+            userAgent,
+          });
+
           return res.redirect(303, url);
         }
         default:

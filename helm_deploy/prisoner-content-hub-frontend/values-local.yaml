@@ -6,7 +6,7 @@ application:
     elasticsearchServiceName: hub-elasticsearch-elasticsearch-coordinating-only
     feedbackServiceName: hub-elasticsearch-elasticsearch-coordinating-only
     feedbackEndpoint: /prod-feedback/_doc
-    analyticsSiteId: G-0RBPFCWD3X
+    analyticsSiteId: UA-152065860-4
     googleTagManagerSiteId: GTM-M62TTBK
 
 ingress:
