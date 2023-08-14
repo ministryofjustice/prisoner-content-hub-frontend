@@ -37,7 +37,7 @@ const incentivesApiClient = new IncentivesApiClient({
   cachingStrategy: new InMemoryCachingStrategy(),
 });
 const adjudicationsApiClient = new AdjudicationsApiClient({
-  incentivesApi: config.incentivesApi,
+  adjudicationsApi: config.adjudicationsApi,
   cachingStrategy: new InMemoryCachingStrategy(),
 });
 const cmsApi = new CmsApi({
