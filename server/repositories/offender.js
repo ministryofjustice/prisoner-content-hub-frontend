@@ -81,7 +81,7 @@ function offenderRepository(
 
   function getAdjudicationsFor(offenderNo) {
     return adjudicationsApiHttpClient.get(
-      `${adjudicationsApiBaseUrl}/adjudications/${offenderNo}`,
+      `${adjudicationsApiBaseUrl}/adjudications/${offenderNo}/adjudications`,
       {
         'Page-Limit': config.adjudicationsApi.adjudications.pageLimit,
       },
