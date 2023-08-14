@@ -192,7 +192,7 @@ describe('offenderRepository', () => {
       const result = await repository.getAdjudicationsFor('FOO_ID');
 
       expect(lastCall(adjudicationsApiClient.get)[0]).toContain(
-        '/adjudications/FOO_ID',
+        '/adjudications/FOO_ID/adjudications',
       );
 
       expect(result).toBe('SOME_RESULT');
