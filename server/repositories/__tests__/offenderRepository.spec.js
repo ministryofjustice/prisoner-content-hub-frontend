@@ -215,7 +215,7 @@ describe('getAdjudicationFor', () => {
     const result = await repository.getAdjudicationFor('FOO_ID', 'ADJ_ID');
 
     expect(lastCall(adjudicationsApiClient.get)[0]).toContain(
-      '/FOO_ID/charge/ADJ_ID',
+      '/adjudications/FOO_ID/charge/ADJ_ID',
     );
 
     expect(result).toBe('SOME_RESULT');

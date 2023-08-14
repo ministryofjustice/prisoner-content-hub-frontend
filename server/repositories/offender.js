@@ -90,7 +90,7 @@ function offenderRepository(
 
   function getAdjudicationFor(offenderNo, adjudicationNo) {
     return adjudicationsApiHttpClient.get(
-      `${adjudicationsApiBaseUrl}/${offenderNo}/charge/${adjudicationNo}`,
+      `${adjudicationsApiBaseUrl}/adjudications/${offenderNo}/charge/${adjudicationNo}`,
     );
   }
 
