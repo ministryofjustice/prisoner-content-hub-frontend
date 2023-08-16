@@ -5,9 +5,14 @@ const {
 
 describe('Adjudications', () => {
   it('Should handle an empty response', () => {
-    const adjudications = Adjudications.from();
+    const response = {
+      results: {
+        content: [],
+      }
+    };
+    const adjudications = Adjudications.from(response);
 
-    expect(adjudications.adjudications).not.toBeDefined();
+    expect(adjudications.adjudications).toBeDefined();
 
     const formatted = adjudications.format();
 
@@ -16,15 +21,17 @@ describe('Adjudications', () => {
 
   it('should handle an incomplete response', () => {
     const response = {
-      results: [
-        {
-          adjudicationNumber: 12345,
-        },
-        {
-          reportTime: '2016-05-08T14:16:00',
-        },
-        {},
-      ],
+      results: {
+        content: [
+          {
+            adjudicationNumber: 12345,
+          },
+          {
+            reportTime: '2016-05-08T14:16:00',
+          },
+          {},
+        ],
+      }
     };
 
     const formatted = Adjudications.from(response).format();
@@ -50,24 +57,26 @@ describe('Adjudications', () => {
 
   it('should format data when passed', () => {
     const response = {
-      results: [
-        {
-          adjudicationNumber: 1310574,
-          reportTime: '2016-05-08T14:16:00',
-          agencyIncidentId: 1291673,
-          agencyId: 'WMI',
-          partySeq: 1,
-          adjudicationCharges: [{}],
-        },
-        {
-          adjudicationNumber: 1310549,
-          reportTime: '2012-01-10T08:52:00',
-          agencyIncidentId: 1291652,
-          agencyId: 'WMI',
-          partySeq: 1,
-          adjudicationCharges: [{}, {}, {}, {}, {}],
-        },
-      ],
+      results: {
+        content: [
+          {
+            adjudicationNumber: 1310574,
+            reportTime: '2016-05-08T14:16:00',
+            agencyIncidentId: 1291673,
+            agencyId: 'WMI',
+            partySeq: 1,
+            adjudicationCharges: [{}],
+          },
+          {
+            adjudicationNumber: 1310549,
+            reportTime: '2012-01-10T08:52:00',
+            agencyIncidentId: 1291652,
+            agencyId: 'WMI',
+            partySeq: 1,
+            adjudicationCharges: [{}, {}, {}, {}, {}],
+          },
+        ],
+      }
     };
 
     const formatted = Adjudications.from(response).format();
