@@ -81,7 +81,7 @@ function offenderRepository(
 
   function getAdjudicationsFor(offenderNo) {
     const endpoint = `${adjudicationsApiBaseUrl}/adjudications/${offenderNo}/adjudications`;
-    const query = [`limit=${config.adjudicationsApi.adjudications.pageLimit}`];
+    const query = [`size=${config.adjudicationsApi.adjudications.pageLimit}`];
 
     return adjudicationsApiHttpClient.get(`${endpoint}?${query.join('&')}`);
   }
