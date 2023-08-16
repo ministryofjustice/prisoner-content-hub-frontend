@@ -80,12 +80,10 @@ function offenderRepository(
   }
 
   function getAdjudicationsFor(offenderNo) {
-    return adjudicationsApiHttpClient.get(
-      `${adjudicationsApiBaseUrl}/adjudications/${offenderNo}/adjudications`,
-      {
-        'Page-Limit': config.adjudicationsApi.adjudications.pageLimit,
-      },
-    );
+    const endpoint = `${adjudicationsApiBaseUrl}/adjudications/${offenderNo}/adjudications`;
+    const query = [`limit=${config.adjudicationsApi.adjudications.pageLimit}`];
+
+    return adjudicationsApiHttpClient.get(`${endpoint}?${query.join('&')}`);
   }
 
   function getAdjudicationFor(offenderNo, adjudicationNo) {
