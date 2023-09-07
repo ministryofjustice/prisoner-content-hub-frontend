@@ -16,7 +16,7 @@ orbs:
 parameters:
   node-version:
     type: string
-    default: 18.15-browsers
+    default: 18.17-browsers
 
 commands:
   release_to_namespace:

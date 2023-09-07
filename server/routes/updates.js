@@ -17,9 +17,8 @@ const createUpdatesContentRouter = ({ cmsService }) => {
 
   router.get('/', async (req, res, next) => {
     try {
-      const { updatesContent, isLastPage = true } = await getUpdatesContent(
-        req,
-      );
+      const { updatesContent, isLastPage = true } =
+        await getUpdatesContent(req);
 
       res.render('pages/collections', {
         config: {
