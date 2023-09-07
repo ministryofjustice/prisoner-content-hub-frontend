@@ -794,9 +794,8 @@ describe('PrisonerInformation', () => {
       );
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      const data = await prisonerInformationService.getDamageObligationsFor(
-        user,
-      );
+      const data =
+        await prisonerInformationService.getDamageObligationsFor(user);
 
       expect(prisonApiRepository.getDamageObligationsFor).toHaveBeenCalledWith(
         user.prisonerId,
@@ -829,9 +828,8 @@ describe('PrisonerInformation', () => {
       );
       prisonApiRepository.getPrisonDetails.mockResolvedValue([]);
 
-      const data = await prisonerInformationService.getDamageObligationsFor(
-        user,
-      );
+      const data =
+        await prisonerInformationService.getDamageObligationsFor(user);
 
       expect(prisonApiRepository.getDamageObligationsFor).toHaveBeenCalledWith(
         user.prisonerId,
@@ -862,9 +860,8 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getDamageObligationsFor.mockResolvedValue(null);
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      const data = await prisonerInformationService.getDamageObligationsFor(
-        user,
-      );
+      const data =
+        await prisonerInformationService.getDamageObligationsFor(user);
 
       expect(data).toBeNull();
     });
@@ -877,9 +874,8 @@ describe('PrisonerInformation', () => {
       prisonApiRepository.getDamageObligationsFor.mockRejectedValue('💥');
       prisonApiRepository.getPrisonDetails.mockResolvedValue(prisons);
 
-      const data = await prisonerInformationService.getDamageObligationsFor(
-        user,
-      );
+      const data =
+        await prisonerInformationService.getDamageObligationsFor(user);
 
       expect(data).toEqual(null);
     });
