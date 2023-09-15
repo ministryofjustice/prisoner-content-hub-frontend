@@ -1,5 +1,5 @@
 # First stage
-FROM node:18.15-bullseye-slim as builder
+FROM node:18.17-bullseye-slim as builder
 
 ARG BUILD_NUMBER
 ARG GIT_REF
@@ -22,7 +22,7 @@ RUN npm ci --no-audit --ignore-scripts && \
 
 
 # Second stage
-FROM node:18.15-bullseye-slim
+FROM node:18.17-bullseye-slim
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 
 RUN apt-get update && \

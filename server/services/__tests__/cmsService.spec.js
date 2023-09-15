@@ -903,9 +903,8 @@ describe('cms Service', () => {
 
     beforeEach(async () => {
       cmsApi.getCache.mockResolvedValueOnce(resObject);
-      result = await cmsService.getRecentlyAddedHomepageContent(
-        ESTABLISHMENT_NAME,
-      );
+      result =
+        await cmsService.getRecentlyAddedHomepageContent(ESTABLISHMENT_NAME);
     });
 
     it('should call cmsApi.get once', async () => {

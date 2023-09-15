@@ -292,7 +292,11 @@
 }
 
 .app-step-nav__circle-background {
-  text-shadow: 0 -0.1em 0 #fff, 0.1em 0 0 #fff, 0 0.1em 0 #fff, -0.1em 0 0 #fff;
+  text-shadow:
+    0 -0.1em 0 #fff,
+    0.1em 0 0 #fff,
+    0 0.1em 0 #fff,
+    -0.1em 0 0 #fff;
 }
 
 .app-step-nav__step:first-child .app-step-nav__header {
