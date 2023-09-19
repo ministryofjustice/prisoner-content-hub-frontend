@@ -12,7 +12,8 @@ const createAdjudicationsRouter = ({ offenderService }) => {
 
     const { paginatedData, pageData } = createPagination({
       data: adjudications,
-      maxItemsPerPage: config.prisonApi.adjudications.maxAdjudicationsPerPage,
+      maxItemsPerPage:
+        config.adjudicationsApi.adjudications.maxAdjudicationsPerPage,
       query,
     });
 
