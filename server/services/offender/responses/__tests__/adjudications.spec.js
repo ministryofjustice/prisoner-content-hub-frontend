@@ -8,7 +8,7 @@ describe('Adjudications', () => {
     const response = {
       results: {
         content: [],
-      }
+      },
     };
     const adjudications = Adjudications.from(response);
 
@@ -31,7 +31,7 @@ describe('Adjudications', () => {
           },
           {},
         ],
-      }
+      },
     };
 
     const formatted = Adjudications.from(response).format();
@@ -76,7 +76,7 @@ describe('Adjudications', () => {
             adjudicationCharges: [{}, {}, {}, {}, {}],
           },
         ],
-      }
+      },
     };
 
     const formatted = Adjudications.from(response).format();
