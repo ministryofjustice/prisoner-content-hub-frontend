@@ -110,7 +110,7 @@ const createOffenderService = (
       logger.error(
         `OffenderService (getVisitsFor) - Failed: ${e.message} - User: ${prisonerId}`,
       );
-      logger.error(e.stack);
+      logger.debug(e.stack);
       return {
         error: true,
       };
