@@ -2,6 +2,7 @@ const express = require('express');
 const config = require('../config');
 const { createBreadcrumbs } = require('../utils/breadcrumbs');
 const { createPagination } = require('../utils/pagination');
+const { logger } = require('../utils/logger');
 
 const createAdjudicationsRouter = ({ offenderService }) => {
   const router = express.Router();
@@ -11,7 +12,8 @@ const createAdjudicationsRouter = ({ offenderService }) => {
 
     const { paginatedData, pageData } = createPagination({
       data: adjudications,
-      maxItemsPerPage: config.prisonApi.adjudications.maxAdjudicationsPerPage,
+      maxItemsPerPage:
+        config.adjudicationsApi.adjudications.maxAdjudicationsPerPage,
       query,
     });
 
@@ -37,6 +39,10 @@ const createAdjudicationsRouter = ({ offenderService }) => {
       try {
         personalisation = user ? await getPersonalisation(user, query) : {};
       } catch (e) {
+        logger.error(
+          `Adjudications Route (/) (getAdjudicationsFor) - Failed: ${e.message} - User: ${user.prisonerId}`,
+        );
+        logger.debug(e.stack);
         error = e.message;
       }
 

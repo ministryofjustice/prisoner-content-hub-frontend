@@ -179,17 +179,45 @@ describe('offenderRepository', () => {
 
   describe('getAdjudicationsFor', () => {
     it('calls the adjudications endpoint for a given ID', async () => {
-      const client = {
+      const prisonApiClient = {};
+      const incentivesApiClient = {};
+      const adjudicationsApiClient = {
         get: jest.fn().mockResolvedValue('SOME_RESULT'),
       };
-      const repository = offenderRepository(client);
+      const repository = offenderRepository(
+        prisonApiClient,
+        incentivesApiClient,
+        adjudicationsApiClient,
+      );
       const result = await repository.getAdjudicationsFor('FOO_ID');
 
-      expect(lastCall(client.get)[0]).toContain(
-        'offenders/FOO_ID/adjudications',
+      expect(lastCall(adjudicationsApiClient.get)[0]).toContain(
+        '/adjudications/FOO_ID/adjudications',
       );
 
       expect(result).toBe('SOME_RESULT');
     });
+  });
+});
+
+describe('getAdjudicationFor', () => {
+  it('calls the getAdjudicationFor endpoint for a given ID', async () => {
+    const prisonApiClient = {};
+    const incentivesApiClient = {};
+    const adjudicationsApiClient = {
+      get: jest.fn().mockResolvedValue('SOME_RESULT'),
+    };
+    const repository = offenderRepository(
+      prisonApiClient,
+      incentivesApiClient,
+      adjudicationsApiClient,
+    );
+    const result = await repository.getAdjudicationFor('FOO_ID', 'ADJ_ID');
+
+    expect(lastCall(adjudicationsApiClient.get)[0]).toContain(
+      '/adjudications/FOO_ID/charge/ADJ_ID',
+    );
+
+    expect(result).toBe('SOME_RESULT');
   });
 });

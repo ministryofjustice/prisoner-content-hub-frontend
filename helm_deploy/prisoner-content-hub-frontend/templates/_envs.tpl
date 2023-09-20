@@ -40,6 +40,12 @@ env:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
           key: incentivesApiBaseUrl
 
+    - name: ADJUDICATIONS_API_BASE_URL
+      valueFrom:
+        secretKeyRef:
+          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+          key: adjudicationsApiBaseUrl
+
     - name: HUB_API_ENDPOINT
       valueFrom:
         configMapKeyRef:
@@ -129,7 +135,7 @@ env:
         secretKeyRef:
           name: frontend-redis
           key: auth_token
-    
+
     - name: REDIS_TLS_ENABLED
       value: {{ .Values.application.config.REDIS_TLS_ENABLED }}
       value: "true"

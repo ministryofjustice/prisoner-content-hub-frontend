@@ -8,8 +8,13 @@ function validateOffenderNumberFor(offenderNo) {
 const prisonApiBaseUrl = `${config.prisonApi.baseUrl}/api`;
 const prisonContactRegistryBaseUrl = `${config.prisonerContactRegistryApi.baseUrl}`;
 const incentivesApiBaseUrl = `${config.incentivesApi.baseUrl}`;
+const adjudicationsApiBaseUrl = `${config.adjudicationsApi.baseUrl}`;
 
-function offenderRepository(prisonApiHttpClient, incentivesApiHttpClient) {
+function offenderRepository(
+  prisonApiHttpClient,
+  incentivesApiHttpClient,
+  adjudicationsApiHttpClient,
+) {
   function getOffenderDetailsFor(offenderNo) {
     if (validateOffenderNumberFor(offenderNo)) {
       return prisonApiHttpClient.get(
@@ -75,17 +80,15 @@ function offenderRepository(prisonApiHttpClient, incentivesApiHttpClient) {
   }
 
   function getAdjudicationsFor(offenderNo) {
-    return prisonApiHttpClient.get(
-      `${prisonApiBaseUrl}/offenders/${offenderNo}/adjudications`,
-      {
-        'Page-Limit': config.prisonApi.adjudications.pageLimit,
-      },
-    );
+    const endpoint = `${adjudicationsApiBaseUrl}/adjudications/${offenderNo}/adjudications`;
+    const query = [`size=${config.adjudicationsApi.adjudications.pageLimit}`];
+
+    return adjudicationsApiHttpClient.get(`${endpoint}?${query.join('&')}`);
   }
 
   function getAdjudicationFor(offenderNo, adjudicationNo) {
-    return prisonApiHttpClient.get(
-      `${prisonApiBaseUrl}/offenders/${offenderNo}/adjudications/${adjudicationNo}`,
+    return adjudicationsApiHttpClient.get(
+      `${adjudicationsApiBaseUrl}/adjudications/${offenderNo}/charge/${adjudicationNo}`,
     );
   }
 
