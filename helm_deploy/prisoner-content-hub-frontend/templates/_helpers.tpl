@@ -52,20 +52,6 @@ Create internal Kubernetes hostname
 {{- end }}
 
 {{/*
-Create internal ES Kubernetes hostname
-*/}}
-{{- define "prisoner-content-hub-frontend.elasticsearchServiceHost" -}}
-{{- printf "http://%s.%s.svc.cluster.local:9200" .Values.application.config.elasticsearchServiceName .Release.Namespace }}
-{{- end }}
-
-{{/*
-Create a feedback URL
-*/}}
-{{- define "prisoner-content-hub-frontend.feedbackUrl" -}}
-{{- printf "http://%s.%s.svc.cluster.local:9200%s" .Values.application.config.feedbackServiceName .Release.Namespace .Values.application.config.feedbackEndpoint }}
-{{- end }}
-
-{{/*
 Create a string from a list of values joined by a comma
 */}}
 {{- define "app.joinListWithComma" -}}

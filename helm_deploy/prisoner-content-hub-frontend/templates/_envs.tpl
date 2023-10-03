@@ -59,19 +59,13 @@ env:
       value: {{ .Values.application.config.adjudicationsFeatureEnabled | quote }}
 
     - name: ELASTICSEARCH_ENDPOINT
-      value: {{ include "prisoner-content-hub-frontend.elasticsearchServiceHost" . }}
-
-    - name: ELASTICSEARCH_INDEX_NAME
-      value: "content_index"
-
-    - name: DRUPAL_DATABASE_NAME
       valueFrom:
         secretKeyRef:
-          name: {{ .Values.application.dbSecretName }}
-          key: database_name
+          name: {{ .Values.application.openSearchSecretName }}
+          key: proxy_url
 
-    - name: FEEDBACK_URL
-      value: {{ include "prisoner-content-hub-frontend.feedbackUrl" . }}
+    - name: FEEDBACK_ENDPOINT
+      value: {{ .Values.application.config.feedbackEndpoint }}
 
     - name: NPR_STREAM
       valueFrom:

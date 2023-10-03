@@ -23,7 +23,7 @@ application:
     timeoutSeconds: 5
   contentConfigMapName: prisoner-content-hub-drupal
   nprConfigMapName: npr-live
-  dbSecretName: drupal-rds
+  openSearchSecretName: pfs-opensearch-proxy-url
 
 securityContext:
   capabilities:
