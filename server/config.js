@@ -9,11 +9,10 @@ const elasticsearchEndpoint = getRequiredEnv(
   'ELASTICSEARCH_ENDPOINT',
   'http://localhost:9200',
 );
-const elasticsearchIndexName = getRequiredEnv(
-  'ELASTICSEARCH_INDEX_NAME',
-  'content_index',
+const feedbackEndpoint = getRequiredEnv(
+  'FEEDBACK_ENDPOINT',
+  '/local-feedback/_doc',
 );
-const drupalDatabaseName = getRequiredEnv('DRUPAL_DATABASE_NAME', 'hubdb');
 
 module.exports = {
   isProduction,
@@ -87,9 +86,6 @@ module.exports = {
       maxAdjudicationsPerPage: 10,
     },
   },
-  elasticsearch: {
-    search: `${elasticsearchEndpoint}/elasticsearch_index_${drupalDatabaseName}_${elasticsearchIndexName}/_search`,
-  },
   features: {
     useMockAuth: getEnv('ENABLE_MOCK_AUTH', 'false') === 'true',
     showStackTraces:
@@ -126,10 +122,7 @@ module.exports = {
     gtmSiteId: getEnv('GOOGLE_TAG_MANAGER_SITE_ID', 'GTM-M62TTBK'),
   },
   feedback: {
-    endpoint: getRequiredEnv(
-      'FEEDBACK_URL',
-      'http://localhost:9200/local-feedback/_doc',
-    ),
+    endpoint: elasticsearchEndpoint + feedbackEndpoint,
   },
   npr: {
     stream: getEnv('NPR_STREAM', '/npr-stream'),

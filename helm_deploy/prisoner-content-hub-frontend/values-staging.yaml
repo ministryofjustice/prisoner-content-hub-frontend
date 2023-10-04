@@ -1,7 +1,5 @@
 application:
   config:
-    elasticsearchServiceName: aws-es-proxy-service
-    feedbackServiceName: aws-es-proxy-service
     feedbackEndpoint: /prod-feedback/_doc
     analyticsSiteId: G-FVRKLRH5PJ
     googleTagManagerSiteId: GTM-M62TTBK
