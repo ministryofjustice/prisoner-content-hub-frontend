@@ -13,7 +13,7 @@ describe('Healthcheck', () => {
     });
 
     it('Health/readiness is visible and UP', () => {
-      cy.request('/health/readiness').its('body.status').should('equal', 'OK');
+      cy.request('/health/readiness').its('body.status').should('equal', 'UP');
     });
   });
 });
