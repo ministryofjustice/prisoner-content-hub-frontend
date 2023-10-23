@@ -44,7 +44,7 @@ describe('GET healthchecks', () => {
       .expect('Content-Type', /json/)
       .then(res => {
         expect(res.body).toStrictEqual({
-          status: 'OK',
+          status: 'UP',
         });
       }));
 });
