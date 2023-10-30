@@ -43,7 +43,7 @@ class BasicPageQuery {
       created: item.created,
       contentType: 'page',
       breadcrumbs: mapBreadcrumbs(item.breadcrumbs, item.title),
-      description: item.fieldMainBodyContent.processed,
+      description: item.fieldMainBodyContent?.processed,
       standFirst: item.fieldMojStandFirst,
       categories: getCategoryId(item.fieldMojTopLevelCategories),
       topics: buildFieldTopics(item.fieldTopics),
