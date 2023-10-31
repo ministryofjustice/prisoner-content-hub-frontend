@@ -74,5 +74,36 @@ describe('Basic page query', () => {
         topics: [{ id: 2345, name: 'carol', uuid: 101 }],
       });
     });
+
+    it('handles missing moj description with missing fieldMainBodyContent', async () => {
+      const basicPage = {
+        drupalInternal_Nid: 5923,
+        created: '2020-01-03T01:02:30',
+        title: 'Novus',
+        type: 'node--node--page',
+        breadcrumbs: [{ uri: 'parent1Url', title: 'parent1' }],
+        fieldExcludeFeedback: true,
+        fieldMojStandFirst: 'Education',
+        fieldMojTopLevelCategories: {
+          resourceIdObjMeta: { drupal_internal__target_id: 1234 },
+          name: 'steve',
+          id: 101,
+        },
+        fieldTopics: [{ drupalInternal_Tid: 2345, name: 'carol', id: 101 }],
+      };
+
+      expect(query.transform(basicPage)).toStrictEqual({
+        id: 5923,
+        created: '2020-01-03T01:02:30',
+        title: 'Novus',
+        contentType: 'page',
+        breadcrumbs: [{ href: 'parent1Url', text: 'parent1' }],
+        description: undefined,
+        excludeFeedback: true,
+        standFirst: 'Education',
+        categories: { id: 1234, name: 'steve', uuid: 101 },
+        topics: [{ id: 2345, name: 'carol', uuid: 101 }],
+      });
+    });
   });
 });
