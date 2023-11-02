@@ -26,7 +26,7 @@ function offenderRepository(
 
   function getIncentivesSummaryFor(bookingId) {
     return incentivesApiHttpClient.get(
-      `${incentivesApiBaseUrl}/iep/reviews/booking/${bookingId}`,
+      `${incentivesApiBaseUrl}/incentive-reviews/reviews/booking/${bookingId}`,
     );
   }
 
