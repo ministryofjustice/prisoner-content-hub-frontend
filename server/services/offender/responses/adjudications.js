@@ -18,7 +18,7 @@ const formatAdjudication = adjudication => ({
 class Adjudications {
   constructor(options = {}) {
     const { results } = options;
-    this.adjudications = results.content;
+    this.adjudications = results;
   }
 
   format() {
