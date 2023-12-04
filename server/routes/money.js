@@ -1,5 +1,11 @@
 const express = require('express');
-const { startOfMonth, parseISO, endOfMonth, isFuture } = require('date-fns');
+const {
+  startOfMonth,
+  parseISO,
+  endOfMonth,
+  isFuture,
+  isValid,
+} = require('date-fns');
 const {
   createTransactionsResponseFrom,
   createDamageObligationsResponseFrom,
@@ -15,14 +21,22 @@ function isValidDateSelection(selectedDate, dateSelection) {
 }
 
 function processSelectedDate(selectedDate) {
-  const dateSelection = getDateSelection(new Date(), parseISO(selectedDate));
+  const parsedDate = parseISO(selectedDate);
+  const selectedDateForNewDate = new Date();
+
+  if (isValid(parsedDate)) {
+    const selectedYear = parsedDate.getFullYear();
+    selectedDateForNewDate.setFullYear(selectedYear);
+  }
+
+  const dateSelection = getDateSelection(selectedDateForNewDate, parsedDate);
   const fromDate = isValidDateSelection(selectedDate, dateSelection)
     ? parseISO(selectedDate)
-    : startOfMonth(new Date());
+    : startOfMonth(selectedDateForNewDate);
   const endOfSelectedMonth = endOfMonth(fromDate);
   const toDate = !isFuture(endOfSelectedMonth)
     ? endOfSelectedMonth
-    : new Date();
+    : selectedDateForNewDate;
 
   return {
     dateSelection,
