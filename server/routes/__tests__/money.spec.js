@@ -30,6 +30,7 @@ const api = {
 
 describe('Prisoner Money', () => {
   let app;
+  let clock;
   const client = { get: jest.fn() };
   const stubApiCalls = mockServer(client);
   const prisonApiRepository = new PrisonApiRepository({
@@ -169,6 +170,14 @@ describe('Prisoner Money', () => {
     app.use(setCurrentUser);
     app.use('/money', moneyRouter);
     app.use(consoleLogError);
+
+    clock = FakeTimers.install({
+      now: new Date('2021-03-10T12:00:00.000'),
+    });
+  });
+
+  afterEach(() => {
+    clock.uninstall();
   });
 
   describe('GET /money/transactions/spends', () => {
@@ -338,14 +347,14 @@ describe('Prisoner Money', () => {
       const spy = jest.spyOn(prisonerInformationService, 'getTransactionsFor');
 
       await request(app)
-        .get('/money/transactions/spends?selectedDate=2022-12-01')
+        .get('/money/transactions/spends?selectedDate=2021-01-01')
         .expect(200)
         .then(() => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
             'spends',
-            new Date('2022-12-01T00:00:00.000'),
-            new Date('2022-12-31T23:59:59.999'),
+            new Date('2021-01-01T00:00:00.000'),
+            new Date('2021-01-31T23:59:59.999'),
           );
         });
     });
@@ -358,10 +367,6 @@ describe('Prisoner Money', () => {
       // jest
       //   .useFakeTimers('modern')
       //   .setSystemTime(new Date('2021-03-10T12:00:00.000').getTime());
-
-      const clock = FakeTimers.install({
-        now: new Date('2021-03-10T12:00:00.000'),
-      });
 
       const spy = jest.spyOn(prisonerInformationService, 'getTransactionsFor');
       await request(app)
@@ -399,8 +404,6 @@ describe('Prisoner Money', () => {
             new Date('2021-03-10T12:00:00.000'),
           );
         });
-
-      clock.uninstall();
     });
   });
 
@@ -535,6 +538,7 @@ describe('Prisoner Money', () => {
           [api.balances, success(balancesApiResponse)],
         ]);
       });
+
       it('notifies the user', async () => {
         await request(app)
           .get('/money/transactions/private')
@@ -675,13 +679,13 @@ describe('Prisoner Money', () => {
       );
 
       await request(app)
-        .get('/money/transactions/private?selectedDate=2022-12-01')
+        .get('/money/transactions/private?selectedDate=2021-01-01')
         .expect(200)
         .then(() => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
-            new Date('2022-12-01T00:00:00.000'),
-            new Date('2022-12-31T23:59:59.999'),
+            new Date('2021-01-01T00:00:00.000'),
+            new Date('2021-01-31T23:59:59.999'),
           );
         });
     });
@@ -694,10 +698,6 @@ describe('Prisoner Money', () => {
       // jest
       //   .useFakeTimers('modern')
       //   .setSystemTime(new Date('2021-03-10T12:00:00.000').getTime());
-
-      const clock = FakeTimers.install({
-        now: new Date('2021-03-10T12:00:00.000'),
-      });
 
       const spy = jest.spyOn(
         prisonerInformationService,
@@ -735,8 +735,6 @@ describe('Prisoner Money', () => {
             new Date('2021-03-10T12:00:00.000'),
           );
         });
-
-      clock.uninstall();
     });
   });
 
@@ -902,14 +900,14 @@ describe('Prisoner Money', () => {
       const spy = jest.spyOn(prisonerInformationService, 'getTransactionsFor');
 
       await request(app)
-        .get('/money/transactions/savings?selectedDate=2022-12-01')
+        .get('/money/transactions/savings?selectedDate=2021-01-01')
         .expect(200)
         .then(() => {
           expect(spy).toHaveBeenCalledWith(
             testUser,
             'savings',
-            new Date('2022-12-01T00:00:00.000'),
-            new Date('2022-12-31T23:59:59.999'),
+            new Date('2021-01-01T00:00:00.000'),
+            new Date('2021-01-31T23:59:59.999'),
           );
         });
     });
@@ -922,10 +920,6 @@ describe('Prisoner Money', () => {
       // jest
       //   .useFakeTimers('modern')
       //   .setSystemTime(new Date('2021-03-10T12:00:00.000').getTime());
-
-      const clock = FakeTimers.install({
-        now: new Date('2021-03-10T12:00:00.000'),
-      });
 
       const spy = jest.spyOn(prisonerInformationService, 'getTransactionsFor');
       await request(app)
@@ -963,8 +957,6 @@ describe('Prisoner Money', () => {
             new Date('2021-03-10T12:00:00.000'),
           );
         });
-
-      clock.uninstall();
     });
   });
 

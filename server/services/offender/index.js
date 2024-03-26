@@ -120,9 +120,8 @@ const createOffenderService = (
   async function getVisitsRemaining({ prisonerId }) {
     try {
       logger.info(`OffenderService (getVisitsRemaining) - User: ${prisonerId}`);
-      const { remainingPvo, remainingVo } = await repository.getVisitBalances(
-        prisonerId,
-      );
+      const { remainingPvo, remainingVo } =
+        await repository.getVisitBalances(prisonerId);
       return { visitsRemaining: remainingPvo + remainingVo };
     } catch (e) {
       if (e?.response?.status === 404) return { visitsRemaining: 0 };

@@ -4,7 +4,7 @@ const createHealthRouter = () => {
   const router = express.Router();
 
   router.get('/', (_, res) => res.json(addAppInfo({ healthy: true })));
-  router.get('/readiness', (_, res) => res.json({ status: 'OK' }));
+  router.get('/readiness', (_, res) => res.json({ status: 'UP' }));
 
   return router;
 };

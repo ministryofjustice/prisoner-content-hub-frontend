@@ -40,6 +40,12 @@ env:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
           key: incentivesApiBaseUrl
 
+    - name: ADJUDICATIONS_API_BASE_URL
+      valueFrom:
+        secretKeyRef:
+          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
+          key: adjudicationsApiBaseUrl
+
     - name: HUB_API_ENDPOINT
       valueFrom:
         configMapKeyRef:
@@ -53,19 +59,13 @@ env:
       value: {{ .Values.application.config.adjudicationsFeatureEnabled | quote }}
 
     - name: ELASTICSEARCH_ENDPOINT
-      value: {{ include "prisoner-content-hub-frontend.elasticsearchServiceHost" . }}
-
-    - name: ELASTICSEARCH_INDEX_NAME
-      value: "content_index"
-
-    - name: DRUPAL_DATABASE_NAME
       valueFrom:
         secretKeyRef:
-          name: {{ .Values.application.dbSecretName }}
-          key: database_name
+          name: {{ .Values.application.openSearchSecretName }}
+          key: proxy_url
 
-    - name: FEEDBACK_URL
-      value: {{ include "prisoner-content-hub-frontend.feedbackUrl" . }}
+    - name: FEEDBACK_ENDPOINT
+      value: {{ .Values.application.config.feedbackEndpoint }}
 
     - name: NPR_STREAM
       valueFrom:
@@ -129,7 +129,7 @@ env:
         secretKeyRef:
           name: frontend-redis
           key: auth_token
-    
+
     - name: REDIS_TLS_ENABLED
       value: {{ .Values.application.config.REDIS_TLS_ENABLED }}
       value: "true"

@@ -9,11 +9,10 @@ const elasticsearchEndpoint = getRequiredEnv(
   'ELASTICSEARCH_ENDPOINT',
   'http://localhost:9200',
 );
-const elasticsearchIndexName = getRequiredEnv(
-  'ELASTICSEARCH_INDEX_NAME',
-  'content_index',
+const feedbackEndpoint = getRequiredEnv(
+  'FEEDBACK_ENDPOINT',
+  '/local-feedback/_doc',
 );
-const drupalDatabaseName = getRequiredEnv('DRUPAL_DATABASE_NAME', 'hubdb');
 
 module.exports = {
   isProduction,
@@ -79,8 +78,17 @@ module.exports = {
     },
     baseUrl: getRequiredEnv('INCENTIVES_API_BASE_URL', 'https://api.nomis'),
   },
-  elasticsearch: {
-    search: `${elasticsearchEndpoint}/elasticsearch_index_${drupalDatabaseName}_${elasticsearchIndexName}/_search`,
+  adjudicationsApi: {
+    auth: {
+      clientId: getEnv('HMPPS_AUTH_CLIENT_ID', 'UNSET'),
+      clientSecret: getEnv('HMPPS_AUTH_CLIENT_SECRET', 'UNSET'),
+      authUrl: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
+    },
+    baseUrl: getRequiredEnv('ADJUDICATIONS_API_BASE_URL', 'https://api.nomis'),
+    adjudications: {
+      pageLimit: 50,
+      maxAdjudicationsPerPage: 10,
+    },
   },
   features: {
     useMockAuth: getEnv('ENABLE_MOCK_AUTH', 'false') === 'true',
@@ -118,10 +126,7 @@ module.exports = {
     gtmSiteId: getEnv('GOOGLE_TAG_MANAGER_SITE_ID', 'GTM-M62TTBK'),
   },
   feedback: {
-    endpoint: getRequiredEnv(
-      'FEEDBACK_URL',
-      'http://localhost:9200/local-feedback/_doc',
-    ),
+    endpoint: elasticsearchEndpoint + feedbackEndpoint,
   },
   npr: {
     stream: getEnv('NPR_STREAM', '/npr-stream'),

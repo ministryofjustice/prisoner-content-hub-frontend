@@ -22,9 +22,7 @@ class TopicsQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/taxonomy_term?${
-      TopicsQuery.#QUERYSTRING
-    }`;
+    return `/jsonapi/prison/${this.establishmentName}/taxonomy_term?${TopicsQuery.#QUERYSTRING}`;
   }
 
   transformEach({ drupalInternal_Tid: id, name }) {

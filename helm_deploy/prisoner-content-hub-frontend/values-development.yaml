@@ -3,8 +3,6 @@ image:
 
 application:
   config:
-    elasticsearchServiceName: aws-es-proxy-service
-    feedbackServiceName: aws-es-proxy-service
     feedbackEndpoint: /prod-feedback/_doc
     analyticsSiteId: G-0RBPFCWD3X
     googleTagManagerSiteId: GTM-M62TTBK

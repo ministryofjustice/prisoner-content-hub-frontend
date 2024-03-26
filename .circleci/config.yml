@@ -10,13 +10,13 @@ feature_branch: &feature_branch
 version: 2.1
 
 orbs:
-  hmpps: ministryofjustice/hmpps@3.14
-  slack: circleci/slack@4.4
+  hmpps: ministryofjustice/hmpps@7
+  slack: circleci/slack@4.12.5
 
 parameters:
   node-version:
     type: string
-    default: 18.15-browsers
+    default: 20.9-browsers
 
 commands:
   release_to_namespace:
@@ -57,6 +57,7 @@ commands:
               --set prisonApiBaseUrl="${PRISON_API_BASE_URL}" \
               --set prisonerContactRegistryApiBaseUrl="${PRISONER_CONTACT_REGISTRY_BASE_URL}" \
               --set incentivesApiBaseUrl="${INCENTIVES_API_BASE_URL}" \
+              --set adjudicationsApiBaseUrl="${ADJUDICATIONS_API_BASE_URL}" \
               --set cacheSecret="${CACHE_SECRET}" \
               --set prisonerAuthAD.clientId="${AZURE_AD_CLIENT_ID}" \
               --set prisonerAuthAD.clientSecret="${AZURE_AD_CLIENT_SECRET}" \
