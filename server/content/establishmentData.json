@@ -107,5 +107,11 @@
     "displayName": "HMP Woodhill",
     "youth": false,
     "agencyId": "WHI"
+  },
+  "2001": {
+    "name": "chelmsford",
+    "displayName": "HMP CHELMSFORD",
+    "youth": false,
+    "agencyId": "CDI"
   }
 }
