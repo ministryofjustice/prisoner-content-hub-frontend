@@ -19,10 +19,10 @@ const mapNoneCMSUrls = (originalUrl, primaryNavigation) => {
     case '/approved-visitors':
       return '/profile';
     case '/games':
-      // Assumption made that games will appear in an 'entertainment' primary category
+      // Assumption made that games will appear in the 'inspire and entertain' primary category
       return (
         primaryNavigation.find(({ text = '' }) =>
-          text.toLowerCase().includes('entertainment'),
+          text.toLowerCase().includes('inspire and entertain'),
         )?.href || originalUrl
       );
     default:
