@@ -153,7 +153,7 @@ describe('CmsApi', () => {
         expect(testCacheStrategy.set).toHaveBeenCalledWith(
           key,
           expectedResult,
-          3600,
+          300,
         );
       });
     });

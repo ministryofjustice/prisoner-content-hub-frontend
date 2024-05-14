@@ -57,7 +57,7 @@ class TopicPageQuery {
   }
 
   getExpiry() {
-    return 3600;
+    return 60;
   }
 
   path() {

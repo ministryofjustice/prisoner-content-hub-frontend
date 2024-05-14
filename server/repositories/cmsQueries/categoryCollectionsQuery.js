@@ -41,7 +41,7 @@ class CategoryCollectionsQuery {
   }
 
   getExpiry() {
-    return 3600;
+    return 300;
   }
 
   path() {
