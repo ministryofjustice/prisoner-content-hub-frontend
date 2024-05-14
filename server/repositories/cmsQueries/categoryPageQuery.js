@@ -43,7 +43,7 @@ class CategoryPageQuery {
   }
 
   getExpiry() {
-    return 60;
+    return 3600;
   }
 
   path() {
