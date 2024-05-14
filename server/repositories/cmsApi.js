@@ -82,7 +82,7 @@ class CmsApi {
       throw new Error(
         `Could not retrieve cache key from query: ${query?.constructor?.name}`,
       );
-    const expiry = query.getExpiry?.() || 3600;
+    const expiry = query.getExpiry?.() || 300;
     let data = key ? await this.#cache.get(key) : null;
     if (!data) {
       data = (await this.get(query)) || [];

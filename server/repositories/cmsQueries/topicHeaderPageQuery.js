@@ -23,7 +23,7 @@ class TopicHeaderPageQuery {
   }
 
   getExpiry() {
-    return 3600;
+    return 300;
   }
 
   url() {
