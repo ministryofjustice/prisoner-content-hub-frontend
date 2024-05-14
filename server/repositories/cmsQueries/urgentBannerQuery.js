@@ -25,7 +25,7 @@ class UrgentBannerQuery {
   }
 
   getExpiry() {
-    return 300;
+    return 3600;
   }
 
   path() {

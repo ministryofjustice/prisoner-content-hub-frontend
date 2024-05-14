@@ -57,7 +57,7 @@ class SeriesPageQuery {
   }
 
   getExpiry() {
-    return 60;
+    return 3600;
   }
 
   path() {
