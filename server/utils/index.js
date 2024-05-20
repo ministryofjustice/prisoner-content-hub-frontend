@@ -1,3 +1,4 @@
+const { logger } = require('./logger');
 const defaultEstablishmentData = require('../content/establishmentData.json');
 
 const getEstablishmentId = (
@@ -25,8 +26,11 @@ const getEstablishment = (
 };
 
 const updateSessionEstablishment = (req, agencyId) => {
+  logger.info(`Calling updateSessionEstablishment with agencyId ${agencyId}`)
   if (!req.session?.establishmentName) {
+    logger.info('No establishmentName found')
     const { establishmentId, establishmentName } = getEstablishment(agencyId);
+    logger.info(`getEstablishment returned establishmentId=${establishmentId}, establishmentName=${establishmentName}`)
     req.session.establishmentId = establishmentId;
     req.session.establishmentName = establishmentName;
   }
