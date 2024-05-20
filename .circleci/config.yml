@@ -328,7 +328,7 @@ workflows:
           name: deploy_to_dev
           environment: "development"
           qualifier: "${CIRCLE_PULL_REQUEST##*/}"
-          releaseChannel: "hub_dev_releases"
+          releaseChannel: "launchpad_alerts_nonprod"
           requires:
             - build_preview
 
@@ -345,7 +345,7 @@ workflows:
             - prisoner-content-hub-staging
           name: deploy_to_staging_branch
           environment: "staging"
-          releaseChannel: "hub_dev_releases"
+          releaseChannel: "launchpad_alerts_nonprod"
           requires:
             - approve_deploy_staging
 
@@ -367,7 +367,7 @@ workflows:
             - prisoner-content-hub-staging
           name: deploy_to_staging
           environment: "staging"
-          releaseChannel: "hub_dev_releases"
+          releaseChannel: "launchpad_alerts_nonprod"
           requires:
             - build_production
 
@@ -383,7 +383,7 @@ workflows:
             - hmpps-common-vars
             - prisoner-content-hub-prod
           environment: "production"
-          releaseChannel: "hub_releases"
+          releaseChannel: "launchpad_alerts"
           requires:
             - approve_deploy_production
 
@@ -397,11 +397,11 @@ workflows:
                 - main
     jobs:
       - hmpps/npm_security_audit:
-          slack_channel: hub_frontend
+          slack_channel: "launchpad_alerts"
           context:
             - hmpps-common-vars
       - hmpps/veracode_pipeline_scan:
-          slack_channel: hub_frontend
+          slack_channel: launchpad_alerts
           context:
             - hmpps-common-vars
             - veracode-credentials
@@ -415,7 +415,7 @@ workflows:
                 - main
     jobs:
       - hmpps/veracode_policy_scan:
-          slack_channel: hub_frontend
+          slack_channel: launchpad_alerts
           context:
             - veracode-credentials
             - hmpps-common-vars
