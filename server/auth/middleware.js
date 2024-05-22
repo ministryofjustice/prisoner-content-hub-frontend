@@ -110,7 +110,6 @@ const createSignInCallbackMiddleware = ({
       if (isPrisonerId(user.prisonerId)) {
         const { bookingId, agencyId } =
           await offenderService.getOffenderDetailsFor(user);
-        logger.info(`agencyId: ${agencyId}`);
         user.setBookingId(bookingId);
         if (!req.session?.establishmentName) {
           updateSessionEstablishment(req, agencyId);
