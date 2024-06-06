@@ -12,7 +12,7 @@
 <html lang="{{ htmlLang | default('en') }}" class="govuk-template {{ htmlClasses }}">
   <head>
     <meta charset="utf-8"/>
-    <title>Content Hub - {% block pageTitle -%}{{ title if title else establishmentDisplayName}}{%- endblock -%}</title>
+    <title>{% block pageTitle -%}{{ title if title else establishmentDisplayName}}{%- endblock %} - Content Hub</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="{{ themeColor | default('#0b0c0c') }}"/>
     <meta name="robots" content="noindex, nofollow, noimageindex">
