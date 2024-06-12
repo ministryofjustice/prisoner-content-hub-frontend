@@ -58,7 +58,7 @@ const createApp = services => {
     dsn: process.env.SENTRY_DSN,
     integrations: [
       // enable HTTP calls tracing
-      new Sentry.Integrations.Http({ tracing: true }),
+      Sentry.httpIntegration({ tracing: true }),
       // enable Express.js middleware tracing
       new Tracing.Integrations.Express({ app }),
     ],
@@ -75,10 +75,6 @@ const createApp = services => {
         : 0.05;
     },
   });
-  app.use(Sentry.Handlers.requestHandler());
-
-  // TracingHandler creates a trace for every incoming request
-  app.use(Sentry.Handlers.tracingHandler());
 
   // Secure code best practice - see:
   // 1. https://expressjs.com/en/advanced/best-practice-security.html,
@@ -264,13 +260,7 @@ const createApp = services => {
   app.use(routes(services, establishmentData));
   // the sentry error handler has to be placed between our controllers and our error handler
   // https://docs.sentry.io/platforms/node/guides/express/
-  app.use(
-    Sentry.Handlers.errorHandler({
-      shouldHandleError(error) {
-        return !(error instanceof NotFound);
-      },
-    }),
-  );
+  Sentry.setupExpressErrorHandler(app);
 
   app.use(renderErrors);
 

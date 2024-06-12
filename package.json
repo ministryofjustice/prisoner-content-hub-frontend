@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@ministryofjustice/frontend": "^1.8.1",
-    "@sentry/node": "^7.108.0",
+    "@sentry/node": "^8.9.2",
     "@sentry/tracing": "^7.108.0",
     "applicationinsights": "^2.9.5",
     "axios": "^1.6.8",
