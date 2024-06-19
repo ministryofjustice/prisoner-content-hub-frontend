@@ -43,6 +43,7 @@ ingress:
   path: /
   prefixes:
     - berwyn
+    - bullingdon
     - chelmsford
     - cookhamwood
     - erlestoke

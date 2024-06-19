@@ -91,7 +91,7 @@ describe('SearchService', () => {
         expect(service.isInvalid(test)).toBe(false);
       });
     });
-    ['', 'a'.repeat(51)].forEach(test => {
+    [undefined, '', 'a'.repeat(51)].forEach(test => {
       it(`'${test}' should be valid input to search`, () => {
         expect(service.isInvalid(test)).toBe(true);
       });

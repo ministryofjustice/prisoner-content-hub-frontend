@@ -1,7 +1,7 @@
 const { SearchQuery } = require('../repositories/cmsQueries/searchQuery');
 
 const createSearchService = ({ cmsApi }) => {
-  const isInvalid = query => query === '' || query.length > 50;
+  const isInvalid = query => !query || query === '' || query.length > 50;
   const sanitise = query => query.replace(/[^a-zA-Z0-9';,\-()!"]+/g, ' ');
 
   function find(query, establishmentName) {

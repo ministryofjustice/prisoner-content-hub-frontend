@@ -43,7 +43,7 @@ class RecentlyAddedHomepageContentQuery {
 
       .getQueryString();
 
-    this.query = `${queryWithoutOffset}&${getPagination(1, 4)}`;
+    this.query = `${queryWithoutOffset}&${getPagination(1, 8)}`;
   }
 
   getKey() {
