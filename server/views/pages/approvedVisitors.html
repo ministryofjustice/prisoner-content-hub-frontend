@@ -45,9 +45,6 @@
 
 {% block bodyEnd %}
   <script src="/public/all.js"></script>
-  <script>
-    window
-      .GOVUKFrontend
-      .initAll();
-  </script>
+  <script type="module" src="/assets/javascript/govukFrontendInit.js"></script>
+  <script src="/assets/javascript/mojFrontendInit.js"></script>
 {% endblock %}

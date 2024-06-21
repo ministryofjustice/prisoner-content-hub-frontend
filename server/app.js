@@ -140,7 +140,7 @@ const createApp = services => {
     '../public',
     '../assets',
     '../assets/stylesheets',
-    '../node_modules/govuk-frontend/govuk/',
+    '../node_modules/govuk-frontend/dist/govuk/',
     '../node_modules/jquery/dist',
     '../node_modules/nunjucks/browser',
     '../node_modules/@ministryofjustice/frontend/moj/',
@@ -152,7 +152,7 @@ const createApp = services => {
   app.use(
     '/assets',
     express.static(
-      path.join(__dirname, '../node_modules/govuk-frontend/govuk/assets'),
+      path.join(__dirname, '../node_modules/govuk-frontend/dist/govuk/assets'),
       cacheControl,
     ),
   );
