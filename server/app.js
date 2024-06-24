@@ -1,3 +1,4 @@
+require('./instrument');
 const express = require('express');
 const compression = require('compression');
 const uuid = require('uuid');
@@ -8,7 +9,6 @@ const session = require('cookie-session');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
 const Sentry = require('@sentry/node');
-const Tracing = require('@sentry/tracing');
 const nunjucksSetup = require('./utils/nunjucksSetup');
 
 const { createHealthRouter } = require('./routes/health');
@@ -52,33 +52,6 @@ const createApp = services => {
 
   // Server Configuration
   app.set('port', process.env.PORT || 3000);
-
-  // Set up Sentry before (almost) everything else, so we can capture any exceptions during startup
-  Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    integrations: [
-      // enable HTTP calls tracing
-      new Sentry.Integrations.Http({ tracing: true }),
-      // enable Express.js middleware tracing
-      new Tracing.Integrations.Express({ app }),
-    ],
-
-    tracesSampler: samplingContext => {
-      const transactionName = samplingContext?.transactionContext?.name;
-      return transactionName &&
-        (transactionName.includes('/health') ||
-          transactionName.includes('/public/') ||
-          transactionName.includes('/assets/') ||
-          transactionName.includes('/analytics/page') ||
-          transactionName.includes('/analytics/event'))
-        ? 0
-        : 0.05;
-    },
-  });
-  app.use(Sentry.Handlers.requestHandler());
-
-  // TracingHandler creates a trace for every incoming request
-  app.use(Sentry.Handlers.tracingHandler());
 
   // Secure code best practice - see:
   // 1. https://expressjs.com/en/advanced/best-practice-security.html,
@@ -262,15 +235,9 @@ const createApp = services => {
   app.use([setCurrentUser, setReturnUrl]);
 
   app.use(routes(services, establishmentData));
-  // the sentry error handler has to be placed between our controllers and our error handler
-  // https://docs.sentry.io/platforms/node/guides/express/
-  app.use(
-    Sentry.Handlers.errorHandler({
-      shouldHandleError(error) {
-        return !(error instanceof NotFound);
-      },
-    }),
-  );
+  // Add Sentry error handler to the Express app as per the latest version
+  // https://docs.sentry.io/platforms/javascript/guides/express/migration/v7-to-v8/
+  Sentry.setupExpressErrorHandler(app);
 
   app.use(renderErrors);
 
