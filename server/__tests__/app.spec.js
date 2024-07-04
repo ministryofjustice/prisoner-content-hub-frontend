@@ -8,47 +8,13 @@ const establishmentData = require('../content/establishmentData.json');
 const { logger } = require('../../test/test-helpers');
 const { User } = require('../auth/user');
 
-jest.mock('@sentry/node', () => {
-  const errorHandlingMiddleware = jest.fn();
-  const requestHandlingMiddleware = jest.fn();
-  const tracingHandlingMiddleware = jest.fn();
-  const httpHandlingMiddleware = jest.fn();
-  const expressHandlingMiddleware = jest.fn();
-  return {
-    init: jest.fn(),
-    Integrations: {
-      Http: jest.fn(() => (req, res, next) => {
-        httpHandlingMiddleware();
-        next();
-      }),
-      Express: jest.fn(() => (req, res, next) => {
-        expressHandlingMiddleware();
-        next();
-      }),
-    },
-    Handlers: {
-      errorHandler: jest.fn(() => (err, req, res, next) => {
-        errorHandlingMiddleware();
-        next(err);
-      }),
-      requestHandler: jest.fn(() => (req, res, next) => {
-        requestHandlingMiddleware();
-        next();
-      }),
-      tracingHandler: jest.fn(() => (req, res, next) => {
-        tracingHandlingMiddleware();
-        next();
-      }),
-    },
-
-    captureMessage: jest.fn(),
-    errorHandlingMiddleware,
-    requestHandlingMiddleware,
-    tracingHandlingMiddleware,
-    httpHandlingMiddleware,
-    expressHandlingMiddleware,
-  };
-});
+jest.mock('@sentry/node', () => ({
+  init: jest.fn(),
+  captureException: jest.fn(),
+  httpIntegration: jest.fn(),
+  expressIntegration: jest.fn(),
+  setupExpressErrorHandler: jest.fn(),
+}));
 jest.mock('passport', () => ({
   use: jest.fn(() => true),
   serializeUser: jest.fn(() => true),
@@ -72,25 +38,15 @@ describe('Sentry', () => {
 
   it('creates the Sentry error handling middleware', () => {
     app();
-    expect(Sentry.Handlers.errorHandler).toHaveBeenCalled();
+    expect(Sentry.setupExpressErrorHandler).toHaveBeenCalled();
   });
 
-  it('creates the Sentry request handling middleware', () => {
-    app();
-    expect(Sentry.Handlers.requestHandler).toHaveBeenCalled();
-  });
-
-  it('creates the Sentry tracing handling middleware', () => {
-    app();
-    expect(Sentry.Handlers.tracingHandler).toHaveBeenCalled();
-  });
-
-  it('does not call the Sentry error handling middleware when a request succeeds', async () => {
+  it('does not call the Sentry capture exception when a request succeeds', async () => {
     await request(app())
       .get('/games/chess')
       .set('host', 'wayland.content-hub')
       .expect(200);
-    expect(Sentry.errorHandlingMiddleware).not.toHaveBeenCalled();
+    expect(Sentry.captureException).not.toHaveBeenCalled();
   });
 
   it('calls the Sentry request handling middleware when an request is made', async () => {
@@ -98,7 +54,7 @@ describe('Sentry', () => {
       .get('/games/chess')
       .set('host', 'wayland.content-hub')
       .expect(200);
-    expect(Sentry.requestHandlingMiddleware).toHaveBeenCalled();
+    expect(Sentry.setupExpressErrorHandler).toHaveBeenCalled();
   });
 });
 

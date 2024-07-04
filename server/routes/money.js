@@ -15,9 +15,14 @@ function isValidDateSelection(selectedDate, dateSelection) {
 }
 
 function processSelectedDate(selectedDate) {
-  const dateSelection = getDateSelection(new Date(), parseISO(selectedDate));
-  const fromDate = isValidDateSelection(selectedDate, dateSelection)
-    ? parseISO(selectedDate)
+  // parseISO used to return Invalid Date without an error for undefined in the older versions. Added safety check and had to change the variable for eslint checks.
+  const checkedSelectedDate = selectedDate !== undefined ? selectedDate : '';
+  const dateSelection = getDateSelection(
+    new Date(),
+    parseISO(checkedSelectedDate),
+  );
+  const fromDate = isValidDateSelection(checkedSelectedDate, dateSelection)
+    ? parseISO(checkedSelectedDate)
     : startOfMonth(new Date());
   const endOfSelectedMonth = endOfMonth(fromDate);
   const toDate = !isFuture(endOfSelectedMonth)

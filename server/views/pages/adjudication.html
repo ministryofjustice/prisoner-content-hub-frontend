@@ -80,11 +80,8 @@
 
 {% block bodyEnd %}
   <script src="/public/all.js"></script>
+  <script type="module" src="/assets/javascript/govukFrontendInit.js"></script>
+  <script src="/assets/javascript/mojFrontendInit.js"></script>
   <script src="/public/javascript/showMore.js"></script>
   <script>setUpShowMore($('.show-more-tiles'), $('.small-tiles'))</script>
-  <script>
-    window
-      .GOVUKFrontend
-      .initAll();
-  </script>
 {% endblock %}

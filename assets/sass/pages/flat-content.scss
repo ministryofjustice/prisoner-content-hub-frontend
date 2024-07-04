@@ -84,7 +84,7 @@
     display: block;
 
     p {
-      @extend .govuk-panel__body;
+      @extend .govuk-panel__body !optional;
       color: govuk-colour('white');
       font-weight: bold;
       margin-bottom: 0;
