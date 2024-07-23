@@ -44,7 +44,6 @@ ingress:
   prefixes:
     - berwyn
     - bullingdon
-    - chelmsford
     - cookhamwood
     - erlestoke
     - felthama
