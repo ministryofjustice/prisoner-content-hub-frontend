@@ -19,11 +19,15 @@
 
     if (event.target.matches('#go-back')) {
       event.preventDefault();
+      let historyIndex = parseInt(sessionStorage.getItem('historyIndex') === null ? 0 : sessionStorage.getItem('historyIndex'));
+      sessionStorage.setItem('historyIndex', historyIndex - 1);
       window.history.go(-1);
     }
 
     if (event.target.matches('#go-forwards')) {
       event.preventDefault();
+      let historyIndex = parseInt(sessionStorage.getItem('historyIndex') === null ? 0 : sessionStorage.getItem('historyIndex'));
+      sessionStorage.setItem('historyIndex', historyIndex + 1);      
       window.history.go(1);
     }
   });
@@ -97,3 +101,36 @@ $('a.sign-out-btn').on('click', function() {
     userAgent: navigator.userAgent
   });
 });
+
+function updateNavigationLinks(){
+  const backLink = document.getElementById('go-back');
+  const forwardLink = document.getElementById('go-forwards');
+
+  let historyExists = false;
+
+  if(history.length > 1){
+    historyExists = true; 
+  }else{
+    historyExists = false; 
+  }
+
+  if(!historyExists){
+    backLink.style.display = 'none';
+    forwardLink.style.display = 'none';
+  }
+  else{
+    let historyIndex = parseInt(sessionStorage.getItem('historyIndex') === null ? 0 : sessionStorage.getItem('historyIndex'));
+    //disable forward button if we are at 0 position
+    if(historyIndex < 0)
+      forwardLink.style.display = 'flex';
+    else
+      forwardLink.style.display = 'none';
+
+    if(historyIndex + history.length <= 1)
+      backLink.style.display = 'none';
+    else
+      backLink.style.display = 'flex';
+  }
+}
+
+updateNavigationLinks();
