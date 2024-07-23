@@ -126,7 +126,6 @@ const createProfileRouter = ({ offenderService }) => {
           personalisation.hasAdjudications,
       });
     } catch (e) {
-      console.log(e);
       return next(e);
     }
   });
