@@ -28,8 +28,8 @@ const createAdjudicationsRouter = ({ offenderService }) => {
 
     if (
       config.features.adjudicationsFeatureEnabled &&
-      config.features.adjudicationsFeatureEnabledAt.includes(
-        req.session.establishmentName,
+      config.sites[req.session.establishmentName].features.includes(
+        'adjudications',
       )
     ) {
       let personalisation;
@@ -67,8 +67,8 @@ const createAdjudicationsRouter = ({ offenderService }) => {
 
     if (
       config.features.adjudicationsFeatureEnabled &&
-      config.features.adjudicationsFeatureEnabledAt.includes(
-        req.session.establishmentName,
+      config.sites[req.session.establishmentName].features.includes(
+        'adjudications',
       ) &&
       adjudicationId
     ) {

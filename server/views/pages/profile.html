@@ -26,6 +26,7 @@
           <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link sign-in-btn">Sign in</a> to see your personal information.
       </div>
     {% else %}
+      {% if displayTimetable %}
       <div class="card-background">
         <div class="govuk-width-container" data-test="timetable-container">
           <h2 class="govuk-heading-m">Today's timetable</h2>
@@ -58,7 +59,8 @@
           {% endif %}
         </div>
       </div>
-
+      {% endif %}
+      {% if displayIncentives %}
       <div class="card-background grey">
         <div class="govuk-width-container" data-test="incentive-container">
           <h2 class="govuk-heading-m">Incentives (IEP)</h2>
@@ -78,7 +80,8 @@
           {% endif %}
         </div>
       </div>
-  
+      {% endif %}
+      {% if displayMoney %}
       <div class="card-background" data-test="money-container">
         <div class="govuk-width-container sensitive-card-container">
           <h2 class="govuk-heading-m card-title">Money
@@ -127,8 +130,8 @@
           {% endif %}
         </div>
       </div>
-
-
+      {% endif %}
+      {% if displayVisits %}
       <div class="card-background grey">
         <div class="govuk-width-container" data-test="visits-container">
           <h2 class="govuk-heading-m">Visits</h2>
@@ -172,7 +175,7 @@
                   {%- endcall %}
                 </li>
               {%- endif %}
-              {% if displayApprovedVisitorsCard %}
+              {% if displayApprovedVisitors %}
                 <li class="govuk-grid-column-one-quarter card-group__item">
                   {{imageCard({ id: 'approvedVisitors', src: "/public/images/image_visitors.jpg", link: knownPages.profile.visitorsLink, description: "View my visitors - social" }) }}
                 </li>
@@ -184,8 +187,8 @@
           {% endif %}
         </div>
       </div>
-
-      {% if displayAdjudicationsFeature %}
+      {% endif %}
+      {% if displayAdjudications %}
         <div class="card-background">
           <div class="govuk-width-container" data-test="adjudications-container">
             <h2 class="govuk-heading-m">Adjudications</h2>

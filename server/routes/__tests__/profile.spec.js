@@ -1,6 +1,32 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
 
+const config = {
+  features: {
+    approvedVisitorsFeatureEnabled: true,
+  },
+  sites: {
+    berwyn: {
+      enabled: true,
+      features: [
+        'adjudications',
+        'approvedVisitors',
+        'incentives',
+        'money',
+        'timetable',
+        'visits',
+      ],
+    },
+  },
+  analytics: {
+    endpoint: 'https://www.google-analytics.com/collect',
+    siteId: 'G-0RBPFCWD3X',
+    gtmSiteId: 'GTM-M62TTBK',
+  },
+};
+
+jest.mock('../../config', () => config);
+
 const {
   testApp: { setupApp, userSupplier, sessionSupplier },
   testData: { user },
@@ -19,12 +45,20 @@ describe('GET /profile', () => {
   let app;
 
   beforeEach(() => {
+    const establishmentData = {
+      1: {
+        name: 'berwyn',
+      },
+    };
     const cmsService = {
       getPrimaryNavigation: jest.fn().mockResolvedValue([]),
       getUrgentBanners: jest.fn().mockResolvedValue([]),
       getTopics: jest.fn().mockReturnValue([]),
     };
-    app = setupApp({ offenderService, cmsService });
+    app = setupApp(
+      { offenderService, cmsService },
+      { config, establishmentData },
+    );
     userSupplier.mockReturnValue(user);
   });
 

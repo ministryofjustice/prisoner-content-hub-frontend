@@ -85,6 +85,7 @@ const createProfileRouter = ({ offenderService }) => {
 
   router.get('/', async (req, res, next) => {
     try {
+      // if (config.sites[req.session.establishmentName].enabled) {
       const { user } = req;
       const personalisation = user ? await getPersonalisation(user) : {};
 
@@ -96,16 +97,36 @@ const createProfileRouter = ({ offenderService }) => {
         detailsType: 'small',
         data: { contentType: 'profile', breadcrumbs: createBreadcrumbs(req) },
         ...personalisation,
-        displayApprovedVisitorsCard:
-          config.features.approvedVisitorsFeatureEnabled,
-        displayAdjudicationsFeature:
+        displayVisits:
+          config.sites[req.session.establishmentName].features.includes(
+            'visits',
+          ),
+        displayTimetable:
+          config.sites[req.session.establishmentName].features.includes(
+            'timetable',
+          ),
+        displayIncentives:
+          config.sites[req.session.establishmentName].features.includes(
+            'incentives',
+          ),
+        displayMoney:
+          config.sites[req.session.establishmentName].features.includes(
+            'money',
+          ),
+        displayApprovedVisitors:
+          config.features.approvedVisitorsFeatureEnabled &&
+          config.sites[req.session.establishmentName].features.includes(
+            'approvedVisitors',
+          ),
+        displayAdjudications:
           config.features.adjudicationsFeatureEnabled &&
-          config.features.adjudicationsFeatureEnabledAt.includes(
-            req.session.establishmentName,
+          config.sites[req.session.establishmentName].features.includes(
+            'adjudications',
           ) &&
           personalisation.hasAdjudications,
       });
     } catch (e) {
+      console.log(e);
       return next(e);
     }
   });
