@@ -84,8 +84,11 @@ const createProfileRouter = ({ offenderService }) => {
   };
 
   router.get('/', async (req, res, next) => {
+    if (!config.sites[req.session.establishmentName].enabled) {
+      return res.render('pages/404');
+    }
+
     try {
-      // if (config.sites[req.session.establishmentName].enabled) {
       const { user } = req;
       const personalisation = user ? await getPersonalisation(user) : {};
 
