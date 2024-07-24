@@ -27,7 +27,6 @@ const createAdjudicationsRouter = ({ offenderService }) => {
     const { user, originalUrl: returnUrl, query } = req;
 
     if (
-      config.features.adjudicationsFeatureEnabled &&
       config.sites[req.session.establishmentName].enabled &&
       config.sites[req.session.establishmentName].features.includes(
         'adjudications',
@@ -67,7 +66,6 @@ const createAdjudicationsRouter = ({ offenderService }) => {
     const { adjudicationId } = req.params;
 
     if (
-      config.features.adjudicationsFeatureEnabled &&
       config.sites[req.session.establishmentName].enabled &&
       config.sites[req.session.establishmentName].features.includes(
         'adjudications',

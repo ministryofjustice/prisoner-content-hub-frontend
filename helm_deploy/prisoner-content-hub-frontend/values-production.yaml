@@ -5,7 +5,6 @@ application:
     googleTagManagerSiteId: GTM-M62TTBK
     mockAuthEnabled: false
     approvedVisitorsFeatureEnabled: true
-    adjudicationsFeatureEnabled: true
 
 ingress:
   annotations:

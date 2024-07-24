@@ -8,7 +8,6 @@ application:
     googleTagManagerSiteId: GTM-M62TTBK
     mockAuthEnabled: true
     approvedVisitorsFeatureEnabled: true
-    adjudicationsFeatureEnabled: true
 
 ingress:
   annotations:

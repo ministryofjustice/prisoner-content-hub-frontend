@@ -127,7 +127,6 @@ const createProfileRouter = ({ offenderService }) => {
             'approvedVisitors',
           ),
         displayAdjudications:
-          config.features.adjudicationsFeatureEnabled &&
           config.sites[req.session.establishmentName].enabled &&
           config.sites[req.session.establishmentName].features.includes(
             'adjudications',
