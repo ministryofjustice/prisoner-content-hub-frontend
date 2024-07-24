@@ -85,7 +85,7 @@ const createProfileRouter = ({ offenderService }) => {
 
   router.get('/', async (req, res, next) => {
     if (!config.sites[req.session.establishmentName].enabled) {
-      return res.render('pages/404');
+      return next();
     }
 
     try {
