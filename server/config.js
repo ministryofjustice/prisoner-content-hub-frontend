@@ -113,13 +113,7 @@ module.exports = {
     },
     chelmsford: {
       enabled: true,
-      features: [
-        'approvedVisitors',
-        'incentives',
-        'money',
-        'timetable',
-        'visits',
-      ],
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     cookhamwood: {
       enabled: true,
