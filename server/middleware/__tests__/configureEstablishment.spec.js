@@ -1,5 +1,3 @@
-const configureEstablishment = require('../configureEstablishment');
-
 const config = {
   sites: {
     berwyn: {
@@ -22,6 +20,8 @@ const config = {
 };
 
 jest.mock('../../config', () => config);
+
+const configureEstablishment = require('../configureEstablishment');
 
 describe('configureEstablishment', () => {
   const next = jest.fn();
