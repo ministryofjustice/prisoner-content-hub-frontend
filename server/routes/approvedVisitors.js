@@ -32,7 +32,12 @@ const createApprovedVisitorsRouter = ({ offenderService }) => {
   router.get('/', async (req, res, next) => {
     const { user, originalUrl: returnUrl, query } = req;
 
-    if (config.features.approvedVisitorsFeatureEnabled) {
+    if (
+      config.sites[req.session.establishmentName].enabled &&
+      config.sites[req.session.establishmentName].features.includes(
+        'approvedVisitors',
+      )
+    ) {
       try {
         const personalisation = user
           ? await getPersonalisation(user, query)

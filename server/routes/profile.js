@@ -121,7 +121,6 @@ const createProfileRouter = ({ offenderService }) => {
             'money',
           ),
         displayApprovedVisitors:
-          config.features.approvedVisitorsFeatureEnabled &&
           config.sites[req.session.establishmentName].enabled &&
           config.sites[req.session.establishmentName].features.includes(
             'approvedVisitors',

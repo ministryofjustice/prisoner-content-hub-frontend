@@ -4,7 +4,6 @@ application:
     analyticsSiteId: G-H1MT63QRLQ
     googleTagManagerSiteId: GTM-M62TTBK
     mockAuthEnabled: false
-    approvedVisitorsFeatureEnabled: true
 
 ingress:
   annotations:

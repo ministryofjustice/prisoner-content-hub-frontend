@@ -2,9 +2,6 @@ const request = require('supertest');
 const cheerio = require('cheerio');
 
 const config = {
-  features: {
-    approvedVisitorsFeatureEnabled: true,
-  },
   sites: {
     berwyn: {
       enabled: true,
