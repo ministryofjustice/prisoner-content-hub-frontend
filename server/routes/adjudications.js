@@ -28,6 +28,7 @@ const createAdjudicationsRouter = ({ offenderService }) => {
 
     if (
       config.features.adjudicationsFeatureEnabled &&
+      config.sites[req.session.establishmentName].enabled &&
       config.sites[req.session.establishmentName].features.includes(
         'adjudications',
       )
@@ -67,6 +68,7 @@ const createAdjudicationsRouter = ({ offenderService }) => {
 
     if (
       config.features.adjudicationsFeatureEnabled &&
+      config.sites[req.session.establishmentName].enabled &&
       config.sites[req.session.establishmentName].features.includes(
         'adjudications',
       ) &&
