@@ -1,5 +1,4 @@
 const express = require('express');
-const config = require('../config');
 
 const createHomepageRouter = ({ cmsService, offenderService }) => {
   const router = express.Router();
@@ -48,7 +47,6 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
           postscript: true,
           detailsType: 'large',
         },
-        showSchedule: config.sites[req.session.establishmentName].enabled,
         hideSignInLink: true,
         title: 'Home',
         recentlyAddedHomepageContent,

@@ -85,7 +85,7 @@
             {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs  }) }}
           {% endblock %}
           {% block userDetails %}
-            {% if establishmentName != 'berwyn' %}
+            {% if establishmentEnabled %}
               {{ userDetails({
                 hideSignInLink: hideSignInLink,
                 isSignedIn: isSignedIn,
