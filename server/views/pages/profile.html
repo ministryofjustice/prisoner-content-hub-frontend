@@ -214,10 +214,7 @@
 
 {% block bodyEnd %}
   <script src="/public/all.js"></script>
+  <script type="module" src="/public/javascript/govukFrontendInit.js"></script>
+  <script src="/public/javascript/mojFrontendInit.js"></script>
   <script src="/public/javascript/card.js"></script>
-  <script>
-    window
-      .GOVUKFrontend
-      .initAll();
-  </script>
 {% endblock %}
