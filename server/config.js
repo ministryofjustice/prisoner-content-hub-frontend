@@ -104,7 +104,6 @@ module.exports = {
     bullingdon: {
       enabled: true,
       features: [
-        'adjudications',
         'approvedVisitors',
         'incentives',
         'money',
@@ -115,7 +114,6 @@ module.exports = {
     chelmsford: {
       enabled: true,
       features: [
-        'adjudications',
         'approvedVisitors',
         'incentives',
         'money',
@@ -302,7 +300,6 @@ module.exports = {
     woodhill: {
       enabled: true,
       features: [
-        'adjudications',
         'approvedVisitors',
         'incentives',
         'money',
