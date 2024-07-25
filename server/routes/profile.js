@@ -100,37 +100,31 @@ const createProfileRouter = ({ offenderService }) => {
         detailsType: 'small',
         data: { contentType: 'profile', breadcrumbs: createBreadcrumbs(req) },
         ...personalisation,
-        displayVisits:
-          config.sites[req.session.establishmentName]?.enabled &&
-          config.sites[req.session.establishmentName]?.features.includes(
-            'visits',
-          ),
-        displayTimetable:
-          config.sites[req.session.establishmentName]?.enabled &&
-          config.sites[req.session.establishmentName]?.features.includes(
-            'timetable',
-          ),
-        displayIncentives:
-          config.sites[req.session.establishmentName]?.enabled &&
-          config.sites[req.session.establishmentName]?.features.includes(
-            'incentives',
-          ),
-        displayMoney:
-          config.sites[req.session.establishmentName]?.enabled &&
-          config.sites[req.session.establishmentName]?.features.includes(
-            'money',
-          ),
-        displayApprovedVisitors:
-          config.sites[req.session.establishmentName]?.enabled &&
-          config.sites[req.session.establishmentName]?.features.includes(
-            'approvedVisitors',
-          ),
+        displayVisits: checkFeatureEnabledAtSite(
+          req.session.establishmentName,
+          'visits',
+        ),
+        displayTimetable: checkFeatureEnabledAtSite(
+          req.session.establishmentName,
+          'timetable',
+        ),
+        displayIncentives: checkFeatureEnabledAtSite(
+          req.session.establishmentName,
+          'incentives',
+        ),
+        displayMoney: checkFeatureEnabledAtSite(
+          req.session.establishmentName,
+          'money',
+        ),
+        displayApprovedVisitors: checkFeatureEnabledAtSite(
+          req.session.establishmentName,
+          'approvedVisitors',
+        ),
         displayAdjudications:
-          config.sites[req.session.establishmentName]?.enabled &&
-          config.sites[req.session.establishmentName]?.features.includes(
+          checkFeatureEnabledAtSite(
+            req.session.establishmentName,
             'adjudications',
-          ) &&
-          personalisation.hasAdjudications,
+          ) && personalisation.hasAdjudications,
       });
     } catch (e) {
       return next(e);
@@ -139,6 +133,13 @@ const createProfileRouter = ({ offenderService }) => {
 
   return router;
 };
+
+function checkFeatureEnabledAtSite(site, feature) {
+  return (
+    config.sites[site]?.enabled &&
+    config.sites[site]?.features.includes(feature)
+  );
+}
 
 module.exports = {
   createProfileRouter,
