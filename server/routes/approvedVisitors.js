@@ -1,6 +1,6 @@
 const express = require('express');
-const config = require('../config');
 const { createBreadcrumbs } = require('../utils/breadcrumbs');
+const { checkFeatureEnabledAtSite } = require('../utils');
 
 const createApprovedVisitorsRouter = ({ offenderService }) => {
   const router = express.Router();
@@ -33,8 +33,8 @@ const createApprovedVisitorsRouter = ({ offenderService }) => {
     const { user, originalUrl: returnUrl, query } = req;
 
     if (
-      config.sites[req.session.establishmentName]?.enabled &&
-      config.sites[req.session.establishmentName]?.features.includes(
+      checkFeatureEnabledAtSite(
+        req.session.establishmentName,
         'approvedVisitors',
       )
     ) {
