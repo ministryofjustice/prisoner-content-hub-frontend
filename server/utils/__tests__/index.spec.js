@@ -228,6 +228,10 @@ describe('Utils', () => {
           enabled: true,
           features: ['visits'],
         },
+        prisonEnabledVisitsMoney: {
+          enabled: true,
+          features: ['visits', 'money'],
+        },
       },
     };
 
@@ -241,6 +245,26 @@ describe('Utils', () => {
       {
         site: 'prisonEnabledAdjudications',
         feature: 'adjudications',
+        expected: true,
+      },
+      {
+        site: 'prisonEnabledMoney',
+        feature: 'adjudications',
+        expected: false,
+      },
+      {
+        site: 'prisonEnabledVisitsMoney',
+        feature: 'adjudications',
+        expected: false,
+      },
+      {
+        site: 'prisonEnabledVisitsMoney',
+        feature: 'visits',
+        expected: true,
+      },
+      {
+        site: 'prisonEnabledVisitsMoney',
+        feature: 'money',
         expected: true,
       },
     ])(
