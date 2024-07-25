@@ -4,6 +4,7 @@ const {
   capitalizePersonName,
   groupBy,
   sortBy,
+  checkFeatureEnabledAtSite,
 } = require('../index');
 
 describe('Utils', () => {
@@ -190,5 +191,63 @@ describe('Utils', () => {
 
       expect(contacts).toStrictEqual([contactC, contactA, contactB]);
     });
+  });
+
+  describe('checkFeatureEnabledAtSite', () => {
+    const config = {
+      sites: {
+        prisonDisabled: {
+          enabled: false,
+          features: [],
+        },
+        prisonEnabledNoFeatures: {
+          enabled: true,
+          features: [],
+        },
+        prisonEnabledAdjudications: {
+          enabled: true,
+          features: ['adjudications'],
+        },
+        prisonEnabledApprovedVisitors: {
+          enabled: true,
+          features: ['approvedVisitors'],
+        },
+        prisonEnabledMoney: {
+          enabled: true,
+          features: ['money'],
+        },
+        prisonEnabledIncentives: {
+          enabled: true,
+          features: ['incentives'],
+        },
+        prisonEnabledTimetable: {
+          enabled: true,
+          features: ['timetable'],
+        },
+        prisonEnabledVisits: {
+          enabled: true,
+          features: ['visits'],
+        },
+      },
+    };
+
+    test.each([
+      { site: 'prisonDisabled', feature: 'adjudications', expected: false },
+      {
+        site: 'prisonEnabledNoFeatures',
+        feature: 'adjudications',
+        expected: false,
+      },
+      {
+        site: 'prisonEnabledAdjudications',
+        feature: 'adjudications',
+        expected: true,
+      },
+    ])(
+      'checkFeatureEnabledAtSite($site, $feature) should return $expected',
+      ({ site, feature, expected }) => {
+        expect(checkFeatureEnabledAtSite(site, feature, config)).toBe(expected);
+      },
+    );
   });
 });
