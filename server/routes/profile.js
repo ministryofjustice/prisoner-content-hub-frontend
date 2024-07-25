@@ -1,6 +1,7 @@
 const express = require('express');
 const config = require('../config');
 const { createBreadcrumbs } = require('../utils/breadcrumbs');
+const { checkFeatureEnabledAtSite } = require('../utils');
 
 const createProfileRouter = ({ offenderService }) => {
   const router = express.Router();
@@ -133,13 +134,6 @@ const createProfileRouter = ({ offenderService }) => {
 
   return router;
 };
-
-function checkFeatureEnabledAtSite(site, feature) {
-  return (
-    config.sites[site]?.enabled &&
-    config.sites[site]?.features.includes(feature)
-  );
-}
 
 module.exports = {
   createProfileRouter,

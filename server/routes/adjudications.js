@@ -2,6 +2,7 @@ const express = require('express');
 const config = require('../config');
 const { createBreadcrumbs } = require('../utils/breadcrumbs');
 const { createPagination } = require('../utils/pagination');
+const { checkFeatureEnabledAtSite } = require('../utils');
 const { logger } = require('../utils/logger');
 
 const createAdjudicationsRouter = ({ offenderService }) => {
@@ -27,10 +28,7 @@ const createAdjudicationsRouter = ({ offenderService }) => {
     const { user, originalUrl: returnUrl, query } = req;
 
     if (
-      config.sites[req.session.establishmentName]?.enabled &&
-      config.sites[req.session.establishmentName]?.features.includes(
-        'adjudications',
-      )
+      checkFeatureEnabledAtSite(req.session.establishmentName, 'adjudications')
     ) {
       let personalisation;
       let error = null;
@@ -66,8 +64,8 @@ const createAdjudicationsRouter = ({ offenderService }) => {
     const { adjudicationId } = req.params;
 
     if (
-      config.sites[req.session.establishmentName]?.enabled &&
-      config.sites[req.session.establishmentName]?.features.includes(
+      checkFeatureEnabledAtSite(
+        req.session.establishmentName,
         'adjudications',
       ) &&
       adjudicationId
