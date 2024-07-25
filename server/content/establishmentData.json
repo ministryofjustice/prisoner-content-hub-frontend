@@ -11,6 +11,12 @@
     "youth": false,
     "agencyId": "BNI"
   },
+  "2001": {
+    "name": "chelmsford",
+    "displayName": "HMP Chelmsford",
+    "youth": false,
+    "agencyId": "CDI"
+  },
   "959": {
     "name": "cookhamwood",
     "displayName": "HMP Cookham Wood",
