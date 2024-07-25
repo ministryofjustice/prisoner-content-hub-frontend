@@ -31,10 +31,10 @@ const logger = {
   error: jest.fn(),
   debug: jest.fn(),
   warn: jest.fn(),
-  requestLogger: () => (_req, _res, next) => next(),
+  requestLogger: () => (req, res, next) => next(),
 };
 
-function consoleLogError(err, _req, res) {
+function consoleLogError(err, req, res) {
   console.error(err.stack); // eslint-disable-line no-console
   res.status(500).send('Something broke!');
 }
@@ -68,7 +68,7 @@ const setupFullApp = (
 
   nunjucksSetup(app);
 
-  app.use((req, _res, next) => {
+  app.use((req, res, next) => {
     req.user = userSupplier();
     req.session = sessionSupplier() || {};
     req.headers.cookie = cookieSupplier() || '';
