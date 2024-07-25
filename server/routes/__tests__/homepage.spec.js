@@ -188,6 +188,7 @@ describe('GET /', () => {
             establishmentPersonalisationToggle(),
         };
         req.user = userSupplier();
+        res.locals.establishmentEnabled = true;
         next();
       });
       app.use(setCurrentUser);

@@ -33,8 +33,8 @@ const createApprovedVisitorsRouter = ({ offenderService }) => {
     const { user, originalUrl: returnUrl, query } = req;
 
     if (
-      config.sites[req.session.establishmentName].enabled &&
-      config.sites[req.session.establishmentName].features.includes(
+      config.sites[req.session.establishmentName]?.enabled &&
+      config.sites[req.session.establishmentName]?.features.includes(
         'approvedVisitors',
       )
     ) {

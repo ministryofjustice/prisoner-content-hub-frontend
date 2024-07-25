@@ -84,7 +84,7 @@ const createProfileRouter = ({ offenderService }) => {
   };
 
   router.get('/', async (req, res, next) => {
-    if (!config.sites[req.session.establishmentName].enabled) {
+    if (!config.sites[req.session.establishmentName]?.enabled) {
       return next();
     }
 
@@ -101,33 +101,33 @@ const createProfileRouter = ({ offenderService }) => {
         data: { contentType: 'profile', breadcrumbs: createBreadcrumbs(req) },
         ...personalisation,
         displayVisits:
-          config.sites[req.session.establishmentName].enabled &&
-          config.sites[req.session.establishmentName].features.includes(
+          config.sites[req.session.establishmentName]?.enabled &&
+          config.sites[req.session.establishmentName]?.features.includes(
             'visits',
           ),
         displayTimetable:
-          config.sites[req.session.establishmentName].enabled &&
-          config.sites[req.session.establishmentName].features.includes(
+          config.sites[req.session.establishmentName]?.enabled &&
+          config.sites[req.session.establishmentName]?.features.includes(
             'timetable',
           ),
         displayIncentives:
-          config.sites[req.session.establishmentName].enabled &&
-          config.sites[req.session.establishmentName].features.includes(
+          config.sites[req.session.establishmentName]?.enabled &&
+          config.sites[req.session.establishmentName]?.features.includes(
             'incentives',
           ),
         displayMoney:
-          config.sites[req.session.establishmentName].enabled &&
-          config.sites[req.session.establishmentName].features.includes(
+          config.sites[req.session.establishmentName]?.enabled &&
+          config.sites[req.session.establishmentName]?.features.includes(
             'money',
           ),
         displayApprovedVisitors:
-          config.sites[req.session.establishmentName].enabled &&
-          config.sites[req.session.establishmentName].features.includes(
+          config.sites[req.session.establishmentName]?.enabled &&
+          config.sites[req.session.establishmentName]?.features.includes(
             'approvedVisitors',
           ),
         displayAdjudications:
-          config.sites[req.session.establishmentName].enabled &&
-          config.sites[req.session.establishmentName].features.includes(
+          config.sites[req.session.establishmentName]?.enabled &&
+          config.sites[req.session.establishmentName]?.features.includes(
             'adjudications',
           ) &&
           personalisation.hasAdjudications,
