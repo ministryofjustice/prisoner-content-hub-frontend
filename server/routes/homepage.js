@@ -40,7 +40,7 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         isLastPage &&
         (updatesContentWithDuplicatesRemoved.length < 5 || !useLargeUpdateTile);
 
-      res.render('pages/home-new', {
+      res.render('pages/home', {
         config: {
           content: true,
           header: true,
