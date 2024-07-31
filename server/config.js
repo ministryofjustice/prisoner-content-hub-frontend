@@ -112,13 +112,7 @@ module.exports = {
     },
     bullingdon: {
       enabled: true,
-      features: [
-        'approvedVisitors',
-        'incentives',
-        'money',
-        'timetable',
-        'visits',
-      ],
+      features: ['incentives', 'money', 'timetable', 'visits'],
     },
     chelmsford: {
       enabled: true,
@@ -126,47 +120,47 @@ module.exports = {
     },
     cookhamwood: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     erlestoke: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     felthama: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     felthamb: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     garth: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     lindholme: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     newhall: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     ranby: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     stokeheath: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     styal: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     swaleside: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     themount: {
       enabled: true,
@@ -174,29 +168,23 @@ module.exports = {
     },
     thestudio: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     wayland: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     werrington: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     wetherby: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     woodhill: {
       enabled: true,
-      features: [
-        'approvedVisitors',
-        'incentives',
-        'money',
-        'timetable',
-        'visits',
-      ],
+      features: ['incentives', 'money', 'timetable', 'visits'],
     },
   },
   analytics: {
