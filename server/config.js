@@ -14,6 +14,7 @@ const feedbackEndpoint = getRequiredEnv(
   '/local-feedback/_doc',
 );
 
+// covers all features being enabled to stop repetition as requested, commented out to stop errors in linting while no sites are using everything
 // const ALL_PROFILE_FEATURES = [
 //   'adjudications',
 //   'approvedVisitors',
