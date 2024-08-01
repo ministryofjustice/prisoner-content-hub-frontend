@@ -1,4 +1,5 @@
 const defaultEstablishmentData = require('../content/establishmentData.json');
+const defaultConfig = require('../config');
 
 const getEstablishmentId = (
   establishmentName,
@@ -72,6 +73,13 @@ const sortBy = key => (a, b) => {
   return a[key] < b[key] ? -1 : 1;
 };
 
+function checkFeatureEnabledAtSite(site, feature, config = defaultConfig) {
+  return (
+    config.sites[site]?.enabled &&
+    config.sites[site]?.features.includes(feature)
+  );
+}
+
 module.exports = {
   getEstablishmentId,
   getEstablishment,
@@ -82,4 +90,5 @@ module.exports = {
   capitalizePersonName,
   groupBy,
   sortBy,
+  checkFeatureEnabledAtSite,
 };

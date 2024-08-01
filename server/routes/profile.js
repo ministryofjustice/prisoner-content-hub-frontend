@@ -1,6 +1,7 @@
 const express = require('express');
 const config = require('../config');
 const { createBreadcrumbs } = require('../utils/breadcrumbs');
+const { checkFeatureEnabledAtSite } = require('../utils');
 
 const createProfileRouter = ({ offenderService }) => {
   const router = express.Router();
@@ -84,6 +85,10 @@ const createProfileRouter = ({ offenderService }) => {
   };
 
   router.get('/', async (req, res, next) => {
+    if (!config.sites[req.session.establishmentName]?.enabled) {
+      return next();
+    }
+
     try {
       const { user } = req;
       const personalisation = user ? await getPersonalisation(user) : {};
@@ -96,14 +101,31 @@ const createProfileRouter = ({ offenderService }) => {
         detailsType: 'small',
         data: { contentType: 'profile', breadcrumbs: createBreadcrumbs(req) },
         ...personalisation,
-        displayApprovedVisitorsCard:
-          config.features.approvedVisitorsFeatureEnabled,
-        displayAdjudicationsFeature:
-          config.features.adjudicationsFeatureEnabled &&
-          config.features.adjudicationsFeatureEnabledAt.includes(
+        displayVisits: checkFeatureEnabledAtSite(
+          req.session.establishmentName,
+          'visits',
+        ),
+        displayTimetable: checkFeatureEnabledAtSite(
+          req.session.establishmentName,
+          'timetable',
+        ),
+        displayIncentives: checkFeatureEnabledAtSite(
+          req.session.establishmentName,
+          'incentives',
+        ),
+        displayMoney: checkFeatureEnabledAtSite(
+          req.session.establishmentName,
+          'money',
+        ),
+        displayApprovedVisitors: checkFeatureEnabledAtSite(
+          req.session.establishmentName,
+          'approvedVisitors',
+        ),
+        displayAdjudications:
+          checkFeatureEnabledAtSite(
             req.session.establishmentName,
-          ) &&
-          personalisation.hasAdjudications,
+            'adjudications',
+          ) && personalisation.hasAdjudications,
       });
     } catch (e) {
       return next(e);

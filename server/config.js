@@ -14,6 +14,16 @@ const feedbackEndpoint = getRequiredEnv(
   '/local-feedback/_doc',
 );
 
+// covers all features being enabled to stop repetition as requested, commented out to stop errors in linting while no sites are using everything
+// const ALL_PROFILE_FEATURES = [
+//   'adjudications',
+//   'approvedVisitors',
+//   'incentives',
+//   'money',
+//   'timetable',
+//   'visits',
+// ];
+
 module.exports = {
   isProduction,
   logLevel: getEnv('LOG_LEVEL', 'info'),
@@ -95,27 +105,88 @@ module.exports = {
     showStackTraces:
       getEnv('ENABLE_STACK_TRACES_ON_ERROR_PAGES', 'false') === 'true',
     useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'true') === 'true',
-    approvedVisitorsFeatureEnabled:
-      getEnv('APPROVED_VISITORS_FEATURE_ENABLED', 'false') === 'true',
-    adjudicationsFeatureEnabled:
-      getEnv('ADJUDICATIONS_FEATURE_ENABLED', 'false') === 'true',
-    adjudicationsFeatureEnabledAt: [
-      'cookhamwood',
-      'erlestoke',
-      'felthama',
-      'felthamb',
-      'garth',
-      'lindholme',
-      'newhall',
-      'ranby',
-      'stokeheath',
-      'styal',
-      'swaleside',
-      'themount',
-      'wayland',
-      'werrington',
-      'wetherby',
-    ],
+  },
+  sites: {
+    berwyn: {
+      enabled: false,
+      features: [],
+    },
+    bullingdon: {
+      enabled: true,
+      features: ['incentives', 'money', 'timetable', 'visits'],
+    },
+    chelmsford: {
+      enabled: true,
+      features: ['incentives', 'money', 'timetable', 'visits'],
+    },
+    cookhamwood: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    erlestoke: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    felthama: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    felthamb: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    garth: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    lindholme: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    newhall: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    ranby: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    stokeheath: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    styal: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    swaleside: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    themount: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    thestudio: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    wayland: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    werrington: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    wetherby: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
+    woodhill: {
+      enabled: true,
+      features: ['incentives', 'money', 'timetable', 'visits'],
+    },
   },
   analytics: {
     endpoint: getEnv(

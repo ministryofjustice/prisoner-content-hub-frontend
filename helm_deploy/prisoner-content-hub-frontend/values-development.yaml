@@ -7,8 +7,6 @@ application:
     analyticsSiteId: G-0RBPFCWD3X
     googleTagManagerSiteId: GTM-M62TTBK
     mockAuthEnabled: true
-    approvedVisitorsFeatureEnabled: true
-    adjudicationsFeatureEnabled: true
 
 ingress:
   annotations:

@@ -1,6 +1,6 @@
 const express = require('express');
-const config = require('../config');
 const { createBreadcrumbs } = require('../utils/breadcrumbs');
+const { checkFeatureEnabledAtSite } = require('../utils');
 
 const createApprovedVisitorsRouter = ({ offenderService }) => {
   const router = express.Router();
@@ -32,7 +32,12 @@ const createApprovedVisitorsRouter = ({ offenderService }) => {
   router.get('/', async (req, res, next) => {
     const { user, originalUrl: returnUrl, query } = req;
 
-    if (config.features.approvedVisitorsFeatureEnabled) {
+    if (
+      checkFeatureEnabledAtSite(
+        req.session.establishmentName,
+        'approvedVisitors',
+      )
+    ) {
       try {
         const personalisation = user
           ? await getPersonalisation(user, query)
