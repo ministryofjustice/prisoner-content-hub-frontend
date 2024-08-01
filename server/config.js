@@ -14,14 +14,14 @@ const feedbackEndpoint = getRequiredEnv(
   '/local-feedback/_doc',
 );
 
-const ALL_PROFILE_FEATURES = [
-  'adjudications',
-  'approvedVisitors',
-  'incentives',
-  'money',
-  'timetable',
-  'visits',
-];
+// const ALL_PROFILE_FEATURES = [
+//   'adjudications',
+//   'approvedVisitors',
+//   'incentives',
+//   'money',
+//   'timetable',
+//   'visits',
+// ];
 
 module.exports = {
   isProduction,
@@ -164,7 +164,7 @@ module.exports = {
     },
     themount: {
       enabled: true,
-      features: ALL_PROFILE_FEATURES,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     thestudio: {
       enabled: true,
