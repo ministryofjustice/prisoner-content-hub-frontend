@@ -19,7 +19,6 @@ class CategoryContentQuery {
     this.page = page;
     const queryWithoutOffset = new Query()
       .addFilter('field_moj_top_level_categories.id', uuid)
-      .addFilter('field_not_in_series', 1)
       .addFields('node--page', CategoryContentQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', CategoryContentQuery.#TILE_FIELDS)
       .addFields('node--moj_radio_item', CategoryContentQuery.#TILE_FIELDS)
