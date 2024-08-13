@@ -132,7 +132,6 @@
         "published_at": "2020-11-13T12:50:07+00:00",
         "field_moj_episode": null,
         "field_moj_season": null,
-        "field_not_in_series": true,
         "field_release_date": null
       },
       "relationships": {
