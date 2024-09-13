@@ -184,7 +184,7 @@ module.exports = {
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     woodhill: {
-      enabled: true,
+      enabled: false,
       features: ['incentives', 'money', 'timetable', 'visits'],
     },
   },
