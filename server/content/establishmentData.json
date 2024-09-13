@@ -11,6 +11,12 @@
     "youth": false,
     "agencyId": "BNI"
   },
+  "2095": {
+    "name": "cardiff",
+    "displayName": "HMP Cardiff",
+    "youth": false,
+    "agencyId": "CFI"
+  },
   "2001": {
     "name": "chelmsford",
     "displayName": "HMP Chelmsford",
