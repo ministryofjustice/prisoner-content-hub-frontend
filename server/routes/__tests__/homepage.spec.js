@@ -10,9 +10,11 @@ const {
 const setCurrentUser = require('../../middleware/setCurrentUser');
 const retrieveTopicList = require('../../middleware/retrieveTopicList');
 
+const mockCheckFeatureEnabledAtSite = jest.fn();
+
 jest.mock('../../utils', () => ({
   ...jest.requireActual('../../utils'),
-  checkFeatureEnabledAtSite: jest.fn().mockReturnValue(true),
+  checkFeatureEnabledAtSite: () => mockCheckFeatureEnabledAtSite(),
 }));
 
 describe('GET /', () => {
@@ -230,6 +232,7 @@ describe('GET /', () => {
         ],
         isTomorrow: false,
       };
+      mockCheckFeatureEnabledAtSite.mockReturnValue(true);
     });
 
     it('renders the homepage with a search bar', () =>
