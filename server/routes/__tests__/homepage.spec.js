@@ -10,6 +10,11 @@ const {
 const setCurrentUser = require('../../middleware/setCurrentUser');
 const retrieveTopicList = require('../../middleware/retrieveTopicList');
 
+jest.mock('../../utils', () => ({
+  ...jest.requireActual('../../utils'),
+  checkFeatureEnabledAtSite: jest.fn().mockReturnValue(true),
+}));
+
 describe('GET /', () => {
   let featuredItem;
   let cmsService;
