@@ -115,6 +115,10 @@ module.exports = {
       enabled: true,
       features: ['incentives', 'money', 'timetable', 'visits'],
     },
+    cardiff: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
     chelmsford: {
       enabled: true,
       features: ['incentives', 'money', 'timetable', 'visits'],
