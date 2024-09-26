@@ -177,14 +177,7 @@ module.exports = {
     },
     wayland: {
       enabled: true,
-      features: [
-        'adjudications',
-        'approvedVisitors',
-        'incentives',
-        'money',
-        'timetable',
-        'visits',
-      ],
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     werrington: {
       enabled: true,
