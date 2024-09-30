@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block title %}
-  {% if establishmentEnabled %}
+  {% if displayTimetable %}
     <div class="govuk-width-container home-navigation govuk-!-margin-top-3">
       {{personalScheduleToday({ data: currentEvents, authReturnUrl: returnUrl }, userName if isSignedIn else '')}}
     </div>
