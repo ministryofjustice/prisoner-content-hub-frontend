@@ -2,6 +2,7 @@ const { Contracts } = require('applicationinsights');
 const {
   addEstablishmentProcessor,
   ignoreStaticAssetsProcessor,
+  ignoreInProcDependencies,
 } = require('../azureAppInsights');
 
 describe('azureAppInsights', () => {
@@ -107,6 +108,48 @@ describe('azureAppInsights', () => {
       );
 
       const result = ignoreStaticAssetsProcessor(envelope, context);
+
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('ignoreInProcDependencies', () => {
+    const context = {};
+
+    const createRemoteDependencyData = type => {
+      const baseData = new Contracts.RemoteDependencyData();
+      baseData.name = 'name';
+      baseData.type = type;
+      return baseData;
+    };
+
+    const createEnvelope = baseData => ({
+      data: {
+        baseType: 'RemoteDependencyData',
+        baseData,
+      },
+    });
+
+    it('processes when missing request data', () => {
+      const envelope = createEnvelope(null);
+
+      const result = ignoreInProcDependencies(envelope, context);
+
+      expect(result).toBe(true);
+    });
+
+    it('processes when unknown baseType', () => {
+      const envelope = createEnvelope(createRemoteDependencyData('HTTP'));
+
+      const result = ignoreInProcDependencies(envelope, context);
+
+      expect(result).toBe(true);
+    });
+
+    it('does not InProc dependencies', () => {
+      const envelope = createEnvelope(createRemoteDependencyData('InProc'));
+
+      const result = ignoreInProcDependencies(envelope, context);
 
       expect(result).toBe(false);
     });
