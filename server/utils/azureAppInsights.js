@@ -20,6 +20,13 @@ function ignoreStaticAssetsProcessor(envelope) {
   return true;
 }
 
+function ignoreInProcDependencies(envelope) {
+  if (envelope.data.baseType === Contracts.TelemetryTypeString.Dependency) {
+    return envelope.data.baseData?.type !== 'InProc';
+  }
+  return true;
+}
+
 function addEstablishmentProcessor(envelope, contextObjects) {
   if (envelope.data.baseType === Contracts.TelemetryTypeString.Request) {
     const establishmentName =
@@ -49,11 +56,13 @@ function initialiseAppInsights() {
   client.context.tags['ai.application.ver'] = version();
   client.addTelemetryProcessor(addEstablishmentProcessor);
   client.addTelemetryProcessor(ignoreStaticAssetsProcessor);
+  client.addTelemetryProcessor(ignoreInProcDependencies);
   return client;
 }
 
 module.exports = {
   ignoreStaticAssetsProcessor,
+  ignoreInProcDependencies,
   addEstablishmentProcessor,
   initialiseAppInsights,
 };
