@@ -128,16 +128,16 @@ module.exports = {
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     erlestoke: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     felthama: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     felthamb: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     garth: {
       enabled: true,
@@ -148,8 +148,8 @@ module.exports = {
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     newhall: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     ranby: {
       enabled: true,
@@ -160,8 +160,8 @@ module.exports = {
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     styal: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     swaleside: {
       enabled: true,
@@ -180,12 +180,12 @@ module.exports = {
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     werrington: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     wetherby: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     woodhill: {
       enabled: true,
