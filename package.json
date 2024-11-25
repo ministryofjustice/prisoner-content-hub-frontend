@@ -6,6 +6,7 @@
     "postinstall": "husky",
     "start": "node server.js",
     "dev": "nodemon server.js",
+    "debug": "nodemon --inspect-brk server.js",
     "build": "npm run css-build && npm run precompile-templates",
     "css-build": "./bin/build-css",
     "clean": "rm -rf public/* .port.tmp *.log build/* uploads/* test-results.xml",
