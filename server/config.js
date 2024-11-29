@@ -1,6 +1,9 @@
 const { getEnv, getRequiredEnv, isProduction } = require('../utils/index');
 
-const hubEndpoint = getRequiredEnv('HUB_API_ENDPOINT', 'http://localhost:9090');
+const hubEndpoint = getRequiredEnv(
+  'HUB_API_ENDPOINT',
+  'http://localhost:11001',
+);
 const hmppsAuthBaseUrl = getRequiredEnv(
   'HMPPS_AUTH_BASE_URL',
   'https://api.nomis',
@@ -112,20 +115,20 @@ module.exports = {
       features: [],
     },
     bullingdon: {
-      enabled: true,
-      features: ['incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     cardiff: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     chelmsford: {
-      enabled: true,
-      features: ['incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     cookhamwood: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     erlestoke: {
       enabled: false,
@@ -140,44 +143,44 @@ module.exports = {
       features: [],
     },
     garth: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     lindholme: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     newhall: {
       enabled: false,
       features: [],
     },
     ranby: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     stokeheath: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     styal: {
       enabled: false,
       features: [],
     },
     swaleside: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     themount: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     thestudio: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     wayland: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
     werrington: {
       enabled: false,
@@ -188,8 +191,8 @@ module.exports = {
       features: [],
     },
     woodhill: {
-      enabled: true,
-      features: ['incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
     },
   },
   analytics: {
