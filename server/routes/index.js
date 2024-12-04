@@ -4,10 +4,6 @@ const { createHomepageRouter } = require('./homepage');
 const { createTopicsRouter } = require('./topics');
 const { createTimetableRouter } = require('./timetable');
 const { createContentRouter } = require('./content');
-const { createMoneyRouter } = require('./money');
-const { createAdjudicationsRouter } = require('./adjudications');
-const { createApprovedVisitorsRouter } = require('./approvedVisitors');
-const { createProfileRouter } = require('./profile');
 const { createTagRouter } = require('./tags');
 const { createLinkRouter } = require('./link');
 const { createGamesRouter } = require('./games');
@@ -26,7 +22,6 @@ module.exports = (
     logger,
     cmsService,
     offenderService,
-    prisonerInformationService,
     searchService,
     feedbackService,
     config,
@@ -75,37 +70,9 @@ module.exports = (
   router.use('/timetable', createTimetableRouter({ offenderService }));
 
   router.use(
-    '/money',
-    createMoneyRouter({
-      prisonerInformationService,
-    }),
-  );
-
-  router.use(
-    '/approved-visitors',
-    createApprovedVisitorsRouter({
-      offenderService,
-    }),
-  );
-
-  router.use(
-    '/profile',
-    createProfileRouter({
-      offenderService,
-    }),
-  );
-
-  router.use(
     '/content',
     createContentRouter({
       cmsService,
-    }),
-  );
-
-  router.use(
-    '/adjudications',
-    createAdjudicationsRouter({
-      offenderService,
     }),
   );
 
