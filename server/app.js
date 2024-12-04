@@ -1,7 +1,7 @@
 require('./instrument');
 const express = require('express');
 const compression = require('compression');
-const uuid = require('uuid');
+const { randomUUID } = require('crypto');
 const helmet = require('helmet');
 const noCache = require('nocache');
 const path = require('path');
@@ -68,7 +68,7 @@ const createApp = services => {
   app.use((req, res, next) => {
     const headerName = 'X-Request-Id';
     const oldValue = req.get(headerName);
-    const id = oldValue === undefined ? uuid.v4() : oldValue;
+    const id = oldValue === undefined ? randomUUID() : oldValue;
 
     res.set(headerName, id);
     req.id = id;

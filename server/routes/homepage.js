@@ -1,4 +1,5 @@
 const express = require('express');
+const { checkFeatureEnabledAtSite } = require('../utils');
 
 const createHomepageRouter = ({ cmsService, offenderService }) => {
   const router = express.Router();
@@ -57,6 +58,10 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         largeUpdateTile,
         exploreContent,
         currentEvents,
+        displayTimetable: checkFeatureEnabledAtSite(
+          req.session.establishmentName,
+          'timetable',
+        ),
       });
     } catch (error) {
       next(error);
