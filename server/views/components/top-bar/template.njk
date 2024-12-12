@@ -3,7 +3,7 @@
 <header class="govuk-header top-bar-container" data-module="header">
   <div class="govuk-width-container top-bar">
     <img class="hub-logo" src="/public/images/icons/content-hub.png" alt="logo">
-    <a href="/" class="govuk-heading-m govuk-link govuk-link--inverse">Content Hub <span>{{ params.establishmentDisplayName }}</span></a>
+    <a href="/" class="govuk-heading-m govuk-link govuk-link--inverse">{{ t('topBar.title') }} <span>{{ params.establishmentDisplayName }}</span></a>
     {% if params.showSearch %}
       {{ hubSearch({ query: params.searchQuery, small: true }) }}
     {% endif %}
