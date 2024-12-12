@@ -9,6 +9,9 @@ const session = require('cookie-session');
 const passport = require('passport');
 const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
 const Sentry = require('@sentry/node');
+const i18next = require('i18next');
+const middleware = require('i18next-http-middleware');
+const filesystem = require('i18next-fs-backend');
 const nunjucksSetup = require('./utils/nunjucksSetup');
 
 const { createHealthRouter } = require('./routes/health');
@@ -26,6 +29,20 @@ const routes = require('./routes');
 const { NotFound } = require('./repositories/apiError');
 const setCurrentUser = require('./middleware/setCurrentUser');
 const setReturnUrl = require('./middleware/setReturnUrl');
+
+i18next
+  .use(middleware.LanguageDetector)
+  .use(filesystem)
+  .init({
+    preload: ['en', 'cy'],
+    fallbackLng: 'en',
+    backend: {
+      loadPath: path.join(__dirname, 'locales/{{lng}}.json'),
+    },
+    detection: {
+      caches: ['cookie'],
+    },
+  });
 
 const createApp = services => {
   const {
