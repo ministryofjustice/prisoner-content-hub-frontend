@@ -70,6 +70,13 @@ const createApp = services => {
   // Server Configuration
   app.set('port', process.env.PORT || 3000);
 
+  app.use(
+    middleware.handle(i18next, {
+      ignoreRoutes: ['/foo'],
+      removeLngFromUrl: false,
+    }),
+  );
+
   // Secure code best practice - see:
   // 1. https://expressjs.com/en/advanced/best-practice-security.html,
   // 2. https://www.npmjs.com/package/helmet
