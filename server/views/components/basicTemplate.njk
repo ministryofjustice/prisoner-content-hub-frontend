@@ -63,7 +63,10 @@
     {% block topBar %}
       {{ topBar({
         establishmentDisplayName: establishmentDisplayName,
-        showSearch: true
+        showSearch: true,
+        multilingual: multilingual,
+        translations: translations,
+        currentLng: currentLng
       }, t) }}
     {% endblock %}
     {% block primaryNav %}
