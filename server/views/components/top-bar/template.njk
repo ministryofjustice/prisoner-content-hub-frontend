@@ -4,6 +4,22 @@
   <div class="govuk-width-container top-bar">
     <img class="hub-logo" src="/public/images/icons/content-hub.png" alt="logo">
     <a href="/" class="govuk-heading-m govuk-link govuk-link--inverse">{{ t('topBar.title') }} <span>{{ params.establishmentDisplayName }}</span></a>
+    {%  if params.multilingual %}
+      <div>
+        <div>
+          {% for translation in params.translations %}
+            <div>
+              <a
+                href="{{ translation.href }}"
+                lang="{{ translation.lang }}"
+                class="{% if translation.lang == params.currentLng %}active{% endif %}">
+                {{ translation.text }}
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
     {% if params.showSearch %}
       {{ hubSearch({ query: params.searchQuery, small: true }) }}
     {% endif %}
