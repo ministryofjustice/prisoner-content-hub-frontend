@@ -28,7 +28,7 @@ const configureEstablishment = (req, res, next) => {
   )}`;
 
   res.locals.currentLng = req.language?.split('-')[0] || 'en';
-  if (config.sites[establishmentName]?.languages.length > 1) {
+  if (config.sites[establishmentName]?.languages?.length > 1) {
     res.locals.multilingual = true;
     res.locals.translations = config.languages.reduce(
       (result, { lang, text }) =>
