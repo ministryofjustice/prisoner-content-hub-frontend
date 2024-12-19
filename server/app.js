@@ -72,7 +72,6 @@ const createApp = services => {
 
   app.use(
     middleware.handle(i18next, {
-      ignoreRoutes: ['/foo'],
       removeLngFromUrl: false,
     }),
   );
