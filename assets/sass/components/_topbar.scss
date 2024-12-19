@@ -22,9 +22,12 @@
   }
 
   & a {
-    color: govuk-colour('white');
     text-decoration: none;
     margin-bottom: 0;
+  }
+
+  & a.govuk-link {
+    color: govuk-colour('white');
   }
 
   & a:hover {
