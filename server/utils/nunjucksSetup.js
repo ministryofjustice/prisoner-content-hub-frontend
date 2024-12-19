@@ -1,6 +1,7 @@
 const nunjucks = require('nunjucks');
 const path = require('path');
 const { URLSearchParams } = require('url');
+const i18next = require('i18next');
 const { analytics } = require('../config');
 
 const knownPages = require('../content/knownPages.json');
@@ -61,6 +62,8 @@ module.exports = expressApp => {
       return primaryNavigation;
     },
   );
+
+  nunjucksEnv.addGlobal('t', key => i18next.t(key));
 
   return nunjucksEnv;
 };
