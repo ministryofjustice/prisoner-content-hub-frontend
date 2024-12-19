@@ -327,7 +327,7 @@ workflows:
             - prisoner-content-hub-development
           name: deploy_to_dev
           environment: "development"
-          qualifier: "${CIRCLE_PULL_REQUEST##*/}"
+          qualifier: "${CIRCLE_PULL_REQUEST##*/:-default}"
           releaseChannel: "launchpad-alerts-nonprod"
           requires:
             - build_preview
