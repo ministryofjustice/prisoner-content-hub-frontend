@@ -10,6 +10,12 @@ const config = {
         'timetable',
         'visits',
       ],
+      languages: ['en'],
+    },
+    cardiff: {
+      enabled: true,
+      features: [],
+      languages: ['en', 'cy'],
     },
   },
   analytics: {
@@ -17,6 +23,11 @@ const config = {
     siteId: 'G-0RBPFCWD3X',
     gtmSiteId: 'GTM-M62TTBK',
   },
+  defaultLanguage: 'en',
+  languages: [
+    { lang: 'en', text: 'English' },
+    { lang: 'cy', text: 'Cymraeg' },
+  ],
 };
 
 jest.mock('../../config', () => config);
@@ -47,6 +58,29 @@ describe('configureEstablishment', () => {
     expect(res.locals.establishmentName).toBe('berwyn');
     expect(res.locals.establishmentEnabled).toBe(true);
     expect(res.locals.establishmentDisplayName).toBe('HMP Berwyn');
+    expect(res.locals.currentLng).toBe('en');
+    expect(res.locals.multilingual).toEqual(false);
+    expect(next).toHaveBeenCalled();
+  });
+
+  it('should detect multilingual sites', () => {
+    const req = {
+      session: {
+        id: 1,
+        establishmentName: 'cardiff',
+        establishmentId: 2095,
+        establishmentPersonalisationEnabled: true,
+      },
+      protocol: 'http',
+      originalUrl: '/',
+    };
+    req.get = function () {
+      return 'localhost';
+    };
+
+    configureEstablishment(req, res, next);
+
+    expect(res.locals.multilingual).toEqual(true);
     expect(next).toHaveBeenCalled();
   });
 });
