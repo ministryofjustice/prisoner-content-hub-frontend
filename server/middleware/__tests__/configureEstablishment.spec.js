@@ -74,9 +74,7 @@ describe('configureEstablishment', () => {
       protocol: 'http',
       originalUrl: '/',
     };
-    req.get = function () {
-      return 'localhost';
-    };
+    req.get = () => 'localhost';
 
     configureEstablishment(req, res, next);
 
