@@ -27,6 +27,7 @@ const configureEstablishment = (req, res, next) => {
     req.session.establishmentId,
   )}`;
 
+  res.locals.multilingual = false;
   res.locals.currentLng = req.language?.split('-')[0] || 'en';
   if (config.sites[establishmentName]?.languages?.length > 1) {
     res.locals.multilingual = true;
