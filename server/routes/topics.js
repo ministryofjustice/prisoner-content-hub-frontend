@@ -12,7 +12,10 @@ const createTopicsRouter = ({ cmsService }) => {
         throw new Error('Could not determine establishment!');
       }
 
-      const topics = await cmsService.getTopics(establishmentName);
+      const topics = await cmsService.getTopics(
+        establishmentName,
+        res.locals.currentLng,
+      );
 
       res.render('pages/topics', {
         title: 'Browse all topics',

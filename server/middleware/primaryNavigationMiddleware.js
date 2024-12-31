@@ -2,8 +2,10 @@ module.exports =
   cmsService =>
   async ({ session: { establishmentName }, originalUrl }, res, next) => {
     try {
-      const primaryNavigation =
-        await cmsService.getPrimaryNavigation(establishmentName);
+      const primaryNavigation = await cmsService.getPrimaryNavigation(
+        establishmentName,
+        res.locals.currentLng,
+      );
       res.locals.primaryNavigation = primaryNavigation;
       res.locals.originalUrl = mapNoneCMSUrls(originalUrl, primaryNavigation);
       return next();

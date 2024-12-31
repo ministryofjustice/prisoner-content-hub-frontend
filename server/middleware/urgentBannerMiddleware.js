@@ -2,8 +2,10 @@ module.exports =
   cmsService =>
   async ({ session: { establishmentName } }, res, next) => {
     try {
-      const urgentBanners =
-        await cmsService.getUrgentBanners(establishmentName);
+      const urgentBanners = await cmsService.getUrgentBanners(
+        establishmentName,
+        res.locals.language,
+      );
       res.locals.urgentBanners = urgentBanners;
       return next();
     } catch (e) {

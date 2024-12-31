@@ -5,6 +5,7 @@ const createContentRouter = ({ cmsService }) => {
 
   router.get('/:id', async (req, res, next) => {
     const { id } = req.params;
+    const { currentLng } = res.locals;
 
     if (!id) {
       return next();
@@ -22,6 +23,7 @@ const createContentRouter = ({ cmsService }) => {
       const data = await cmsService.getContent(
         establishmentName,
         parseInt(id, 10),
+        currentLng,
       );
 
       const contentType = data?.contentType;

@@ -3,7 +3,7 @@ const express = require('express');
 const createUpdatesContentRouter = ({ cmsService }) => {
   const router = express.Router();
 
-  const getUpdatesContent = req => {
+  const getUpdatesContent = (req, res) => {
     const { establishmentName } = req.session;
 
     if (!establishmentName) {
@@ -11,14 +11,22 @@ const createUpdatesContentRouter = ({ cmsService }) => {
     }
 
     const { page } = req.query;
+    const { currentLng } = res.locals;
 
-    return cmsService.getUpdatesContent(establishmentName, page, 40);
+    return cmsService.getUpdatesContent(
+      establishmentName,
+      currentLng,
+      page,
+      40,
+    );
   };
 
   router.get('/', async (req, res, next) => {
     try {
-      const { updatesContent, isLastPage = true } =
-        await getUpdatesContent(req);
+      const { updatesContent, isLastPage = true } = await getUpdatesContent(
+        req,
+        res,
+      );
 
       res.render('pages/collections', {
         config: {
@@ -46,7 +54,7 @@ const createUpdatesContentRouter = ({ cmsService }) => {
   router.get('/json', async (req, res, next) => {
     try {
       const { updatesContent: hubContentData, isLastPage } =
-        await getUpdatesContent(req);
+        await getUpdatesContent(req.res);
 
       res.json({
         data: hubContentData,
