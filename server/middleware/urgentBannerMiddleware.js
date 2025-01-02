@@ -4,7 +4,7 @@ module.exports =
     try {
       const urgentBanners = await cmsService.getUrgentBanners(
         establishmentName,
-        res.locals.language,
+        res.locals.currentLng,
       );
       res.locals.urgentBanners = urgentBanners;
       return next();
