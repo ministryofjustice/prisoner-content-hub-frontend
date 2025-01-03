@@ -112,15 +112,21 @@ class CmsService {
     };
   }
 
-  async getCategoryPage(establishmentName, uuid, page, catType) {
+  async getCategoryPage(establishmentName, uuid, page, catType, language) {
     switch (catType) {
       case 'series':
         return this.#cmsApi.getCache(
-          new CategoryCollectionsQuery(establishmentName, uuid, 40, page),
+          new CategoryCollectionsQuery(
+            establishmentName,
+            uuid,
+            language,
+            40,
+            page,
+          ),
         );
       case 'other':
         return this.#cmsApi.getCache(
-          new CategoryContentQuery(establishmentName, uuid, 40, page),
+          new CategoryContentQuery(establishmentName, uuid, language, 40, page),
         );
       default:
         throw new Error(
@@ -135,11 +141,7 @@ class CmsService {
   }
 
   async getTag(establishmentName, id, language) {
-    const lookupData = await this.#cmsApi.lookupTag(
-      establishmentName,
-      id,
-      language,
-    );
+    const lookupData = await this.#cmsApi.lookupTag(establishmentName, id);
     const { type, uuid } = lookupData;
     let { location } = lookupData;
 
@@ -172,11 +174,21 @@ class CmsService {
           page,
         ).then(({ hubContentData }) => hubContentData);
       case 'taxonomy_term--series':
-        return this.getSeries(establishmentName, uuid, location, page).then(
-          ({ hubContentData }) => hubContentData,
-        );
+        return this.getSeries(
+          establishmentName,
+          uuid,
+          location,
+          language,
+          page,
+        ).then(({ hubContentData }) => hubContentData);
       case 'taxonomy_term--moj_categories':
-        return this.getCategoryPage(establishmentName, uuid, page, catType);
+        return this.getCategoryPage(
+          establishmentName,
+          uuid,
+          page,
+          catType,
+          language,
+        );
       default:
         throw new Error(`Unknown tag type: ${type} with content id: ${id}`);
     }
