@@ -7,13 +7,14 @@ const createTagRouter = ({ cmsService }) => {
     try {
       const { id } = req.params;
       const { page, pageType } = req.query;
+      const { currentLng } = res.locals;
 
       const data = await cmsService.getPage(
         req.session.establishmentName,
         parseInt(id, 10),
         parseInt(page || '1', 10),
         ['other', 'series', ''].includes(pageType) ? pageType : '',
-        res.locals.currentLng,
+        currentLng,
       );
       return res.json(data);
     } catch (e) {
