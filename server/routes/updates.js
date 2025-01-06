@@ -4,7 +4,7 @@ const createUpdatesContentRouter = ({ cmsService }) => {
   const router = express.Router();
 
   const getUpdatesContent = (req, res) => {
-    const { establishmentName } = req.session;
+    const { establishmentName } = res.locals;
 
     if (!establishmentName) {
       throw new Error('Could not determine establishment!');
@@ -54,7 +54,7 @@ const createUpdatesContentRouter = ({ cmsService }) => {
   router.get('/json', async (req, res, next) => {
     try {
       const { updatesContent: hubContentData, isLastPage } =
-        await getUpdatesContent(req.res);
+        await getUpdatesContent(req, res);
 
       res.json({
         data: hubContentData,
