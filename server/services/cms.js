@@ -299,9 +299,21 @@ class CmsService {
   }
 
   async getPrimaryNavigation(establishmentName, language) {
-    return this.#cmsApi.getCache(
+    const primaryNavigation = await this.#cmsApi.getCache(
       new PrimaryNavigationQuery(establishmentName, language),
     );
+    primaryNavigation.forEach((item, index) => {
+      const languageCodeRegex = /^\/[a-z]{2}\//;
+      if (languageCodeRegex.test(item.href)) {
+        primaryNavigation[index].href = item.href.substring(3);
+      }
+      const untranslatedPrefix = '/taxonomy/term/';
+      if (primaryNavigation[index].href.startsWith(untranslatedPrefix)) {
+        primaryNavigation[index].href =
+          `/tags/${primaryNavigation[index].href.substring(untranslatedPrefix.length)}`;
+      }
+    });
+    return primaryNavigation;
   }
 
   async getRecentlyAddedContent(establishmentName, page = 1, pageLimit = 4) {
