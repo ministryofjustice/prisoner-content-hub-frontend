@@ -5,7 +5,7 @@ describe('Healthcheck', () => {
     });
 
     it("'healthy' key/value pair is present with the expected value", () => {
-      cy.request('/health').its('body.healthy').should('equal', true);
+      cy.request('/health').its('body.status').should('equal', 'UP');
     });
 
     it("'uptime' key/value pair is present with the expected value", () => {

@@ -32,7 +32,8 @@ describe('GET healthchecks', () => {
             gitDate: 'foo-date',
             gitRef: 'foo-ref',
           },
-          healthy: true,
+          components: {},
+          status: 'UP',
           uptime: expect.any(Number),
           version: buildNumber,
         });
