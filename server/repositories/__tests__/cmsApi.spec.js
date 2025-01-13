@@ -105,7 +105,7 @@ describe('CmsApi', () => {
     describe('no cache key defined', () => {
       it('should throw an error', async () => {
         const query = new TestUrlTransformEachQuery();
-        await expect(cmsApi.getCache(query)).rejects.toThrow(
+        await expect(cmsApi.getCache({ query })).rejects.toThrow(
           'Could not retrieve cache key from query: TestUrlTransformEachQuery',
         );
       });
@@ -118,7 +118,7 @@ describe('CmsApi', () => {
           uuid: 42,
         };
         testCacheStrategy.get.mockResolvedValueOnce(cachedValue);
-        const response = await cmsApi.getCache(new TestPathTransformQuery());
+        const response = await cmsApi.getCache({ query: new TestPathTransformQuery() });
         expect(response).toStrictEqual(cachedValue);
       });
     });
@@ -144,7 +144,7 @@ describe('CmsApi', () => {
             }),
           ),
         );
-        response = await cmsApi.getCache(new TestPathTransformQuery());
+        response = await cmsApi.getCache({ query: new TestPathTransformQuery() });
       });
       it('should return the drupal value', async () => {
         expect(response).toStrictEqual(expectedResult);
