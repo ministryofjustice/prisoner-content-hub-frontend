@@ -1,4 +1,3 @@
-const { path } = require('ramda');
 const express = require('express');
 
 const createSearchRouter = ({ searchService }) => {
@@ -6,7 +5,7 @@ const createSearchRouter = ({ searchService }) => {
 
   router.get('/', async (req, res, next) => {
     let results = [];
-    const query = path(['query', 'query'], req);
+    const query = req.query?.query;
 
     try {
       results = await searchService.find(query, req.session?.establishmentName);
