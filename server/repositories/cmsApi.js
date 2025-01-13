@@ -76,7 +76,7 @@ class CmsApi {
     });
   }
 
-  async getCache(query) {
+  async getCache({ query, throwError = true }) {
     const key = query.getKey?.() || null;
     if (!key)
       throw new Error(
@@ -85,10 +85,14 @@ class CmsApi {
     const expiry = query.getExpiry?.() || 300;
     let data = key ? await this.#cache.get(key) : null;
     if (!data) {
-      data = (await this.get(query)) || [];
-      if (data) await this.#cache.set(key, data, expiry);
+      if (throwError) {
+        data = (await this.get(query)) || [];
+      }
+      if (data) {
+        await this.#cache.set(key, data, expiry);
+      }
     }
-    // move to "structuredClone" when on node 18+
+
     return clone(data);
   }
 

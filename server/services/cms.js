@@ -68,24 +68,24 @@ class CmsService {
   }
 
   async getTopic(establishmentName, uuid, location, page = 1) {
-    const result = await this.#cmsApi.getCache(
-      new TopicPageQuery(establishmentName, uuid, page),
-    );
+    const result = await this.#cmsApi.getCache({
+      query: new TopicPageQuery(establishmentName, uuid, page),
+    });
     if (result?.title) return result;
-    const tagResult = await this.#cmsApi.getCache(
-      new TopicHeaderPageQuery(location),
-    );
+    const tagResult = await this.#cmsApi.getCache({
+      query: new TopicHeaderPageQuery(location),
+    });
     return tagResult;
   }
 
   async getSeries(establishmentName, uuid, location, page = 1) {
-    const result = await this.#cmsApi.getCache(
-      new SeriesPageQuery(establishmentName, uuid, page),
-    );
+    const result = await this.#cmsApi.getCache({
+      query: new SeriesPageQuery(establishmentName, uuid, page),
+    });
     if (result?.title) return result;
-    const tagResult = await this.#cmsApi.getCache(
-      new SeriesHeaderPageQuery(location),
-    );
+    const tagResult = await this.#cmsApi.getCache({
+      query: new SeriesHeaderPageQuery(location),
+    });
     return tagResult;
   }
 
@@ -93,17 +93,17 @@ class CmsService {
     const [[categoryData, categoryContent = []], categorySeries] =
       await Promise.all([
         this.#cmsApi
-          .getCache(new CategoryPageQuery(establishmentName, uuid))
+          .getCache({ query: new CategoryPageQuery(establishmentName, uuid) })
           .then(async data => {
             if (!(data?.breadcrumbs?.length >= 1)) return [data];
-            const rawCategoryContent = await this.#cmsApi.getCache(
-              new CategoryContentQuery(establishmentName, uuid, 40),
-            );
+            const rawCategoryContent = await this.#cmsApi.getCache({
+              query: new CategoryContentQuery(establishmentName, uuid, 40),
+            });
             return [data, rawCategoryContent];
           }),
-        this.#cmsApi.getCache(
-          new CategoryCollectionsQuery(establishmentName, uuid, 40),
-        ),
+        this.#cmsApi.getCache({
+          query: new CategoryCollectionsQuery(establishmentName, uuid, 40),
+        }),
       ]);
     return {
       ...categoryData,
@@ -115,13 +115,13 @@ class CmsService {
   async getCategoryPage(establishmentName, uuid, page, catType) {
     switch (catType) {
       case 'series':
-        return this.#cmsApi.getCache(
-          new CategoryCollectionsQuery(establishmentName, uuid, 40, page),
-        );
+        return this.#cmsApi.getCache({
+          query: new CategoryCollectionsQuery(establishmentName, uuid, 40, page),
+        });
       case 'other':
-        return this.#cmsApi.getCache(
-          new CategoryContentQuery(establishmentName, uuid, 40, page),
-        );
+        return this.#cmsApi.getCache({
+          query: new CategoryContentQuery(establishmentName, uuid, 40, page),
+        });
       default:
         throw new Error(
           `Unknown type for category page: ${catType} with content uuid: ${uuid}`,
@@ -218,27 +218,27 @@ class CmsService {
   }
 
   async getTopics(establishmentName) {
-    return this.#cmsApi.getCache(new TopicsQuery(establishmentName));
+    return this.#cmsApi.getCache({ query: new TopicsQuery(establishmentName) });
   }
 
   async getHomepageContent(establishmentName) {
-    const homepageContent = await this.#cmsApi.getCache(
-      new HomepageContentQuery(establishmentName),
-    );
+    const homepageContent = await this.#cmsApi.getCache({
+      query: new HomepageContentQuery(establishmentName),
+    });
     return homepageContent[0];
   }
 
   async getUpdatesContent(establishmentName, page = 1, pageLimit = 5) {
-    const updatesContent = await this.#cmsApi.getCache(
-      new HomepageUpdatesContentQuery(establishmentName, page, pageLimit),
-    );
+    const updatesContent = await this.#cmsApi.getCache({
+      query: new HomepageUpdatesContentQuery(establishmentName, page, pageLimit),
+    });
     return updatesContent;
   }
 
   async getExploreContent(establishmentName) {
-    const exploreContent = await this.#cmsApi.getCache(
-      new ExploreContentQuery(establishmentName),
-    );
+    const exploreContent = await this.#cmsApi.getCache({
+      query: new ExploreContentQuery(establishmentName),
+    });
     return exploreContent;
   }
 
@@ -259,35 +259,35 @@ class CmsService {
   }
 
   async getPrimaryNavigation(establishmentName) {
-    return this.#cmsApi.getCache(new PrimaryNavigationQuery(establishmentName));
+    return this.#cmsApi.getCache({ query: new PrimaryNavigationQuery(establishmentName) });
   }
 
   async getRecentlyAddedContent(establishmentName, page = 1, pageLimit = 4) {
     const timeStamp = getOffsetUnixTime(14);
 
-    const recentlyAddedContent = await this.#cmsApi.getCache(
-      new RecentlyAddedContentQuery(
+    const recentlyAddedContent = await this.#cmsApi.getCache({
+      query: new RecentlyAddedContentQuery(
         establishmentName,
         page,
         pageLimit,
         timeStamp,
       ),
-    );
+    });
 
     return recentlyAddedContent;
   }
 
   async getRecentlyAddedHomepageContent(establishmentName) {
-    const RecentlyAddedHomepageContent = await this.#cmsApi.getCache(
-      new RecentlyAddedHomepageContentQuery(establishmentName),
-    );
+    const RecentlyAddedHomepageContent = await this.#cmsApi.getCache({
+      query: new RecentlyAddedHomepageContentQuery(establishmentName),
+    });
 
     return RecentlyAddedHomepageContent;
   }
 
   async getUrgentBanners(establishmentName) {
     const urgentBanner = await this.#cmsApi
-      .getCache(new UrgentBannerQuery(establishmentName))
+      .getCache({ query: new UrgentBannerQuery(establishmentName) })
       .then(res => res.filter(isUnpublished));
     return urgentBanner;
   }
