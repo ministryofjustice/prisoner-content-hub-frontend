@@ -17,3 +17,6 @@ ingress:
     - pattern: "{{ .prison }}-prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk"
   host:
       pattern: "prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk"
+
+generic-prometheus-alerts:
+  alertSeverity: hmpps-launchpad-nonprod
