@@ -106,90 +106,116 @@ module.exports = {
       getEnv('ENABLE_STACK_TRACES_ON_ERROR_PAGES', 'false') === 'true',
     useRedisCache: getEnv('ENABLE_REDIS_CACHE', 'true') === 'true',
   },
+  defaultLanguage: 'en',
+  languages: [
+    { lang: 'en', text: 'English' },
+    { lang: 'cy', text: 'Cymraeg' },
+  ],
   sites: {
     berwyn: {
       enabled: false,
       features: [],
+      languages: ['en'],
     },
     bullingdon: {
       enabled: true,
       features: ['incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
     },
     cardiff: {
       enabled: true,
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
     },
     chelmsford: {
       enabled: true,
       features: ['incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
     },
     cookhamwood: {
       enabled: true,
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
     },
     erlestoke: {
       enabled: false,
       features: [],
+      languages: ['en'],
     },
     felthama: {
       enabled: false,
       features: [],
+      languages: ['en'],
     },
     felthamb: {
       enabled: false,
       features: [],
+      languages: ['en'],
     },
     garth: {
       enabled: true,
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
     },
     lindholme: {
       enabled: true,
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
     },
     newhall: {
       enabled: false,
       features: [],
+      languages: ['en'],
     },
     ranby: {
       enabled: true,
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
     },
     stokeheath: {
       enabled: true,
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
     },
     styal: {
       enabled: false,
       features: [],
+      languages: ['en'],
     },
     swaleside: {
       enabled: true,
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
     },
     themount: {
       enabled: true,
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
     },
     thestudio: {
       enabled: true,
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      languages: ['en', 'cy'],
     },
     wayland: {
       enabled: true,
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
     },
     werrington: {
       enabled: false,
       features: [],
+      languages: ['en'],
     },
     wetherby: {
       enabled: false,
       features: [],
+      languages: ['en'],
     },
     woodhill: {
       enabled: true,
       features: ['incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
     },
   },
   analytics: {

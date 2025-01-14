@@ -14,9 +14,10 @@ class CategoryPageQuery {
     'published_at',
   ];
 
-  constructor(establishmentName, uuid) {
+  constructor(establishmentName, uuid, language) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
+    this.language = language;
     this.query = new Query()
       .addFields('node--page', CategoryPageQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', CategoryPageQuery.#TILE_FIELDS)
@@ -39,7 +40,12 @@ class CategoryPageQuery {
   }
 
   getKey() {
-    return getCmsCacheKey('categoryPage', this.establishmentName, this.uuid);
+    return getCmsCacheKey(
+      'categoryPage',
+      this.language,
+      this.establishmentName,
+      this.uuid,
+    );
   }
 
   getExpiry() {
@@ -47,7 +53,7 @@ class CategoryPageQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/taxonomy_term/moj_categories/${this.uuid}?${this.query}`;
+    return `/${this.language}/jsonapi/prison/${this.establishmentName}/taxonomy_term/moj_categories/${this.uuid}?${this.query}`;
   }
 
   transform(data) {
