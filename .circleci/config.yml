@@ -26,8 +26,6 @@ commands:
         type: string
       releaseName:
         type: string
-      qualifier:
-        type: string
       releaseChannel:
         type: string
     steps:
@@ -38,8 +36,7 @@ commands:
           command: |
             VERSION_TO_DEPLOY=$(cat /tmp/build-info/version-to-deploy.txt)
             sed -i "s/appVersion:.*/appVersion: \"${VERSION_TO_DEPLOY}\"/g" "./helm_deploy/prisoner-content-hub-frontend/Chart.yaml"
-            QUALIFIER=<< parameters.qualifier >>
-            RELEASE_NAME=<< parameters.releaseName >>${QUALIFIER:+-$QUALIFIER}
+            RELEASE_NAME=<< parameters.releaseName >>
             kubectl -n ${KUBE_NAMESPACE} get secret ip-allowlist -o json | jq '{ ingress: { allowed: .data |  map_values(@base64d) } } ' | \
             helm upgrade $RELEASE_NAME ./helm_deploy/prisoner-content-hub-frontend \
               --install --wait --reset-values --timeout 360s \
@@ -63,7 +60,7 @@ commands:
               --set prisonerAuthAD.clientSecret="${AZURE_AD_CLIENT_SECRET}" \
               --set appInsightsSecret="${APPINSIGHTS_INSTRUMENTATIONKEY}" \
               --set image.tag=${VERSION_TO_DEPLOY} \
-              --set ingress.qualifier="<< parameters.qualifier >>"
+              --set ingress.qualifier=""
 
               PULL_REQUEST=${CIRCLE_PULL_REQUEST##*/}
               if [ ! -z $PULL_REQUEST ]; then
@@ -267,9 +264,6 @@ jobs:
     parameters:
       environment:
         type: string
-      qualifier:
-        type: string
-        default: ""
       releaseChannel:
         type: string
     steps:
@@ -279,7 +273,6 @@ jobs:
       - release_to_namespace:
           environment: "<< parameters.environment >>"
           releaseName: "prisoner-content-hub-frontend"
-          qualifier: "<< parameters.qualifier >>"
           releaseChannel: "<< parameters.releaseChannel >>"
 
   clean_up_dev_deployments:
