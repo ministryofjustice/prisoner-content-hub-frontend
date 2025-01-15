@@ -42,7 +42,8 @@ spec:
                   number: 80
     {{- end }}
   {{- end }}
-    - host: {{ .Values.ingress.host }}
+  {{- with .Values.ingress.host }}
+    - host: {{ tpl .pattern (dict "qualifier" $.Values.ingress.qualifier "Template" $.Template) }}
       http:
         paths:
           - path: "/"
@@ -52,4 +53,5 @@ spec:
                 name: {{ $fullName }}
                 port:
                   number: 80
+  {{- end }}
 {{- end }}
