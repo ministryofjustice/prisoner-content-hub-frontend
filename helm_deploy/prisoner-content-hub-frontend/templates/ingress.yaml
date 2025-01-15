@@ -22,10 +22,8 @@ spec:
       - {{ tpl $domainPattern (dict "prison" . "Template" $.Template) }}
     {{- end }}
   {{- end }}
-  {{- with .Values.ingress.host }}
-      - {{ tpl .pattern (dict "Template" $.Template) }}
+      - {{ .Values.ingress.host }}
     {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
-  {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
     {{- $domainPattern := .pattern -}}
@@ -42,8 +40,7 @@ spec:
                   number: 80
     {{- end }}
   {{- end }}
-  {{- with .Values.ingress.host }}
-    - host: {{ tpl .pattern (dict "Template" $.Template) }}
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
           - path: "/"
@@ -53,5 +50,4 @@ spec:
                 name: {{ $fullName }}
                 port:
                   number: 80
-  {{- end }}
 {{- end }}
