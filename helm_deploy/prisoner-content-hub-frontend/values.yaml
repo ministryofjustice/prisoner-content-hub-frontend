@@ -71,3 +71,5 @@ ingress:
     nginx.ingress.kubernetes.io/server-snippet: |
        add_header X-Robots-Tag "noindex, nofollow, nosnippet, noarchive";
 
+generic-prometheus-alerts:
+  targetApplication: prisoner-content-hub-frontend
