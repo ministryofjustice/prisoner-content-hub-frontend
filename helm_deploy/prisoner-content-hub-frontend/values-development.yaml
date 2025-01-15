@@ -10,10 +10,10 @@ application:
 
 ingress:
   annotations:
-    external-dns.alpha.kubernetes.io/set-identifier: prisoner-content-hub-frontend-{{ .qualifier }}-prisoner-content-hub-development-green
+    external-dns.alpha.kubernetes.io/set-identifier: prisoner-content-hub-frontend-prisoner-content-hub-development-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
   # These are legacy, prison specific hostnames we want to deprecate
   hosts:
-    - pattern: "{{ .prison }}-prisoner-content-hub-development-{{ .qualifier }}.apps.live.cloud-platform.service.justice.gov.uk"
+    - pattern: "{{ .prison }}-prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk"
   host:
-      pattern: "prisoner-content-hub-development-{{ .qualifier }}.apps.live.cloud-platform.service.justice.gov.uk"
+      pattern: "prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk"
