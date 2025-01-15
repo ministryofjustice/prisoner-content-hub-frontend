@@ -36,7 +36,7 @@ commands:
           command: |
             VERSION_TO_DEPLOY=$(cat /tmp/build-info/version-to-deploy.txt)
             sed -i "s/appVersion:.*/appVersion: \"${VERSION_TO_DEPLOY}\"/g" "./helm_deploy/prisoner-content-hub-frontend/Chart.yaml"
-            helm dependency update "generic-prometheus-alerts"
+            helm dependency update "prisoner-content-hub-frontend"
             RELEASE_NAME=<< parameters.releaseName >>
             kubectl -n ${KUBE_NAMESPACE} get secret ip-allowlist -o json | jq '{ ingress: { allowed: .data |  map_values(@base64d) } } ' | \
             helm upgrade $RELEASE_NAME ./helm_deploy/prisoner-content-hub-frontend \
