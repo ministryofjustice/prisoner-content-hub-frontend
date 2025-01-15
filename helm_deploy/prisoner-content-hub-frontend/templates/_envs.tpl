@@ -130,6 +130,6 @@ env:
 
     - name: SINGLE_HOST_NAME
     {{- with .Values.ingress.host }}
-      value: {{ tpl .pattern (dict "qualifier" $.Values.ingress.qualifier "Template" $.Template) }}
+      value: {{ tpl .pattern (dict "Template" $.Template) }}
     {{- end }}
 {{- end -}}
