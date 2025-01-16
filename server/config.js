@@ -131,6 +131,10 @@ module.exports = {
       enabled: false,
       features: [],
     },
+    etwoe: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+    },
     felthama: {
       enabled: false,
       features: [],
