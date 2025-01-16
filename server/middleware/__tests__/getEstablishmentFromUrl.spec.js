@@ -18,7 +18,7 @@ describe('getEstablishmentFromUrl', () => {
     it(`should retrieve establishment from the header in ${env} and set in the session`, () => {
       req.headers.host = urlStubWith;
       getEstablishmentFromUrl(req, res, next);
-      expect(req.session.establishmentName).toBe('cookhamwood');
+      expect(req.session.establishmentName).toBe('etwoe');
     });
     it(`should not retrieve establishment from the header and set in the session in ${env} if not provided`, () => {
       req.headers.host = urlStubWithout;
@@ -28,31 +28,35 @@ describe('getEstablishmentFromUrl', () => {
   };
 
   describe('for localhost urls', () => {
-    getTests('development', 'e2e.localhost:3000', 'localhost:3000');
+    getTests('development', 'etwoe.localhost:3000', 'localhost:3000');
   });
 
   describe('for local urls', () => {
-    getTests('local', 'e2e.prisoner-content-hub.local:3000', 'localhost:3000');
+    getTests(
+      'local',
+      'etwoe.prisoner-content-hub.local:3000',
+      'localhost:3000',
+    );
   });
 
   describe('for development urls', () => {
     getTests(
       'development',
-      'cookhamwood-prisoner-content-hub-development-395.apps.live.cloud-platform.service.justice.gov.uk/',
+      'etwoe-prisoner-content-hub-development-395.apps.live.cloud-platform.service.justice.gov.uk/',
       'prisoner-content-hub-development-395.apps.live.cloud-platform.service.justice.gov.uk/',
     );
   });
   describe('for staging urls', () => {
     getTests(
       'staging',
-      'cookhamwood-prisoner-content-hub-staging.apps.live.cloud-platform.service.justice.gov.uk',
+      'etwoe-prisoner-content-hub-staging.apps.live.cloud-platform.service.justice.gov.uk',
       'prisoner-content-hub-staging.apps.live.cloud-platform.service.justice.gov.uk',
     );
   });
   describe('for production urls', () => {
     getTests(
       'production',
-      'e2e.content-hub.prisoner.service.justice.gov.uk',
+      'etwoe.content-hub.prisoner.service.justice.gov.uk',
       'content-hub.prisoner.service.justice.gov.uk/',
     );
   });

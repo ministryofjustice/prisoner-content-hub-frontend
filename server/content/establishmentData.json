@@ -29,6 +29,12 @@
     "youth": false,
     "agencyId": "CKI"
   },
+  "1": {
+    "name": "etwoe",
+    "displayName": "HMP etwoe",
+    "youth": false,
+    "agencyId": "EEE"
+  },
   "1074": {
     "name": "erlestoke",
     "displayName": "HMP Erlestoke",

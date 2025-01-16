@@ -4,7 +4,7 @@ describe('Profile', () => {
     cy.task('stubPrimaryNavigation');
     cy.task('stubUrgentBanners');
     cy.task('stubBrowseAllTopics');
-    cy.visit(`http://e2e.content-hub.localhost:3000/profile`);
+    cy.visit(`http://etwoe.content-hub.localhost:3000/profile`);
   });
   describe('When signed out', () => {
     it('displays the sign in link', () => {
