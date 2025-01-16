@@ -4,12 +4,12 @@ services:
     build: ..
     container_name: web
     networks:
-      prisoner-content-hub-e2e:
+      prisoner-content-hub-etwoe:
         aliases:
           - content-hub.localhost
           - wayland.content-hub.localhost
           - berwyn.content-hub.localhost
-          - e2e.content-hub.localhost
+          - etwoe.content-hub.localhost
     depends_on:
       - wiremock
     restart: always
@@ -22,7 +22,7 @@ services:
     image: rodolpheche/wiremock
     container_name: wiremock
     networks:
-      - prisoner-content-hub-e2e
+      - prisoner-content-hub-etwoe
     restart: always
     ports:
       - "9091:8080"
@@ -31,7 +31,7 @@ services:
     build: .
     container_name: cypress
     networks:
-      - prisoner-content-hub-e2e
+      - prisoner-content-hub-etwoe
     depends_on:
       - web
       - wiremock
@@ -41,4 +41,4 @@ services:
       - WIREMOCK_BASE_URL=http://wiremock:8080
 
 networks:
-  prisoner-content-hub-e2e:
+  prisoner-content-hub-etwoe:

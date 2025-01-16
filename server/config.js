@@ -127,13 +127,13 @@ module.exports = {
       enabled: true,
       features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
-    e2e: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
-    },
     erlestoke: {
       enabled: false,
       features: [],
+    },
+    etwoe: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
     },
     felthama: {
       enabled: false,
