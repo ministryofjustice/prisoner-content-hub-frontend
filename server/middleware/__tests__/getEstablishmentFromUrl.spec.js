@@ -28,15 +28,11 @@ describe('getEstablishmentFromUrl', () => {
   };
 
   describe('for localhost urls', () => {
-    getTests('development', 'cookhamwood.localhost:3000', 'localhost:3000');
+    getTests('development', 'e2e.localhost:3000', 'localhost:3000');
   });
 
   describe('for local urls', () => {
-    getTests(
-      'local',
-      'cookhamwood.prisoner-content-hub.local:3000',
-      'localhost:3000',
-    );
+    getTests('local', 'e2e.prisoner-content-hub.local:3000', 'localhost:3000');
   });
 
   describe('for development urls', () => {
@@ -56,7 +52,7 @@ describe('getEstablishmentFromUrl', () => {
   describe('for production urls', () => {
     getTests(
       'production',
-      'cookhamwood.content-hub.prisoner.service.justice.gov.uk',
+      'e2e.content-hub.prisoner.service.justice.gov.uk',
       'content-hub.prisoner.service.justice.gov.uk/',
     );
   });

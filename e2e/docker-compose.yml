@@ -9,7 +9,7 @@ services:
           - content-hub.localhost
           - wayland.content-hub.localhost
           - berwyn.content-hub.localhost
-          - cookhamwood.content-hub.localhost
+          - e2e.content-hub.localhost
     depends_on:
       - wiremock
     restart: always
