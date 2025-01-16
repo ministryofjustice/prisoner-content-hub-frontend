@@ -42,8 +42,8 @@ describe('getEstablishmentFromUrl', () => {
   describe('for development urls', () => {
     getTests(
       'development',
-      'etwoe-prisoner-content-hub-development-395.apps.live.cloud-platform.service.justice.gov.uk/',
-      'prisoner-content-hub-development-395.apps.live.cloud-platform.service.justice.gov.uk/',
+      'etwoe-prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk/',
+      'prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk/',
     );
   });
   describe('for staging urls', () => {
