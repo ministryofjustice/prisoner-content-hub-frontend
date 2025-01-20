@@ -289,6 +289,12 @@ workflows:
       - build_preview:
           <<: *feature_branch
 
+      - approve_deploy_dev:
+          <<: *feature_branch
+          type: approval
+          requires:
+            - build_preview
+
       - deploy_cloud_platform:
           <<: *feature_branch
           context:
@@ -298,7 +304,7 @@ workflows:
           environment: "development"
           releaseChannel: "launchpad-alerts-nonprod"
           requires:
-            - build_preview
+            - approve_deploy_dev
 
       - approve_deploy_staging:
           <<: *feature_branch
