@@ -49,7 +49,7 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{GTMSiteId}}"
      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    
+
     <script>
       document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
     </script>
@@ -63,8 +63,11 @@
     {% block topBar %}
       {{ topBar({
         establishmentDisplayName: establishmentDisplayName,
-        showSearch: true
-      }) }}
+        showSearch: true,
+        multilingual: multilingual,
+        translations: translations,
+        currentLng: currentLng
+      }, t) }}
     {% endblock %}
     {% block primaryNav %}
       {% if primaryNavigation | length > 0 %}
@@ -101,7 +104,7 @@
 
     {% if data.breadcrumbs %}
       <div class="govuk-width-container govuk-body govuk-clearfix">
-        <nav aria-label="breadcrumb"> 
+        <nav aria-label="breadcrumb">
           {{ govukBreadcrumbs({ items: data.breadcrumbs }) }}
         </nav>
       </div>

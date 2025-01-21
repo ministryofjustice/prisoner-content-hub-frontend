@@ -244,6 +244,15 @@ describe('GET /', () => {
           expect($('#search-wrapper').length).toBe(1);
         }));
 
+    it('renders the homepage without a language switcher for a non-multilingual site', () =>
+      request(app)
+        .get('/')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('.top-bar__navigation__item__translations').length).toBe(0);
+        }));
+
     describe('timetable events', () => {
       it('renders the homepage events for today', () => {
         offenderService.getCurrentEvents.mockResolvedValue(testEvents);
@@ -580,6 +589,56 @@ describe('GET /', () => {
         .then(response => {
           const $ = cheerio.load(response.text);
           expect($('.govuk-footer__list-item').length).toBe(2);
+        }));
+  });
+
+  describe('Multilingual homepage', () => {
+    const establishmentPersonalisationToggle = jest.fn();
+
+    beforeEach(() => {
+      const establishmentData = {
+        2095: {
+          name: 'cardiff',
+        },
+      };
+      router = createHomepageRouter({
+        cmsService,
+        offenderService,
+        establishmentData,
+      });
+
+      app = setupBasicApp();
+      app.use((req, res, next) => {
+        req.session = {
+          establishmentName: 'cardiff',
+          establishmentId: 792,
+          isSignedIn: true,
+          establishmentPersonalisationEnabled:
+            establishmentPersonalisationToggle(),
+        };
+        res.locals.establishmentEnabled = true;
+        res.locals.multilingual = true;
+        next();
+      });
+      app.use(router);
+    });
+
+    it('renders the homepage with a search bar', () =>
+      request(app)
+        .get('/')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('#search-wrapper').length).toBe(1);
+        }));
+
+    it('renders the homepage with a language switcher', () =>
+      request(app)
+        .get('/')
+        .expect(200)
+        .then(response => {
+          const $ = cheerio.load(response.text);
+          expect($('.top-bar__navigation__item__translations').length).toBe(1);
         }));
   });
 });
