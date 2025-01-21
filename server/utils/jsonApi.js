@@ -184,6 +184,7 @@ module.exports = {
   typeFrom,
   isBottomCategory,
   mapBreadcrumbs,
+  mapBreadcrumbHref,
   isNew,
   cropTextWithEllipsis,
 };
