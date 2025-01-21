@@ -364,7 +364,7 @@ describe('CmsApi', () => {
 
     it('should format and return single value', async () => {
       const individual =
-        'https://cms.org//jsonapi/prison/cookhamwood/taxonomy_term/series/1562712e-ecdc-4d99-82ae-86c04349a6a0';
+        'https://cms.org//jsonapi/prison/etwoe/taxonomy_term/series/1562712e-ecdc-4d99-82ae-86c04349a6a0';
       const resourceName = 'taxonomy_term--series';
       mockDrupal.get(lookupPath).reply(200, {
         jsonapi: {
@@ -412,7 +412,7 @@ describe('CmsApi', () => {
 
     it('should format and return single value', async () => {
       const individual =
-        'https://cms.org//jsonapi/prison/cookhamwood/taxonomy_term/series/1562712e-ecdc-4d99-82ae-86c04349a6a0';
+        'https://cms.org//jsonapi/prison/etwoe/taxonomy_term/series/1562712e-ecdc-4d99-82ae-86c04349a6a0';
       const resourceName = 'taxonomy_term--series';
       mockDrupal.get(lookupPath).reply(200, {
         jsonapi: {

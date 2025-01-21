@@ -26,8 +26,6 @@ commands:
         type: string
       releaseName:
         type: string
-      qualifier:
-        type: string
       releaseChannel:
         type: string
     steps:
@@ -38,8 +36,8 @@ commands:
           command: |
             VERSION_TO_DEPLOY=$(cat /tmp/build-info/version-to-deploy.txt)
             sed -i "s/appVersion:.*/appVersion: \"${VERSION_TO_DEPLOY}\"/g" "./helm_deploy/prisoner-content-hub-frontend/Chart.yaml"
-            QUALIFIER=<< parameters.qualifier >>
-            RELEASE_NAME=<< parameters.releaseName >>${QUALIFIER:+-$QUALIFIER}
+            helm dependency update "./helm_deploy/prisoner-content-hub-frontend"
+            RELEASE_NAME=<< parameters.releaseName >>
             kubectl -n ${KUBE_NAMESPACE} get secret ip-allowlist -o json | jq '{ ingress: { allowed: .data |  map_values(@base64d) } } ' | \
             helm upgrade $RELEASE_NAME ./helm_deploy/prisoner-content-hub-frontend \
               --install --wait --reset-values --timeout 360s \
@@ -62,8 +60,7 @@ commands:
               --set prisonerAuthAD.clientId="${AZURE_AD_CLIENT_ID}" \
               --set prisonerAuthAD.clientSecret="${AZURE_AD_CLIENT_SECRET}" \
               --set appInsightsSecret="${APPINSIGHTS_INSTRUMENTATIONKEY}" \
-              --set image.tag=${VERSION_TO_DEPLOY} \
-              --set ingress.qualifier="<< parameters.qualifier >>"
+              --set image.tag=${VERSION_TO_DEPLOY}
 
               PULL_REQUEST=${CIRCLE_PULL_REQUEST##*/}
               if [ ! -z $PULL_REQUEST ]; then
@@ -267,9 +264,6 @@ jobs:
     parameters:
       environment:
         type: string
-      qualifier:
-        type: string
-        default: ""
       releaseChannel:
         type: string
     steps:
@@ -279,32 +273,7 @@ jobs:
       - release_to_namespace:
           environment: "<< parameters.environment >>"
           releaseName: "prisoner-content-hub-frontend"
-          qualifier: "<< parameters.qualifier >>"
           releaseChannel: "<< parameters.releaseChannel >>"
-
-  clean_up_dev_deployments:
-    executor:
-      name: hmpps/node
-      tag: << pipeline.parameters.node-version >>
-    steps:
-      - checkout
-      - hmpps/k8s_setup
-      - hmpps/install_helm
-      - run:
-          name: Clean up dev deployments
-          command: |
-            curl -s "https://api.github.com/repos/ministryofjustice/prisoner-content-hub-frontend/pulls" | jq  '.[].number' | sort > prs.txt
-            helm --namespace prisoner-content-hub-development list | awk '{ print $1 }' | grep 'frontend-' | sed "s/[^0-9]//g" | sort > deployments.txt
-
-            deployments_to_delete=($(comm -23 deployments.txt prs.txt))
-
-            echo "Deployments to delete: ${#deployments_to_delete[@]}"
-            for i in "${deployments_to_delete[@]}"
-              do
-                DEPLOYMENT="prisoner-content-hub-frontend-${i}"
-                echo "Uninstalling deployment: ${DEPLOYMENT}"
-                helm -n prisoner-content-hub-development uninstall "${DEPLOYMENT}"
-            done
 
 workflows:
   version: 2
@@ -320,6 +289,12 @@ workflows:
       - build_preview:
           <<: *feature_branch
 
+      - approve_deploy_dev:
+          <<: *feature_branch
+          type: approval
+          requires:
+            - build_preview
+
       - deploy_cloud_platform:
           <<: *feature_branch
           context:
@@ -327,10 +302,9 @@ workflows:
             - prisoner-content-hub-development
           name: deploy_to_dev
           environment: "development"
-          qualifier: "${CIRCLE_PULL_REQUEST##*/}"
           releaseChannel: "launchpad-alerts-nonprod"
           requires:
-            - build_preview
+            - approve_deploy_dev
 
       - approve_deploy_staging:
           <<: *feature_branch
@@ -348,11 +322,6 @@ workflows:
           releaseChannel: "launchpad-alerts-nonprod"
           requires:
             - approve_deploy_staging
-
-      - clean_up_dev_deployments:
-          <<: *main_branch
-          context:
-            - prisoner-content-hub-development
 
       - build_production:
           <<: *main_branch

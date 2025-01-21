@@ -46,7 +46,7 @@ The app now takes it's establishment name from the hostname of each request. In 
 When running locally, in order to access the application as if you were at a specific establishment, `/etc/hosts` will need to be configured so that `127.0.0.1 localhost` includes one or more of the following:
 
 - `berwyn.prisoner-content-hub.local`
-- `cookhamwood.prisoner-content-hub.local`
+- `etwoe.prisoner-content-hub.local`
 - `erlestoke.prisoner-content-hub.local`
 - `felthama.prisoner-content-hub.local`
 - `felthamb.prisoner-content-hub.local`

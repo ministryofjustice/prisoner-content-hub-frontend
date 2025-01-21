@@ -7,7 +7,7 @@ describe('Timetable', () => {
     cy.task('stubPrimaryNavigation');
     cy.task('stubUrgentBanners');
     cy.task('stubBrowseAllTopics');
-    cy.visit(`http://cookhamwood.content-hub.localhost:3000/timetable`);
+    cy.visit(`http://etwoe.content-hub.localhost:3000/timetable`);
   });
   describe('When signed out', () => {
     it('displays the sign in link', () => {

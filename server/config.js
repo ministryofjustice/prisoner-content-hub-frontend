@@ -142,6 +142,11 @@ module.exports = {
       features: [],
       languages: ['en'],
     },
+    etwoe: {
+      enabled: true,
+      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      languages: ['en'],
+    },
     felthama: {
       enabled: false,
       features: [],

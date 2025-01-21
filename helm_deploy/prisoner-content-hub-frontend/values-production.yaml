@@ -17,3 +17,6 @@ ingress:
   host:
       pattern: "content-hub.prisoner.service.justice.gov.uk"
       cert_secret: prisoner-content-hub-frontend-certificate
+
+generic-prometheus-alerts:
+  alertSeverity: hmpps-launchpad
