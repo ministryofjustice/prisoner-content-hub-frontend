@@ -20,7 +20,7 @@
       <h1 class="govuk-heading-l" id="title">{{ title }}</h1>
     </div>
     <div class="help-container-tablet">
-      <h2 class="govuk-heading-m">In this section</h2>
+      <h2 class="govuk-heading-m">{{ t("category.inThisSection" }}</h2>
       <ul class="govuk-body">
         {% for link in data.categoryMenu %}
           <li>
@@ -31,7 +31,7 @@
     </div>
     <div class="help-container">
       <div class="help-block">
-        <h2 class="govuk-heading-m">In this section</h2>
+        <h2 class="govuk-heading-m">{{ t("category.inThisSection" }}</h2>
         <ul class="govuk-body">
           {% for link in data.categoryMenu %}
             <li>
@@ -59,11 +59,11 @@
   <div class="govuk-body categories-container">
     <h2>Featured</h2>
     <div class="category-content">
-      {{ contentTileLarge({content: data.categoryFeaturedContent.data[0], imageAlign: 'right'}) }}
+      {{ contentTileLarge({content: data.categoryFeaturedContent.data[0], imageAlign: 'right'}, t) }}
       {%- for tiles in data.categoryFeaturedContent.data | skip(1) | batch(3) %}
       <div class="category-content__three-items">
         {%- for tile in tiles %}
-          {{ contentTileSmall(tile) }}
+          {{ contentTileSmall(tile, t) }}
         {%- endfor %}
       </div>
       {%- endfor %}

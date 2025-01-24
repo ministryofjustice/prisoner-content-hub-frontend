@@ -4,7 +4,7 @@
       {% if params.isNew %}
         <strong class="govuk-tag govuk-tag--green">NEW</strong>
       {% elif params.contentType === "series" %}
-        <strong class="govuk-tag govuk-tag--purple">SERIES</strong>
+        <strong class="govuk-tag govuk-tag--purple">{{ t("contentTile.series") }}</strong>
       {% endif %}
       {% if params.image.url %}
         <img src="{{params.image.url}}" alt="" class="tile-image" loading="lazy">
@@ -16,16 +16,16 @@
     <div class="govuk-grid-column-full govuk-hub-contentTileSmall">
       <div>
         {% if params.contentType === "video" %}
-          <p class="content-link--video">Watch</p>
+          <p class="content-link--video">{{ t("contentTile.watch") }}</p>
         {% elif params.contentType === "radio" %}
-          <p class="content-link--audio">Listen</p>
+          <p class="content-link--audio">{{ t("contentTile.listen") }}</p>
         {% elif params.contentType === "external_link" %}
           <p class="content-link--external">{{ params.displayUrl }}</p>
         {% elif params.contentType === "internal_link" %}
         <p class="content-link--internal"></p>
         {% elif params.contentType === "category" %}
         {% elif params.contentType !== "series" and params.contentType !== "category_bottom" %}
-          <p class="content-link--article">Read</p>
+          <p class="content-link--article">{{ t("contentTile.read") }}</p>
         {% endif %}
       </div>
     </div>

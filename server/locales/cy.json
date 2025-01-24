@@ -1,4 +1,55 @@
 {
+  "category": {
+    "content": "Cynnwys",
+    "inThisSection": "Yn yr Adran hon",
+    "tellUsWhatYouThinkAboutThisPage": "Dywedwch wrthym beth ydych chi’n ei feddwl o’r dudalen hon"
+  },
+  "contentTile": {
+    "listen": "Gwrando",
+    "read": "Darllen",
+    "series": "CYFRES",
+    "watch": "Gwylio"
+  },
+  "games": {
+    "mimstris": {
+      "howToPlay": "Sut i chwarae:",
+      "instructions1": "Bysellau saeth = Chwith, Dde, Lawr",
+      "instructions2": "Up Arrow / Space = Rotate",
+      "instructions3": "A = Chwith",
+      "instructions4": "D = Dde",
+      "instructions5": "S = Lawr",
+      "instructions6": "Bysell Enter = Rhewi’r gêm"
+    },
+    "solitaire": {
+      "instructions1": "Rydych chi wedi dweud wrthym nad yw’r gêm solitaire yn gweithio am nad oes modd llusgo cerdyn i’r lle rydych am iddo fod.",
+      "instructions2": "Dyma sut mae symud cerdyn yn y fersiwn yma o’r gêm:",
+      "instructions3": "I symud cerdyn, dewiswch yr un rydych eisiau ei symud. Bydd yr ymylon yn troi’n felyn. Nesaf, dewiswch ble hoffech iddo fynd.",
+      "instructions4": "Gall fod oedi cyn i’r gêm gofrestru symudiad, felly rhowch amser iddo.",
+      "instructions5": "Dewiswch y pentwr yng nghornel chwith uchaf y gêm i ddatgelu cardiau newydd."
+    }
+  },
+  "home": {
+    "browseAllTopics": "Pori pob pwnc",
+    "exploreTheHub": "Archwilio’r Hwb",
+    "featured": "Dan sylw",
+    "recentlyAdded": "Ychwanegwyd yn ddiweddar",
+    "updates": "Diweddariadau"
+  },
+  "hubContentBlock": {
+    "viewAll": "Gweld y cyfan"
+  },
+  "pageNavigation": {
+    "back": "Yn ôl",
+    "home": "Hafan",
+    "forward": "Ymlaen"
+  },
+  "recentlyAdded": {
+    "summary": "Y lanlwythiadau diweddaraf ar yr Hwb.",
+    "title": "Ychwanegwyd yn ddiweddar"
+  },
+  "suggestedContent": {
+    "youMightLike": "Efallai yr hoffech chi"
+  },
   "topBar": {
     "title": "Hwb Cynnwys"
   }

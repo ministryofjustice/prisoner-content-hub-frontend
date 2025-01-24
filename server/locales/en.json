@@ -1,4 +1,55 @@
 {
+  "category": {
+    "content": "Content",
+    "inThisSection": "In this section",
+    "tellUsWhatYouThinkAboutThisPage": "Tell us what you think about this page"
+  },
+  "contentTile": {
+    "listen": "Listen",
+    "read": "Read",
+    "series": "SERIES",
+    "watch": "Watch"
+  },
+  "games": {
+    "mimstris": {
+      "howToPlay": "How to play:",
+      "instructions1": "Arrow Keys = Left, Right, Down",
+      "instructions2": "Up Arrow / Space = Rotate",
+      "instructions3": "A = Left",
+      "instructions4": "D = Right",
+      "instructions5": "S = Down",
+      "instructions6": "Enter = Pause game"
+    },
+    "solitaire": {
+      "instructions1": "You’ve told us that the solitaire game is not working as you can’t drag a card to where you want it.",
+      "instructions2": "Here’s how to make a move in this version of the game:",
+      "instructions3": "To move a card select the card you want to move. The edges will turn yellow. Next select the space where you want it to go.",
+      "instructions4": "The game can be a little slow to register a move so give it time for the move to happen.",
+      "instructions5": "Select the pile in the top left of the game to reveal new cards."
+    }
+  },
+  "home": {
+    "browseAllTopics": "Browse all topics",
+    "exploreTheHub": "Explore the Hub",
+    "featured": "Featured",
+    "recentlyAdded": "Recently added",
+    "updates": "Updates"
+  },
+  "hubContentBlock": {
+    "viewAll": "View all"
+  },
+  "pageNavigation": {
+    "back": "Back",
+    "home": "Home",
+    "forward": "Forward"
+  },
+  "recentlyAdded": {
+    "summary": "The latest uploads on the Hub.",
+    "title": "Recently added"
+  },
+  "suggestedContent": {
+    "youMightLike": "You might like"
+  },
   "topBar": {
     "title": "Content Hub"
   }

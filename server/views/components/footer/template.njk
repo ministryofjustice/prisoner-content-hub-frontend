@@ -6,7 +6,7 @@
     {% if params.allTopics %}
       <div class="govuk-footer__navigation">
         <div class="govuk-footer__section govuk-grid-column-full">
-          <h2 class="govuk-footer__heading govuk-heading-m">Browse all topics</h2>
+          <h2 class="govuk-footer__heading govuk-heading-m">{{ t("home.browseAllTopics") }}</h2>
           <ul class="govuk-footer__list govuk-footer__list--columns-3">
             {% for topic in params.allTopics %}
               <li class="govuk-footer__list-item">

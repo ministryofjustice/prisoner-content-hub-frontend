@@ -85,7 +85,7 @@
 
         <div class="govuk-hub-navigationUserDetailsBar">
           {% block pageNavigation %}
-            {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs  }) }}
+            {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs  }, t) }}
           {% endblock %}
           {% block userDetails %}
             {% if establishmentEnabled %}
@@ -153,7 +153,7 @@
     {% endif %}
 
     {% block footer %}
-      {{ footer({ allTopics: allTopics }) }}
+      {{ footer({ allTopics: allTopics }, t) }}
     {% endblock %}
 
     <script src="/public/jquery.min.js"></script>
