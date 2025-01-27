@@ -302,7 +302,7 @@ workflows:
             - prisoner-content-hub-development
           name: deploy_to_dev
           environment: "development"
-          releaseChannel: "launchpad-alerts-nonprod"
+          releaseChannel: "prisoner_facing_services_releases"
           requires:
             - approve_deploy_dev
 
@@ -319,7 +319,7 @@ workflows:
             - prisoner-content-hub-staging
           name: deploy_to_staging_branch
           environment: "staging"
-          releaseChannel: "launchpad-alerts-nonprod"
+          releaseChannel: "prisoner_facing_services_releases"
           requires:
             - approve_deploy_staging
 
@@ -336,7 +336,7 @@ workflows:
             - prisoner-content-hub-staging
           name: deploy_to_staging
           environment: "staging"
-          releaseChannel: "launchpad-alerts-nonprod"
+          releaseChannel: "prisoner_facing_services_releases"
           requires:
             - build_production
 
@@ -352,7 +352,7 @@ workflows:
             - hmpps-common-vars
             - prisoner-content-hub-prod
           environment: "production"
-          releaseChannel: "launchpad-alerts"
+          releaseChannel: "prisoner_facing_services_releases"
           requires:
             - approve_deploy_production
 
