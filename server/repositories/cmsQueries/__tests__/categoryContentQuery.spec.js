@@ -6,11 +6,18 @@ describe('Category collection query', () => {
   const UUID = `42`;
   const LIMIT = 17;
   const PAGE = 2;
-  const query = new CategoryContentQuery(ESTABLISHMENTNAME, UUID, LIMIT, PAGE);
+  const LANGUAGE = 'en';
+  const query = new CategoryContentQuery(
+    ESTABLISHMENTNAME,
+    UUID,
+    LANGUAGE,
+    LIMIT,
+    PAGE,
+  );
   describe('path', () => {
     it('should create correct path', () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/${ESTABLISHMENTNAME}/node?filter%5Bfield_moj_top_level_categories.id%5D=${UUID}&include=field_moj_thumbnail_image&sort=-created&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&fields%5Bmoj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&${getPagination(
+        `/${LANGUAGE}/jsonapi/prison/${ESTABLISHMENTNAME}/node?filter%5Bfield_moj_top_level_categories.id%5D=${UUID}&include=field_moj_thumbnail_image&sort=-created&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&fields%5Bmoj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_summary%2Cfield_moj_thumbnail_image%2Cpath%2Cpublished_at&${getPagination(
           PAGE,
           LIMIT,
         )}`,

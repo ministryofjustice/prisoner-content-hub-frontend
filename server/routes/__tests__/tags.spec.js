@@ -19,6 +19,9 @@ describe('GET /tags', () => {
       establishmentId: 123,
       establishmentName: 'berwyn',
     };
+    res.locals = {
+      currentLng: 'en',
+    };
     next();
   };
 
@@ -129,6 +132,7 @@ describe('GET /tags', () => {
                 1,
                 1,
                 '',
+                'en',
               );
             });
         });
@@ -147,25 +151,30 @@ describe('GET /tags', () => {
                 1,
                 2,
                 '',
+                'en',
               );
             });
         });
         it('can specify data type by query parameter', () => {
           cmsService.getPage.mockReturnValue(data);
 
-          return request(app)
-            .get('/tags/1/json?page=2&pageType=other')
-            .expect(200)
-            .expect('Content-Type', /application\/json/)
-            .then(response => {
-              expect(response.body).toEqual(data);
-              expect(cmsService.getPage).toHaveBeenCalledWith(
-                'berwyn',
-                1,
-                2,
-                'other',
-              );
-            });
+          return (
+            request(app)
+              //            .get('/tags/1/json?page=2&pageType=other&lng=en')
+              .get('/tags/1/json?page=2&pageType=other')
+              .expect(200)
+              .expect('Content-Type', /application\/json/)
+              .then(response => {
+                expect(response.body).toEqual(data);
+                expect(cmsService.getPage).toHaveBeenCalledWith(
+                  'berwyn',
+                  1,
+                  2,
+                  'other',
+                  'en',
+                );
+              })
+          );
         });
       });
     });
