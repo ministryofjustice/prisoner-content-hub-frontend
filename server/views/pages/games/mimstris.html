@@ -31,5 +31,11 @@
 {% endblock %}
 
 {% block bodyEnd %}
+
+  <script>const i18n = {
+    'level': '{{ t("games.mimstris.level") }}',
+    'lines': '{{ t("games.mimstris.lines") }}',
+    'score': '{{ t("games.mimstris.score") }}'
+  };</script>
   <script src="/public/javascript/games/mimstris/main.js"></script>
 {% endblock %}

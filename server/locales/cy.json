@@ -18,7 +18,10 @@
       "instructions3": "A = Chwith",
       "instructions4": "D = Dde",
       "instructions5": "S = Lawr",
-      "instructions6": "Bysell Enter = Rhewi’r gêm"
+      "instructions6": "Bysell Enter = Rhewi’r gêm",
+      "level": "Lefel",
+      "lines": "Llinellau",
+      "score": "Sgôr"
     },
     "solitaire": {
       "instructions1": "Rydych chi wedi dweud wrthym nad yw’r gêm solitaire yn gweithio am nad oes modd llusgo cerdyn i’r lle rydych am iddo fod.",

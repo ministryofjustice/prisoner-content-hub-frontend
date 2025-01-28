@@ -18,7 +18,10 @@
       "instructions3": "A = Left",
       "instructions4": "D = Right",
       "instructions5": "S = Down",
-      "instructions6": "Enter = Pause game"
+      "instructions6": "Enter = Pause game",
+      "level": "Level",
+      "lines": "Lines",
+      "score": "Score"
     },
     "solitaire": {
       "instructions1": "You’ve told us that the solitaire game is not working as you can’t drag a card to where you want it.",
