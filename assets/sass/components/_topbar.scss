@@ -98,6 +98,10 @@
 
       &-search {
         padding-left: govuk-spacing(3);
+
+        a.tt-suggestion {
+          color: govuk-colour(black);
+        }
       }
     }
   }
