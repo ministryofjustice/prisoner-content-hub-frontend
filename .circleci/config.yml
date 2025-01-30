@@ -366,11 +366,11 @@ workflows:
                 - main
     jobs:
       - hmpps/npm_security_audit:
-          slack_channel: "launchpad-alerts"
+          slack_channel: "launchpad-alerts-nonprod"
           context:
             - hmpps-common-vars
       - hmpps/veracode_pipeline_scan:
-          slack_channel: launchpad-alerts
+          slack_channel: launchpad-alerts-nonprod
           context:
             - hmpps-common-vars
             - veracode-credentials
@@ -384,7 +384,7 @@ workflows:
                 - main
     jobs:
       - hmpps/veracode_policy_scan:
-          slack_channel: launchpad-alerts
+          slack_channel: launchpad-alerts-nonprod
           context:
             - veracode-credentials
             - hmpps-common-vars
