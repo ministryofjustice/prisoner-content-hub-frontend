@@ -1,10 +1,27 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
+const i18next = require('i18next');
+const middleware = require('i18next-http-middleware');
 
 jest.mock('@sentry/node');
 
 const { createRecentlyAddedContentRouter } = require('../recentlyAdded');
 const { setupBasicApp } = require('../../../test/test-helpers');
+
+i18next.init({
+  debug: true,
+  lng: 'en',
+  resources: {
+    en: {
+      translation: {
+        recentlyAdded: {
+          title: 'Recently added',
+          summary: 'The latest uploads on the Hub.',
+        },
+      },
+    },
+  },
+});
 
 describe('GET /recently-added', () => {
   let app;
@@ -27,6 +44,13 @@ describe('GET /recently-added', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     app = setupBasicApp();
+    app.use(middleware.handle(i18next));
+    app.use((req, res, next) => {
+      res.locals = {
+        currentLng: 'en',
+      };
+      next();
+    });
     app.use(sessionMiddleware);
     app.use('/', createRecentlyAddedContentRouter({ cmsService }));
 
