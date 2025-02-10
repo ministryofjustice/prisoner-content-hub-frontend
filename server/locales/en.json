@@ -6,6 +6,7 @@
   },
   "contentTile": {
     "listen": "Listen",
+    "new": "NEW",
     "read": "Read",
     "series": "SERIES",
     "watch": "Watch"
