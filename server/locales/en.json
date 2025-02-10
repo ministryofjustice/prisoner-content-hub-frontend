@@ -10,6 +10,11 @@
     "series": "SERIES",
     "watch": "Watch"
   },
+  "footer": {
+    "crownCopyright": "© Crown copyright",
+    "licence": "All content is available under the Open Government Licence v3.0, except where otherwise stated",
+    "privacy": "Privacy"
+  },
   "games": {
     "mimstris": {
       "howToPlay": "How to play:",

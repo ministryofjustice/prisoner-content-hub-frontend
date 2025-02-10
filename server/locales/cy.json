@@ -10,6 +10,11 @@
     "series": "CYFRES",
     "watch": "Gwylio"
   },
+  "footer": {
+    "crownCopyright": "© Hawlfraint y goron",
+    "licence": "Mae’r holl gynnwys ar gael o dan Drwydded Llywodraeth Agored f3.0, ac eithrio lle nodir fel arall",
+    "privacy": "Preifatrwydd"
+  },
   "games": {
     "mimstris": {
       "howToPlay": "Sut i chwarae:",
