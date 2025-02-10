@@ -50,6 +50,9 @@
     "summary": "The latest uploads on the Hub.",
     "title": "Recently added"
   },
+  "search": {
+    "searchTheContentHub": "Search the Content Hub"
+  },
   "skipToMainContent": {
     "skipToMainContent": "Skip to main content"
   },
