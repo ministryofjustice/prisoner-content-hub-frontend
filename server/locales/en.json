@@ -50,6 +50,9 @@
     "summary": "The latest uploads on the Hub.",
     "title": "Recently added"
   },
+  "skipToMainContent": {
+    "skipToMainContent": "Skip to main content"
+  },
   "suggestedContent": {
     "youMightLike": "You might like"
   },
