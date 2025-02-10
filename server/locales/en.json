@@ -59,6 +59,10 @@
   "search": {
     "searchTheContentHub": "Search the Content Hub"
   },
+  "showMore": {
+    "enabled": "Show more",
+    "disabled": "Loading"
+  },
   "skipToMainContent": {
     "skipToMainContent": "Skip to main content"
   },

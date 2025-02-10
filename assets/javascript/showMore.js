@@ -5,11 +5,11 @@ const setUpShowMore = (showMoreButton, showMoreTiles, pageType = '') => {
     }
   };
   const enableShowMore = () => {
-    showMoreButton.html('Show more');
+    showMoreButton.html(i18nShowMore['showMore.enabled'] || 'Show more');
     showMoreButton.attr('disabled', false);
   };
   const disableShowMore = () => {
-    showMoreButton.html('Loading');
+    showMoreButton.html(i18nShowMore['showMore.disabled'] || 'Loading');
     showMoreButton.attr('disabled', true);
   };
 

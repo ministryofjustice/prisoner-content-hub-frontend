@@ -44,6 +44,10 @@
 <script src="/public/generated/templates.js"></script>
 <script src="/public/nunjucks-slim.js"></script>
 <script src="/public/javascript/showMore.js"></script>
+<script>const i18nShowMore = {
+  'showMore.enabled': '{{ t("showMore.enabled") }}',
+  'showMore.disabled': '{{ t("showMore.disabled") }}'
+};</script>
 <script>setUpShowMore($('.show-more-tiles'), $('.small-tiles'))</script>
 {% endblock %}
 

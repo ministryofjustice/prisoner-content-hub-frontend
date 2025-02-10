@@ -59,6 +59,10 @@
   "search": {
     "searchTheContentHub": "Chwilio'r Hyb Cynnwys"
   },
+  "showMore": {
+    "enabled": "Dangos mwy",
+    "disabled": "Wrthi'n llwytho"
+  },
   "skipToMainContent": {
     "skipToMainContent": "Neidio i'r prif gynnwys"
   },
