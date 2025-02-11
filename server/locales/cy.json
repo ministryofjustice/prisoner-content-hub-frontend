@@ -1,8 +1,7 @@
 {
   "category": {
     "content": "Cynnwys",
-    "inThisSection": "Yn yr Adran hon",
-    "tellUsWhatYouThinkAboutThisPage": "Dywedwch wrthym beth ydych chi’n ei feddwl o’r dudalen hon"
+    "inThisSection": "Yn yr Adran hon"
   },
   "contentTile": {
     "listen": "Gwrando",
@@ -10,6 +9,33 @@
     "read": "Darllen",
     "series": "CYFRES",
     "watch": "Gwylio"
+  },
+  "feedback": {
+    "contact": {
+      "1": "Anfonwch gais yn ddigidol neu drwy’r ap",
+      "2": "Siaradwch â’ch PID Digidol, swyddog neu weithiwr allweddol",
+      "3": "Ffoniwch linell gymorth",
+      "4": "Darllenwch a gwyliwch fwy am iechyd meddwl",
+      "5": "Cysylltwch ag NPR gyda neges neu gais am gân",
+      "preamble": "Os ydych chi eisiau cysylltu â rhywun am unrhyw beth arall:"
+    },
+    "dislike": {
+      "1": "Mae cynnwys ar goll",
+      "2": "Mae dolen wedi torri ar y dudalen hon",
+      "3": "Dydy’r sain neu’r fideo ddim yn chwarae",
+      "4": "Dydy’r delweddau ddim yn gweithio",
+      "5": "Mae gwybodaeth anghywir ar y dudalen hon"
+    },
+    "headings": {
+      "alternative": "Dywedwch wrthym beth ydych chi’n ei feddwl o’r dudalen hon",
+      "default": "Rhowch adborth i ni"
+    },
+    "like": {
+      "1": "Mae’r cynnwys hwn wedi gwneud gwahaniaeth positif i mi",
+      "2": "Hoffwn gael mwy o’r math hwn o gynnwys"
+    },
+    "select": "Dewiswch un:",
+    "send": "Anfon"
   },
   "footer": {
     "crownCopyright": "© Hawlfraint y goron",

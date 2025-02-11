@@ -1,8 +1,7 @@
 {
   "category": {
     "content": "Content",
-    "inThisSection": "In this section",
-    "tellUsWhatYouThinkAboutThisPage": "Tell us what you think about this page"
+    "inThisSection": "In this section"
   },
   "contentTile": {
     "listen": "Listen",
@@ -10,6 +9,33 @@
     "read": "Read",
     "series": "SERIES",
     "watch": "Watch"
+  },
+  "feedback": {
+    "contact": {
+      "1": "Send an app or a digital request",
+      "2": "Speak to your Digital PID, an officer or keyworker",
+      "3": "Call a helpline",
+      "4": "Read and watch more about mental health",
+      "5": "Contact NPR with a shout out or song request",
+      "preamble": "If you want to contact someone about anything else:"
+    },
+    "dislike": {
+      "1": "Content is missing",
+      "2": "Broken link on this page",
+      "3": "Audio or video isn’t playing",
+      "4": "Images aren’t working",
+      "5": "There is wrong information on this page"
+    },
+    "headings": {
+      "alternative": "Tell us what you think about this page",
+      "default": "Give us feedback"
+    },
+    "like": {
+      "1": "This content made a positive difference to me",
+      "2": "I’d like more of this kind of content"
+    },
+    "select": "Select one:",
+    "send": "Send"
   },
   "footer": {
     "crownCopyright": "© Crown copyright",

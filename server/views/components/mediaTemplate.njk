@@ -43,7 +43,7 @@
         feedbackId: feedbackId,
         categories: data.categories.name,
         topics: data.topics | join(',', 'name')
-      })}}
+      }, t)}}
     {% endif %}
 
     {{ hubRelatedTopics({ data: data.topics, darkmode: true }, t) }}
