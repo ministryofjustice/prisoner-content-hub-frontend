@@ -47,6 +47,9 @@
   "hubContentBlock": {
     "viewAll": "Gweld y cyfan"
   },
+  "nextEpisodes": {
+    "heading": "Nesaf"
+  },
   "pageNavigation": {
     "back": "Yn ôl",
     "home": "Hafan",
@@ -55,6 +58,9 @@
   "recentlyAdded": {
     "summary": "Y lanlwythiadau diweddaraf ar yr Hwb.",
     "title": "Ychwanegwyd yn ddiweddar"
+  },
+  "relatedTopics": {
+    "heading": "Pynciau cysylltiedig"
   },
   "search": {
     "searchTheContentHub": "Chwilio'r Hyb Cynnwys"

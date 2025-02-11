@@ -46,10 +46,10 @@
       })}}
     {% endif %}
 
-    {{ hubRelatedTopics({ data: data.topics, darkmode: true }) }}
+    {{ hubRelatedTopics({ data: data.topics, darkmode: true }, t) }}
 
     <div id="next-episodes" class="govuk-hub-media-player__watch-next">
-      {{ nextEpisodesContent({ data: data.nextEpisodes }) }}
+      {{ nextEpisodesContent({ data: data.nextEpisodes }, t) }}
     </div>
   </div>
   <div class="govuk-grid-row">

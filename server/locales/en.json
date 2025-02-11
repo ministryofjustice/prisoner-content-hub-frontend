@@ -47,6 +47,9 @@
   "hubContentBlock": {
     "viewAll": "View all"
   },
+  "nextEpisodes": {
+    "heading": "Next"
+  },
   "pageNavigation": {
     "back": "Back",
     "home": "Home",
@@ -55,6 +58,9 @@
   "recentlyAdded": {
     "summary": "The latest uploads on the Hub.",
     "title": "Recently added"
+  },
+  "relatedTopics": {
+    "heading": "Related topics"
   },
   "search": {
     "searchTheContentHub": "Search the Content Hub"
