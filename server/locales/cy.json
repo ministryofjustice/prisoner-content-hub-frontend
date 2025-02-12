@@ -96,7 +96,10 @@
     "heading": "Pynciau cysylltiedig"
   },
   "search": {
-    "searchTheContentHub": "Chwilio'r Hyb Cynnwys"
+    "noResults": "Dim canlyniadau ar gyfer \"{{ term }}\"",
+    "searchTheContentHub": "Chwilio'r Hyb Cynnwys",
+    "showingResults": "Dyma’r canlyniadau ar gyfer \"{{ term }}\"",
+    "title": "Chwilio"
   },
   "showMore": {
     "enabled": "Dangos mwy",

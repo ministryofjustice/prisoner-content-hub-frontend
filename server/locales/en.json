@@ -96,7 +96,10 @@
     "heading": "Related topics"
   },
   "search": {
-    "searchTheContentHub": "Search the Content Hub"
+    "noResults": "No results found for \"{{ term }}\"",
+    "searchTheContentHub": "Search the Content Hub",
+    "showingResults": "Showing results for \"{{ term }}\"",
+    "title": "Search"
   },
   "showMore": {
     "enabled": "Show more",
