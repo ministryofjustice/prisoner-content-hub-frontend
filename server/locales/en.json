@@ -73,6 +73,13 @@
   "hubContentBlock": {
     "viewAll": "View all"
   },
+  "interstitial": {
+    "1": "You are being taken to {{ url }}. You are <strong>allowed</strong> to visit this website.",
+    "2": "Internet access is restricted in prisons so links to other websites are blocked.",
+    "continue": "Continue",
+    "doNotShowMessage": "Don't show me this message again",
+    "heading": "You're leaving the Hub"
+  },
   "nextEpisodes": {
     "heading": "Next"
   },
