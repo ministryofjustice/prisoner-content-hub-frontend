@@ -110,5 +110,8 @@
   },
   "topBar": {
     "title": "Content Hub"
+  },
+  "urgentBanner": {
+    "title": "URGENT"
   }
 }

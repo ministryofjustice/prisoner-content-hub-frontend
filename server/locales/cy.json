@@ -110,5 +110,8 @@
   },
   "topBar": {
     "title": "Hwb Cynnwys"
+  },
+  "urgentBanner": {
+    "title": "BRYS"
   }
 }
