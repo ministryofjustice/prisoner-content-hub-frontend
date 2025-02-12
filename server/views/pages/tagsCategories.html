@@ -42,6 +42,15 @@
 <script src="/public/generated/templates.js"></script>
 <script src="/public/nunjucks-slim.js"></script>
 <script src="/public/javascript/showMore.js"></script>
+<script>const i18nShowMore = {
+  'contentTile.new': '{{ t("contentTile.new") }}',
+  'contentTile.series': '{{ t("contentTile.series") }}',
+  'contentTile.watch': '{{ t("contentTile.watch") }}',
+  'contentTile.listen': '{{ t("contentTile.listen") }}',
+  'contentTile.read': '{{ t("contentTile.read") }}',
+  'showMore.enabled': '{{ t("showMore.enabled") }}',
+  'showMore.disabled': '{{ t("showMore.disabled") }}'
+};</script>
 <script>
   setUpShowMore($('#seriesTiles .show-more-tiles'), $('#seriesTiles .small-tiles'), 'series')
   setUpShowMore($('#otherContentTiles .show-more-tiles'), $('#otherContentTiles .small-tiles'), 'other')

@@ -2,9 +2,9 @@
   <a data-featured-tile-id="{{params.id}}" data-featured-id="{{params.id}}" data-featured-title="{{ params.title }}" href="{{params.contentUrl}}" {% if params.externalContent %}target="_blank"{% endif %} {% if params.contentType === 'pdf' or params.contentType === 'moj_pdf_item' %} class="is-pdf"{% endif %}>
     <div class="tile-top">
       {% if params.isNew %}
-        <strong class="govuk-tag govuk-tag--green">{{ t("contentTile.new") }}</strong>
+        <strong class="govuk-tag govuk-tag--green">{{ t("contentTile.new") if t else i18nStrings.new }}</strong>
       {% elif params.contentType === "series" %}
-        <strong class="govuk-tag govuk-tag--purple">{{ t("contentTile.series") }}</strong>
+        <strong class="govuk-tag govuk-tag--purple">{{ t("contentTile.series") if t else i18nStrings.series }}</strong>
       {% endif %}
       {% if params.image.url %}
         <img src="{{params.image.url}}" alt="" class="tile-image" loading="lazy">
@@ -16,16 +16,16 @@
     <div class="govuk-grid-column-full govuk-hub-contentTileSmall">
       <div>
         {% if params.contentType === "video" %}
-          <p class="content-link--video">{{ t("contentTile.watch") }}</p>
+          <p class="content-link--video">{{ t("contentTile.watch") if t else i18nStrings.watch }}</p>
         {% elif params.contentType === "radio" %}
-          <p class="content-link--audio">{{ t("contentTile.listen") }}</p>
+          <p class="content-link--audio">{{ t("contentTile.listen") if t else i18nStrings.listen }}</p>
         {% elif params.contentType === "external_link" %}
           <p class="content-link--external">{{ params.displayUrl }}</p>
         {% elif params.contentType === "internal_link" %}
         <p class="content-link--internal"></p>
         {% elif params.contentType === "category" %}
         {% elif params.contentType !== "series" and params.contentType !== "category_bottom" %}
-          <p class="content-link--article">{{ t("contentTile.read") }}</p>
+          <p class="content-link--article">{{ t("contentTile.read") if t else i18nStrings.read }}</p>
         {% endif %}
       </div>
     </div>
