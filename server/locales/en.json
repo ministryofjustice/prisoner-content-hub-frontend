@@ -10,6 +10,11 @@
     "series": "SERIES",
     "watch": "Watch"
   },
+  "error": {
+    "orTryAgain": "or <a href=\"{{ returnUrl }}\">try again</a>",
+    "returnHome": "Return to the <a href=\"/\">home page</a>",
+    "somethingWentWrong": "Something went wrong"
+  },
   "feedback": {
     "contact": {
       "1": "Send an app or a digital request",

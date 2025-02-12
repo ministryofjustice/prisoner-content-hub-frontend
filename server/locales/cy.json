@@ -10,6 +10,11 @@
     "series": "CYFRES",
     "watch": "Gwylio"
   },
+  "error": {
+    "orTryAgain": "neu <a href=\"{{ returnUrl }}\">roi cynnig arall arni</a>",
+    "returnHome": "Ewch yn ôl i'r <a href=\"/\">hafan</a>",
+    "somethingWentWrong": "Aeth rhywbeth o’i le"
+  },
   "feedback": {
     "contact": {
       "1": "Anfonwch gais yn ddigidol neu drwy’r ap",

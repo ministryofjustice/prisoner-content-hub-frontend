@@ -1,11 +1,11 @@
 {% extends "../components/basicTemplate.njk" %}
 
 {% set title = 'The error has been logged, please try again' %}
-{% set longTitle = 'Something went wrong' %}
+{% set longTitle = t("error.somethingWentWrong") %}
 
 {% block content %}
   <p class="govuk-body">
-    Return to the <a href="/">home page</a>{% if returnUrl %} or <a href="{{ returnUrl }}">try again</a>{% endif %}
+    {{ t("error.returnHome") | safe }}{% if returnUrl %} or {{ t("error.orTryAgain", { returnUrl:returnUrl }) | safe }}{% endif %}
   </p>
   {% if error %}
     <h2 class="govuk-heading-m">Geek Stuff 👇</h2>
