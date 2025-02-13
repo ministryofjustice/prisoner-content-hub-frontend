@@ -5,7 +5,7 @@ Application is running at:
   {{- range .Values.ingress.hosts }}
     {{- $domainPattern := .pattern -}}
     {{- range $.Values.ingress.prefixes }}
-    - {{ tpl $domainPattern (dict "prison" . "qualifier" $.Values.ingress.qualifier "Template" $.Template) }}
+    - {{ tpl $domainPattern (dict "prison" . "Template" $.Template) }}
     {{- end }}
   {{- end }}
 {{- end }}

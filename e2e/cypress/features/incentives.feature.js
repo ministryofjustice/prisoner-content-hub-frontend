@@ -4,7 +4,7 @@ describe('Profile', () => {
     cy.task('stubPrimaryNavigation');
     cy.task('stubUrgentBanners');
     cy.task('stubBrowseAllTopics');
-    cy.visit(`http://cookhamwood.content-hub.localhost:3000/profile`);
+    cy.visit(`http://etwoe.content-hub.localhost:3000/profile`);
   });
 
   describe('When signed in', () => {
