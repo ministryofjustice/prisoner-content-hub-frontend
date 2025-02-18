@@ -7,11 +7,14 @@ const createTagRouter = ({ cmsService }) => {
     try {
       const { id } = req.params;
       const { page, pageType } = req.query;
+      const { currentLng } = res.locals;
+
       const data = await cmsService.getPage(
         req.session.establishmentName,
         parseInt(id, 10),
         parseInt(page || '1', 10),
         ['other', 'series', ''].includes(pageType) ? pageType : '',
+        currentLng,
       );
       return res.json(data);
     } catch (e) {
@@ -25,6 +28,7 @@ const createTagRouter = ({ cmsService }) => {
       if (!id) {
         return next();
       }
+      const { currentLng } = res.locals;
       const config = {
         content: true,
         header: false,
@@ -35,6 +39,7 @@ const createTagRouter = ({ cmsService }) => {
       const data = await cmsService.getTag(
         req.session.establishmentName,
         parseInt(id, 10),
+        currentLng,
       );
       const pageType = ['topic', 'series'].includes(data.contentType)
         ? 'collections'
