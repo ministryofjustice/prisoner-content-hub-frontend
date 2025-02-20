@@ -28,6 +28,7 @@ commands:
         type: string
       releaseChannel:
         type: string
+        default: ""
     steps:
       - attach_workspace:
           at: /tmp/build-info
