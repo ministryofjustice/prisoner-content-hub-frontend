@@ -270,6 +270,7 @@ jobs:
       environment:
         type: string
       releaseChannel:
+        default: ""
         type: string
     steps:
       - checkout
