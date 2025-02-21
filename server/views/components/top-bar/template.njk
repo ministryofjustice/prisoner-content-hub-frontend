@@ -21,7 +21,7 @@
                 <a
                   href="{{ translation.href }}"
                   lang="{{ translation.lang }}"
-                  class="{% if translation.lang == params.currentLng %}active{% endif %} govuk-link">
+                  class="govuk-link govuk-link--inverse {% if translation.lang == params.currentLng %}active{% endif %} govuk-link">
                   {{ translation.text }}
                 </a>
               </div>
