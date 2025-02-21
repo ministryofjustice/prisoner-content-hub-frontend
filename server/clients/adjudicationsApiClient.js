@@ -1,4 +1,3 @@
-const { path, pathOr } = require('ramda');
 const { baseClient } = require('./baseClient');
 const { logger } = require('../utils/logger');
 const { InMemoryCachingStrategy } = require('../utils/caching/memory');
@@ -8,11 +7,8 @@ const CACHE_EXPIRY_OFFSET = 60; // Seconds
 
 class AdjudicationsApiClient {
   constructor(options = {}) {
-    const { clientId, clientSecret, authUrl } = pathOr(
-      {},
-      ['adjudicationsApi', 'auth'],
-      options,
-    );
+    const { clientId, clientSecret, authUrl } =
+      options?.adjudicationsApi?.auth ?? {};
 
     if (!authUrl) {
       throw new Error(
@@ -54,12 +50,12 @@ class AdjudicationsApiClient {
         },
       });
     } catch (error) {
-      const responseStatus = path(['response', 'status'], error);
+      const responseStatus = error?.response?.status;
       throw new Error(`Failed to request access token - ${responseStatus}`);
     }
 
-    const token = path(['data', 'access_token'], response);
-    const expiresIn = path(['data', 'expires_in'], response);
+    const token = response?.data?.access_token;
+    const expiresIn = response?.data?.expires_in;
 
     if (!token || !expiresIn) {
       throw new Error('Failed to request access token - malformed response');

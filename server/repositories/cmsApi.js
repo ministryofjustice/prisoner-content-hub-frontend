@@ -1,4 +1,3 @@
-const { clone } = require('ramda');
 const { Jsona, SwitchCaseJsonMapper } = require('jsona');
 const { NotFound } = require('./apiError');
 const { InMemoryCachingStrategy } = require('../utils/caching/memory');
@@ -32,7 +31,7 @@ class CmsApi {
       id,
     );
     const cacheValue = (await this.#cache.get(cacheKey)) || null;
-    if (cacheValue) return clone(cacheValue);
+    if (cacheValue) return JSON.parse(JSON.stringify(cacheValue));
     // Router will return 403 when content exists but not assigned to this prison
     const lookupResult = await this.#throwNotFoundWhenStatusIs(
       [403, 404],
@@ -48,7 +47,7 @@ class CmsApi {
       },
     );
     await this.#cache.set(cacheKey, lookupResult, 86400);
-    return clone(lookupResult);
+    return JSON.parse(JSON.stringify(lookupResult));
   };
 
   async lookupContent(establishmentName, contentId) {
@@ -88,8 +87,8 @@ class CmsApi {
       data = (await this.get(query)) || [];
       if (data) await this.#cache.set(key, data, expiry);
     }
-    // move to "structuredClone" when on node 18+
-    return clone(data);
+
+    return JSON.parse(JSON.stringify(data));
   }
 
   #throwNotFoundWhenStatusIs = async (statusCodes, call) => {
