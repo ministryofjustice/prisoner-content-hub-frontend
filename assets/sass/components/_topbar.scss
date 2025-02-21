@@ -5,7 +5,6 @@
 .top-bar {
   @include govuk-font(24, 'regular');
   display: flex;
-  color: govuk-colour('white');
   align-items: center;
   padding: govuk-spacing(1) 0;
 
@@ -24,10 +23,6 @@
   & a {
     text-decoration: none;
     margin-bottom: 0;
-  }
-
-  & a.govuk-link {
-    color: govuk-colour('white');
   }
 
   & a:hover {
@@ -87,10 +82,6 @@
             &:hover,
             &.active {
               text-decoration: underline;
-            }
-
-            &:visited {
-              color: white;
             }
           }
         }
