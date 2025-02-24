@@ -5,7 +5,6 @@
 .top-bar {
   @include govuk-font(24, 'regular');
   display: flex;
-  color: govuk-colour('white');
   align-items: center;
   padding: govuk-spacing(1) 0;
 
@@ -22,7 +21,6 @@
   }
 
   & a {
-    color: govuk-colour('white');
     text-decoration: none;
     margin-bottom: 0;
   }
@@ -33,6 +31,70 @@
 
   & span {
     font-weight: 400;
+  }
+
+  &__title {
+    padding-right: 15px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__navigation {
+    display: flex;
+    align-items: center;
+
+    &__items {
+      display: flex;
+      flex: 1;
+      justify-content: flex-end;
+      height: 100%;
+    }
+
+    &__item {
+      position: relative;
+
+      &__translations {
+        display: flex;
+        padding: 0 15px;
+        border-left: 1px solid white;
+        border-right: 1px solid white;
+        align-items: center;
+
+        .content-hub-header__link {
+          padding: 0 10px;
+          border-left: 1px solid white;
+
+          &:first-child {
+            padding-left: 0;
+            border-left: none;
+          }
+
+          &:last-child {
+            padding-right: 0;
+            border-right: none;
+          }
+
+          a {
+            font-size: 1rem;
+            text-decoration: none;
+            line-height: 1;
+
+            &:hover,
+            &.active {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+
+      &-search {
+        padding-left: govuk-spacing(3);
+
+        a.tt-suggestion {
+          color: govuk-colour(black);
+        }
+      }
+    }
   }
 }
 

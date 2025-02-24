@@ -16,7 +16,7 @@ orbs:
 parameters:
   node-version:
     type: string
-    default: 20.17-browsers
+    default: 22.12-browsers
 
 commands:
   release_to_namespace:
@@ -26,10 +26,9 @@ commands:
         type: string
       releaseName:
         type: string
-      qualifier:
-        type: string
       releaseChannel:
         type: string
+        default: ""
     steps:
       - attach_workspace:
           at: /tmp/build-info
@@ -38,8 +37,8 @@ commands:
           command: |
             VERSION_TO_DEPLOY=$(cat /tmp/build-info/version-to-deploy.txt)
             sed -i "s/appVersion:.*/appVersion: \"${VERSION_TO_DEPLOY}\"/g" "./helm_deploy/prisoner-content-hub-frontend/Chart.yaml"
-            QUALIFIER=<< parameters.qualifier >>
-            RELEASE_NAME=<< parameters.releaseName >>${QUALIFIER:+-$QUALIFIER}
+            helm dependency update "./helm_deploy/prisoner-content-hub-frontend"
+            RELEASE_NAME=<< parameters.releaseName >>
             kubectl -n ${KUBE_NAMESPACE} get secret ip-allowlist -o json | jq '{ ingress: { allowed: .data |  map_values(@base64d) } } ' | \
             helm upgrade $RELEASE_NAME ./helm_deploy/prisoner-content-hub-frontend \
               --install --wait --reset-values --timeout 360s \
@@ -62,8 +61,7 @@ commands:
               --set prisonerAuthAD.clientId="${AZURE_AD_CLIENT_ID}" \
               --set prisonerAuthAD.clientSecret="${AZURE_AD_CLIENT_SECRET}" \
               --set appInsightsSecret="${APPINSIGHTS_INSTRUMENTATIONKEY}" \
-              --set image.tag=${VERSION_TO_DEPLOY} \
-              --set ingress.qualifier="<< parameters.qualifier >>"
+              --set image.tag=${VERSION_TO_DEPLOY}
 
               PULL_REQUEST=${CIRCLE_PULL_REQUEST##*/}
               if [ ! -z $PULL_REQUEST ]; then
@@ -76,42 +74,46 @@ commands:
               echo "export RELEASE_NAME=${RELEASE_NAME}" >> $BASH_ENV
               echo "export PR_NAME=${CIRCLE_PR_BRANCH}" >> $BASH_ENV
               echo "export GIT_MSG=${GIT_MSG}" >> $BASH_ENV
-      - slack/notify:
-          channel: << parameters.releaseChannel >>
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*${CIRCLE_PROJECT_REPONAME}* version `${RELEASE_NAME}` deploy to *<< parameters.environment >>*"
-                  },
-                  "accessory": {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "View job"
-                    },
-                    "url": "${CIRCLE_BUILD_URL}"
+      - when:
+          condition: 
+            equal: [ << parameters.environment >>, "production" ]
+          steps:
+            - slack/notify:
+                channel: << parameters.releaseChannel >>
+                custom: |
+                  {
+                    "blocks": [
+                      {
+                        "type": "section",
+                        "text": {
+                          "type": "mrkdwn",
+                          "text": "*${CIRCLE_PROJECT_REPONAME}* version `${RELEASE_NAME}` deploy to *<< parameters.environment >>*"
+                        },
+                        "accessory": {
+                          "type": "button",
+                          "text": {
+                            "type": "plain_text",
+                            "text": "View job"
+                          },
+                          "url": "${CIRCLE_BUILD_URL}"
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "elements": [
+                          {
+                            "type": "mrkdwn",
+                            "text": "\n${PR_NAME}\nMost recent change: *${GIT_MSG}*\n\n${NOTES}"
+                          },
+                          {
+                            "type": "mrkdwn",
+                            "text": "\n:circleci-${CCI_STATUS}: Deploy ${CCI_STATUS}"
+                          }
+                        ]
+                      }
+                    ]
                   }
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "\n${PR_NAME}\nMost recent change: *${GIT_MSG}*\n\n${NOTES}"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "\n:circleci-${CCI_STATUS}: Deploy ${CCI_STATUS}"
-                    }
-                  ]
-                }
-              ]
-            }
-          event: always
+                event: always
 
 jobs:
   build:
@@ -267,10 +269,8 @@ jobs:
     parameters:
       environment:
         type: string
-      qualifier:
-        type: string
-        default: ""
       releaseChannel:
+        default: ""
         type: string
     steps:
       - checkout
@@ -279,32 +279,7 @@ jobs:
       - release_to_namespace:
           environment: "<< parameters.environment >>"
           releaseName: "prisoner-content-hub-frontend"
-          qualifier: "<< parameters.qualifier >>"
           releaseChannel: "<< parameters.releaseChannel >>"
-
-  clean_up_dev_deployments:
-    executor:
-      name: hmpps/node
-      tag: << pipeline.parameters.node-version >>
-    steps:
-      - checkout
-      - hmpps/k8s_setup
-      - hmpps/install_helm
-      - run:
-          name: Clean up dev deployments
-          command: |
-            curl -s "https://api.github.com/repos/ministryofjustice/prisoner-content-hub-frontend/pulls" | jq  '.[].number' | sort > prs.txt
-            helm --namespace prisoner-content-hub-development list | awk '{ print $1 }' | grep 'frontend-' | sed "s/[^0-9]//g" | sort > deployments.txt
-
-            deployments_to_delete=($(comm -23 deployments.txt prs.txt))
-
-            echo "Deployments to delete: ${#deployments_to_delete[@]}"
-            for i in "${deployments_to_delete[@]}"
-              do
-                DEPLOYMENT="prisoner-content-hub-frontend-${i}"
-                echo "Uninstalling deployment: ${DEPLOYMENT}"
-                helm -n prisoner-content-hub-development uninstall "${DEPLOYMENT}"
-            done
 
 workflows:
   version: 2
@@ -320,6 +295,12 @@ workflows:
       - build_preview:
           <<: *feature_branch
 
+      - approve_deploy_dev:
+          <<: *feature_branch
+          type: approval
+          requires:
+            - build_preview
+
       - deploy_cloud_platform:
           <<: *feature_branch
           context:
@@ -327,10 +308,8 @@ workflows:
             - prisoner-content-hub-development
           name: deploy_to_dev
           environment: "development"
-          qualifier: "${CIRCLE_PULL_REQUEST##*/}"
-          releaseChannel: "launchpad-alerts-nonprod"
           requires:
-            - build_preview
+            - approve_deploy_dev
 
       - approve_deploy_staging:
           <<: *feature_branch
@@ -345,14 +324,8 @@ workflows:
             - prisoner-content-hub-staging
           name: deploy_to_staging_branch
           environment: "staging"
-          releaseChannel: "launchpad-alerts-nonprod"
           requires:
             - approve_deploy_staging
-
-      - clean_up_dev_deployments:
-          <<: *main_branch
-          context:
-            - prisoner-content-hub-development
 
       - build_production:
           <<: *main_branch
@@ -367,7 +340,7 @@ workflows:
             - prisoner-content-hub-staging
           name: deploy_to_staging
           environment: "staging"
-          releaseChannel: "launchpad-alerts-nonprod"
+          releaseChannel: "prisoner_facing_services_releases"
           requires:
             - build_production
 
@@ -383,7 +356,7 @@ workflows:
             - hmpps-common-vars
             - prisoner-content-hub-prod
           environment: "production"
-          releaseChannel: "launchpad-alerts"
+          releaseChannel: "prisoner_facing_services_releases"
           requires:
             - approve_deploy_production
 
@@ -397,11 +370,11 @@ workflows:
                 - main
     jobs:
       - hmpps/npm_security_audit:
-          slack_channel: "launchpad-alerts"
+          slack_channel: "launchpad-alerts-nonprod"
           context:
             - hmpps-common-vars
       - hmpps/veracode_pipeline_scan:
-          slack_channel: launchpad-alerts
+          slack_channel: launchpad-alerts-nonprod
           context:
             - hmpps-common-vars
             - veracode-credentials
@@ -415,7 +388,7 @@ workflows:
                 - main
     jobs:
       - hmpps/veracode_policy_scan:
-          slack_channel: launchpad-alerts
+          slack_channel: launchpad-alerts-nonprod
           context:
             - veracode-credentials
             - hmpps-common-vars
