@@ -93,6 +93,18 @@ const setupFullApp = (
   });
 
   const app = express();
+  app.use((req, res, next) => {
+    res.locals = {
+      currentLng: 'en',
+    };
+    next();
+  });
+
+  app.use(
+    middleware.handle(i18next, {
+      removeLngFromUrl: false,
+    }),
+  );
   app.set('view engine', 'html');
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
