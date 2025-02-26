@@ -1,7 +1,5 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
-const i18next = require('i18next');
-const middleware = require('i18next-http-middleware');
 const { User } = require('../../auth/user');
 
 const { createHomepageRouter, removeDuplicateUpdates } = require('../homepage');
@@ -13,19 +11,6 @@ const setCurrentUser = require('../../middleware/setCurrentUser');
 const retrieveTopicList = require('../../middleware/retrieveTopicList');
 
 const mockCheckFeatureEnabledAtSite = jest.fn();
-
-i18next.init({
-  lng: 'en',
-  resources: {
-    en: {
-      translation: {
-        hubContentBlock: {
-          viewAll: 'View all',
-        },
-      },
-    },
-  },
-});
 
 jest.mock('../../utils', () => ({
   ...jest.requireActual('../../utils'),
@@ -202,7 +187,6 @@ describe('GET /', () => {
       });
 
       app = setupBasicApp();
-      app.use(middleware.handle(i18next));
       app.use((req, res, next) => {
         req.session = {
           establishmentName: 'berwyn',
