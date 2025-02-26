@@ -198,7 +198,6 @@ describe('GET /', () => {
         res.locals.establishmentEnabled = true;
         next();
       });
-
       app.use(setCurrentUser);
       app.use(['^/*'], retrieveTopicList(cmsService));
       app.use(router);
