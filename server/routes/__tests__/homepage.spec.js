@@ -198,12 +198,6 @@ describe('GET /', () => {
         res.locals.establishmentEnabled = true;
         next();
       });
-      app.use((req, res, next) => {
-        res.locals = {
-          currentLng: 'en',
-        };
-        next();
-      });
 
       app.use(setCurrentUser);
       app.use(['^/*'], retrieveTopicList(cmsService));
