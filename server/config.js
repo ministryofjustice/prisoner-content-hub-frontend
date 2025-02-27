@@ -1,9 +1,6 @@
 const { getEnv, getRequiredEnv, isProduction } = require('../utils/index');
 
-const hubEndpoint = getRequiredEnv(
-  'HUB_API_ENDPOINT',
-  'http://localhost:11001',
-);
+const hubEndpoint = getRequiredEnv('HUB_API_ENDPOINT', 'http://localhost:9090');
 const hmppsAuthBaseUrl = getRequiredEnv(
   'HMPPS_AUTH_BASE_URL',
   'https://api.nomis',
