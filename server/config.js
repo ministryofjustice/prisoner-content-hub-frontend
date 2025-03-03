@@ -128,13 +128,13 @@ module.exports = {
       languages: ['en'],
     },
     chelmsford: {
-      enabled: true,
-      features: ['incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en'],
     },
     cookhamwood: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en'],
     },
     erlestoke: {
@@ -157,13 +157,13 @@ module.exports = {
       languages: ['en'],
     },
     garth: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en'],
     },
     lindholme: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en'],
     },
     newhall: {
@@ -172,13 +172,13 @@ module.exports = {
       languages: ['en'],
     },
     ranby: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en'],
     },
     stokeheath: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en'],
     },
     styal: {
@@ -187,23 +187,23 @@ module.exports = {
       languages: ['en'],
     },
     swaleside: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en'],
     },
     themount: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en'],
     },
     thestudio: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en', 'cy'],
     },
     wayland: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en'],
     },
     werrington: {
@@ -217,8 +217,8 @@ module.exports = {
       languages: ['en'],
     },
     woodhill: {
-      enabled: true,
-      features: ['incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en'],
     },
   },
