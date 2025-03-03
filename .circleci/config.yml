@@ -61,6 +61,10 @@ commands:
               --set prisonerAuthAD.clientId="${AZURE_AD_CLIENT_ID}" \
               --set prisonerAuthAD.clientSecret="${AZURE_AD_CLIENT_SECRET}" \
               --set appInsightsSecret="${APPINSIGHTS_INSTRUMENTATIONKEY}" \
+              --set feedbackDatabaseName="${FEEDBACK_DATABASE_NAME}" \
+              --set feedbackDatabaseUrl="${FEEDBACK_DATABASE_URL}" \
+              --set feedbackDatabaseUserName="${FEEDBACK_DATABASE_USERNAME}" \
+              --set feedbackDatabasePassword="${FEEDBACK_DATABASE_PASSWORD}" \
               --set image.tag=${VERSION_TO_DEPLOY}
 
               PULL_REQUEST=${CIRCLE_PULL_REQUEST##*/}
