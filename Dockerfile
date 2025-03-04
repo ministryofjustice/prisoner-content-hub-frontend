@@ -10,6 +10,16 @@ RUN apt-get update && \
 
 WORKDIR /app
 
+# Cache breaking and ensure required build / git args defined
+RUN test -n "$BUILD_NUMBER" || (echo "BUILD_NUMBER not set" && false)
+RUN test -n "$GIT_REF" || (echo "GIT_REF not set" && false)
+RUN test -n "$GIT_BRANCH" || (echo "GIT_BRANCH not set" && false)
+
+# Define env variables for runtime health / info
+ENV BUILD_NUMBER=${BUILD_NUMBER}
+ENV GIT_REF=${GIT_REF}
+ENV GIT_BRANCH=${GIT_BRANCH}
+
 COPY . .
 
 RUN npm ci --no-audit --ignore-scripts && \
@@ -33,10 +43,6 @@ RUN addgroup --gid 2000 --system appgroup && \
     adduser --uid 2000 --system appuser --gid 2000
 
 RUN mkdir /app && chown appuser:appgroup /app
-
-ENV BUILD_NUMBER=${BUILD_NUMBER}
-ENV GIT_REF=${GIT_REF}
-ENV GIT_DATE=${GIT_DATE}
 
 ADD --chown=appuser:appgroup https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /app/global-bundle.pem
 WORKDIR /app
