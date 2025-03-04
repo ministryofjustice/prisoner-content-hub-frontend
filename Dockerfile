@@ -34,6 +34,10 @@ RUN addgroup --gid 2000 --system appgroup && \
 
 RUN mkdir /app && chown appuser:appgroup /app
 
+ENV BUILD_NUMBER=${BUILD_NUMBER}
+ENV GIT_REF=${GIT_REF}
+ENV GIT_DATE=${GIT_DATE}
+
 ADD --chown=appuser:appgroup https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /app/global-bundle.pem
 WORKDIR /app
 
@@ -58,9 +62,6 @@ COPY --from=builder --chown=appuser:appgroup \
 COPY --from=builder --chown=appuser:appgroup \
         /app/assets ./assets
 
-ENV BUILD_NUMBER=${BUILD_NUMBER}
-ENV GIT_REF=${GIT_REF}
-ENV GIT_DATE=${GIT_DATE}
 ENV PORT=3000
 
 EXPOSE 3000
