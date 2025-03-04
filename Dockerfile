@@ -52,6 +52,12 @@ COPY --from=builder --chown=appuser:appgroup \
 COPY --from=builder --chown=appuser:appgroup \
         /app/node_modules ./node_modules
 
+COPY --from=builder --chown=appuser:appgroup \
+        /app/utils ./utils
+
+COPY --from=builder --chown=appuser:appgroup \
+        /app/assets ./assets
+
 ENV BUILD_NUMBER=${BUILD_NUMBER}
 ENV GIT_REF=${GIT_REF}
 ENV GIT_DATE=${GIT_DATE}
