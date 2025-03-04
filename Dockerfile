@@ -46,10 +46,10 @@ COPY --from=builder --chown=appuser:appgroup \
         /app/server.js \
         ./
 
-COPY --from=build --chown=appuser:appgroup \
+COPY --from=builder --chown=appuser:appgroup \
         /app/server ./server
 
-COPY --from=build --chown=appuser:appgroup \
+COPY --from=builder --chown=appuser:appgroup \
         /app/node_modules ./node_modules
 
 ENV BUILD_NUMBER=${BUILD_NUMBER}
