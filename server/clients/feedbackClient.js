@@ -16,7 +16,7 @@ class FeedbackClient {
     this.title = feedback.title;
     this.url = feedback.url;
     this.contentType = feedback.contentType;
-    this.series = feedback.contentType;
+    this.series = feedback.series;
     this.categories = feedback.categories;
     this.topics = feedback.topics;
     this.sentiment = feedback.sentiment;
@@ -25,7 +25,6 @@ class FeedbackClient {
     this.establishment = feedback.establishment;
     this.sessionId = feedback.sessionId;
     this.feedbackId = feedback.feedbackId;
-    logger.info(this.date);
 
     try {
       return this.connection('feedback').insert({
