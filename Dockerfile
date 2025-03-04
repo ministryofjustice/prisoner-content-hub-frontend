@@ -1,5 +1,5 @@
 # First stage
-FROM node:22.12-bookworm-slim as builder
+FROM node:22.12-bookworm-slim AS builder
 
 ARG BUILD_NUMBER
 ARG GIT_REF
