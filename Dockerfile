@@ -20,7 +20,6 @@ RUN npm ci --no-audit --ignore-scripts && \
     npm run record-build-info && \
     npm prune --production
 
-
 # Second stage
 FROM node:22.12-bookworm-slim
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
@@ -35,12 +34,23 @@ RUN addgroup --gid 2000 --system appgroup && \
 
 RUN mkdir /app && chown appuser:appgroup /app
 
-# Download AWS RDS Root cert into app
 ADD --chown=appuser:appgroup https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /app/global-bundle.pem
-
 WORKDIR /app
 
 COPY --from=builder --chown=appuser:appgroup /app /app
+
+COPY --from=builder --chown=appuser:appgroup \
+        /app/package.json \
+        /app/package-lock.json \
+        /app/global-bundle.pem \
+        /app/server.js \
+        ./
+
+COPY --from=build --chown=appuser:appgroup \
+        /app/server ./server
+
+COPY --from=build --chown=appuser:appgroup \
+        /app/node_modules ./node_modules
 
 ENV BUILD_NUMBER=${BUILD_NUMBER}
 ENV GIT_REF=${GIT_REF}
