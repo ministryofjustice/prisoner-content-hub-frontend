@@ -51,7 +51,7 @@ FEEDBACK_DATABASE_USERNAME=<from secret>
 FEEDBACK_DATABASE_PASSWORD=<from secret>
 FEEDBACK_DATABASE_URL=localhost
 FEEDBACK_DATABASE_NAME=<from secret>
-NODE_ENV=dev
+LOCAL_ENV=true
 ```
 
 Next download the PEM file for SSL certification from https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem and place in the root of the app folder.
