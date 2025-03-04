@@ -1,11 +1,32 @@
 const knex = require('knex');
-const knexFile = require('../../knexfile');
+const { readFileSync } = require('node:fs');
+const path = require('node:path');
+
+const config = require('../config');
+
 const { logger } = require('../utils/logger');
 
 class FeedbackClient {
-  constructor(configFile = knexFile) {
+  constructor(
+    sslConfig = {
+      rejectUnauthorized: false,
+      cert: readFileSync(path.join(__dirname, '../../global-bundle.pem')),
+    },
+  ) {
+    this.config = {
+      client: 'pg',
+      connection: {
+        host: config.feedback.host,
+        port: 5432,
+        user: config.feedback.user,
+        password: config.feedback.password,
+        database: config.feedback.database,
+        ssl: sslConfig,
+      },
+    };
+
     try {
-      this.connection = knex(configFile.feedback);
+      this.connection = knex(this.config);
       logger.debug('Database connection established');
     } catch (error) {
       logger.error('Failed to connect to database', error);

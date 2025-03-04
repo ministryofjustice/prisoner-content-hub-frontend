@@ -13,7 +13,7 @@ knex.mockReturnValue(mockKnex);
 describe('FeedbackClient', () => {
   describe('.postFeedback', () => {
     it('should generate a basic auth token', async () => {
-      const client = new FeedbackClient();
+      const client = new FeedbackClient(true);
       const feedbackData = {
         title: 'some title',
         url: 'some url',
