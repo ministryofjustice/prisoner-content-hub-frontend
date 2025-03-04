@@ -28,7 +28,7 @@ RUN npm ci --no-audit --ignore-scripts && \
     export GIT_REF=${GIT_REF:-dummy} && \
     export GIT_DATE="${GIT_DATE:-dummy}" && \
     npm run record-build-info && \
-    npm prune --production
+    npm prune --no-audit --omit=dev
 
 # Second stage
 FROM node:22.12-bookworm-slim
@@ -45,6 +45,8 @@ RUN addgroup --gid 2000 --system appgroup && \
 RUN mkdir /app && chown appuser:appgroup /app
 
 ADD --chown=appuser:appgroup https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /app/global-bundle.pem
+
+RUN ls -al /app
 WORKDIR /app
 
 # COPY --from=builder --chown=appuser:appgroup /app /app
