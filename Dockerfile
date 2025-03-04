@@ -46,7 +46,6 @@ RUN mkdir /app && chown appuser:appgroup /app
 
 ADD --chown=appuser:appgroup https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /app/global-bundle.pem
 
-RUN ls -al /app
 WORKDIR /app
 
 # COPY --from=builder --chown=appuser:appgroup /app /app
@@ -54,7 +53,6 @@ WORKDIR /app
 COPY --from=builder --chown=appuser:appgroup \
         /app/package.json \
         /app/package-lock.json \
-        /app/global-bundle.pem \
         /app/server.js \
         ./
 
