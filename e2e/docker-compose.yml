@@ -11,11 +11,12 @@ services:
 
   web:
     build:
-      dockerfile: "../Dockerfile"
+      context: ../
+      dockerfile: Dockerfile
       args:
-        BUILD_NUMBER: '1'
-        GIT_REF: '1'
-        GIT_DATE: '1'
+        BUILD_NUMBER: 1
+        GIT_REF: 1
+        GIT_DATE: 1
     container_name: web
     networks:
       prisoner-content-hub-etwoe:
