@@ -28,6 +28,7 @@ commands:
         type: string
       releaseChannel:
         type: string
+        default: ""
     steps:
       - attach_workspace:
           at: /tmp/build-info
@@ -73,42 +74,46 @@ commands:
               echo "export RELEASE_NAME=${RELEASE_NAME}" >> $BASH_ENV
               echo "export PR_NAME=${CIRCLE_PR_BRANCH}" >> $BASH_ENV
               echo "export GIT_MSG=${GIT_MSG}" >> $BASH_ENV
-      - slack/notify:
-          channel: << parameters.releaseChannel >>
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*${CIRCLE_PROJECT_REPONAME}* version `${RELEASE_NAME}` deploy to *<< parameters.environment >>*"
-                  },
-                  "accessory": {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "View job"
-                    },
-                    "url": "${CIRCLE_BUILD_URL}"
+      - when:
+          condition: 
+            equal: [ << parameters.environment >>, "production" ]
+          steps:
+            - slack/notify:
+                channel: << parameters.releaseChannel >>
+                custom: |
+                  {
+                    "blocks": [
+                      {
+                        "type": "section",
+                        "text": {
+                          "type": "mrkdwn",
+                          "text": "*${CIRCLE_PROJECT_REPONAME}* version `${RELEASE_NAME}` deploy to *<< parameters.environment >>*"
+                        },
+                        "accessory": {
+                          "type": "button",
+                          "text": {
+                            "type": "plain_text",
+                            "text": "View job"
+                          },
+                          "url": "${CIRCLE_BUILD_URL}"
+                        }
+                      },
+                      {
+                        "type": "context",
+                        "elements": [
+                          {
+                            "type": "mrkdwn",
+                            "text": "\n${PR_NAME}\nMost recent change: *${GIT_MSG}*\n\n${NOTES}"
+                          },
+                          {
+                            "type": "mrkdwn",
+                            "text": "\n:circleci-${CCI_STATUS}: Deploy ${CCI_STATUS}"
+                          }
+                        ]
+                      }
+                    ]
                   }
-                },
-                {
-                  "type": "context",
-                  "elements": [
-                    {
-                      "type": "mrkdwn",
-                      "text": "\n${PR_NAME}\nMost recent change: *${GIT_MSG}*\n\n${NOTES}"
-                    },
-                    {
-                      "type": "mrkdwn",
-                      "text": "\n:circleci-${CCI_STATUS}: Deploy ${CCI_STATUS}"
-                    }
-                  ]
-                }
-              ]
-            }
-          event: always
+                event: always
 
 jobs:
   build:
@@ -265,6 +270,7 @@ jobs:
       environment:
         type: string
       releaseChannel:
+        default: ""
         type: string
     steps:
       - checkout
@@ -302,7 +308,6 @@ workflows:
             - prisoner-content-hub-development
           name: deploy_to_dev
           environment: "development"
-          releaseChannel: "launchpad-alerts-nonprod"
           requires:
             - approve_deploy_dev
 
@@ -319,7 +324,6 @@ workflows:
             - prisoner-content-hub-staging
           name: deploy_to_staging_branch
           environment: "staging"
-          releaseChannel: "launchpad-alerts-nonprod"
           requires:
             - approve_deploy_staging
 
@@ -336,7 +340,7 @@ workflows:
             - prisoner-content-hub-staging
           name: deploy_to_staging
           environment: "staging"
-          releaseChannel: "launchpad-alerts-nonprod"
+          releaseChannel: "prisoner_facing_services_releases"
           requires:
             - build_production
 
@@ -352,7 +356,7 @@ workflows:
             - hmpps-common-vars
             - prisoner-content-hub-prod
           environment: "production"
-          releaseChannel: "launchpad-alerts"
+          releaseChannel: "prisoner_facing_services_releases"
           requires:
             - approve_deploy_production
 
@@ -366,11 +370,11 @@ workflows:
                 - main
     jobs:
       - hmpps/npm_security_audit:
-          slack_channel: "launchpad-alerts"
+          slack_channel: "launchpad-alerts-nonprod"
           context:
             - hmpps-common-vars
       - hmpps/veracode_pipeline_scan:
-          slack_channel: launchpad-alerts
+          slack_channel: launchpad-alerts-nonprod
           context:
             - hmpps-common-vars
             - veracode-credentials
@@ -384,7 +388,7 @@ workflows:
                 - main
     jobs:
       - hmpps/veracode_policy_scan:
-          slack_channel: launchpad-alerts
+          slack_channel: launchpad-alerts-nonprod
           context:
             - veracode-credentials
             - hmpps-common-vars
