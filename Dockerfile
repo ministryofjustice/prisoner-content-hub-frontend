@@ -1,5 +1,5 @@
 # First stage
-FROM node:22.12-bookworm-slim AS builder
+FROM node:22.14-bookworm-slim AS builder
 
 ARG BUILD_NUMBER
 ARG GIT_REF
@@ -31,7 +31,7 @@ RUN npm ci --no-audit --ignore-scripts && \
     npm prune --no-audit --omit=dev
 
 # Second stage
-FROM node:22.12-bookworm-slim
+FROM node:22.14-bookworm-slim
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 
 RUN apt-get update && \
@@ -46,9 +46,6 @@ RUN mkdir /app && chown appuser:appgroup /app
 
 WORKDIR /app
 ADD --chown=appuser:appgroup --chmod=644 https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /app/global-bundle.pem
-
-
-# COPY --from=builder --chown=appuser:appgroup /app /app
 
 COPY --from=builder --chown=appuser:appgroup \
         /app/package.json \
