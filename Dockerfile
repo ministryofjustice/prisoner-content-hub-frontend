@@ -45,7 +45,7 @@ RUN addgroup --gid 2000 --system appgroup && \
 RUN mkdir /app && chown appuser:appgroup /app
 
 WORKDIR /app
-ADD --chown=appuser:appgroup --chmod=777 https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /app/global-bundle.pem
+ADD --chown=appuser:appgroup --chmod=644 https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /app/global-bundle.pem
 
 
 # COPY --from=builder --chown=appuser:appgroup /app /app
