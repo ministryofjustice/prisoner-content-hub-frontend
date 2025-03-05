@@ -27,10 +27,18 @@ describe('GET /topics', () => {
         establishmentName: 'berwyn',
       });
 
+      const sessionMiddleware = (req, res, next) => {
+        res.locals = {
+          currentLng: 'en',
+        };
+        next();
+      };
+
       app.use((req, res, next) => {
         req.session = sessionProvider();
         next();
       });
+      app.use(sessionMiddleware);
       app.use('/topics', router);
       app.use(consoleLogError);
 
@@ -73,7 +81,7 @@ describe('GET /topics', () => {
         .get('/topics')
         .expect(200)
         .then(() => {
-          expect(cmsService.getTopics).toHaveBeenCalledWith('berwyn');
+          expect(cmsService.getTopics).toHaveBeenCalledWith('berwyn', 'en');
         }));
 
     it('Should error when no establishment present', () => {
