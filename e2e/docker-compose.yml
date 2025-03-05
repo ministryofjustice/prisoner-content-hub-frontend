@@ -11,7 +11,7 @@ services:
 
   web:
     build:
-      dockerfile: ..
+      dockerfile: "../Dockerfile"
       args:
         BUILD_NUMBER: '1'
         GIT_REF: '1'
