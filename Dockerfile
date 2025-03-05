@@ -53,7 +53,6 @@ ADD --chown=appuser:appgroup --chmod=777 https://truststore.pki.rds.amazonaws.co
 COPY --from=builder --chown=appuser:appgroup \
         /app/package.json \
         /app/package-lock.json \
-        /app/global-bundle.pem \
         /app/server.js \
         ./
 
