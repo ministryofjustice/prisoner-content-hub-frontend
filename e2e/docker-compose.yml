@@ -1,7 +1,22 @@
 version: '3'
 services:
+  wiremock:
+    image: rodolpheche/wiremock
+    container_name: wiremock
+    networks:
+      - prisoner-content-hub-etwoe
+    restart: always
+    ports:
+      - "9091:8080"
+
   web:
-    build: ..
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        BUILD_NUMBER: 1
+        GIT_REF: 1
+        GIT_DATE: 1
     container_name: web
     networks:
       prisoner-content-hub-etwoe:
@@ -17,15 +32,6 @@ services:
       - "3000:3000"
     env_file: 
       - "./test-ci.env"
-
-  wiremock:
-    image: rodolpheche/wiremock
-    container_name: wiremock
-    networks:
-      - prisoner-content-hub-etwoe
-    restart: always
-    ports:
-      - "9091:8080"
 
   cypress:
     build: .

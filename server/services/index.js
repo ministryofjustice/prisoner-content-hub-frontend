@@ -5,6 +5,7 @@ const { StandardClient } = require('../clients/standard');
 const { PrisonApiClient } = require('../clients/prisonApiClient');
 const { IncentivesApiClient } = require('../clients/incentivesApiClient');
 const { JsonApiClient } = require('../clients/jsonApiClient');
+const { FeedbackClient } = require('../clients/feedbackClient');
 
 const { InMemoryCachingStrategy } = require('../utils/caching/memory');
 const RedisCachingStrategy = require('../utils/caching/redisClient');
@@ -27,6 +28,7 @@ const cmsCachingStrategy = config?.features?.useRedisCache
   : new InMemoryCachingStrategy();
 const jsonApiClient = new JsonApiClient(config.api.hubEndpoint);
 const standardClient = new StandardClient();
+const feedbackClient = new FeedbackClient();
 const prisonApiClient = new PrisonApiClient({
   prisonApi: config.prisonApi,
   cachingStrategy: new InMemoryCachingStrategy(),
@@ -58,6 +60,6 @@ module.exports = {
   }),
   searchService: createSearchService({ cmsApi }),
   feedbackService: createFeedbackService({
-    feedbackRepository: feedbackRepository(standardClient),
+    feedbackRepository: feedbackRepository(standardClient, feedbackClient),
   }),
 };
