@@ -34,18 +34,18 @@ class FeedbackClient {
   }
 
   async postFeedback(feedback) {
-    this.title = feedback.title;
-    this.url = feedback.url;
-    this.contentType = feedback.contentType;
-    this.series = feedback.series;
-    this.categories = feedback.categories;
-    this.topics = feedback.topics;
-    this.sentiment = feedback.sentiment;
-    this.comment = feedback.comment;
-    this.date = feedback.date;
-    this.establishment = feedback.establishment;
-    this.sessionId = feedback.sessionId;
-    this.feedbackId = feedback.feedbackId;
+    this.title = `${feedback.title}`;
+    this.url = `${feedback.url}`;
+    this.contentType = `${feedback.contentType}`;
+    this.series = `${feedback.series}`;
+    this.categories = `${feedback.categories}`;
+    this.topics = `${feedback.topics}`;
+    this.sentiment = `${feedback.sentiment}`;
+    this.comment = `${feedback.comment}`;
+    this.date = `${feedback.date}`;
+    this.establishment = `${feedback.establishment}`;
+    this.sessionId = `${feedback.sessionId}`;
+    this.feedbackId = `${feedback.feedbackId}`;
 
     try {
       return this.connection('feedback').insert({
