@@ -10,7 +10,7 @@ jest.mock('../../utils/logger');
 const feedback = {
   title: 'Sports',
   url: 'http://bbc.com/sports',
-  contentType: 'audio',
+  contentType: 'AUDIO',
   series: 'Football highlight',
   categories: 'Ball sports',
   topics: 'Fitness',
