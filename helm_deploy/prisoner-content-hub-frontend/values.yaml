@@ -21,7 +21,6 @@ application:
     endpoint: /health/readiness
     delaySeconds: 10
     timeoutSeconds: 5
-  contentConfigMapName: prisoner-content-hub-drupal
   nprConfigMapName: npr-live
   openSearchSecretName: pfs-opensearch-proxy-url
 
