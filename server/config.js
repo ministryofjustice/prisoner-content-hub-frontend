@@ -233,6 +233,10 @@ module.exports = {
   },
   feedback: {
     endpoint: elasticsearchEndpoint + feedbackEndpoint,
+    host: getRequiredEnv('FEEDBACK_DATABASE_URL', 'localhost'),
+    user: getRequiredEnv('FEEDBACK_DATABASE_USERNAME', 'feedbackuser'),
+    password: getRequiredEnv('FEEDBACK_DATABASE_PASSWORD', 'feedbackpassword'),
+    database: getRequiredEnv('FEEDBACK_DATABASE_NAME', 'feedbackdatabase'),
   },
   npr: {
     stream: getEnv('NPR_STREAM', '/npr-stream'),

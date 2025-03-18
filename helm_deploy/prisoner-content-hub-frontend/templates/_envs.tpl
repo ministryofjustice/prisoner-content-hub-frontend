@@ -130,4 +130,28 @@ env:
 
     - name: SINGLE_HOST_NAME
       value: {{ .Values.ingress.host }}
+
+    - name: FEEDBACK_DATABASE_NAME
+      valueFrom:
+        secretKeyRef:
+          name: prisoner-feedback-rds
+          key: database_name
+
+    - name: FEEDBACK_DATABASE_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: prisoner-feedback-rds
+          key: database_username
+
+    - name: FEEDBACK_DATABASE_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: prisoner-feedback-rds
+          key: database_password
+
+    - name: FEEDBACK_DATABASE_URL
+      valueFrom:
+        secretKeyRef:
+          name: prisoner-feedback-rds
+          key: rds_instance_address
 {{- end -}}

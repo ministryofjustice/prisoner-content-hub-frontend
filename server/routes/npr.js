@@ -19,7 +19,7 @@ const createNprRouter = () => {
       config,
       data: {
         title: 'NPR Listen Live',
-        contentType: 'audio',
+        contentType: 'AUDIO',
         series: 'none',
         description: {
           sanitized: '',

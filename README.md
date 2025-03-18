@@ -6,7 +6,7 @@ The frontend for the Digital Hub service using Node
 
 ### Prerequisites
 
-    Node >= v16
+    Node >= v22
 
 ### Install dependencies
 
@@ -28,6 +28,33 @@ The application caches certain of the CMS queries in redis cache. To not use red
 
 To point to a locally running Drupal backend application that has been spun up using docker-compose.
 Set `HUB_API_ENDPOINT=http://localhost:11001` in your `.env` file.
+
+### Using a Postgres instance locally
+
+Feedback uses a Postgres database connection which uses [knexjs](https://knexjs.org/). If you wish to connect to a Cloud Platform hosted RDS instance follow these steps.
+
+First grab the RDS secrets from the relevant namespace and add to your `.env` file for later use:
+
+`kubectl get secrets prisoner-feedback-rds -o json | jq '.data | map_values(@base64d)'`
+
+Create a port-forward pod and connect to it:
+
+```
+kubectl -n <namespace> run feedback-port-forward-pod  --image=ministryofjustice/port-forward --port=5432 --env="REMOTE_HOST=<rds_instance_address>" --env="LOCAL_PORT=5432"  --env="REMOTE_PORT=5432"
+kubectl -n <namespace> port-forward feedback-port-forward-pod 5432:5432
+```
+
+Ensure you have a `.env` file with the relevant fields populated from the secret:
+
+```
+FEEDBACK_DATABASE_USERNAME=<from secret>
+FEEDBACK_DATABASE_PASSWORD=<from secret>
+FEEDBACK_DATABASE_URL=localhost
+FEEDBACK_DATABASE_NAME=<from secret>
+LOCAL_ENV=true
+```
+
+Next download the PEM file for SSL certification from https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem and place in the root of the app folder.
 
 ### Running the app
 
