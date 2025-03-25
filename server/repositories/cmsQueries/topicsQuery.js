@@ -9,12 +9,13 @@ class TopicsQuery {
     .addPageLimit(100)
     .getQueryString();
 
-  constructor(establishmentName) {
+  constructor(establishmentName, language) {
     this.establishmentName = establishmentName;
+    this.language = language;
   }
 
   getKey() {
-    return getCmsCacheKey('topics', this.establishmentName);
+    return getCmsCacheKey(this.language, 'topics', this.establishmentName);
   }
 
   getExpiry() {
@@ -22,7 +23,7 @@ class TopicsQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/taxonomy_term?${TopicsQuery.#QUERYSTRING}`;
+    return `/${this.language}/jsonapi/prison/${this.establishmentName}/taxonomy_term?${TopicsQuery.#QUERYSTRING}`;
   }
 
   transformEach({ drupalInternal_Tid: id, name }) {
