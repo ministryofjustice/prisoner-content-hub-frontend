@@ -15,11 +15,32 @@ spec:
   ingressClassName: default
   tls:
   - hosts:
+  {{- range .Values.ingress.hosts }}
+  {{- $domainPattern := .pattern }}
+    {{- range $.Values.ingress.prefixes }}
+      - {{ tpl $domainPattern (dict "prison" . "Template" $.Template) }}
+    {{- end }}
+  {{- end }}
   {{- with .Values.ingress.host }}
       - {{ tpl .pattern (dict "Template" $.Template) }}
     {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
   {{- end }}
   rules:
+  {{- range .Values.ingress.hosts }}
+    {{- $domainPattern := .pattern -}}
+    {{- range $.Values.ingress.prefixes }}
+    - host: {{ tpl $domainPattern (dict "prison" . "Template" $.Template) }}
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: 80
+    {{- end }}
+  {{- end }}
   {{- with .Values.ingress.host }}
     - host: {{ tpl .pattern (dict "Template" $.Template) }}
       http:
