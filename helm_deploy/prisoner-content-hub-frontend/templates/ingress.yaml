@@ -16,7 +16,6 @@ spec:
   tls:
   - hosts:
   {{- range .Values.ingress.hosts }}
-  {{- $certSecret := .cert_secret -}}
   {{- $domainPattern := .pattern }}
     {{- range $.Values.ingress.prefixes }}
       - {{ tpl $domainPattern (dict "prison" . "Template" $.Template) }}
