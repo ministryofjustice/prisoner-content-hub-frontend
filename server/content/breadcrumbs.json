@@ -3,10 +3,6 @@
     "href": "/",
     "text": "Home"
   },
-  "profile": {
-    "href": "/profile",
-    "text": "My profile"
-  },
   "adjudications": {
     "href": "/adjudications",
     "text": "My adjudications"
