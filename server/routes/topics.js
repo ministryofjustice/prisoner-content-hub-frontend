@@ -13,6 +13,18 @@ const createTopicsRouter = ({ cmsService }) => {
       }
 
       const topics = await cmsService.getTopics(establishmentName);
+      // We have to sort the results even though we specified a sort order in
+      // the JSON:API request.
+      // See https://www.drupal.org/project/drupal/issues/3186834.
+      topics.sort((a, b) => {
+        if (a.linkText > b.linkText) {
+          return 1;
+        }
+        if (b.linkText > a.linkText) {
+          return -1;
+        }
+        return 0;
+      });
 
       res.render('pages/topics', {
         title: 'Browse all topics',

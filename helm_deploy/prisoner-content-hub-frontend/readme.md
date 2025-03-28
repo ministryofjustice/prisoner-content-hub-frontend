@@ -47,6 +47,10 @@ helm upgrade [Release Name] . \
 --set cacheSecret=[32Byte string used for encrypting cached items] \
 --set prisonerAuthAD.clientId=[Azure AD Client ID] \
 --set prisonerAuthAD.clientSecret=[Azure AD Client secret] \
+--set feedbackDatabaseName=[RDS Database Name] \
+--set feedbackDatabaseUrl=[RDS Database Name Address] \
+--set feedbackDatabaseUserName=[RDS Database Username] \
+--set feedbackDatabasePassword=[RDS Database Password] \
 --set image.tag=[Image Tag]
 ```
 
@@ -74,6 +78,10 @@ helm upgrade [Release Name] . \
 --set cacheSecret=[32Byte string used for encrypting cached items] \
 --set prisonerAuthAD.clientId=[Azure AD Client ID] \
 --set prisonerAuthAD.clientSecret=[Azure AD Client secret] \
+--set feedbackDatabaseName=[RDS Database Name] \
+--set feedbackDatabaseUrl=[RDS Database Name Address] \
+--set feedbackDatabaseUserName=[RDS Database Username] \
+--set feedbackDatabasePassword=[RDS Database Password] \
 --set image.tag=[Image Tag]
 ```
 
