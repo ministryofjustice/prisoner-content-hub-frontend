@@ -7,7 +7,6 @@
     });
   }
 
-  var CHARACTER_LIMIT = 240;
   var typesDisplay = {
     video: 'video',
     radio: 'podcast',
