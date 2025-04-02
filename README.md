@@ -138,10 +138,9 @@ const { createBreadcrumbs } = require('../utils/breadcrumbs');
 Pass the breadcrumb data into the view within res.render
 
 ```
-return res.render('pages/approvedVisitors', {
+return res.render('pages/games/2048', {
     ...
     data: {
-        contentType: 'profile',
         breadcrumbs: createBreadcrumbs(req)
         },
     ...
