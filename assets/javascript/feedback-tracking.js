@@ -8,13 +8,13 @@
   }
 
   var typesDisplay = {
-    video: 'video',
-    radio: 'podcast',
-    page: 'article',
-    game: 'game',
-    series: 'series',
-    topic: 'topic',
-    category: 'category'
+    "video": i18n.video,
+    "radio": i18n.podcast,
+    "page": i18n.article,
+    "game": i18n.game,
+    "series": i18n.series,
+    "topic": i18n.topic,
+    "category": i18n.category
   };
   var types = {
     video: 'VIDEO',
@@ -71,7 +71,7 @@
     function updateFeedbackSentimentText(feedback) {
       var type = widget.data('item-type');
       var typeText = typesDisplay[type] ? typesDisplay[type] : '';
-      $('[data-item-feedback-text]').text(`I ${feedback === 'LIKE'?'':' don\'t' } like this ${typeText}`);
+      $('[data-item-feedback-text]').text(`${feedback === 'LIKE'?i18n.iLikeThis:i18n.iDontLikeThis } ${typeText}`);
     }
 
     function updateSentimentIcons(sentiment) {

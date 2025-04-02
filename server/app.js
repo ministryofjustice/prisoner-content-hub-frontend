@@ -270,14 +270,18 @@ const createApp = services => {
       logger.warn(`Failed to find: ${error.message}`);
       logger.debug(error.stack);
       res.status(403);
-      return res.render('pages/404', { title: 'Page not found' });
+      return res.render('pages/404', {
+        title: i18next.t('error.pageNotFound'),
+      });
     }
 
     if (error instanceof NotFound) {
       logger.warn(`Failed to find: ${error.message}`);
       logger.debug(error.stack);
       res.status(404);
-      return res.render('pages/404', { title: 'Page not found' });
+      return res.render('pages/404', {
+        title: i18next.t('error.pageNotFound'),
+      });
     }
 
     logger.error(`Unhandled error - ${req.originalUrl} - ${error.message}`);

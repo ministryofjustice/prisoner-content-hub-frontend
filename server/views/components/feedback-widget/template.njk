@@ -78,7 +78,7 @@
     </form>
   </div>
   <div class="govuk-hub-feedback-confirmation govuk-u-hidden">
-    <h2 class="govuk-body govuk-!-font-weight-bold">Thanks for your feedback</h2>
+    <h2 class="govuk-body govuk-!-font-weight-bold">{{ t("feedback.thanks") }}</h2>
     <p class="govuk-body">
       <a href="{{ knownPages.feedback }}" class="govuk-link">What happens to your feedback?</a>.
     </p>
@@ -94,6 +94,17 @@
     </ul>
   </div>
 </div>
+<script>const i18n = {
+    "iLikeThis": '{{  t("feedback.like.iLikeThis") }}',
+    "iDontLikeThis": '{{  t("feedback.dislike.iDontLikeThis") }}',
+    "article": '{{ t("feedback.contentTypes.article") }}',
+    "category": '{{ t("feedback.contentTypes.category") }}',
+    "game": '{{ t("feedback.contentTypes.game") }}',
+    "podcast": '{{ t("feedback.contentTypes.podcast") }}',
+    "series": '{{ t("feedback.contentTypes.series") }}',
+    "topic": '{{ t("feedback.contentTypes.topic") }}',
+    "video": '{{ t("feedback.contentTypes.video") }}'
+  };</script>
 <script defer src="/public/javascript/feedback-tracking.js"></script>
 <script>
   window.addEventListener('DOMContentLoaded', function () {

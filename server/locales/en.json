@@ -11,7 +11,9 @@
     "watch": "Watch"
   },
   "error": {
+    "goHome": "Go back to the <a class=\"govuk-link\" href=\"/\">home page</a>",
     "orTryAgain": "or <a href=\"{{ returnUrl }}\">try again</a>",
+    "pageNotFound": "Page not found",
     "returnHome": "Return to the <a href=\"/\">home page</a>",
     "somethingWentWrong": "Something went wrong"
   },
@@ -24,12 +26,22 @@
       "5": "Contact NPR with a shout out or song request",
       "preamble": "If you want to contact someone about anything else:"
     },
+    "contentTypes": {
+      "article": "article",
+      "category": "category",
+      "game": "game",
+      "podcast": "podcast",
+      "series": "series",
+      "topic": "topic",
+      "video": "video"
+    },
     "dislike": {
       "1": "Content is missing",
       "2": "Broken link on this page",
       "3": "Audio or video isn’t playing",
       "4": "Images aren’t working",
-      "5": "There is wrong information on this page"
+      "5": "There is wrong information on this page",
+      "iDontLikeThis": "I don't like this"
     },
     "headings": {
       "alternative": "Tell us what you think about this page",
@@ -37,10 +49,13 @@
     },
     "like": {
       "1": "This content made a positive difference to me",
-      "2": "I’d like more of this kind of content"
+      "2": "I’d like more of this kind of content",
+      "iLikeThis": "I like this"
     },
     "select": "Select one:",
-    "send": "Send"
+    "send": "Send",
+    "thanks": "Thanks for your feedback",
+    "whatHappens": "What happens to your feedback?"
   },
   "footer": {
     "crownCopyright": "© Crown copyright",
@@ -120,6 +135,7 @@
     "title": "Content Hub"
   },
   "urgentBanner": {
+    "moreInfo": "More info",
     "title": "URGENT"
   }
 }

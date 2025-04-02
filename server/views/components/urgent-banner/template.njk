@@ -20,7 +20,7 @@
         {{ urgentBanner.title }}
 
         {% if urgentBanner.moreInfoLink %}
-          <a class="govuk-notification-banner__link" href="{{ urgentBanner.moreInfoLink }}">More info</a>
+          <a class="govuk-notification-banner__link" href="{{ urgentBanner.moreInfoLink }}">{{ t("urgentBanner.moreInfo") }}</a>
         {% endif %}
         </p>
       </div>

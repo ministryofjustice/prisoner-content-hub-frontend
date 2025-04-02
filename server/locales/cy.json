@@ -11,8 +11,10 @@
     "watch": "Gwylio"
   },
   "error": {
+    "goHome": "Ewch yn ôl i’r <a href=\"/\">dudalen gartref</a>",
     "orTryAgain": "neu <a href=\"{{ returnUrl }}\">roi cynnig arall arni</a>",
-    "returnHome": "Ewch yn ôl i'r <a href=\"/\">hafan</a>",
+    "pageNotFound": "Tudalen heb ei chanfod",
+    "returnHome": "Ewch yn ôl i’r <a href=\"/\">hafan</a>",
     "somethingWentWrong": "Aeth rhywbeth o’i le"
   },
   "feedback": {
@@ -24,12 +26,22 @@
       "5": "Cysylltwch ag NPR gyda neges neu gais am gân",
       "preamble": "Os ydych chi eisiau cysylltu â rhywun am unrhyw beth arall:"
     },
+    "contentTypes": {
+      "article": "erthygl hon",
+      "category": "categori hwn",
+      "game": "gêm hon",
+      "podcast": "podlediad hwn",
+      "series": "gyfres hon",
+      "topic": "pwnc hwn",
+      "video": "fideo hwn"
+    },
     "dislike": {
       "1": "Mae cynnwys ar goll",
       "2": "Mae dolen wedi torri ar y dudalen hon",
       "3": "Dydy’r sain neu’r fideo ddim yn chwarae",
       "4": "Dydy’r delweddau ddim yn gweithio",
-      "5": "Mae gwybodaeth anghywir ar y dudalen hon"
+      "5": "Mae gwybodaeth anghywir ar y dudalen hon",
+      "iDontLikeThis": "Dydw i ddim yn hoffi’r"
     },
     "headings": {
       "alternative": "Dywedwch wrthym beth ydych chi’n ei feddwl o’r dudalen hon",
@@ -37,10 +49,13 @@
     },
     "like": {
       "1": "Mae’r cynnwys hwn wedi gwneud gwahaniaeth positif i mi",
-      "2": "Hoffwn gael mwy o’r math hwn o gynnwys"
+      "2": "Hoffwn gael mwy o’r math hwn o gynnwys",
+      "iLikeThis": "Rwy’n hoffi’r"
     },
     "select": "Dewiswch un:",
-    "send": "Anfon"
+    "send": "Anfon",
+    "thanks": "Diolch am eich adborth",
+    "whatHappens": "Beth fydd yn digwydd i’ch ymateb?"
   },
   "footer": {
     "crownCopyright": "© Hawlfraint y goron",
@@ -102,16 +117,16 @@
   },
   "search": {
     "noResults": "Dim canlyniadau ar gyfer \"{{ term }}\"",
-    "searchTheContentHub": "Chwilio'r Hyb Cynnwys",
+    "searchTheContentHub": "Chwilio’r Hyb Cynnwys",
     "showingResults": "Dyma’r canlyniadau ar gyfer \"{{ term }}\"",
     "title": "Chwilio"
   },
   "showMore": {
     "enabled": "Dangos mwy",
-    "disabled": "Wrthi'n llwytho"
+    "disabled": "Wrthi’n llwytho"
   },
   "skipToMainContent": {
-    "skipToMainContent": "Neidio i'r prif gynnwys"
+    "skipToMainContent": "Neidio i’r prif gynnwys"
   },
   "suggestedContent": {
     "youMightLike": "Efallai yr hoffech chi"
@@ -120,6 +135,7 @@
     "title": "Hwb Cynnwys"
   },
   "urgentBanner": {
+    "moreInfo": "Mwy o wybodaeth",
     "title": "BRYS"
   }
 }
