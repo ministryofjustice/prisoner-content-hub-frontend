@@ -66,7 +66,7 @@ class FeedbackClient {
       return insertResult;
     } catch (error) {
       logger.error('Database insert failed', error);
-      return Promise.reject();
+      return Promise.resolve();
     }
   }
 }
