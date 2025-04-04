@@ -48,7 +48,7 @@ class FeedbackClient {
     this.feedbackId = `${feedback.feedbackId}`;
 
     try {
-      const insertResult = this.connection('feedback').insert({
+      const insertResult = await this.connection('feedback').insert({
         title: this.title,
         url: this.url,
         contentType: this.contentType,
