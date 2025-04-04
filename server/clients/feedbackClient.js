@@ -48,7 +48,7 @@ class FeedbackClient {
     this.feedbackId = `${feedback.feedbackId}`;
 
     try {
-      return this.connection('feedback').insert({
+      const insertResult = this.connection('feedback').insert({
         title: this.title,
         url: this.url,
         contentType: this.contentType,
@@ -62,6 +62,8 @@ class FeedbackClient {
         sessionId: this.sessionId,
         feedbackId: this.feedbackId,
       });
+
+      return insertResult;
     } catch (error) {
       logger.error('Database insert failed', error);
       return Promise.reject();
