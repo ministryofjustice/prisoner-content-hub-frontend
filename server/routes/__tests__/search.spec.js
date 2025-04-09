@@ -2,28 +2,37 @@ const request = require('supertest');
 const cheerio = require('cheerio');
 
 const { createSearchRouter } = require('../search');
-const { setupBasicApp } = require('../../../test/test-helpers');
+const {
+  setupBasicApp,
+  i18nextInitPromise,
+} = require('../../../test/test-helpers');
 
 const searchResponse = require('../../../test/resources/searchResponse.json');
 
 describe('Search Spec', () => {
+  let app;
+  let analyticsService;
+  beforeAll(async () => {
+    await i18nextInitPromise;
+  });
+  beforeEach(() => {
+    app = setupBasicApp();
+    analyticsService = {
+      sendPageTrack: jest.fn(),
+      sendEvent: jest.fn(),
+    };
+  });
   describe('GET /search', () => {
     describe('Results page', () => {
       it('should return the correct number of search results', () => {
         const searchService = {
           find: jest.fn().mockReturnValue(searchResponse),
         };
-        const analyticsService = {
-          sendPageTrack: jest.fn(),
-          sendEvent: jest.fn(),
-        };
 
         const router = createSearchRouter({
           searchService,
           analyticsService,
         });
-        const app = setupBasicApp();
-
         app.use('/search', router);
 
         const query = 'bob';
@@ -62,16 +71,11 @@ describe('Search Spec', () => {
         const searchService = {
           find: jest.fn().mockReturnValue([]),
         };
-        const analyticsService = {
-          sendPageTrack: jest.fn(),
-          sendEvent: jest.fn(),
-        };
 
         const router = createSearchRouter({
           searchService,
           analyticsService,
         });
-        const app = setupBasicApp();
 
         app.use('/search', router);
 
@@ -99,16 +103,11 @@ describe('Search Spec', () => {
         const searchService = {
           find: jest.fn().mockRejectedValue('BOOM!'),
         };
-        const analyticsService = {
-          sendPageTrack: jest.fn(),
-          sendEvent: jest.fn(),
-        };
 
         const router = createSearchRouter({
           searchService,
           analyticsService,
         });
-        const app = setupBasicApp();
 
         app.use('/search', router);
 
@@ -135,16 +134,11 @@ describe('Search Spec', () => {
         const searchService = {
           typeAhead: jest.fn().mockReturnValue(searchResponse),
         };
-        const analyticsService = {
-          sendPageTrack: jest.fn(),
-          sendEvent: jest.fn(),
-        };
 
         const router = createSearchRouter({
           searchService,
           analyticsService,
         });
-        const app = setupBasicApp();
 
         app.use('/search', router);
 
@@ -170,16 +164,11 @@ describe('Search Spec', () => {
         const searchService = {
           find: jest.fn().mockRejectedValue('BOOM!'),
         };
-        const analyticsService = {
-          sendPageTrack: jest.fn(),
-          sendEvent: jest.fn(),
-        };
 
         const router = createSearchRouter({
           searchService,
           analyticsService,
         });
-        const app = setupBasicApp();
 
         app.use('/search', router);
 

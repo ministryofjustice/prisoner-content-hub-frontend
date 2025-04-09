@@ -17,11 +17,11 @@ const testData = {
   }),
 };
 
-i18next
+const i18nextInitPromise = i18next
   .use(middleware.LanguageDetector)
   .use(filesystem)
   .init({
-    lng: 'en',
+    debug: false,
     preload: ['en', 'cy'],
     fallbackLng: 'en',
     backend: {
@@ -138,4 +138,5 @@ module.exports = {
   createClient,
   lastCall,
   testData,
+  i18nextInitPromise,
 };
