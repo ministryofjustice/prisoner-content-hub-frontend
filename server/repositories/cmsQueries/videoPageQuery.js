@@ -26,6 +26,7 @@ class VideoPageQuery {
         'series_sort_value',
         'field_exclude_feedback',
         'breadcrumbs',
+        'field_moj_subtitles',
       ])
 
       .addFields('file--file', ['uri', 'image_style_uri'])
@@ -49,6 +50,7 @@ class VideoPageQuery {
         'field_video',
         'field_topics',
         'field_moj_top_level_categories',
+        'field_moj_subtitles',
       ])
 
       .getQueryString();
@@ -81,6 +83,7 @@ class VideoPageQuery {
       topics: buildFieldTopics(item.fieldTopics),
       image: getLargeImage(item.fieldMojThumbnailImage),
       excludeFeedback: item.fieldExcludeFeedback,
+      subtitles: item.fieldMojSubtitles?.uri?.url,
     };
   }
 }

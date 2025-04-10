@@ -7,20 +7,19 @@
     controls
     preload="auto"
     poster="{{ data.image.url }}"
+    crossorigin="anonymous"
     data-setup='{
       "fluid": true,
       "controlBar": {
         "children": [
-            "playToggle",
-            "volumePanel",
-            "currentTimeDisplay",
-            "progressControl",
-            "durationDisplay",
-            "fullscreenToggle"
+          "controlBar"
         ]
       }
     }'
   >
     <source src="{{ data.media }}" type="video/mp4"/>
+    {% if data.subtitles  %}
+    <track kind="subtitles" src="{{ data.subtitles }}" label="Captions on">
+    {% endif %}
   </video>
 {% endblock %}
