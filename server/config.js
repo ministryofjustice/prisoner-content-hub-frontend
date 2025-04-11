@@ -118,13 +118,13 @@ module.exports = {
       languages: ['en'],
     },
     bullingdon: {
-      enabled: true,
-      features: ['incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en'],
     },
     cardiff: {
-      enabled: true,
-      features: ['adjudications', 'incentives', 'money', 'timetable', 'visits'],
+      enabled: false,
+      features: [],
       languages: ['en'],
     },
     chelmsford: {

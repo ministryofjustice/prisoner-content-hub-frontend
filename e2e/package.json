@@ -12,18 +12,18 @@
     "start-ci": "docker-compose up --build --abort-on-container-exit --exit-code-from cypress"
   },
   "engines": {
-    "node": ">= 18",
-    "npm": ">= 9"
+    "node": ">= 22",
+    "npm": ">= 10"
   },
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
-    "concurrently": "^9.1.0",
-    "cypress": "13.16.0",
-    "cypress-multi-reporters": "^2.0.4",
+    "concurrently": "^9.1.2",
+    "cypress": "14.2.0",
+    "cypress-multi-reporters": "^2.0.5",
     "date-fns": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "mocha-junit-reporter": "^2.2.1",
-    "superagent": "^10.1.1"
+    "superagent": "^10.2.0"
   }
 }
