@@ -447,9 +447,9 @@ describe('cms Service', () => {
     });
     it('calls cmsApi.getCache', () => {
       expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
-      expect(cmsApi.getCache).toHaveBeenCalledWith(
-        new PrimaryNavigationQuery(ESTABLISHMENT_NAME),
-      );
+      expect(cmsApi.getCache).toHaveBeenCalledWith({
+        query: new PrimaryNavigationQuery(ESTABLISHMENT_NAME),
+      });
     });
   });
 
@@ -459,9 +459,9 @@ describe('cms Service', () => {
     });
     it('first checks the cache', () => {
       expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
-      expect(cmsApi.getCache).toHaveBeenCalledWith(
-        new TopicsQuery(ESTABLISHMENT_NAME),
-      );
+      expect(cmsApi.getCache).toHaveBeenCalledWith({
+        query: new TopicsQuery(ESTABLISHMENT_NAME),
+      });
     });
   });
 
@@ -492,9 +492,9 @@ describe('cms Service', () => {
           );
         });
         it('returns the tag', async () => {
-          expect(cmsApi.getCache).toHaveBeenCalledWith(
-            new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 1),
-          );
+          expect(cmsApi.getCache).toHaveBeenCalledWith({
+            query: new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 1),
+          });
           expect(result).toBe(populatedTopic);
         });
       });
@@ -515,11 +515,11 @@ describe('cms Service', () => {
         it('returns the tag', async () => {
           expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             1,
-            new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 1),
+            { query: new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 1) },
           );
           expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             2,
-            new TopicHeaderPageQuery(location),
+            { query: new TopicHeaderPageQuery(location) },
           );
           expect(result).toBe(populatedTopic);
         });
@@ -550,9 +550,9 @@ describe('cms Service', () => {
         });
         it('returns the series', async () => {
           expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
-          expect(cmsApi.getCache).toHaveBeenCalledWith(
-            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 1),
-          );
+          expect(cmsApi.getCache).toHaveBeenCalledWith({
+            query: new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 1),
+          });
           expect(result).toBe(populatedSeries);
         });
       });
@@ -573,11 +573,11 @@ describe('cms Service', () => {
         it('returns the series', async () => {
           expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             1,
-            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 1),
+            { query: new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 1) },
           );
           expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             2,
-            new SeriesHeaderPageQuery(location),
+            { query: new SeriesHeaderPageQuery(location) },
           );
           expect(result).toBe(populatedSeries);
         });
@@ -612,9 +612,9 @@ describe('cms Service', () => {
         });
         it('returns the category', async () => {
           expect(cmsApi.getCache).toHaveBeenCalledTimes(2);
-          expect(cmsApi.getCache).toHaveBeenCalledWith(
-            new CategoryPageQuery(ESTABLISHMENT_NAME, uuid),
-          );
+          expect(cmsApi.getCache).toHaveBeenCalledWith({
+            query: new CategoryPageQuery(ESTABLISHMENT_NAME, uuid),
+          });
           expect(result).toStrictEqual({
             ...populatedCategory,
             categorySeries: populatedAllSeries,
@@ -641,7 +641,7 @@ describe('cms Service', () => {
         it('returns the category', async () => {
           expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             1,
-            new CategoryPageQuery(ESTABLISHMENT_NAME, uuid),
+            { query: new CategoryPageQuery(ESTABLISHMENT_NAME, uuid) },
           );
           expect(result).toStrictEqual({
             categoryFeaturedContent: [],
@@ -680,9 +680,9 @@ describe('cms Service', () => {
         });
         it('returns the tag', async () => {
           expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
-          expect(cmsApi.getCache).toHaveBeenCalledWith(
-            new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 2),
-          );
+          expect(cmsApi.getCache).toHaveBeenCalledWith({
+            query: new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 2),
+          });
           expect(result).toBe(populatedTopic.hubContentData);
         });
       });
@@ -703,11 +703,11 @@ describe('cms Service', () => {
         it('returns the tag', async () => {
           expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             1,
-            new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 2),
+            { query: new TopicPageQuery(ESTABLISHMENT_NAME, uuid, 2) },
           );
           expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             2,
-            new TopicHeaderPageQuery(location),
+            { query: new TopicHeaderPageQuery(location) },
           );
           expect(result).toBe(populatedTopic.hubContentData);
         });
@@ -738,9 +738,9 @@ describe('cms Service', () => {
         });
         it('returns the series', async () => {
           expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
-          expect(cmsApi.getCache).toHaveBeenCalledWith(
-            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 2),
-          );
+          expect(cmsApi.getCache).toHaveBeenCalledWith({
+            query: new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 2),
+          });
           expect(result).toBe(populatedSeries.hubContentData);
         });
       });
@@ -761,11 +761,11 @@ describe('cms Service', () => {
         it('returns the series', async () => {
           expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             1,
-            new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 2),
+            { query: new SeriesPageQuery(ESTABLISHMENT_NAME, uuid, 2) },
           );
           expect(cmsApi.getCache).toHaveBeenNthCalledWith(
             2,
-            new SeriesHeaderPageQuery(location),
+            { query: new SeriesHeaderPageQuery(location) },
           );
           expect(result).toBe(populatedSeries.hubContentData);
         });
@@ -801,9 +801,9 @@ describe('cms Service', () => {
         });
         it('returns the series', async () => {
           expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
-          expect(cmsApi.getCache).toHaveBeenCalledWith(
-            new CategoryCollectionsQuery(ESTABLISHMENT_NAME, uuid, 40, 2),
-          );
+          expect(cmsApi.getCache).toHaveBeenCalledWith({
+            query: new CategoryCollectionsQuery(ESTABLISHMENT_NAME, uuid, 40, 2),
+          });
           expect(result).toBe(populatedSeries);
         });
       });
@@ -827,9 +827,9 @@ describe('cms Service', () => {
         });
         it('returns the other content', async () => {
           expect(cmsApi.getCache).toHaveBeenCalledTimes(1);
-          expect(cmsApi.getCache).toHaveBeenCalledWith(
-            new CategoryContentQuery(ESTABLISHMENT_NAME, uuid, 40, 2),
-          );
+          expect(cmsApi.getCache).toHaveBeenCalledWith({
+            query: new CategoryContentQuery(ESTABLISHMENT_NAME, uuid, 40, 2),
+          });
           expect(result).toBe(populatedOtherCategory);
         });
       });
@@ -880,14 +880,14 @@ describe('cms Service', () => {
     });
 
     it('should call cmsApi.get with the RecentlyAddedContentQuery', async () => {
-      expect(cmsApi.getCache).toHaveBeenCalledWith(
-        new RecentlyAddedContentQuery(
+      expect(cmsApi.getCache).toHaveBeenCalledWith({
+        query: new RecentlyAddedContentQuery(
           ESTABLISHMENT_NAME,
           1,
           40,
           getOffsetUnixTime(14),
         ),
-      );
+      });
     });
 
     it('should return a result when cmsApi.get is called', async () => {
@@ -912,9 +912,9 @@ describe('cms Service', () => {
     });
 
     it('should call cmsApi.get with the RecentlyAddedContentQuery', async () => {
-      expect(cmsApi.getCache).toHaveBeenCalledWith(
-        new RecentlyAddedHomepageContentQuery(ESTABLISHMENT_NAME),
-      );
+      expect(cmsApi.getCache).toHaveBeenCalledWith({
+        query: new RecentlyAddedHomepageContentQuery(ESTABLISHMENT_NAME),
+      });
     });
 
     it('should return a result when cmsApi.get is called', async () => {
@@ -968,9 +968,9 @@ describe('cms Service', () => {
     });
 
     it('should call cmsApi.get with the HomepageContentQuery', async () => {
-      expect(cmsApi.getCache).toHaveBeenCalledWith(
-        new HomepageContentQuery(ESTABLISHMENT_NAME, 4),
-      );
+      expect(cmsApi.getCache).toHaveBeenCalledWith({
+        query: new HomepageContentQuery(ESTABLISHMENT_NAME, 4),
+      });
     });
 
     it('should return a result when cmsApi.get is called', async () => {
@@ -994,9 +994,9 @@ describe('cms Service', () => {
     });
 
     it('should call cmsApi.get with the ExploreContentQuery', async () => {
-      expect(cmsApi.getCache).toHaveBeenCalledWith(
-        new ExploreContentQuery(ESTABLISHMENT_NAME, 4),
-      );
+      expect(cmsApi.getCache).toHaveBeenCalledWith({
+        query: new ExploreContentQuery(ESTABLISHMENT_NAME, 4),
+      });
     });
 
     it('should return a result when cmsApi.get is called', async () => {
@@ -1023,9 +1023,9 @@ describe('cms Service', () => {
     });
 
     it('should call cmsApi.get with the ExploreContentQuery', async () => {
-      expect(cmsApi.getCache).toHaveBeenCalledWith(
-        new UrgentBannerQuery(ESTABLISHMENT_NAME),
-      );
+      expect(cmsApi.getCache).toHaveBeenCalledWith({
+        query: new UrgentBannerQuery(ESTABLISHMENT_NAME),
+      });
     });
 
     it('returns urgent banner', () => {
