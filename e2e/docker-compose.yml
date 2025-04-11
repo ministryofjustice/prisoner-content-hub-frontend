@@ -1,15 +1,30 @@
 version: '3'
 services:
+  wiremock:
+    image: rodolpheche/wiremock
+    container_name: wiremock
+    networks:
+      - prisoner-content-hub-etwoe
+    restart: always
+    ports:
+      - "9091:8080"
+
   web:
-    build: ..
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        BUILD_NUMBER: 1
+        GIT_REF: 1
+        GIT_DATE: 1
     container_name: web
     networks:
-      prisoner-content-hub-e2e:
+      prisoner-content-hub-etwoe:
         aliases:
           - content-hub.localhost
           - wayland.content-hub.localhost
           - berwyn.content-hub.localhost
-          - cookhamwood.content-hub.localhost
+          - etwoe.content-hub.localhost
     depends_on:
       - wiremock
     restart: always
@@ -18,20 +33,11 @@ services:
     env_file: 
       - "./test-ci.env"
 
-  wiremock:
-    image: rodolpheche/wiremock
-    container_name: wiremock
-    networks:
-      - prisoner-content-hub-e2e
-    restart: always
-    ports:
-      - "9091:8080"
-
   cypress:
     build: .
     container_name: cypress
     networks:
-      - prisoner-content-hub-e2e
+      - prisoner-content-hub-etwoe
     depends_on:
       - web
       - wiremock
@@ -41,4 +47,4 @@ services:
       - WIREMOCK_BASE_URL=http://wiremock:8080
 
 networks:
-  prisoner-content-hub-e2e:
+  prisoner-content-hub-etwoe:

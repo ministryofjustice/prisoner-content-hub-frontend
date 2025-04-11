@@ -2,11 +2,38 @@
 
 <header class="govuk-header top-bar-container" data-module="header">
   <div class="govuk-width-container top-bar">
-    <img class="hub-logo" src="/public/images/icons/content-hub.png" alt="logo">
-    <a href="/" class="govuk-heading-m govuk-link govuk-link--inverse">Content Hub <span>{{ params.establishmentDisplayName }}</span></a>
-    {% if params.showSearch %}
-      {{ hubSearch({ query: params.searchQuery, small: true }) }}
-    {% endif %}
+    <div class="top-bar__title">
+      <img class="hub-logo" src="/public/images/icons/content-hub.png" alt="logo">
+      <a href="/" class="govuk-heading-m govuk-link govuk-link--inverse">{{ t('topBar.title') }} <span>{{ params.establishmentDisplayName }}</span></a>
+    </div>
+    <nav aria-label="Content Hub Navigation" class="top-bar__nav">
+      <div class="top-bar__navigation">
+        <h2 id="top-bar__navigation-heading" class="govuk-visually-hidden">
+          ::before
+          " Content Hub Navigation Menu "
+          ::after
+        </h2>
+        <div class="top-bar__navigation__items">
+          {%  if params.multilingual %}
+          <div class="top-bar__navigation__item top-bar__navigation__item__translations">
+            {% for translation in params.translations %}
+              <div class="content-hub-header__link">
+                <a
+                  href="{{ translation.href }}"
+                  lang="{{ translation.lang }}"
+                  class="govuk-link govuk-link--inverse {% if translation.lang == params.currentLng %}active{% endif %} govuk-link">
+                  {{ translation.text }}
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% if params.showSearch %}
+            {{ hubSearch({ query: params.searchQuery, small: true }) }}
+          {% endif %}
+        </div>
+      </div>
+    </nav>
   </div>
 </header>
 <hr class="govuk-section-break govuk-top-bar-break--visible" aria-hidden="true">

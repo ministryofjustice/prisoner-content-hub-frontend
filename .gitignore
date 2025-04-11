@@ -30,3 +30,4 @@ csv-exports
 .vscode
 cypress/artifacts/
 .cache
+*.pem
