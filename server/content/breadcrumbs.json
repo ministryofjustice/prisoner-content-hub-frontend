@@ -3,14 +3,6 @@
     "href": "/",
     "text": "Home"
   },
-  "profile": {
-    "href": "/profile",
-    "text": "My profile"
-  },
-  "adjudications": {
-    "href": "/adjudications",
-    "text": "My adjudications"
-  },
   "entertainment": {
     "href": "/tags/1282",
     "text": "Inspire and entertain"

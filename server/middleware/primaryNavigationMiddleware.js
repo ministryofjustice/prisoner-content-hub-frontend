@@ -14,10 +14,6 @@ module.exports =
 
 const mapNoneCMSUrls = (originalUrl, primaryNavigation) => {
   switch (originalUrl.match(/^\/[a-z,-]*/g)[0]) {
-    case '/money':
-    case '/timetable':
-    case '/approved-visitors':
-      return '/profile';
     case '/games':
       // Assumption made that games will appear in the 'inspire and entertain' primary category
       return (
