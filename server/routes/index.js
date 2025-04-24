@@ -54,7 +54,6 @@ module.exports = (
     createHomepageRouter({
       logger,
       cmsService,
-      offenderService,
       config,
       establishmentData,
     }),
