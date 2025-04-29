@@ -145,12 +145,3 @@
   align-items: center;
   margin: 0;
 }
-
-.govuk-hub-userDetails {
-  padding: govuk-spacing(2) 0;
-  h3 {
-    @include govuk-font(16, $weight: bold);
-    display: inline-block;
-    margin: 0;
-  }
-}
