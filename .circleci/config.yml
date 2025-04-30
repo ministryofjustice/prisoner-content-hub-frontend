@@ -56,7 +56,6 @@ commands:
               --set prisonApiBaseUrl="${PRISON_API_BASE_URL}" \
               --set prisonerContactRegistryApiBaseUrl="${PRISONER_CONTACT_REGISTRY_BASE_URL}" \
               --set incentivesApiBaseUrl="${INCENTIVES_API_BASE_URL}" \
-              --set adjudicationsApiBaseUrl="${ADJUDICATIONS_API_BASE_URL}" \
               --set cacheSecret="${CACHE_SECRET}" \
               --set prisonerAuthAD.clientId="${AZURE_AD_CLIENT_ID}" \
               --set prisonerAuthAD.clientSecret="${AZURE_AD_CLIENT_SECRET}" \
@@ -79,7 +78,7 @@ commands:
               echo "export PR_NAME=${CIRCLE_PR_BRANCH}" >> $BASH_ENV
               echo "export GIT_MSG=${GIT_MSG}" >> $BASH_ENV
       - when:
-          condition: 
+          condition:
             equal: [ << parameters.environment >>, "production" ]
           steps:
             - slack/notify:

@@ -57,10 +57,6 @@ module.exports = {
       authUrl: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
     },
     baseUrl: getRequiredEnv('PRISON_API_BASE_URL', 'https://api.nomis'),
-    adjudications: {
-      pageLimit: 50,
-      maxAdjudicationsPerPage: 10,
-    },
   },
   prisonerContactRegistryApi: {
     auth: {
@@ -80,18 +76,6 @@ module.exports = {
       authUrl: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
     },
     baseUrl: getRequiredEnv('INCENTIVES_API_BASE_URL', 'https://api.nomis'),
-  },
-  adjudicationsApi: {
-    auth: {
-      clientId: getEnv('HMPPS_AUTH_CLIENT_ID', 'UNSET'),
-      clientSecret: getEnv('HMPPS_AUTH_CLIENT_SECRET', 'UNSET'),
-      authUrl: `${hmppsAuthBaseUrl}/oauth/token?grant_type=client_credentials`,
-    },
-    baseUrl: getRequiredEnv('ADJUDICATIONS_API_BASE_URL', 'https://api.nomis'),
-    adjudications: {
-      pageLimit: 50,
-      maxAdjudicationsPerPage: 10,
-    },
   },
   features: {
     useMockAuth: getEnv('ENABLE_MOCK_AUTH', 'false') === 'true',

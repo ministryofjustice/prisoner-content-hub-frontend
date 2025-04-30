@@ -43,7 +43,6 @@ helm upgrade [Release Name] . \
 --set hmppsAuthBaseUrl=[HMPPS Auth base URL] \
 --set prisonApiBaseUrl=[Prison API base URL] \
 --set incentivesApiBaseUrl=[Incentives API base URL] \
---set adjudicationsApiBaseUrl=[Adjudications API base URL] \
 --set cacheSecret=[32Byte string used for encrypting cached items] \
 --set prisonerAuthAD.clientId=[Azure AD Client ID] \
 --set prisonerAuthAD.clientSecret=[Azure AD Client secret] \
@@ -74,7 +73,6 @@ helm upgrade [Release Name] . \
 --set hmppsAuthBaseUrl=[HMPPS Auth base URL] \
 --set prisonApiBaseUrl=[Prison API base URL] \
 --set incentivesApiBaseUrl=[Incentives API base URL] \
---set adjudicationsApiBaseUrl=[Adjudications API base URL] \
 --set cacheSecret=[32Byte string used for encrypting cached items] \
 --set prisonerAuthAD.clientId=[Azure AD Client ID] \
 --set prisonerAuthAD.clientSecret=[Azure AD Client secret] \

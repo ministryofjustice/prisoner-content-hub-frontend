@@ -40,12 +40,6 @@ env:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
           key: incentivesApiBaseUrl
 
-    - name: ADJUDICATIONS_API_BASE_URL
-      valueFrom:
-        secretKeyRef:
-          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
-          key: adjudicationsApiBaseUrl
-
     - name: HUB_API_ENDPOINT
       valueFrom:
         configMapKeyRef:

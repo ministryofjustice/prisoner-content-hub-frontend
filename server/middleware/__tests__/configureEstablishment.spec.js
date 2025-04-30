@@ -2,14 +2,6 @@ const config = {
   sites: {
     berwyn: {
       enabled: true,
-      features: [
-        'adjudications',
-        'approvedVisitors',
-        'incentives',
-        'money',
-        'timetable',
-        'visits',
-      ],
       languages: ['en'],
     },
     cardiff: {
