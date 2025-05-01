@@ -2,7 +2,6 @@ const express = require('express');
 
 const { createHomepageRouter } = require('./homepage');
 const { createTopicsRouter } = require('./topics');
-const { createTimetableRouter } = require('./timetable');
 const { createContentRouter } = require('./content');
 const { createTagRouter } = require('./tags');
 const { createLinkRouter } = require('./link');
@@ -18,14 +17,7 @@ const retrieveTopicList = require('../middleware/retrieveTopicList');
 const urgentBannerMiddleware = require('../middleware/urgentBannerMiddleware');
 
 module.exports = (
-  {
-    logger,
-    cmsService,
-    offenderService,
-    searchService,
-    feedbackService,
-    config,
-  },
+  { logger, cmsService, searchService, feedbackService, config },
   establishmentData,
 ) => {
   const router = express.Router();
@@ -60,8 +52,6 @@ module.exports = (
   );
 
   router.use('/topics', createTopicsRouter({ cmsService }));
-
-  router.use('/timetable', createTimetableRouter({ offenderService }));
 
   router.use(
     '/content',
