@@ -25,12 +25,6 @@ module.exports = {
   singleHostName: getRequiredEnv('SINGLE_HOST_NAME', 'localhost'),
   api: {
     hubEndpoint,
-    hubContent: `${hubEndpoint}/v1/api/content`,
-    hubCategoryFeatured: `${hubEndpoint}/v1/api/category/featured`,
-    categoryMenu: `${hubEndpoint}/v1/api/category-menu`,
-    hubTerm: `${hubEndpoint}/v1/api/term`,
-    series: `${hubEndpoint}/v1/api/content/series`,
-    tags: `${hubEndpoint}/v1/api/vocabulary/tags`,
   },
   caching: {
     secret: getRequiredEnv('CACHE_SECRET', 'secret-2'),
