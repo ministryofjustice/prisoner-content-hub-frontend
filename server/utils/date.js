@@ -3,9 +3,6 @@ const {
   format,
   isValid,
   formatDistance,
-  startOfMonth,
-  subMonths,
-  formatISO,
   getUnixTime,
   subDays,
 } = require('date-fns');
@@ -26,30 +23,6 @@ const formatTimeBetweenOrDefault = (placeHolder, start, finish) => {
     : formatDistance(parseISO(start), new Date());
 };
 
-const getDateSelection = (date, selectedDate, amount = 12) => {
-  const startDate = startOfMonth(date);
-  const dateRange = [];
-
-  for (let offset = 0; offset < amount; offset += 1) {
-    const current = subMonths(startDate, offset);
-    const element = {
-      text: format(current, 'MMMM yyyy'),
-      value: formatISO(current, { representation: 'date' }),
-    };
-
-    if (
-      selectedDate &&
-      startOfMonth(selectedDate).valueOf() === current.valueOf()
-    ) {
-      element.selected = true;
-    }
-
-    dateRange.push(element);
-  }
-
-  return dateRange;
-};
-
 const sortByDateTime = (firstDate, secondDate) => {
   if (firstDate && secondDate)
     return parseISO(firstDate).valueOf() - parseISO(secondDate).valueOf();
@@ -64,7 +37,6 @@ const getOffsetUnixTime = (offset, timeStamp) =>
 module.exports = {
   formatDateOrDefault,
   formatTimeBetweenOrDefault,
-  getDateSelection,
   sortByDateTime,
   getOffsetUnixTime,
 };
