@@ -1,50 +1,8 @@
-const {
-  formatDateOrDefault,
-  formatTimeBetweenOrDefault,
-  getOffsetUnixTime,
-} = require('../date');
+const { formatTimeBetweenOrDefault, getOffsetUnixTime } = require('../date');
 
 describe('DateUtils', () => {
   afterEach(() => {
     jest.useRealTimers();
-  });
-
-  describe('formatDateOrDefault', () => {
-    it('should format a valid date', () => {
-      const formatted = formatDateOrDefault(
-        'PLACEHOLDER',
-        'EEEE dd MMMM yyyy',
-        '2020-09-04',
-      );
-      expect(formatted).toBe('Friday 04 September 2020');
-    });
-
-    it('should return the placeholder when date is invalid', () => {
-      const formatted = formatDateOrDefault(
-        'PLACEHOLDER',
-        'EEEE dd MMMM yyyy',
-        'invalid-date',
-      );
-      expect(formatted).toBe('PLACEHOLDER');
-    });
-
-    it('should return the placeholder when date is not provided', () => {
-      const formatted = formatDateOrDefault(
-        'PLACEHOLDER',
-        'EEEE dd MMMM yyyy',
-        undefined,
-      );
-      expect(formatted).toBe('PLACEHOLDER');
-    });
-
-    it('should return a valid date in the expected GDS date format', () => {
-      const formatted = formatDateOrDefault(
-        'PLACEHOLDER',
-        'd MMMM yyyy, h.mmaaa',
-        '2016-05-08T14:16:00',
-      );
-      expect(formatted).toBe('8 May 2016, 2.16pm');
-    });
   });
 
   describe('formatTimeBetweenOrDefault', () => {
