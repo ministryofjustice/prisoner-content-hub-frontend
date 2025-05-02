@@ -1,23 +1,6 @@
-const { fullNameOrDefault, formatBalanceOrDefault } = require('../string');
+const { formatBalanceOrDefault } = require('../string');
 
 describe('StringUtils', () => {
-  describe('fullNameOrDefault', () => {
-    it('should format multiple names', () => {
-      const fullName = fullNameOrDefault('', 'FOO', 'BAR', 'BAZ');
-      expect(fullName).toBe('Foo Bar Baz');
-    });
-
-    it('should format a single name', () => {
-      const fullName = fullNameOrDefault('', 'FOO');
-      expect(fullName).toBe('Foo');
-    });
-
-    it('should handle bad data', () => {
-      const fullName = fullNameOrDefault('PLACEHOLDER', undefined, '');
-      expect(fullName).toBe('PLACEHOLDER');
-    });
-  });
-
   describe('formatBalanceOrDefault', () => {
     it('should format currency', () => {
       const balance = formatBalanceOrDefault('', 5.0, 'GBP');
