@@ -12,20 +12,6 @@ jest.mock('@sentry/node', () => ({
   expressIntegration: jest.fn(),
   setupExpressErrorHandler: jest.fn(),
 }));
-jest.mock('passport', () => ({
-  use: jest.fn(() => true),
-  serializeUser: jest.fn(() => true),
-  deserializeUser: jest.fn(() => true),
-  initialize: jest.fn(() => (req, res, next) => {
-    next();
-  }),
-  session: jest.fn(() => (req, res, next) => {
-    next();
-  }),
-}));
-jest.mock('passport-azure-ad-oauth2', () =>
-  jest.fn().mockImplementation(() => ({})),
-);
 
 describe('Sentry', () => {
   it('initializes Sentry', () => {
