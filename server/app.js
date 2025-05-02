@@ -109,21 +109,6 @@ const createApp = services => {
       maxAge: 4.32e7, // 12 Hours
     }),
   );
-  // https://github.com/jaredhanson/passport/issues/904#issuecomment-1307558283
-  // register regenerate & save after the cookieSession middleware initialization
-  app.use((req, res, next) => {
-    if (req.session && !req.session.regenerate) {
-      req.session.regenerate = callback => {
-        callback();
-      };
-    }
-    if (req.session && !req.session.save) {
-      req.session.save = callback => {
-        callback();
-      };
-    }
-    next();
-  });
 
   [
     '../public',
