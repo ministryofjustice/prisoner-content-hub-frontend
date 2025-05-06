@@ -23,9 +23,14 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         cmsService.getExploreContent(establishmentName),
         cmsService.getUpdatesContent(establishmentName),
       ]);
-      const currentEvents = res.locals.isSignedIn
-        ? await offenderService.getCurrentEvents(req.user)
-        : {};
+      const displayTimetable = checkFeatureEnabledAtSite(
+        req.session.establishmentName,
+        'timetable',
+      );
+      const currentEvents =
+        res.locals.isSignedIn && displayTimetable
+          ? await offenderService.getCurrentEvents(req.user)
+          : {};
       const useLargeUpdateTile = Boolean(largeUpdateTileSpecified?.contentUrl);
 
       const largeUpdateTile = useLargeUpdateTile
@@ -58,10 +63,7 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         largeUpdateTile,
         exploreContent,
         currentEvents,
-        displayTimetable: checkFeatureEnabledAtSite(
-          req.session.establishmentName,
-          'timetable',
-        ),
+        displayTimetable,
       });
     } catch (error) {
       next(error);
