@@ -1,7 +1,0 @@
-{% from "../components/personal-transactions/macro.njk" import personalTransactions %}
-
-{% extends "../components/basicTemplate.njk" %}
-
-{% block content %}
-  {{ personalTransactions(prisonerInformation, returnUrl, isSignedIn) }}
-{% endblock %}

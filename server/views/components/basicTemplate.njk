@@ -5,7 +5,6 @@
 {%- from "moj/components/primary-navigation/macro.njk" import mojPrimaryNavigation -%}
 {% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "./top-bar/macro.njk" import topBar %}
-{% from "./user-details/macro.njk" import userDetails %}
 {% from "./urgent-banner/macro.njk" import urgentBanner %}
 
 <!DOCTYPE html>
@@ -86,16 +85,6 @@
         <div class="govuk-hub-navigationUserDetailsBar">
           {% block pageNavigation %}
             {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs  }) }}
-          {% endblock %}
-          {% block userDetails %}
-            {% if establishmentEnabled %}
-              {{ userDetails({
-                hideSignInLink: hideSignInLink,
-                isSignedIn: isSignedIn,
-                userName: userName,
-                returnUrl: returnUrl
-              }) }}
-            {% endif %}
           {% endblock %}
         </div>
       </div>

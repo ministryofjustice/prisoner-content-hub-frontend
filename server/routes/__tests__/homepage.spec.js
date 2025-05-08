@@ -1,21 +1,12 @@
 const request = require('supertest');
 const cheerio = require('cheerio');
-const { User } = require('../../auth/user');
 
 const { createHomepageRouter, removeDuplicateUpdates } = require('../homepage');
 const {
   setupBasicApp,
   consoleLogError,
 } = require('../../../test/test-helpers');
-const setCurrentUser = require('../../middleware/setCurrentUser');
 const retrieveTopicList = require('../../middleware/retrieveTopicList');
-
-const mockCheckFeatureEnabledAtSite = jest.fn();
-
-jest.mock('../../utils', () => ({
-  ...jest.requireActual('../../utils'),
-  checkFeatureEnabledAtSite: () => mockCheckFeatureEnabledAtSite(),
-}));
 
 describe('GET /', () => {
   let featuredItem;
@@ -163,16 +154,7 @@ describe('GET /', () => {
 
   /* new homepage */
   describe('New homepage', () => {
-    let testEvents;
     const establishmentPersonalisationToggle = jest.fn();
-    const userSupplier = jest.fn();
-
-    const testUser = new User({
-      prisonerId: 'A1234BC',
-      firstName: 'Test',
-      surname: 'User',
-      bookingId: 1234567,
-    });
 
     beforeEach(() => {
       const establishmentData = {
@@ -190,49 +172,15 @@ describe('GET /', () => {
       app.use((req, res, next) => {
         req.session = {
           establishmentName: 'berwyn',
-          isSignedIn: true,
           establishmentPersonalisationEnabled:
             establishmentPersonalisationToggle(),
         };
-        req.user = userSupplier();
-        res.locals.establishmentEnabled = true;
         next();
       });
-      app.use(setCurrentUser);
       app.use(['^/*'], retrieveTopicList(cmsService));
       app.use(router);
       app.use(consoleLogError);
-      userSupplier.mockReturnValue(testUser);
       establishmentPersonalisationToggle.mockReturnValue(true);
-
-      testEvents = {
-        events: [
-          {
-            description: 'SUSPENDED ACTIVITY',
-            startTime: '8:10AM',
-            endTime: '11:25AM',
-            location: 'Main exercise yard',
-            timeString: '8:10AM to 11:25AM',
-            eventType: 'PRISON_ACT',
-            finished: false,
-            status: 'SCH',
-            paid: false,
-          },
-          {
-            description: 'EDU IT AM',
-            startTime: '8:10AM',
-            endTime: '11:25AM',
-            location: 'New education',
-            timeString: '8:10AM to 11:25AM',
-            eventType: 'PRISON_ACT',
-            finished: false,
-            status: 'SCH',
-            paid: false,
-          },
-        ],
-        isTomorrow: false,
-      };
-      mockCheckFeatureEnabledAtSite.mockReturnValue(true);
     });
 
     it('renders the homepage with a search bar', () =>
@@ -252,61 +200,6 @@ describe('GET /', () => {
           const $ = cheerio.load(response.text);
           expect($('.top-bar__navigation__item__translations').length).toBe(0);
         }));
-
-    describe('timetable events', () => {
-      it('renders the homepage events for today', () => {
-        offenderService.getCurrentEvents.mockResolvedValue(testEvents);
-
-        return request(app)
-          .get('/')
-          .then(response => {
-            const $ = cheerio.load(response.text);
-            expect($('div.todays-events').first().find('h2').text()).toBe(
-              "Today's events",
-            );
-            expect($('[data-test="event"]').length).toBe(
-              2,
-              'Correct number of events',
-            );
-          });
-      });
-
-      it('renders the homepage events for tomorrow', () => {
-        testEvents = { ...testEvents, isTomorrow: true };
-
-        offenderService.getCurrentEvents.mockResolvedValue(testEvents);
-
-        return request(app)
-          .get('/')
-          .then(response => {
-            const $ = cheerio.load(response.text);
-            expect($('div.todays-events').first().find('h2').text()).toBe(
-              "Tomorrow's events",
-            );
-            expect($('[data-test="event"]').length).toBe(
-              2,
-              'Correct number of events',
-            );
-          });
-      });
-
-      it('renders the homepage with no events', () => {
-        const currentEvents = {
-          events: [],
-          isTomorrow: false,
-        };
-
-        offenderService.getCurrentEvents.mockResolvedValue(currentEvents);
-
-        return request(app)
-          .get('/')
-          .then(response => {
-            const $ = cheerio.load(response.text);
-            expect($('[data-test="event"]').length).toBe(0);
-            expect($('[data-test="no-events"]').length).toBe(1);
-          });
-      });
-    });
 
     describe('featured update tile', () => {
       it('renders the homepage with the featured update tile', () =>
@@ -569,19 +462,6 @@ describe('GET /', () => {
           expect($('#featuredContent .small-tiles a').length).toBe(4);
         }));
 
-    it('renders an error when the homepage cannot retrieve events', () => {
-      offenderService.getCurrentEvents.mockResolvedValue({
-        error: 'We are not able to show your schedule for today at this time',
-      });
-
-      return request(app)
-        .get('/')
-        .then(response => {
-          const $ = cheerio.load(response.text);
-          expect($('[data-test="event-error"]').length).toBe(1);
-        });
-    });
-
     it('renders the homepage with topics footer', () =>
       request(app)
         .get('/')
@@ -616,7 +496,6 @@ describe('GET /', () => {
           establishmentPersonalisationEnabled:
             establishmentPersonalisationToggle(),
         };
-        res.locals.establishmentEnabled = true;
         res.locals.multilingual = true;
         next();
       });

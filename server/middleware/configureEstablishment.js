@@ -22,7 +22,6 @@ const configureEstablishment = (req, res, next) => {
 
   res.locals.feedbackId = randomUUID();
   res.locals.establishmentName = establishmentName;
-  res.locals.establishmentEnabled = config.sites[establishmentName]?.enabled;
   res.locals.establishmentDisplayName = `${getEstablishmentDisplayName(
     req.session.establishmentId,
   )}`;

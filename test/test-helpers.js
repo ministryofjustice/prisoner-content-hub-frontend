@@ -2,16 +2,6 @@ const express = require('express');
 const nunjucksSetup = require('../server/utils/nunjucksSetup');
 const routes = require('../server/routes');
 const setCurrentUser = require('../server/middleware/setCurrentUser');
-const { User } = require('../server/auth/user');
-
-const testData = {
-  user: new User({
-    prisonerId: 'A1234BC',
-    firstName: 'Test',
-    surname: 'User',
-    bookingId: 1234567,
-  }),
-};
 
 function setupBasicApp(config = {}) {
   const app = express();
@@ -93,5 +83,4 @@ module.exports = {
   consoleLogError,
   createClient,
   lastCall,
-  testData,
 };
