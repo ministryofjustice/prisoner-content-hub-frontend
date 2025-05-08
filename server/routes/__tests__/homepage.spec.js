@@ -175,7 +175,6 @@ describe('GET /', () => {
           establishmentPersonalisationEnabled:
             establishmentPersonalisationToggle(),
         };
-        res.locals.establishmentEnabled = true;
         next();
       });
       app.use(['^/*'], retrieveTopicList(cmsService));
@@ -497,7 +496,6 @@ describe('GET /', () => {
           establishmentPersonalisationEnabled:
             establishmentPersonalisationToggle(),
         };
-        res.locals.establishmentEnabled = true;
         res.locals.multilingual = true;
         next();
       });
