@@ -5,16 +5,5 @@
   "privacyPolicy": "/content/4856",
   "helpLink": "/tags/1503",
   "mentalHealthLink": "/tags/1297",
-  "NPRRequestLink": "/content/17132",
-  "profile": {
-    "timetable": "/timetable",
-    "incentivesInfo": "/tags/1417",
-    "transactions": "/money/transactions",
-    "moneyAndDebtInfo": "/tags/872",
-    "visitorInfo": "/tags/1133",
-    "visitorsLink": "/approved-visitors",
-    "learningAndSkills": "/tags/1341",
-    "adjudications": "/adjudications",
-    "adjudicationsInfo": "/content/4193"
-  }
+  "NPRRequestLink": "/content/17132"
 }

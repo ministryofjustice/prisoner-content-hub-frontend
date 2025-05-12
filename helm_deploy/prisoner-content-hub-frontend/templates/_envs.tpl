@@ -4,48 +4,6 @@ Environment variables for web and worker containers
 */}}
 {{- define "deployment.envs" }}
 env:
-    - name: HMPPS_AUTH_CLIENT_ID
-      valueFrom:
-        secretKeyRef:
-          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
-          key: hmppsAuthClientId
-
-    - name: HMPPS_AUTH_CLIENT_SECRET
-      valueFrom:
-        secretKeyRef:
-          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
-          key: hmppsAuthClientSecret
-
-    - name: HMPPS_AUTH_BASE_URL
-      valueFrom:
-        secretKeyRef:
-          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
-          key: hmppsAuthBaseUrl
-
-    - name: PRISON_API_BASE_URL
-      valueFrom:
-        secretKeyRef:
-          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
-          key: prisonApiBaseUrl
-
-    - name: PRISONER_CONTACT_REGISTRY_BASE_URL
-      valueFrom:
-        secretKeyRef:
-          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
-          key: prisonerContactRegistryApiBaseUrl
-
-    - name: INCENTIVES_API_BASE_URL
-      valueFrom:
-        secretKeyRef:
-          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
-          key: incentivesApiBaseUrl
-
-    - name: ADJUDICATIONS_API_BASE_URL
-      valueFrom:
-        secretKeyRef:
-          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
-          key: adjudicationsApiBaseUrl
-
     - name: HUB_API_ENDPOINT
       valueFrom:
         configMapKeyRef:
@@ -91,26 +49,11 @@ env:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
           key: appInsightsSecret
 
-    - name: ENABLE_MOCK_AUTH
-      value: {{ .Values.application.config.mockAuthEnabled | quote }}
-
     - name: CACHE_SECRET
       valueFrom:
         secretKeyRef:
           name: {{ include "prisoner-content-hub-frontend.fullname" . }}
           key: cacheSecret
-
-    - name: AZURE_AD_CLIENT_ID
-      valueFrom:
-        secretKeyRef:
-          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
-          key: azureAdClientId
-
-    - name: AZURE_AD_CLIENT_SECRET
-      valueFrom:
-        secretKeyRef:
-          name: {{ include "prisoner-content-hub-frontend.fullname" . }}
-          key: azureAdClientSecret
 
     - name: REDIS_HOST
       valueFrom:
