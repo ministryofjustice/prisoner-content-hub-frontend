@@ -21,8 +21,8 @@ spec:
     {{- range $.Values.ingress.prefixes }}
       - {{ tpl $domainPattern (dict "prison" . "Template" $.Template) }}
     {{- end }}
+      {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
   {{- end }}
-    secretName: {{ $certSecret }}
   rules:
   {{- range .Values.ingress.hosts }}
     {{- $domainPattern := .pattern -}}
