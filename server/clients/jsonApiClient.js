@@ -26,11 +26,17 @@ class JsonApiClient {
     const res = await this.client.get(`${this.baseURL}${path}`, {
       params: query,
     });
+    logger.debug(
+      `Cache ${res.headers['x-drupal-cache']} for path ${this.baseURL}${path}`,
+    );
+
     return res.data;
   }
 
   async getUrl(url, { query } = {}) {
     const res = await this.client.get(url, { params: query });
+    logger.debug(`Cache ${res.headers['x-drupal-cache']} for url ${url}`);
+
     return res.data;
   }
 }
