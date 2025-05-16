@@ -8,14 +8,12 @@ class JsonApiClient {
       timeout: 30000,
     });
     this.client.interceptors.request.use(request => {
-      logger.debug(
-        `JsonApiClient [${request.method}] request - ${request.url}`,
-      );
+      logger.info(`JsonApiClient [${request.method}] request - ${request.url}`);
       return request;
     });
 
     this.client.interceptors.response.use(res => {
-      logger.debug(
+      logger.info(
         `JsonApiClient [${res.config?.method}], status: ${res.status} response - ${res.config?.url}`,
       );
       return res;
@@ -26,7 +24,7 @@ class JsonApiClient {
     const res = await this.client.get(`${this.baseURL}${path}`, {
       params: query,
     });
-    logger.debug(
+    logger.info(
       `Cache ${res.headers['x-drupal-cache']} for path ${this.baseURL}${path}`,
     );
 
@@ -35,7 +33,7 @@ class JsonApiClient {
 
   async getUrl(url, { query } = {}) {
     const res = await this.client.get(url, { params: query });
-    logger.debug(`Cache ${res.headers['x-drupal-cache']} for url ${url}`);
+    logger.info(`Cache ${res.headers['x-drupal-cache']} for url ${url}`);
 
     return res.data;
   }
