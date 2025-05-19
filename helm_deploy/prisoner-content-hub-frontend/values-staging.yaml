@@ -9,8 +9,11 @@ ingress:
   annotations:
     external-dns.alpha.kubernetes.io/set-identifier: prisoner-content-hub-frontend-prisoner-content-hub-staging-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
+  # These are legacy, prison specific hostnames we want to deprecate
   hosts:
     - pattern: "{{ .prison }}-prisoner-content-hub-staging.apps.live.cloud-platform.service.justice.gov.uk"
+  host:
+      pattern: "prisoner-content-hub-staging.apps.live.cloud-platform.service.justice.gov.uk"
 
 generic-prometheus-alerts:
   alertSeverity: hmpps-launchpad-nonprod

@@ -1,0 +1,119 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+<div class="govuk-grid-row">
+  <article class="moj-ticket-panel" aria-label="hearing">
+    <section class="moj-ticket-panel__content moj-ticket-panel__content--blue" aria-label="hearing detail">
+      <h2 class="govuk-heading-m" id="hearingDateTime">Hearing on {{hearing.hearingTime}}</h2>
+
+      {{ govukSummaryList({
+        classes: 'govuk-summary-list--no-border',
+        rows: [
+          {
+            key: {
+              text: "What"
+            },
+            value: {
+              text: hearing.hearingType
+            }
+          },
+          {
+            key: {
+              text: "Where"
+            },
+            value: {
+              text: hearing.location
+            }
+          },
+          {
+            key: {
+              text: "Heard by"
+            },
+            value: {
+              text: hearing.heardBy
+            }
+          },
+          {
+            key: {
+              text: "Comments"
+            },
+            value: {
+              text: hearing.comment
+            }
+          }
+        ]
+      }) }}
+
+      {% if hearing.offences | length %}
+        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+        {% for offence in hearing.offences %}
+          <h3 class="govuk-heading-s govuk-grid-column-three-quarters govuk-!-padding-left-0" id="hearingDateTime">{{offence.offenceDescription}}</h3>
+
+          {{ govukSummaryList({
+            classes: 'govuk-summary-list--no-border',
+            rows: [
+                {
+                  key: {
+                    text: "Paragraph"
+                  },
+                  value: {
+                    text: offence.offenceCode
+                  }
+                },
+                {
+                  key: {
+                    text: "Type"
+                  },
+                  value: {
+                    text: offence.offenceType
+                  }
+                },
+                {
+                  key: {
+                    text: "Plea"
+                  },
+                  value: {
+                    text: offence.plea
+                  }
+                },
+                {
+                  key: {
+                    text: "Status"
+                  },
+                  value: {
+                    text: offence.finding
+                  }
+                }
+              ]
+            }) 
+          }}
+
+          {% if offence.sanctions | length %}
+            <table class="govuk-table">
+              <caption class="govuk-table__caption govuk-table__caption--s">Awards</caption>
+              <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                  <th scope="col" class="govuk-table__header">Type</th>
+                  <th scope="col" class="govuk-table__header sanction_no_wrap">How long</th>
+                  <th scope="col" class="govuk-table__header sanction_no_wrap">Effective date</th>
+                  <th scope="col" class="govuk-table__header">Status</th>
+                  <th scope="col" class="govuk-table__header sanction_no_wrap">Status date</th>
+                </tr>
+              </thead>
+              <tbody class="govuk-table__body">
+                {% for sanction in offence.sanctions %}
+                  <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">{{sanction.sanctionType}}</td>
+                    <td class="govuk-table__cell sanction_no_wrap">{{sanction.sanctionDays}}</td>
+                    <td class="govuk-table__cell sanction_no_wrap">{{sanction.effectiveDate}}</td>
+                    <td class="govuk-table__cell">{{sanction.status}}</td>
+                    <td class="govuk-table__cell sanction_no_wrap">{{sanction.statusDate}}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </section>
+  </article>
+</div>

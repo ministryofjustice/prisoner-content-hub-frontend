@@ -1,9 +1,20 @@
 const config = {
   sites: {
     berwyn: {
+      enabled: true,
+      features: [
+        'adjudications',
+        'approvedVisitors',
+        'incentives',
+        'money',
+        'timetable',
+        'visits',
+      ],
       languages: ['en'],
     },
     cardiff: {
+      enabled: true,
+      features: [],
       languages: ['en', 'cy'],
     },
   },
@@ -45,6 +56,7 @@ describe('configureEstablishment', () => {
     configureEstablishment(req, res, next);
 
     expect(res.locals.establishmentName).toBe('berwyn');
+    expect(res.locals.establishmentEnabled).toBe(true);
     expect(res.locals.establishmentDisplayName).toBe('HMP Berwyn');
     expect(res.locals.currentLng).toBe('en');
     expect(res.locals.multilingual).toEqual(false);

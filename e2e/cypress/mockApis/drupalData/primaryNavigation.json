@@ -20,6 +20,14 @@
     },
     {
       "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:63608771-73b9-4d13-b2e9-11cf7a6b7db2",
+      "attributes": {
+        "title": "My profile",
+        "url": "/profile"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
       "id": "menu_link_content:6e10cb18-aea6-4eaf-9075-8ff5d07f965a",
       "attributes": {
         "title": "Entertainment",

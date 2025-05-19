@@ -1,6 +1,7 @@
 const request = require('supertest');
 const {
-  testApp: { setupApp },
+  testApp: { setupApp, userSupplier },
+  testData: { user },
 } = require('../../../test/test-helpers');
 const { logger } = require('../../utils/logger');
 
@@ -81,5 +82,21 @@ describe('POST /feedback', () => {
             "Prisoner 'anon' leaving feedback: 1234-5678",
           );
         }));
+
+    it('logs real user', () => {
+      userSupplier.mockReturnValue(user);
+
+      return request(app)
+        .post('/feedback/1234-5678')
+        .send(feedback)
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json')
+        .expect(200)
+        .then(() => {
+          expect(logger.info).toHaveBeenCalledWith(
+            "Prisoner 'A1234BC' leaving feedback: 1234-5678",
+          );
+        });
+    });
   });
 });

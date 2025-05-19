@@ -1,4 +1,5 @@
 const defaultEstablishmentData = require('../content/establishmentData.json');
+const defaultConfig = require('../config');
 
 const getEstablishmentId = (
   establishmentName,
@@ -37,6 +38,27 @@ const getEstablishmentDisplayName = (
   establishmentData = defaultEstablishmentData,
 ) => establishmentData?.[id]?.displayName;
 
+const capitalize = (str = '') =>
+  str === '' ? '' : str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+function capitalizeAll(input, separator = ' ') {
+  if (input === '') return '';
+
+  const names = input.split(separator);
+
+  return names.map(name => capitalize(name.trim())).join(separator);
+}
+
+function capitalizePersonName(input, separator = ' ') {
+  if (input === '') return '';
+
+  const names = input.split(separator);
+
+  return names
+    .map(name => capitalizeAll(capitalize(name.trim()), '-'))
+    .join(separator);
+}
+
 function groupBy(items, keyAccessor) {
   return items.reduce((acc, item) => {
     const key = keyAccessor(item);
@@ -51,11 +73,22 @@ const sortBy = key => (a, b) => {
   return a[key] < b[key] ? -1 : 1;
 };
 
+function checkFeatureEnabledAtSite(site, feature, config = defaultConfig) {
+  return (
+    config.sites[site]?.enabled &&
+    config.sites[site]?.features.includes(feature)
+  );
+}
+
 module.exports = {
   getEstablishmentId,
   getEstablishment,
   updateSessionEstablishment,
   getEstablishmentDisplayName,
+  capitalize,
+  capitalizeAll,
+  capitalizePersonName,
   groupBy,
   sortBy,
+  checkFeatureEnabledAtSite,
 };

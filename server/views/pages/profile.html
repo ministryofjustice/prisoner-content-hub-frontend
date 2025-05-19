@@ -1,0 +1,220 @@
+{% from "../components/card/macro.njk" import card, imageCard, cardSensitiveData %}
+
+{% extends "../components/basicTemplate.njk" %}
+
+{% set feedbackHeading = "Tell us what you think" %}
+
+{% macro eventsSummaryCard(events) %}
+    {% for event in events %}
+      <div class="govuk-!-padding-bottom-4">
+        <strong>{{event.description}}</strong><br/>
+        {{event.startTime }} to {{event.endTime }}<br/>
+        {{event.location}}
+      </div>
+      {% else %}
+        <strong data-test="no-activities">No activities</strong>
+    {% endfor %}
+{% endmacro %}
+
+{% block main %}{% endblock %}
+{% block main_full_width %}
+  <div class="govuk-body">
+    {% if not isSignedIn %}
+      <div class= "govuk-width-container">
+        <h2 class="govuk-heading-m">You are signed out</h2>
+        <p class="govuk-!-font-size-24" data-test="signin-prompt">
+          <a href="/auth/sign-in?returnUrl={{ returnUrl }}" class="govuk-link sign-in-btn">Sign in</a> to see your personal information.
+      </div>
+    {% else %}
+      {% if displayTimetable %}
+      <div class="card-background">
+        <div class="govuk-width-container" data-test="timetable-container">
+          <h2 class="govuk-heading-m">Today's timetable</h2>
+          {% if eventsSummary.error %}
+            <p class="govuk-!-font-size-24" data-test="timetable-error">We are not able to show your timetable at this time, <a href="{{ params.returnUrl }}" class="govuk-link">try again</a>.</p>
+          {% else %}
+            <ul class="govuk-grid-row card-group">
+              <li class="govuk-grid-column-one-quarter card-group__item">
+                {% call card({ id: 'morningEvents', heading: 'Morning'}) -%}
+                  {{ eventsSummaryCard(eventsSummary.morning.events) }}
+                {%- endcall %}
+              </li>
+              <li class="govuk-grid-column-one-quarter card-group__item">
+                {% call card({ id: 'afternoonEvents', heading: 'Afternoon'}) -%}
+                  {{ eventsSummaryCard(eventsSummary.afternoon.events) }}
+                {%- endcall %}
+              </li>
+              <li class="govuk-grid-column-one-quarter card-group__item">
+                {% call card({ id: 'eveningEvents', heading: 'Evening'}) -%}
+                  {{ eventsSummaryCard(eventsSummary.evening.events) }}
+                {%- endcall %}
+              </li>
+              <li class="govuk-grid-column-one-quarter card-group__item">
+                {{imageCard({ id: 'timetableLink', src: "/public/images/image_timetable.jpg", link: knownPages.profile.timetable, description: "View my timetable" }) }}
+              </li>
+            </ul>
+            <a href= '{{ knownPages.profile.learningAndSkills }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">
+              <span>Read more about learning and skills</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+      {% if displayIncentives %}
+      <div class="card-background grey">
+        <div class="govuk-width-container" data-test="incentive-container">
+          <h2 class="govuk-heading-m">Incentives (IEP)</h2>
+          {% if incentivesSummary.error %}
+            <p class="govuk-!-font-size-24" data-test="incentives-error">We are not able to show your incentive level at this time. <a href="{{ params.returnUrl }}" class="govuk-link">Try again</a> or <a href="{{ incentivesSummary.link }}" class="govuk-link">find out more about incentive levels</a>.</p>
+          {% else %}
+            <ul class="govuk-grid-row card-group">
+              <li class="govuk-grid-column-one-quarter card-group__item">
+                {% call card({ id: 'currentLevel', heading: 'My current level:'}) -%}
+                  {{ incentivesSummary.incentivesLevel }}
+                {%- endcall %}
+              </li>
+            </ul>
+            <a href= '{{ knownPages.profile.incentivesInfo }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state" data-test="incentivesLink">
+              <span>Read more about incentives (IEP)</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+      {% if displayMoney %}
+      <div class="card-background" data-test="money-container">
+        <div class="govuk-width-container sensitive-card-container">
+          <h2 class="govuk-heading-m card-title">Money
+            {% if not moneySummary.error %}
+              <a href='#' class="sensitive-card-control govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state" data-is-closed="true">
+                <span class="open">Open</span>
+                <span class="closed hidden">Close</span>
+              </a>
+            {% endif %}
+          </h2>
+          {% if moneySummary.error %}
+            <p class="govuk-!-font-size-24" data-test="money-error">We are not able to show your balances or transactions at this time. <a href="{{ params.returnUrl }}" class="govuk-link">Try again</a> or <a href="{{ moneySummary.link }}" class="govuk-link">find out more about money and debt</a>.</p>
+          {% else %}
+            <ul class="govuk-grid-row card-group sensitive-cards">
+              <li class="govuk-grid-column-one-quarter card-group__item">
+                {% call cardSensitiveData({ id: 'moneySpends', heading: 'Spends' }) -%}
+                <div class="hidden sensitive">
+                  <p>My current balance is:</p>
+                  <strong data-test="money-spends">{{ moneySummary.spends }}</strong>
+                </div>
+                {%- endcall %}
+              </li>
+              <li class="govuk-grid-column-one-quarter card-group__item">
+                {% call cardSensitiveData({ id: 'moneyPrivate', heading: 'Private' }) -%}
+                <div class="hidden sensitive">
+                  <p>My current balance is:</p>
+                  <strong data-test="money-private">{{ moneySummary.privateAccount }}</strong>
+                </div>
+                {%- endcall %}
+              </li>
+              <li class="govuk-grid-column-one-quarter card-group__item">
+                {% call cardSensitiveData({ id: 'moneySavings', heading: 'Savings' }) -%}
+                <div class="hidden sensitive">
+                  <p>My current balance is:</p>
+                  <strong data-test="money-savings">{{ moneySummary.savings }}</strong>
+                </div>
+                {%- endcall %}
+              </li>
+              <li class="govuk-grid-column-one-quarter card-group__item">
+              {{imageCard({ id: 'moneyLink', src: "/public/images/image_transactions.jpg", link: knownPages.profile.transactions, description: "View my transactions" }) }}
+              </li>
+            </ul>
+            <a href= '{{ knownPages.profile.moneyAndDebtInfo }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state">
+              <span>Read more about money and debt</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+      {% if displayVisits %}
+      <div class="card-background grey">
+        <div class="govuk-width-container" data-test="visits-container">
+          <h2 class="govuk-heading-m">Visits</h2>
+          {% if visitsSummary.error %}
+            <p class="govuk-!-font-size-24" data-test="visits-error">We are not able to show your visit information at this time. <a href="{{ params.returnUrl }}" class="govuk-link">Try again</a> or <a href="{{ visitsSummary.link }}" class="govuk-link">find out more about visits</a>.</p>
+          {% else %}
+            <ul class="govuk-grid-row card-group">
+              <li class="govuk-grid-column-one-quarter card-group__item">
+                {% call card({ id: 'nextVisit', heading: 'My next visit'}) -%}
+                  {% if visitsSummary.hasNextVisit %}
+                    <strong>{{ visitsSummary.nextVisit }}</strong><br/>
+                    {{ visitsSummary.startTime }} to {{ visitsSummary.endTime }}
+                    <br/><br/>
+                    {{ visitsSummary.visitType }}
+                  {% else %}
+                    No upcoming visit
+                  {% endif %}
+                {%- endcall %}
+              </li>
+              {% if visitsSummary.hasNextVisit %}
+                <li class="govuk-grid-column-one-quarter card-group__item">
+                  {% call cardSensitiveData({ id: 'visitors', heading: 'Who is coming to my next visit?' }) -%}
+                    <div class="hidden sensitive" data-test="visitors">
+                      {% if visitsSummary.visitors.length > 1 %}
+                        <ol class="hidden sensitive visitors-names" data-test="visitors">
+                          {% for visit in visitsSummary.visitors %}
+                            <li class="govuk-!-padding-bottom-2">{{ visit }}</li>
+                          {% else %}
+                            <strong data-test="no-activities">No activities</strong>
+                          {% endfor %}
+                        </ol>
+                      {% else %}
+                        {{ visitsSummary.visitors[0] }}
+                      {% endif %}
+                    </div>
+                  {%- endcall %}
+                </li>
+                <li class="govuk-grid-column-one-quarter card-group__item">
+                  {% call card({ id: 'visitsRemaining', heading: 'Visits I\'ve got left'}) -%}
+                    <strong>{{ visitsSummary.visitsRemaining}}</strong>
+                  {%- endcall %}
+                </li>
+              {%- endif %}
+              {% if displayApprovedVisitors %}
+                <li class="govuk-grid-column-one-quarter card-group__item">
+                  {{imageCard({ id: 'approvedVisitors', src: "/public/images/image_visitors.jpg", link: knownPages.profile.visitorsLink, description: "View my visitors - social" }) }}
+                </li>
+              {%- endif %}
+            </ul>
+            <a href= '{{ knownPages.profile.visitorInfo }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state" data-test="visitsLink">
+              <span>Read more about visits</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+      {% if displayAdjudications %}
+        <div class="card-background">
+          <div class="govuk-width-container" data-test="adjudications-container">
+            <h2 class="govuk-heading-m">Adjudications</h2>
+            {% if adjudications.error %}
+              <p class="govuk-!-font-size-24" data-test="visits-error">We are not able to show your adjudications at this time. <a href="{{ params.returnUrl }}" class="govuk-link">Try again</a></p>
+            {% else %}
+              <ul class="govuk-grid-row card-group">
+                <li class="govuk-grid-column-one-quarter card-group__item">
+                  {{imageCard({ id: 'adjudications', src: "/public/images/image_adjudications.jpg", link: knownPages.profile.adjudications, description: "View my adjudications" }) }}
+                </li>
+              </ul>
+              <a href='{{ knownPages.profile.adjudicationsInfo }}' class="govuk-!-font-size-24 card-title govuk-link govuk-!-font-weight-regular govuk-link--no-visited-state" data-test="adjudicationsLink">
+                <span>Read more about adjudications</span>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      {%- endif %}
+
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  <script src="/public/all.js"></script>
+  <script type="module" src="/public/javascript/govukFrontendInit.js"></script>
+  <script src="/public/javascript/mojFrontendInit.js"></script>
+  <script src="/public/javascript/card.js"></script>
+{% endblock %}
