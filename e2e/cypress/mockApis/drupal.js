@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const { stubFor } = require('./wiremock');
 const primaryNavigationData = require('./drupalData/primaryNavigation.json');
 const browseAllTopicsData = require('./drupalData/browseAllTopics.json');
