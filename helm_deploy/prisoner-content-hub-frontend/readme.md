@@ -38,7 +38,15 @@ helm upgrade [Release Name] . \
 --values secrets.yaml \
 --set application.contentConfigMapName=[Backend Release Name] \
 --set application.nprConfigMapName=[NPR Proxy config map name] \
+--set hmppsAuthClientId=[HMPPS Auth client ID] \
+--set hmppsAuthClientSecret=[HMPPS Auth client secret] \
+--set hmppsAuthBaseUrl=[HMPPS Auth base URL] \
+--set prisonApiBaseUrl=[Prison API base URL] \
+--set incentivesApiBaseUrl=[Incentives API base URL] \
+--set adjudicationsApiBaseUrl=[Adjudications API base URL] \
 --set cacheSecret=[32Byte string used for encrypting cached items] \
+--set prisonerAuthAD.clientId=[Azure AD Client ID] \
+--set prisonerAuthAD.clientSecret=[Azure AD Client secret] \
 --set feedbackDatabaseName=[RDS Database Name] \
 --set feedbackDatabaseUrl=[RDS Database Name Address] \
 --set feedbackDatabaseUserName=[RDS Database Username] \
@@ -61,7 +69,15 @@ helm upgrade [Release Name] . \
 --values secrets.yaml \
 --set application.contentConfigMapName=[Backend Release Name] \
 --set application.nprConfigMapName=[NPR Proxy config map name] \
+--set hmppsAuthClientId=[HMPPS Auth client ID] \
+--set hmppsAuthClientSecret=[HMPPS Auth client secret] \
+--set hmppsAuthBaseUrl=[HMPPS Auth base URL] \
+--set prisonApiBaseUrl=[Prison API base URL] \
+--set incentivesApiBaseUrl=[Incentives API base URL] \
+--set adjudicationsApiBaseUrl=[Adjudications API base URL] \
 --set cacheSecret=[32Byte string used for encrypting cached items] \
+--set prisonerAuthAD.clientId=[Azure AD Client ID] \
+--set prisonerAuthAD.clientSecret=[Azure AD Client secret] \
 --set feedbackDatabaseName=[RDS Database Name] \
 --set feedbackDatabaseUrl=[RDS Database Name Address] \
 --set feedbackDatabaseUserName=[RDS Database Username] \

@@ -1,0 +1,7 @@
+{% from "../components/personal-damage-obligations/macro.njk" import personalDamageObligations %}
+
+{% extends "../components/basicTemplate.njk" %}
+
+{% block content %}
+  {{ personalDamageObligations(prisonerInformation, returnUrl, isSignedIn) }}
+{% endblock %}

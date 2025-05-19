@@ -1,0 +1,40 @@
+<div class="todays-events">
+  <div>
+    <h2 class="govuk-heading-m">{% if params.data.isTomorrow %}Tomorrow{% else %}Today{% endif %}'s events</h2>
+    {% if not isLoggedIn %}
+      <span class="govuk-body" data-test="signin-prompt">
+        <a href="/auth/sign-in?returnUrl=/" class="govuk-link see-timetable">Sign in</a> to see your timetable</span>
+    {% else %}
+      <a href="/timetable" class="govuk-link see-timetable">View my timetable</a>
+    {% endif %}
+  </div>
+  <div class="govuk-body">
+    {% if params.data.error %}
+      <span data-test="event-error" class="govuk-!-font-size-24">
+        {{ params.data.error }}, <a href="{{ params.authReturnUrl }}" class="govuk-link">try again</a>
+      </span>
+    {% else %}
+      {% for event in params.data.events %}
+        {% if loop.first %}
+          <div data-hj-suppress>
+          {% endif %}
+          <span class="timetable-time">{{event.timeString}}</span>
+          <span data-test="event">
+            <strong>{{event.description}}</strong>
+            {{event.location}}</span>
+          {% if loop.last %}
+          </div>
+        {% endif %}
+      {% else %}
+        {% if isLoggedIn %}
+          <span data-test="no-events">Nothing scheduled for today</span>
+        {% else %}
+          <div class="todays-events__placeholder">
+            <div></div>
+            <div></div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
