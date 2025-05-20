@@ -1,7 +1,7 @@
 const { differenceInDays, format } = require('date-fns');
 
 const getPagination = (page, size = 40) =>
-  `page[offset]=${Math.max(page - 1, 0) * size}&page[limit]=${size}`;
+  `page%5Boffset%5D=${Math.max(page - 1, 0) * size}&page%5Blimit%5D=${size}`;
 
 const getImage = (data, type) => {
   if (!data) return null;
