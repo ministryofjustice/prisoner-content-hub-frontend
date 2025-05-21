@@ -1,4 +1,5 @@
 const express = require('express');
+const i18next = require('i18next');
 const { groupBy } = require('../utils');
 
 const createTopicsRouter = ({ cmsService }) => {
@@ -12,13 +13,24 @@ const createTopicsRouter = ({ cmsService }) => {
         throw new Error('Could not determine establishment!');
       }
 
-      const topics = await cmsService.getTopics(
-        establishmentName,
-        res.locals.currentLng,
-      );
+      const language = req.language || i18next.language;
+
+      const topics = await cmsService.getTopics(establishmentName, language);
+      // We have to sort the results even though we specified a sort order in
+      // the JSON:API request.
+      // See https://www.drupal.org/project/drupal/issues/3186834.
+      topics.sort((a, b) => {
+        if (a.linkText > b.linkText) {
+          return 1;
+        }
+        if (b.linkText > a.linkText) {
+          return -1;
+        }
+        return 0;
+      });
 
       res.render('pages/topics', {
-        title: 'Browse all topics',
+        title: i18next.t('home.browseAllTopics', { lng: language }),
         topics: groupBy(topics, item => item.linkText.charAt(0).toUpperCase()),
         config: {
           content: false,

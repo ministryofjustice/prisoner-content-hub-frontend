@@ -1,5 +1,4 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "../components/personal-schedule-today/macro.njk" import personalScheduleToday %}
 {% from "../components/content-tile-small/macro.njk" import contentTileSmall %}
 {% from "../components/content-tile-featured/macro.njk" import contentTileFeatured %}
 {% from "../components/update-items/macro.njk" import updateItems %}
@@ -12,35 +11,27 @@
 
 {% block pageNavigation %}
     {{ govukButton({
-      text: "Browse all topics",
+      text: t("home.browseAllTopics"),
       href: "/topics",
       isStartButton: true,
       classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-2 govuk-!-margin-right-2"
     }) }}
 {% endblock %}
 
-{% block title %}
-  {% if displayTimetable %}
-    <div class="govuk-width-container home-navigation govuk-!-margin-top-3">
-      {{personalScheduleToday({ data: currentEvents, authReturnUrl: returnUrl }, userName if isSignedIn else '')}}
-    </div>
-  {% endif %}
-{% endblock %}
-
 {% block content %}
   {% if largeUpdateTile or (updatesContent | length) or (keyInfo.data | length) %}
     <h2 class="govuk-heading-l govuk-hub-white-heading govuk-!-margin-top-5 govuk-!-margin-bottom-6 hub-horizontal-rule-title" id="main-content">
-      <span class="black-background govuk-!-padding-right-2">Updates</span>
+      <span class="black-background govuk-!-padding-right-2">{{ t("home.updates") }}</span>
     </h2>
     <div class="govuk-grid-row govuk-!-margin-0 govuk-body govuk-hub-home-updates">
       <div class="govuk-hub-home-updates-feature">
         {% if largeUpdateTile %}
-          {{ contentTileFeatured(largeUpdateTile) }}
+          {{ contentTileFeatured(largeUpdateTile, t) }}
         {% endif %}
       </div>
       <div class="govuk-hub-home-updates-content">
         {% if updatesContent | length %}
-          {{ updateItems(updatesContent, updatesContentHideViewAll) }}
+          {{ updateItems(updatesContent, updatesContentHideViewAll, t) }}
         {% endif %}
       </div>
       <div class="govuk-hub-home-updates-keyInfo" id="keyInfo">
@@ -53,24 +44,24 @@
   {% endif %}
 
   {{ hubContentBlock({
-    title: 'Featured',
+    title: t("home.featured"),
     id: 'featuredContent',
     data: featuredContent
-  }) }}
+  }, t) }}
 
   {{ hubContentBlock({
-    title: 'Recently added',
+    title: t("home.recentlyAdded"),
     viewAllUrl: '/recently-added',
     id: 'recentlyAdded',
     data: recentlyAddedHomepageContent
-  }) }}
+  }, t) }}
 
   {{ hubContentBlock({
-    title: 'Explore the Hub',
+    title: t("home.exploreTheHub"),
     id: 'exploreContent',
     data: exploreContent,
     hideHorizontalRule: true
-  }) }}
+  }, t) }}
 {% endblock %}
 
 {% block feedback %}

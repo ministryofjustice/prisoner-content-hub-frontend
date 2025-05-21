@@ -41,7 +41,7 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{GTMSiteId}}"
       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    
+
     <div class="govuk-width-container govuk-!-padding-top-9">
       <main class="govuk-main-wrapper">
         <script>
@@ -52,14 +52,14 @@
 
         <div class="govuk-!-padding-top-9 govuk-!-padding-bottom-9 external-link-content">
           <img class="hub-logo" src="/public/images/icons/content-hub-invert.png" alt="logo">
-          <h1 class="govuk-heading-xl govuk-!-margin-0 govuk-!-padding-left-4">Content Hub</h1>
+          <h1 class="govuk-heading-xl govuk-!-margin-0 govuk-!-padding-left-4">{{ t("topBar.title") }}</h1>
         </div>
         <section class="govuk-!-text-align-centre" data-test="external-link-content">
-          <h2 class="govuk-heading-l">You're leaving the Hub</h2>
-          <p>You are being taken to {{ url }}. You are <strong>allowed</strong> to visit this website.</p>
-          <p>Internet access is restricted in prisons so links to other websites are blocked.</p>
+          <h2 class="govuk-heading-l">{{ t("interstitial.heading") }}</h2>
+          <p>{{ t("interstitial.1", { url:url }) | safe }}</p>
+          <p>{{ t("interstitial.2") }}</p>
           {{ govukButton({
-            text: "Continue",
+            text: t("interstitial.continue"),
             href: url
           }) }}
           <div class="external-link-content">
@@ -69,7 +69,7 @@
               items: [
                 {
                   value: "doNotShowMessage",
-                  text: "Don't show me this message again"
+                  text: t("interstitial.doNotShowMessage")
                 }
               ]
             }) }}

@@ -14,15 +14,15 @@
 
       <div class="govuk-grid-column-one-half">
         <p class="govuk-body">
-          <b>How to play:</b>
+          <b>{{ t("games.mimstris.howToPlay") }}</b>
         </p>
         <p class="govuk-body">
-          Arrow Keys	= Left, Right, Down
-          <br>Up Arrow / Space = Rotate
-          <br>A	= Left
-          <br>D = Right
-          <br>S = Down
-          <br>Enter = Pause game
+          {{ t("games.mimstris.instructions1") }}
+          <br>{{ t("games.mimstris.instructions2") }}
+          <br>{{ t("games.mimstris.instructions3") }}
+          <br>{{ t("games.mimstris.instructions4") }}
+          <br>{{ t("games.mimstris.instructions5") }}
+          <br>{{ t("games.mimstris.instructions6") }}
         </p>
       </div>
     </div>
@@ -31,5 +31,11 @@
 {% endblock %}
 
 {% block bodyEnd %}
+
+  <script>const i18n = {
+    'level': '{{ t("games.mimstris.level") }}',
+    'lines': '{{ t("games.mimstris.lines") }}',
+    'score': '{{ t("games.mimstris.score") }}'
+  };</script>
   <script src="/public/javascript/games/mimstris/main.js"></script>
 {% endblock %}

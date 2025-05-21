@@ -13,7 +13,6 @@ WORKDIR /app
 # Cache breaking and ensure required build / git args defined
 RUN test -n "$BUILD_NUMBER" || (echo "BUILD_NUMBER not set" && false)
 RUN test -n "$GIT_REF" || (echo "GIT_REF not set" && false)
-RUN test -n "$GIT_DATE" || (echo "GIT_DATE not set" && false)
 
 # Define env variables for runtime health / info
 ENV BUILD_NUMBER=${BUILD_NUMBER}

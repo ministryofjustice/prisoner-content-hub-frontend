@@ -6,8 +6,6 @@ const helmet = require('helmet');
 const noCache = require('nocache');
 const path = require('path');
 const session = require('cookie-session');
-const passport = require('passport');
-const AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2');
 const Sentry = require('@sentry/node');
 const i18next = require('i18next');
 const middleware = require('i18next-http-middleware');
@@ -15,16 +13,13 @@ const filesystem = require('i18next-fs-backend');
 const nunjucksSetup = require('./utils/nunjucksSetup');
 
 const { createHealthRouter } = require('./routes/health');
-const { createAuthRouter } = require('./routes/auth');
 
 const { featureToggleMiddleware } = require('./middleware/featureToggle');
 const getEstablishmentFromUrl = require('./middleware/getEstablishmentFromUrl');
 const configureEstablishment = require('./middleware/configureEstablishment');
 
-const { User } = require('./auth/user');
 const defaultConfig = require('./config');
 const defaultEstablishmentData = require('./content/establishmentData.json');
-const defaultAuthMiddleware = require('./auth/middleware');
 const routes = require('./routes');
 const { NotFound } = require('./repositories/apiError');
 const setCurrentUser = require('./middleware/setCurrentUser');
@@ -47,10 +42,8 @@ i18next
 const createApp = services => {
   const {
     logger,
-    offenderService,
     config = defaultConfig,
     establishmentData = defaultEstablishmentData,
-    authMiddleware = defaultAuthMiddleware,
   } = services;
 
   const app = express();
@@ -116,21 +109,6 @@ const createApp = services => {
       maxAge: 4.32e7, // 12 Hours
     }),
   );
-  // https://github.com/jaredhanson/passport/issues/904#issuecomment-1307558283
-  // register regenerate & save after the cookieSession middleware initialization
-  app.use((req, res, next) => {
-    if (req.session && !req.session.regenerate) {
-      req.session.regenerate = callback => {
-        callback();
-      };
-    }
-    if (req.session && !req.session.save) {
-      req.session.save = callback => {
-        callback();
-      };
-    }
-    next();
-  });
 
   [
     '../public',
@@ -181,78 +159,7 @@ const createApp = services => {
   // Health end point
   app.use('/health', createHealthRouter(config));
 
-  // establishment toggle
   app.use(getEstablishmentFromUrl);
-
-  if (config.features.useMockAuth) {
-    app.use('*', (req, res, next) => {
-      const serializedUser = req.session?.passport?.user;
-      if (serializedUser) {
-        req.user = User.deserialize(serializedUser);
-      }
-      next();
-    });
-    app.use(
-      '/auth',
-      createAuthRouter({
-        logger,
-        signIn: authMiddleware.createMockSignIn({
-          offenderService,
-        }),
-        signInCallback: (req, res) => res.send('Not Implemented'),
-        signOut: authMiddleware.createMockSignOut(),
-      }),
-    );
-  } else {
-    passport.serializeUser((user, done) => done(null, user.serialize()));
-    passport.deserializeUser((serializedUser, done) =>
-      done(null, User.deserialize(serializedUser)),
-    );
-    app.use((req, res, next) => {
-      passport.use(
-        new AzureAdOAuth2Strategy(
-          {
-            clientID: config.auth.clientId,
-            clientSecret: config.auth.clientSecret,
-            callbackURL: `${req.protocol}://${
-              req.headers?.host || 'localhost'
-            }${config.auth.callbackPath}`,
-          },
-          (accessToken, refreshToken, params, profile, done) =>
-            done(null, User.from(params.id_token)),
-        ),
-      );
-      next();
-    });
-    app.use(passport.initialize());
-    app.use(passport.session());
-    app.use(
-      '/auth',
-      createAuthRouter({
-        logger,
-        signIn: authMiddleware.createSignInMiddleware(),
-        signInCallback: authMiddleware.createSignInCallbackMiddleware({
-          offenderService,
-          logger,
-        }),
-        signOut: authMiddleware.createSignOutMiddleware({
-          logger,
-        }),
-      }),
-    );
-  }
-
-  app.use((req, res, next) => {
-    if (!req.session?.establishmentName) {
-      if (!req.user) {
-        return res.redirect(`/auth/sign-in?returnUrl=${req.originalUrl}`);
-      }
-      req.session.isSignedIn = true;
-    }
-    return next();
-  });
-
-  // establishment toggle
   app.use(configureEstablishment);
 
   app.use([setCurrentUser, setReturnUrl]);
@@ -270,14 +177,18 @@ const createApp = services => {
       logger.warn(`Failed to find: ${error.message}`);
       logger.debug(error.stack);
       res.status(403);
-      return res.render('pages/404', { title: 'Page not found' });
+      return res.render('pages/404', {
+        title: i18next.t('error.pageNotFound'),
+      });
     }
 
     if (error instanceof NotFound) {
       logger.warn(`Failed to find: ${error.message}`);
       logger.debug(error.stack);
       res.status(404);
-      return res.render('pages/404', { title: 'Page not found' });
+      return res.render('pages/404', {
+        title: i18next.t('error.pageNotFound'),
+      });
     }
 
     logger.error(`Unhandled error - ${req.originalUrl} - ${error.message}`);

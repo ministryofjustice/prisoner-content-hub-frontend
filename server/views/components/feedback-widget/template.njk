@@ -1,7 +1,7 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% macro feedbackOptions(feedbackTexts, sentiment) %}
+{% macro feedbackOptions(feedbackTexts, sentiment, t) %}
   <div class="{{ sentiment }} govuk-u-hidden">
     {% set feedbackOptions = [] %}
     {% for feedbackText in feedbackTexts %}
@@ -13,7 +13,7 @@
       name: 'feedbackOption',
       fieldset: {
         legend: {
-          text: "Select one:",
+          text: t("feedback.select"),
           isPageHeading: true,
           classes: "govuk-fieldset__legend--m"
         }
@@ -34,7 +34,7 @@
   >
   <div class="govuk-hub-feedback-ui">
     {% if params.heading != '' %}
-      <h3 class="govuk-body govuk-hub-feedback-heading">{{ params.heading|default('Give us feedback') }}</h3>
+      <h3 class="govuk-body govuk-hub-feedback-heading">{{ params.heading|default(t("feedback.headings.default")) }}</h3>
     {% endif %}
     <div class="govuk-hub-feedback">
       <button data-feedback-sentiment
@@ -58,42 +58,53 @@
     >
       <div class="govuk-!-margin-bottom-2">
         {% set feedbackLikeTexts = [
-          "This content made a positive difference to me",
-          "I’d like more of this kind of content"
+          t("feedback.like.1"),
+          t("feedback.like.2")
         ] %}
-        {{ feedbackOptions(feedbackLikeTexts, 'feedbackOption-LIKE') }}
+        {{ feedbackOptions(feedbackLikeTexts, 'feedbackOption-LIKE', t) }}
         {% set feedbackDislikeTexts = [
-          "Content is missing",
-          "Broken link on this page",
-          "Audio or video isn’t playing",
-          "Images aren’t working",
-          "There is wrong information on this page"
+          t("feedback.dislike.1"),
+          t("feedback.dislike.2"),
+          t("feedback.dislike.3"),
+          t("feedback.dislike.4"),
+          t("feedback.dislike.5")
         ] %}
-        {{ feedbackOptions(feedbackDislikeTexts, 'feedbackOption-DISLIKE') }}
+        {{ feedbackOptions(feedbackDislikeTexts, 'feedbackOption-DISLIKE', t) }}
       </div>
       {{ govukButton({
         type: "submit",
-        text: "Send"
+        text: t("feedback.send")
       }) }}
     </form>
   </div>
   <div class="govuk-hub-feedback-confirmation govuk-u-hidden">
-    <h2 class="govuk-body govuk-!-font-weight-bold">Thanks for your feedback</h2>
+    <h2 class="govuk-body govuk-!-font-weight-bold">{{ t("feedback.thanks") }}</h2>
     <p class="govuk-body">
-      <a href="{{ knownPages.feedback }}" class="govuk-link">What happens to your feedback?</a>.
+      <a href="{{ knownPages.feedback }}" class="govuk-link">{{ t("feedback.whatHappens") }}</a>.
     </p>
   </div>
   <div class="govuk-hub-feedback-more-info govuk-body govuk-u-hidden">
-    If you want to contact someone about anything else: 
+    {{ t("feedback.contact.preamble") }}
     <ul>
-      <li>Send an app or a digital request</li>
-      <li>Speak to your Digital PID, an officer or keyworker</li>
-      <li><a class="govuk-link" href="/help">Call a helpline</a></li>
-      <li><a class="govuk-link" href="{{ knownPages.mentalHealthLink }}">Read and watch more about mental health</a></li>
-      <li><a class="govuk-link" href="{{ knownPages.NPRRequestLink }}">Contact NPR with a shout out or song request</a></li>
+      <li>{{ t("feedback.contact.1") }}</li>
+      <li>{{ t("feedback.contact.2") }}</li>
+      <li><a class="govuk-link" href="/help">{{ t("feedback.contact.3") }}</a></li>
+      <li><a class="govuk-link" href="{{ knownPages.mentalHealthLink }}">{{ t("feedback.contact.4") }}</a></li>
+      <li><a class="govuk-link" href="{{ knownPages.NPRRequestLink }}">{{ t("feedback.contact.5") }}</a></li>
     </ul>
   </div>
 </div>
+<script>const i18n = {
+    "iLikeThis": '{{  t("feedback.like.iLikeThis") }}',
+    "iDontLikeThis": '{{  t("feedback.dislike.iDontLikeThis") }}',
+    "article": '{{ t("feedback.contentTypes.article") }}',
+    "category": '{{ t("feedback.contentTypes.category") }}',
+    "game": '{{ t("feedback.contentTypes.game") }}',
+    "podcast": '{{ t("feedback.contentTypes.podcast") }}',
+    "series": '{{ t("feedback.contentTypes.series") }}',
+    "topic": '{{ t("feedback.contentTypes.topic") }}',
+    "video": '{{ t("feedback.contentTypes.video") }}'
+  };</script>
 <script defer src="/public/javascript/feedback-tracking.js"></script>
 <script>
   window.addEventListener('DOMContentLoaded', function () {

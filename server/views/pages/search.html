@@ -3,7 +3,7 @@
 {% block content %}
   <div class="results">
     {% if results[0] %}
-      <h3 class="govuk-heading-m">Showing results for "{{ query }}"</h3>
+      <h3 class="govuk-heading-m">{{ t("search.showingResults", {term:query}) }}</h3>
       <ul class="govuk-list">
         {% for item in results %}
           <li>
@@ -17,7 +17,7 @@
         {% endfor %}
       </ul>
     {% else %}
-      <h3 class="govuk-heading-m">No results found for "{{ query }}"</h3>
+      <h3 class="govuk-heading-m">{{ t("search.noResults", {term:query}) }}</h3>
     {% endif %}
   </div>
 

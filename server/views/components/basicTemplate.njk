@@ -5,7 +5,6 @@
 {%- from "moj/components/primary-navigation/macro.njk" import mojPrimaryNavigation -%}
 {% from "../components/page-navigation/macro.njk" import pageNavigation %}
 {% from "./top-bar/macro.njk" import topBar %}
-{% from "./user-details/macro.njk" import userDetails %}
 {% from "./urgent-banner/macro.njk" import urgentBanner %}
 
 <!DOCTYPE html>
@@ -57,7 +56,7 @@
 
     {{ govukSkipLink({
       href: '#main-content',
-      text: 'Skip to main content'
+      text: t('skipToMainContent.skipToMainContent')
     }) }}
 
     {% block topBar %}
@@ -81,21 +80,11 @@
     {% block notificationUserDetailsBar %}
       <div class="govuk-width-container">
 
-        {{ urgentBanner(urgentBanners) }}
+        {{ urgentBanner(urgentBanners, t) }}
 
         <div class="govuk-hub-navigationUserDetailsBar">
           {% block pageNavigation %}
-            {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs  }) }}
-          {% endblock %}
-          {% block userDetails %}
-            {% if establishmentEnabled %}
-              {{ userDetails({
-                hideSignInLink: hideSignInLink,
-                isSignedIn: isSignedIn,
-                userName: userName,
-                returnUrl: returnUrl
-              }) }}
-            {% endif %}
+            {{ pageNavigation({ title: title, hideHomePage: data.breadcrumbs  }, t) }}
           {% endblock %}
         </div>
       </div>
@@ -142,7 +131,7 @@
               categories: title if data.contentType == 'category',
               series: title if data.contentType == 'series',
               topics: title if data.contentType == 'topic'
-            })}}
+            }, t)}}
           </div>
         {% endif %}
       {% endblock %}
@@ -153,7 +142,7 @@
     {% endif %}
 
     {% block footer %}
-      {{ footer({ allTopics: allTopics }) }}
+      {{ footer({ allTopics: allTopics }, t) }}
     {% endblock %}
 
     <script src="/public/jquery.min.js"></script>

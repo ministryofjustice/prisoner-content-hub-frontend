@@ -2,12 +2,7 @@ const express = require('express');
 
 const { createHomepageRouter } = require('./homepage');
 const { createTopicsRouter } = require('./topics');
-const { createTimetableRouter } = require('./timetable');
 const { createContentRouter } = require('./content');
-const { createMoneyRouter } = require('./money');
-const { createAdjudicationsRouter } = require('./adjudications');
-const { createApprovedVisitorsRouter } = require('./approvedVisitors');
-const { createProfileRouter } = require('./profile');
 const { createTagRouter } = require('./tags');
 const { createLinkRouter } = require('./link');
 const { createGamesRouter } = require('./games');
@@ -22,15 +17,7 @@ const retrieveTopicList = require('../middleware/retrieveTopicList');
 const urgentBannerMiddleware = require('../middleware/urgentBannerMiddleware');
 
 module.exports = (
-  {
-    logger,
-    cmsService,
-    offenderService,
-    prisonerInformationService,
-    searchService,
-    feedbackService,
-    config,
-  },
+  { logger, cmsService, searchService, feedbackService, config },
   establishmentData,
 ) => {
   const router = express.Router();
@@ -42,15 +29,10 @@ module.exports = (
       '/npr',
       '/tags',
       '/topics',
-      '/timetable',
-      '/money',
-      '/approved-visitors',
-      '/profile',
       '/games',
       '^/search/?$',
       '/recently-added',
       '/updates',
-      '/adjudications',
     ],
     [
       createPrimaryNavigationMiddleware(cmsService),
@@ -64,7 +46,6 @@ module.exports = (
     createHomepageRouter({
       logger,
       cmsService,
-      offenderService,
       config,
       establishmentData,
     }),
@@ -72,40 +53,10 @@ module.exports = (
 
   router.use('/topics', createTopicsRouter({ cmsService }));
 
-  router.use('/timetable', createTimetableRouter({ offenderService }));
-
-  router.use(
-    '/money',
-    createMoneyRouter({
-      prisonerInformationService,
-    }),
-  );
-
-  router.use(
-    '/approved-visitors',
-    createApprovedVisitorsRouter({
-      offenderService,
-    }),
-  );
-
-  router.use(
-    '/profile',
-    createProfileRouter({
-      offenderService,
-    }),
-  );
-
   router.use(
     '/content',
     createContentRouter({
       cmsService,
-    }),
-  );
-
-  router.use(
-    '/adjudications',
-    createAdjudicationsRouter({
-      offenderService,
     }),
   );
 

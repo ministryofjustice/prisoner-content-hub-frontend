@@ -70,9 +70,9 @@ describe('GET /topics', () => {
           const $ = cheerio.load(response.text);
           const topics = $('.hub-topics dl dt');
           expect(topics.length).toBe(2);
-          expect(topics.first().find('a').text()).toContain('foo');
+          expect(topics.first().find('a').text()).toContain('bar');
           expect(topics.first().find('a').attr('href')).toContain(
-            '/content/foo',
+            '/content/bar',
           );
         }));
 

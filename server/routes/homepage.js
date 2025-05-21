@@ -1,7 +1,6 @@
 const express = require('express');
-const { checkFeatureEnabledAtSite } = require('../utils');
 
-const createHomepageRouter = ({ cmsService, offenderService }) => {
+const createHomepageRouter = ({ cmsService }) => {
   const router = express.Router();
 
   router.get('/', async (req, res, next) => {
@@ -27,9 +26,6 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         cmsService.getExploreContent(establishmentName, currentLng),
         cmsService.getUpdatesContent(establishmentName, currentLng),
       ]);
-      const currentEvents = res.locals.isSignedIn
-        ? await offenderService.getCurrentEvents(req.user)
-        : {};
       const useLargeUpdateTile = Boolean(largeUpdateTileSpecified?.contentUrl);
 
       const largeUpdateTile = useLargeUpdateTile
@@ -53,7 +49,6 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
           detailsType: 'large',
         },
         hideSignInLink: true,
-        title: 'Home',
         recentlyAddedHomepageContent,
         updatesContent: updatesContentWithDuplicatesRemoved.splice(0, 4),
         updatesContentHideViewAll,
@@ -61,11 +56,6 @@ const createHomepageRouter = ({ cmsService, offenderService }) => {
         keyInfo,
         largeUpdateTile,
         exploreContent,
-        currentEvents,
-        displayTimetable: checkFeatureEnabledAtSite(
-          req.session.establishmentName,
-          'timetable',
-        ),
       });
     } catch (error) {
       next(error);

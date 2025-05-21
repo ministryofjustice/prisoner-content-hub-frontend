@@ -81,19 +81,3 @@ $('.is-pdf').on('click', function() {
     userAgent: navigator.userAgent
   });
 });
-
-$('a.sign-in-btn').on('click', function() {
-  gtag("event", "signin", {
-    event_category: "signin",
-    event_label: "signin",
-    userAgent: navigator.userAgent
-  });
-});
-
-$('a.sign-out-btn').on('click', function() {
-  gtag("event", "signout", {
-    event_category: "signout",
-    event_label: "signout",
-    userAgent: navigator.userAgent
-  });
-});
