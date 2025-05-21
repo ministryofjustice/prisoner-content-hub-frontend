@@ -6,16 +6,6 @@ const path = require('path');
 const nunjucksSetup = require('../server/utils/nunjucksSetup');
 const routes = require('../server/routes');
 const setCurrentUser = require('../server/middleware/setCurrentUser');
-const { User } = require('../server/auth/user');
-
-const testData = {
-  user: new User({
-    prisonerId: 'A1234BC',
-    firstName: 'Test',
-    surname: 'User',
-    bookingId: 1234567,
-  }),
-};
 
 const i18nextInitPromise = i18next
   .use(middleware.LanguageDetector)
@@ -137,6 +127,5 @@ module.exports = {
   consoleLogError,
   createClient,
   lastCall,
-  testData,
   i18nextInitPromise,
 };

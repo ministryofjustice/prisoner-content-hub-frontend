@@ -1,8 +1,0 @@
-<div class="govuk-hub-userDetails">
-  {% if params.isSignedIn and params.userName %}
-    <h3 data-test="user-name" data-hj-suppress>{{ params.userName }}</h3>
-    <a class="govuk-link govuk-!-margin-left-4 sign-out-btn" href="/auth/sign-out?returnUrl={{ params.returnUrl }}">Sign out</a>
-  {% elseif not params.hideSignInLink%}
-    <a href="/auth/sign-in?returnUrl={{ params.returnUrl }}" class="govuk-link govuk-!-margin-left-4 sign-in-btn">Sign in</a>
-  {% endif %}
-</div>
