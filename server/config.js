@@ -64,7 +64,9 @@ module.exports = {
     erlestoke: {
       languages: ['en'],
     },
-    etwoe: {},
+    etwoe: {
+      languages: ['en'],
+    },
     felthama: {
       languages: ['en'],
     },

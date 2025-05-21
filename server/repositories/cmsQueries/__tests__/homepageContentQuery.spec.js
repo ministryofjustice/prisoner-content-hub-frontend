@@ -2,27 +2,35 @@ const { HomepageContentQuery } = require('../homepageContentQuery');
 
 describe('HomepageContent query', () => {
   const ESTABLISHMENTNAME = 'Wayland';
+  const LANGUAGE = 'en';
   const PAGE_LIMIT = 4;
   let query;
 
   beforeEach(() => {
-    query = new HomepageContentQuery(ESTABLISHMENTNAME, PAGE_LIMIT);
+    query = new HomepageContentQuery(ESTABLISHMENTNAME, LANGUAGE, PAGE_LIMIT);
   });
 
   describe('path', () => {
     it('should return correct path', () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/${ESTABLISHMENTNAME}/node/homepage?include=field_featured_tiles.field_moj_thumbnail_image%2Cfield_featured_tiles%2Cfield_large_update_tile%2Cfield_key_info_tiles%2Cfield_key_info_tiles.field_moj_thumbnail_image%2Cfield_large_update_tile.field_moj_thumbnail_image&page%5Blimit%5D=4&fields%5Bnode--field_featured_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--field_key_info_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bfile--file%5D=drupal_internal__fid%2Cid%2Cimage_style_uri`,
+        `/${LANGUAGE}/jsonapi/prison/${ESTABLISHMENTNAME}/node/homepage?include=field_featured_tiles.field_moj_thumbnail_image%2Cfield_featured_tiles%2Cfield_large_update_tile%2Cfield_key_info_tiles%2Cfield_key_info_tiles.field_moj_thumbnail_image%2Cfield_large_update_tile.field_moj_thumbnail_image&page%5Blimit%5D=4&fields%5Bnode--field_featured_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--field_key_info_tiles%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bfile--file%5D=drupal_internal__fid%2Cid%2Cimage_style_uri`,
       );
     });
 
     it("should return a path containing the default page limit of '4' when a page limit is not provided", () => {
-      const queryWithoutPageLimit = new HomepageContentQuery(ESTABLISHMENTNAME);
+      const queryWithoutPageLimit = new HomepageContentQuery(
+        ESTABLISHMENTNAME,
+        LANGUAGE,
+      );
       expect(queryWithoutPageLimit.path()).toContain('page%5Blimit%5D=4');
     });
 
     it('should return a path containing the specifi page limit value when one is provided', () => {
-      const queryWithPageLimit = new HomepageContentQuery(ESTABLISHMENTNAME, 8);
+      const queryWithPageLimit = new HomepageContentQuery(
+        ESTABLISHMENTNAME,
+        LANGUAGE,
+        8,
+      );
       expect(queryWithPageLimit.path()).toContain('page%5Blimit%5D=8');
     });
   });
