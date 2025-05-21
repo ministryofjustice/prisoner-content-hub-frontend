@@ -1,5 +1,6 @@
 const { path } = require('ramda');
 const express = require('express');
+const i18next = require('i18next');
 
 const createSearchRouter = ({ searchService }) => {
   const router = express.Router();
@@ -10,9 +11,10 @@ const createSearchRouter = ({ searchService }) => {
 
     try {
       results = await searchService.find(query, req.session?.establishmentName);
+      const language = req.language || i18next.language;
 
       return res.render('pages/search', {
-        title: 'Search',
+        title: i18next.t('search.title', { lng: language }),
         config: {
           content: false,
           header: false,

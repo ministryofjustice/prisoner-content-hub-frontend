@@ -1,4 +1,5 @@
 const express = require('express');
+const i18next = require('i18next');
 const { groupBy } = require('../utils');
 
 const createTopicsRouter = ({ cmsService }) => {
@@ -26,8 +27,10 @@ const createTopicsRouter = ({ cmsService }) => {
         return 0;
       });
 
+      const language = req.language || i18next.language;
+
       res.render('pages/topics', {
-        title: 'Browse all topics',
+        title: i18next.t('home.browseAllTopics', { lng: language }),
         topics: groupBy(topics, item => item.linkText.charAt(0).toUpperCase()),
         config: {
           content: false,

@@ -4,11 +4,11 @@
 <div data-content-type="{{params.data.contentType}}" data-content-id="{{params.id}}" >
   {{ hubContent({
     data: params.data.data
-  }) }}
+  }, t) }}
   {% if not params.data.isLastPage %}
     <div class="show-more govuk-!-margin-top-9">
       {{ govukButton({
-        text: "Show more",
+        text: t("showMore.enabled"),
         classes: 'show-more-tiles govuk-button--secondary'
       }) }}
     </div>

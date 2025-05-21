@@ -9,15 +9,15 @@
     <h3 class="govuk-heading-l">{{params.title}}</h3>
     <p class="content-storyline">{{params.summary | safe}}</p>
     {% if params.contentType === "video" %}
-      <p class="content-link--video">Watch</p>
+      <p class="content-link--video">{{ t("contentTile.watch") }}</p>
     {% elif params.contentType === "radio" %}
-      <p class="content-link--audio">Listen</p>
+      <p class="content-link--audio">{{ t("contentTile.listen") }}</p>
     {% elif params.contentType === "external_link" %}
       <p class="content-link--external">{{ params.displayUrl }}</p>
     {% elif params.contentType === "internal_link" %}
       <p class="content-link--internal"></p>
     {% elif params.contentType !== "series" and params.contentType !== "category" %}
-      <p class="content-link--article">Read</p>
+      <p class="content-link--article">{{ t("contentTile.read") }}</p>
     {% endif %}
   </div>
 {% endmacro %}
