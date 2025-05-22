@@ -1,3 +1,5 @@
+const i18next = require('i18next');
+
 const express = require('express');
 
 const createRecentlyAddedContentRouter = ({ cmsService }) => {
@@ -19,14 +21,16 @@ const createRecentlyAddedContentRouter = ({ cmsService }) => {
     try {
       const hubContentData = await getMostRecentContent(req);
 
+      const language = req.language || i18next.language;
+
       res.render('pages/collections', {
         config: {
           content: true,
         },
-        title: 'Recently added',
+        title: i18next.t('recentlyAdded.title', { lng: language }),
         data: {
           hubContentData,
-          summary: 'The latest uploads on the Hub.',
+          summary: i18next.t('recentlyAdded.summary', { lng: language }),
           breadcrumbs: [
             { href: '/', text: 'Home' },
             { href: '', text: 'Recently added' },

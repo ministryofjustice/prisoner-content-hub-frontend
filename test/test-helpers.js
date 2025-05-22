@@ -1,10 +1,42 @@
 const express = require('express');
+const i18next = require('i18next');
+const filesystem = require('i18next-fs-backend');
+const middleware = require('i18next-http-middleware');
+const path = require('path');
 const nunjucksSetup = require('../server/utils/nunjucksSetup');
 const routes = require('../server/routes');
 const setCurrentUser = require('../server/middleware/setCurrentUser');
 
+const i18nextInitPromise = i18next
+  .use(middleware.LanguageDetector)
+  .use(filesystem)
+  .init({
+    debug: false,
+    preload: ['en', 'cy'],
+    fallbackLng: 'en',
+    backend: {
+      loadPath: path.join(__dirname, '../server/locales/{{lng}}.json'),
+    },
+    detection: {
+      caches: ['cookie'],
+    },
+  });
+
 function setupBasicApp(config = {}) {
   const app = express();
+  app.use((req, res, next) => {
+    res.locals = {
+      currentLng: 'en',
+    };
+    next();
+  });
+
+  app.use(
+    middleware.handle(i18next, {
+      removeLngFromUrl: false,
+    }),
+  );
+
   app.set('view engine', 'html');
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -51,6 +83,18 @@ const setupFullApp = (
   });
 
   const app = express();
+  app.use((req, res, next) => {
+    res.locals = {
+      currentLng: 'en',
+    };
+    next();
+  });
+
+  app.use(
+    middleware.handle(i18next, {
+      removeLngFromUrl: false,
+    }),
+  );
   app.set('view engine', 'html');
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -83,4 +127,5 @@ module.exports = {
   consoleLogError,
   createClient,
   lastCall,
+  i18nextInitPromise,
 };

@@ -22,6 +22,10 @@ spec:
     {{- end }}
     {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
   {{- end }}
+  {{- with .Values.ingress.host }}
+      - {{ tpl .pattern (dict "Template" $.Template) }}
+    {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
+  {{- end }}
   rules:
   {{- range .Values.ingress.hosts }}
     {{- $domainPattern := .pattern -}}
@@ -37,5 +41,17 @@ spec:
                 port:
                   number: 80
     {{- end }}
+  {{- end }}
+  {{- with .Values.ingress.host }}
+    - host: {{ tpl .pattern (dict "Template" $.Template) }}
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: 80
   {{- end }}
 {{- end }}
