@@ -46,6 +46,9 @@ class HomepageContentQuery {
         'field_key_info_tiles',
         'field_key_info_tiles.field_moj_thumbnail_image',
         'field_large_update_tile.field_moj_thumbnail_image',
+        'field_featured_tiles.field_image.field_media_image',
+        'field_key_info_tiles.field_image.field_media_image',
+        'field_large_update_tile.field_image.field_media_image',
       ])
 
       .addPageLimit(pageLimit)
