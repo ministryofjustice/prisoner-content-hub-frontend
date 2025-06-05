@@ -55,7 +55,7 @@ class HomepageUpdatesContentQuery {
       )
       .addFilter(
         'published_at',
-        getOffsetUnixTime(90),
+        getOffsetUnixTime(90, new Date().setHours(0, 0, 0, 0)),
         '>=',
         'categories_group',
       )
