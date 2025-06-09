@@ -604,19 +604,23 @@ describe('with content tile data', () => {
 
   describe('getPagination', () => {
     it('should return the correct pagination for page zero', () => {
-      expect(getPagination(0)).toEqual('page[offset]=0&page[limit]=40');
+      expect(getPagination(0)).toEqual('page%5Boffset%5D=0&page%5Blimit%5D=40');
     });
 
     it('should return the correct pagination for page one', () => {
-      expect(getPagination(1)).toEqual('page[offset]=0&page[limit]=40');
+      expect(getPagination(1)).toEqual('page%5Boffset%5D=0&page%5Blimit%5D=40');
     });
 
     it('should return the correct pagination for page two', () => {
-      expect(getPagination(2)).toEqual('page[offset]=40&page[limit]=40');
+      expect(getPagination(2)).toEqual(
+        'page%5Boffset%5D=40&page%5Blimit%5D=40',
+      );
     });
 
     it('should return the correct pagination for page three', () => {
-      expect(getPagination(3)).toEqual('page[offset]=80&page[limit]=40');
+      expect(getPagination(3)).toEqual(
+        'page%5Boffset%5D=80&page%5Blimit%5D=40',
+      );
     });
   });
 });
