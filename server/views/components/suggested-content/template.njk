@@ -4,7 +4,7 @@
 <section>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-      <h2 class="govuk-hub-featured-content__category-title">You might like</h2>
+      <h2 class="govuk-hub-featured-content__category-title">{{ t("suggestedContent.youMightLike") }}</h2>
     </div>
   </div>
   <div class="content__four-items">
@@ -18,7 +18,7 @@
         displayUrl: item.displayUrl,
         externalContent: item.externalContent,
         isNew: item.isNew
-      }) }}
+      }, t) }}
     {% endfor %}
   </div>
 </section>

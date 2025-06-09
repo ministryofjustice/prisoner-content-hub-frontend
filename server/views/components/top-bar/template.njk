@@ -29,7 +29,7 @@
           </div>
           {% endif %}
           {% if params.showSearch %}
-            {{ hubSearch({ query: params.searchQuery, small: true }) }}
+            {{ hubSearch({ query: params.searchQuery, small: true }, t) }}
           {% endif %}
         </div>
       </div>

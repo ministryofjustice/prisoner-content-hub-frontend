@@ -16703,9 +16703,9 @@ var Scoreboard = function Scoreboard(props) {
   return _react2.default.createElement(
     'div',
     { className: 'scoreboard' },
-    _react2.default.createElement(_ScoreboardText2.default, { label: 'Level', value: props.level }),
-    _react2.default.createElement(_ScoreboardText2.default, { label: 'Score', value: props.score }),
-    _react2.default.createElement(_ScoreboardText2.default, { label: 'Lines', value: props.lines })
+    _react2.default.createElement(_ScoreboardText2.default, { label: i18n.level, value: props.level }),
+    _react2.default.createElement(_ScoreboardText2.default, { label: i18n.score, value: props.score }),
+    _react2.default.createElement(_ScoreboardText2.default, { label: i18n.lines, value: props.lines })
   );
 };
 

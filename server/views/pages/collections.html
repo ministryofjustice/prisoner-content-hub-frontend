@@ -3,10 +3,10 @@
 {% extends "../components/basicTemplate.njk" %}
 
 {% set blackBackground = true %}
-{% set feedbackHeading = "Tell us what you think about this page" %}
+{% set feedbackHeading = t("feedback.headings.alternative") %}
 
 {% block title %}
-  <div id="category-{{tagId}}" class="govuk-hub-landing-page-header govuk-hub-landing-page-header--with-stripe"> 
+  <div id="category-{{tagId}}" class="govuk-hub-landing-page-header govuk-hub-landing-page-header--with-stripe">
     <div class="govuk-width-container">
       <div class="govuk-main-wrapper">
         <div class="govuk-grid-row">
@@ -36,7 +36,7 @@
       id: tagId,
       data: data.hubContentData,
       lazyLoadContent: true
-    }) }}
+    }, t) }}
   {% endif %}
   <hr>
 {% endblock %}
@@ -44,6 +44,15 @@
 <script src="/public/generated/templates.js"></script>
 <script src="/public/nunjucks-slim.js"></script>
 <script src="/public/javascript/showMore.js"></script>
+<script>const i18nShowMore = {
+  'contentTile.new': '{{ t("contentTile.new") }}',
+  'contentTile.series': '{{ t("contentTile.series") }}',
+  'contentTile.watch': '{{ t("contentTile.watch") }}',
+  'contentTile.listen': '{{ t("contentTile.listen") }}',
+  'contentTile.read': '{{ t("contentTile.read") }}',
+  'showMore.enabled': '{{ t("showMore.enabled") }}',
+  'showMore.disabled': '{{ t("showMore.disabled") }}'
+};</script>
 <script>setUpShowMore($('.show-more-tiles'), $('.small-tiles'))</script>
 {% endblock %}
 
