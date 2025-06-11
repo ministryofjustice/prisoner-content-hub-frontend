@@ -18,10 +18,11 @@ class TopicPageQuery {
     'published_at',
   ];
 
-  constructor(establishmentName, uuid, page) {
+  constructor(establishmentName, uuid, language, page) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
     this.page = page;
+    this.language = language;
     const queryWithoutOffset = new Query()
       .addFilter('field_topics.id', uuid)
       .addFields('node--page', TopicPageQuery.#TILE_FIELDS)
@@ -50,6 +51,7 @@ class TopicPageQuery {
   getKey() {
     return getCmsCacheKey(
       'topicPage',
+      this.language,
       this.establishmentName,
       this.uuid,
       `page:${this.page}`,
@@ -61,7 +63,7 @@ class TopicPageQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
+    return `/${this.language}/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
   }
 
   #getTopic = fieldTopics => {

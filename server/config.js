@@ -53,7 +53,7 @@ module.exports = {
       languages: ['en'],
     },
     cardiff: {
-      languages: ['en'],
+      languages: ['en', 'cy'],
     },
     chelmsford: {
       languages: ['en'],
@@ -64,7 +64,9 @@ module.exports = {
     erlestoke: {
       languages: ['en'],
     },
-    etwoe: {},
+    etwoe: {
+      languages: ['en'],
+    },
     felthama: {
       languages: ['en'],
     },
