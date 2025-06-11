@@ -16,11 +16,11 @@ spec:
   tls:
   - hosts:
   {{- range .Values.ingress.hosts }}
-  {{- $certSecret := .cert_secret -}}
   {{- $domainPattern := .pattern }}
     {{- range $.Values.ingress.prefixes }}
       - {{ tpl $domainPattern (dict "prison" . "Template" $.Template) }}
     {{- end }}
+    {{ if .cert_secret }}secretName: {{ .cert_secret }}{{ end }}
   {{- end }}
   {{- with .Values.ingress.host }}
       - {{ tpl .pattern (dict "Template" $.Template) }}
