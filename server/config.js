@@ -53,7 +53,7 @@ module.exports = {
       languages: ['en'],
     },
     cardiff: {
-      languages: ['en'],
+      languages: ['en', 'cy'],
     },
     chelmsford: {
       languages: ['en'],
