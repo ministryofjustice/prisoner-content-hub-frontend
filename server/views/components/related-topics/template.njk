@@ -1,6 +1,6 @@
 {% if params.data|length %}
 
-<div class="govuk-!-margin-top-2            
+<div class="govuk-!-margin-top-2
             govuk-!-margin-bottom-8"
      id="related-links">
 
@@ -8,15 +8,15 @@
               govuk-!-padding-5
               govuk-hub-related-topics{% if params.darkmode %}-dark{% endif %}">
 
-    <h3 class="govuk-heading-m 
-               govuk-hub-related-topics{% if params.darkmode %}-dark{% endif %}">Related topics</h3>
+    <h3 class="govuk-heading-m
+               govuk-hub-related-topics{% if params.darkmode %}-dark{% endif %}">{{ t("relatedTopics.heading") }}</h3>
 
     {% for tagItem in params.data %}
       <a title="{{tagItem.name}}" href="/tags/{{tagItem.id}}" class="{% if not params.darkmode %}govuk-link{% endif %} govuk-!-margin-right-1">{{tagItem.name}}</a>
     {% endfor %}
-    
+
   </div>
 
 </div>
 
-{% endif %}  
+{% endif %}

@@ -20,7 +20,10 @@ const createAnagramicaRouter = config => {
       res.render('pages/games/anagramica.html', {
         title: 'Anagramica',
         config: { ...config, detailsType: 'small' },
-        data: { breadcrumbs: createBreadcrumbs(req) },
+        data: {
+          breadcrumbs: createBreadcrumbs(req),
+          contentType: 'game',
+        },
       }),
     )
     .post((req, res) => {

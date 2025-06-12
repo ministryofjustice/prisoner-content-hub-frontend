@@ -1,9 +1,9 @@
 <div class="page-navigation">
   <nav>
     {% if not params.hideHomePage %}
-      <a href="/" class="govuk-link" id="go-home">Home</a>
+      <a href="/" class="govuk-link" id="go-home">{{ t("pageNavigation.home") }}</a>
     {% endif %}
-    <a href="" class="govuk-link" id="go-back">Back</a>
-    <a href="" class="govuk-link" id="go-forwards">Forward</a>
+    <a href="" class="govuk-link" id="go-back">{{ t("pageNavigation.back") }}</a>
+    <a href="" class="govuk-link" id="go-forwards">{{ t("pageNavigation.forward") }}</a>
   </nav>
 </div>

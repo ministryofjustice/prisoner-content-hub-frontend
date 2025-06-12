@@ -22,7 +22,10 @@ const createGamesRouter = () => {
     return res.render('pages/games/2048', {
       title: '2048',
       config,
-      data: { breadcrumbs: createBreadcrumbs(req) },
+      data: {
+        breadcrumbs: createBreadcrumbs(req),
+        contentType: 'game',
+      },
     });
   });
 
@@ -32,7 +35,10 @@ const createGamesRouter = () => {
     return res.render('pages/games/fadingsnake', {
       title: 'Fading Snake',
       config,
-      data: { breadcrumbs: createBreadcrumbs(req) },
+      data: {
+        breadcrumbs: createBreadcrumbs(req),
+        contentType: 'game',
+      },
     });
   });
 
@@ -42,7 +48,10 @@ const createGamesRouter = () => {
     return res.render('pages/games/sn4ke', {
       title: 'Sn4ke',
       config,
-      data: { breadcrumbs: createBreadcrumbs(req) },
+      data: {
+        breadcrumbs: createBreadcrumbs(req),
+        contentType: 'game',
+      },
     });
   });
 
@@ -54,7 +63,10 @@ const createGamesRouter = () => {
     return res.render('pages/games/chess', {
       title: 'Chess',
       config,
-      data: { breadcrumbs: createBreadcrumbs(req) },
+      data: {
+        breadcrumbs: createBreadcrumbs(req),
+        contentType: 'game',
+      },
     });
   });
 
@@ -64,7 +76,10 @@ const createGamesRouter = () => {
     return res.render('pages/games/sudoku', {
       title: 'Sudoku',
       config,
-      data: { breadcrumbs: createBreadcrumbs(req) },
+      data: {
+        breadcrumbs: createBreadcrumbs(req),
+        contentType: 'game',
+      },
     });
   });
 
@@ -74,7 +89,10 @@ const createGamesRouter = () => {
     return res.render('pages/games/neontroids', {
       title: 'Neontroids',
       config,
-      data: { breadcrumbs: createBreadcrumbs(req) },
+      data: {
+        breadcrumbs: createBreadcrumbs(req),
+        contentType: 'game',
+      },
     });
   });
 
@@ -84,7 +102,10 @@ const createGamesRouter = () => {
     return res.render('pages/games/mimstris', {
       title: 'Mimstris',
       config,
-      data: { breadcrumbs: createBreadcrumbs(req) },
+      data: {
+        breadcrumbs: createBreadcrumbs(req),
+        contentType: 'game',
+      },
     });
   });
 
@@ -94,7 +115,10 @@ const createGamesRouter = () => {
     return res.render('pages/games/invadersfromspace', {
       title: 'Invaders from Space',
       config,
-      data: { breadcrumbs: createBreadcrumbs(req) },
+      data: {
+        breadcrumbs: createBreadcrumbs(req),
+        contentType: 'game',
+      },
     });
   });
 
@@ -104,7 +128,10 @@ const createGamesRouter = () => {
     return res.render('pages/games/crossword', {
       title: 'Crossword',
       config,
-      data: { breadcrumbs: createBreadcrumbs(req) },
+      data: {
+        breadcrumbs: createBreadcrumbs(req),
+        contentType: 'game',
+      },
     });
   });
 
@@ -114,7 +141,10 @@ const createGamesRouter = () => {
     return res.render('pages/games/christmas-crossword', {
       title: 'Christmas Crossword',
       config,
-      data: { breadcrumbs: createBreadcrumbs(req) },
+      data: {
+        breadcrumbs: createBreadcrumbs(req),
+        contentType: 'game',
+      },
     });
   });
 
@@ -124,7 +154,10 @@ const createGamesRouter = () => {
     return res.render('pages/games/solitaire', {
       title: 'Solitaire',
       config,
-      data: { breadcrumbs: createBreadcrumbs(req) },
+      data: {
+        breadcrumbs: createBreadcrumbs(req),
+        contentType: 'game',
+      },
     });
   });
 
@@ -134,7 +167,10 @@ const createGamesRouter = () => {
     return res.render('pages/games/smashout', {
       title: 'Smashout',
       config,
-      data: { breadcrumbs: createBreadcrumbs(req) },
+      data: {
+        breadcrumbs: createBreadcrumbs(req),
+        contentType: 'game',
+      },
     });
   });
 
