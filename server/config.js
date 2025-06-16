@@ -4,14 +4,6 @@ const hubEndpoint = getRequiredEnv(
   'HUB_API_ENDPOINT',
   'http://localhost:11001',
 );
-const elasticsearchEndpoint = getRequiredEnv(
-  'ELASTICSEARCH_ENDPOINT',
-  'http://localhost:9200',
-);
-const feedbackEndpoint = getRequiredEnv(
-  'FEEDBACK_ENDPOINT',
-  '/local-feedback/_doc',
-);
 
 module.exports = {
   isProduction,
@@ -120,7 +112,6 @@ module.exports = {
     gtmSiteId: getEnv('GOOGLE_TAG_MANAGER_SITE_ID', 'GTM-M62TTBK'),
   },
   feedback: {
-    endpoint: elasticsearchEndpoint + feedbackEndpoint,
     host: getRequiredEnv('FEEDBACK_DATABASE_URL', 'localhost'),
     user: getRequiredEnv('FEEDBACK_DATABASE_USERNAME', 'feedbackuser'),
     password: getRequiredEnv('FEEDBACK_DATABASE_PASSWORD', 'feedbackpassword'),
