@@ -1,11 +1,15 @@
 module.exports = cmsService => async (req, res, next) => {
   try {
     const { establishmentName } = req.session;
+    const { currentLng } = res.locals;
 
     if (!establishmentName) {
       throw new Error('Could not determine establishment!');
     }
-    res.locals.allTopics = await cmsService.getTopics(establishmentName);
+    res.locals.allTopics = await cmsService.getTopics(
+      establishmentName,
+      currentLng,
+    );
     // We have to sort the results even though we specified a sort order in
     // the JSON:API request.
     // See https://www.drupal.org/project/drupal/issues/3186834.
