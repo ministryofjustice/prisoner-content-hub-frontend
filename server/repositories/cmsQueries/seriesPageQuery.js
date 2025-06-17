@@ -18,10 +18,11 @@ class SeriesPageQuery {
     'published_at',
   ];
 
-  constructor(establishmentName, uuid, page) {
+  constructor(establishmentName, uuid, page, language) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
     this.page = page;
+    this.language = language;
     const queryWithoutOffset = new Query()
       .addFilter('field_moj_series.id', uuid)
       .addFields('node--page', SeriesPageQuery.#TILE_FIELDS)
@@ -50,6 +51,7 @@ class SeriesPageQuery {
   getKey() {
     return getCmsCacheKey(
       'seriesPage',
+      this.language,
       this.establishmentName,
       this.uuid,
       `page:${this.page}`,
@@ -61,7 +63,7 @@ class SeriesPageQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
+    return `/${this.language}/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
   }
 
   transform(deserializedResponse, links) {

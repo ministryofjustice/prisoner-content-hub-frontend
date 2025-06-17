@@ -3,26 +3,34 @@ const { ExploreContentQuery } = require('../exploreContentQuery');
 describe('Recently Added Content page query', () => {
   const ESTABLISHMENTNAME = 'Wayland';
   const PAGE_LIMIT = 4;
+  const LANGUAGE = 'en';
   let query;
 
   beforeEach(() => {
-    query = new ExploreContentQuery(ESTABLISHMENTNAME, PAGE_LIMIT);
+    query = new ExploreContentQuery(ESTABLISHMENTNAME, LANGUAGE, PAGE_LIMIT);
   });
 
   describe('path', () => {
     it('should return correct path', () => {
       expect(query.path()).toStrictEqual(
-        `/jsonapi/prison/${ESTABLISHMENTNAME}/explore/node?include=field_moj_thumbnail_image&page%5Blimit%5D=4&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--moj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at`,
+        `/${LANGUAGE}/jsonapi/prison/${ESTABLISHMENTNAME}/explore/node?include=field_moj_thumbnail_image&page%5Blimit%5D=4&fields%5Bnode--page%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--moj_video_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--moj_radio_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at&fields%5Bnode--moj_pdf_item%5D=drupal_internal__nid%2Ctitle%2Cfield_moj_thumbnail_image%2Cfield_summary%2Cfield_moj_series%2Cpath%2Ctype.meta.drupal_internal__target_id%2Cpublished_at`,
       );
     });
 
     it("should return a path containing the default page limit of '4' when a page limit is not provided", () => {
-      const queryWithoutPageLimit = new ExploreContentQuery(ESTABLISHMENTNAME);
+      const queryWithoutPageLimit = new ExploreContentQuery(
+        ESTABLISHMENTNAME,
+        LANGUAGE,
+      );
       expect(queryWithoutPageLimit.path()).toContain('page%5Blimit%5D=4');
     });
 
     it('should return a path containing the specifi page limit value when one is provided', () => {
-      const queryWithPageLimit = new ExploreContentQuery(ESTABLISHMENTNAME, 8);
+      const queryWithPageLimit = new ExploreContentQuery(
+        ESTABLISHMENTNAME,
+        LANGUAGE,
+        8,
+      );
       expect(queryWithPageLimit.path()).toContain('page%5Blimit%5D=8');
     });
   });
