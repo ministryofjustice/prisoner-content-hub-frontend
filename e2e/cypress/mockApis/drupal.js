@@ -7,7 +7,7 @@ const stubPrimaryNavigation = () =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/drupal/jsonapi/prison/.*?/primary_navigation.*?',
+      urlPattern: '/drupal/en/jsonapi/prison/.*?/primary_navigation.*?',
     },
     response: {
       status: 200,
@@ -22,7 +22,7 @@ const stubBrowseAllTopics = () =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/drupal/jsonapi/prison/.*?/taxonomy_term.*?',
+      urlPattern: '/drupal/en/jsonapi/prison/.*?/taxonomy_term.*?',
     },
     response: {
       status: 200,
@@ -37,7 +37,7 @@ const stubUrgentBanners = () =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/drupal/jsonapi/prison/.*?/node/urgent_banner.*?',
+      urlPattern: '/drupal/en/jsonapi/prison/.*?/node/urgent_banner.*?',
     },
     response: {
       status: 200,
