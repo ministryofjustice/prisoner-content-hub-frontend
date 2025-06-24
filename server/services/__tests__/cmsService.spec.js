@@ -923,6 +923,7 @@ describe('cms Service', () => {
       jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
       result = await cmsService.getRecentlyAddedContent(
         ESTABLISHMENT_NAME,
+        'en',
         1,
         40,
       );
@@ -943,6 +944,7 @@ describe('cms Service', () => {
           1,
           40,
           getOffsetUnixTime(14),
+          'en',
         ),
       );
     });
