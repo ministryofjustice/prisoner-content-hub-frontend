@@ -37,8 +37,14 @@ const createRecentlyAddedContentRouter = ({ cmsService }) => {
           hubContentData,
           summary: i18next.t('recentlyAdded.summary', { lng: currentLng }),
           breadcrumbs: [
-            { href: '/', text: 'Home' },
-            { href: '', text: 'Recently added' },
+            {
+              href: '/',
+              text: i18next.t('pageNavigation.home', { lng: currentLng }),
+            },
+            {
+              href: '',
+              text: i18next.t('recentlyAdded.title', { lng: currentLng }),
+            },
           ],
         },
       });
