@@ -316,7 +316,12 @@ class CmsService {
     return primaryNavigation;
   }
 
-  async getRecentlyAddedContent(establishmentName, page = 1, pageLimit = 4) {
+  async getRecentlyAddedContent(
+    establishmentName,
+    language,
+    page = 1,
+    pageLimit = 4,
+  ) {
     const timeStamp = getOffsetUnixTime(14);
 
     const recentlyAddedContent = await this.#cmsApi.getCache(
@@ -325,6 +330,7 @@ class CmsService {
         page,
         pageLimit,
         timeStamp,
+        language,
       ),
     );
 

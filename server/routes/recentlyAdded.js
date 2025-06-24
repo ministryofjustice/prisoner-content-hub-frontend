@@ -5,7 +5,7 @@ const express = require('express');
 const createRecentlyAddedContentRouter = ({ cmsService }) => {
   const router = express.Router();
 
-  const getMostRecentContent = req => {
+  const getMostRecentContent = (req, language) => {
     const { establishmentName } = req.session;
 
     if (!establishmentName) {
@@ -14,23 +14,28 @@ const createRecentlyAddedContentRouter = ({ cmsService }) => {
 
     const { page } = req.query;
 
-    return cmsService.getRecentlyAddedContent(establishmentName, page, 40);
+    return cmsService.getRecentlyAddedContent(
+      establishmentName,
+      language,
+      page,
+      40,
+    );
   };
 
   router.get('/', async (req, res, next) => {
     try {
-      const hubContentData = await getMostRecentContent(req);
+      const { currentLng } = res.locals;
 
-      const language = req.language || i18next.language;
+      const hubContentData = await getMostRecentContent(req, currentLng);
 
       res.render('pages/collections', {
         config: {
           content: true,
         },
-        title: i18next.t('recentlyAdded.title', { lng: language }),
+        title: i18next.t('recentlyAdded.title', { lng: currentLng }),
         data: {
           hubContentData,
-          summary: i18next.t('recentlyAdded.summary', { lng: language }),
+          summary: i18next.t('recentlyAdded.summary', { lng: currentLng }),
           breadcrumbs: [
             { href: '/', text: 'Home' },
             { href: '', text: 'Recently added' },
