@@ -56,7 +56,9 @@ const createRecentlyAddedContentRouter = ({ cmsService }) => {
 
   router.get('/json', async (req, res, next) => {
     try {
-      const hubContentData = await getMostRecentContent(req);
+      const { currentLng } = res.locals;
+
+      const hubContentData = await getMostRecentContent(req, currentLng);
 
       res.json(hubContentData);
     } catch (e) {
