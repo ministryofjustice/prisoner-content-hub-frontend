@@ -1,7 +1,6 @@
 const { logger } = require('../utils/logger');
 const config = require('../config');
 
-const { StandardClient } = require('../clients/standard');
 const { JsonApiClient } = require('../clients/jsonApiClient');
 const { FeedbackClient } = require('../clients/feedbackClient');
 
@@ -21,8 +20,6 @@ const cmsCachingStrategy = config?.features?.useRedisCache
   ? new RedisCachingStrategy()
   : new InMemoryCachingStrategy();
 const jsonApiClient = new JsonApiClient(config.api.hubEndpoint);
-const standardClient = new StandardClient();
-
 const feedbackClient = new FeedbackClient();
 
 const cmsApi = new CmsApi({
@@ -39,6 +36,6 @@ module.exports = {
   cmsService,
   searchService: createSearchService({ cmsApi }),
   feedbackService: createFeedbackService({
-    feedbackRepository: feedbackRepository(standardClient, feedbackClient),
+    feedbackRepository: feedbackRepository(feedbackClient),
   }),
 };
