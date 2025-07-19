@@ -51,7 +51,7 @@
     "dotenv": "^16.4.7",
     "drupal-jsonapi-params": "^2.3.2",
     "express": "^4.21.2",
-    "govuk-frontend": "^5.9.0",
+    "govuk-frontend": "^5.11.0",
     "helmet": "^8.0.0",
     "i18next": "^24.2.3",
     "i18next-fs-backend": "^2.6.0",
