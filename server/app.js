@@ -114,11 +114,11 @@ const createApp = services => {
     '../public',
     '../assets',
     '../assets/stylesheets',
-    '../node_modules/govuk-frontend/dist/govuk/',
     '../node_modules/jquery/dist',
     '../node_modules/nunjucks/browser',
-    '../node_modules/@ministryofjustice/frontend/moj/',
     '../node_modules/video.js/dist',
+    '../node_modules/govuk-frontend/dist',
+    '../node_modules/@ministryofjustice/frontend',
   ].forEach(dir => {
     app.use('/public', express.static(path.join(__dirname, dir), cacheControl));
   });
