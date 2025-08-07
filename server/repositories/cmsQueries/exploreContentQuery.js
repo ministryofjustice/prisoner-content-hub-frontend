@@ -14,9 +14,10 @@ class ExploreContentQuery {
     'published_at',
   ];
 
-  constructor(establishmentName, pageLimit = 4) {
+  constructor(establishmentName, language, pageLimit = 4) {
     this.establishmentName = establishmentName;
     this.limit = pageLimit;
+    this.language = language;
     this.query = new Query()
       .addFields('node--page', ExploreContentQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', ExploreContentQuery.#TILE_FIELDS)
@@ -33,6 +34,7 @@ class ExploreContentQuery {
   getKey() {
     return getCmsCacheKey(
       'exploreContent',
+      this.language,
       this.establishmentName,
       `limit:${this.limit}`,
     );
@@ -43,7 +45,7 @@ class ExploreContentQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/explore/node?${this.query}`;
+    return `/${this.language}/jsonapi/prison/${this.establishmentName}/explore/node?${this.query}`;
   }
 
   transform(deserializedResponse, links) {

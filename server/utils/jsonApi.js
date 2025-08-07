@@ -1,7 +1,7 @@
 const { differenceInDays, format } = require('date-fns');
 
 const getPagination = (page, size = 40) =>
-  `page[offset]=${Math.max(page - 1, 0) * size}&page[limit]=${size}`;
+  `page%5Boffset%5D=${Math.max(page - 1, 0) * size}&page%5Blimit%5D=${size}`;
 
 const getImage = (data, type) => {
   if (!data) return null;
@@ -143,9 +143,32 @@ const isBottomCategory = ({
   sub_series_count: subSeriesCount = 0,
 } = {}) => subCategoriesCount === 0 && subSeriesCount === 0;
 
+const mapBreadcrumbHref = href => {
+  // If the href is only a language prefix...
+  const languagePrefixOnlyRegex = /\/[a-z][a-z]$/;
+  if (languagePrefixOnlyRegex.test(href)) {
+    // ...it should map to /.
+    return '/';
+  }
+  // If the tag is prefixed but already aliased...
+  const aliasedTagRegex = /\/[a-z][a-z]\/tags\/[0-9]*$/;
+  if (aliasedTagRegex.test(href)) {
+    // ...just strip the prefix.
+    return href.substring(3);
+  }
+  // If the tag is prefixed but unaliased...
+  const unaliasedTagRegex = /\/[a-z][a-z]\/taxonomy\/term\/([0-9]*)$/;
+  if (unaliasedTagRegex.test(href)) {
+    // ...simulate an aliased tag.
+    return `/tags/${href.match(unaliasedTagRegex)[1]}`;
+  }
+
+  return href;
+};
+
 const mapBreadcrumbs = (rawBreadcrumbs = []) =>
   rawBreadcrumbs.map(({ uri: href = '', title: text }) => ({
-    href,
+    href: mapBreadcrumbHref(href),
     text,
   }));
 
@@ -161,6 +184,7 @@ module.exports = {
   typeFrom,
   isBottomCategory,
   mapBreadcrumbs,
+  mapBreadcrumbHref,
   isNew,
   cropTextWithEllipsis,
 };

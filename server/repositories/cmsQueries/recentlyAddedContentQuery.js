@@ -14,10 +14,12 @@ class RecentlyAddedContentQuery {
     'published_at',
   ];
 
-  constructor(establishmentName, page, pageLimit, timeStamp) {
+  constructor(establishmentName, page, pageLimit, timeStamp, language) {
     this.establishmentName = establishmentName;
     this.page = page;
     this.limit = pageLimit;
+    this.language = language;
+
     const queryWithoutOffset = new Query()
       .addFields('node--page', RecentlyAddedContentQuery.#TILE_FIELDS)
       .addFields('node--moj_video_item', RecentlyAddedContentQuery.#TILE_FIELDS)
@@ -53,6 +55,7 @@ class RecentlyAddedContentQuery {
       this.establishmentName,
       `limit:${this.limit}`,
       `page:${this.page}`,
+      this.language,
     );
   }
 
@@ -61,7 +64,7 @@ class RecentlyAddedContentQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
+    return `/${this.language}/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
   }
 
   transform(deserializedResponse, links) {
