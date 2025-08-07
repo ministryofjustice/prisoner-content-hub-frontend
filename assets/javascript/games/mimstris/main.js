@@ -17052,7 +17052,7 @@ function hasArrayNature(obj) {
     Array.isArray(obj) ||
     // arguments
     'callee' in obj ||
-     // HTMLCollection/NodeList
+    // HTMLCollection/NodeList
     'item' in obj)
   );
 }
