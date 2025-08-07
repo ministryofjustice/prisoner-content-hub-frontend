@@ -10307,13 +10307,13 @@ function arrayLikeKeys(value, inherited) {
     if ((inherited || hasOwnProperty.call(value, key)) &&
         !(skipIndexes && (
            // Safari 9 has enumerable `arguments.length` in strict mode.
-          key == 'length' ||
-          // Node.js 0.10 has enumerable non-index properties on buffers.
-          (isBuff && (key == 'offset' || key == 'parent')) ||
-          // PhantomJS 2 has enumerable non-index properties on typed arrays.
-          (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) ||
-          // Skip index properties.
-          isIndex(key, length)
+           key == 'length' ||
+           // Node.js 0.10 has enumerable non-index properties on buffers.
+           (isBuff && (key == 'offset' || key == 'parent')) ||
+           // PhantomJS 2 has enumerable non-index properties on typed arrays.
+           (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) ||
+           // Skip index properties.
+           isIndex(key, length)
         ))) {
       result.push(key);
     }
@@ -17039,8 +17039,8 @@ function hasArrayNature(obj) {
   return (
     // not null/false
     !!obj && (
-      // arrays are objects, NodeLists are functions in Safari
-      typeof obj == 'object' || typeof obj == 'function') &&
+    // arrays are objects, NodeLists are functions in Safari
+    typeof obj == 'object' || typeof obj == 'function') &&
     // quacks like an array
     'length' in obj &&
     // not window
@@ -17048,12 +17048,12 @@ function hasArrayNature(obj) {
     // no DOM node should be considered an array-like
     // a 'select' element has 'length' and 'item' properties on IE8
     typeof obj.nodeType != 'number' && (
-      // a real array
-      Array.isArray(obj) ||
-      // arguments
-      'callee' in obj ||
-      // HTMLCollection/NodeList
-      'item' in obj)
+    // a real array
+    Array.isArray(obj) ||
+    // arguments
+    'callee' in obj ||
+     // HTMLCollection/NodeList
+    'item' in obj)
   );
 }
 
