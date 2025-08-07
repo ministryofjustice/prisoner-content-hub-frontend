@@ -16,7 +16,7 @@ const stub = (urlPattern, jsonBody) =>
   });
 
 const stubOffenderDetails = () =>
-  stub(`/prisonapi/api/bookings/offenderNo/[^/]+$`, {
+  stub(`/prisonapi/api/bookings/offenderNo/{*offenderNo}`, {
     bookingId: 14,
     firstName: 'John',
     lastName: 'Smith',
@@ -24,20 +24,26 @@ const stubOffenderDetails = () =>
   });
 
 const stubEvents = events =>
-  stub(`/prisonapi/api/bookings/.*?/events\\?fromDate=.*?&toDate=.*?`, events);
+  stub(
+    `/prisonapi/api/bookings/*bookingId/events?fromDate={*fromDate}&toDate={*toDate}`,
+    events,
+  );
 
 const stubBalancesFor = incentives =>
-  stub(`/prisonapi/api/bookings/.*?/balances`, incentives);
+  stub(`/prisonapi/api/bookings/*bookingId/balances`, incentives);
 
 const stubVisitors = visitors =>
-  stub(`/prisonapi/api/bookings/.*?/contacts`, visitors);
+  stub(`/prisonapi/api/bookings/*bookingId/contacts`, visitors);
 
 const stubVisit = visit =>
-  stub(`/prisonapi/api/bookings/.*?/visits/next\\?withVisitors=true`, visit);
+  stub(
+    `/prisonapi/api/bookings/*bookingId/visits/next?withVisitors=true`,
+    visit,
+  );
 
 const stubVisitsRemaining = visitsRemaining =>
   stub(
-    `/prisonapi/api/bookings/offenderNo/.*?/visit/balances`,
+    `/prisonapi/api/bookings/offenderNo/*offenderNo/visit/balances`,
     visitsRemaining,
   );
 
