@@ -3,6 +3,7 @@
   "extends": ["github>ministryofjustice/hmpps-renovate-config:node"],
   "prBodyTemplate": "{{{table}}}{{{notes}}}{{{warnings}}}{{{controls}}}",
   "prCreation": "immediate",
+  "ignoreDeps": ["jsona"],
   "packageRules": [
     {
       "matchManagers": ["npm"],
