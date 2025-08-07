@@ -41,6 +41,8 @@ const createHomepageRouter = ({ cmsService }) => {
         isLastPage &&
         (updatesContentWithDuplicatesRemoved.length < 5 || !useLargeUpdateTile);
 
+      console.log(featuredContent);
+
       res.render('pages/home', {
         config: {
           content: true,
