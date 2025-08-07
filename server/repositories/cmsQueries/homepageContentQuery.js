@@ -18,9 +18,10 @@ class HomepageContentQuery {
     'published_at',
   ];
 
-  constructor(establishmentName, pageLimit = 4) {
+  constructor(establishmentName, language, pageLimit = 4) {
     this.establishmentName = establishmentName;
     this.limit = pageLimit;
+    this.language = language;
     this.query = new Query()
 
       .addFields(
@@ -55,6 +56,7 @@ class HomepageContentQuery {
   getKey() {
     return getCmsCacheKey(
       'homepageContent',
+      this.language,
       this.establishmentName,
       `limit:${this.limit}`,
     );
@@ -65,7 +67,7 @@ class HomepageContentQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/node/homepage?${this.query}`;
+    return `/${this.language}/jsonapi/prison/${this.establishmentName}/node/homepage?${this.query}`;
   }
 
   transformEach(item) {

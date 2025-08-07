@@ -14,8 +14,9 @@ class RecentlyAddedHomepageContentQuery {
     'published_at',
   ];
 
-  constructor(establishmentName) {
+  constructor(establishmentName, language) {
     this.establishmentName = establishmentName;
+    this.language = language;
     const queryWithoutOffset = new Query()
       .addFields('node--page', RecentlyAddedHomepageContentQuery.#TILE_FIELDS)
       .addFields(
@@ -49,6 +50,7 @@ class RecentlyAddedHomepageContentQuery {
   getKey() {
     return getCmsCacheKey(
       'recentlyAddedHomepageContent',
+      this.language,
       this.establishmentName,
     );
   }
@@ -58,7 +60,7 @@ class RecentlyAddedHomepageContentQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/recently-added?${this.query}`;
+    return `/${this.language}/jsonapi/prison/${this.establishmentName}/recently-added?${this.query}`;
   }
 
   transform(deserializedResponse) {

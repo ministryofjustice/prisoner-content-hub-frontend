@@ -16,6 +16,10 @@ describe('GET /updates', () => {
   const sessionMiddleware = (req, res, next) => {
     req.session = {
       establishmentId: 123,
+    };
+    res.locals = {
+      multilingual: false,
+      currentLng: 'en',
       establishmentName: 'berwyn',
     };
     next();
