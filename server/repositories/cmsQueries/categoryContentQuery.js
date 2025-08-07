@@ -12,9 +12,10 @@ class CategoryContentQuery {
     'published_at',
   ];
 
-  constructor(establishmentName, uuid, limit = 4, page = 1) {
+  constructor(establishmentName, uuid, language, limit = 4, page = 1) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
+    this.language = language;
     this.limit = limit;
     this.page = page;
     const queryWithoutOffset = new Query()
@@ -32,6 +33,7 @@ class CategoryContentQuery {
   getKey() {
     return getCmsCacheKey(
       'categoryContent',
+      this.language,
       this.establishmentName,
       this.uuid,
       `limit:${this.limit}`,
@@ -44,7 +46,7 @@ class CategoryContentQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
+    return `/${this.language}/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
   }
 
   transform(deserializedResponse, links) {

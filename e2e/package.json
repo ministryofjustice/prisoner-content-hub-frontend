@@ -18,12 +18,12 @@
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
-    "concurrently": "^9.1.2",
-    "cypress": "14.2.0",
+    "concurrently": "^9.2.0",
+    "cypress": "14.5.3",
     "cypress-multi-reporters": "^2.0.5",
     "date-fns": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "mocha-junit-reporter": "^2.2.1",
-    "superagent": "^10.2.0"
+    "superagent": "^10.2.3"
   }
 }

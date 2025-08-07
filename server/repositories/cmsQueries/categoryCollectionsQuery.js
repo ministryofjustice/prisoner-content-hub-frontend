@@ -14,11 +14,12 @@ class CategoryCollectionsQuery {
     'published_at',
   ];
 
-  constructor(establishmentName, uuid, limit = 10, page = 1) {
+  constructor(establishmentName, uuid, language, limit = 10, page = 1) {
     this.establishmentName = establishmentName;
     this.uuid = uuid;
     this.limit = limit;
     this.page = page;
+    this.language = language;
     const queryWithoutOffset = new Query()
       .addFields('taxonomy_term--series', CategoryCollectionsQuery.#TILE_FIELDS)
       .addFields(
@@ -33,6 +34,7 @@ class CategoryCollectionsQuery {
   getKey() {
     return getCmsCacheKey(
       'categoryCollections',
+      this.language,
       this.establishmentName,
       this.uuid,
       `limit:${this.limit}`,
@@ -45,7 +47,7 @@ class CategoryCollectionsQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/taxonomy_term/moj_categories/${this.uuid}/sub_terms?${this.query}`;
+    return `/${this.language}/jsonapi/prison/${this.establishmentName}/taxonomy_term/moj_categories/${this.uuid}/sub_terms?${this.query}`;
   }
 
   transform(deserializedResponse, links) {

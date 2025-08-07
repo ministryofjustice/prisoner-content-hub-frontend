@@ -19,10 +19,11 @@ class HomepageUpdatesContentQuery {
     'published_at',
   ];
 
-  constructor(establishmentName, page, pageLimit) {
+  constructor(establishmentName, page, pageLimit, language) {
     this.establishmentName = establishmentName;
     this.page = page;
     this.limit = pageLimit;
+    this.language = language;
     const queryWithoutOffset = new Query()
       .addFields('node--page', HomepageUpdatesContentQuery.#TILE_FIELDS)
       .addFields(
@@ -55,7 +56,7 @@ class HomepageUpdatesContentQuery {
       )
       .addFilter(
         'published_at',
-        getOffsetUnixTime(90),
+        getOffsetUnixTime(90, new Date().setHours(0, 0, 0, 0)),
         '>=',
         'categories_group',
       )
@@ -65,7 +66,12 @@ class HomepageUpdatesContentQuery {
         '=',
         'series_group',
       )
-      .addFilter('published_at', getOffsetUnixTime(90), '>=', 'series_group')
+      .addFilter(
+        'published_at',
+        getOffsetUnixTime(90, new Date().setHours(0, 0, 0, 0)),
+        '>=',
+        'series_group',
+      )
       .addSort('published_at,created', 'DESC')
       .getQueryString();
 
@@ -75,6 +81,7 @@ class HomepageUpdatesContentQuery {
   getKey() {
     return getCmsCacheKey(
       'homepageUpdates',
+      this.language,
       this.establishmentName,
       `limit:${this.limit}`,
       `page:${this.page}`,
@@ -86,7 +93,7 @@ class HomepageUpdatesContentQuery {
   }
 
   path() {
-    return `/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
+    return `/${this.language}/jsonapi/prison/${this.establishmentName}/node?${this.query}`;
   }
 
   transform(items, links) {

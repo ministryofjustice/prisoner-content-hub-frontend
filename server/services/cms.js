@@ -67,20 +67,20 @@ class CmsService {
     this.#cache = cachingStrategy || new InMemoryCachingStrategy();
   }
 
-  async getTopic(establishmentName, uuid, location, page = 1) {
+  async getTopic(establishmentName, uuid, location, language, page = 1) {
     const result = await this.#cmsApi.getCache(
-      new TopicPageQuery(establishmentName, uuid, page),
+      new TopicPageQuery(establishmentName, uuid, language, page),
     );
     if (result?.title) return result;
     const tagResult = await this.#cmsApi.getCache(
-      new TopicHeaderPageQuery(location),
+      new TopicHeaderPageQuery(location, language),
     );
     return tagResult;
   }
 
-  async getSeries(establishmentName, uuid, location, page = 1) {
+  async getSeries(establishmentName, uuid, location, language, page = 1) {
     const result = await this.#cmsApi.getCache(
-      new SeriesPageQuery(establishmentName, uuid, page),
+      new SeriesPageQuery(establishmentName, uuid, page, language),
     );
     if (result?.title) return result;
     const tagResult = await this.#cmsApi.getCache(
@@ -89,20 +89,20 @@ class CmsService {
     return tagResult;
   }
 
-  async getCategory(establishmentName, uuid) {
+  async getCategory(establishmentName, uuid, language) {
     const [[categoryData, categoryContent = []], categorySeries] =
       await Promise.all([
         this.#cmsApi
-          .getCache(new CategoryPageQuery(establishmentName, uuid))
+          .getCache(new CategoryPageQuery(establishmentName, uuid, language))
           .then(async data => {
             if (!(data?.breadcrumbs?.length >= 1)) return [data];
             const rawCategoryContent = await this.#cmsApi.getCache(
-              new CategoryContentQuery(establishmentName, uuid, 40),
+              new CategoryContentQuery(establishmentName, uuid, language, 40),
             );
             return [data, rawCategoryContent];
           }),
         this.#cmsApi.getCache(
-          new CategoryCollectionsQuery(establishmentName, uuid, 40),
+          new CategoryCollectionsQuery(establishmentName, uuid, language, 40),
         ),
       ]);
     return {
@@ -112,15 +112,21 @@ class CmsService {
     };
   }
 
-  async getCategoryPage(establishmentName, uuid, page, catType) {
+  async getCategoryPage(establishmentName, uuid, page, catType, language) {
     switch (catType) {
       case 'series':
         return this.#cmsApi.getCache(
-          new CategoryCollectionsQuery(establishmentName, uuid, 40, page),
+          new CategoryCollectionsQuery(
+            establishmentName,
+            uuid,
+            language,
+            40,
+            page,
+          ),
         );
       case 'other':
         return this.#cmsApi.getCache(
-          new CategoryContentQuery(establishmentName, uuid, 40, page),
+          new CategoryContentQuery(establishmentName, uuid, language, 40, page),
         );
       default:
         throw new Error(
@@ -134,35 +140,55 @@ class CmsService {
     return this.#cmsApi.get(new LinkPageQuery(location));
   }
 
-  async getTag(establishmentName, id) {
+  async getTag(establishmentName, id, language) {
     const lookupData = await this.#cmsApi.lookupTag(establishmentName, id);
-    const { type, uuid, location } = lookupData;
+    const { type, uuid } = lookupData;
+    let { location } = lookupData;
+
+    if (language !== 'en') {
+      location = location.replace('/en/', `/${language}/`);
+    }
+
     switch (type) {
       case 'taxonomy_term--topics':
-        return this.getTopic(establishmentName, uuid, location);
+        return this.getTopic(establishmentName, uuid, location, language);
       case 'taxonomy_term--series':
-        return this.getSeries(establishmentName, uuid, location);
+        return this.getSeries(establishmentName, uuid, location, language);
       case 'taxonomy_term--moj_categories':
-        return this.getCategory(establishmentName, uuid);
+        return this.getCategory(establishmentName, uuid, language);
       default:
         throw new Error(`Unknown tag type: ${type} with content id: ${id}`);
     }
   }
 
-  async getPage(establishmentName, id, page, catType) {
+  async getPage(establishmentName, id, page, catType, language) {
     const lookupData = await this.#cmsApi.lookupTag(establishmentName, id);
     const { type, uuid, location } = lookupData;
     switch (type) {
       case 'taxonomy_term--topics':
-        return this.getTopic(establishmentName, uuid, location, page).then(
-          ({ hubContentData }) => hubContentData,
-        );
+        return this.getTopic(
+          establishmentName,
+          uuid,
+          location,
+          language,
+          page,
+        ).then(({ hubContentData }) => hubContentData);
       case 'taxonomy_term--series':
-        return this.getSeries(establishmentName, uuid, location, page).then(
-          ({ hubContentData }) => hubContentData,
-        );
+        return this.getSeries(
+          establishmentName,
+          uuid,
+          location,
+          language,
+          page,
+        ).then(({ hubContentData }) => hubContentData);
       case 'taxonomy_term--moj_categories':
-        return this.getCategoryPage(establishmentName, uuid, page, catType);
+        return this.getCategoryPage(
+          establishmentName,
+          uuid,
+          page,
+          catType,
+          language,
+        );
       default:
         throw new Error(`Unknown tag type: ${type} with content id: ${id}`);
     }
@@ -178,11 +204,15 @@ class CmsService {
     return suggestions;
   }
 
-  async getContent(establishmentName, id) {
-    const { type, location } = await this.#cmsApi.lookupContent(
-      establishmentName,
-      id,
-    );
+  async getContent(establishmentName, id, language) {
+    const lookupData = await this.#cmsApi.lookupContent(establishmentName, id);
+
+    const { type } = lookupData;
+    let { location } = lookupData;
+
+    if (language !== 'en') {
+      location = location.replace('/en/', `/${language}/`);
+    }
 
     switch (type) {
       case 'node--page':
@@ -217,27 +247,37 @@ class CmsService {
     };
   }
 
-  async getTopics(establishmentName) {
-    return this.#cmsApi.getCache(new TopicsQuery(establishmentName));
+  async getTopics(establishmentName, language) {
+    return this.#cmsApi.getCache(new TopicsQuery(establishmentName, language));
   }
 
-  async getHomepageContent(establishmentName) {
+  async getHomepageContent(establishmentName, language) {
     const homepageContent = await this.#cmsApi.getCache(
-      new HomepageContentQuery(establishmentName),
+      new HomepageContentQuery(establishmentName, language),
     );
     return homepageContent[0];
   }
 
-  async getUpdatesContent(establishmentName, page = 1, pageLimit = 5) {
+  async getUpdatesContent(
+    establishmentName,
+    language,
+    page = 1,
+    pageLimit = 5,
+  ) {
     const updatesContent = await this.#cmsApi.getCache(
-      new HomepageUpdatesContentQuery(establishmentName, page, pageLimit),
+      new HomepageUpdatesContentQuery(
+        establishmentName,
+        page,
+        pageLimit,
+        language,
+      ),
     );
     return updatesContent;
   }
 
-  async getExploreContent(establishmentName) {
+  async getExploreContent(establishmentName, language) {
     const exploreContent = await this.#cmsApi.getCache(
-      new ExploreContentQuery(establishmentName),
+      new ExploreContentQuery(establishmentName, language),
     );
     return exploreContent;
   }
@@ -258,11 +298,30 @@ class CmsService {
     );
   }
 
-  async getPrimaryNavigation(establishmentName) {
-    return this.#cmsApi.getCache(new PrimaryNavigationQuery(establishmentName));
+  async getPrimaryNavigation(establishmentName, language) {
+    const primaryNavigation = await this.#cmsApi.getCache(
+      new PrimaryNavigationQuery(establishmentName, language),
+    );
+    primaryNavigation.forEach((item, index) => {
+      const languageCodeRegex = /^\/[a-z]{2}\//;
+      if (languageCodeRegex.test(item.href)) {
+        primaryNavigation[index].href = item.href.substring(3);
+      }
+      const untranslatedPrefix = '/taxonomy/term/';
+      if (primaryNavigation[index].href.startsWith(untranslatedPrefix)) {
+        primaryNavigation[index].href =
+          `/tags/${primaryNavigation[index].href.substring(untranslatedPrefix.length)}`;
+      }
+    });
+    return primaryNavigation;
   }
 
-  async getRecentlyAddedContent(establishmentName, page = 1, pageLimit = 4) {
+  async getRecentlyAddedContent(
+    establishmentName,
+    language,
+    page = 1,
+    pageLimit = 4,
+  ) {
     const timeStamp = getOffsetUnixTime(14);
 
     const recentlyAddedContent = await this.#cmsApi.getCache(
@@ -271,23 +330,24 @@ class CmsService {
         page,
         pageLimit,
         timeStamp,
+        language,
       ),
     );
 
     return recentlyAddedContent;
   }
 
-  async getRecentlyAddedHomepageContent(establishmentName) {
+  async getRecentlyAddedHomepageContent(establishmentName, language) {
     const RecentlyAddedHomepageContent = await this.#cmsApi.getCache(
-      new RecentlyAddedHomepageContentQuery(establishmentName),
+      new RecentlyAddedHomepageContentQuery(establishmentName, language),
     );
 
     return RecentlyAddedHomepageContent;
   }
 
-  async getUrgentBanners(establishmentName) {
+  async getUrgentBanners(establishmentName, language) {
     const urgentBanner = await this.#cmsApi
-      .getCache(new UrgentBannerQuery(establishmentName))
+      .getCache(new UrgentBannerQuery(establishmentName, language))
       .then(res => res.filter(isUnpublished));
     return urgentBanner;
   }

@@ -6,6 +6,7 @@ const createHomepageRouter = ({ cmsService }) => {
   router.get('/', async (req, res, next) => {
     try {
       const { establishmentName } = req.session;
+      const { currentLng } = res.locals;
 
       if (!establishmentName) {
         throw new Error('Could not determine establishment!');
@@ -17,10 +18,13 @@ const createHomepageRouter = ({ cmsService }) => {
         exploreContent,
         { largeUpdateTileDefault, updatesContent, isLastPage },
       ] = await Promise.all([
-        cmsService.getHomepageContent(establishmentName),
-        cmsService.getRecentlyAddedHomepageContent(establishmentName),
-        cmsService.getExploreContent(establishmentName),
-        cmsService.getUpdatesContent(establishmentName),
+        cmsService.getHomepageContent(establishmentName, currentLng),
+        cmsService.getRecentlyAddedHomepageContent(
+          establishmentName,
+          currentLng,
+        ),
+        cmsService.getExploreContent(establishmentName, currentLng),
+        cmsService.getUpdatesContent(establishmentName, currentLng),
       ]);
       const useLargeUpdateTile = Boolean(largeUpdateTileSpecified?.contentUrl);
 

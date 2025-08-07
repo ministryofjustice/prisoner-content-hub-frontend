@@ -1,11 +1,11 @@
 const { TopicsQuery } = require('../topicsQuery');
 
 describe('Topics query', () => {
-  const query = new TopicsQuery('berwyn');
+  const query = new TopicsQuery('berwyn', 'en');
   describe('path', () => {
     it('should create correct path', async () => {
       expect(query.path()).toStrictEqual(
-        '/jsonapi/prison/berwyn/taxonomy_term?filter%5Bvid.meta.drupal_internal__target_id%5D=topics&page%5Blimit%5D=100&sort=name&fields%5Btaxonomy_term--topics%5D=drupal_internal__tid%2Cname',
+        '/en/jsonapi/prison/berwyn/taxonomy_term?filter%5Bvid.meta.drupal_internal__target_id%5D=topics&page%5Blimit%5D=100&sort=name&fields%5Btaxonomy_term--topics%5D=drupal_internal__tid%2Cname',
       );
     });
   });
