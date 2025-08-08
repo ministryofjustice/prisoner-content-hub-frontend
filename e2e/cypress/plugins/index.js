@@ -26,7 +26,6 @@ module.exports = (on, config) => {
     ...incentivesApi,
     ...drupal,
     stubPrisonerSignIn: () => Promise.all([auth.stubClientCredentialsToken()]),
-
     reset: () => resetStubs(),
   });
 };
