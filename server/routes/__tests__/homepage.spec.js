@@ -177,7 +177,7 @@ describe('GET /', () => {
         };
         next();
       });
-      app.use(['^/*'], retrieveTopicList(cmsService));
+      app.use(['/{*splat}'], retrieveTopicList(cmsService));
       app.use(router);
       app.use(consoleLogError);
       establishmentPersonalisationToggle.mockReturnValue(true);

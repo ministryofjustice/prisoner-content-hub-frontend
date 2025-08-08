@@ -24,13 +24,13 @@ module.exports = (
 
   router.use(
     [
-      '^/$',
+      '/',
       '/content',
       '/npr',
       '/tags',
       '/topics',
       '/games',
-      '^/search/?$',
+      '/search{/}',
       '/recently-added',
       '/updates',
     ],
@@ -76,7 +76,7 @@ module.exports = (
 
   router.use('/updates', createUpdatesContentRouter({ cmsService }));
 
-  router.use('*', (req, res) => {
+  router.use('*splat', (req, res) => {
     res.status(404);
     res.render('pages/404');
   });
