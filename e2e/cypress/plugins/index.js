@@ -1,5 +1,4 @@
 const auth = require('../mockApis/auth');
-const prisonApi = require('../mockApis/prisonApi');
 const incentivesApi = require('../mockApis/incentivesApi');
 const drupal = require('../mockApis/drupal');
 const { resetStubs } = require('../mockApis/wiremock');
@@ -24,14 +23,9 @@ module.exports = (on, config) => {
 
   on('task', {
     ...auth,
-    ...prisonApi,
     ...incentivesApi,
     ...drupal,
-    stubPrisonerSignIn: () =>
-      Promise.all([
-        auth.stubClientCredentialsToken(),
-        prisonApi.stubOffenderDetails(),
-      ]),
+    stubPrisonerSignIn: () => Promise.all([auth.stubClientCredentialsToken()]),
 
     reset: () => resetStubs(),
   });
