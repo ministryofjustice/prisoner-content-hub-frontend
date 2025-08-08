@@ -39,7 +39,7 @@
   "dependencies": {
     "@ministryofjustice/frontend": "^5.1.5",
     "@sentry/node": "^9.44.0",
-    "applicationinsights": "^2.9.7",
+    "applicationinsights": "^3.9.0",
     "axios": "^1.11.0",
     "body-parser": "^2.2.0",
     "bunyan": "^1.8.15",
