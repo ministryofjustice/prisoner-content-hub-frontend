@@ -11,7 +11,7 @@ const createGamesRouter = () => {
     postscript: false,
   };
 
-  router.get('*', (req, res, next) => {
+  router.get('*splat', (req, res, next) => {
     res.locals.data = { contentType: 'games' };
     next();
   });
