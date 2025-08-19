@@ -517,9 +517,9 @@ function bindClick(selectors, double) {
       var dataValue = dataParts[1].replace(replaceNonAlpha, '');
 
       if (dataName === 'played') {
-        $(actualSelector).each(function() {
+        $(actualSelector.toString()).each(function() {
           if ($(this).data(dataName) === dataValue) {
-            $(selector).on(eventType, select);
+            $(selector.toString()).on(eventType, select);
             doBind = false;
             return false;
           }
@@ -527,7 +527,7 @@ function bindClick(selectors, double) {
       }
     }
     if (doBind) {
-      $(selector).on(eventType, select);
+      $(selector.toString()).on(eventType, select);
     }
   });
 }
