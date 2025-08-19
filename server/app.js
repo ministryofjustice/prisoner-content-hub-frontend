@@ -81,7 +81,7 @@ const createApp = services => {
           defaultSrc: ["'self'"],
           scriptSrc: ["'self'", "'unsafe-inline'", 'www.googletagmanager.com'],
           imgSrc: ["'self'", '*.amazonaws.com'],
-          connectSrc: ['*.google-analytics.com'],
+          connectSrc: ["'self'", '*.google-analytics.com'],
           styleSrc: ["'self'", "'unsafe-inline'"],
         },
       },
