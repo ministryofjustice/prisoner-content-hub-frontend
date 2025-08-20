@@ -517,9 +517,9 @@ function bindClick(selectors, double) {
       var dataValue = dataParts[1].replace(replaceNonAlpha, '');
 
       if (dataName === 'played') {
-        $(actualSelector.toString()).each(function() {
+        $(actualSelector).each(function() {
           if ($(this).data(dataName) === dataValue) {
-            $(selector.toString()).on(eventType, select);
+            $(selector).on(eventType, select);
             doBind = false;
             return false;
           }
@@ -527,7 +527,7 @@ function bindClick(selectors, double) {
       }
     }
     if (doBind) {
-      $(selector.toString()).on(eventType, select);
+      $(selector).on(eventType, select);
     }
   });
 }
@@ -585,12 +585,19 @@ function select(event) {
     lastEventTime = time; // cache timestamp
   }
 
+  var suits = ['spade', 'heart', 'diamond', 'club'];
+
   // get variables
   var $e = $(this);
   var rank = $e.attr('data-rank');//e.dataset.rank; // get rank attribute
-  var suit = $e.attr('data-suit');//e.dataset.suit; // get suit attribute
+  var suit = String($e.attr('data-suit'));//e.dataset.suit; // get suit attribute
   var pile = $e.attr('data-pile');//e.dataset.pile; // get pile attribute
   var action = $e.attr('data-action');//e.dataset.action; // get action attribute
+
+  // ensure suit is valid
+  if (!suits.includes(suit)) {
+    return false;
+  }
 
   // create card array
   if (rank && suit) var card = [rank, suit];
