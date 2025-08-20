@@ -585,19 +585,19 @@ function select(event) {
     lastEventTime = time; // cache timestamp
   }
 
-  var suits = ['spade', 'heart', 'diamond', 'club'];
+  var suits = {
+    spade: 'spade',
+    heart: 'heart',
+    diamond: 'diamond',
+    club: 'club',
+  };
 
   // get variables
   var $e = $(this);
   var rank = $e.attr('data-rank');//e.dataset.rank; // get rank attribute
-  var suit = String($e.attr('data-suit'));//e.dataset.suit; // get suit attribute
+  var suit = suits[$e.attr('data-suit')];//e.dataset.suit; // get suit attribute
   var pile = $e.attr('data-pile');//e.dataset.pile; // get pile attribute
   var action = $e.attr('data-action');//e.dataset.action; // get action attribute
-
-  // ensure suit is valid
-  if (!suits.includes(suit)) {
-    return false;
-  }
 
   // create card array
   if (rank && suit) var card = [rank, suit];
