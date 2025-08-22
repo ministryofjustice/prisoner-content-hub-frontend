@@ -67,14 +67,15 @@
     "pg": "^8.16.3",
     "ramda": "^0.31.3",
     "redis": "^4.7.1",
-    "video.js": "^8.23.3"
+    "video.js": "^8.23.3",
+    "zod": "^4.0.17"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.28.0",
     "cheerio": "^1.1.2",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^9.1.2",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-cypress": "^3.6.0",
     "eslint-plugin-import": "^2.32.0",
     "husky": "^9.1.7",
