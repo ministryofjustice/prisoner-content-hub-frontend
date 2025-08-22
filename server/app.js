@@ -75,7 +75,16 @@ const createApp = services => {
 
   app.use(
     helmet({
-      contentSecurityPolicy: false,
+      contentSecurityPolicy: {
+        useDefaults: false,
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'", "'unsafe-inline'", 'www.googletagmanager.com'],
+          imgSrc: ["'self'", '*.amazonaws.com'],
+          connectSrc: ["'self'", '*.google-analytics.com'],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+        },
+      },
       crossOriginEmbedderPolicy: false,
       referrerPolicy: { policy: ['no-referrer', 'same-origin'] },
     }),
