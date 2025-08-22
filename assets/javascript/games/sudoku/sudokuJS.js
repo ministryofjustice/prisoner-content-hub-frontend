@@ -311,12 +311,11 @@
 		/* buildCandidatesString
 		 * -----------------------------------------------------------------*/
 		var buildCandidatesString = function(candidatesList){
-			var s="";
+			var s = "";
 			for(var i=1; i<boardSize+1; i++){
-				if(contains(candidatesList,i))
-					s+= "<div>"+i+"</div> ";
-				else
-					s+= "<div>&nbsp;</div> ";
+        var div = document.createElement("div");
+        div.textContent = contains(candidatesList,i) ? i : '&nbsp;';
+				s+= div.outerHTML;
 			}
 			return s;
 		};
