@@ -53,6 +53,9 @@ COPY --from=builder --chown=appuser:appgroup \
         ./
 
 COPY --from=builder --chown=appuser:appgroup \
+        /app/build-info.json ./dist/build-info.json
+
+COPY --from=builder --chown=appuser:appgroup \
         /app/server ./server
 
 COPY --from=builder --chown=appuser:appgroup \

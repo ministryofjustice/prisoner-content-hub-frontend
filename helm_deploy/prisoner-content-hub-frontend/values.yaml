@@ -1,4 +1,4 @@
-nameOverride: ""
+nameOverride: prisoner-content-hub-frontend
 fullnameOverride: ""
 
 replicaCount: 3
