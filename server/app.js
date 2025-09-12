@@ -10,6 +10,7 @@ const Sentry = require('@sentry/node');
 const i18next = require('i18next');
 const middleware = require('i18next-http-middleware');
 const filesystem = require('i18next-fs-backend');
+const getRequiredEnv = require('../utils/index');
 const nunjucksSetup = require('./utils/nunjucksSetup');
 
 const { createHealthRouter } = require('./routes/health');
@@ -69,6 +70,8 @@ const createApp = services => {
     }),
   );
 
+  const s3Address = `${getRequiredEnv('FLYSYSTEM_S3_BUCKET')}.s3.${getRequiredEnv('FLYSYSTEM_S3_REGION')}.amazonaws.com`;
+
   // Secure code best practice - see:
   // 1. https://expressjs.com/en/advanced/best-practice-security.html,
   // 2. https://www.npmjs.com/package/helmet
@@ -80,9 +83,10 @@ const createApp = services => {
         directives: {
           defaultSrc: ["'self'"],
           scriptSrc: ["'self'", "'unsafe-inline'", 'www.googletagmanager.com'],
-          imgSrc: ["'self'", '*.amazonaws.com'],
+          imgSrc: ["'self'", s3Address, 'www.googletagmanager.com'],
           connectSrc: ["'self'", '*.google-analytics.com'],
           styleSrc: ["'self'", "'unsafe-inline'"],
+          mediaSrc: [s3Address],
         },
       },
       crossOriginEmbedderPolicy: false,

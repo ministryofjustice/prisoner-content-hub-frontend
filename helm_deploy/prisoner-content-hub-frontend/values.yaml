@@ -24,6 +24,9 @@ application:
   contentConfigMapName: prisoner-content-hub-drupal
   nprConfigMapName: npr-live
   openSearchSecretName: pfs-opensearch-proxy-url
+  s3:
+    secretName: drupal-s3-2
+    region: eu-west-2
 
 securityContext:
   capabilities:

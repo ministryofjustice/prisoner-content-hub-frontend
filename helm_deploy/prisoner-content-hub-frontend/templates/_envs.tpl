@@ -97,4 +97,14 @@ env:
         secretKeyRef:
           name: prisoner-feedback-rds
           key: rds_instance_address
+
+    - name: FLYSYSTEM_S3_REGION
+      value: {{ .Values.application.s3.region }}
+
+    - name: FLYSYSTEM_S3_BUCKET
+      valueFrom:
+        secretKeyRef:
+          name: {{ .Values.application.s3.secretName }}
+          key: bucket_name
+
 {{- end -}}
