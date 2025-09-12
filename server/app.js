@@ -10,7 +10,7 @@ const Sentry = require('@sentry/node');
 const i18next = require('i18next');
 const middleware = require('i18next-http-middleware');
 const filesystem = require('i18next-fs-backend');
-const getRequiredEnv = require('../utils/index');
+const { getRequiredEnv } = require('../utils/index');
 const nunjucksSetup = require('./utils/nunjucksSetup');
 
 const { createHealthRouter } = require('./routes/health');
