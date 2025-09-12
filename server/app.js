@@ -87,6 +87,7 @@ const createApp = services => {
           connectSrc: ["'self'", '*.google-analytics.com'],
           styleSrc: ["'self'", "'unsafe-inline'"],
           mediaSrc: [s3Address],
+          fontSrc: ["'self'", 'data:'],
         },
       },
       crossOriginEmbedderPolicy: false,
