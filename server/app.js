@@ -70,7 +70,10 @@ const createApp = services => {
     }),
   );
 
-  const s3Address = `${getRequiredEnv('FLYSYSTEM_S3_BUCKET')}.s3.${getRequiredEnv('FLYSYSTEM_S3_REGION')}.amazonaws.com`;
+  const s3Bucket = getRequiredEnv('S3_BUCKET', '');
+  const s3Region = `${getRequiredEnv('S3_REGION', 'aws-west-2')}.s3.${getRequiredEnv('S3_REGION')}.amazonaws.com`;
+  const s3Cname = getRequiredEnv('S3_CNAME', '');
+  const s3Address = s3Cname || `${s3Bucket}.s3.${s3Region}.amazonaws.com`;
 
   // Secure code best practice - see:
   // 1. https://expressjs.com/en/advanced/best-practice-security.html,
