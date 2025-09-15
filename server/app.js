@@ -71,7 +71,7 @@ const createApp = services => {
   );
 
   const s3Bucket = getRequiredEnv('S3_BUCKET', '');
-  const s3Region = `${getRequiredEnv('S3_REGION', 'aws-west-2')}.s3.${getRequiredEnv('S3_REGION')}.amazonaws.com`;
+  const s3Region = getRequiredEnv('S3_REGION', 'aws-west-2');
   const s3Cname = getRequiredEnv('S3_CNAME', '');
   const s3Address = s3Cname || `${s3Bucket}.s3.${s3Region}.amazonaws.com`;
 
