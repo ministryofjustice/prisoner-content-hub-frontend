@@ -89,7 +89,7 @@ const createApp = services => {
           imgSrc: ["'self'", s3Address, 'www.googletagmanager.com'],
           connectSrc: ["'self'", '*.google-analytics.com'],
           styleSrc: ["'self'", "'unsafe-inline'"],
-          mediaSrc: [s3Address],
+          mediaSrc: ["'self'", s3Address],
           fontSrc: ["'self'", 'data:'],
         },
       },
