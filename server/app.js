@@ -75,12 +75,9 @@ const createApp = services => {
   const s3Cname = getRequiredEnv('S3_CNAME', '');
   const s3Address = s3Cname || `${s3Bucket}.s3.${s3Region}.amazonaws.com`;
   const nprStream = getRequiredEnv('NPR_STREAM', '');
-  let nprLiveHostname = '';
-  if (nprStream) {
-    nprLiveHostname = new URL(nprStream).host;
-  }
+  const nprLiveHostname = nprStream ? new URL(nprStream).host : '';
   const mediaSources = ["'self'", s3Address];
-  if (nprStream && nprLiveHostname) {
+  if (nprLiveHostname) {
     mediaSources.push(nprLiveHostname);
   }
 
