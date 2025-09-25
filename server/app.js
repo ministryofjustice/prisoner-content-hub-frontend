@@ -74,7 +74,15 @@ const createApp = services => {
   const s3Region = getRequiredEnv('S3_REGION', 'aws-west-2');
   const s3Cname = getRequiredEnv('S3_CNAME', '');
   const s3Address = s3Cname || `${s3Bucket}.s3.${s3Region}.amazonaws.com`;
-  const nprLiveHostname = new URL(getRequiredEnv('NPR_STREAM', '')).host;
+  const nprStream = getRequiredEnv('NPR_STREAM', '');
+  let nprLiveHostname = '';
+  if (nprStream) {
+    nprLiveHostname = new URL(nprStream).host;
+  }
+  const mediaSources = ["'self'", s3Address];
+  if (nprStream && nprLiveHostname) {
+    mediaSources.push(nprLiveHostname);
+  }
 
   // Secure code best practice - see:
   // 1. https://expressjs.com/en/advanced/best-practice-security.html,
@@ -90,7 +98,7 @@ const createApp = services => {
           imgSrc: ["'self'", s3Address, 'www.googletagmanager.com'],
           connectSrc: ["'self'", '*.google-analytics.com'],
           styleSrc: ["'self'", "'unsafe-inline'"],
-          mediaSrc: ["'self'", s3Address, nprLiveHostname],
+          mediaSrc: mediaSources,
           fontSrc: ["'self'", 'data:'],
         },
       },
