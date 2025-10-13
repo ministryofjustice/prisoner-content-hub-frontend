@@ -10,6 +10,7 @@ const Sentry = require('@sentry/node');
 const i18next = require('i18next');
 const middleware = require('i18next-http-middleware');
 const filesystem = require('i18next-fs-backend');
+const { getRequiredEnv } = require('../utils/index');
 const nunjucksSetup = require('./utils/nunjucksSetup');
 
 const { createHealthRouter } = require('./routes/health');
@@ -69,13 +70,35 @@ const createApp = services => {
     }),
   );
 
+  const s3Bucket = getRequiredEnv('S3_BUCKET', '');
+  const s3Region = getRequiredEnv('S3_REGION', 'aws-west-2');
+  const s3Cname = getRequiredEnv('S3_CNAME', '');
+  const s3Address = s3Cname || `${s3Bucket}.s3.${s3Region}.amazonaws.com`;
+  const nprStream = getRequiredEnv('NPR_STREAM', '');
+  const nprLiveHostname = nprStream ? new URL(nprStream).host : '';
+  const mediaSources = ["'self'", s3Address];
+  if (nprLiveHostname) {
+    mediaSources.push(nprLiveHostname);
+  }
+
   // Secure code best practice - see:
   // 1. https://expressjs.com/en/advanced/best-practice-security.html,
   // 2. https://www.npmjs.com/package/helmet
 
   app.use(
     helmet({
-      contentSecurityPolicy: false,
+      contentSecurityPolicy: {
+        useDefaults: false,
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'", "'unsafe-inline'", 'www.googletagmanager.com'],
+          imgSrc: ["'self'", s3Address, 'www.googletagmanager.com'],
+          connectSrc: ["'self'", '*.google-analytics.com'],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          mediaSrc: mediaSources,
+          fontSrc: ["'self'", 'data:'],
+        },
+      },
       crossOriginEmbedderPolicy: false,
       referrerPolicy: { policy: ['no-referrer', 'same-origin'] },
     }),

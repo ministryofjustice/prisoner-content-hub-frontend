@@ -1,4 +1,5 @@
 const request = require('supertest');
+const { randomUUID } = require('crypto');
 const {
   testApp: { setupApp },
 } = require('../../../test/test-helpers');
@@ -18,6 +19,8 @@ const feedback = {
 };
 
 describe('POST /feedback', () => {
+  const feedbackId = randomUUID();
+  const feedbackUrl = `/feedback/${feedbackId}`;
   const feedbackService = { sendFeedback: jest.fn() };
   describe('/feedback', () => {
     let app;
@@ -29,7 +32,7 @@ describe('POST /feedback', () => {
 
     it('handles no feedback', () =>
       request(app)
-        .post('/feedback/1234-5678')
+        .post(feedbackUrl)
         .send({})
         .expect(200)
         .then(response => {
@@ -38,16 +41,25 @@ describe('POST /feedback', () => {
 
     it('returns no response', () =>
       request(app)
-        .post('/feedback/1234-5678')
+        .post(feedbackUrl)
         .send(feedback)
         .expect(200)
         .then(response => {
           expect(response.text).toBe('');
         }));
 
+    it('returns bad request if feedback id is invalid', () =>
+      request(app)
+        .post('/feedback/invalid-id')
+        .send(feedback)
+        .expect(400)
+        .then(response => {
+          expect(response.text).toBe('');
+        }));
+
     it('sends feedback', () =>
       request(app)
-        .post('/feedback/1234-5678')
+        .post(feedbackUrl)
         .send(feedback)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
@@ -58,7 +70,7 @@ describe('POST /feedback', () => {
             url: feedback.url,
             sessionId: 1234,
             establishment: 'BERWYN',
-            feedbackId: '1234-5678',
+            feedbackId,
             categories: feedback.categories,
             comment: feedback.comment,
             contentType: feedback.contentType,
@@ -71,14 +83,14 @@ describe('POST /feedback', () => {
 
     it('logs anon user', () =>
       request(app)
-        .post('/feedback/1234-5678')
+        .post(feedbackUrl)
         .send(feedback)
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
         .expect(200)
         .then(() => {
           expect(logger.info).toHaveBeenCalledWith(
-            "Prisoner 'anon' leaving feedback: 1234-5678",
+            `Prisoner 'anon' leaving feedback: ${feedbackId}`,
           );
         }));
   });
