@@ -1,8 +1,11 @@
 {
-  "*js": [
+  "*.js": [
+    "eslint"
+  ],
+  "!(e2e)/**/*.js": [
     "eslint"
   ],
   "**/*.+(js|jsx|json|css|scss|md)": [
-    "prettier --write",
+    "prettier --write"
   ]
 }

@@ -1,8 +1,8 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
-import { activity, appointment } from '../../mockApis/data';
-import { horizontalTableToObject } from './utils';
 import { format, addDays } from 'date-fns';
 import { cy } from 'date-fns/locale';
+import { activity, appointment } from '../../mockApis/data';
+import { horizontalTableToObject } from './utils';
 
 Given(
   'that with an {string} content hub url, I request {string} page',

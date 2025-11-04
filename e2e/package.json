@@ -1,15 +1,19 @@
 {
   "name": "e2e",
   "version": "1.0.0",
-  "description": "Cypress tests",
+  "description": "Playwright tests",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "run-cypress": "cypress open",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
     "run-server": "export $(cat test-local.env) && node ../server.js",
     "run-wiremock": "docker-compose up wiremock | sed 's/^[^|]*[^ ]* //'",
-    "start-ui": "concurrently --names \"CYPRESS,SERVER,WIREMOCK \" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run run-cypress\" \"npm run run-server\" \"npm run run-wiremock\"",
-    "start-ci": "docker-compose up --build --abort-on-container-exit --exit-code-from cypress"
+    "start-ui": "concurrently --names \"PLAYWRIGHT,SERVER,WIREMOCK \" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run test:ui\" \"npm run run-server\" \"npm run run-wiremock\"",
+    "start-ci": "docker-compose up --build --abort-on-container-exit --exit-code-from playwright",
+    "report": "playwright show-report",
+    "install-deps": "playwright install"
   },
   "engines": {
     "node": ">= 22",
@@ -18,12 +22,21 @@
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.56.1",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.9.2",
+    "@types/superagent": "^8.1.9",
+    "@typescript-eslint/eslint-plugin": "^8.46.3",
+    "@typescript-eslint/parser": "^8.46.3",
     "concurrently": "^9.2.0",
     "cypress": "14.5.4",
     "cypress-multi-reporters": "^2.0.5",
     "date-fns": "^4.1.0",
+    "eslint": "^9.39.1",
     "jsonwebtoken": "^9.0.2",
     "mocha-junit-reporter": "^2.2.1",
-    "superagent": "^10.2.3"
+    "superagent": "^10.2.3",
+    "typescript": "^5.9.3"
   }
 }

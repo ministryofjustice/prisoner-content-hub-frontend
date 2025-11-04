@@ -12,6 +12,8 @@ node_modules/*
 e2e/node_modules/*
 e2e/cypress/artifacts/
 e2e/cypress/downloads/
+e2e/test-results/
+e2e/playwright-report/
 .tmuxp.*
 .idea
 npm-debug.log
@@ -21,6 +23,8 @@ test-results.xml
 test-results/*
 build-info.json
 .env
+e2e/test-local.env
+e2e/test-ci.env
 yarn-error.log
 .eslintcache
 coverage/**

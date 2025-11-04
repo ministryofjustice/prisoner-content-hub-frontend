@@ -1,0 +1,83 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http://jsonapi.org/format/1.0/"
+        }
+      }
+    }
+  },
+  "data": [
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:0cd673a7-b9b4-4e64-99ee-25283f80726f",
+      "attributes": {
+        "title": "My prison",
+        "url": "/tags/1283"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:6e10cb18-aea6-4eaf-9075-8ff5d07f965a",
+      "attributes": {
+        "title": "Entertainment",
+        "url": "/tags/1282"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:c6ea22db-bc3d-4493-afc8-428826a4d1d0",
+      "attributes": {
+        "title": "Leaving",
+        "url": "/tags/1337"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:987c7c8f-693a-42d3-95ed-93239332e40e",
+      "attributes": {
+        "title": "News and events",
+        "url": "/tags/644"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:5d5755f7-f4b0-4f82-9912-6645b6bbae0e",
+      "attributes": {
+        "title": "Inspiration",
+        "url": "/tags/649"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:93ca6d3d-36c7-4742-831a-2951ac0fa019",
+      "attributes": {
+        "title": "Health",
+        "url": "/tags/1284"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:2800d67b-6db7-43fb-ba03-46a8279198bf",
+      "attributes": {
+        "title": "Sentence info",
+        "url": "/tags/1285"
+      }
+    },
+    {
+      "type": "menu_link_content--menu_link_content",
+      "id": "menu_link_content:620f67fa-2a67-4700-bf44-6be9d2d7b7b0",
+      "attributes": {
+        "title": "Learning and skills",
+        "url": "/tags/1341"
+      }
+    }
+  ],
+  "links": {
+    "self": {
+      "href": "https://mock-api.local/jsonapi/prison/felthamb/primary_navigation?fields%5Bmenu_link_content--menu_link_content%5D=id%2Ctitle%2Curl"
+    }
+  }
+}

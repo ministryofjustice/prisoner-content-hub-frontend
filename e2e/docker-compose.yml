@@ -33,17 +33,17 @@ services:
     env_file: 
       - "./test-ci.env"
 
-  cypress:
+  playwright:
     build: .
-    container_name: cypress
+    container_name: playwright
     networks:
       - prisoner-content-hub-etwoe
     depends_on:
       - web
       - wiremock
-    command: npx cypress run
+    command: npx playwright test
     environment:
-      - CYPRESS_baseUrl=http://content-hub.localhost:3000
+      - PLAYWRIGHT_baseURL=http://content-hub.localhost:3000
       - WIREMOCK_BASE_URL=http://wiremock:8080
 
 networks:
