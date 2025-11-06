@@ -11,8 +11,8 @@ const horizontalTableToObject = ({ rawTable }) => {
   );
 };
 
-const verticalTableToObject = ({ rawTable }) => {
-  return rawTable.reduce((arr, [key, ...rawValues]) => {
+const verticalTableToObject = ({ rawTable }) =>
+  rawTable.reduce((arr, [key, ...rawValues]) => {
     rawValues.forEach((rawValue, i) => {
       if (!arr[i]) arr[i] = {};
       const obj = arr[i];
@@ -25,7 +25,6 @@ const verticalTableToObject = ({ rawTable }) => {
     });
     return arr;
   }, []);
-};
 
 const daysFromNow = n => format(addDays(new Date(), n), 'yyyy-MM-dd');
 

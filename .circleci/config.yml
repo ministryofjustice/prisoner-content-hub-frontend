@@ -175,9 +175,9 @@ jobs:
       - store_test_results:
           path: e2e/test-results
       - store_artifacts:
-          path: e2e/cypress/artifacts/videos
+          path: e2e/test-results
       - store_artifacts:
-          path: e2e/cypress/artifacts/screenshots
+          path: e2e/playwright-report
 
   build_preview:
     executor:
