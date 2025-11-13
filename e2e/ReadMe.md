@@ -1,4 +1,8 @@
-# Migration from Cypress to Playwright
+# E2E Testing with Playwright
+
+> **Note**: Cypress has been deprecated and moved to `archive-cypress/`. This project now uses Playwright for all end-to-end testing.
+
+## Migration from Cypress to Playwright
 
 This document outlines the migration from Cypress to Playwright with TypeScript for the Digital Hub Frontend project.
 
@@ -6,7 +10,7 @@ This document outlines the migration from Cypress to Playwright with TypeScript 
 
 ### Test Framework
 
-- **From**: Cypress (JavaScript)
+- **From**: Cypress (JavaScript) - **DEPRECATED as of November 2025**
 - **To**: Playwright (TypeScript)
 
 ### Project Structure
@@ -303,6 +307,35 @@ Updated root ESLint configuration:
 - `drupalData/primaryNavigation.json`
 - `drupalData/browseAllTopics.json`
 - `drupalData/urgentBanners.json`
+
+## Cypress Deprecation
+
+Cypress has been deprecated as of **November 7, 2025** and moved to the `archive-cypress/` directory.
+
+### Why We Migrated
+
+- **Better TypeScript support**: Playwright has first-class TypeScript support
+- **Faster execution**: Playwright tests run faster with better parallelization
+- **Cross-browser testing**: More reliable testing across Chromium, Firefox, and WebKit
+- **Modern tooling**: Better documentation, active development, and modern API design
+- **API testing**: Superior capabilities for testing APIs alongside UI tests
+
+### Archived Cypress Files
+
+All Cypress-related files have been moved to `archive-cypress/`:
+
+- `archive-cypress/cypress/` - All Cypress test files and configurations
+- `archive-cypress/cypress.config.js` - Cypress configuration
+- `archive-cypress/README.md` - Documentation on restoration if needed
+
+### Restoring Cypress (Not Recommended)
+
+If you absolutely need to restore Cypress:
+
+1. Review `archive-cypress/README.md` for instructions
+2. Move files back from the archive folder
+3. Reinstall dependencies: `npm install cypress@14.5.4 cypress-multi-reporters@^2.0.5`
+4. Note: Cypress support is no longer maintained for this project
 
 ## Future Enhancements
 
