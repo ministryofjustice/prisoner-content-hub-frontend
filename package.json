@@ -73,7 +73,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.28.0",
     "cheerio": "^1.1.2",
-    "eslint": "^8.57.1",
+    "eslint": "^9.39.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
