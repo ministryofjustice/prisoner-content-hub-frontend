@@ -8,6 +8,8 @@ COPY tsconfig.json .
 ADD tests tests
 ADD utils utils
 ADD fixtures fixtures
+ADD stepDefinition stepDefinition
+ADD framework framework
 
 ENV CI=1
 RUN npm ci

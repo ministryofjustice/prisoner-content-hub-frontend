@@ -1,4 +1,4 @@
-import { test, expect } from '../../stepDefinintion/myPrisonSteps';
+import { test, expect } from '../../stepDefinition/myPrisonSteps';
 import { PRISONS } from '../../utils/prisons';
 
 // Test the My Prison page across all prison environments

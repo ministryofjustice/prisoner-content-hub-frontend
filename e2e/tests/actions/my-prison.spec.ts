@@ -1,4 +1,4 @@
-import { test, expect } from '../../stepDefinintion/myPrisonSteps';
+import { test, expect } from '../../stepDefinition/myPrisonSteps';
 
 test.describe('Feature: My Prison Page', () => {
   
