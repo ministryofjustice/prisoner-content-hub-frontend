@@ -22,9 +22,28 @@ services:
       prisoner-content-hub-etwoe:
         aliases:
           - content-hub.localhost
-          - wayland.content-hub.localhost
           - berwyn.content-hub.localhost
+          - bullingdon.content-hub.localhost
+          - cardiff.content-hub.localhost
+          - chelmsford.content-hub.localhost
+          - cookhamwood.content-hub.localhost
+          - erlestoke.content-hub.localhost
           - etwoe.content-hub.localhost
+          - felthama.content-hub.localhost
+          - felthamb.content-hub.localhost
+          - garth.content-hub.localhost
+          - lindholme.content-hub.localhost
+          - newhall.content-hub.localhost
+          - ranby.content-hub.localhost
+          - stokeheath.content-hub.localhost
+          - styal.content-hub.localhost
+          - swaleside.content-hub.localhost
+          - themount.content-hub.localhost
+          - thestudio.content-hub.localhost
+          - wayland.content-hub.localhost
+          - werrington.content-hub.localhost
+          - wetherby.content-hub.localhost
+          - woodhill.content-hub.localhost
     depends_on:
       - wiremock
     restart: always
@@ -49,9 +68,10 @@ services:
         condition: service_healthy
       wiremock:
         condition: service_started
-    command: npx playwright test
+    command: npx playwright test --grep "Feature:"
+    env_file:
+      - "./test-ci.env"
     environment:
-      - PLAYWRIGHT_baseURL=http://content-hub.localhost:3000
       - WIREMOCK_BASE_URL=http://wiremock:8080
 
 networks:

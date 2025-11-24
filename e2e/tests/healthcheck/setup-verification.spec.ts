@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { testSetup } from '../utils/test-setup';
+import { testSetup } from '../../utils/test-setup';
 
 test.describe('Playwright Setup Verification', () => {
   test.beforeEach(async () => {
