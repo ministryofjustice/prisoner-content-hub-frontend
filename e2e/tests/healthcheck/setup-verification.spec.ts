@@ -25,7 +25,7 @@ test.describe('Playwright Setup Verification', () => {
     const fs = require('fs');
     const path = require('path');
     
-    const fixturePath = path.join(__dirname, '../fixtures/example.json');
+    const fixturePath = path.join(__dirname, '../../fixtures/example.json');
     const fixtureExists = fs.existsSync(fixturePath);
     
     expect(fixtureExists).toBe(true);

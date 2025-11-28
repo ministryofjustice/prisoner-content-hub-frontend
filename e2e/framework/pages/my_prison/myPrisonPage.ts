@@ -12,7 +12,6 @@ export class MyPrisonPage {
     this.page = page;
     this.myPrisonNavLink = page.locator('a.moj-primary-navigation__link[href="/tags/1283"]');
     this.pageHeading = page.locator('h1#title.govuk-heading-l');
-    // Content can appear as tiles with data-featured-tile-id or in search results
     this.contentCards = page.locator('a[data-featured-tile-id], a[data-featured-id]');
     this.contentTiles = page.locator('.govuk-hub-contentTileSmall');
     this.searchInput = page.locator('input#search');

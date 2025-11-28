@@ -28,7 +28,7 @@ export function getPrisonByIdName(id: string) {
   return PRISONS.find(prison => prison.id === id);
 }
 
-export function getBaseURL(prisonId: PrisonId, port = 3000): string {
+export function getBaseURL(prisonId: PrisonId, port?: number): string {
   const prison = PRISONS.find(p => p.id === prisonId);
   if (!prison) {
     throw new Error(`Prison with id '${prisonId}' not found`);
@@ -36,6 +36,7 @@ export function getBaseURL(prisonId: PrisonId, port = 3000): string {
   
   const isCI = !!process.env.CI;
   const domain = isCI ? prison.url.replace('prisoner-content-hub.local', 'content-hub.localhost') : prison.url;
+  const portNumber = port ?? (process.env.PORT ? parseInt(process.env.PORT, 10) : 3000);
   
-  return `http://${domain}:${port}`;
+  return `http://${domain}:${portNumber}`;
 }
