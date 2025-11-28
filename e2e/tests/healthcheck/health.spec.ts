@@ -1,7 +1,7 @@
 import { test, expect, APIResponse } from '@playwright/test';
 import { testSetup } from '../../utils/test-setup';
 
-test.describe('Feature: Application Health Check', () => {
+test.describe('Feature: Application Health Check @healthcheck', () => {
   test.beforeEach(async () => {
     await testSetup.reset();
   });

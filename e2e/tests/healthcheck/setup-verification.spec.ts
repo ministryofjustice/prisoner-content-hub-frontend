@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { testSetup } from '../../utils/test-setup';
 
-test.describe('Playwright Setup Verification', () => {
+test.describe('Playwright Setup Verification @healthcheck', () => {
   test.beforeEach(async () => {
     await testSetup.reset();
   });
