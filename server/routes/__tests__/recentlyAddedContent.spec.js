@@ -4,7 +4,10 @@ const cheerio = require('cheerio');
 jest.mock('@sentry/node');
 
 const { createRecentlyAddedContentRouter } = require('../recentlyAdded');
-const { setupBasicApp } = require('../../../test/test-helpers');
+const {
+  setupBasicApp,
+  i18nextInitPromise,
+} = require('../../../test/test-helpers');
 
 describe('GET /recently-added', () => {
   let app;
@@ -23,6 +26,10 @@ describe('GET /recently-added', () => {
 
   let relatedContent;
   let data;
+
+  beforeAll(async () => {
+    await i18nextInitPromise;
+  });
 
   beforeEach(() => {
     jest.clearAllMocks();
