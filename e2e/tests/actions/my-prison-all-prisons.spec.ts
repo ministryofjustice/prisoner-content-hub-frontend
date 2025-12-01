@@ -1,5 +1,6 @@
 import { test, expect } from '../../stepDefinition/myPrisonSteps';
 import { PRISONS } from '../../utils/prisons';
+import { testSetup } from '../../utils/test-setup';
 
 // Test the My Prison page across all prison environments
 for (const prison of PRISONS) {
@@ -12,6 +13,11 @@ for (const prison of PRISONS) {
         ? prison.url.replace('prisoner-content-hub.local', 'content-hub.localhost')
         : prison.url;
       baseURL = `http://${domain}:3000`;
+    });
+
+    test.beforeEach(async () => {
+      // Reset wiremock state before each test for fresh session
+      await testSetup.reset();
     });
 
     test(`Scenario: Navigate to My Prison page directly at ${prison.name}`, async ({ myPrisonPage, page }) => {

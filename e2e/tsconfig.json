@@ -16,6 +16,9 @@
     "tests/**/*",
     "fixtures/**/*",
     "utils/**/*",
+    "step-definitions/**/*",
+    "framework/**/*",
+    "features/**/*",
     "playwright.config.ts"
   ],
   "exclude": ["node_modules", "dist", "cypress"]
