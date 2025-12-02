@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { testSetup } from '../utils/test-setup';
+import { testSetup } from '../../utils/test-setup';
 
-test.describe('Playwright Setup Verification', () => {
+test.describe('Playwright Setup Verification @healthcheck', () => {
   test.beforeEach(async () => {
     await testSetup.reset();
   });
@@ -25,7 +25,7 @@ test.describe('Playwright Setup Verification', () => {
     const fs = require('fs');
     const path = require('path');
     
-    const fixturePath = path.join(__dirname, '../fixtures/example.json');
+    const fixturePath = path.join(__dirname, '../../fixtures/example.json');
     const fixtureExists = fs.existsSync(fixturePath);
     
     expect(fixtureExists).toBe(true);
