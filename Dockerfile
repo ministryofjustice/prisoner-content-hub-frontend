@@ -5,8 +5,8 @@ ARG BUILD_NUMBER
 ARG GIT_REF
 ARG GIT_DATE
 
-RUN apt-get update && \
-    apt-get upgrade -y
+RUN apk update && \
+    apk upgrade -y
 
 WORKDIR /app
 
@@ -33,10 +33,10 @@ RUN npm run setup --no-audit --ignore-scripts && \
 FROM node:24-alpine
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk update && \
+    apk upgrade -y && \
+    apk autoremove -y && \
+    rm -rf /var/lib/apk/lists/*
 
 RUN addgroup --gid 2000 --system appgroup && \
     adduser --uid 2000 --system appuser --gid 2000
