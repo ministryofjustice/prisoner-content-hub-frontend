@@ -47,7 +47,7 @@ module.exports = {
   ],
   sites: {
     berwyn: {
-      languages: ['en'],
+      languages: ['en', 'cy'],
     },
     bullingdon: {
       languages: ['en'],
