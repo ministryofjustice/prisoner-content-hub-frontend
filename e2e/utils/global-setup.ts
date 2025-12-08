@@ -1,10 +1,19 @@
+import { testSetup } from './test-setup';
+
 async function globalSetup() {
   console.log('Starting global setup for Playwright tests');
   
-  // You can perform any global setup here, such as:
-  // - Starting external services
-  // - Database setup
-  // - Authentication setup
+  try {
+    // Reset wiremock to ensure clean state
+    console.log('Resetting Wiremock...');
+    await testSetup.reset();
+    console.log('Wiremock reset complete');
+    
+    console.log('Global setup completed successfully');
+  } catch (error) {
+    console.error('Global setup failed:', error);
+    throw error;
+  }
   
   return;
 }
