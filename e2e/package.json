@@ -25,6 +25,7 @@
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.3",
     "@playwright/test": "^1.56.1",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.9.2",
