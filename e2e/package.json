@@ -14,7 +14,8 @@
     "start-ui": "concurrently --names \"PLAYWRIGHT,SERVER,WIREMOCK \" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run test:ui\" \"npm run run-server\" \"npm run run-wiremock\"",
     "start-ci": "docker-compose up --build --abort-on-container-exit --exit-code-from playwright",
     "report": "playwright show-report",
-    "install-deps": "playwright install"
+    "install-deps": "playwright install",
+    "setup": "npm ci && hmpps-npm-script-run-allowlist"
   },
   "engines": {
     "node": ">= 22",
