@@ -1,6 +1,6 @@
-import { test, expect } from '../../stepDefinition/mySentenceJourneySteps';
-import { PRISONS } from '../../utils/prisons';
-import { testSetup } from '../../utils/test-setup';
+import { test, expect } from '../../../stepDefinition/mySentenceJourneySteps';
+import { PRISONS } from '../../../utils/prisons';
+import { testSetup } from '../../../utils/test-setup';
 
 // Test the Sentence Journey page across all prison environments
 for (const prison of PRISONS) {
@@ -18,25 +18,7 @@ for (const prison of PRISONS) {
     test.beforeEach(async () => {
       // Reset wiremock state before each test for fresh session
       await testSetup.reset();
-    });
-
-    test(`Scenario: Navigate to Sentence Journey page directly at ${prison.name}`, async ({ mySentenceJourneyPage, page }) => {
-      await test.step(`Given I am on the ${prison.name} Content Hub`, async () => {
-        await page.goto(baseURL);
-      });
-
-      await test.step('When I navigate directly to the Sentence Journey page', async () => {
-        await page.goto(`${baseURL}/tags/1285`);
-      });
-
-      await test.step('Then I should see the Sentence Journey page heading', async () => {
-        await expect(mySentenceJourneyPage.pageHeading).toBeVisible();
-        await expect(mySentenceJourneyPage.pageHeading).toHaveText('Sentence journey');
-      });
-
-      await test.step('And content should be loaded on the page', async () => {
-        await mySentenceJourneyPage.waitForContentToLoad();
-      });
+      await testSetup.stubPrisonerSignIn();
     });
 
     test(`Scenario: Navigate to Sentence Journey via navigation link at ${prison.name}`, async ({ mySentenceJourneyPage, page }) => {

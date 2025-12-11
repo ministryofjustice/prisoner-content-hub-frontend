@@ -125,12 +125,31 @@ The `docker-compose.yml` has been updated with:
 
 ### Local Development
 
+**Important**: Always run tests from the `e2e` directory with environment variables loaded:
+
 ```bash
+# Navigate to e2e directory
+cd e2e
+
 # Install Playwright browsers (first time only)
 npm run install-deps
 
-# Run tests headless
+# Run ALL tests (loads environment from test-local.env)
 npm test
+
+# Run specific test file
+export $(cat test-local.env | xargs) && npx playwright test tests/actions/my-prison.spec.ts
+
+# Run all tests in actions directory
+export $(cat test-local.env | xargs) && npx playwright test tests/actions/
+
+# Run all multi-prison tests (tests across all 21 prisons)
+export $(cat test-local.env | xargs) && npx playwright test \
+  tests/actions/my-prison-all-prisons.spec.ts \
+  tests/actions/sentence-journey-all-prisons.spec.ts \
+  tests/actions/news-events-all-prisons.spec.ts \
+  tests/actions/news-events-series-tiles-all-prisons.spec.ts \
+  tests/actions/sentence-journey-series-tiles-all-prisons.spec.ts
 
 # Run tests with UI (interactive mode)
 npm run test:ui
@@ -143,6 +162,35 @@ npm run test:debug
 
 # View last test report
 npm run report
+```
+
+### Test File Organization
+
+Tests are organized into two categories:
+
+1. **Single-prison tests** (e.g., `my-prison.spec.ts`, `news-events.spec.ts`)
+   - Run against default prison (Berwyn)
+   - Faster execution for development
+   - Use relative URLs like `/tags/1283`
+
+2. **All-prisons tests** (e.g., `*-all-prisons.spec.ts`)
+   - Run against all 21 prison environments
+   - Test prison-specific configurations
+   - Use absolute URLs like `http://{prison}.prisoner-content-hub.local:3000`
+   - **588 total tests** across all prisons
+
+### Running Tests from Root Directory
+
+**Note**: Running `npx playwright test` from the root project directory will fail because:
+
+- It tries to install a different Playwright version
+- Environment variables are not loaded
+- Incorrect working directory
+
+**Always run from the `e2e` directory** or use the full command:
+
+```bash
+cd /path/to/prisoner-content-hub-frontend/e2e && export $(cat test-local.env | xargs) && npx playwright test
 ```
 
 ### CI/Docker
