@@ -1,5 +1,5 @@
 # First stage
-FROM node:24.11-bookworm-slim AS builder
+FROM node:24.12-bookworm-slim AS builder
 
 ARG BUILD_NUMBER
 ARG GIT_REF
@@ -30,7 +30,7 @@ RUN npm run setup --no-audit --ignore-scripts && \
     npm prune --no-audit --omit=dev
 
 # Second stage
-FROM node:24.11-bookworm-slim
+FROM node:24.12-bookworm-slim
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 
 RUN apt-get update && \
