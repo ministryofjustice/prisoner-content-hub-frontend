@@ -1,6 +1,6 @@
-import { test, expect } from '../../stepDefinition/myPrisonSteps';
-import { PRISONS } from '../../utils/prisons';
-import { testSetup } from '../../utils/test-setup';
+import { test, expect } from '../../../stepDefinition/myPrisonSteps';
+import { PRISONS } from '../../../utils/prisons';
+import { testSetup } from '../../../utils/test-setup';
 
 // Test the My Prison page across all prison environments
 for (const prison of PRISONS) {
@@ -18,6 +18,7 @@ for (const prison of PRISONS) {
     test.beforeEach(async () => {
       // Reset wiremock state before each test for fresh session
       await testSetup.reset();
+      await testSetup.stubPrisonerSignIn();
     });
 
     test(`Scenario: Navigate to My Prison page directly at ${prison.name}`, async ({ myPrisonPage, page }) => {
