@@ -20,15 +20,16 @@
     "verify": "npm run lint && npm run prettier -- --list-different && npm run test",
     "format": "npm run prettier -- --write",
     "security_audit": "npx audit-ci --config audit-ci.json",
-    "precompile-templates": "mkdir -p assets/generated && nunjucks-precompile -n content-tile-small server/views/components/content-tile-small/template.njk > assets/generated/templates.js"
+    "precompile-templates": "mkdir -p assets/generated && nunjucks-precompile -n content-tile-small server/views/components/content-tile-small/template.njk > assets/generated/templates.js",
+    "setup": "npm ci && hmpps-npm-script-run-allowlist"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/ministryofjustice/prisoner-content-hub-frontend/"
   },
   "engines": {
-    "node": "22",
-    "npm": "10"
+    "node": "^24",
+    "npm": "^11"
   },
   "jest": {
     "verbose": true,
@@ -72,6 +73,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.28.0",
+    "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.3",
     "cheerio": "^1.1.2",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",

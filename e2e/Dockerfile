@@ -12,5 +12,5 @@ ADD stepDefinition stepDefinition
 ADD framework framework
 
 ENV CI=1
-RUN npm ci
+RUN npm run setup
 
