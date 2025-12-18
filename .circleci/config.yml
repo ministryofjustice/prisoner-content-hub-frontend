@@ -6,18 +6,14 @@ feature_branch: &feature_branch
   filters:
     branches:
       ignore: main
-
 version: 2.1
-
 orbs:
   hmpps: ministryofjustice/hmpps@11
   slack: circleci/slack@4.12.5
-
 parameters:
   node-version:
     type: string
     default: 24.11-browsers
-
 commands:
   release_to_namespace:
     description: "Release with Helm"
@@ -71,7 +67,7 @@ commands:
               echo "export GIT_MSG=${GIT_MSG}" >> $BASH_ENV
       - when:
           condition:
-            equal: [ << parameters.environment >>, "production" ]
+            equal: [<< parameters.environment >>, "production"]
           steps:
             - slack/notify:
                 channel: << parameters.releaseChannel >>
@@ -109,7 +105,6 @@ commands:
                     ]
                   }
                 event: always
-
 jobs:
   build:
     executor:
@@ -128,8 +123,7 @@ jobs:
             - node_modules
             - ~/.cache
       - run:
-          command:
-            npm run build
+          command: npm run build
       - run:
           name: Linter check
           command: npm run lint
@@ -139,7 +133,6 @@ jobs:
             - node_modules
             - assets/stylesheets
             - .cache/Cypress
-
   run_unit_tests:
     executor:
       name: hmpps/node
@@ -156,7 +149,6 @@ jobs:
       - run:
           name: Lint code
           command: npm run lint
-
   run_e2e_tests:
     executor:
       name: hmpps/node
@@ -178,7 +170,6 @@ jobs:
           path: e2e/test-results
       - store_artifacts:
           path: e2e/playwright-report
-
   build_preview:
     executor:
       name: hmpps/node
@@ -210,7 +201,6 @@ jobs:
           root: /tmp/build-info
           paths:
             - version-to-deploy.txt
-
   build_production:
     executor:
       name: hmpps/node
@@ -256,7 +246,6 @@ jobs:
           root: /tmp/build-info
           paths:
             - version-to-deploy.txt
-
   deploy_cloud_platform:
     executor:
       name: hmpps/node
@@ -275,7 +264,6 @@ jobs:
           environment: "<< parameters.environment >>"
           releaseName: "prisoner-content-hub-frontend"
           releaseChannel: "<< parameters.releaseChannel >>"
-
 workflows:
   version: 2
   build-test-deploy:
@@ -295,7 +283,6 @@ workflows:
           type: approval
           requires:
             - build_preview
-
       - deploy_cloud_platform:
           <<: *feature_branch
           context:
@@ -305,13 +292,11 @@ workflows:
           environment: "development"
           requires:
             - approve_deploy_dev
-
       - approve_deploy_staging:
           <<: *feature_branch
           type: approval
           requires:
             - deploy_to_dev
-
       - deploy_cloud_platform:
           <<: *feature_branch
           context:
@@ -321,13 +306,11 @@ workflows:
           environment: "staging"
           requires:
             - approve_deploy_staging
-
       - build_production:
           <<: *main_branch
           requires:
             - run_unit_tests
             - run_e2e_tests
-
       - deploy_cloud_platform:
           <<: *main_branch
           context:
@@ -338,13 +321,11 @@ workflows:
           releaseChannel: "prisoner_facing_services_releases"
           requires:
             - build_production
-
       - approve_deploy_production:
           <<: *main_branch
           type: approval
           requires:
             - deploy_to_staging
-
       - deploy_cloud_platform:
           <<: *main_branch
           context:
@@ -354,36 +335,3 @@ workflows:
           releaseChannel: "prisoner_facing_services_releases"
           requires:
             - approve_deploy_production
-
-  security:
-    triggers:
-      - schedule:
-          cron: "32 4 * * 1-5"
-          filters:
-            branches:
-              only:
-                - main
-    jobs:
-      - hmpps/npm_security_audit:
-          slack_channel: "launchpad-alerts-nonprod"
-          context:
-            - hmpps-common-vars
-      - hmpps/veracode_pipeline_scan:
-          slack_channel: launchpad-alerts-nonprod
-          context:
-            - hmpps-common-vars
-            - veracode-credentials
-  security-weekly:
-    triggers:
-      - schedule:
-          cron: "48 5 * * 1"
-          filters:
-            branches:
-              only:
-                - main
-    jobs:
-      - hmpps/veracode_policy_scan:
-          slack_channel: launchpad-alerts-nonprod
-          context:
-            - veracode-credentials
-            - hmpps-common-vars
