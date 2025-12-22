@@ -59,15 +59,16 @@
       <div class="govuk-!-margin-bottom-2">
         {% set feedbackLikeTexts = [
           t("feedback.like.1"),
-          t("feedback.like.2")
+          t("feedback.like.2"),
+          t("feedback.like.3"),
+          t("feedback.like.4")
         ] %}
         {{ feedbackOptions(feedbackLikeTexts, 'feedbackOption-LIKE', t) }}
         {% set feedbackDislikeTexts = [
           t("feedback.dislike.1"),
           t("feedback.dislike.2"),
           t("feedback.dislike.3"),
-          t("feedback.dislike.4"),
-          t("feedback.dislike.5")
+          t("feedback.dislike.4")
         ] %}
         {{ feedbackOptions(feedbackDislikeTexts, 'feedbackOption-DISLIKE', t) }}
       </div>
