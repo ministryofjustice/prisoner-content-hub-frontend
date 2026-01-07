@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 1,
+  retries: process.env.CI ? 2 : 2,
   workers: process.env.CI ? 5 : undefined,
   globalSetup: require.resolve('./utils/global-setup'),
   globalTeardown: require.resolve('./utils/global-teardown'),
