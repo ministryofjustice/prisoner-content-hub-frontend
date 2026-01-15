@@ -24,6 +24,7 @@
 {% endmacro %}
 
 <div id="{{ params.id|default('feedback-widget', true) }}"
+      data-testid="feedback-widget"
       data-item-type="{{params.contentType}}"
       data-item-title="{{ params.title }}"
       data-item-series="{{params.series}}"
@@ -37,22 +38,25 @@
       <h3 class="govuk-body govuk-hub-feedback-heading">{{ params.heading|default(t("feedback.headings.default")) }}</h3>
     {% endif %}
     <div class="govuk-hub-feedback">
-      <button data-feedback-sentiment
+      <button data-testid="feedback-like-button"
+        data-feedback-sentiment
         class="govuk-link govuk-hub-thumbs govuk-hub-thumbs--up"
         value="LIKE"
         type="button"
         aria-label="like"
       ></button>
 
-      <button data-feedback-sentiment
+      <button data-testid="feedback-dislike-button"
+        data-feedback-sentiment
         class="govuk-link govuk-hub-thumbs govuk-hub-thumbs--down"
         value="DISLIKE"
         type="button"
         aria-label="dislike"
       ></button>
     </div>
-    <div data-item-feedback-text class="govuk-body govuk-!-font-weight-bold"></div>
+    <div data-testid="feedback-text" data-item-feedback-text class="govuk-body govuk-!-font-weight-bold"></div>
     <form
+      data-testid="feedback-form"
       data-feedback-form
       class="govuk-hub-comment-form govuk-u-hidden"
     >
@@ -61,7 +65,9 @@
           t("feedback.like.1"),
           t("feedback.like.2")
         ] %}
-        {{ feedbackOptions(feedbackLikeTexts, 'feedbackOption-LIKE', t) }}
+        <div data-testid="feedback-like-options">
+          {{ feedbackOptions(feedbackLikeTexts, 'feedbackOption-LIKE', t) }}
+        </div>
         {% set feedbackDislikeTexts = [
           t("feedback.dislike.1"),
           t("feedback.dislike.2"),
@@ -69,21 +75,26 @@
           t("feedback.dislike.4"),
           t("feedback.dislike.5")
         ] %}
-        {{ feedbackOptions(feedbackDislikeTexts, 'feedbackOption-DISLIKE', t) }}
+        <div data-testid="feedback-dislike-options">
+          {{ feedbackOptions(feedbackDislikeTexts, 'feedbackOption-DISLIKE', t) }}
+        </div>
       </div>
       {{ govukButton({
         type: "submit",
-        text: t("feedback.send")
+        text: t("feedback.send"),
+        attributes: {
+          "data-testid": "feedback-submit-button"
+        }
       }) }}
     </form>
   </div>
-  <div class="govuk-hub-feedback-confirmation govuk-u-hidden">
+  <div data-testid="feedback-confirmation" class="govuk-hub-feedback-confirmation govuk-u-hidden">
     <h2 class="govuk-body govuk-!-font-weight-bold">{{ t("feedback.thanks") }}</h2>
     <p class="govuk-body">
       <a href="{{ knownPages.feedback }}" class="govuk-link">{{ t("feedback.whatHappens") }}</a>.
     </p>
   </div>
-  <div class="govuk-hub-feedback-more-info govuk-body govuk-u-hidden">
+  <div data-testid="feedback-more-info" class="govuk-hub-feedback-more-info govuk-body govuk-u-hidden">
     {{ t("feedback.contact.preamble") }}
     <ul>
       <li>{{ t("feedback.contact.1") }}</li>
