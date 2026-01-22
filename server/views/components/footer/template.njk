@@ -1,7 +1,7 @@
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
 
 <div>
-  <footer class="govuk-footer" role="contentinfo">
+  <footer data-testid="footer" class="govuk-footer" role="contentinfo">
     <div class="govuk-width-container ">
     {% if params.allTopics %}
       <div class="govuk-footer__navigation">
@@ -23,7 +23,7 @@
           <h2 class="govuk-visually-hidden">Additional links</h2>
           <ul class="govuk-footer__inline-list">
             <li class="govuk-footer__inline-list-item">
-              <a class="govuk-footer__link govuk-hub-privacy" href="{{ knownPages.privacyPolicy }}">{{ t("footer.privacy") }}</a>
+              <a data-testid="footer-privacy-link" class="govuk-footer__link govuk-hub-privacy" href="{{ knownPages.privacyPolicy }}">{{ t("footer.privacy") }}</a>
             </li>
           </ul>
           <svg role="presentation" focusable="false" class="govuk-footer__licence-logo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 483.2 195.7" height="17" width="41">

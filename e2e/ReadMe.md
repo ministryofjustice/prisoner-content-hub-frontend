@@ -18,8 +18,39 @@ This document outlines the migration from Cypress to Playwright with TypeScript 
 ```
 e2e/
 ├── tests/                      # Test files (.spec.ts)
-│   ├── health.spec.ts         # Health check tests
-│   └── setup-verification.spec.ts
+│   ├── healthcheck/           # Health check tests
+│   │   ├── health.spec.ts
+│   │   └── setup-verification.spec.ts
+│   └── actions/               # Feature tests organized by area
+│       ├── feedback/          # Feedback widget tests
+│       ├── privacy-policy/    # Privacy policy tests
+│       ├── health-and-wellbeing/
+│       ├── learning-and-skills/
+│       ├── faith/
+│       ├── inspire-and-entertain/
+│       ├── sentence-journey/
+│       ├── news-and-events/
+│       └── my-prison/
+├── framework/                  # Page Object Models
+│   └── pages/                 # Page objects for each section
+│       ├── feedback/          # Feedback page object
+│       ├── privacy_policy/
+│       ├── health_wellbeing/
+│       ├── learning_skills/
+│       ├── faith/
+│       ├── inspire_entertain/
+│       ├── sentence_journey/
+│       ├── news_events/
+│       └── my_prison/
+├── stepDefinition/             # Test fixtures with shared setup
+│   ├── feedbackSteps.ts       # Feedback test fixtures
+│   ├── privacyPolicySteps.ts
+│   └── ...
+├── features/                   # Gherkin-style feature files (documentation)
+│   └── e2e/                   # Feature scenarios
+│       ├── feedback.feature   # Feedback widget scenarios
+│       ├── privacy-policy.feature
+│       └── ...
 ├── utils/                      # Utility classes and helpers
 │   ├── test-setup.ts          # Central test setup
 │   ├── wiremock.ts            # Wiremock utilities
@@ -33,6 +64,7 @@ e2e/
 │       ├── primaryNavigation.json
 │       ├── browseAllTopics.json
 │       └── urgentBanners.json
+├── TEST_ID_STRATEGY.md         # Test ID conventions and catalog
 ├── playwright.config.ts        # Playwright configuration
 ├── eslint.config.js           # ESLint configuration (flat config)
 ├── tsconfig.json              # TypeScript configuration
@@ -179,6 +211,39 @@ Tests are organized into two categories:
    - Use absolute URLs like `http://{prison}.prisoner-content-hub.local:3000`
    - **588 total tests** across all prisons
 
+### Test Coverage
+
+The test suite includes comprehensive coverage of:
+
+- **Feedback Widget** (`tests/actions/feedback/feedback.spec.ts`)
+  - Widget visibility and rendering across all pages
+  - Like/dislike button interactions and attributes
+  - Feedback form display with like/dislike options
+  - Form submission with network handling
+  - Confirmation messages and "more info" display
+  - Button disabled states during and after submission
+  - Keyboard accessibility (Tab, Enter, Space)
+  - CSS class verification (thumbs-up/thumbs-down)
+  - AJAX request handling with proper waits
+  - State management and DOM updates
+  - **12 test scenarios** covering full feedback flow
+
+- **Navigation** (all page tests)
+  - Primary navigation links
+  - Page navigation (back/forward/home)
+  - Search functionality
+
+- **Content Display**
+  - Series tiles rendering
+  - Content cards display
+  - Featured items
+
+- **Footer & Privacy**
+  - Privacy policy link
+  - Browse all topics section
+
+See [features/e2e/](features/e2e/) for detailed scenario documentation in Gherkin format.
+
 ### Running Tests from Root Directory
 
 **Note**: Running `npx playwright test` from the root project directory will fail because:
@@ -265,6 +330,87 @@ await testSetup.auth.stubClientCredentialsToken();
 - **Cypress**: `cypress.config.js`
 - **Playwright**: `playwright.config.ts` with full TypeScript support
 
+## Test ID Strategy
+
+All tests use `data-testid` attributes for stable, maintainable selectors. This approach provides:
+
+- **Resilient selectors**: Tests don't break when CSS classes or HTML structure changes
+- **Clear intent**: Elements are explicitly marked for testing
+- **Better performance**: `getByTestId()` is Playwright's fastest selector method
+- **Maintainability**: Easy to locate and update test selectors
+- **Separation of concerns**: Test IDs separate from application styling/behavior
+- **Industry standard**: Used by major companies (GitHub, Airbnb, Netflix)
+
+### Why Test IDs?
+
+Using `data-testid` instead of CSS classes or other selectors prevents test brittleness:
+
+```typescript
+// ✅ Stable - survives CSS refactoring
+page.getByTestId('feedback-like-button');
+
+// ❌ Fragile - breaks if classes change for styling
+page.locator('.govuk-hub-thumbs.govuk-hub-thumbs--up');
+```
+
+### Key Test IDs
+
+| Component           | Test ID                    | Template                          |
+| ------------------- | -------------------------- | --------------------------------- |
+| **Navigation**      |                            |                                   |
+| Top Bar             | `top-bar`                  | `top-bar/template.njk`            |
+| Search Input        | `search-input`             | `search/template.njk`             |
+| Search Button       | `search-button`            | `search/template.njk`             |
+| Page Nav Back       | `page-nav-back-button`     | `page-navigation/template.njk`    |
+| Page Nav Forward    | `page-nav-forward-button`  | `page-navigation/template.njk`    |
+| Page Nav Home       | `page-nav-home-button`     | `page-navigation/template.njk`    |
+| **Feedback Widget** |                            |                                   |
+| Widget Container    | `feedback-widget`          | `feedback-widget/template.njk`    |
+| Like Button         | `feedback-like-button`     | `feedback-widget/template.njk`    |
+| Dislike Button      | `feedback-dislike-button`  | `feedback-widget/template.njk`    |
+| Feedback Text       | `feedback-text`            | `feedback-widget/template.njk`    |
+| Feedback Form       | `feedback-form`            | `feedback-widget/template.njk`    |
+| Like Options        | `feedback-like-options`    | `feedback-widget/template.njk`    |
+| Dislike Options     | `feedback-dislike-options` | `feedback-widget/template.njk`    |
+| Submit Button       | `feedback-submit-button`   | `feedback-widget/template.njk`    |
+| Confirmation        | `feedback-confirmation`    | `feedback-widget/template.njk`    |
+| More Info           | `feedback-more-info`       | `feedback-widget/template.njk`    |
+| **Footer**          |                            |                                   |
+| Footer Container    | `footer`                   | `footer/template.njk`             |
+| Privacy Link        | `footer-privacy-link`      | `footer/template.njk`             |
+| **Content**         |                            |                                   |
+| Small Content Tile  | `content-tile-small-{id}`  | `content-tile-small/template.njk` |
+| Large Content Tile  | `content-tile-large-{id}`  | `content-tile-large/template.njk` |
+
+See [TEST_ID_STRATEGY.md](TEST_ID_STRATEGY.md) for the complete catalog, naming conventions, and implementation guidelines.
+
+## Page Object Model
+
+Tests use the Page Object Model pattern for better maintainability:
+
+```typescript
+// Example: Using the feedback page object
+import { test, expect } from '../stepDefinition/feedbackSteps';
+
+test('Clicking like button shows feedback form', async ({
+  feedbackPage,
+  page,
+}) => {
+  await page.goto(baseURL);
+  await feedbackPage.waitForFeedbackWidget();
+  await feedbackPage.clickLikeButton();
+
+  const isVisible = await feedbackPage.isFeedbackFormVisible();
+  expect(isVisible).toBe(true);
+});
+```
+
+Each page object encapsulates:
+
+- Element locators (using test IDs)
+- Page-specific actions
+- Wait strategies and state checks
+
 ## Benefits of Migration
 
 1. **TypeScript Support**: Full type safety and better IDE support
@@ -274,6 +420,8 @@ await testSetup.auth.stubClientCredentialsToken();
 5. **Better Debugging**: Integrated debugging tools and trace viewer
 6. **Performance**: Generally faster test execution
 7. **Mobile Testing**: Built-in device emulation
+8. **Test ID Strategy**: Stable selectors using data-testid attributes
+9. **Page Object Model**: Maintainable, reusable test code
 
 ## Security Improvements
 
@@ -335,15 +483,172 @@ Updated root ESLint configuration:
 
 ### Tests Fail with ECONNREFUSED
 
-**Issue**: Playwright tries to connect before the web server is ready.
+\*\*IWriting New Tests
 
-**Solution**: The `docker-compose.yml` now includes a healthcheck on the web service. Playwright waits for the service to be healthy before starting tests.
+### Best Practices
 
-### ESLint Errors in Pre-commit Hook
+1. **Always Use Test IDs**: Use `data-testid` attributes for all element selection
 
-**Issue**: Root ESLint tries to lint e2e TypeScript files.
+   ```typescript
+   // ✅ Best practice - stable and fast
+   page.getByTestId('feedback-like-button');
 
-**Solution**: The e2e directory is now excluded from root ESLint via `.eslintignore` and `.eslintrc`. The e2e directory uses its own `eslint.config.js`.
+   // ❌ Avoid - breaks when CSS changes
+   page.locator('.govuk-hub-thumbs--up');
+
+   // ❌ Avoid - breaks when text changes or gets translated
+   page.getByText('Like');
+   ```
+
+2. **Add Test IDs to Templates First**: Before writing tests for new features, add test IDs to Nunjucks templates:
+
+   ```html
+   <!-- Good: Test ID on interactive elements -->
+   <button data-testid="my-action-button" class="govuk-button">Click me</button>
+
+   <!-- Good: Test ID on containers -->
+   <div data-testid="my-widget" class="widget-container">
+     <!-- content -->
+   </div>
+
+   <!-- For GOV.UK Design System macros, use attributes parameter -->
+   {{ govukButton({ text: "Submit", attributes: { "data-testid": "submit-button"
+   } }) }}
+   ```
+
+3. **Use Page Objects**: Create page objects in `framework/pages/` for reusable, maintainable test code:
+
+   ```typescript
+   // framework/pages/my-feature/myFeaturePage.ts
+   export class MyFeaturePage {
+     readonly page: Page;
+     readonly myButton: Locator;
+
+     constructor(page: Page) {
+       this.page = page;
+       this.myButton = page.getByTestId('my-button');
+     }
+
+     async clickMyButton() {
+       await this.myButton.click();
+     }
+
+     async isMyButtonVisible() {
+       return await this.myButton.isVisible();
+     }
+   }
+   ```
+
+4. **Wait for State Changes Properly**: Use appropriate waits instead of arbitrary timeouts:
+
+   ```typescript
+   // ✅ Good - wait for network response
+   await page.waitForResponse(
+     response =>
+       response.url().includes('/api/feedback') &&
+       response.request().method() === 'POST',
+   );
+
+   // ✅ Good - wait for element state
+   await page.getByTestId('confirmation').waitFor({ state: 'visible' });
+
+   // ✅ Good - wait for JavaScript state
+   await page.waitForFunction(() =>
+     document.querySelector('[data-testid="widget"]'),
+   );
+
+   // ❌ Avoid - arbitrary timeout causes flaky tests
+   await page.waitForTimeout(1000);
+   ```
+
+5. **Create Test Fixtures**: Use fixtures in `stepDefinition/` for shared page object setup:
+
+   ```typescript
+   // stepDefinition/myFeatureSteps.ts
+   import { test as base } from '@playwright/test';
+   import { MyFeaturePage } from '../framework/pages/my-feature/myFeaturePage';
+
+   export const test = base.extend<{ myFeaturePage: MyFeaturePage }>({
+     myFeaturePage: async ({ page }, use) => {
+       await use(new MyFeaturePage(page));
+     },
+   });
+
+   export { expect } from '@playwright/test';
+   ```
+
+6. **Document with Feature Files**: Create Gherkin feature files in `features/e2e/` to document test scenarios:
+
+   ```gherkin
+   Feature: My Feature
+     As a user
+     I want to perform an action
+     So that I can achieve a goal
+
+     Scenario: Successful action
+       Given I am on the my feature page
+       When I click the action button
+       Then I should see a confirmation message
+   ```
+
+### Test Structure Template
+
+For consistency, each test area should follow this structure:
+
+```
+e2e/
+├── features/e2e/
+│   └── my-feature.feature              # Gherkin documentation
+├── framework/pages/
+│   └── my-feature/
+│       └── myFeaturePage.ts            # Page object with test ID locators
+├── stepDefinition/
+│   └── myFeatureSteps.ts               # Test fixtures
+└── tests/actions/
+    └── my-feature/
+        └── my-feature.spec.ts          # Test specifications
+```
+
+**Reference Implementation**: See `feedback/` directories for a complete example of this pattern.
+
+### Anti-Flaky Test Patterns
+
+The feedback tests demonstrate anti-flaky patterns:
+
+- **Network waits**: Wait for AJAX requests to complete
+- **State verification**: Check element visibility before interaction
+- **Graceful error handling**: Handle network timeouts without failing
+- **No arbitrary timeouts**: Never use `waitForTimeout()` in production tests
+- **JavaScript initialization**: Wait for client-side code to be ready
+
+```typescript
+// Example: Robust form submission test
+async submitFeedbackForm(text: string) {
+  await this.feedbackText.fill(text);
+
+  // Wait for network response
+  const responsePromise = this.page.waitForResponse(
+    response => response.url().includes('/api/feedback') &&
+                response.request().method() === 'POST'
+  ).catch(() => null); // Graceful handling
+
+  await this.submitButton.click();
+  await responsePromise;
+
+  // Wait for confirmation to be visible
+  await this.confirmationMessage.waitFor({ state: 'visible' });
+}
+```
+
+## Future Enhancements
+
+1. Expand test coverage to more user journeys
+2. Implement visual regression testing with Playwright
+3. Add performance testing capabilities
+4. Implement API contract testing
+5. Add more accessibility testing with Playwright's built-in tools
+6. Add cross-prison configuration testing
+   **Solution**: The e2e directory is now excluded from root ESLint via `.eslintignore` and `.eslintrc`. The e2e directory uses its own `eslint.config.js`.
 
 ### Fixture File Not Found
 

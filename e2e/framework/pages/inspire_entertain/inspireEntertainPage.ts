@@ -14,9 +14,9 @@ export class InspireEntertainPage {
   constructor(page: Page) {
     this.page = page;
     this.pageHeading = page.locator('h1#title.govuk-heading-l');
-    this.contentCards = page.locator('a[data-content-card-id]');
-    this.searchInput = page.locator('input[name="query"]');
-    this.searchButton = page.locator('button[type="submit"]');
+    this.contentCards = page.locator('a[data-featured-tile-id]');
+    this.searchInput = page.getByTestId('search-input');
+    this.searchButton = page.getByTestId('search-button');
     this.navLink = page.locator('a.moj-primary-navigation__link[href="/tags/1282"]');
     this.seriesTilesSection = page.locator('section#seriesTiles');
     this.seriesTilesHeading = this.seriesTilesSection.locator('h2');

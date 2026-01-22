@@ -20,7 +20,7 @@ export class NewsEventsPage {
     this.pageHeading = page.locator('h1#title.govuk-heading-l');
     this.contentCards = page.locator('a[data-featured-tile-id], a[data-featured-id]');
     this.contentTiles = page.locator('.govuk-hub-contentTileSmall');
-    this.searchInput = page.locator('input#search');
+    this.searchInput = page.getByTestId('search-input');
     this.seriesTilesSection = page.locator('section#seriesTiles');
     this.seriesTilesHeading = page.locator('section#seriesTiles h2.govuk-heading-l');
     this.seriesTiles = page.locator('section#seriesTiles a[data-featured-tile-id]');
