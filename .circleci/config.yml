@@ -162,14 +162,8 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: e2e healthcheck tests (with Wiremock)
-          command: npm run test:e2e:ci
-      - run:
-          name: e2e tests against dev environment (excluding healthchecks)
-          command: |
-            cd e2e
-            npm run setup
-            USE_DEV_ENV=true npx playwright test --grep-invert "@healthcheck"
+          name: e2e tests
+          command: USE_DEV_ENV=true npm run test:e2e:ci
       - store_test_results:
           path: e2e/test-results
       - store_artifacts:
