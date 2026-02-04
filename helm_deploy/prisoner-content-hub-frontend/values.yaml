@@ -45,6 +45,7 @@ ingress:
   tlsEnabled: true
   path: /
   prefixes:
+    - bedford
     - berwyn
     - bullingdon
     - cardiff
