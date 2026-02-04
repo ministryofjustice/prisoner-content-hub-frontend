@@ -46,6 +46,9 @@ module.exports = {
     { lang: 'cy', text: 'Cymraeg' },
   ],
   sites: {
+    bedford: {
+      languages: ['en'],
+    },
     berwyn: {
       languages: ['en', 'cy'],
     },
