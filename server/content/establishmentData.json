@@ -1,4 +1,10 @@
 {
+  "2343": {
+    "name": "bedford",
+    "displayName": "HMP Bedford",
+    "youth": false,
+    "agencyId": "BFI"
+  },
   "792": {
     "name": "berwyn",
     "displayName": "HMP Berwyn",
