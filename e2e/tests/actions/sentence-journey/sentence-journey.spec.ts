@@ -8,11 +8,15 @@ for (const prison of PRISONS) {
     let baseURL: string;
 
     test.beforeAll(() => {
-      const isCI = !!process.env.CI;
-      const domain = isCI 
-        ? prison.url.replace('prisoner-content-hub.local', 'content-hub.localhost')
-        : prison.url;
-      baseURL = `http://${domain}:3000`;
+      if (process.env.USE_DEV_ENV === 'true') {
+        baseURL = prison.devUrl;
+      } else {
+        const isCI = !!process.env.CI;
+        const domain = isCI 
+          ? prison.url.replace('prisoner-content-hub.local', 'content-hub.localhost')
+          : prison.url;
+        baseURL = `http://${domain}:3000`;
+      }
     });
 
     test.beforeEach(async () => {

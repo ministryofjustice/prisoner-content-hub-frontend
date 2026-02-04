@@ -17,10 +17,18 @@ export class TestSetup {
   }
 
   async stubPrisonerSignIn(): Promise<void> {
+    // Skip Wiremock stubs when testing against dev environment
+    if (process.env.USE_DEV_ENV === 'true') {
+      return;
+    }
     await this.auth.stubClientCredentialsToken();
   }
 
   async reset(): Promise<void> {
+    // Skip Wiremock reset when testing against dev environment
+    if (process.env.USE_DEV_ENV === 'true') {
+      return;
+    }
     await this.wiremock.reset();
   }
 }
