@@ -4,15 +4,7 @@ import { PRISONS } from '../../../utils/prisons';
 
 PRISONS.forEach((prison) => {
   test.describe(`Feature: Learning and Skills Series Tiles - ${prison.name}`, () => {
-    let baseURL: string;
-
-    test.beforeAll(() => {
-      const isCI = !!process.env.CI;
-      const domain = isCI 
-        ? prison.url.replace('prisoner-content-hub.local', 'content-hub.localhost')
-        : prison.url;
-      baseURL = `http://${domain}:3000`;
-    });
+    const baseURL = testSetup.getBaseURL(prison);
 
     test.beforeEach(async () => {
       await testSetup.reset();
@@ -103,7 +95,8 @@ PRISONS.forEach((prison) => {
       });
 
       await test.step('Then I should navigate to the series content page', async () => {
-        await page.waitForLoadState('networkidle');
+        // Use domcontentloaded instead of networkidle for dev environment to avoid timeouts
+        await page.waitForLoadState('domcontentloaded');
         const currentUrl = page.url();
         // Should navigate to a different page (typically another tag page like /tags/1668)
         expect(currentUrl).toContain('/tags/');

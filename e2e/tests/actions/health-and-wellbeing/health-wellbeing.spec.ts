@@ -4,15 +4,7 @@ import { PRISONS } from '../../../utils/prisons';
 
 PRISONS.forEach((prison) => {
   test.describe(`Feature: Health and Wellbeing Page - ${prison.name}`, () => {
-    let baseURL: string;
-
-    test.beforeAll(() => {
-      const isCI = !!process.env.CI;
-      const domain = isCI 
-        ? prison.url.replace('prisoner-content-hub.local', 'content-hub.localhost')
-        : prison.url;
-      baseURL = `http://${domain}:3000`;
-    });
+    const baseURL = testSetup.getBaseURL(prison);
 
     test.beforeEach(async () => {
       await testSetup.reset();

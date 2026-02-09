@@ -163,7 +163,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: e2e tests
-          command: npm run test:e2e:ci
+          command: USE_DEV_ENV=true npm run test:e2e:ci
       - store_test_results:
           path: e2e/test-results
       - store_artifacts:

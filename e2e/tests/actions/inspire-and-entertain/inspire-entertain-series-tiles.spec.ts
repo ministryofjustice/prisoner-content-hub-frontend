@@ -4,15 +4,7 @@ import { PRISONS } from '../../../utils/prisons';
 
 PRISONS.forEach((prison) => {
   test.describe(`Feature: Inspire and Entertain Series Tiles - ${prison.name}`, () => {
-    let baseURL: string;
-
-    test.beforeAll(() => {
-      const isCI = !!process.env.CI;
-      const domain = isCI 
-        ? prison.url.replace('prisoner-content-hub.local', 'content-hub.localhost')
-        : prison.url;
-      baseURL = `http://${domain}:3000`;
-    });
+    const baseURL = testSetup.getBaseURL(prison);
 
     test.beforeEach(async () => {
       await testSetup.reset();
@@ -78,7 +70,8 @@ PRISONS.forEach((prison) => {
           await inspireEntertainPage.clickSeriesTileByIndex(0);
           
           await test.step('Then I should navigate to the linked page', async () => {
-            await page.waitForLoadState('networkidle');
+            // Use domcontentloaded instead of networkidle for dev environment to avoid timeouts
+            await page.waitForLoadState('domcontentloaded');
             const currentUrl = page.url();
             // Should navigate away from the Inspire and Entertain page
             expect(currentUrl).not.toContain('/tags/1282');
