@@ -5,19 +5,7 @@ import { testSetup } from '../../../utils/test-setup';
 // Test the Sentence Journey page across all prison environments
 for (const prison of PRISONS) {
   test.describe(`Feature: Sentence Journey Page - ${prison.name}`, () => {
-    let baseURL: string;
-
-    test.beforeAll(() => {
-      if (process.env.USE_DEV_ENV === 'true') {
-        baseURL = prison.devUrl;
-      } else {
-        const isCI = !!process.env.CI;
-        const domain = isCI 
-          ? prison.url.replace('prisoner-content-hub.local', 'content-hub.localhost')
-          : prison.url;
-        baseURL = `http://${domain}:3000`;
-      }
-    });
+    const baseURL = testSetup.getBaseURL(prison);
 
     test.beforeEach(async () => {
       // Reset wiremock state before each test for fresh session

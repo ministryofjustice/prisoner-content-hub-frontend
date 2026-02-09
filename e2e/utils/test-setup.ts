@@ -2,6 +2,9 @@ import { WiremockUtils } from './wiremock';
 import { AuthUtils } from './auth';
 import { DrupalUtils } from './drupal';
 import { IncentivesApiUtils } from './incentives-api';
+import { PRISONS } from './prisons';
+
+type Prison = typeof PRISONS[number];
 
 export class TestSetup {
   public wiremock: WiremockUtils;
@@ -30,6 +33,17 @@ export class TestSetup {
       return;
     }
     await this.wiremock.reset();
+  }
+
+  getBaseURL(prison: Prison): string {
+    if (process.env.USE_DEV_ENV === 'true') {
+      return prison.devUrl;
+    }
+    const isCI = !!process.env.CI;
+    const domain = isCI 
+      ? prison.url.replace('prisoner-content-hub.local', 'content-hub.localhost')
+      : prison.url;
+    return `http://${domain}:3000`;
   }
 }
 

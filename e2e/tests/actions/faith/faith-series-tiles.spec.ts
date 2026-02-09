@@ -4,19 +4,7 @@ import { PRISONS } from '../../../utils/prisons';
 
 PRISONS.forEach((prison) => {
   test.describe(`Feature: Faith Series Tiles - ${prison.name}`, () => {
-    let baseURL: string;
-
-    test.beforeAll(() => {
-      if (process.env.USE_DEV_ENV === 'true') {
-        baseURL = prison.devUrl;
-      } else {
-        const isCI = !!process.env.CI;
-        const domain = isCI 
-          ? prison.url.replace('prisoner-content-hub.local', 'content-hub.localhost')
-          : prison.url;
-        baseURL = `http://${domain}:3000`;
-      }
-    });
+    const baseURL = testSetup.getBaseURL(prison);
 
     test.beforeEach(async () => {
       await testSetup.reset();
@@ -82,7 +70,8 @@ PRISONS.forEach((prison) => {
           await faithPage.clickSeriesTileByIndex(0);
           
           await test.step('Then I should navigate to the linked page', async () => {
-            await page.waitForLoadState('networkidle');
+            // Use domcontentloaded instead of networkidle for dev environment to avoid timeouts
+            await page.waitForLoadState('domcontentloaded');
             const currentUrl = page.url();
             // Should navigate away from the Faith page
             expect(currentUrl).not.toContain('/tags/1286');
