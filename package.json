@@ -50,7 +50,7 @@
     "cookies": "^0.9.1",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
-    "drupal-jsonapi-params": "^2.3.2",
+    "drupal-jsonapi-params": "^3.0.0",
     "express": "^5.2.1",
     "govuk-frontend": "^5.14.0",
     "helmet": "^8.1.0",
