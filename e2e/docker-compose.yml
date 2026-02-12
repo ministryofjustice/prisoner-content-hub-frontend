@@ -22,6 +22,7 @@ services:
       prisoner-content-hub-etwoe:
         aliases:
           - content-hub.localhost
+          - bedford.content-hub.localhost
           - berwyn.content-hub.localhost
           - bullingdon.content-hub.localhost
           - cardiff.content-hub.localhost
