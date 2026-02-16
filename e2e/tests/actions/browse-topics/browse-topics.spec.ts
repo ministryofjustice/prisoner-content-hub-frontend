@@ -105,9 +105,13 @@ PRISONS.forEach((prison) => {
               await browseTopicsPage.scrollToFooter();
               
               const initialUrl = await browseTopicsPage.getCurrentURL();
-              await browseTopicsPage.clickFooterLink(i);
               
-              await page.waitForLoadState('load');
+              // Click the link and wait for navigation
+              await Promise.all([
+                page.waitForURL(url => url.toString().includes('/tags/')),
+                browseTopicsPage.clickFooterLink(i)
+              ]);
+              
               const newUrl = await browseTopicsPage.getCurrentURL();
               expect(newUrl).not.toBe(initialUrl);
               expect(newUrl).toContain('/tags/');
