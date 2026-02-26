@@ -502,6 +502,28 @@ The test suite includes comprehensive coverage of:
   - Privacy policy link
   - Browse all topics section
 
+- **Video Playback (Dev Environment)**
+  - Homepage video tile navigation and playback
+  - Uses dynamic selectors because video tiles change frequently
+  - Requires dev environment (`USE_DEV_ENV=true`) to validate playback
+
+### Video Playback Testing (Dynamic Content)
+
+Video tiles on the homepage are dynamic and can change between runs. To keep tests stable:
+
+- Select the first video tile by its **video label** (e.g., `.content-link--video`) rather than a fixed ID/title.
+- Navigate to the content page and assert the video player exists (`#hub-video`).
+- Start playback muted and assert `currentTime` advances.
+
+**Run against dev:**
+
+```bash
+cd e2e
+USE_DEV_ENV=true npx playwright test tests/actions/video/video-navigation.spec.ts
+```
+
+If possible, add stable `data-testid` attributes to video tiles to make selectors more resilient.
+
 See [features/e2e/](features/e2e/) for detailed scenario documentation in Gherkin format.
 
 ### Running Tests from Root Directory
