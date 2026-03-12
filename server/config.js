@@ -88,9 +88,6 @@ module.exports = {
     ranby: {
       languages: ['en'],
     },
-    stokeheath: {
-      languages: ['en'],
-    },
     styal: {
       languages: ['en'],
     },
