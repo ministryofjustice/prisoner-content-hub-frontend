@@ -10,15 +10,6 @@ env:
           name: {{ .Values.application.contentConfigMapName }}
           key: internalUrl
 
-    - name: ELASTICSEARCH_ENDPOINT
-      valueFrom:
-        secretKeyRef:
-          name: {{ .Values.application.openSearchSecretName }}
-          key: proxy_url
-
-    - name: FEEDBACK_ENDPOINT
-      value: {{ .Values.application.config.feedbackEndpoint }}
-
     - name: NPR_STREAM
       valueFrom:
         configMapKeyRef:
