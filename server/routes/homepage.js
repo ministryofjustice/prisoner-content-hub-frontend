@@ -32,10 +32,9 @@ const createHomepageRouter = ({ cmsService }) => {
         ? largeUpdateTileSpecified
         : largeUpdateTileDefault;
 
-      const updatesContentWithDuplicatesRemoved = removeDuplicateUpdates(
-        updatesContent,
-        largeUpdateTile,
-      );
+      const updatesContentWithDuplicatesRemoved = largeUpdateTile
+        ? removeDuplicateUpdates(updatesContent, largeUpdateTile)
+        : updatesContent;
 
       const updatesContentHideViewAll =
         isLastPage &&
