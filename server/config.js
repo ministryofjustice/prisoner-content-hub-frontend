@@ -52,6 +52,9 @@ module.exports = {
     berwyn: {
       languages: ['en', 'cy'],
     },
+    bristol: {
+      languages: ['en'],
+    },
     bullingdon: {
       languages: ['en'],
     },
