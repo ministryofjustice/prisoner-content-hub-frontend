@@ -74,6 +74,7 @@ When running locally, in order to access the application as if you were at a spe
 
 - `bedford.prisoner-content-hub.local`
 - `berwyn.prisoner-content-hub.local`
+- `bristol.prisoner-content-hub.local`
 - `bullingdon.prisoner-content-hub.local`
 - `cardiff.prisoner-content-hub.local`
 - `chelmsford.prisoner-content-hub.local`
