@@ -3,19 +3,22 @@ var keyPressed = {};
 function initKeyboard() {
     document.addEventListener('keydown', function (event) {
         keyPressed[event.keyCode] = true;
+        if (gameState === "playing" && (event.keyCode === 32 || event.keyCode === 38)) {
+          event.preventDefault();
+        }
     }, true);
 
     document.addEventListener('keyup', function (event) {
-        if (gameState === "playing") {
+      if (gameState === "playing") {
             keyPressed[event.keyCode] = false;
 
-			if ((event.keyCode === 78) || (event.keyCode === 32)) {
+			  if ((event.keyCode === 78) || (event.keyCode === 32)) {
 				ship.fire();
-			}
-		} else if (gameState === "attract") {
+			  }
+		  } else if (gameState === "attract") {
             startGame();
-        }
-	}, true);
+      }
+	  }, true);
 
     document.addEventListener('blur', function () {
         keyPressed = {};
