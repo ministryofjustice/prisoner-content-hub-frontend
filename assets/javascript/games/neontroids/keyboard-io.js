@@ -3,7 +3,7 @@ var keyPressed = {};
 function initKeyboard() {
     document.addEventListener('keydown', function (event) {
         keyPressed[event.keyCode] = true;
-        if (gameState === "playing" && (event.keyCode === 32 || event.keyCode === 38)) {
+        if ([32, 38, 40].includes(event.keyCode)) {
           event.preventDefault();
         }
     }, true);
