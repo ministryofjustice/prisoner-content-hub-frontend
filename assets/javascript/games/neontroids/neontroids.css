@@ -3,11 +3,6 @@
   height: 100%;
 }
 
-.noscroll {
-  overflow-y: hidden;
-  margin-bottom:0 !important;
-}
-
 .neontroids {
   background-color: black !important;
 }
