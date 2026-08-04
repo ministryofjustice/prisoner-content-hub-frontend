@@ -15,3 +15,5 @@ eslint-report.html
 test-report.html
 **/*.test.js
 **/*.test.ts
+!.allowed-scripts.mjs
+!.npmrc
