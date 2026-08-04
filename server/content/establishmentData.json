@@ -3,145 +3,169 @@
     "name": "bedford",
     "displayName": "HMP Bedford",
     "youth": false,
-    "agencyId": "BFI"
+    "agencyId": "BFI",
+    "active": true
   },
   "792": {
     "name": "berwyn",
     "displayName": "HMP Berwyn",
     "youth": false,
-    "agencyId": "BWI"
+    "agencyId": "BWI",
+    "active": true
   },
   "2428": {
     "name": "bristol",
     "displayName": "HMP Bristol",
     "youth": false,
-    "agencyId": "BLI"
+    "agencyId": "BLI",
+    "active": true
   },
   "2010": {
     "name": "bullingdon",
     "displayName": "HMP Bullingdon",
     "youth": false,
-    "agencyId": "BNI"
+    "agencyId": "BNI",
+    "active": true
   },
   "2095": {
     "name": "cardiff",
     "displayName": "HMP Cardiff",
     "youth": false,
-    "agencyId": "CFI"
+    "agencyId": "CFI",
+    "active": true
   },
   "2001": {
     "name": "chelmsford",
     "displayName": "HMP Chelmsford",
     "youth": false,
-    "agencyId": "CDI"
+    "agencyId": "CDI",
+    "active": true
   },
   "959": {
     "name": "cookhamwood",
     "displayName": "HMP Cookham Wood",
     "youth": false,
-    "agencyId": "CKI"
+    "agencyId": "CKI",
+    "active": true
   },
   "1": {
     "name": "etwoe",
     "displayName": "HMP etwoe",
     "youth": false,
-    "agencyId": "EEE"
+    "agencyId": "EEE",
+    "active": true
   },
   "1074": {
     "name": "erlestoke",
     "displayName": "HMP Erlestoke",
     "youth": false,
-    "agencyId": "EEI"
+    "agencyId": "EEI",
+    "active": true
   },
   "1083": {
     "name": "felthama",
     "displayName": "HMYOI Feltham A",
     "youth": true,
-    "agencyId": "FYI"
+    "agencyId": "FYI",
+    "active": true
   },
   "1084": {
     "name": "felthamb",
     "displayName": "HMYOI Feltham B",
     "youth": true,
-    "agencyId": "FMI"
+    "agencyId": "FMI",
+    "active": true
   },
   "1075": {
     "name": "garth",
     "displayName": "HMP Garth",
     "youth": false,
-    "agencyId": "GHI"
+    "agencyId": "GHI",
+    "active": true
   },
   "1076": {
     "name": "lindholme",
     "displayName": "HMP Lindholme",
     "youth": false,
-    "agencyId": "LHI"
+    "agencyId": "LHI",
+    "active": true
   },
   "1077": {
     "name": "newhall",
     "displayName": "HMPYOI New Hall",
     "youth": false,
-    "agencyId": "NHI"
+    "agencyId": "NHI",
+    "active": true
   },
   "1078": {
     "name": "ranby",
     "displayName": "HMP Ranby",
     "youth": false,
-    "agencyId": "RNI"
+    "agencyId": "RNI",
+    "active": true
   },
   "1079": {
     "name": "stokeheath",
     "displayName": "HMPYOI Stoke Heath",
     "youth": false,
-    "agencyId": "SHI"
+    "agencyId": "SHI",
+    "active": true
   },
   "1080": {
     "name": "styal",
     "displayName": "HMPYOI Styal",
     "youth": false,
-    "agencyId": "STI"
+    "agencyId": "STI",
+    "active": true
   },
   "1081": {
     "name": "swaleside",
     "displayName": "HMP Swaleside",
     "youth": false,
-    "agencyId": "SLI"
+    "agencyId": "SLI",
+    "active": true
   },
   "1082": {
     "name": "themount",
     "displayName": "HMP The Mount",
     "youth": false,
-    "agencyId": "MTI"
+    "agencyId": "MTI",
+    "active": true
   },
   "1603": {
     "name": "thestudio",
     "displayName": "HMPPS The Studio",
-    "agencyId": ""
+    "agencyId": "",
+    "active": true
   },
   "793": {
     "name": "wayland",
     "displayName": "HMP Wayland",
     "youth": false,
-    "agencyId": "WLI"
+    "agencyId": "WLI",
+    "active": true
   },
   "1085": {
     "name": "werrington",
     "displayName": "HMYOI Werrington",
     "youth": false,
-    "agencyId": "WNI"
+    "agencyId": "WNI",
+    "active": true
   },
   "1086": {
     "name": "wetherby",
     "formattedName": "Wetherby",
     "displayName": "HMYOI Wetherby",
     "youth": true,
-    "agencyId": "WYI"
+    "agencyId": "WYI",
+    "active": true
   },
   "1915": {
     "name": "woodhill",
     "formattedName": "Woodhill",
     "displayName": "HMP Woodhill",
     "youth": false,
-    "agencyId": "WHI"
+    "agencyId": "WHI",
+    "active": true
   }
 }

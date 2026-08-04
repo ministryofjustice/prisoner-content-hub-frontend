@@ -25,6 +25,7 @@ const routes = require('./routes');
 const { NotFound } = require('./repositories/apiError');
 const setCurrentUser = require('./middleware/setCurrentUser');
 const setReturnUrl = require('./middleware/setReturnUrl');
+const { createInfoRouter } = require('./routes/info');
 
 i18next
   .use(middleware.LanguageDetector)
@@ -181,6 +182,9 @@ const createApp = services => {
 
   // Health end point
   app.use('/health', createHealthRouter(config));
+
+  // info end point
+  app.use('/info', createInfoRouter(establishmentData));
 
   app.use(getEstablishmentFromUrl);
   app.use(configureEstablishment);
