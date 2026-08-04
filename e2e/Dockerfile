@@ -1,6 +1,8 @@
 FROM mcr.microsoft.com/playwright:v1.58.2-jammy
 WORKDIR /app
 
+COPY .allowed-scripts.mjs .
+COPY .npmrc .
 COPY package.json .
 COPY package-lock.json .
 COPY playwright.config.ts .
@@ -13,4 +15,3 @@ ADD framework framework
 
 ENV CI=1
 RUN npm run setup
-
