@@ -19,6 +19,7 @@ ENV BUILD_NUMBER=${BUILD_NUMBER}
 ENV GIT_REF=${GIT_REF}
 ENV GIT_DATE=${GIT_DATE}
 
+COPY package*.json .allowed-scripts.mjs .npmrc ./
 COPY . .
 
 RUN npm run setup --no-audit --ignore-scripts && \
