@@ -557,13 +557,15 @@ if (!anagramica.ui) {
 				var exists = false;
 				$(".word").each(function() { if(word === $(this).find(".text").text()) exists=true; });
 
-				if(!exists) {
+        if(!exists) {
+          //Save word and clear input.
+          var ok = (!anagramica.game.validWord(word))?' moj-badge--red':'moj-badge--grey';
+          var textSpan = document.createElement('span')
+              textSpan.setAttribute('class', 'text');
+              textSpan.textContent = word;
 
-					//Save word and clear input.
-					var ok = (!anagramica.game.validWord(word))?' moj-badge--red':'moj-badge--grey';
-					$("#words").append(`<span class="word govuk-!-margin-1 moj-badge moj-badge--large ${ok} "><span class="text">${word}</span> | <span class="value">?</span></div>`);
-
-				}
+          $("#words").append(`<span class="word govuk-!-margin-1 moj-badge moj-badge--large ${ok}">${textSpan.outerHTML} | <span class="value">?</span></div>`);
+        }
 
 				//Clear input and refocus
 				$(this).val('').focus();

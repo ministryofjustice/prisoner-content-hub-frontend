@@ -50,7 +50,6 @@ function playThumps() {
         thumpLow ? playSound('thumpLow') : playSound('thumpHigh');
         thumpLow = !thumpLow;
         thumpDelay -= 15;
-        console.log(thumpDelay);
         if (thumpDelay < 200) {
             thumpDelay = 200;
         }

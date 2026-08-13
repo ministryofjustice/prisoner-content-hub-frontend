@@ -16,6 +16,7 @@ const createTopicsRouter = ({ cmsService }) => {
       const language = req.language || i18next.language;
 
       const topics = await cmsService.getTopics(establishmentName, language);
+
       // We have to sort the results even though we specified a sort order in
       // the JSON:API request.
       // See https://www.drupal.org/project/drupal/issues/3186834.
@@ -30,7 +31,7 @@ const createTopicsRouter = ({ cmsService }) => {
       });
 
       res.render('pages/topics', {
-        title: i18next.t('home.browseAllTopics', { lng: language }),
+        title: i18next.t('home.browseAllTopics', { lng: currentLng }),
         topics: groupBy(topics, item => item.linkText.charAt(0).toUpperCase()),
         config: {
           content: false,

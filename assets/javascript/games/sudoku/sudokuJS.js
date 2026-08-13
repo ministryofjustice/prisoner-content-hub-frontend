@@ -296,27 +296,38 @@
 		/* renderBoardCell
 		 * -----------------------------------------------------------------*/
 		var renderBoardCell = function(boardCell, id){
-			var val = (boardCell.val === null) ? "" : boardCell.val;
+			var value = (boardCell.val === null) ? "" : boardCell.val;
 			var candidates = boardCell.candidates || [];
 			var candidatesString = buildCandidatesString(candidates);
-			var maxlength = (boardSize < 10) ? " maxlength='1'" : "";
-			return "<div class='sudoku-board-cell'>" +
-						//want to use type=number, but then have to prevent chrome scrolling and up down key behaviors..
-						"<input class='govuk-input' type='text' pattern='\\d*' novalidate id='input-"+id+"' value='"+val+"'"+maxlength+">" +
-						"<div id='input-"+id+"-candidates' class='candidates'>" + candidatesString + "</div>" +
-					"</div>";
+			var maxlength = (boardSize < 10) ? "1" : "";
+
+      //want to use type=number, but then have to prevent chrome scrolling and up down key behaviors..
+      var input = document.createElement("input")
+      input.setAttribute("class", "govuk-input");
+      input.setAttribute("type", "text");
+      input.setAttribute("pattern", "\\d*");
+      input.setAttribute("novalidate", "novalidate");
+      input.setAttribute("id", "input-" + id);
+      input.setAttribute("value", value);
+      input.setAttribute("maxlength", maxlength);
+
+      var div = document.createElement("div")
+      div.setAttribute("id", "input-" + id + "-candidates");
+      div.setAttribute("class", "candidates");
+      div.textContent = candidatesString;
+
+			return "<div class='sudoku-board-cell'>" + input.outerHTML + div.outerHTML + "</div>";
 		};
 
 
 		/* buildCandidatesString
 		 * -----------------------------------------------------------------*/
 		var buildCandidatesString = function(candidatesList){
-			var s="";
+			var s = "";
 			for(var i=1; i<boardSize+1; i++){
-				if(contains(candidatesList,i))
-					s+= "<div>"+i+"</div> ";
-				else
-					s+= "<div>&nbsp;</div> ";
+        var div = document.createElement("div");
+        div.textContent = contains(candidatesList,i) ? i : '&nbsp;';
+				s+= div.outerHTML;
 			}
 			return s;
 		};

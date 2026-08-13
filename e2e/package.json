@@ -1,15 +1,21 @@
 {
   "name": "e2e",
   "version": "1.0.0",
-  "description": "Cypress tests",
+  "description": "Playwright tests",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "run-cypress": "cypress open",
+    "test": "export $(cat test-local.env | xargs) && playwright test",
+    "test:features": "export $(cat test-local.env | xargs) && playwright test --grep \"Feature:\"",
+    "test:ui": "export $(cat test-local.env | xargs) && playwright test --ui",
+    "test:headed": "export $(cat test-local.env | xargs) && playwright test --headed",
+    "test:debug": "export $(cat test-local.env | xargs) && playwright test --debug",
     "run-server": "export $(cat test-local.env) && node ../server.js",
     "run-wiremock": "docker-compose up wiremock | sed 's/^[^|]*[^ ]* //'",
-    "start-ui": "concurrently --names \"CYPRESS,SERVER,WIREMOCK \" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run run-cypress\" \"npm run run-server\" \"npm run run-wiremock\"",
-    "start-ci": "docker-compose up --build --abort-on-container-exit --exit-code-from cypress"
+    "start-ui": "concurrently --names \"PLAYWRIGHT,SERVER,WIREMOCK \" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm run test:ui\" \"npm run run-server\" \"npm run run-wiremock\"",
+    "start-ci": "docker-compose up --build --abort-on-container-exit --exit-code-from playwright",
+    "report": "playwright show-report",
+    "install-deps": "playwright install",
+    "setup": "npm ci && hmpps-npm-script-run-allowlist"
   },
   "engines": {
     "node": ">= 22",
@@ -18,12 +24,21 @@
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
-    "concurrently": "^9.1.2",
-    "cypress": "14.2.0",
-    "cypress-multi-reporters": "^2.0.5",
-    "date-fns": "^4.1.0",
-    "jsonwebtoken": "^9.0.2",
+    "@axe-core/playwright": "4.12.1",
+    "@eslint/js": "^9.39.5",
+    "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.6",
+    "@playwright/test": "^1.62.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.13.3",
+    "@types/superagent": "^8.1.11",
+    "@typescript-eslint/eslint-plugin": "^8.65.0",
+    "@typescript-eslint/parser": "^8.65.0",
+    "concurrently": "^9.2.4",
+    "date-fns": "^4.4.0",
+    "eslint": "^9.39.5",
+    "jsonwebtoken": "^9.0.3",
     "mocha-junit-reporter": "^2.2.1",
-    "superagent": "^10.2.0"
+    "superagent": "^10.3.0",
+    "typescript": "^5.9.3"
   }
 }

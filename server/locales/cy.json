@@ -36,11 +36,10 @@
       "video": "fideo hwn"
     },
     "dislike": {
-      "1": "Mae cynnwys ar goll",
-      "2": "Mae dolen wedi torri ar y dudalen hon",
-      "3": "Dydy’r sain neu’r fideo ddim yn chwarae",
-      "4": "Dydy’r delweddau ddim yn gweithio",
-      "5": "Mae gwybodaeth anghywir ar y dudalen hon",
+      "1": "Wnes i ddim mwynhau hwn",
+      "2": "Doedd hwn ddim yn berthnasol i mi",
+      "3": "Doedd hwn ddim yn ddiddorol",
+      "4": "Roedd yn anodd i mi ei ddeall",
       "iDontLikeThis": "Dydw i ddim yn hoffi’r"
     },
     "headings": {
@@ -48,8 +47,10 @@
       "default": "Rhowch adborth i ni"
     },
     "like": {
-      "1": "Mae’r cynnwys hwn wedi gwneud gwahaniaeth positif i mi",
-      "2": "Hoffwn gael mwy o’r math hwn o gynnwys",
+      "1": "Mi wnes i fwynhau hwn",
+      "2": "Roedd hwn o fudd i mi",
+      "3": "Roedd hwn yn ddiddorol",
+      "4": "Roedd yn hawdd i mi ei ddeall",
       "iLikeThis": "Rwy’n hoffi’r"
     },
     "select": "Dewiswch un:",

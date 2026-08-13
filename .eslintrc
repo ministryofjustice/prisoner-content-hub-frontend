@@ -5,6 +5,7 @@
     "requireConfigFile": false
   },
   "extends": ["airbnb-base", "eslint-config-prettier"],
+  "ignorePatterns": ["e2e/**"],
   "rules": {
     "no-use-before-define": "off",
     "max-classes-per-file": "off",

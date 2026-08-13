@@ -36,20 +36,21 @@
       "video": "video"
     },
     "dislike": {
-      "1": "Content is missing",
-      "2": "Broken link on this page",
-      "3": "Audio or video isn’t playing",
-      "4": "Images aren’t working",
-      "5": "There is wrong information on this page",
-      "iDontLikeThis": "I don't like this"
+      "1": "I didn’t enjoy this",
+      "2": "This wasn’t relevant to me",
+      "3": "This wasn’t interesting",
+      "4": "It was hard for me to understand",
+      "iDontLikeThis": "I don’t like this"
     },
     "headings": {
       "alternative": "Tell us what you think about this page",
       "default": "Give us feedback"
     },
     "like": {
-      "1": "This content made a positive difference to me",
-      "2": "I’d like more of this kind of content",
+      "1": "I enjoyed this",
+      "2": "This was beneficial to me",
+      "3": "This was interesting",
+      "4": "It was easy for me to understand",
       "iLikeThis": "I like this"
     },
     "select": "Select one:",

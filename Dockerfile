@@ -1,5 +1,5 @@
 # First stage
-FROM node:22.14-bookworm-slim AS builder
+FROM node:24-bookworm-slim AS builder
 
 ARG BUILD_NUMBER
 ARG GIT_REF
@@ -19,9 +19,10 @@ ENV BUILD_NUMBER=${BUILD_NUMBER}
 ENV GIT_REF=${GIT_REF}
 ENV GIT_DATE=${GIT_DATE}
 
+COPY package*.json .allowed-scripts.mjs .npmrc ./
 COPY . .
 
-RUN npm ci --no-audit --ignore-scripts && \
+RUN npm run setup --no-audit --ignore-scripts && \
     npm run build && \
     export BUILD_NUMBER=${BUILD_NUMBER:-1_0_0} && \
     export GIT_REF=${GIT_REF:-dummy} && \
@@ -30,7 +31,7 @@ RUN npm ci --no-audit --ignore-scripts && \
     npm prune --no-audit --omit=dev
 
 # Second stage
-FROM node:22.14-bookworm-slim
+FROM node:24-bookworm-slim
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 
 RUN apt-get update && \

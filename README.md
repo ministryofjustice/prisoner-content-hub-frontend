@@ -72,7 +72,13 @@ The app now takes it's establishment name from the hostname of each request. In 
 
 When running locally, in order to access the application as if you were at a specific establishment, `/etc/hosts` will need to be configured so that `127.0.0.1 localhost` includes one or more of the following:
 
+- `bedford.prisoner-content-hub.local`
 - `berwyn.prisoner-content-hub.local`
+- `bristol.prisoner-content-hub.local`
+- `bullingdon.prisoner-content-hub.local`
+- `cardiff.prisoner-content-hub.local`
+- `chelmsford.prisoner-content-hub.local`
+- `cookhamwood.prisoner-content-hub.local`
 - `etwoe.prisoner-content-hub.local`
 - `erlestoke.prisoner-content-hub.local`
 - `felthama.prisoner-content-hub.local`
@@ -89,6 +95,7 @@ When running locally, in order to access the application as if you were at a spe
 - `wayland.prisoner-content-hub.local`
 - `werrington.prisoner-content-hub.local`
 - `wetherby.prisoner-content-hub.local`
+- `woodhill.prisoner-content-hub.local`
 
 You can then access the application in the browser on `http://wetherby.prisoner-content-hub.local:3000` for example.
 
@@ -100,20 +107,66 @@ Jest is used for unit and integration tests
 
 ### Running the E2E tests
 
-Cypress is used for E2E testing
+Playwright is used for E2E testing with BDD (Behavior-Driven Development) format.
 
 #### Prerequisites
 
-Wiremock needs to run:
-`docker-compose -f docker-compose.yml up`
+All prison hostnames must be added to your `/etc/hosts` file (see hostname list above).
 
-#### Running tests
+#### Running tests locally
 
-Can either run the tests headlessly:
-`npm run test:e2e:ci`
+All tests (with server and wiremock):
 
-Or with the cypress user interface:
-`npm run test:e2e:ui`
+```bash
+cd e2e
+npm run start-ui
+```
+
+Feature tests only:
+
+```bash
+cd e2e
+npm run test:features
+```
+
+All tests (headless):
+
+```bash
+cd e2e
+npm test
+```
+
+Debug mode:
+
+```bash
+cd e2e
+npm run test:debug
+```
+
+#### Running tests in CI
+
+CI automatically runs all BDD feature tests across all 21 prison environments:
+
+```bash
+npm run test:e2e:ci
+```
+
+This runs:
+
+- Health check tests (3 scenarios)
+- My Prison page tests (5 scenarios)
+- Multi-prison tests (63 scenarios across all 21 prisons)
+
+**Total: 71 BDD feature tests**
+
+#### Multi-Prison Testing
+
+The test suite supports all 21 prison environments. Tests automatically detect whether running locally or in CI and use the appropriate domain pattern:
+
+- **Local**: `*.prisoner-content-hub.local`
+- **CI**: `*.content-hub.localhost`
+
+See `e2e/MULTI-PRISON-TESTING.md` for detailed documentation.
 
 ## Adding new breadcrumbs to none Drupal pages
 

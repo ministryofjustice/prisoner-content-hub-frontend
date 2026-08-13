@@ -4,4 +4,4 @@ assets
 .vscode
 cypress/
 .circleci
-e2e
+e2e/

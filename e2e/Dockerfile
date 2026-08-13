@@ -1,17 +1,17 @@
-FROM cypress/base:18.16.1
+FROM mcr.microsoft.com/playwright:v1.58.2-jammy
 WORKDIR /app
 
+COPY .allowed-scripts.mjs .
+COPY .npmrc .
 COPY package.json .
 COPY package-lock.json .
-COPY reporter-config.json .
-COPY cypress.config.js .
-ADD cypress cypress
-
-
+COPY playwright.config.ts .
+COPY tsconfig.json .
+ADD tests tests
+ADD utils utils
+ADD fixtures fixtures
+ADD stepDefinition stepDefinition
+ADD framework framework
 
 ENV CI=1
-RUN npm ci
-
-# verify that Cypress has been installed correctly.
-RUN npx cypress verify
-
+RUN npm run setup
