@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
   } 
 
   if(!getEstablishmentActive(req.session?.establishmentId)) {
-    res.redirect(newContentHub.url)
+    res.redirect(req.path ? newContentHub.url + req.path : newContentHub.url)
     return
   }
 
