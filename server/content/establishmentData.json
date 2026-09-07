@@ -136,7 +136,7 @@
     "name": "thestudio",
     "displayName": "HMPPS The Studio",
     "agencyId": "",
-    "active": true
+    "active": false
   },
   "793": {
     "name": "wayland",
