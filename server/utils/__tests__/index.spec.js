@@ -1,4 +1,4 @@
-const { groupBy, sortBy } = require('../index');
+const { groupBy, sortBy, getEstablishmentActive } = require('../index');
 
 describe('Utils', () => {
   describe('groupBy', () => {
@@ -62,6 +62,16 @@ describe('Utils', () => {
       contacts = contacts.sort(sortBy(key)).sort(sortBy(secondSortKey));
 
       expect(contacts).toStrictEqual([contactC, contactA, contactB]);
+    });
+  });
+
+    describe('getEstablishmentActive', () => {
+    it('returns true for active establishments', () => {
+      expect(getEstablishmentActive("1086")).toBe(true)
+    });
+
+    it('returns false for inactive establishments', () => {
+      expect(getEstablishmentActive("1603")).toBe(false)
     });
   });
 });

@@ -25,6 +25,9 @@ env:
           name: {{ .Values.application.nprConfigMapName }}
           key: externalUrl
 
+    - name: CONTENT_HUB_TS
+      value: {{ .Values.application.config.contentHubTypescriptUrl }}
+
     - name: ANALYTICS_ENDPOINT
       value: "https://www.google-analytics.com/collect"
 

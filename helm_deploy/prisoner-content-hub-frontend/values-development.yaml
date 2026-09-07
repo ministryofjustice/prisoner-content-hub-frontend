@@ -7,6 +7,7 @@ application:
     analyticsSiteId: G-0RBPFCWD3X
     googleTagManagerSiteId: GTM-M62TTBK
     mockAuthEnabled: true
+    contentHubTypescriptUrl: "https://content-hub-dev.hmpps.service.justice.gov.uk"
 
 ingress:
   annotations:

@@ -18,6 +18,7 @@ const { createHealthRouter } = require('./routes/health');
 const { featureToggleMiddleware } = require('./middleware/featureToggle');
 const getEstablishmentFromUrl = require('./middleware/getEstablishmentFromUrl');
 const configureEstablishment = require('./middleware/configureEstablishment');
+const redirectInactiveEstablishments = require('./middleware/redirectInactiveEstablishments')
 
 const defaultConfig = require('./config');
 const defaultEstablishmentData = require('./content/establishmentData.json');
@@ -188,7 +189,7 @@ const createApp = services => {
 
   app.use(getEstablishmentFromUrl);
   app.use(configureEstablishment);
-
+  app.use(redirectInactiveEstablishments)
   app.use([setCurrentUser, setReturnUrl]);
 
   app.use(routes(services, establishmentData));

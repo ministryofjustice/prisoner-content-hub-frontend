@@ -24,6 +24,11 @@ const getEstablishment = (
   };
 };
 
+const getEstablishmentActive = (
+  establishmentId,
+  establishmentData = defaultEstablishmentData
+) => establishmentData[establishmentId]?.active
+
 const updateSessionEstablishment = (req, agencyId) => {
   if (!req.session?.establishmentName) {
     const { establishmentId, establishmentName } = getEstablishment(agencyId);
@@ -54,6 +59,7 @@ const sortBy = key => (a, b) => {
 module.exports = {
   getEstablishmentId,
   getEstablishment,
+  getEstablishmentActive,
   updateSessionEstablishment,
   getEstablishmentDisplayName,
   groupBy,
