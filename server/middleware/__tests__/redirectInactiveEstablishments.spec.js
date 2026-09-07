@@ -37,6 +37,15 @@ describe('redirectInactiveEstablishments - config defined', () => {
     expect(next).not.toHaveBeenCalled();
   });
 
+  it('should redirect to the new content hub url for inactive establishments - including path', () => {
+    const inactiveEstablishmentWithPath = {...inactiveEstablishment, path: '/content/1111'}
+    
+    redirectInactiveEstablishments(inactiveEstablishmentWithPath, res, next);
+
+    expect(res.redirect).toHaveBeenCalledWith('/test-redirect/content/1111')
+    expect(next).not.toHaveBeenCalled();
+  });
+
   it('should not redirect to the new content hub url for active establishments', () => {
     redirectInactiveEstablishments(activeEstablishment, res, next);
 
