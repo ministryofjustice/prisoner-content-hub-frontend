@@ -39,6 +39,6 @@
     "jsonwebtoken": "^9.0.3",
     "mocha-junit-reporter": "^2.2.1",
     "superagent": "^10.3.0",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   }
 }
