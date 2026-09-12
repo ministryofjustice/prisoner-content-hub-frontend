@@ -27,7 +27,7 @@
     "@axe-core/playwright": "4.13.0",
     "@eslint/js": "^9.39.5",
     "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.6",
-    "@playwright/test": "^1.62.1",
+    "@playwright/test": "^1.63.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.13.3",
     "@types/superagent": "^8.1.11",
