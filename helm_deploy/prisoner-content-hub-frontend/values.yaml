@@ -67,6 +67,7 @@ ingress:
     - wayland
     - werrington
     - wetherby
+    - winchester
     - woodhill
   annotations:
     # nginx.ingress.kubernetes.io/enable-modsecurity: "true"

@@ -115,6 +115,9 @@ module.exports = {
     wetherby: {
       languages: ['en'],
     },
+    winchester: {
+      languages: ['en'],
+    },
     woodhill: {
       languages: ['en'],
     },
