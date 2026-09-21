@@ -95,6 +95,7 @@ When running locally, in order to access the application as if you were at a spe
 - `wayland.prisoner-content-hub.local`
 - `werrington.prisoner-content-hub.local`
 - `wetherby.prisoner-content-hub.local`
+- `winchester.prisoner-content-hub.local`
 - `woodhill.prisoner-content-hub.local`
 
 You can then access the application in the browser on `http://wetherby.prisoner-content-hub.local:3000` for example.
