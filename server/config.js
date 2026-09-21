@@ -141,6 +141,6 @@ module.exports = {
     stream: getEnv('NPR_STREAM', '/npr-stream'),
   },
   newContentHub: {
-    url: getEnv('CONTENT_HUB_TS', '')
-  }
+    url: getEnv('CONTENT_HUB_TS', ''),
+  },
 };

@@ -26,8 +26,8 @@ const getEstablishment = (
 
 const getEstablishmentActive = (
   establishmentId,
-  establishmentData = defaultEstablishmentData
-) => establishmentData[establishmentId]?.active
+  establishmentData = defaultEstablishmentData,
+) => establishmentData[establishmentId]?.active;
 
 const updateSessionEstablishment = (req, agencyId) => {
   if (!req.session?.establishmentName) {
