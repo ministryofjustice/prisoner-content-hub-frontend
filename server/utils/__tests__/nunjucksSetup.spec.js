@@ -20,7 +20,7 @@ describe('skip', () => {
   });
 
   it('should handle null', () => {
-    expect(() => skip(null, -1)).toThrowError();
+    expect(() => skip(null, -1)).toThrow();
   });
 });
 

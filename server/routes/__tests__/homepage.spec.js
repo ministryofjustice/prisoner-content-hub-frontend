@@ -385,8 +385,8 @@ describe('GET /', () => {
       });
 
       it('should remove the update object with an id that matches the largeUpdateTileContent id', () =>
-        expect(updatesContentWithDuplicateRemoved).toEqual(
-          expect.not.objectContaining(hubUpdatesContent[0]),
+        expect(updatesContentWithDuplicateRemoved).not.toContainEqual(
+          hubUpdatesContent[0],
         ));
 
       it('should return the remaining 4 items in the updatesContent array when a duplicate item has been removed', () =>
