@@ -160,6 +160,14 @@
     "agencyId": "WYI",
     "active": true
   },
+  "2454": {
+    "name": "winchester",
+    "formattedName": "Winchester",
+    "displayName": "HMP Winchester",
+    "youth": false,
+    "agencyId": "WCI",
+    "active": true
+  },
   "1915": {
     "name": "woodhill",
     "formattedName": "Woodhill",

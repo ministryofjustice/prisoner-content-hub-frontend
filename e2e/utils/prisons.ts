@@ -20,6 +20,7 @@ export const PRISONS = [
   { id: 'wayland', name: 'Wayland', url: 'wayland.prisoner-content-hub.local', devUrl: 'https://wayland-prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk' },
   { id: 'werrington', name: 'Werrington', url: 'werrington.prisoner-content-hub.local', devUrl: 'https://werrington-prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk' },
   { id: 'wetherby', name: 'Wetherby', url: 'wetherby.prisoner-content-hub.local', devUrl: 'https://wetherby-prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk' },
+  { id: 'winchester', name: 'Winchester', url: 'winchester.prisoner-content-hub.local', devUrl: 'https://winchester-prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk' },
   { id: 'woodhill', name: 'Woodhill', url: 'woodhill.prisoner-content-hub.local', devUrl: 'https://woodhill-prisoner-content-hub-development.apps.live.cloud-platform.service.justice.gov.uk' },
 ] as const;
 
