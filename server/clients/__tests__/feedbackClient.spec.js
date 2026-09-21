@@ -31,7 +31,7 @@ describe('FeedbackClient', () => {
 
       await client.postFeedback(feedbackData);
 
-      expect(mockInsert).toBeCalledWith(feedbackData);
+      expect(mockInsert).toHaveBeenCalledWith(feedbackData);
     });
   });
 });

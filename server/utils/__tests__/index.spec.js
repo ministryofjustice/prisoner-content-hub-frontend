@@ -65,13 +65,13 @@ describe('Utils', () => {
     });
   });
 
-    describe('getEstablishmentActive', () => {
+  describe('getEstablishmentActive', () => {
     it('returns true for active establishments', () => {
-      expect(getEstablishmentActive("1086")).toBe(true)
+      expect(getEstablishmentActive('1086')).toBe(true);
     });
 
     it('returns false for inactive establishments', () => {
-      expect(getEstablishmentActive("1603")).toBe(false)
+      expect(getEstablishmentActive('1603')).toBe(false);
     });
   });
 });

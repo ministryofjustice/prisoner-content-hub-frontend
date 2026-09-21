@@ -4,25 +4,24 @@ const express = require('express');
 const { createInfoRouter } = require('../info');
 
 const mockActiveAgency = {
-  "2343": {
-    "name": "bedford",
-    "displayName": "HMP Bedford",
-    "youth": false,
-    "agencyId": "BFI",
-    "active": true
+  2343: {
+    name: 'bedford',
+    displayName: 'HMP Bedford',
+    youth: false,
+    agencyId: 'BFI',
+    active: true,
   },
-}
+};
 
 const mockNoActiveAgencies = {
-    "2343": {
-    "name": "bedford",
-    "displayName": "HMP Bedford",
-    "youth": false,
-    "agencyId": "BFI",
-    "active": false
+  2343: {
+    name: 'bedford',
+    displayName: 'HMP Bedford',
+    youth: false,
+    agencyId: 'BFI',
+    active: false,
   },
-}
-
+};
 
 describe('GET info', () => {
   let app;
@@ -38,9 +37,9 @@ describe('GET info', () => {
       .expect('Content-Type', /json/)
       .then(res => {
         expect(res.body).toStrictEqual({
-          activeAgencies: ['BFI']
+          activeAgencies: ['BFI'],
         });
-      })
+      });
   });
 
   it('returns an empty array on /info when there are no active agencies', () => {
@@ -51,9 +50,9 @@ describe('GET info', () => {
       .expect('Content-Type', /json/)
       .then(res => {
         expect(res.body).toStrictEqual({
-          activeAgencies: []
+          activeAgencies: [],
         });
-      })
+      });
   });
 
   it('returns an empty array when no establishment data is present', () => {
@@ -64,8 +63,8 @@ describe('GET info', () => {
       .expect('Content-Type', /json/)
       .then(res => {
         expect(res.body).toStrictEqual({
-          activeAgencies: []
+          activeAgencies: [],
         });
-      })
+      });
   });
 });
