@@ -47,9 +47,9 @@ PRISONS.forEach((prison) => {
         expect(href).not.toBe('#');
       });
 
-      await test.step('And the href should point to "/content/4856"', async () => {
+      await test.step('And the href should point to "/content/64583"', async () => {
         const href = await privacyPolicyPage.getPrivacyLinkHref();
-        expect(href).toBe('/content/4856');
+        expect(href).toBe('/content/64583');
       });
     });
 
@@ -67,7 +67,7 @@ PRISONS.forEach((prison) => {
       await test.step('When I click the privacy link', async () => {
         const initialUrl = await privacyPolicyPage.getCurrentURL();
         await privacyPolicyPage.clickPrivacyLink();
-        
+
         await test.step('Then the URL should change', async () => {
           await privacyPolicyPage.waitForNavigation();
           const newUrl = await privacyPolicyPage.getCurrentURL();
@@ -76,7 +76,7 @@ PRISONS.forEach((prison) => {
 
         await test.step('And I should navigate to the privacy page', async () => {
           const newUrl = await privacyPolicyPage.getCurrentURL();
-          expect(newUrl).toContain('/content/4856');
+          expect(newUrl).toContain('/content/64583');
         });
 
         await test.step('And the privacy page should load successfully', async () => {

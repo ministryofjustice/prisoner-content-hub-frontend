@@ -11,7 +11,7 @@ Feature: Privacy Policy Footer Link - Functional Behavior
     Given I am on the homepage
     When I inspect the privacy link
     Then the privacy link should have a valid href attribute
-    And the href should point to "/content/4856"
+    And the href should point to "/content/64583"
 
   # Navigation Tests
   Scenario: Privacy link navigation works
