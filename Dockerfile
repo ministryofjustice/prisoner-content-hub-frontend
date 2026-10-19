@@ -1,5 +1,5 @@
 # First stage
-FROM node:24-bookworm-slim AS builder
+FROM node:24-trixie-slim AS builder
 
 ARG BUILD_NUMBER
 ARG GIT_REF
