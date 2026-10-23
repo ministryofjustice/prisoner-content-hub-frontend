@@ -17,6 +17,6 @@ fs.writeFileSync(
   JSON.stringify({
     buildNumber: getEnvironmentVariable('BUILD_NUMBER'),
     gitRef: getEnvironmentVariable('GIT_REF'),
-    gitDate: getEnvironmentVariable('GIT_DATE'),
+    gitBranch: getEnvironmentVariable('GIT_BRANCH'),
   }),
 );

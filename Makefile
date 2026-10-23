@@ -2,7 +2,7 @@ build:
 	docker build -t prisoner-content-hub-frontend . \
 		--build-arg BUILD_NUMBER="$(APP_VERSION)" \
 		--build-arg GIT_REF="$(GIT_REF)" \
-		--build-arg GIT_DATE="$(GIT_DATE)"
+		--build-arg GIT_BRANCH="$(GIT_BRANCH)"
 
 push:
 	@docker login -u="${QUAYIO_USERNAME}" -p="${QUAYIO_PASSWORD}" quay.io
