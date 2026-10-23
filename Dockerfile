@@ -1,48 +1,32 @@
-# First stage
-FROM node:24-trixie-slim AS builder
+# Stage: build assets
+FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine AS builder
 
 ARG BUILD_NUMBER
 ARG GIT_REF
-ARG GIT_DATE
-
-RUN apt-get update && \
-    apt-get upgrade -y
-
-WORKDIR /app
+ARG GIT_BRANCH
 
 # Cache breaking and ensure required build / git args defined
 RUN test -n "$BUILD_NUMBER" || (echo "BUILD_NUMBER not set" && false)
 RUN test -n "$GIT_REF" || (echo "GIT_REF not set" && false)
+RUN test -n "$GIT_BRANCH" || (echo "GIT_BRANCH not set" && false)
 
-# Define env variables for runtime health / info
-ENV BUILD_NUMBER=${BUILD_NUMBER}
-ENV GIT_REF=${GIT_REF}
-ENV GIT_DATE=${GIT_DATE}
+WORKDIR /app
 
 COPY package*.json .allowed-scripts.mjs .npmrc ./
+RUN NPM_CONFIG_AUDIT=false NPM_CONFIG_FUND=false npm run setup
+ENV NODE_ENV='production'
+
 COPY . .
+RUN BUILD_NUMBER="${BUILD_NUMBER}" GIT_REF="${GIT_REF}" GIT_BRANCH="${GIT_BRANCH}" npm run record-build-info
+RUN npm run build
+RUN npm prune --no-audit --no-fund --omit=dev
 
-RUN npm run setup --no-audit --ignore-scripts && \
-    npm run build && \
-    export BUILD_NUMBER=${BUILD_NUMBER:-1_0_0} && \
-    export GIT_REF=${GIT_REF:-dummy} && \
-    export GIT_DATE="${GIT_DATE:-dummy}" && \
-    npm run record-build-info && \
-    npm prune --no-audit --omit=dev
+# Stage: copy production assets and dependencies
+FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine-runtime
 
-# Second stage
-FROM node:24-bookworm-slim
-LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
-
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN addgroup --gid 2000 --system appgroup && \
-    adduser --uid 2000 --system appuser --gid 2000
-
-RUN mkdir /app && chown appuser:appgroup /app
+ARG BUILD_NUMBER
+ARG GIT_REF
+ARG GIT_BRANCH
 
 WORKDIR /app
 ADD --chown=appuser:appgroup --chmod=644 https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /app/global-bundle.pem
@@ -51,6 +35,7 @@ COPY --from=builder --chown=appuser:appgroup \
         /app/package.json \
         /app/package-lock.json \
         /app/server.js \
+        /app/build-info.json \
         ./
 
 COPY --from=builder --chown=appuser:appgroup \
@@ -68,5 +53,10 @@ COPY --from=builder --chown=appuser:appgroup \
 ENV PORT=3000
 
 EXPOSE 3000
+ENV BUILD_NUMBER=${BUILD_NUMBER}
+ENV GIT_REF=${GIT_REF}
+ENV GIT_BRANCH=${GIT_BRANCH}
+ENV NODE_ENV='production'
 USER 2000
+
 CMD [ "npm", "start" ]
