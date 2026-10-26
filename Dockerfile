@@ -1,5 +1,5 @@
 # First stage
-FROM node:24-trixie-slim AS builder
+FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine AS builder
 
 ARG BUILD_NUMBER
 ARG GIT_REF
@@ -31,7 +31,7 @@ RUN npm run setup --no-audit --ignore-scripts && \
     npm prune --no-audit --omit=dev
 
 # Second stage
-FROM node:24-bookworm-slim
+FROM ghcr.io/ministryofjustice/hmpps-node:24-alpine-runtime
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 
 RUN apt-get update && \
