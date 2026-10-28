@@ -71,7 +71,7 @@ describe('Utils', () => {
     });
 
     it('returns false for inactive establishments', () => {
-      expect(getEstablishmentActive('1603')).toBe(false);
+      expect(getEstablishmentActive('2095')).toBe(false);
     });
   });
 });

@@ -4,7 +4,7 @@ const config = {
 
 const inactiveEstablishment = {
   session: {
-    establishmentId: 1603,
+    establishmentId: 2095,
   },
 };
 
