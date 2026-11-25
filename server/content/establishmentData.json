@@ -32,7 +32,7 @@
     "displayName": "HMP Cardiff",
     "youth": false,
     "agencyId": "CFI",
-    "active": true
+    "active": false
   },
   "2001": {
     "name": "chelmsford",
@@ -136,7 +136,7 @@
     "name": "thestudio",
     "displayName": "HMPPS The Studio",
     "agencyId": "",
-    "active": false
+    "active": true
   },
   "793": {
     "name": "wayland",
