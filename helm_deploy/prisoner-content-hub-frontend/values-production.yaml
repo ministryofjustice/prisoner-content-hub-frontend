@@ -1,6 +1,5 @@
 application:
   config:
-    feedbackEndpoint: /prod-feedback/_doc
     analyticsSiteId: G-H1MT63QRLQ
     googleTagManagerSiteId: GTM-M62TTBK
     mockAuthEnabled: false

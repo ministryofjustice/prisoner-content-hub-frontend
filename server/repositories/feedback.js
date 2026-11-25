@@ -1,6 +1,4 @@
-const config = require('../config');
-
-function feedbackRepository(httpClient, feedbackClient) {
+function feedbackRepository(feedbackClient) {
   async function sendFeedback({
     title,
     url,
@@ -36,11 +34,7 @@ function feedbackRepository(httpClient, feedbackClient) {
     }
 
     if (feedbackId) {
-      const endpoint = `${config.feedback.endpoint}/${feedbackId}`;
-      const openSeach = httpClient.post(endpoint, postData);
-      const feedback = feedbackClient.postFeedback({ ...postData, feedbackId });
-
-      return openSeach && feedback;
+      return feedbackClient.postFeedback({ ...postData, feedbackId });
     }
 
     return Promise.resolve();
