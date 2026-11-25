@@ -38,6 +38,7 @@ describe('GET info', () => {
       .then(res => {
         expect(res.body).toStrictEqual({
           activeAgencies: ['BFI'],
+          productId: 'DPS101',
         });
       });
   });
@@ -51,6 +52,7 @@ describe('GET info', () => {
       .then(res => {
         expect(res.body).toStrictEqual({
           activeAgencies: [],
+          productId: 'DPS101',
         });
       });
   });
@@ -64,6 +66,7 @@ describe('GET info', () => {
       .then(res => {
         expect(res.body).toStrictEqual({
           activeAgencies: [],
+          productId: 'DPS101',
         });
       });
   });

@@ -10,7 +10,7 @@ const Sentry = require('@sentry/node');
 const i18next = require('i18next');
 const middleware = require('i18next-http-middleware');
 const filesystem = require('i18next-fs-backend');
-const { getRequiredEnv } = require('../utils/index');
+const { getRequiredEnv, getEnv } = require('../utils/index');
 const nunjucksSetup = require('./utils/nunjucksSetup');
 
 const { createHealthRouter } = require('./routes/health');
@@ -74,7 +74,7 @@ const createApp = services => {
 
   const s3Bucket = getRequiredEnv('S3_BUCKET', '');
   const s3Region = getRequiredEnv('S3_REGION', 'aws-west-2');
-  const s3Cname = getRequiredEnv('S3_CNAME', '');
+  const s3Cname = getEnv('S3_CNAME', '');
   const s3Address = s3Cname || `${s3Bucket}.s3.${s3Region}.amazonaws.com`;
   const nprStream = getRequiredEnv('NPR_STREAM', '');
   const nprLiveHostname = nprStream ? new URL(nprStream).host : '';
