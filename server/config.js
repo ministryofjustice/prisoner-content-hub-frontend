@@ -22,7 +22,6 @@ module.exports = {
     gitDate: getEnv('GIT_DATE', '2020-06-21 12:12:12'),
   },
   cookieSecret: getEnv('COOKIE_SECRET', 'keyboard cat'),
-  singleHostName: getRequiredEnv('SINGLE_HOST_NAME', 'localhost'),
   api: {
     hubEndpoint,
   },

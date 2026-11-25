@@ -74,9 +74,6 @@ env:
       value: {{ .Values.application.config.REDIS_TLS_ENABLED }}
       value: "true"
 
-    - name: SINGLE_HOST_NAME
-      value: {{ .Values.ingress.host }}
-
     - name: FEEDBACK_DATABASE_NAME
       valueFrom:
         secretKeyRef:
